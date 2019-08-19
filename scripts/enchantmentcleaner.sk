@@ -1,0 +1,14 @@
+on load:
+	register new shapeless recipe for sugar named "<bold>Cleansing Dust" with lore "<gold>Right-click a cauldron to cleanse enchantments." using glowstone dust, sugar, air, air, air, air, air, air, air
+
+on rightclick on a cauldron:
+	set {_isCleaner} to metadata value "isCleaner" of the targeted block
+	if the name of the player's tool is "<bold>Cleansing Dust":
+		set the name of the targeted block to "<bold>Enchantment Cleanser"
+		set metadata value "isCleaner" of the targeted block to 1
+		set the player's tool to air
+		send "<green>Converted this cauldron to an enchantment cleanser!"
+	if {_isCleaner} is 1:
+		if the player's tool is enchanted:
+			disenchant the player's tool
+			send "<light blue>Disenchanted your tool!"

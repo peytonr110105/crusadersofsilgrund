@@ -1,0 +1,436 @@
+every 1 minecraft day:
+	set {toddRNG} to true
+	
+on damage:
+	if victim is npc:
+		if victim's name is "Todd":
+			set {toddRNG} to true
+			set damage to damage - 1.5
+
+command /bs-shop [<number=1>]:
+	trigger:
+		if arg 1 is 1:
+			open chest with 2 rows named "<gold>Blacksmith" for the player
+			set slot 0 of the player's current inventory to 1 leather helmet with lore "<white>Cost:", "12"
+			set slot 1 of the player's current inventory to 1 leather chestplate with lore "<white>Cost:", "20"
+			set slot 2 of the player's current inventory to 1 leather leggings with lore "<white>Cost:", "17"
+			set slot 3 of the player's current inventory to 1 leather boots with lore "<white>Cost:", "10"
+			set slot 4 of the player's current inventory to 1 wooden sword with lore "<white>Cost:", "5"
+			set slot 5 of the player's current inventory to 1 wooden axe with lore "<white>Cost:", "8"
+			set slot 6 of the player's current inventory to 1 wooden pickaxe with lore "<white>Cost:", "8"
+			set slot 7 of the player's current inventory to 1 wooden shovel with lore "<white>Cost:", "4"
+			set slot 8 of the player's current inventory to 1 wooden hoe with lore "<white>Cost:", "6"
+			if {quests.%player%::Home Sweet Home} is set:
+				set slot 12 of the player's current inventory to 1 light green glass pane named "<light green>Go to Page 2"
+		else if arg 1 is 2:
+			open chest with 2 rows named "<gold>Blacksmith" for the player
+			set slot 0 of the player's current inventory to 1 chain helmet with lore "<white>Cost:", "20"
+			set slot 1 of the player's current inventory to 1 chain chestplate with lore "<white>Cost:", "32"
+			set slot 2 of the player's current inventory to 1 chain leggings with lore "<white>Cost:", "28"
+			set slot 3 of the player's current inventory to 1 chain boots with lore "<white>Cost:", "16"
+			set slot 4 of the player's current inventory to 1 stone sword with lore "<white>Cost:", "7"
+			set slot 5 of the player's current inventory to 1 stone axe with lore "<white>Cost:", "10"
+			set slot 6 of the player's current inventory to 1 stone pickaxe with lore "<white>Cost:", "10"
+			set slot 7 of the player's current inventory to 1 stone shovel with lore "<white>Cost:", "5"
+			set slot 8 of the player's current inventory to 1 stone hoe with lore "<white>Cost:", "8"
+			set slot 11 of the player's current inventory to 1 red glass pane named "<light red>Go to Page 1"
+			if {quests.%player%::Seeking the Light} is 999:
+				set slot 12 of the player's current inventory to 1 light green glass pane named "<light green>Go to Page 3"
+		else if arg 1 is 3:
+			open chest with 2 rows named "<gold>Blacksmith" for the player
+			set slot 0 of the player's current inventory to 1 iron helmet with lore "<white>Cost:", "150"
+			set slot 1 of the player's current inventory to 1 iron chestplate with lore "<white>Cost:", "240"
+			set slot 2 of the player's current inventory to 1 iron leggings with lore "<white>Cost:", "210"
+			set slot 3 of the player's current inventory to 1 iron boots with lore "<white>Cost:", "120"
+			set slot 4 of the player's current inventory to 1 iron sword with lore "<white>Cost:", "60"
+			set slot 5 of the player's current inventory to 1 iron axe with lore "<white>Cost:", "90"
+			set slot 6 of the player's current inventory to 1 iron pickaxe with lore "<white>Cost:", "90"
+			set slot 7 of the player's current inventory to 1 iron shovel with lore "<white>Cost:", "90"
+			set slot 8 of the player's current inventory to 1 iron hoe with lore "<white>Cost:", "60"
+			set slot 9 of the player's current inventory to 1 bow with lore "<white>Cost:", "60"
+			set slot 10 of the player's current inventory to 16 arrow with lore "<white>Cost:", "64"
+			set slot 11 of the player's current inventory to 8 iron ingot with lore "<white>Cost:", "240"
+			set slot 12 of the player's current inventory to 8 gold ingot with lore "<white>Cost:", "320"
+			set slot 16 of the player's current inventory to 1 red glass pane named "<light red>Go to Page 2"
+			if {quests.%player%::Greats Guide You} is 999:
+				set slot 17 of the player's current inventory to 1 light green glass pane named "<light green>Go to Page 4"
+		else if arg 1 is 4:
+			open chest with 3 rows named "<gold>Blacksmith" for the player
+			set slot 0 of the player's current inventory to 1 iron helmet of protection 2 named "<light blue>Steel Helmet" with lore "<white>Cost:", "225"
+			set slot 1 of the player's current inventory to 1 iron chestplate of protection 2 named "<light blue>Steel Chestplate" with lore "<white>Cost:", "360"
+			set slot 2 of the player's current inventory to 1 iron leggings of protection 2 named "<light blue>Steel Leggings" with lore "<white>Cost:", "315"
+			set slot 3 of the player's current inventory to 1 iron boots of protection 2 named "<light blue>Steel Boots" with lore "<white>Cost:", "180"
+			set slot 4 of the player's current inventory to 1 iron sword of sharpness 2 named "<light blue>Steel Sword" with lore "<white>Cost:", "135"
+			set slot 5 of the player's current inventory to 1 iron axe of sharpness 2, efficiency 2 named "<light blue>Steel Axe" with lore "<white>Cost:", "135"
+			set slot 6 of the player's current inventory to 1 iron pickaxe of efficiency 2 named "<light blue>Steel Pickaxe" with lore "<white>Cost:", "135"
+			set slot 7 of the player's current inventory to 1 iron shovel of efficiency 2 named "<light blue>Steel Shovel" with lore "<white>Cost:", "135"
+			set slot 8 of the player's current inventory to 1 iron hoe of unbreaking 2 named "<light blue>Steel Hoe" with lore "<white>Cost:", "135"
+			set slot 9 of the player's current inventory to 1 bow of power 1 named "<light blue>Steel Bow" with lore "<white>Cost:", "90"
+			set slot 10 of the player's current inventory to 1 gold helmet with lore "<white>Cost:", "150"
+			set slot 11 of the player's current inventory to 1 gold chestplate with lore "<white>Cost:", "240"
+			set slot 12 of the player's current inventory to 1 gold leggings with lore "<white>Cost:", "210"
+			set slot 13 of the player's current inventory to 1 gold boots with lore "<white>Cost:", "120"
+			set slot 14 of the player's current inventory to 1 gold sword with lore "<white>Cost:", "60"
+			set slot 15 of the player's current inventory to 1 gold axe with lore "<white>Cost:", "90"
+			set slot 16 of the player's current inventory to 1 gold pickaxe with lore "<white>Cost:", "90"
+			set slot 17 of the player's current inventory to 1 gold shovel with lore "<white>Cost:", "90"
+			set slot 18 of the player's current inventory to 1 gold hoe with lore "<white>Cost:", "60"
+			set slot 19 of the player's current inventory to 1 bow of power 3 named "<light blue>Golden Bow" with lore "<white>Cost:", "60"
+			set slot 25 of the player's current inventory to 1 red glass pane named "<light red>Go to Page 3"
+			if {quests.%player%::Liberation} is set:
+				set slot 26 of the player's current inventory to 1 light green glass pane named "<light green>Go to Page 5"
+		else if arg 1 is 5:
+			open chest with 2 rows named "<gold>Blacksmith" for the player
+			set slot 0 of the player's current inventory to 1 iron helmet of protection 5 named "<light blue>Silver Helmet" with lore "<white>Cost:", "375"
+			set slot 1 of the player's current inventory to 1 iron chestplate of protection 5 named "<light blue>Silver Chestplate" with lore "<white>Cost:", "600"
+			set slot 2 of the player's current inventory to 1 iron leggings of protection 5 named "<light blue>Silver Leggings" with lore "<white>Cost:", "525"
+			set slot 3 of the player's current inventory to 1 iron boots of protection 5 named "<light blue>Silver Boots" with lore "<white>Cost:", "300"
+			set slot 4 of the player's current inventory to 1 iron sword of sharpness 5 named "<light blue>Silver Sword" with lore "<white>Cost:", "200"
+			set slot 5 of the player's current inventory to 1 iron axe of sharpness 5, efficiency 5 named "<light blue>Silver Axe" with lore "<white>Cost:", "235"
+			set slot 6 of the player's current inventory to 1 iron pickaxe of efficiency 5 named "<light blue>Silver Pickaxe" with lore "<white>Cost:", "235"
+			set slot 7 of the player's current inventory to 1 iron shovel of efficiency 5 named "<light blue>Silver Shovel" with lore "<white>Cost:", "235"
+			set slot 8 of the player's current inventory to 1 iron hoe of unbreaking 5 named "<light blue>Silver Hoe" with lore "<white>Cost:", "235"
+			set slot 9 of the player's current inventory to 1 bow of power 5 named "<light blue>Silver Bow" with lore "<white>Cost:", "350"
+			set slot 10 of the player's current inventory to 8 iron ingot named "<light blue>Tempered Iron" with lore "<white>Cost:", "2160"
+			set slot 11 of the player's current inventory to 8 gold ingot named "<light blue>Tempered Gold" with lore "<white>Cost:", "2880"
+			set slot 16 of the player's current inventory to 1 red glass pane named "<light red>Go to Page 4"
+			if {quests.%player%::A Hero's Destiny} is set:
+				set slot 17 of the player's current inventory to 1 light green glass pane named "<light green>Go to Page 6"
+		else if arg 1 is 6:
+			open chest with 2 rows named "<gold>Blacksmith" for the player
+			set slot 0 of the player's current inventory to 1 diamond helmet with lore "<white>Cost:", "500"
+			set slot 1 of the player's current inventory to 1 diamond chestplate with lore "<white>Cost:", "800"
+			set slot 2 of the player's current inventory to 1 diamond leggings with lore "<white>Cost:", "700"
+			set slot 3 of the player's current inventory to 1 diamond boots with lore "<white>Cost:", "400"
+			set slot 4 of the player's current inventory to 1 diamond sword with lore "<white>Cost:", "200"
+			set slot 5 of the player's current inventory to 1 diamond axe with lore "<white>Cost:", "300"
+			set slot 6 of the player's current inventory to 1 diamond pickaxe with lore "<white>Cost:", "300"
+			set slot 7 of the player's current inventory to 1 diamond shovel with lore "<white>Cost:", "300"
+			set slot 8 of the player's current inventory to 1 diamond hoe with lore "<white>Cost:", "200"
+			set slot 9 of the player's current inventory to 4 diamond with lore "<white>Cost:", "400"
+			set slot 10 of the player's current inventory to 4 diamond named "<light blue>Tempered Diamond" with lore "<white>Cost:", "3600"
+			set slot 16 of the player's current inventory to 1 red glass pane named "<light red>Go to Page 5"
+
+command /butchershop:
+	trigger:
+		open chest with 2 rows named "<gold>Butcher" for the player
+			
+command /tradershop [<number=1>]:
+	trigger:
+		open chest with 6 rows named "<gold>Trader" for the player
+		set slot 0 of the player's current inventory to 1 workbench with lore "<white>Cost:", "8"
+		set slot 1 of the player's current inventory to 1 furnace with lore "<white>Cost:", "20"
+		set slot 2 of the player's current inventory to 16 oak log with lore "<white>Cost:", "64"
+		set slot 3 of the player's current inventory to 16 birch log with lore "<white>Cost:", "64"
+		set slot 4 of the player's current inventory to 16 spruce log with lore "<white>Cost:", "64"
+		set slot 5 of the player's current inventory to 16 jungle log with lore "<white>Cost:", "64"
+		set slot 6 of the player's current inventory to 16 acacia log with lore "<white>Cost:", "64"
+		set slot 7 of the player's current inventory to 16 dark oak log with lore "<white>Cost:", "64"
+		set slot 8 of the player's current inventory to 8 ladder item with lore "<white>Cost:", "24"
+		set slot 9 of the player's current inventory to 1 chest with lore "<white>Cost:", "10"
+		set slot 10 of the player's current inventory to 1 flint and steel with lore "<white>Cost:", "20"
+		set slot 11 of the player's current inventory to 32 torch with lore "<white>Cost:", "24"
+		set slot 12 of the player's current inventory to 6 glass with lore "<white>Cost:", "30"
+		set slot 13 of the player's current inventory to 4 white wool with lore "<white>Cost:", "16"
+		set slot 14 of the player's current inventory to 1 fishing rod with lore "<white>Cost:", "24"
+		set slot 15 of the player's current inventory to 1 compass with lore "<white>Cost:", "20"
+		set slot 16 of the player's current inventory to 1 bed with lore "<white>Cost:", "16"
+		set slot 17 of the player's current inventory to 1 empty map with lore "<white>Cost:", "20"
+		set slot 18 of the player's current inventory to 3 sugar cane with lore "<white>Cost:", "9"
+		set slot 19 of the player's current inventory to 1 name tag with lore "<white>Cost:", "10"
+		set slot 20 of the player's current inventory to 1 lead with lore "<white>Cost:", "8"
+		set slot 21 of the player's current inventory to 1 painting with lore "<white>Cost:", "15"
+		set slot 22 of the player's current inventory to 1 piston with lore "<white>Cost:", "40"
+		set slot 23 of the player's current inventory to 1 slimeball with lore "<white>Cost:", "15"
+		set slot 24 of the player's current inventory to 8 redstone dust with lore "<white>Cost:", "40"
+		set slot 25 of the player's current inventory to 2 redstone repeater item with lore "<white>Cost:", "40"
+		set slot 26 of the player's current inventory to 4 redstone torch with lore "<white>Cost:", "24"
+		set slot 27 of the player's current inventory to 1 dispenser with lore "<white>Cost:", "40"
+		set slot 28 of the player's current inventory to 4 tnt with lore "<white>Cost:", "80"
+		set slot 29 of the player's current inventory to 1 redstone lamp with lore "<white>Cost:", "20"
+		set slot 30 of the player's current inventory to 1 jukebox with lore "<white>Cost:", "20"
+		set slot 31 of the player's current inventory to 1 music disc cat with lore "<white>Cost:", "45"
+		set slot 32 of the player's current inventory to 1 music disc wait with lore "<white>Cost:", "45"
+		set slot 33 of the player's current inventory to 1 saddle with lore "<white>Cost:", "20"
+		set slot 34 of the player's current inventory to 1 book named "<gold>Quest Log" with lore "<white>Cost:", "5", "<white>A suitable replacement for a lost quest log."
+		set slot 35 of the player's current inventory to 1 sponge with lore "<white>Cost:", "20"
+		if {quests.%player%::Greats Guide You} is set:
+			set slot 36 of the player's current inventory to 2 bookshelf with lore "<white>Cost:", "35"
+			set slot 37 of the player's current inventory to 8 lapis item with lore "<white>Cost:", "40"
+			set slot 38 of the player's current inventory to 1 elytra with lore "<white>Cost:", "150"
+			set slot 39 of the player's current inventory to 1 purple shulker box with lore "<white>Cost:", "80"
+			set slot 40 of the player's current inventory to 1 enchanting table with lore "<white>Cost:", "300"
+		
+command /toddshop:
+	trigger:
+		if {toddRNG} is set:
+			set {toddInventory} to a random integer from 1 to 3
+			clear {toddRNG}
+		open chest with 2 rows named "<gold>Todd's General Goods" for the player
+		if {toddInventory} is 1:
+			set slot 0 of the player's current inventory to 1 tnt named "<white>Workbench" with lore "<white>Cost:", "16"
+			set slot 1 of the player's current inventory to 1 redstone block named "<white>Furnace" with lore "<white>Cost:", "40"
+			set slot 2 of the player's current inventory to 32 cobblestone with lore "<white>Cost:", "96"
+			set slot 3 of the player's current inventory to 32 oak log with lore "<white>Cost:", "128"
+			set slot 4 of the player's current inventory to 1 iron sword of sharpness 2 named "<white>Nordic Greatsword" with lore "<white>Cost:", "65"
+			set slot 5 of the player's current inventory to 32 arrow with lore "<white>Cost:", "64"
+			set slot 6 of the player's current inventory to 1 stone pickaxe of looting 3 named "<white>Notched Pickaxe" with lore "<white>Cost:", "200"
+			set slot 7 of the player's current inventory to 1 iron helmet of protection 1 named "<white>Nordic Helmet" with lore "<white>Cost:", "200"
+			set slot 8 of the player's current inventory to 1 leather chestplate of protection 1 named "<white>Leather Armour" with lore "<white>Cost:", "80"
+			set slot 9 of the player's current inventory to 1 music disc cat named "<light green><bold>Recover Ring" with lore "<white>Cost:", "2500", "<gold>Restores 50%% of your maximum HP every 15 seconds."
+			set slot 10 of the player's current inventory to 1 music disc strad named "<white><bold>Shield Ring" with lore "<white>Cost:", "600", "<gold>Grants Resistance 2 while in your inventory."
+		else if {toddInventory} is 2:
+			set slot 0 of the player's current inventory to 1 tnt named "<white>Workbench" with lore "<white>Cost:", "16"
+			set slot 1 of the player's current inventory to 1 redstone block named "<white>Furnace" with lore "<white>Cost:", "40"
+			set slot 2 of the player's current inventory to 32 granite with lore "<white>Cost:", "96"
+			set slot 3 of the player's current inventory to 32 birch log with lore "<white>Cost:", "128"
+			set slot 4 of the player's current inventory to 1 iron sword with lore "<white>Cost:", "60"
+			set slot 5 of the player's current inventory to 16 arrow with lore "<white>Cost:", "32"
+			set slot 6 of the player's current inventory to 1 iron pickaxe of fortune 1 named "<white>Lucky's Pickaxe" with lore "<white>Cost:", "300"
+			set slot 7 of the player's current inventory to 1 iron leggings of protection 1 named "<white>Skyforge Leggings" with lore "<white>Cost:", "175"
+			set slot 8 of the player's current inventory to 1 leather boots of protection 1 named "<white>Leather Boots" with lore "<white>Cost:", "40"
+			set slot 9 of the player's current inventory to 64 torches with lore "<white>Cost:", "128"
+			set slot 10 of the player's current inventory to 1 iron sword of smite 2 named "<white>Iron Sword of Purging" with lore "<white>Cost:", "175"
+		else:
+			set slot 0 of the player's current inventory to 1 tnt named "<white>Workbench" with lore "<white>Cost:", "16"
+			set slot 1 of the player's current inventory to 1 redstone block named "<white>Furnace" with lore "<white>Cost:", "40"
+			set slot 2 of the player's current inventory to 32 andesite with lore "<white>Cost:", "96"
+			set slot 3 of the player's current inventory to 32 jungle log with lore "<white>Cost:", "128"
+			set slot 4 of the player's current inventory to 1 iron shovel named "<bold>Iron Lance" with lore "<white>Cost:", "90"
+			set slot 5 of the player's current inventory to 64 arrow with lore "<white>Cost:", "128"
+			set slot 6 of the player's current inventory to 1 iron pickaxe of unbreaking 1 named "<white>Steel Pickaxe" with lore "<white>Cost:", "90"
+			set slot 7 of the player's current inventory to 1 iron chestplate of protection 1 named "<white>Steel Chestplate" with lore "<white>Cost:", "210"
+			set slot 8 of the player's current inventory to 1 leather chestplate named "<white>Leather Chestplate of Strength" with lore "<white>Cost:", "350"
+			set slot 9 of the player's current inventory to 64 torches with lore "<white>Cost:", "128"
+			set slot 10 of the player's current inventory to 1 iron sword of smite 2 named "<white>Iron Sword of Purging" with lore "<white>Cost:", "175"
+
+command /hwbuy <text> [<text="NULL">]:
+	trigger:
+		if arg 1 is "HW":
+			open chest with 6 rows named "<gold><bold>Holy Weapons" for the player
+			set slot 0 of the player's current inventory to 1 diamond sword named "<gold><bold>Falchion" with lore "<white>Effective against end-type monsters.", "<white>Can deal random critical damage.", "<white>Right-click to restore health.", "<bold>Unique Refine:", "<white>Grants Strength/Swiftness/Resistance 1 to nearby party members.", "<light red>Requires the Lord's Blood perk OR A or higher rank in Swords."
+			set slot 1 of the player's current inventory to 1 diamond sword named "<gold><bold>Binding Blade" with lore "<white>Effective against end-type monsters.", "<white>+4 weapon might.", "<white>Right-click to restore health.", "<white><bold>Unique Refine:", "<white>Grants Resistance 2 while equipped.", "<white>Grants Riposte.", "<bold>Riposte counters ignite foes.", "<light red>Requires the Lord's Blood perk OR A rank or higher in Swords."
+			set slot 2 of the player's current inventory to 1 diamond sword named "<gold><bold>Tyrfing" with lore "<white>+4 weapon might.", "<white>Reduces ranged damage suffered by 75%%.", "<white>Grants Miracle while equipped.", "<white><bold>Unique Refine:", "<white>Grants STR/DEF +40 while within 10 blocks of a party member.", "<light red><bold>Requires Crusader's Blood perk OR A rank or higher in Swords."
+			set slot 3 of the player's current inventory to 1 diamond sword named "<gold><bold>Ragnell" with lore "<white>+6 weapon might.", "<white>Grants Radiant Aether, a more likely to activate version of Aether.", "<white><bold>Unique Refine:", "<white>+4 weapon might.", "<white>Right-click to fire damaging shockwaves.", "<light red><bold>Requires A rank or higher in Swords to wield."
+			set slot 4 of the player's current inventory to 1 diamond sword named "<gold><bold>Light Brand" with lore "<white>Grants SKL +20 while equipped.", "<white>Right-click to strike lightning at nearby monsters.", "<white>Grants bonus damage = MAG / 8. Max: +7", "<bold>Unique Refine:", "<white>+4 weapon might.", "<white>Calculates damage using lower of foe's DEF or MAG.", "<light red><bold>Requires B rank or higher in Swords to wield."
+			set slot 5 of the player's current inventory to 1 diamond axe named "<gold><bold>Armads" with lore "<white>+6 weapon might.", "<white>Grants Resistance 2 while equipped.", "<white><bold>Unique Refine:", "<white>Automatically retaliate against ranged foes.", "<white>Automatically make a follow-up attack when attacked.", "<light red><bold>Requires A rank or higher in Axes to wield."
+			set slot 6 of the player's current inventory to 1 bow named "<gold><bold>Parthia" with lore "<white>Reduces ranged damage suffered by 75%%.", "<white>+2 weapon might.", "<white>Grants Experience Sapper.", "<white><bold>Unique Refine:", "<white>+6 weapon might against ranged opponents.", "<white>Inflicts Weakness 2 to foes on-hit.", "<light red><bold>Requires B rank or higher in Bows to wield."
+			set slot 7 of the player's current inventory to 1 iron horse armour named "<gold><bold>Super Shotgun" with lore "The double-barreled classic. Plenty of risk & plenty of reward.", "Right-click to fire.", "Left-click to reload. Costs 6 gold nuggets.", "<bold>Skills cannot be equipped on this weapon.", "<bold>This weapon cannot be refined."
+			set slot 8 of the player's current inventory to 1 diamond shovel named "<gold><bold>Siegmund" with lore "<white>+5 weapon might.", "<white>Grants Rally Strength.", "<white>Effective against monsters.", "<white><bold>Unique Refine:", "<white>If there are more enemies than allies within 10 blocks of you:", "<white>Automatically make a follow-up attack, and grants Strength 2.", "<light red>Requires the Lord's Blood perk OR A rank or higher in Lances."
+			set slot 9 of the player's current inventory to 1 diamond sword named "<gold><bold>Sieglinde" with lore "<white>+5 weapon might.", "<white>Grants Rally Strength.", "<white>Effective against monsters.", "<white><bold>Unique Refine:", "<white>Rallies also apply to yourself.", "<white>Rally skills apply in a 7-block radius.", "<light red>Requires the Lord's Blood perk OR A rank or higher in Swords."
+			set slot 10 of the player's current inventory to 1 diamond sword named "<gold><bold>Durandal" with lore "<white>+2 weapon might.", "<white>Effective against end-type monsters.", "<white>Imbued with the Crushing refine effect.", "<white><bold>Unique Refine:", "<white>Grants Strength/Swiftness 2 on-hit.", "<light red><bold>Requires A Rank or higher in Swords to wield."
+			set slot 11 of the player's current inventory to 1 diamond shovel named "<gold><bold>Gae Bolg" with lore "<white>Grants STR/DEF/SKL +10 while equipped.", "<white>Grants the Guard and Vantage perks while equipped.", "<white><bold>Unique refine:", "<white><bold>Inflicts DEF/MAG - 10 on foes within 10 blocks.", "<light red>Requires the Crusader's Blood perk OR S rank in Lances to wield."
+			set slot 12 of the player's current inventory to 1 diamond sword named "<gold><bold>Mercurius" with lore "<white>+3 weapon might.", "<white>Grants Experience Sapper.", "<light red><bold>Requires B rank or higher in Swords to wield."
+			set slot 13 of the player's current inventory to 1 diamond axe named "<gold><bold>Basilikos" with lore "<white>+5 weapon might.", "<white><bold>Unique Refine:", "<white>Grants Life & Death (A-Slot).", "<light red><bold>Requires B rank or higher in Axes to wield."
+			set slot 14 of the player's current inventory to 1 diamond axe named "<gold><bold>Hauteclere" with lore "<white>+2 weapon might.", "<white>Grants SKL +15 while equipped.", "<white><bold>Unique Refine:", "<white>Accelerates Special trigger (+20%% activation chance).", "<white>If Special activates, increases damage dealt by 2.5 hearts.", "<light red><bold>Requires B rank or higher in Axes to wield."
+			set slot 15 of the player's current inventory to 1 diamond sword named "<gold><bold>Mystletainn" with lore "<white>+4 weapon might.", "<white>Grants SKL +40 while equipped.", "<white>If HP < 75%%, grants SKL +30, and deals +4 damage when Special activates.", "<white>Stacks with Wrath.", "<white><bold>Unique refine:", "<white>Grants STR/DEF/SPD/SKL/MAG +20.", "<white>Player suffers 1.5 hearts of recoil damage each hit.", "<light red>Requires the Crusader's Blood perk OR B rank or higher in Swords to wield."
+			set slot 16 of the player's current inventory to 1 diamond shovel named "<gold><bold>Fensalir" with lore "<white>+4 weapon might.", "<white>While within 10 blocks of a party member, grants +6 weapon might.", "<white><bold>Unique Refine:", "<white>While within 10 blocks of a party member, grants STR/SKL +40.", "<light red>Requires the Lord's Blood perk OR A rank or higher in Lances."
+			set slot 17 of the player's current inventory to 1 diamond sword named "<gold><bold>Folkvangr" with lore "<white>+4 weapon might.", "<white>While within 10 blocks of a party member, grants +6 weapon might.", "<bold>Unique Refine:", "<white>If HP < 70%%, grants STR/DEF +40.", "<light red>Requires the Lord's Blood perk OR A rank or higher in Swords."
+			set slot 18 of the player's current inventory to 1 diamond shovel named "<gold><bold>Gradivus" with lore "<white>+4 weapon might.", "<white>Grants Experience Sapper.", "<light red><bold>Requires B rank or higher in Lances to wield."
+			set slot 19 of the player's current inventory to 1 diamond horse armour named "<gold><bold>Love is Blue" with lore "<white>Right-click to fire bullets at the cost of EXP.", "Melee hits restore 5 EXP.", "<bold>Skills cannot be equipped to this weapon.", "<bold>This weapon cannot be refined."
+			set slot 20 of the player's current inventory to 1 gold horse armour named "<gold><bold>Scarborough Fair" with lore "<white>Right-click to fire bullets at the cost of EXP.", "Melee hits restore 5 EXP.", "<bold>Skills cannot be equipped to this weapon.", "<bold>This weapon cannot be refined."
+			set slot 21 of the player's current inventory to 1 diamond sword named "<gold><bold>Balder Side Sword" with lore "<white>+2 weapon might.", "<white>Right-click to parry attacks.", "<white>Parry has a 0.5 second cooldown.", "<light red><bold>Requires B rank or higher in Swords to wield."
+			set slot 22 of the player's current inventory to 1 bow named "<gold><bold>Fujin Yumi" with lore "<white>Grants MAG +20 while equipped.", "<white>This weapon will automatically counter-attack melee hits.", "<white><bold>Unique Refine:", "<white>Holding sneak and firing an arrow teleports you where it lands.", "<light red><bold>Requires B rank or higher in Bows to wield."
+			set slot 23 of the player's current inventory to 1 diamond sword named "<gold><bold>Blessed Sword" with lore "<white>Reduces damage suffered by 1.5 hearts.", "<white>Effective against monsters.", "<white>Imbued with the Plenitude skill.", "<white><bold>Unique Refine:", "<white>Grants Regeneration 2 while equipped.", "<white>Nullifies negative potion effects."
+			set slot 24 of the player's current inventory to 1 diamond axe named "<gold><bold>Devil Axe" with lore "<white>+3 weapon might.", "<white>Imbued with the Fury skill.", "<white>Inflicts Wither 4 on foes on-hit.", "<white><bold>Unique Refine:", "<white>Grants weapon might +6.", "<white>Inflicts 3 hearts of recoil damage when attacking."
+			set slot 25 of the player's current inventory to 1 diamond shovel named "<gold><bold>Crusader's Lance" with lore "<white>+8 weapon might.", "<white>Can be thrown for no durability cost.", "<white>Reduces damage suffered by 30%%.", "<white><bold>Unique Refine:", "<white>Reduces damage suffered by 20%%.", "<white>Player automatically makes a follow-up attack above 50%% HP."
+			set slot 26 of the player's current inventory to 1 bow named "<gold><bold>Lunar Bow" with lore "<white>+3 weapon might.", "<white>Imbued with the Luna skill.", "<white>Calculates damage using the lower of foe's DEF or MAG.", "<white><bold>Unique Refine:", "<white>Ignores damage reductions from enemy's armour. (Excludes enchantments)", "<white>If Special activates, increases damage by 20%% of the player's SPD."
+			set slot 27 of the player's current inventory to 1 diamond shovel named "<gold><bold>Rex Hasta" with lore "<white>When a special activates, boosts damage by 5 hearts.", "<white><bold>Unique Refine:", "<white>+4 weapon might.", "<white>Accelerates special activation (activation chance +20%%).", "<light red><bold>Requires A rank or higher in Lances to wield."
+			set slot 28 of the player's current inventory to 1 diamond sword named "<gold><bold>Meisterschwert" with lore "<white>Attacks twice during combat.", "<white><bold>Unique Refine:", "<white>Grants [Accost].", "<white>[Accost]: If attacker's HP & SPD > foe's HP & SPD, damage dealt for that round of combat is doubled.", "<light red><bold>Requires B rank or higher in Swords to wield."
+			set slot 29 of the player's current inventory to 1 book named "<gold><bold>Dire Thunder" with lore "<white>Attacks twice when initiating combat.", "<white><bold>Unique Refine:","<white>Grants [Accost].", "<white>[Accost]: If attacker's HP & SPD > foe's HP & SPD, damage dealt for that round of combat is doubled.", "<light red><bold>Requires B rank or higher in Magic to wield."
+			set slot 30 of the player's current inventory to 1 diamond shovel named "<gold><bold>Rhomphaia" with lore "<white>Deals bonus damage equal to 25%% of the player's SPD.", "<light red><bold>Requires B rank or higher in Lances to wield."
+			set slot 31 of the player's current inventory to 1 diamond sword named "<gold><bold>Alondite" with lore "<white>Imbued with the Eclipse skill:", "<white>Nullifies bonuses provided by armor, and reduces foe's DEF/MAG by 80%%.", "<white>Activation chance: (SKL ^ 0.65) | Max: 50%%.", "<light red><bold>Requires A rank or higher in Swords to wield."
+			set slot 32 of the player's current inventory to 1 bow named "<gold><bold>Guard Bow" with lore "<white>Reduces damage suffered by 1.5 hearts.", "<light red><bold>Requires C rank or higher in Bows to wield."
+			set slot 33 of the player's current inventory to 1 bow named "<gold><bold>Brave Bow" with lore "<white>Inflicts SPD -15.", "<white>-3 weapon might.", "<white>Weapon attacks twice during combat.", "<light red><bold>Requires C rank or higher in Bows to wield."
+			set slot 34 of the player's current inventory to 1 diamond axe named "<gold><bold>Tomahawk" with lore "<white>Grants <gold>[Distant Counter]<white>.", "<gold>[Distant Counter]<white>: Automatically retaliate against ranged opponents. Range-dependent skills will activate regardless of foe's range."
+			set slot 35 of the player's current inventory to 1 diamond shovel named "<gold><bold>Javelin" with lore "<white>Grants <gold>[Distant Counter]<white>.", "<gold>[Distant Counter]<white>: Automatically retaliate against ranged opponents. Range-dependent skills will activate regardless of foe's range."
+			set slot 36 of the player's current inventory to 1 diamond sword named "<gold><bold>Tornado Blade" with lore "<white>Grants <gold>[Distant Counter]<white>.", "<gold>[Distant Counter]<white>: Automatically retaliate against ranged opponents. Range-dependent skills will activate regardless of foe's range."
+			set slot 37 of the player's current inventory to 1 diamond shovel named "<gold><bold>Swift-Winds Lance" with lore "<white>Grants <gold>[Sweeper]<white>.", "<bold><white>Unique Refine: Grants STR/SPD +20 for 5 seconds when initiating combat. Recharge duration: 10 seconds.", "<gold>[Sweeper]<white>: Disables player & foe's skills that guarantee counter-attacks during combat."
+			set slot 38 of the player's current inventory to 1 diamond sword named "<gold><bold>Kindled-Fire Sword" with lore "<white>Grants <gold>[Brave]<white>.", "<bold><white>Unique Refine:", "<white>Grants STR/DEF +20 for 5 seconds when initiating combat. Recharge duration: 10 seconds.", "<gold>[Brave]<white>: Inflicts SPD -15. Player attacks twice during combat."
+			set slot 39 of the player's current inventory to 1 diamond axe named "<gold><bold>Axtinguisher" with lore "<white>+50%% damage against burning targets.", "<white>-50%% damage against non-burning targets."
+		else if arg 1 is "hw2":
+			open chest with 1 row named "<gold><bold>Holy Weapons | Inspection" for the player
+			set {_weapon} to uncoloured name of slot 4 of the player's current inventory
+			remove "<gold><bold>" from {_weapon}
+			if {_weapon} is "Basilikos":
+				set {_price} to 750
+			else if {_weapon} is "Mercurius":
+				set {_price} to 750
+			else if {_weapon} is "Hauteclere":
+				set {_price} to 750
+			else if {_weapon} is "Gradivus":
+				set {_price} to 750
+			else if {_weapon} is "Super Shotgun":
+				set {_price} to 750
+			else:
+				set {_price} to 1000
+			set slot 0 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
+			set slot 8 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
+			set slot 3 of the player's current inventory to 1 emerald named "<gold><bold>Summon Weapon" with lore "<white>Price: %{_price}%"
+			set slot 4 of the player's current inventory to 1 cobblestone named "<gold><bold>%arg 2%"
+			set slot 5 of the player's current inventory to 1 nether star named "<gold><bold>Warp to Heroic Challenge"
+
+on inventory click:
+	if the name of the player's current inventory is "<gold>Repair Tools":
+		if the name of the clicked item is "<green><bold>Repair Tool":
+			set {_cashreq} to (the damage value of slot 4 of the player's current inventory / 2)
+			if {_cashreq} is less than the player's money:
+				repair slot 4 of the player's current inventory
+				set the player's money to (player's money - {_cashreq})
+				send "<light green>Transaction complete. New balance: $%player's money%."
+				cancel event
+			else:
+				send "<light red>Not enough money!"
+			cancel event
+		else if the name of the clicked item is "<bold>Exit":
+			cancel event
+			teleport the player to the player
+	if the name of the player's current inventory is "<gold>Blacksmith":
+		cancel event
+		if the name of the clicked item contains "Go to Page 1":
+			make player execute command "/bs-shop 1"
+		else if the name of the clicked item contains "Go to Page 2":
+			make player execute command "/bs-shop 2"
+		else if the name of the clicked item contains "Go to Page 3":
+			make player execute command "/bs-shop 3"
+		else if the name of the clicked item contains "Go to Page 4":
+			make player execute command "/bs-shop 4"
+		else if the name of the clicked item contains "Go to Page 5":
+			make player execute command "/bs-shop 5"
+		else if the name of the clicked item contains "Go to Page 6":
+			make player execute command "/bs-shop 6"
+		else:
+			set {_cost} to the 2nd line of the lore of the clicked item parsed as integer
+			if {_cost} is less than player's money:
+				if {_cost} is set:
+					set {_item} to the clicked item
+					clear the lore of {_item}
+					give {_item} to the player
+					subtract {_cost} from player's money
+					send "<light green>Purchased that item for %{_cost}%. New balance: %player's money%"
+	else if the name of the player's current inventory is "<gold>Trader":
+		cancel event
+		set {_cost} to the 2nd line of the lore of the clicked item parsed as integer
+		if {_cost} is less than player's money:
+			if {_cost} is set:
+				set {_item} to the clicked item
+				clear the lore of {_item}
+				give {_item} to the player
+				subtract {_cost} from player's money
+				send "<light green>Purchased that item for %{_cost}%. New balance: %player's money%"
+	else if the name of the player's current inventory is "<gold>Todd's General Goods":
+		cancel event
+		set {_cost} to the 2nd line of the lore of the clicked item parsed as integer
+		if {_cost} is less than player's money:
+			if {_cost} is set:
+				set {_item} to the clicked item
+				clear the lore of {_item}
+				if the name of {_item} is "<white>Leather Chestplate of Strength":
+					set the 1st line of the lore of {_item} to "Skill - STR Up"
+				give {_item} to the player
+				subtract {_cost} from player's money
+				send "<light green>Purchased that item for %{_cost}%. New balance: %player's money%"
+	else if the name of the player's current inventory is "<gold><bold>Holy Weapons":
+		if the name of the clicked item contains "<gold><bold>":
+			set {_weapon} to uncoloured name of the clicked item
+			remove "<gold><bold>" from {_weapon}
+			make player execute command "/hwbuy hw2 %{_weapon}%"
+			cancel event
+	else if the name of the player's current inventory is "<gold><bold>Holy Weapons | Inspection":
+		if the name of the clicked item is "<gold><bold>Summon Weapon":
+			set {_weapon} to uncoloured name of slot 4 of the player's current inventory
+			remove "<gold><bold>" from {_weapon}
+			if {_weapon} is "Basilikos":
+				set {_price} to 750
+			else if {_weapon} is "Mercurius":
+				set {_price} to 750
+			else if {_weapon} is "Hauteclere":
+				set {_price} to 750
+			else if {_weapon} is "Gradivus":
+				set {_price} to 750
+			else if {_weapon} is "Super Shotgun":
+				set {_price} to 750
+			else:
+				set {_price} to 1000
+			if the player's money is less than {_price}:
+				send "<red><bold>You lack the required funds to purchase this Holy Weapon. You need %{_price}%, but only have %player's money%."
+			else:
+				#Things other than swords
+				if {_weapon} is "Basilikos":
+					set slot 4 of the player's current inventory to 1 stone axe named "<light blue><bold>Broken Axe" with lore "<white>A broken axe unfit for combat.", "<white>This is all that remains of the Basilikos."
+				else if {_weapon} is "Hauteclere":
+					set slot 4 of the player's current inventory to 1 stone axe named "<light blue><bold>Broken Axe" with lore "<white>A broken axe unfit for combat.", "<white>This is all that remains of the Hauteclere."
+				else if {_weapon} is "Gradivus":
+					set slot 4 of the player's current inventory to 1 stone shovel named "<light blue><bold>Broken Lance" with lore "<white>A broken lance unfit for combat.", "<white>This is all that remains of the Gradivus."
+				else if {_weapon} is "Super Shotgun":
+					set slot 4 of the player's current inventory to 1 iron horse armour named "<red><bold>Super Shotgun | Clip: 2/2" with lore "<red>Left-Click to reload. Costs 6 gold nuggets per barrel. ", " <red>Right-Click to fire. Shots are less accurate at range."
+				else if {_weapon} is "Fensalir":
+					set slot 4 of the player's current inventory to 1 stone shovel named "<light blue><bold>Broken Lance" with lore "<white>A broken lance unfit for combat.", "<white>This is all that remains of the Fensalir."
+				else if {_weapon} is "Parthia":
+					set slot 4 of the player's current inventory to 1 bow named "<light blue><bold>Broken Bow" with lore "<white>A broken bow unfit for combat.", "<white>This is all that remains of Parthia."
+				else if {_weapon} is "Siegmund":
+					set slot 4 of the player's current inventory to 1 stone shovel named "<light blue><bold>Broken Lance" with lore "<white>A broken lance unfit for combat.", "<white>This is all that remains of Siegmund."
+				else if {_weapon} is "Scarborough Fair":
+					set slot 4 of the player's current inventory to 1 gold horse armor named "<light red><bold>Scarborough Fair"
+				else if {_weapon} is "Love is Blue":
+					set slot 4 of the player's current inventory to 1 diamond horse armor named "<light blue><bold>Love is Blue"
+				else if {_weapon} is "Axtinguisher":
+					set slot 4 of the player's current inventory to 1 stone axe named "<light blue><bold>Broken Axe" with lore "<white>A broken axe unfit for combat.", "<white>This is all that remains of the Axtinguisher."
+				else if {_weapon} is "Armads":
+					set slot 4 of the player's current inventory to 1 stone axe named "<light blue><bold>Broken Axe" with lore "<white>A broken axe unfit for combat.", "<white>This is all that remains of Armads."
+				else if {_weapon} is "Gae Bolg":
+					set slot 4 of the player's current inventory to 1 stone shovel named "<light blue><bold>Broken Lance" with lore "<white>A broken lance unfit for combat.", "<white>Despite its legendary reputation, the Gae Bolg looks no more mighty than a laundry pole."
+				else if {_weapon} is "Fujin Yumi":
+					set slot 4 of the player's current inventory to 1 bow named "<light blue><bold>Broken Bow" with lore "<white>A broken bow unfit for combat.", "<white>This is all that remains of the Fujin Yumi."
+				else if {_weapon} is "Crusader's Lance":
+					set slot 4 of the player's current inventory to 1 stone shovel named "<light blue><bold>Broken Lance" with lore "<white>A broken lance unfit for combat.", "<white>This is all that remains of the Crusader's Lance."
+				else if {_weapon} is "Devil Axe":
+					set slot 4 of the player's current inventory to 1 stone axe named "<light blue><bold>Broken Axe" with lore "<white>A broken axe unfit for combat.", "<white>This is all that remains of the Devil Axe."
+				else if {_weapon} is "Dire Thunder":
+					set slot 4 of the player's current inventory to 1 book named "<light blue><bold>Broken Tome" with lore "<white>An old tome sapped of magic.", "<white>The spell Dire Thunder used to be present."
+				else if {_weapon} is "Rhomphaia":
+					set slot 4 of the player's current inventory to 1 stone shovel named "<light blue><bold>Broken Lance" with lore "<white>A broken lance unfit for combat.", "<white>This is all that remains of Rhomphaia."
+				else if {_weapon} is "Rex Hasta":
+					set slot 4 of the player's current inventory to 1 stone shovel named "<light blue><bold>Broken Lance" with lore "<white>A broken lance unfit for combat.", "<white>This is all that remains of the Rex Hasta."
+				else if {_weapon} is "Lunar Bow":
+					set slot 4 of the player's current inventory to 1 bow named "<light blue><bold>Broken Bow" with lore "<white>A broken bow unfit for combat.", "<white>This is all that remains of the Lunar Bow."
+				else if {_weapon} is "Guard Bow":
+					set slot 4 of the player's current inventory to 1 bow named "<light blue><bold>Broken Bow" with lore "<white>A broken bow unfit for combat.", "<white>This is all that remains of the Guard Bow."
+				else if {_weapon} is "Brave Bow":
+					set slot 4 of the player's current inventory to 1 bow named "<light blue><bold>Broken Bow" with lore "<white>A broken bow unfit for combat.", "<white>This is all that remains of the Brave Bow."
+				else if {_weapon} is "Tomahawk":
+					set slot 4 of the player's current inventory to 1 stone axe named "<light blue><bold>Broken Axe" with lore "<white>A rusted axe unfit for combat.", "<white>This used to be a Tomahawk in a previous life."
+				else if {_weapon} is "Javelin":
+					set slot 4 of the player's current inventory to 1 stone shovel named "<light blue><bold>Broken Lance" with lore "<white>A broken lance unfit for combat.", "<white>It's an old throwing Javelin, once popular among soldiers many years ago."
+				else if {_weapon} is "Swift-Winds Lance":
+					set slot 4 of the player's current inventory to 1 stone shovel named "<light blue><bold>Broken Lance" with lore "<white>A broken lance unfit for combat.", "<white>This is all that remains of the Swift-Winds Lance."
+				else if {_weapon} is "Devil Axe":
+					set slot 4 of the player's current inventory to 1 stone axe named "<light blue><bold>Broken Axe" with lore "<white>A broken axe unfit for combat.", "<white>This is all that remains of the Axtinguisher."
+				#Swords
+				else:
+					set slot 4 of the player's current inventory to 1 stone sword named "<light blue><bold>Broken Sword" with lore "<white>A broken sword unfit for combat.", "<white>This is all that remains of %{_weapon}%."
+				subtract {_price} from the player's money
+				send "<green><bold>Weapon purchased! Current Funds: %player's money%."
+			cancel event
+		else if the name of the clicked item contains "Go Back":
+			cancel event
+			make player execute command "/hwbuy HW"
+		else if the name of the clicked item is "<gold><bold>Warp to Heroic Challenge":
+			set {_name} to the name of slot 4 of the player's current inventory
+			if {_name} is "<gold><bold>Falchion":
+				make player execute command "/warp qp_h2"
+			else if {_name} is "<gold><bold>Binding Blade":
+				make player execute command "/warp qp_h1"
+			else if {_name} is "<gold><bold>Mystletainn":
+				make player execute command "/warp qp_h3"
+			cancel event
+		else if the clicked item is cobblestone:
+			cancel event
+			
+command /jeromefix:
+	trigger:
+		open chest with 1 row named "<gold>Repair Tools" for the player
+		set slot 0 of the player's current inventory to 1 red glass pane named "<bold>Exit"
+		set slot 3 of the player's current inventory to 1 book named "<bold>Place item here -->"
+		set slot 5 of the player's current inventory to 1 book named "<bold><-- Place item here"
+		set slot 8 of the player's current inventory to 1 green glass pane named "<green><bold>Repair Tool"

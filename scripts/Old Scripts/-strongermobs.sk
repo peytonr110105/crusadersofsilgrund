@@ -1,0 +1,83 @@
+on spawn:
+	if entity's world is "adventure":
+		entity is a monster:
+			chance of 20%:
+				apply speed 1 to the entity for 999 days
+			chance of 20%:
+				apply strength 1 to the entity for 999 days
+			chance of 20%:
+				apply resistance 1 to the entity for 999 days
+			chance of 5%:
+				apply resistance 1 to the entity for 999 days	
+				apply strength 1 to the entity for 999 days		
+				apply speed 1 to the entity for 999 days			
+		entity is a zombie:
+			apply speed 1 to the entity for 999 days
+			chance of 75%:
+				set the entity's tool to sword of sharpness 1
+			chance of 75%:
+				set the entity's tool to axe of sharpness 1
+			chance of 75%:
+				set the entity's tool to iron shovel of sharpness 1 named "<bold>Iron Lance"
+			chance of 10%:
+				set the entity's helmet to helmet of protection 1
+			chance of 10%:
+				set the entity's chestplate to chestplate of protection 1
+			chance of 10%:
+				set the entity's leggings to leggings of protection 1
+			chance of 10%:
+				set the entity's boots to boots of protection 1
+			chance of 1%:
+				set the entity's tool to sword of sharpness 5
+				set the entity's helmet to helmet of protection 3
+				set the entity's chestplate to chestplate of protection 3
+				set the entity's leggings to leggings of protection 3
+				set the entity's boots to boots of protection 3
+		entity is a skeleton:
+			chance of 5%:
+				set the entity's tool to bow of flame 1
+			chance of 10%:
+				set the entity's tool to bow of power 1
+			chance of 10%:
+				set the entity's tool to bow of punch 1
+			chance of 10%:
+				set the entity's helmet to helmet of protection 1
+			chance of 10%:
+				set the entity's chestplate to chestplate of protection 1
+			chance of 10%: 
+				set the entity's leggings to leggings of protection 1
+			chance of 10%:
+				set the entity's boots to boots of protection 1
+			chance of 1%:
+				set the entity's tool to  bow of power 6
+				set the entity's helmet to helmet of protection 3
+				set the entity's chestplate to chestplate of protection 3
+				set the entity's leggings to leggings of protection 3
+				set the entity's boots to boots of protection 3
+				set {_hasTool} to 1
+		entity is a creeper:
+			chance of 2%:
+				cancel event
+				spawn a powered creeper
+		entity is a zombie pigman:
+			chance of 75%:
+				set the entity's tool to gold sword of sharpness 1
+			chance of 75%:
+				set the entity's tool to gold axe of sharpness 1
+			chance of 75%:
+				set the entity's tool to gold shovel of sharpness 1 named "<bold>Golden Lance"
+			chance of 10%:
+				set the entity's helmet to gold helmet of protection 1
+			chance of 10%:
+				set the entity's chestplate to gold chestplate of protection 1
+			chance of 10%:
+				set the entity's leggings to gold leggings of protection 1
+			chance of 10%:
+				set the entity's boots to gold boots of protection 1
+			chance of 1%:
+				set the entity's tool to gold sword of sharpness 5
+				set the entity's helmet to gold helmet of protection 3
+				set the entity's chestplate to gold chestplate of protection 3
+				set the entity's leggings to gold leggings of protection 3
+				set the entity's boots to gold boots of protection 3
+				set {_hasTool} to 1

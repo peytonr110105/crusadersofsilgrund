@@ -1,0 +1,100 @@
+#On death, players are able to send messages for a set amount of time before finally passing.
+#Players can also be picked back up during their farewells.
+
+command /bleedout:
+	description: Send a farewell message on death.
+	usage: /bleedout
+	executable by: players
+	aliases: /farewell
+	trigger:
+		if {farewells.%player%} is 1:
+			set {farewells.%player%} to 0
+			set {farewellskip.%player%} to 0
+			send "<green>[Bleedout]<red><bold> You have disabled bleeding out. You will now die immediately on death without a chance to send messages. You also cannot be revived if the bleedout type is set to Casual Mode."
+			send "<red>[BHealth]<reset> Instant kill prevention can now be enabled."
+		else:
+			set {farewells.%player%} to 1
+			set {farewellskip.%player%} to 1
+			send "<green>[Bleedout]<yellow><bold> You have enabled bleeding out. You can send a farewell message for a brief moment before dying. If the bleedout type is set to Casual Mode, you may be revived after enough time has passed."
+			set {bhealth.%player%} to 0
+			send "<red>[BHealth]<reset> Toggled off instant-kill prevention."
+			
+command /fw <number>:
+	trigger:
+		if arg 1 is 0:
+			set {farewells.%player%} to 0
+			send "<green>[Bleedout]<red><bold> You have disabled bleeding out. You will now die immediately on death without a chance to send messages. You also cannot be revived if the bleedout type is set to Casual Mode."
+			send "<red>[BHealth]<reset> Instant kill prevention can now be enabled."
+		else:
+			set {farewells.%player%} to 1
+			set {farewellskip.%player%} to 1
+			send "<green>[Bleedout]<yellow><bold> You have enabled bleeding out. You can send a farewell message for a brief moment before dying. If the bleedout type is set to Casual Mode, you may be revived after enough time has passed."
+			set {bhealth.%player%} to 0
+			send "<red>[BHealth]<reset> Toggled off instant-kill prevention."
+
+command /fadmin:
+	description: Change between Classic and Casual mode for the current world. (Admins Only!)
+	usage: /fadmin
+	executable by: players
+	trigger:
+		if {farewelltype} is 0:
+			set {farewelltype} to 1
+			broadcast "<yellow><bold>Bleedout type changed to Casual Mode. Fallen allies can be revived by right-clicking them within 15 seconds of their incapacitation. Opt out of this feature by using /bleedout."
+		else:
+			set {farewelltype} to 0
+			broadcast "<red><bold>Bleedout type changed to Classic Mode. Fallen allies cannot be revived. Every decision counts. You can disable bleeding out by using /bleedout."
+			
+#Bleedout Type
+#0 = Classic Mode. Fallen players cannot be revived. Every decision counts.
+#1 = Casual Mode. Fallen players can be right-clicked to be revived.
+
+on damage of player:
+	if damage is more than or equal to victim's health:
+		if {farewells.%victim%} is 1:
+			if {farewellskip.%victim%} is 1:
+				apply resistance 5 to the victim for 15 seconds
+				apply weakness 99 to the victim for 15 seconds
+				apply blindness 1 to the victim for 15 seconds
+				apply slowness 99 to the victim for 15 seconds
+				apply mining fatigue 99 to the victim for 15 seconds
+				cancel event
+				set {bleedout.%victim%} to 1
+				heal the victim by 999
+				send "<red><bold>You have been critically wounded. You have 15 seconds to send messages before you die completely. Say your farewells..." to the victim
+				broadcast "<red><bold>%victim% has been downed!"
+				make victim say "%{downedQuote.%victim%}%"
+				loop 15 times:
+					if {bleedout.%victim%} is 0:
+						send "<light blue><bold>Another player saved you from imminent death." to the victim
+						make victim say "%{healedQuote.%victim%}%"
+						heal the victim by 5
+						apply regeneration 3 to the victim for 5 seconds
+						remove blindness from the victim
+						remove slowness from the victim
+						remove weakness from the victim
+						remove resistance from the victim
+						remove mining fatigue from the victim
+						set {farewellskip.%victim%} to 1
+						exit 1 loop
+					wait 1 second
+				if {bleedout.%victim%} is 1:
+					set {farewellskip.%victim%} to 0
+					#send "<red><bold>You were unable to be saved..."
+					kill the victim
+			else:
+				send "<red><bold>You were unable to be saved..."
+
+on player respawn:
+	set {farewellskip.%player%} to 1
+	set {bleedout.%player%} to 0
+
+
+on right-click on a player:
+	if {bleedout.%target%} is 1:
+		if {farewelltype} is 1:
+			set {bleedout.%target%} to 0
+			send "<light blue><bold>You saved %target% from death. They will be back on their feet shortly." to the player
+			heal the player by 2 hearts
+			make player say "%{allyDownedQuote.%player%}%"
+		else:
+			send "<light red><bold>The bleedout type is currently on Classic Mode. %target% cannot be saved..." to the player

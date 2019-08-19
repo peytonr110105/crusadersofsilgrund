@@ -1,0 +1,77 @@
+command /quickplay [<text="none">]:
+	description: Opens the quickplay menu to instantly jump into various activities.
+	usage: /quickplay
+	executable by: players
+	aliases: /qp,/menu
+	trigger:
+		if arg 1 is "none":
+			open chest with 1 row named "<gold><bold>Quickplay Menu" for the player
+			wait 1 tick
+			set slot 3 of the player's current inventory to 1 stone named "<gray><bold>Dungeons"
+			set slot 4 of the player's current inventory to 1 grass named "<light green><bold>Heroic Challenges"
+			set slot 5 of the player's current inventory to 1 wooden sword named "<light red><bold>Player VS Player Arenas"
+		else if arg 1 is "dungeons":
+			open chest with 1 row named "<gold><bold>Quickplay: Dungeons" for the player
+			wait 1 tick
+			set slot 3 of the player's current inventory to 1 stone named "<gray><bold>Perplexing Pathways"
+			set slot 4 of the player's current inventory to 1 stone named "<gray><bold>Warrior's Challenge"
+			set slot 5 of the player's current inventory to 1 stone named "<gray><bold>Vexing Villa"
+		else if arg 1 is "challenges":
+			open chest with 1 row named "<gold><bold>Quickplay: Heroic Challenges" for the player
+			wait 1 tick
+			set slot 3 of the player's current inventory to 1 stone sword named "<light green><bold>Roy's Challenge"
+			set slot 4 of the player's current inventory to 1 iron sword named "<light green><bold>Marth Departs"
+		else if arg 1 is "pvp":
+			open chest with 1 row named "<gold><bold>Quickplay: Player VS Player Arenas" for the player
+			wait 1 tick
+			set slot 3 of the player's current inventory to 1 wooden sword named "<light red><bold>Gladiator's Arena"
+			set slot 4 of the player's current inventory to 1 wooden sword named "<light red><bold>Guild's Grounds"
+			set slot 5 of the player's current inventory to 1 wooden sword named "<light red><bold>The Fight Pit"
+			set slot 2 of the player's current inventory to 1 wooden sword named "<light red><bold>The Alfheim"
+			set slot 6 of the player's current inventory to 1 wooden sword named "<light red><bold>The Secret Mission"
+			
+on inventory click:
+	if the name of the player's current inventory is "<gold><bold>Quickplay Menu":
+		if the name of clicked item is "<gray><bold>Dungeons":
+			make player execute command "/qp dungeons"
+			cancel event
+		else if the name of the clicked item is "<light green><bold>Heroic Challenges":
+			make player execute command "/qp challenges"
+			cancel event
+		else if the name of the clicked item is "<light red><bold>Player VS Player Arenas":
+			make player execute command "/qp pvp"
+			cancel event
+	else if the name of the player's current inventory is "<gold><bold>Quickplay: Dungeons":
+		if the name of the clicked item is "<gray><bold>Perplexing Pathways":
+			make player execute command "/warp qp_d1"
+			cancel event
+		else if the name of the clicked item is "<gray><bold>Warrior's Challenge":
+			make player execute command "/warp qp_d2"
+			cancel event
+		else if the name of the clicked item is "<gray><bold>Vexing Villa":
+			make player execute command "/warp qp_d3"
+			cancel event
+	else if the name of the player's current inventory is "<gold><bold>Quickplay: Heroic Challenges":
+		if the name of the clicked item is "<light green><bold>Roy's Challenge":
+			make player execute command "/warp qp_h1"
+			cancel event
+		else if the name of the clicked item is "<light green><bold>Marth Departs":
+			make player execute command "/warp qp_h2"
+			cancel event
+	else if the name of the player's current inventory is "<gold><bold>Quickplay: Player VS Player Arenas":
+		if the name of the clicked item is "<light red><bold>Gladiator's Arena":
+			make player execute command "/warp qp_a1"
+			cancel event
+		else if the name of the clicked item is "<light red><bold>Guild's Grounds":
+			make player execute command "/warp qp_a2"
+			cancel event
+		else if the name of the clicked item is "<light red><bold>The Fight Pit":
+			make player execute command "/warp qp_a3"
+			cancel event
+		else if the name of the clicked item is "<light red><bold>The Alfheim":
+			make player execute command "/warp qp_a4"
+			cancel event
+		else if the name of the clicked item is "<light red><bold>The Secret Mission":
+			make player execute command "/warp qp_a5"
+			cancel event
+		

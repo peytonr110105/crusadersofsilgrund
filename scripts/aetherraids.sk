@@ -1,0 +1,232 @@
+command /arbuild:
+	aliases: /arcreate, /arsetup
+	usage: /arbuild
+	description: Toggles Aether Raids building GUI.
+	trigger:
+		#Enable AR build mode
+		if {arbuildmode.%player%} is not set:
+			send "<gold>Entered Aether Raids build mode!"
+			set the player's game mode to creative
+			set {arbuildmode.%player%} to true
+			clear {arbackup.%player%::*}
+			loop all items in player's inventory:
+				add loop-item to {arbackup.%player%::*}
+			set {ARBuildUnitType.%player%} to 1
+			clear the player's inventory
+			give gold hoe named "<gold>[AR] Place Enemy" with lore "<white>Right-click to place NPCs that fight players.", "<white>Left-Clicking changes the unit you place.", "<white>Placing: Archer" to the player
+			give diamond hoe named "<gold>[AR] Adjust Stats" with lore "<white>Right-click an NPC to change their stats." to the player
+			give diamond sword named "<gold>[AR] Equip Enemy" with lore "<white>Right-click to select the NPC.", "<white>Left-click to equip the selected NPC." to the player
+			give diamond pickaxe named "<gold>[AR] Remove Enemy" with lore "<white>Right-click an NPC to delete it." to the player	
+			#give diamond axe named "<gold>[AR] Select Enemy" with lore "<white>Right-click on an NPC", "<white>to select them for editing."
+			give gold axe named "<gold>[AR] Mark as Loot Chest" with lore "<white>Left-Click a chest to set it as a loot chest.", "<white>Loot chests restock their contents on map start.", "<white>Hold Sneak and left-click to update the Loot Chest." to the player 
+			give gold shovel named "<gold>[AR] Set Warps" with lore "<white>Right-Click to set the Raid's exit warp.", "<white>This is used when a player completes their Raid.", "<white>Left-click to set the map's entrance warp.", "<white>This will be used in the Aether Raids hub to warp to your map." to the player
+			#give gold sword named "<gold>[AR] Validate Map" with lore "<white>Right-Click to validate your map.", "<white>Validated maps can be played in Aether Raids." to the player
+			give book named "<gold>[AR] Name Map" with lore "<white>Right-click to change your Aether Raid map name.", "<white>Your map name should not include spaces", "<white>or else it may cause errors!" to the player
+			give nether star named "<gold>[AR] Generate Exit Star" with lore "<white>Right-click to generate an Exit Star.", "<white>This is used by players", "<white>to finish your map.", "<light red>You must re-generate this item", "<light red>when changing the name or exit warp", "<light red>of your map!" to the player
+		else:
+			clear the player's inventory
+			loop {arbackup.%player%::*}:
+				give loop-value to the player
+			set the player's game mode to survival
+			clear {arbuildmode.%player%}
+			send "<gold>Exited Aether Raids build mode!"
+
+command /arsetstat <number>:
+	trigger:
+		if arg 1 is 1:
+			set {ARBuildEditHP.%player%} to true
+		else if arg 1 is 2:
+			set {ARBuildEditSTR.%player%} to true
+		else if arg 1 is 3:
+			set {ARBuildEditSPD.%player%} to true
+		else if arg 1 is 4:
+			set {ARBuildEditSkl.%player%} to true
+		else if arg 1 is 5:
+			set {ARBuildEditDEF.%player%} to true
+		else if arg 1 is 6:
+			set {ARBuildEditMag.%player%} to true
+		send "<light green>Type the number you wish to set this stat to."
+on drop:
+	if the name of the event-item contains "<gold>[AR]":
+		if {ARItemDropBlock.%player%} is not set:
+			cancel event
+			set {ARItemDropBlock.%player%} to true
+			send "<light red>This is an Aether Raids item! If you drop it, something might break!" to the player
+			send "<light red>You can override this by trying to drop the item again within 5 seconds." to the player
+			wait 5 seconds
+			clear {ARItemDropBlock.%player%}
+			send "<light red>The five-second grace period has run out!" to the player
+on chat:
+	if {ARBuildEditDef.%player%} is true:
+		set {def.%{ARNPC.%player%}%} to the chat message
+		send "<light green>Set the NPC's DEF to %chat message%!"
+		clear {ARBuildEditDef.%player%}
+		cancel event
+	else if {ARBuildEditStr.%player%} is true:
+		set {str.%{ARNPC.%player%}%} to the chat message
+		send "<light green>Set the NPC's STR to %chat message%!"
+		clear {ARBuildEditStr.%player%}
+		cancel event
+	else if {ARBuildEditSkl.%player%} is true:
+		set {skl.%{ARNPC.%player%}%} to the chat message
+		send "<light green>Set the NPC's SKL to %chat message%!"
+		clear {ARBuildEditSkl.%player%}
+		cancel event
+	else if {ARBuildEditSpd.%player%} is true:
+		set {spd.%{ARNPC.%player%}%} to the chat message
+		send "<light green>Set the NPC's SPD to %chat message%!"
+		clear {ARBuildEditSpd.%player%}
+		if {spd.%{ARNPC.%player%}%} is more than 25:
+			apply swiftness 1 to {ARNPC.%player%} for 1 days
+		else if {spd.%{ARNPC.%player%}%} is more than 50:
+			apply swiftness 2 to {ARNPC.%player%} for 1 days
+		else if {spd.%{ARNPC.%player%}%} is more than 75:
+			apply swiftness 3 to {ARNPC.%player%} for 1 days
+		else if {spd.%{ARNPC.%player%}%} is more than 100:
+			apply swiftness 4 to {ARNPC.%player%} for 1 days
+		else if {spd.%{ARNPC.%player%}%} is more than 125:
+			apply swiftness 5 to {ARNPC.%player%} for 1 days
+		cancel event
+	else if {ARBuildEditMag.%player%} is true:
+		set {mag.%{ARNPC.%player%}%} to the chat message
+		send "<light green>Set the NPC's MAG to %chat message%!"
+		clear {ARBuildEditMag.%player%}
+		cancel event
+	else if {ARBuildEditHP.%player%} is true:
+		set {hp.%{ARNPC.%player%}%} to the chat message
+		send "<light green>Set the NPC's HP to %chat message%!"
+		make player execute command "/sentinel health %chat message%"
+		clear {ARBuildEditHP.%player%}
+		cancel event
+	else if {ARBuildMapName.%player%} is true:
+		set {ARBuildMap.%player%} to the chat message
+		send "<light green>Set your map name to %chat message%!"
+		send "<light blue>Remember to re-generate your Exit Star!"
+		clear {ARBuildMapName.%player%}
+		cancel event
+		
+on right-click on an entity:
+	if the name of the player's tool is "<gold>[AR] Remove Enemy":
+		make player execute command "/npc sel"
+		make player execute command "/npc remove"
+	else if the name of the player's tool is "<gold>[AR] Equip Enemy":
+		make player execute command "/npc sel"
+		#wait 0.5 seconds
+		#make player execute command "/npc equip"
+		cancel event
+	else if the name of the player's tool is "<gold>[AR] Adjust Stats":
+		make player execute command "/npc sel"
+		set {ARNPC.%player%} to the target
+		send "<light green>Click a stat to adjust"
+		send "<run command:/arsetstat 1><light blue>Change HP" to the player
+		send "<run command:/arsetstat 2><light blue>Change STR" to the player
+		send "<run command:/arsetstat 3><light blue>Change SPD" to the player
+		send "<run command:/arsetstat 4><light blue>Change SKL" to the player
+		send "<run command:/arsetstat 5><light blue>Change DEF" to the player
+		send "<run command:/arsetstat 6><light blue>Change MAG" to the player
+	
+on left-click:
+	if the name of the player's tool is "<gold>[AR] Place Enemy":
+		if {ARBuildUnitType.%player%} is 1:
+			set {ARBuildUnitType.%player%} to 2
+			set the 3rd line of the lore of the player's tool to "<white>Placing: Mercenary"
+			send "<light green>Now placing Mercenaries!"
+		else if {ARBuildUnitType.%player%} is 2:
+			set {ARBuildUnitType.%player%} to 3
+			set the 3rd line of the lore of the player's tool to "<white>Placing: Armour Knight"
+			send "<light green>Now placing Armour Knights!"
+		else if {ARBuildUnitType.%player%} is 3:
+			set {ARBuildUnitType.%player%} to 4
+			set the 3rd line of the lore of the player's tool to "<white>Placing: Boss"
+			send "<light green>Now placing Bosses!"
+		#else if {ARBuildUnitType.%player%} is 4:
+		#	set {ARBuildUnitType.%player%} to 5
+		#	set the 3rd line of the lore of the player's tool to "<white>Placing: Melee Boss"
+		#	send "<light green>Now placing Melee Bosses!"
+		else:
+			set {ARBuildUnitType.%player%} to 1
+			set the 3rd line of the lore of the player's tool to "<white>Placing: Archer"
+			send "<light green>Now placing Archers!"
+	else if the name of the player's tool is "<gold>[AR] Equip Enemy":
+		make player execute command "/npc equip"
+	else if the name of the player's tool is "<gold>[AR] Mark as Loot Chest":
+		cancel event
+		if player is sneaking:
+			make player execute command "/cr update"
+		else:
+			make player execute command "/cr create"
+	else if the name of the player's tool is "<gold>[AR] Set Warps":
+		if {ARBuildMap.%player%} is not set:
+			send "<light red>You need to set your map's name first!" to the player
+		else:
+			make player execute command "/delwarp %{ARBuildMap.%player%}%"
+			make player execute command "/setwarp %{ARBuildMap.%player%}%"
+		cancel event
+on right-click:
+	if the name of the player's tool is "<gold>[AR] Place Enemy":
+		if {ARBuildUnitType.%player%} is 1:
+			make player execute command "/npc sel 25"
+			make player execute command "/npc copy"
+			make player execute command "/npc path"
+			make player say "clear"
+			make player say "clear"
+			make player execute command "/npc path"
+			make player execute command "/npc tphere"
+			make player execute command "/sentinel spawnpoint"
+			make player execute command "/sentinel guard"
+			send "<light green><bold>Spawned an archer!"
+		else if {ARBuildUnitType.%player%} is 2:
+			make player execute command "/npc sel 27"
+			make player execute command "/npc copy"
+			make player execute command "/npc path"
+			make player say "clear"
+			make player say "clear"
+			make player execute command "/npc path"
+			make player execute command "/npc tphere"
+			make player execute command "/sentinel spawnpoint"
+			make player execute command "/sentinel guard"
+			send "<light green><bold>Spawned a Mercenary!"
+		else if {ARBuildUnitType.%player%} is 3:
+			make player execute command "/npc sel 29"
+			make player execute command "/npc copy"
+			make player execute command "/npc path"
+			make player say "clear"
+			make player say "clear"
+			make player execute command "/npc path"
+			make player execute command "/npc tphere"
+			make player execute command "/sentinel spawnpoint"
+			make player execute command "/sentinel guard"
+			send "<light green><bold>Spawned an Armour Knight!"
+		else if {ARBuildUnitType.%player%} is 4:
+			make player execute command "/npc sel 249"
+			make player execute command "/npc copy"
+			make player execute command "/npc tphere"
+			make player execute command "/sentinel spawnpoint"
+			make player execute command "/sentinel guard"
+			send "<light green><bold>Spawned a Boss!"
+		wait 0.1 seconds
+		make player execute command "/npc tphere"
+		make player execute command "/sentinel spawnpoint"
+		make player execute command "/sentinel guard"
+	else if the name of the player's tool is "<gold>[AR] Set Warps":
+		set {ARBuildExitWarp.%player%} to location of block at player
+		send "<light green>Set the exit warp to %{ARBuildExitWarp.%player%}%!"
+		send "<light blue>Remember to re-generate your Exit Star!"
+	else if the name of the player's tool is "<gold>[AR] Name Map":
+		set {ARBuildMapName.%player%} to true
+		send "<light blue>Type the name for your map."
+	else if the name of the player's tool is "<gold>[AR] Generate Exit Star":
+		give nether star named "<gold>[AR] Exit Star" with lore "<white>Right-click to complete your raid.", "<white>Exit Star for: %player%'s raid %{ARBuildMap.%player%}%", "%{ARBuildExitWarp.%player%}%" to the player
+		send "<light green>Generated your map's Exit Star!"
+	else if the name of the player's tool is "<gold>[AR] Exit Star":
+		set {_teleport} to the 3rd line of the lore of the player's tool
+		set {_coords::*} to {_teleport} split at ", "
+		set {_coordX::*} to {_coords::1} split at "x: "
+		set {_coordY::*} to {_coords::2} split at "y: "
+		set {_coordZ::*} to {_coords::3} split at "z: "
+		make player execute command "/tp %{_coordX::2}% %{_coordY::2}% %{_coordZ::2}%"
+		send "<light green>Map cleared!" to the player
+		clear the player's tool
+	else if the name of the player's tool is "<gold>[AR] Mark as Loot Chest":
+		cancel event
+		make player execute command "/cr disable"

@@ -1,0 +1,80 @@
+#Quotes
+#Add friendly fire quote!
+on death of a monster:
+	if attacker is not npc:
+		if {isBoss.%victim%} is not set:
+			chance of 25%:
+				set {_rng} to a random integer between 0 and 1
+				if {_rng} is 1:
+					make attacker say "%{enemyDefeated1.%attacker%}%"
+				else:
+					make attacker say "%{enemyDefeated2.%attacker%}%"
+			chance of 25%:
+				loop all players in radius 8 of the attacker:
+					if loop-player is not attacker:
+						if {party.%loop-player%} is {party.%attacker%}:
+							set {_rng} to a random integer between 1 and 3
+							if {_rng} is 1:
+								make loop-player say "%{allyEnemyDefeated1.%loop-player%}%"
+							else if {_rng} is 2:
+								make loop-player say "%{allyEnemyDefeated2.%loop-player%}%"
+							else if {_rng} is 3:
+								make loop-player say "%{allyEnemyDefeated3.%loop-player%}%"
+		else:
+			set {_rng} to a random integer between 0 and 1
+			if {_rng} is 1:
+				make attacker say "%{bossDefeated1.%attacker%}%"
+			else:
+				make attacker say "%{bossDefeated2.%attacker%}%"
+			loop all players in radius 30 of the victim:
+				if loop-player is not attacker:
+					if {party.%loop-player%} is {party.%attacker%}:
+						set {_rng} to a random integer between 0 and 1
+						if {_rng} is 1:
+							make loop-player say "%{bossDefeated1.%loop-player%}%"
+						else:
+							make loop-player say "%{bossDefeated2.%loop-player%}%"
+
+						
+on death of a player:
+	if victim is not npc:
+		make victim say "%{deathQuote.%victim%}%"
+		loop all players in radius 20 of the victim:
+			if loop-player is not victim:
+				if {party.%loop-player%} is {party.%victim%}:
+					make loop-player say "%{allyHardcoreDeathQuote.%loop-player%}%"
+				
+on damage of a player:
+	if victim is not npc:
+		if final damage is more than (victim's maximum health * 0.25):
+			loop all players in radius 20 of the victim:
+				if loop-player is not player:
+					if {party.%loop-player%} is {party.%victim%}:
+						set {_rng} to random integer between 1 and 2
+						if {_rng} is 1:
+							make loop-player say "%{allyHurtLarge1.%loop-player%}%"
+						else:
+							make loop-player say "%{allyHurtLarge2.%loop-player%}%"
+
+on heal:
+	if player is not npc:
+		if player's health is less than (player's maximum health * 0.25):
+			if {lowHPQuoteCooldown.%player%} is not set:
+				make player say "%{lowHPQuote.%player%}%"
+				set {lowHPQuoteCooldown.%player%} to 1
+				loop all players in radius 8 of the player:
+					if {party.%loop-player%} is {party.%player%}:
+						if loop-player is not player:
+							make loop-player say "%{allyNeedHealing.%loop-player%}%"
+		else if player's health is less than (player's maximum health * 0.5):
+			clear {lowHPQuoteCooldown.%player%}
+			if {healQuoteCooldown.%player%} is not set:
+				make player say "%{mediumHPQuote.%player%}%"
+				set {healQuoteCooldown.%player%} to 1
+				loop all players in radius 8 of the player:
+					if {party.%loop-player%} is {party.%player%}:
+						if loop-player is not player:
+							make loop-player say "%{allyNeedHealing.%loop-player%}%"
+		else:
+			clear {lowHPQuoteCooldown.%player%}
+			clear {healQuoteCooldown.%player%}

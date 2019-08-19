@@ -1,0 +1,25 @@
+					
+on sneak toggle:
+	if {hover.%player%} is 0:
+		if the 2nd line of the lore of the player's boots contains "Slot B - Hover.":
+			set {hover.%player%} to 1
+			while player is sneaking:
+				apply levitation 255 to the player for 1 second
+				reduce the player's food level by 0.25
+				add 0.25 to {_hunger.%player%}
+				if player is not sneaking:
+					set {hover.%player%} to 0
+					stop loop
+				wait 5 ticks
+				show smoke on the player
+				play sound "entity.minecart.riding" with volume 0.5 and pitch 1 at player for player
+				if player's hunger is less than 6:
+					stop loop
+				if player is not sneaking:
+					set {hover.%player%} to 0
+					stop loop
+			remove levitation from the player
+			set {hover.%player%} to 0
+			increase the player's food level by {_hunger.%player%}
+	else:
+		set {hover.%player%} to 0

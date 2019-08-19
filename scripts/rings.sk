@@ -1,0 +1,48 @@
+
+every 15 seconds:
+	loop all players:
+		loop all items in loop-player's inventory:
+			if the name of the loop-item is "<light green><bold>Life Ring":
+				if loop-player is alive:
+					heal the loop-player by (loop-player's maximum health * 0.1)
+			else if the name of the loop-item is "<light green><bold>Recover Ring":
+				if loop-player is alive:
+					heal the loop-player by (loop-player's maximum health * 0.5)
+			else if the name of the loop-item is "<light cyan><bold>Speed Ring":
+				apply swiftness 2 to the loop-player for 15 seconds
+			else if the name of the loop-item contains "Power Ring":
+				apply strength 2 to the loop-player for 15 seconds
+			else if the name of the loop-item contains "Shield Ring":
+				apply resistance 2 to the loop-player for 15 seconds
+			else if the name of the loop-item is "<gold><bold>Crest of Valor":
+				apply strength 4 to the loop-player for 15 seconds
+			else if the name of the loop-item is "<gold><bold>Crest of Resilience":
+				apply resistance 4 to the loop-player for 15 seconds
+			else if the name of the loop-item is "<gold><bold>Crest of Wisdom":
+				apply swiftness 4 to the loop-player for 15 seconds
+			
+on right-click:
+	if the name of the event-item is "<light purple><bold>Return Ring":
+		if player is sneaking:
+			set {RRWarp.%player%} to location of block at player
+			send "<light purple>Return location saved!" to the player
+		else if {RRWarp.%player%} is not set:
+			send "<light red>You haven't set a return location! Crouch and right-click to mark your location as the return warp."
+		else:
+			teleport the player to {RRWarp.%player%}
+			play sound "entity.enderman.teleport1" with volume 2 and pitch 1 at the player
+			play 20 (ender signal with speed 0) at the player
+			
+on damage:
+	loop all items in attacker's inventory:
+		if the name of the loop-item contains "Pursuit Ring":
+			if attacker's health is more than (attacker's maximum health * 0.5):
+				set damage to damage * 1.5
+				push the victim backwards at speed 1
+				exit 1 loop
+		else if the name of the loop-item contains "Prayer Ring":
+			if attacker's health is less than or equal to (attacker's maximum health * 0.5):
+				set damage to damage * 2
+				send "<light blue>The Prayer Ring caused a Critical Hit!" to the attacker
+				send "<light red>The Prayer Ring caused a Critical Hit!" to the victim
+				exit 1 loop

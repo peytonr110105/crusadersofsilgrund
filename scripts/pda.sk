@@ -1,0 +1,216 @@
+#Adds a PDA to make home and npc management easier.
+
+on load:
+	register new shaped recipe for clock named "<gold>PDA" using gold ingot, gold ingot, gold ingot, gold ingot, redstone block, gold ingot, gold ingot, redstone block, gold ingot
+
+command /pda <number> [<number=0>]:
+	description: Navigates your PDA. Use the item instead of this command!
+	usage: Use the PDA item!
+	executable by: players
+	trigger:
+		#Follower Management
+		if arg 1 is 1:
+			send "<light purple><bold>=====PDA=====", "<light purple>Registered Followers:", "<run command:/pda 3 1><light purple>1. %{followerid1.%player%}%", "<run command:/pda 3 2><light purple>2. %{followerid2.%player%}%", "<run command:/pda 3 3><light purple>3. %{followerid3.%player%}%", "<light purple>Click on a follower to give them commands.", and "<light purple><bold><run command:/pda 2>Click here to register a follower in your PDA."
+		if arg 1 is 2:
+			if {followerid1.%player%} is set:
+				if {followerid2.%player%} is set:
+					if {followerid3.%player%} is set:
+						send "<light purple><bold>=====PDA====="
+						send "<light purple>You have already registered the maximum amount of followers. Please delete some followers in the Follower Management menu to add new followers."
+						send "<run command:/pda 1><light purple>Click here to return to the follower management menu."
+					else:
+						set {_check} to 3
+				else:
+					set {_check} to 2
+			else:
+				set {_check} to 1
+			if {_check} is set:
+				send "<light purple><bold>=====PDA====="
+				send "<light purple>Entered the Follower Registration editor."
+				send "<light purple>Enter the name of the pre-existing follower you would like to register in your PDA."
+			if {_check} is 1:
+				set {addfollower.%player%} to 1
+			else if {_check} is 2:
+				set {addfollower.%player%} to 2
+			else if {_check} is 3:
+				set {addfollower.%player%} to 3
+		if arg 1 is 3:
+			send "<light purple><bold>======PDA====="
+			if arg 2 is 1:
+				set {_followername.%player%} to {followerid1.%player%}
+				set {_followertempid.%player%} to 1
+			if arg 2 is 2:
+				set {_followername.%player%} to {followerid2.%player%}
+				set {_followertempid.%player%} to 2				
+			if arg 2 is 3:
+				set {_followername.%player%} to {followerid3.%player%}
+				set {_followertempid.%player%} to 3				
+			make player execute command "/npc sel %{_followername.%player%}%"
+			send "<light purple>Managing %{_followername.%player%}%."
+			send "<run command:/npc tphere><light purple>Summon Here"
+			send "<run command:/sentinel guard><light purple>Guard this Area"
+			send "<run command:/sentinel guard %player%><light purple>Follow Me"
+			send "<run command:/npc equip><light purple>Equipment Editor"
+			send "<run command:/sentinel forgive><light purple>Forgive All Targets"
+			send "<run command:/pda 4 %{_followertempid.%player%}%><light purple>De-Register this Follower"
+		if arg 1 is 4:
+			if arg 2 is 1:
+				clear {followerid1.%player%}
+			else if arg 2 is 2:
+				clear {followerid2.%player%}
+			else if arg 2 is 3:
+				clear {followerid3.%player%}
+			send "<light purple>De-Registered that follower."
+		if arg 1 is 5:
+			send "<yellow>=====PDA====="
+			send "<yellow>Registered Homes:"
+			send "<run command:/pda 7 1><yellow>1. %{rhome1.%player%}%"
+			send "<run command:/pda 7 2><yellow>2. %{rhome2.%player%}%"
+			send "<run command:/pda 7 3><yellow>3. %{rhome3.%player%}%"
+			send "<run command:/pda 7 4><yellow>4. %{rhome4.%player%}%"
+			send "<run command:/pda 7 5><yellow>5. %{rhome5.%player%}%"
+			send "<yellow>Click on a home to manage it."
+			send "<run command:/pda 6><yellow><bold>Click here to register a home."
+		if arg 1 is 6:
+			send "<yellow>=====PDA====="
+			if {rhome1.%player%} is set:
+				if {rhome2.%player%} is set:
+					if {rhome3.%player%} is set:
+						if {rhome4.%player%} is set:
+							if {rhome5.%player%} is set:
+								send "<yellow>You have already registered the maximum amount of homes."
+								send "<yellow>De-Register a home to register a new one."
+								send "<run command:/pda 5><yellow><bold>Click here to return to the Home Management menu."
+							else:
+								set {addhome.%player%} to 5
+						else:
+							set {addhome.%player%} to 4
+					else:
+						set {addhome.%player%} to 3
+				else:
+					set {addhome.%player%} to 2
+			else:
+				set {addhome.%player%} to 1
+		if {addhome.%player%} is set:
+			send "<yellow>Enter the name of the home you would like to register."
+		if arg 1 is 7:
+			send "<yellow><bold>=====PDA====="
+			if arg 2 is 1:
+				set {_homename.%player%} to {rhome1.%player%}
+				set {_id.%player%} to 1
+			else if arg 2 is 2:
+				set {_homename.%player%} to {rhome2.%player%}
+				set {_id.%player%} to 2
+			else if arg 2 is 3:
+				set {_homename.%player%} to {rhome3.%player%}
+				set {_id.%player%} to 3
+			else if arg 2 is 4:
+				set {_homename.%player%} to {rhome4.%player%}
+				set {_id.%player%} to 4
+			else if arg 2 is 5:
+				set {_homename.%player%} to {rhome5.%player%}
+				set {_id.%player%} to 5
+			send "<run command:/home %{_homename.%player%}%><yellow>Jump to this Home"
+			send "<run command:/delhome %{_homename.%player%}%><yellow>Delete this Home (You will need to de-register this home.)"
+			send "<run command:/pda 9 %{_id.%player%}%><yellow>Set as Quick Home (Appears on your PDA's Main Menu)"
+			send "<run command:/pda 8 %{_id.%player%}%><yellow>De-Register this Home"
+		if arg 1 is 8:
+			if arg 2 is 1:
+				clear {rhome1.%player%}
+			else if arg 2 is 2:
+				clear {rhome2.%player%}
+			else if arg 2 is 3:
+				clear {rhome3.%player%}
+			else if arg 2 is 4:
+				clear {rhome4.%player%}
+			else if arg 2 is 5:
+				clear {rhome5.%player%}
+			send "<yellow>De-Registered that home."
+		if arg 1 is 9:
+			if arg 2 is 1:
+				set {quickhome.%player%} to {rhome1.%player%}
+			else if arg 2 is 2:
+				set {quickhome.%player%} to {rhome2.%player%}
+			else if arg 2 is 3:
+				set {quickhome.%player%} to {rhome3.%player%}
+			else if arg 2 is 4:
+				set {quickhome.%player%} to {rhome4.%player%}
+			else if arg 2 is 5:
+				set {quickhome.%player%} to {rhome5.%player%}
+			send "<yellow>Set that home as your Quick Home."
+		if arg 1 is 10:
+			send "<light blue>=====PDA====="
+			send "<light blue>Personal Stats | Click on a topic to retrieve your stats for that skill."
+			send "<run command:/class><bold><gold>Level %player's level% %{class.%player%}%"
+			send "<run command:/Acrobatics><light blue>Acrobatics"
+			send "<run command:/Alchemy><light blue>Alchemy"
+			send "<run command:/Archery><light blue>Archery"
+			send "<run command:/Axes><light blue>Axes"
+			send "<run command:/Excavation><light blue>Excavation"
+			send "<run command:/Fishing><light blue>Fishing"
+			send "<run command:/Herbalism><light blue>Herbalism"
+			send "<run command:/Mining><light blue>Mining"
+			send "<run command:/Repair><light blue>Repair"
+			send "<run command:/Swords><light blue>Swords"
+			send "<run command:/Taming><light blue>Taming"
+			send "<run command:/Unarmed><light blue>Unarmed"
+			send "<run command:/Woodcutting><light blue>Woodcutting"
+#PDA Navigation:
+#Main Menu
+#Follower Management Sub-Menu (ID: 1)
+#Follower Registration Sub-Menu (ID: 2)
+#Follower Commands Sub-Menu (ID: 3)
+#Follower Unregister ID: 4
+#Home Management ID: 5
+#
+on right-click:
+	if the name of the player's tool contains "<gold>PDA":
+		send "<light blue><bold>====PDA====="
+		send "<run command:/pda 1><light purple>Follower Management"
+		send "<run command:/pda 5><yellow>Home Management"
+		send "<run command:/pda 10><light blue>MCMMO Stats"
+		send "<run command:/cstats %player's name%><light green>Class Stats"
+		send "<run command:/shop><bold><silver>[NEW!] Shop"
+		send "<run command:/home %{quickhome.%player%}%><light blue>Jump to %{quickhome.%player%}%"
+		
+on chat:
+	if {addfollower.%player%} is 1:
+		set {followerid1.%player%} to the chat message
+		cancel event
+		send "Registered your follower." to the player
+		clear {addfollower.%player%}
+	else if {addfollower.%player%} is 2:
+		set {followerid2.%player%} to the chat message
+		cancel event
+		send "Registered your follower." to the player
+		clear {addfollower.%player%}
+	else if {addfollower.%player%} is 3:
+		set {followerid3.%player%} to the chat message
+		cancel event
+		send "Registered your follower." to the player
+		clear {addfollower.%player%}
+	if {addhome.%player%} is 1:
+		set {rhome1.%player%} to the chat message
+		cancel event
+		send "Registered your home." to the player
+		clear {addhome.%player%}
+	else if {addhome.%player%} is 2:
+		set {rhome2.%player%} to the chat message
+		cancel event
+		send "Registered your home." to the player
+		clear {addhome.%player%}
+	else if {addhome.%player%} is 3:
+		set {rhome3.%player%} to the chat message
+		cancel event
+		send "Registered your home." to the player
+		clear {addhome.%player%}
+	else if {addhome.%player%} is 4:
+		set {rhome4.%player%} to the chat message
+		cancel event
+		send "Registered your home." to the player
+		clear {addhome.%player%}
+	else if {addhome.%player%} is 5:
+		set {rhome5.%player%} to the chat message
+		cancel event
+		send "Registered your home." to the player
+		clear {addhome.%player%}

@@ -1,0 +1,152 @@
+#Implements many staples of Goldsrc/Source Engine movement, including proper air-strafing, bunnyhopping, and air velocity.	
+
+#Initialize variables
+on script load:
+	if {svfriction} is not set:
+		set {svfriction} to 0.0235
+	if {svairvelocitymax} is not set:
+		set {svAirVelocityMax} to 0.6
+	if {svairvelocity} is not set:
+		set {svairvelocity} to 0.3
+	if {svairstrafemultiplier} is not set:
+		set {svairstrafemultiplier} to 8
+	if {svairvelocitymultiplier} is not set:
+		set {svairvelocitymultiplier} to 8
+
+#sv_friction command		
+command sv_friction <number>:
+	description: Adjusts the intensity of friction after a bunny hop.
+	executable by: players, console
+	trigger:
+		set {svfriction} to arg 1
+		send "<orange>sv_friction set to %arg 1%"
+		
+#sv_air_velocity_max command
+command sv_air_velocity_max <number>:
+	description: Adjusts maximum velocity attainable by air-strafing / bunny hopping.
+	executable by: players, console
+	trigger:
+		set {svairvelocitymax} to arg 1
+		send "<orange>sv_air_velocity_max set to %arg 1%"
+		
+#sv_air_velocty command
+command sv_air_velocity <number>:
+	description: Adjusts base maximum velocity attainable by bunny hopping.
+	executable by: players, console
+	trigger:
+		set {svairvelocity} to arg 1
+		send "<orange>sv_air_velocity set to %arg 1%"
+
+#sv_air_strafe_multiplier
+command sv_air_strafe_multiplier <number>:
+	description: Adjusts air strafe velocity multiplier. Lower = More velocity, Higher = Less velocity.
+	executable by: players, console
+	trigger:
+		set {svairstrafemultiplier} to arg 1
+		send "<orange>sv_air_strafe_multiplier set to %arg 1%"
+		
+#sv_air_velocity_multiplier (Default = 8)
+command sv_air_velocity_multiplier <number>:
+	description: Adjusts intensity of air strafe / bunnyhop velocity
+	executable by: players, console
+	trigger:
+		set {svairvelocitymultiplier} to arg 1
+		send "<orange>sv_air_velocity_multiplier set to %arg 1%"
+		
+#sv_allow_bhop
+command sv_allow_bhop <boolean>:
+	description: Toggle bunnyhopping on/off for the entire server.
+	executable by: players, console
+	trigger:
+		set {svallowbhop} to arg 1
+		send "<orange>sv_allow_bhop set to %arg 1%"
+		
+#Enable/Disable BHop (Saved to character)
+command bhop <number>:
+	description: Toggles Source Engine style movement on or off for your current character.
+	usage: /bhop <1/0> | 1 = enable | 0 = disable
+	executable by: players
+	trigger:
+		set {bhop.%player%} to arg 1
+		if arg 1 is 1:
+			send "<orange>Enabled Source Engine movement!"
+			send "Bunnyhop by holding space and sprinting to build speed."
+			send "Curve the mouse around smoothly while in the air and sprinting to air strafe."
+			send "Combine the two to reach even higher speeds!"
+		else:
+			send "<orange>Disabled Source Engine movement!"
+			
+
+#Main script
+every tick:
+	loop all players:
+		#Check to see if Source Movement is enabled for that player
+		if {bhop.%loop-player%} is 1:
+			#Checks if player is on the ground
+			if ground state of loop-player is false:
+				if loop-player is not flying:
+					if loop-player is sprinting:
+						#Checks if the last velocity has been set to avoid dividing by 0 / NaN
+						if {lastvel.%loop-player%} is not set:
+							set {lastvel.%loop-player%} to loop-player's velocity
+						#Sets up pythagorean theorum calculation
+						set {_pushspeed} to abs(z of {lastvel.%loop-player%})
+						set {_pushspeed2} to abs(x of {lastvel.%loop-player%})
+						#Avoid divide by 0
+						if {_pushspeed} is less than 0.01:
+							set {_pushspeed} to 0.01
+						if {_pushspeed2} is less than 0.01:
+							set {_pushspeed2} to 0.01
+						#Find hypotenuse of the new velocity triangle
+						set {_finalpush} to sqrt({_pushspeed} ^ 2 + {_pushspeed2} ^ 2)
+						#Reduce velocity boost for game balance
+						set {_finalpush} to ({_finalpush} / {svairvelocitymultiplier})
+						#Find absolute value (abs function seems to be broken in Skript)
+						if {_finalpush} is less than 0:
+							set {_finalpush} to {_finalpush} * -1
+						#Truncate velocity boost if over the defined limit (default = 0.3)
+						if {_finalpush} is more than {svairvelocity}:
+							set {_finalpush} to {svairvelocity}
+						#Allows air strafing if the velocity boost falls under the previous boost
+						if {lastpush.%loop-player%} is set:
+							if {_finalpush} is less than {lastpush.%loop-player%}:
+								set {_finalpush} to {lastpush.%loop-player%} + ({_finalpush} / {svairstrafemultiplier})
+								#Truncate velocity boost if over defined air strafe limit (default = 0.6)
+								if {_finalpush} is more than {svAirVelocityMax}:
+									set {_finalpush} to {svAirVelocityMax}
+						#Sends readout of the player's new velocity boost and their previous velocity boost
+						#Remove the multiplication to print out the raw values
+						send action bar "Current Speed: %{_finalpush} * 100% | Last Speed: %{lastpush.%loop-player%} * 100%" to loop-player
+						#Applies velocity boost
+						push loop-player in horizontal direction of loop-player at speed {_finalpush}
+						#Resets grounded friction negation timer
+						clear {frictionNullTimer.%loop-player%}
+						set {lastpush.%loop-player%} to {_finalpush}
+						set {isBhopping.%loop-player%} to true
+					set {lastvel.%loop-player%} to the loop-player's velocity
+			#Begin grounded friction behavior if player was Bunnyhopping
+			else if {isBhopping.%loop-player%} is true:
+				add 1 to {frictionNullTimer.%loop-player%}
+				clear {lastpush.%loop-player%}
+				#Nulls ground friction if the player was Bunnyhopping on the last tick
+				if {frictionNullTimer.%loop-player%} is less than or equal to 1:
+					#Remove this to enable debug text
+					#send "<orange>Sliding" to loop-player
+					#Maintain player's velocity
+					set x of loop-player's velocity to x of {lastvel.%loop-player%}
+					set z of loop-player's velocity to z of {lastvel.%loop-player%}
+				#Begins slowing the player down
+				else if {frictionNullTimer.%loop-player%} is less than 6:
+					#Remove this to enable debug text
+					#send "<orange>Stopping" to loop-player
+					#Applies friction
+					subtract vector({svfriction} and 0 and {svfriction}) from {lastvel.%loop-player%}
+					set x of loop-player's velocity to x of {lastvel.%loop-player%}
+					set z of loop-player's velocity to z of {lastvel.%loop-player%}
+				#Clears player's momentum and resets all variables for the next bunnyhop.
+				else:
+					#Remove this to enable debug text
+					#send "<orange>Halted" to loop-player
+					clear {lastvel.%loop-player%}
+					clear {frictionNullTimer.%loop-player%}
+					set {isBhopping.%loop-player%} to false

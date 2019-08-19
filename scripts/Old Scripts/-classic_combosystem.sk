@@ -1,0 +1,149 @@
+#Combo System that hooks into Skills.sk and Classes.sk to provide a Devil May Cry / Bayonetta style combo meter.
+
+#Skill Slot Check Function
+function checkSlots(PLR: player , skill: text) :: number:
+	if {skillslot1.%{_PLR}%} contains "%{_skill}%":
+		return 1
+	else if {skillslot2.%{_PLR}%} contains "%{_skill}%":
+		return 1
+	else if {skillslot3.%{_PLR}%} contains "%{_skill}%":
+		return 1
+	else if {skillslot4.%{_PLR}%} contains "%{_skill}%":
+		return 1
+	else if {skillslot5.%{_PLR}%} contains "%{_skill}%":
+		return 1
+	else:
+		return 0
+
+command /combo [<text="toggle">]:
+	description: Toggle combo system.
+	usage: /combo
+	executable by: players
+	trigger:
+		if {combosenabled.%player%} is set:
+			clear {combosenabled.%player%}
+			send "<gold><bold>[Combo System]<reset> Disabled combo system."
+		else:
+			set {combosenabled.%player%} to 1
+			send "<gold><bold>[Combo System]<reset> Enabled combo system. Consecutive hits and stylish actions like dodge rolls increase your combo score. Raise your score to earn a damage multiplier!"
+
+on join:
+	set {combo.%player%} to 0
+	set {combograde.%player%} to 0
+	set {combomult.%player%} to 0
+
+every 7.5 seconds:
+	loop all players:
+		if {combosenabled.%loop-player%} is 1:
+			if {combo.%loop-player%} is less than 0:
+				set {combo.%loop-player%} to 0
+			if {combo.%loop-player%} is less than ({combodecay.%loop-player%} + 4 + {combograde.%loop-player%}):
+				subtract 1 from {combograde.%loop-player%}
+				if {combograde.%loop-player%} is 6:
+					send title "<light red><bold>Slick Skills!" with subtitle "<bold>[2.25x Damage Multiplier!]" to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+					set {combomult.%loop-player%} to 2.25
+					set {combo.%loop-player%} to 151
+				else if {combograde.%loop-player%} is 5:
+					send title "<light red>Savage!" with subtitle "<white>[2x Damage Multiplier!]" to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+					set {combomult.%loop-player%} to 2
+					set {combo.%loop-player%} to 101
+				else if {combograde.%loop-player%} is 4:
+					set {combomult.%loop-player%} to 1.75
+					send title "<gold>Awesome!" with subtitle "<bold>[1.75x Damage Multiplier!]" to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+					set {combo.%loop-player%} to 71
+				else if {combograde.%loop-player%} is 3:
+					set {combomult.%loop-player%} to 1.5
+					send title "<light yellow>Brutal!" with subtitle "<bold>[1.5x Damage Multiplier!]" to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+					set {combo.%loop-player%} to 56
+				else if {combograde.%loop-player%} is 2:
+					set {combomult.%loop-player%} to 1.25
+					send title "<bold>Cool!" with subtitle "<bold>[1.25x Damage Multiplier!]" to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+					set {combo.%loop-player%} to 35
+				else if {combograde.%loop-player%} is 1:
+					set {combomult.%loop-player%} to 1
+					send title "<light gray>Dismal" with subtitle "" to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+					set {combo.%loop-player%} to 15
+				else if {combograde.%loop-player%} is set:
+					send title "<light red>Combo Dropped..." with subtitle "" to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+					clear {combo.%loop-player%}
+					clear {combodecay.%loop-player%}
+					clear {combograde.%loop-player%}
+				set {combodecay.%loop-player%} to {combo.%loop-player%}
+			
+on death of a player:
+	set {combo.%player%} to 0
+	set {combograde.%player%} to 0
+	set {combomult.%player%} to 0
+
+on damage:
+	if {combosenabled.%attacker%} is 1:
+		set {combodecay.%attacker%} to {combo.%attacker%}
+		add (damage + ({perdiff.%attacker%} / 2) + 1) to {combo.%attacker%}
+		if {combo.%attacker%} is more than 315:
+			if {combograde.%attacker%} is not 7:
+				show mob spawner flames on the attacker
+				show mob spawner flames on the attacker
+				show angry villager on the attacker
+				#create safe explosion of force 0 at the attacker
+				play sound "entity.experience_orb.pickup" with volume 1 and pitch 1.5 at the attacker for the attacker
+				play sound "entity.player.levelup" with volume 1 and pitch 2 at the attacker for the attacker
+				set {combograde.%attacker%} to 7
+				set {combomult.%attacker%} to 3
+				set {_perkChk} to checkSlots(attacker,"Umbran Climax")
+				if {_perkChk} is 1:
+					apply swiftness 3 to the attacker for 15 seconds
+					apply strength 3 to the attacker for 15 seconds
+					apply regeneration 3 to the attacker for 15 seconds
+					heal the attacker by 5 hearts
+					send "<light purple><bold>CLIMAX!" to the attacker
+				else:
+					set {_perkChk} to checkSlots(attacker,"Devil Trigger")
+					if {_perkChk} is 1:
+						loop all entities in radius 20 of the attacker:
+							if loop-entity is not the attacker:
+								apply slowness 3 to the loop-entity for 15 seconds
+								damage the loop-entity by 6
+								send "<light red>You were hit by %attacker%'s Devil Trigger!" to the loop-entity
+						apply regeneration 3 to the attacker for 15 seconds
+						heal the attacker by 5 hearts
+						make the attacker say "<light red><bold>This party's gettin' crazy! Let's rock!"
+			send title "<red><bold>SMOKIN' SICK STYLE!!!" with subtitle "<gold>[3x Damage Multiplier!!!]" to the attacker for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+		else if {combo.%attacker%} is more than 240:
+			if {combograde.%attacker%} is not 6:
+				set {combograde.%attacker%} to 6
+				set {combomult.%attacker%} to 2.25
+				play sound "entity.experience_orb.pickup" with volume 1 and pitch 1.5 at the attacker for the attacker
+				play sound "entity.player.levelup" with volume 1 and pitch 2 at the attacker for the attacker
+				send title "<light red><bold>Slick Skills!" with subtitle "<bold>[2.25x Damage Multiplier!]" to the attacker for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+		else if {combo.%attacker%} is more than 180:
+			if {combograde.%attacker%} is not 5:
+				set {combograde.%attacker%} to 5
+				set {combomult.%attacker%} to 2
+				play sound "entity.experience_orb.pickup" with volume 1 and pitch 1.5 at the attacker for the attacker
+				play sound "entity.player.levelup" with volume 1 and pitch 2 at the attacker for the attacker
+				send title "<light red>Savage!" with subtitle "<white>[2x Damage Multiplier!]" to the attacker for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+		else if {combo.%attacker%} is more than 120:
+			if {combograde.%attacker%} is not 4:
+				set {combograde.%attacker%} to 4
+				set {combomult.%attacker%} to 1.75
+				play sound "entity.experience_orb.pickup" with volume 1 and pitch 1.2 at the attacker for the attacker
+				send title "<gold>Awesome!" with subtitle "<bold>[1.75x Damage Multiplier!]" to the attacker for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+		else if {combo.%attacker%} is more than 80:
+			if {combograde.%attacker%} is not 3:
+				set {combograde.%attacker%} to 3
+				set {combomult.%attacker%} to 1.5
+				play sound "entity.experience_orb.pickup" with volume 1 and pitch 1 at the attacker for the attacker
+				send title "<light yellow>Brutal!" with subtitle "<bold>[1.5x Damage Multiplier!]" to the attacker for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+		else if {combo.%attacker%} is more than 45:
+			if {combograde.%attacker%} is not 2:
+				set {combograde.%attacker%} to 2
+				set {combomult.%attacker%} to 1.25
+				play sound "entity.experience_orb.pickup" with volume 1 and pitch 0.8 at the attacker for the attacker
+				send title "<bold>Cool!" with subtitle "<bold>[1.25x Damage Multiplier!]" to the attacker for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+		else if {combo.%attacker%} is more than 10:
+			if {combograde.%attacker%} is not 1:
+				set {combograde.%attacker%} to 1
+				set {combomult.%attacker%} to 1
+				play sound "entity.experience_orb.pickup" with volume 1 and pitch 0.5 at the attacker for the attacker
+				send title "<light gray>Dismal" with subtitle "" to the attacker for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+		set damage to damage * {combomult.%attacker%}

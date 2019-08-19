@@ -1,0 +1,97 @@
+#Master settings toggle for various scripted features.
+		
+command /fsetup [<number=0>]:
+	aliases: /preferences, /ms, /ssettings
+	trigger:
+		if arg 1 is 0:
+			send "<gold>Please respond to each question by clicking your preferred option in the chat. Each question you answer will modify certain features to streamline your gameplay. You can re-take this quiz at any time to change your preferences."
+			send "<cyan>All questions will be sent in a cyan colour."
+			send "<run command:/fsetup 1><light green>Clicking the green option will enable the feature."
+			send "<light red>Clicking the red option will disable the feature."
+			send "<light purple>Some questions will have multiple options in various colours."
+			send "<gold>Be sure to answer each question before proceeding."
+			send "<gold><bold>To continue, please select the ""enable"" option in green."
+		else if arg 1 is 1:
+			send "<gold>Question 1:"
+			send "<cyan>Would you like to enable dodge rolling? When enabled, double-tapping the sneak key (SHIFT by default) will send you backwards a short distance with invincibility."
+			send "<run command:/dr 1><light green>Enable"
+			send "<run command:/dr 0><light red>Disable"
+			send "<run command:/fsetup 2><gold>Next Question"
+		else if arg 1 is 2:
+			send "<gold>Question 2:"
+			send "<cyan>Please select a difficulty level to use. Setting your difficulty level past Normal will increase your XP and money gained!"
+			send "<run command:/pd Relaxed><green>Relaxed: Incoming damage reduced by 50%%. You deal 50%% more damage. Recommended for more casual play."
+			send "<run command:/pd Easy><light green>Easy: Incoming damage reduced by 25%%. You deal 25%% more damage."
+			send "<run command:/pd Normal>Normal: No damage changes. Recommended for all skill levels."
+			send "<run command:/pd Hard><light red>Hard: Incoming damage increased by 50%%. You deal 25%% less damage. Recommended for players seeking responsive gameplay."
+			send "<run command:/pd Lunatic><purple>Lunatic: Incoming damage increased by 100%%. You deal 50%% less damage. Recommended for players seeking a true challenge."
+			send "<run command:/fsetup 3><gold>Next Question"
+			send "<run command:/fsetup 1><gold>Previous Question"
+		else if arg 1 is 3:
+			send "<gold>Question 3:"
+			send "<cyan>Would you like to enable Realism mode? Realism mode makes survival more difficult, reducing your rate of healing, adding a thirst meter, and adds a body temperature system."
+			send "<run command:/realism 1><light green>Enable"
+			send "<run command:/realism 0><light red>Disable"
+			send "<run command:/fsetup 4><gold>Next Question"
+			send "<run command:/fsetup 2><gold>Previous Question"
+		else if arg 1 is 4:
+			send "<gold>Question 4:"
+			send "<cyan>Do you want to recieve hints periodically during gameplay? Hints provide useful tips on various mechanics and survival techniques."
+			send "<run command:/tips 1><light green>Enable"
+			send "<run command:/tips 0><light red>Disable"
+			send "<run command:/fsetup 5><gold>Next Question"
+			send "<run command:/fsetup 3><gold>Previous Question"
+		else if arg 1 is 5:
+			send "<gold>Question 5:"
+			send "<cyan>Would you like to enable PVP (Player VS Player)?"
+			send "<run command:/pvptoggle 1><light green>Enable"
+			send "<run command:/pvptoggle 0><light red>Disable"
+			send "<run command:/fsetup 6><gold>Next Question"
+			send "<run command:/fsetup 4><gold>Previous Question"
+		else if arg 1 is 6:
+			send "<gold>Question 6:"
+			send "<cyan>Would you like to enable instant-kill prevention? If you are above 1/2 of a heart of health and take damage, you will always survive. Limited to once every 30 seconds."
+			send "<cyan>WARNING: This setting is incompatible with bleedouts. Enabling one will disable the other."
+			send "<run command:/bhealth 1><light green>Enable"
+			send "<run command:/bhealth 0><light red>Disable"
+			send "<run command:/fsetup 7><gold>Next Question"
+			send "<run command:/fsetup 5><gold>Previous Question"
+		else if arg 1 is 7:
+			send "<gold>Question 7:"
+			send "<cyan>Would you like to enable bleedout? You will no longer die instantly, but instead will have 15 seconds to be revived by another player for a second chance."
+			send "<cyan>WARNING: This setting is incompatible with instant-kill prevention. Enabling one will disable the other."
+			send "<run command:/fw 1><light green>Enable"
+			send "<run command:/fw 0><light red>Disable"
+			send "<run command:/fsetup 8><gold>Next Question"
+			send "<run command:/fsetup 6><gold>Previous Question"
+		else if arg 1 is 8:
+			send "<gold>Question 8:"
+			send "<cyan>Would you like to play with classes? Classes allow you to specialize your character through a variety of attributes, such as a high-health tank or a speedy bladesman."
+			send "<cyan>NOTE: It is highly recommended to enable classes."
+			send "<run command:/ctoggle 1><light green>Enable"
+			send "<run command:/ctoggle 0><light red>Disable"
+			send "<run command:/fsetup 9><gold>Next Question"
+			send "<run command:/fsetup 7><gold>Previous Question"
+		else if arg 1 is 9:
+			send "<gold>Question 9:"
+			send "<cyan>Would you like to enable Source Engine movement?"
+			send "<cyan>This setting ports air strafing behavior and bunnyhopping from Quake 3 and Source Engine games (Half-Life 2, Team Fortress 2, etc...) to Minecraft."
+			send "<light red><bold>WARNING: This feature is highly experimental! It may lag and cause issues."
+			send "<run command:/bhop 1><light green>Enable"
+			send "<run command:/bhop 0><light red>Disable (Recommended)"
+			send "<run command:/fsetup 10><gold>Finish"
+			send "<run command:/fsetup 8><gold>Previous Question"
+		else if arg 1 is 10:
+			if {tutbonus.%player%} is not set:
+				set {tutbonus.%player%} to 1
+				set {playedTutorial.%player%} to 1
+				if {ctoggle.%player%} is 1:
+					make player execute command "/charsetup"
+				else:
+					send "<gold>It is recommended that you save your current character. Use the command /char save (character ID) to do so."
+			else:
+				send "<gold>Setup complete!"
+				if {charmade.%player%} is not set:
+					make player execute command "/charsetup"
+				else:
+					send "<gold>It is recommended that you save your current character. Use the command /char save (character ID) to do so."

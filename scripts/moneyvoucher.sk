@@ -1,0 +1,21 @@
+on right-click with paper:
+	if the name of the event-item is "<light green><bold>Money Voucher":
+		remove the event-item from the player's inventory
+		add 100 to the player's balance
+		send "<light green><bold>Redeemed the voucher for $100! New balance: %player's money%" to the player
+	else if the name of the event-item is "<light green><bold>Bullion (S)":
+		remove the event-item from the player's inventory
+		add 25 to the player's balance
+		send "<light green><bold>Redeemed the Bullion (S) for $25! New balance: %player's money%" to the player
+	else if the name of the event-item is "<light green><bold>Bullion (M)":
+		remove the event-item from the player's inventory
+		add 50 to the player's balance
+		send "<light green><bold>Redeemed the Bullion (M) for $50! New balance: %player's money%" to the player
+	else if the name of the event-item is "<light green><bold>Bullion (L)":
+		remove the event-item from the player's inventory
+		add 75 to the player's balance
+		send "<light green><bold>Redeemed the Bullion (L) for $75! New balance: %player's money%" to the player
+	else if the name of the event-item is "<light green><bold>Bullion (XL)":
+		remove the event-item from the player's inventory
+		add 100 to the player's balance
+		send "<light green><bold>Redeemed the Bullion (XL) for $100! New balance: %player's money%" to the player

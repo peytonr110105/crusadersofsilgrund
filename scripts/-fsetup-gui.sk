@@ -1,0 +1,14 @@
+#GUI-Based Overhaul for the initial setup quiz.
+
+command /fsetup [<number=0>]:
+	trigger:
+		if arg 1 is 0:
+			open chest with 1 row named "<gold>Setup - Controls" for the player
+			set slot 0 of the player's current inventory to 1 book named "<gold>Help" with lore "<white>Hover over this item for information","<white>about the item you are adjusting.","<white>Click the Green Wool to continue."
+			set slot 2 of the player's current inventory to 1 green wool named "<green>Enable" with lore "<white>Enables the option in the top of this window."
+			set slot 3 of the player's current inventory to 1 red wool named "<red>Disable" with lore "<white>Disables the option in the top of this window."
+			set slot 4 of the player's current inventory to 1 paper named "<gray>Select" with lore "<white>Selects a particular option","<white>if there are multiple options."
+			set slot 7 of the player's current inventory to 1 sign named "<light red>Go Back" with lore "<white>Returns to the previous menu."
+			set slot 8 of the player's current inventory to 1 sign named "<light blue>Continue" with lore "<white>Continues to the next option."
+
+			

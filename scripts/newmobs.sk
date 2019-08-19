@@ -1,0 +1,161 @@
+#Behaviors for new monsters
+
+on damage:
+	if metadata value "isSPurgia" of the attacker is 1:
+		set {_bonusdamage} to helmType(victim)
+		add chestType(victim) to {_bonusdamage}
+		add legType(victim) to {_bonusdamage}
+		add btType(victim) to {_bonusdamage}
+		add {_bonusdamage} to damage
+		apply poison 2 to the victim for 3 seconds
+	if metadata value "isZPPurgia" of the attacker is 1:
+		ignite the victim
+	else if metadata value "isZPurgia" of the victim is 1:
+		if damage cause is attack:
+			ignite the attacker
+	if metadata value "isIPurgia" of the victim is 1:
+		if victim's health is victim's maximum health:
+			while victim is alive:
+				spawn 1 vex at the victim
+				apply swiftness 3 to the last spawned entity for 15 seconds
+				apply strength 3 to the last spawned entity for 15 seconds
+				play 40 (ice break with speed 1) at the victim
+				wait 5 seconds
+	if metadata value "isMimic" of the victim is 1:
+		if victim's health is victim's maximum health:
+			set the victim's health to (victim's maximum health - 1)
+			play 60 (smoke with speed 1) at the victim
+			apply resistance 10 to the victim for 2 seconds
+			create safe explosion of force 1 at the victim
+			set the victim's chestplate to the attacker's chestplate
+			set the victim's helmet to the attacker's helmet
+			set the victim's leggings to the attacker's leggings
+			set the victim's boots to the attacker's boots
+			set the victim's tool to the attacker's tool
+			set {t_str.%victim%} to floor({str.%attacker%} * 0.75)
+			set {t_def.%victim%} to floor({def.%attacker%} * 0.75)
+			set {t_skl.%victim%} to floor({skl.%attacker%} * 0.75)
+			set {t_spd.%victim%} to floor({spd.%attacker%} * 0.75)
+			set {t_res.%victim%} to floor({res.%attacker%} * 0.75)
+	if metadata value "isVenomSpider" of the attacker is 1:
+		apply wither 2 to the victim for 5 seconds
+	if metadata value "isMalediction" of the victim is 1:
+		if victim's health is less than (victim's maximum health * 0.5):
+			set {_mob} to the victim
+			spawn {_mob} at the victim
+	if metadata value "isEnrapture" of the attacker is 1:
+		apply slowness 5 to the victim for 4 seconds
+		play 60 (ice break with speed 1) at the victim
+	if metadata value "isShadow" of the attacker is 1:
+		apply invisibility 1 to the attacker for 7 seconds
+		apply swiftness 4 to the attacker for 7 seconds
+		apply strength 4 to the attacker for 7 seconds
+	else if metadata value "isShadow" of the victim is 1:
+		remove invisibility from the attacker
+		play 60 (obsidian break with speed 1) at the attacker
+		remove swiftness from the attacker
+		remove strength from the attacker
+	if metadata value "isRegret" of the victim is 1:
+		while victim is alive:
+			spawn 1 zombie at the victim
+			set the last spawned entity's health to (last spawned entity's maximum health * 0.5)
+			spawn 1 skeleton at the victim
+			set the last spawned entity's health to (last spawned entity's maximum health * 0.5)
+			play 40 (purple wool break with speed 1) at the victim
+			wait 20 seconds
+	if metadata value "isFury" of the victim is 1:
+		while victim is alive:
+			spawn 1 blaze at the victim
+			set the last spawned entity's health to (last spawned entity's maximum health * 0.5)
+			play 10 (mob spawner flames with speed 1) at the victim
+			wait 10 seconds
+	if metadata value "isStalker" of the victim is 1:
+		if metadata value "ignoreDeathCondition" of the victim is not 1:
+			cancel event
+			set metadata value "ignoreDeathCondition" of the victim to 1
+			create safe explosion of force 3.5 at the victim
+			kill the victim
+	if metadata value "isZPurgia" of the victim is 1:
+		loop all entities in radius 3 of the victim:
+			if loop-entity is the attacker:
+				create safe explosion of force 1 at the victim
+				wait 1 tick
+				push the attacker backwards at speed 2
+				apply weakness 1 to the attacker for 4 seconds
+				
+on spawn of a monster:
+	if entity's world is "Salindrum":
+		loop all players in radius 50 of the entity:
+			if {sd.dolevelscaling.%loop-player%} is true:
+				exit 1 loop
+				set {_sd} to true
+		if {_sd} is true:
+			set {_moblvl} to 1
+			add {lvl.%player%} to {_moblvl}
+			add ({promoted.%player%} * 15) to {_moblvl}
+			set {_mob} to the last spawned entity
+			loop {_moblvl} times:
+				#add 1 to {t_str.%entity%}
+				chance of 80%:
+					add 1 to {t_str.%{_mob}%}
+				#add 1 to {t_def.%entity%}
+				chance of 50%:
+					add 1 to {t_def.%{_mob}%}
+				#add 1 to {t_spd.%entity%}
+				chance of 60%:
+					add 1 to {t_spd.%{_mob}%}
+				#add 1 to {t_skl.%entity%}
+				chance of 70%:
+					add 1 to {t_skl.%{_mob}%}
+				#add 1 to {t_res.%entity%}
+				chance of 50%:
+					add 1 to {t_res.%{_mob}%}
+				#add 0.5 to the entity's maximum health
+				chance of 80%:
+					add 0.5 to {_mob}'s maximum health
+			set {t_lvl.%{_mob}%} to {_moblvl}
+			heal {_mob} by 9999
+		
+on explode:
+	if event-entity is creeper:
+		if metadata value "isSkulker" of the entity is 1:
+			if metadata value "ignoreDeathCondition" of the entity is not 1:
+				cancel event
+				create safe explosion of force 1.5 at the entity
+				set metadata value "ignoreDeathCondition" of the entity to 1
+				kill the entity
+		else if metadata value "isStalker" of the entity is 1:
+			if metadata value "ignoreDeathCondition" of the entity is not 1:
+				cancel event
+				create safe explosion of force 3.5 at the entity
+				kill the entity
+				set metadata value "ignoreDeathCondition" of the entity to 1
+		else if metadata value "isCPurgia" of the entity is 1:
+			if metadata value "ignoreDeathCondition" of the entity is not 1:
+				cancel event
+				kill the entity
+
+on death:
+	if victim is player:
+		if victim's world is "Salindrum":
+			cancel event
+			heal the victim by victim's maximum health
+			teleport the victim to {sd.%{sdroom.%victim%}%}
+			loop all monsters in radius 50 of the victim:
+				kill loop-monster
+	else if metadata value "isFury" of the victim is 1:
+		create safe explosion of force 1.5 at the victim
+		play 60 (smoke with speed 1) at the victim
+		play 2 (explosion with speed 1) at the victim
+	else if metadata value "isCPurgia" of the victim is 1:
+		if metadata value "ignoreDeathCondition" of the victim is not 1:
+			loop all players in radius 8 of the victim:
+				send "boom" to loop-player
+				apply slowness 3 to the loop-entity for 10 seconds
+				apply weakness 3 to the loop-entity for 10 seconds
+				apply mining fatigue 3 to the loop-entity for 10 seconds
+				apply hunger 2 to the loop-entity for 10 seconds
+			cancel event
+			create safe explosion of force 3 at the entity
+			set metadata value "ignoreDeathCondition" of the victim to 1
+			kill the entity

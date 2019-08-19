@@ -1,0 +1,443 @@
+#
+command /salindrum:
+	aliases: /void, /training, /testroom, /sd
+	trigger:
+		if {sd.rewarp.%player%} is set:
+			open chest with 1 row named "<red>Salindrum Configuration" for the player
+			set slot 0 of the player's current inventory to 1 nether star named "<gold>Exit Salindrum"
+			set slot 1 of the player's current inventory to 1 zombie spawn egg named "<white>Spawn Monsters"
+			set slot 2 of the player's current inventory to 1 iron sword named "<white>Test Skills"
+			if {quests.%player%::Awakening} is 999:
+				set slot 3 of the player's current inventory to 1 diamond sword named "<white>Test Holy Weapons"
+			set slot 8 of the player's current inventory to 1 tnt named "<white>Reset Session"
+			if {sd.invuln.%player%} is true:
+				set slot 7 of the player's current inventory to 1 totem of undying named "<white>Player Invincibility: ON" with lore "<white>You won't take damage from enemies.", "<white>Click to toggle."
+			else:
+				set slot 7 of the player's current inventory to 1 redstone block named "<white>Player Invincibility: OFF" with lore "<white>You will take damage from enemies.", "<white>Click to toggle."
+			if {sd.nohunger.%player%} is true:
+				set slot 6 of the player's current inventory to 1 steak named "<white>Infinite Hunger: ON" with lore "<white>Your hunger bar won't decrease.", "<white>Click to toggle."
+			else:
+				set slot 6 of the player's current inventory to 1 rotten flesh named "<white>Infinite Hunger: OFF" with lore "<white>Your hunger bar will decrease normally.", "<white>Click to toggle."
+		else:
+			open chest with 2 rows named "<red>Select a room." for the player
+			set {_roomnum} to 0
+			loop {sd::*}:
+				add 1 to {_roomnum}
+				if loop-value is not 0:
+					set slot ({_roomnum} - 1) of the player's current inventory to 1 redstone block named "<red>Room %{_roomnum}%" with lore "<white>Occupant: %{sd::Room %{_roomnum}%}%"
+				else:
+					set slot ({_roomnum} - 1) of the player's current inventory to 1 lapis block named "Room %{_roomnum}%" with lore "<white>Empty Room"
+				
+command /sdsetup <number> <number> <number> <number>:
+	trigger:
+		set {sd.room %arg 1%} to location at (arg 2, arg 3, arg 4) in world "Salindrum"
+		set {sd::room %arg 1%} to 0
+		send "<light green>Set Room %arg 1% coordinates to %arg 2%, %arg 3%, %arg 4%."
+		
+command /sdmonsters:
+	trigger:
+		open chest with 6 rows named "<red>Spawn Monsters" for the player
+		set slot 0 of the player's current inventory to 1 zombie spawn egg named "<white>Zombie" with lore "<white>An innocent soul reawakened via fell magic.", "<white>They move slowly, but have high attack power.", "<white>Occasionally, they can pick up fallen weapons and armour."
+		set slot 1 of the player's current inventory to 1 skeleton spawn egg named "<white>Skeleton" with lore "<white>An innocent soul reawakened via fell magic.", "<white>The flesh has completely rotted, leaving nothing but an exposed skeleton.", "<white>Scrappy but fragile, skeletons prefer bows to harass their victims at range."
+		set slot 2 of the player's current inventory to 1 spider spawn egg named "<white>Spider" with lore "<white>One of many beasts summonable by dark mages.", "<white>Spiders move quickly and can climb walls, but lack in damage output."
+		set slot 3 of the player's current inventory to 1 creeper spawn egg named "<white>Creeper" with lore "<white>A rather odd beast summonable by dark mages.", "<white>Singling out their target, they rush in and detonate themselves for massive damage.", "<white>They can become supercharged via lightning."
+		set slot 4 of the player's current inventory to 1 husk spawn egg named "<white>Husk" with lore "<white>The dusty remains of a deserted wanderer.", "<white>Their corrosive bites can pierce through armour and poison victims."
+		set slot 5 of the player's current inventory to 1 witch spawn egg named "<white>Witch" with lore "<white>A dark mage from Elrid.", "<white>They choose to battle indirectly, utilizing various potions."
+		set slot 6 of the player's current inventory to 1 enderman spawn egg named "<white>Enderman" with lore "<white>A shadowy creature born of ""The End"".", "<white>They possess teleportation capabilities, and strike using vicious magical attacks."
+		set slot 7 of the player's current inventory to 1 cave spider spawn egg named "<white>Cave Spider" with lore "<white>A rarer version of the Spider.", "<white>These smaller spiders are much faster and can poison unsuspecting adventurers."
+		set slot 8 of the player's current inventory to 1 evoker spawn egg named "<white>Evoker" with lore "<white>A summonder from Elrid.", "<white>They utilize various spells to attack, and are capable of summoning familiars for assistance."
+		set slot 9 of the player's current inventory to 1 vex spawn egg named "<white>Vex" with lore "<white>Weak summonable familiars.", "<white>These maligned spirits fly about and attack as a pack.", "<white>Their weak nature makes them easy to dispel with sweeping attacks."
+		set slot 10 of the player's current inventory to 1 vindicator spawn egg named "<white>Vindicator" with lore "<white>Axe-wielding infantry from Elrid.", "<white>Their skills are second to none; adventurers must exercise extreme caution in their presence."
+		set slot 11 of the player's current inventory to 1 slime spawn egg named "<white>Slime" with lore "<white>A weak familiar.", "<white>They attack by hopping into and absorbing their targets.", "<white>After dying, Slimes split into multiple smaller copies."
+		set slot 12 of the player's current inventory to 1 stray spawn egg named "<white>Stray" with lore "<white>Icey remains of a Nifilian bow knight.", "<white>Their frosted arrows freeze those unlucky enough to be struck."
+		set slot 13 of the player's current inventory to 1 zombie spawn egg of power 1 named "<white>Zombie Mimic" with lore "<white>An incredibly dangerous variety of Zombie.", "<white>When struck, these thralls take on the likeness of their aggressor; increasing their strength to match."
+		set slot 14 of the player's current inventory to 1 skeleton spawn egg of power 1 named "<white>Skeleton Mimic" with lore "<white>An incredibly dangerous variety of Skeleton.", "<white>When struck, these thralls take on the likeness of their aggressor; increasing their strength to match."
+		set slot 15 of the player's current inventory to 1 creeper spawn egg of power 1 named "<white>Skulker" with lore "<white>A faster and more explosive variant of the Creeper."
+		set slot 16 of the player's current inventory to 1 spider spawn egg of power 1 named "<white>Venom Spider" with lore "<white>A highly venomous type of spider.", "<white>Unlike their cave-dwelling bretheren, these spiders' poison is strong enough to kill."
+		set slot 17 of the player's current inventory to 1 husk spawn egg of power 3 named "<white>Malediction" with lore "<white>An incredibly rare foe that can generate multiple copies of itself when in a pinch."
+		set slot 18 of the player's current inventory to 1 stray spawn egg of power 3 named "<white>Enrapture" with lore "<white>Dangerous variation of the Skeleton that binds foes in place with fell magic.", "<white>Their arrows are to be avoided at all costs."
+		set slot 19 of the player's current inventory to 1 spider spawn egg of power 3 named "<white>Shadow" with lore "<white>A powerful beast that has escaped from its master's control.", "<white>They can render themselves invisible in order to attack their prey."
+		set slot 20 of the player's current inventory to 1 zombie spawn egg of power 5 named "<white>Regret" with lore "<white>An Elridian dark mage capable of creating thralls.", "<white>They periodically summon Zombies and Skeletons to aid them in combat."
+		set slot 21 of the player's current inventory to 1 witch spawn egg of power 5 named "<white>Fury" with lore "<white>A spellcaster that has mastered the art of summoning.", "<white>They can generate an unlimited number of Blazes to assist them.", "<white>The power they wield is unstable, however, and when control is lost they will explode violently."
+		set slot 22 of the player's current inventory to 1 creeper spawn egg of power 5 named "<white>Stalker" with lore "<white>A horribly volatile variation of the Creeper with tremendous explosive power.", "<white>Only one hit is required to set off its village-clearing explosion."
+		set slot 23 of the player's current inventory to 1 wither skeleton spawn egg named "<white>Wither Skeleton" with lore "<white>Charred remains of one of the Grand Wizards' protectors.", "<white>With no master to control them, they wander Harbindul in search of salvation.", "<white>Their rusted blades inflict terrible poisons upon any who touch them."
+		set slot 24 of the player's current inventory to 1 blaze spawn egg named "<white>Blaze" with lore "<white>A flame summon born from the fires of Harbindul.", "<white>They are able to fly and launch fireballs at their targets."
+		set slot 25 of the player's current inventory to 1 zombie pigman spawn egg named "<white>Zombie Pigman" with lore "<white>Livestock corrupted by the fires of Harbindul.", "<white>Operating solely upon instinct, their wild and savage blows are a force to be feared.", "<white>Curiously, they have a strong love for gold."
+		set slot 26 of the player's current inventory to 1 zombie spawn egg of power 7 named "<white>Zombie Purgia" with lore "<white>Powerful thralls on the brink of escape from their masters.", "<white>Retaining their abilities from their past life, these Zombies possess highly advanced tactics.", "<white>They can release blasts of energy to knock away foes, at the cost of their own health."
+		set slot 27 of the player's current inventory to 1 skeleton spawn egg of power 7 named "<white>Skeleton Purgia" with lore "<white>Powerful thralls on the brink of escape from their masters.", "<white>Skeleton Purgias are born from only the strongest of bow-wielding knights.", "<white>Their arrows are strong enough to pierce directly through armour and severly wound whoever becomes their victim."
+		set slot 28 of the player's current inventory to 1 creeper spawn egg of power 7 named "<white>Creeper Purgia" with lore "<white>One of the many Purgia-class thralls from Elrid.", "<white>Their explosions leave a debilitating aura that weakens all who come in contact with it."
+		set slot 29 of the player's current inventory to 1 zombie pigman spawn egg of power 7 named "<white>Pigman Purgia" with lore "<white>Resurrected corruptions from Harbindul.", "<white>The massive amount of magical energy used to maintain this thrall grant it immesurable strength.", "<white>It is easily identifiable via its solid-gold armour.", "<white>Their flaming bodies ignite all who come in contact with them."
+		set slot 30 of the player's current inventory to 1 evoker spawn egg of power 7 named "<white>Purgia Invoker" with lore "<white>One of Elrid's finest necromancers.", "<white>Able to summon a multitude of Purgia to assist in battle.", "<white>Purgia Invokers may attempt to drain the life force of their foes in a pinch.", "<white>Rumors claim they are not past turning their powers against themselves if it means ensuring victory."
+		set slot 31 of the player's current inventory to 1 zombie spawn egg of power 8 named "<white>Crusader Purgia" with lore "<white>A diamond-clad thrall with superb combat prowess.", "<white>This particular Purgia acts independently of its master, almost as if it's not a thrall at all...", "<white>They possess the abilities of all other Purgia combined."
+		set slot 34 of the player's current inventory to 1 zombie spawn egg of power 10 named "<red><bold>Fallen Hero" with lore "<white>The defiled corpse of one of the Great Heroes.", "<white>Wielding corrupted variants of their signature weapons, these fell thralls have only one command: kill all who defy the Leader's desires.", "<white>Battles against these thralls are to be avoided at all costs."
+		set slot 32 of the player's current inventory to 1 zombie spawn egg of fortune 5 named "<gold>Treasure Zombie" with lore "<white>A rather quirky summon comprised of various treasures.", "<white>Their attacks are very weak, but being made of solid gold grants them great durability."
+		set slot 33 of the player's current inventory to 1 skeleton spawn egg of fortune 5 named "<gold>Treasure Skeleton" with lore "<white>A rather quirky summon comprised of various treasures.", "<white>Their attacks are very weak, but being made of solid gold grants them great durability."
+		if {sd.dolevelscaling.%player%} is true:
+			set slot 52 of the player's current inventory to 1 lapis block named "<light blue>Level Scaling" with lore "<white>Monsters summoned will scale to your level.", "<white>Click to disable."
+		else:
+			set slot 52 of the player's current inventory to 1 redstone block named "<light red>Level Scaling" with lore "<white>Monsters summoned will NOT scale to your level.", "<white>Click to enable."
+		set slot 51 of the player's current inventory to 1 book named "<white>Summoning Info:" with lore "<white>Summoned monsters will appear at this room's spawn point.", "<white>Only one monster can be summoned at once.", "<white>You will not recieve XP and money for defeating summoned monsters."
+		set slot 53 of the player's current inventory to 1 red glass pane named "<white>Salindrum Menu"
+
+command /sdhw:
+	trigger:
+		open chest with 6 rows named "<red><bold>Salindrum - Holy Weapons" for the player
+		set slot 0 of the player's current inventory to 1 diamond sword named "<gold><bold>Falchion" with lore "<white>Effective against end-type monsters.", "<white>Can deal random critical damage.", "<white>Right-click to restore health.", "<bold>Unique Refine:", "<white>Grants Strength/Swiftness/Resistance 1 to nearby party members.", "<light red>Requires the Lord's Blood perk OR A or higher rank in Swords."
+		set slot 1 of the player's current inventory to 1 diamond sword named "<gold><bold>Binding Blade" with lore "<white>Effective against end-type monsters.", "<white>+4 weapon might.", "<white>Right-click to restore health.", "<white><bold>Unique Refine:", "<white>Grants Resistance 2 while equipped.", "<white>Grants Riposte.", "<bold>Riposte counters ignite foes.", "<light red>Requires the Lord's Blood perk OR A rank or higher in Swords."
+		set slot 2 of the player's current inventory to 1 diamond sword named "<gold><bold>Tyrfing" with lore "<white>+4 weapon might.", "<white>Reduces ranged damage suffered by 75%%.", "<white>Grants Miracle while equipped.", "<white><bold>Unique Refine:", "<white>Grants STR/DEF +40 while within 10 blocks of a party member.", "<light red><bold>Requires Crusader's Blood perk OR A rank or higher in Swords."
+		set slot 3 of the player's current inventory to 1 diamond sword named "<gold><bold>Ragnell" with lore "<white>+6 weapon might.", "<white>Grants Radiant Aether, a more likely to activate version of Aether.", "<white><bold>Unique Refine:", "<white>+4 weapon might.", "<white>Right-click to fire damaging shockwaves.", "<light red><bold>Requires A rank or higher in Swords to wield."
+		set slot 4 of the player's current inventory to 1 diamond sword named "<gold><bold>Light Brand" with lore "<white>Grants SKL +20 while equipped.", "<white>Right-click to strike lightning at nearby monsters.", "<white>Grants bonus damage = MAG / 8. Max: +7", "<bold>Unique Refine:", "<white>+4 weapon might.", "<white>Calculates damage using lower of foe's DEF or MAG.", "<light red><bold>Requires B rank or higher in Swords to wield."
+		set slot 5 of the player's current inventory to 1 diamond axe named "<gold><bold>Armads" with lore "<white>+6 weapon might.", "<white>Grants Resistance 2 while equipped.", "<white><bold>Unique Refine:", "<white>Automatically retaliate against ranged foes.", "<white>Automatically make a follow-up attack when attacked.", "<light red><bold>Requires A rank or higher in Axes to wield."
+		set slot 6 of the player's current inventory to 1 bow named "<gold><bold>Parthia" with lore "<white>Reduces ranged damage suffered by 75%%.", "<white>+2 weapon might.", "<white>Grants Experience Sapper.", "<white><bold>Unique Refine:", "<white>+6 weapon might against ranged opponents.", "<white>Inflicts Weakness 2 to foes on-hit.", "<light red><bold>Requires B rank or higher in Bows to wield."
+		set slot 7 of the player's current inventory to 1 iron horse armour named "<gold><bold>Super Shotgun" with lore "The double-barreled classic. Plenty of risk & plenty of reward.", "Right-click to fire.", "Left-click to reload. Costs 6 gold nuggets.", "<bold>Skills cannot be equipped on this weapon.", "<bold>This weapon cannot be refined."
+		set slot 8 of the player's current inventory to 1 diamond shovel named "<gold><bold>Siegmund" with lore "<white>+5 weapon might.", "<white>Grants Rally Strength.", "<white>Effective against monsters.", "<white><bold>Unique Refine:", "<white>If there are more enemies than allies within 10 blocks of you:", "<white>Automatically make a follow-up attack, and grants Strength 2.", "<light red>Requires the Lord's Blood perk OR A rank or higher in Lances."
+		set slot 9 of the player's current inventory to 1 diamond sword named "<gold><bold>Sieglinde" with lore "<white>+5 weapon might.", "<white>Grants Rally Strength.", "<white>Effective against monsters.", "<white><bold>Unique Refine:", "<white>Rallies also apply to yourself.", "<white>Rally skills apply in a 7-block radius.", "<light red>Requires the Lord's Blood perk OR A rank or higher in Swords."
+		set slot 10 of the player's current inventory to 1 diamond sword named "<gold><bold>Durandal" with lore "<white>+2 weapon might.", "<white>Effective against end-type monsters.", "<white>Imbued with the Crushing refine effect.", "<white><bold>Unique Refine:", "<white>Grants Strength/Swiftness 2 on-hit.", "<light red><bold>Requires A Rank or higher in Swords to wield."
+		set slot 11 of the player's current inventory to 1 diamond shovel named "<gold><bold>Gae Bolg" with lore "<white>Grants STR/DEF/SKL +30 while equipped.", "<white>Grants the Guard and Vantage perks while equipped.", "<white><bold>Unique refine:", "<white><bold>Inflicts DEF/MAG - 30 on foes within 10 blocks.", "<light red>Requires the Crusader's Blood perk OR S rank in Lances to wield."
+		set slot 12 of the player's current inventory to 1 diamond sword named "<gold><bold>Mercurius" with lore "<white>+3 weapon might.", "<white>Grants Experience Sapper.", "<light red><bold>Requires B rank or higher in Swords to wield."
+		set slot 13 of the player's current inventory to 1 diamond axe named "<gold><bold>Basilikos" with lore "<white>+5 weapon might.", "<white><bold>Unique Refine:", "<white>Grants Life & Death (A-Slot).", "<light red><bold>Requires B rank or higher in Axes to wield."
+		set slot 14 of the player's current inventory to 1 diamond axe named "<gold><bold>Hauteclere" with lore "<white>+2 weapon might.", "<white>Grants SKL +15 while equipped.", "<white><bold>Unique Refine:", "<white>Accelerates Special trigger (+20%% activation chance).", "<white>If Special activates, increases damage dealt by 2.5 hearts.", "<light red><bold>Requires B rank or higher in Axes to wield."
+		set slot 15 of the player's current inventory to 1 diamond sword named "<gold><bold>Mystletainn" with lore "<white>+4 weapon might.", "<white>Grants SKL +40 while equipped.", "<white>If HP < 75%%, grants SKL +30, and deals +4 damage when Special activates.", "<white>Stacks with Wrath.", "<white><bold>Unique refine:", "<white>Grants STR/DEF/SPD/SKL/MAG +20.", "<white>Player suffers 1.5 hearts of recoil damage each hit.", "<light red>Requires the Crusader's Blood perk OR B rank or higher in Swords to wield."
+		set slot 16 of the player's current inventory to 1 diamond shovel named "<gold><bold>Fensalir" with lore "<white>+4 weapon might.", "<white>While within 10 blocks of a party member, grants +6 weapon might.", "<white><bold>Unique Refine:", "<white>While within 10 blocks of a party member, grants STR/SKL +40.", "<light red>Requires the Lord's Blood perk OR A rank or higher in Lances."
+		set slot 17 of the player's current inventory to 1 diamond sword named "<gold><bold>Folkvangr" with lore "<white>+4 weapon might.", "<white>While within 10 blocks of a party member, grants +6 weapon might.", "<bold>Unique Refine:", "<white>If HP < 70%%, grants STR/DEF +40.", "<light red>Requires the Lord's Blood perk OR A rank or higher in Swords."
+		set slot 18 of the player's current inventory to 1 diamond shovel named "<gold><bold>Gradivus" with lore "<white>+4 weapon might.", "<white>Grants Experience Sapper.", "<light red><bold>Requires B rank or higher in Lances to wield."
+		set slot 19 of the player's current inventory to 1 diamond horse armour named "<gold><bold>Love is Blue" with lore "<white>Right-click to fire bullets at the cost of EXP.", "Melee hits restore 5 EXP.", "<bold>Skills cannot be equipped to this weapon.", "<bold>This weapon cannot be refined."
+		set slot 20 of the player's current inventory to 1 gold horse armour named "<gold><bold>Scarborough Fair" with lore "<white>Right-click to fire bullets at the cost of EXP.", "Melee hits restore 5 EXP.", "<bold>Skills cannot be equipped to this weapon.", "<bold>This weapon cannot be refined."
+		set slot 21 of the player's current inventory to 1 diamond sword named "<gold><bold>Balder Side Sword" with lore "<white>+2 weapon might.", "<white>Right-click to parry attacks.", "<white>Parry has a 0.5 second cooldown.", "<light red><bold>Requires B rank or higher in Swords to wield."
+		set slot 22 of the player's current inventory to 1 bow named "<gold><bold>Fujin Yumi" with lore "<white>Grants MAG +20 while equipped.", "<white>This weapon will automatically counter-attack melee hits.", "<white><bold>Unique Refine:", "<white>Holding sneak and firing an arrow teleports you where it lands.", "<light red><bold>Requires B rank or higher in Bows to wield."
+		set slot 23 of the player's current inventory to 1 diamond sword named "<gold><bold>Blessed Sword" with lore "<white>Reduces damage suffered by 1.5 hearts.", "<white>Effective against monsters.", "<white>Imbued with the Plenitude skill.", "<white><bold>Unique Refine:", "<white>Grants Regeneration 2 while equipped.", "<white>Nullifies negative potion effects."
+		set slot 24 of the player's current inventory to 1 diamond axe named "<gold><bold>Devil Axe" with lore "<white>+3 weapon might.", "<white>Imbued with the Fury skill.", "<white>Inflicts Wither 4 on foes on-hit.", "<white><bold>Unique Refine:", "<white>Grants weapon might +6.", "<white>Inflicts 3 hearts of recoil damage when attacking."
+		set slot 25 of the player's current inventory to 1 diamond shovel named "<gold><bold>Crusader's Lance" with lore "<white>+8 weapon might.", "<white>Can be thrown for no durability cost.", "<white>Reduces damage suffered by 30%%.", "<white><bold>Unique Refine:", "<white>Reduces damage suffered by 20%%.", "<white>Player automatically makes a follow-up attack above 50%% HP."
+		set slot 26 of the player's current inventory to 1 bow named "<gold><bold>Lunar Bow" with lore "<white>+3 weapon might.", "<white>Imbued with the Luna skill.", "<white>Calculates damage using the lower of foe's DEF or MAG.", "<white><bold>Unique Refine:", "<white>Ignores damage reductions from enemy's armour. (Excludes enchantments)", "<white>If Special activates, increases damage by 20%% of the player's SPD."
+		set slot 27 of the player's current inventory to 1 diamond shovel named "<gold><bold>Rex Hasta" with lore "<white>When a special activates, boosts damage by 5 hearts.", "<white><bold>Unique Refine:", "<white>+4 weapon might.", "<white>Accelerates special activation (activation chance +20%%).", "<light red><bold>Requires A rank or higher in Lances to wield."
+		set slot 28 of the player's current inventory to 1 diamond sword named "<gold><bold>Meisterschwert" with lore "<white>Attacks twice during combat.", "<white><bold>Unique Refine:", "<white>Grants <gold>[Accost]<white>.", "<gold>[Accost]<white>: If attacker's HP & SPD > foe's HP & SPD, damage dealt for that round of combat is doubled.", "<light red><bold>Requires B rank or higher in Swords to wield."
+		set slot 29 of the player's current inventory to 1 book named "<gold><bold>Dire Thunder" with lore "<white>Attacks twice when initiating combat.", "<white><bold>Unique Refine:","<white>Grants <gold>[Accost]<white>.", "<gold>[Accost]<white>: If attacker's HP & SPD > foe's HP & SPD, damage dealt for that round of combat is doubled.", "<light red><bold>Requires B rank or higher in Magic to wield."
+		set slot 30 of the player's current inventory to 1 diamond shovel named "<gold><bold>Rhomphaia" with lore "<white>Deals bonus damage equal to 25%% of the player's SPD.", "<light red><bold>Requires B rank or higher in Lances to wield."
+		set slot 31 of the player's current inventory to 1 diamond sword named "<gold><bold>Alondite" with lore "<white>Imbued with the Eclipse skill:", "<white>Nullifies bonuses provided by armor, and reduces foe's DEF/MAG by 80%%.", "<white>Activation chance: (SKL ^ 0.65) | Max: 50%%.", "<light red><bold>Requires A rank or higher in Swords to wield."
+		set slot 32 of the player's current inventory to 1 bow named "<gold><bold>Guard Bow" with lore "<white>Reduces damage suffered by 1.5 hearts.", "<light red><bold>Requires C rank or higher in Bows to wield."
+		set slot 33 of the player's current inventory to 1 bow named "<gold><bold>Brave Bow" with lore "<white>Inflicts SPD -15.", "<white>-3 weapon might.", "<white>Weapon attacks twice during combat.", "<light red><bold>Requires C rank or higher in Bows to wield."
+		set slot 34 of the player's current inventory to 1 diamond axe named "<gold><bold>Tomahawk" with lore "<white>Grants <gold>[Distant Counter]<white>.", "<gold>[Distant Counter]<white>: Automatically retaliate against ranged opponents. Range-dependent skills will activate regardless of foe's range."
+		set slot 35 of the player's current inventory to 1 diamond shovel named "<gold><bold>Javelin" with lore "<white>Grants <gold>[Distant Counter]<white>.", "<gold>[Distant Counter]<white>: Automatically retaliate against ranged opponents. Range-dependent skills will activate regardless of foe's range."
+		set slot 36 of the player's current inventory to 1 diamond sword named "<gold><bold>Tornado Blade" with lore "<white>Grants <gold>[Distant Counter]<white>.", "<gold>[Distant Counter]<white>: Automatically retaliate against ranged opponents. Range-dependent skills will activate regardless of foe's range."
+		set slot 37 of the player's current inventory to 1 diamond shovel named "<gold><bold>Swift-Winds Lance" with lore "<white>Grants <gold>[Sweeper]<white>.", "<bold><white>Unique Refine: Grants STR/SPD +20 for 5 seconds when initiating combat. Recharge duration: 10 seconds.", "<gold>[Sweeper]<white>: Disables foe's skills that guarantee counter-attacks during combat."
+		set slot 38 of the player's current inventory to 1 diamond sword named "<gold><bold>Kindled-Fire Sword" with lore "<white>Grants <gold>[Brave]<white>.", "<bold><white>Unique Refine:", "<white>Grants STR/DEF +20 for 5 seconds when initiating combat. Recharge duration: 10 seconds.", "<gold>[Brave]<white>: Inflicts SPD -15. Player attacks twice during combat."
+		set slot 39 of the player's current inventory to 1 diamond axe named "<gold><bold>Axtinguisher" with lore "<white>+50%% damage against burning targets.", "<white>-50%% damage against non-burning targets."
+		
+on spawn of a slime:
+	if entity's world is "Salindrum":
+		cancel event
+
+on death of a monster:
+	if victim's world is "Salindrum":
+		wait 1 tick
+		loop dropped items in radius 1 of the victim:
+			kill the loop-entity
+
+on experience spawn:
+	if world is "Salindrum":
+		cancel event
+		
+on food bar change:
+	if {sd.nohunger.%player%} is true:
+		increase the player's food level by 10
+		
+on damage of a player:
+	if {sd.invuln.%victim%} is true:
+		cancel event
+		
+on inventory click:
+	if the name of the player's current inventory is "<red>Select a room.":
+		cancel event
+		if the clicked item is lapis block:
+			set {sd.rewarp.%player%} to location of block at player
+			set {sdroom.%player%} to uncolored name of the clicked item
+			set {sdcash.%player%} to player's balance
+			send "%{sdcash.%player%}%"
+			add 100000 to the player's balance
+			teleport the player to {sd.%{sdroom.%player%}%}
+			set {sd::%{sdroom.%player%}%} to player's tablist name
+			send "<light blue>Entered Salindrum."
+			make player execute command "/salindrum"
+			loop all items in the player's inventory:
+				add loop-item to {sditems.%player%::*}
+	else if the name of the player's current inventory is "<red>Salindrum Configuration":
+		cancel event
+		if the name of the clicked item is "<gold>Exit Salindrum":
+			teleport the player to {sd.rewarp.%player%}
+			set the player's balance to {sdcash.%player%}
+			clear {sdcash.%player%}
+			send "%player's balance%"
+			loop all monsters in radius 50 of the player:
+				kill the loop-monster
+			loop all items in the player's inventory:
+				remove loop-item from the player
+			set {_item} to 0
+			loop {sditems.%player%::*}:
+				if loop-value is helmet:
+					set the player's helmet to loop-value
+				else if loop-value is chestplate:
+					set the player's chestplate to loop-value
+				else if loop-value is leggings:
+					set player's leggings to loop-value
+				else if loop-value is boots:
+					set player's boots to loop-value
+				else if player has enough space for loop-value:
+					add loop-value to the player's inventory
+				else:
+					drop loop-value at the player
+			clear {sd.nohunger.%player%}
+			clear {sd.invuln.%player%}
+			clear {sditems.%player%::*}
+			clear {sd.rewarp.%player%}
+			set {sd::%{sdroom.%player%}%} to 0
+			send "<light blue>Exited Salindrum."
+		else if the name of the clicked item contains "Infinite Hunger":
+			if {sd.nohunger.%player%} is not set:
+				set {sd.nohunger.%player%} to true
+			else:
+				clear {sd.nohunger.%player%}
+			make player execute command "/sd"
+		else if the name of the clicked item contains "Player Invincibility":
+			if {sd.invuln.%player%} is not set:
+				set {sd.invuln.%player%} to true
+			else:
+				clear {sd.invuln.%player%}
+			make player execute command "/sd"
+		else if the name of the clicked item is "<white>Spawn Monsters":
+			make player execute command "/sdmonsters"
+		else if the name of the clicked item is "<white>Test Skills":
+			make player execute command "/skills"
+		else if the name of the clicked item is "<white>Test Holy Weapons":
+			make player execute command "/sdhw"
+		else if the name of the clicked item is "<white>Reset Session":
+			loop all monsters in radius 50 of the player:
+				kill the loop-monster
+			loop all items in the player's inventory:
+				remove loop-item from the player
+			set {_item} to 0
+			loop {sditems.%player%::*}:
+				if loop-value is helmet:
+					set the player's helmet to loop-value
+				else if loop-value is chestplate:
+					set the player's chestplate to loop-value
+				else if loop-value is leggings:
+					set player's leggings to loop-value
+				else if loop-value is boots:
+					set player's boots to loop-value
+				else if player has enough space for loop-value:
+					add loop-value to the player's inventory
+				else:
+					drop loop-value at the player
+			teleport the player to {sd.%{sdroom.%player%}%}
+	else if the name of the player's current inventory is "<red><bold>Salindrum - Holy Weapons":
+		cancel event
+		if the name of the clicked item contains "<gold><bold>":
+			give clicked item to the player
+	else if the name of the player's current inventory is "<red>Spawn Monsters":
+		cancel event
+		if the name of the clicked item is "<white>Salindrum Menu":
+			make player execute command "/salindrum"
+		else if the name of the clicked item is "<light red>Level Scaling":
+			set {sd.dolevelscaling.%player%} to true
+			set slot 52 of the player's current inventory to 1 lapis block named "<light blue>Level Scaling" with lore "<white>Monsters summoned will scale to your level.", "<white>Click to disable."
+		else if the name of the clicked item is "<light blue>Level Scaling":
+			clear {sd.dolevelscaling.%player%}
+			set slot 52 of the player's current inventory to 1 redstone block named "<light red>Level Scaling" with lore "<white>Monsters summoned will NOT scale to your level.", "<white>Click to enable."
+		else if the name of the clicked item is "<white>Zombie":
+			spawn 1 zombie at {sd.%{sdroom.%player%}%}
+			set {_generic} to true
+		else if the name of the clicked item is "<white>Skeleton":
+			spawn 1 skeleton at {sd.%{sdroom.%player%}%}
+			set {_generic} to true
+		else if the name of the clicked item is "<white>Spider":
+			spawn 1 spider at {sd.%{sdroom.%player%}%}
+			set {_generic} to true
+		else if the name of the clicked item is "<white>Creeper":
+			spawn 1 creeper at {sd.%{sdroom.%player%}%}
+			set {_generic} to true
+		else if the name of the clicked item is "<white>Husk":
+			spawn 1 husk at {sd.%{sdroom.%player%}%}
+			set {_generic} to true
+		else if the name of the clicked item is "<white>Witch":
+			spawn 1 witch at {sd.%{sdroom.%player%}%}
+			set {_generic} to true
+		else if the name of the clicked item is "<white>Enderman":
+			spawn 1 enderman at {sd.%{sdroom.%player%}%}
+			set {_generic} to true
+		else if the name of the clicked item is "<white>Cave Spider":
+			spawn 1 cave spider at {sd.%{sdroom.%player%}%}
+			set {_generic} to true
+		else if the name of the clicked item is "<white>Evoker":
+			spawn 1 evoker at {sd.%{sdroom.%player%}%}
+			set {_generic} to true
+		else if the name of the clicked item is "<white>Vex":
+			spawn 1 vex at {sd.%{sdroom.%player%}%}
+			set {_generic} to true
+		else if the name of the clicked item is "<white>Vindicator":
+			spawn 1 vindicator at {sd.%{sdroom.%player%}%}
+			set {_generic} to true
+		else if the name of the clicked item is "<white>Slime":
+			spawn 1 slime at {sd.%{sdroom.%player%}%}
+			set {_generic} to true
+		else if the name of the clicked item is "<white>Stray":
+			spawn 1 stray at {sd.%{sdroom.%player%}%}
+			set {_generic} to true
+		else if the name of the clicked item is "<white>Zombie Mimic":
+			spawn 1 zombie at {sd.%{sdroom.%player%}%}
+			set the name of the last spawned entity to "<white>Mimic"
+			set metadata value "isMimic" of the last spawned entity to 1
+			set {_generic} to true
+		else if the name of the clicked item is "<white>Skeleton Mimic":
+			spawn 1 skeleton at {sd.%{sdroom.%player%}%}
+			set the name of the last spawned entity to "<white>Mimic"
+			set metadata value "isMimic" of the last spawned entity to 1
+			set {_generic} to true
+		else if the name of the clicked item is "<white>Skulker":
+			spawn 1 creeper at {sd.%{sdroom.%player%}%}
+			set the name of the last spawned entity to "<white>Skulker"
+			set metadata value "isSkulker" of the last spawned entity to 1
+			set {_generic} to true
+		else if the name of the clicked item is "<white>Venom Spider":
+			spawn 1 spider at {sd.%{sdroom.%player%}%}
+			set the name of the last spawned entity to "<white>Venom Spider"
+			set metadata value "isVenomSpider" of the last spawned entity to 1
+			set {_generic} to true
+		else if the name of the clicked item is "<white>Malediction":
+			spawn 1 husk at {sd.%{sdroom.%player%}%}
+			set the name of the last spawned entity to "<white>Malediction"
+			set metadata value "isMalediction" of the last spawned entity to 1
+			set {_generic} to true
+		else if the name of the clicked item is "<white>Enrapture":
+			spawn 1 stray at {sd.%{sdroom.%player%}%}
+			set the name of the last spawned entity to "<white>Enrapture"
+			set metadata value "isEnrapture" of the last spawned entity to 1
+			set {_generic} to true
+		else if the name of the clicked item is "<white>Shadow":
+			spawn 1 spider at {sd.%{sdroom.%player%}%}
+			set the name of the last spawned entity to "<white>Shadow"
+			set metadata value "isShadow" of the last spawned entity to 1
+			set {_generic} to true
+			apply invisibility 1 to the last spawned entity for 1 day
+			apply swiftness 2 to the last spawned entity for 1 day
+			apply strength 1 to the last spawned entity for 1 day
+		else if the name of the clicked item is "<white>Regret":
+			spawn 1 zombie at {sd.%{sdroom.%player%}%}
+			set the name of the last spawned entity to "<white>Regret"
+			set metadata value "isRegret" of the last spawned entity to 1
+			set the last spawned entity's helmet to leather helmet of protection 3 colored gray
+			set the last spawned entity's chestplate to leather chestplate of protection 3 colored gray
+			set the last spawned entity's leggings to leather leggings of protection 3 colored gray
+			set the last spawned entity's boots to leather boots of protection 3 colored gray
+			set {_generic} to true
+		else if the name of the clicked item is "<white>Fury":
+			spawn 1 witch at {sd.%{sdroom.%player%}%}
+			set the name of the last spawned entity to "<white>Fury"
+			set metadata value "isFury" of the last spawned entity to 1
+			apply resistance 1 to the last spawned entity for 1 day
+			apply fire resistance 1 to the last spawned entity for 1 day
+			set {_generic} to true
+		else if the name of the clicked item is "<white>Stalker":
+			spawn 1 creeper at {sd.%{sdroom.%player%}%}
+			set the name of the last spawned entity to "<white>Stalker"
+			set metadata value "isStalker" of the last spawned entity to 1
+			apply swiftness 4 to the last spawned entity for 1 day
+			set {_generic} to true
+		else if the name of the clicked item is "<white>Wither Skeleton":
+			spawn 1 wither skeleton at {sd.%{sdroom.%player%}%}
+			set {_generic} to true
+		else if the name of the clicked item is "<white>Blaze":
+			spawn 1 blaze at {sd.%{sdroom.%player%}%}
+			set {_generic} to true
+		else if the name of the clicked item is "<white>Zombie Pigman":
+			spawn 1 zombie pigman at {sd.%{sdroom.%player%}%}
+			set {_generic} to true
+		else if the name of the clicked item is "<white>Zombie Purgia":
+			spawn 1 zombie at {sd.%{sdroom.%player%}%}
+			set the name of the last spawned entity to "<light red>Zombie Purgia"
+			set metadata value "isZPurgia" of the last spawned entity to 1
+			set {_generic} to true
+		else if the name of the clicked item is "<white>Skeleton Purgia":
+			spawn 1 skeleton at {sd.%{sdroom.%player%}%}
+			set the name of the last spawned entity to "<light red>Skeleton Purgia"
+			set metadata value "isSPurgia" of the last spawned entity to 1
+			set {_generic} to true
+		else if the name of the clicked item is "<white>Creeper Purgia":
+			spawn 1 creeper at {sd.%{sdroom.%player%}%}
+			set the name of the last spawned entity to "<light red>Creeper Purgia"
+			set metadata value "isCPurgia" of the last spawned entity to 1
+			set {_generic} to true
+		else if the name of the clicked item is "<white>Pigman Purgia":
+			spawn 1 zombie pigman at {sd.%{sdroom.%player%}%}
+			set the name of the last spawned entity to "<light red>Pigman Purgia"
+			set metadata value "isZPPurgia" of the last spawned entity to 1
+			set the last spawned entity's helmet to gold helmet of protection 5
+			set the last spawned entity's chestplate to gold chestplate of protection 5
+			set the last spawned entity's leggings to gold leggings of protection 5
+			set the last spawned entity's boots to gold boots of protection 5
+			set the last spawned entity's tool to gold sword of sharpness 10 named "<gold>Golden Blade"
+			set {_generic} to true
+		else if the name of the clicked item is "<white>Purgia Invoker":
+			spawn 1 evoker at {sd.%{sdroom.%player%}%}
+			set the name of the last spawned entity to "<light red>Purgia Invoker"
+			set metadata value "isIPurgia" of the last spawned entity to 1
+			set {_generic} to true
+		else if the name of the clicked item is "<white>Crusader Purgia":
+			spawn 1 zombie at {sd.%{sdroom.%player%}%}
+			set the name of the last spawned entity to "<red>Crusader Purgia"
+			set metadata value "isZPurgia" of the last spawned entity to 1
+			set metadata value "isSPurgia" of the last spawned entity to 1
+			set metadata value "isCPurgia" of the last spawned entity to 1
+			set metadata value "isZPPurgia" of the last spawned entity to 1
+			set the last spawned entity's helmet to diamond helmet of protection 5
+			set the last spawned entity's chestplate to diamond chestplate of protection 5
+			set the last spawned entity's leggings to diamond leggings of protection 5
+			set the last spawned entity's boots to diamond boots of protection 5
+			set the last spawned entity's tool to diamond sword of sharpness 5 named "<gold>Diamond Blade"
+			set {_generic} to true
+		else if the name of the clicked item is "<gold>Treasure Zombie":
+			spawn 1 zombie at {sd.%{sdroom.%player%}%}
+			apply weakness 4 to the last spawned entity for 1 day
+			apply swiftness 4 to the last spawned entity for 1 day
+			set the last spawned entity's helmet to gold helmet of protection 5
+			set the last spawned entity's chestplate to gold chestplate of protection 5
+			set the last spawned entity's leggings to gold leggings of protection 5
+			set the last spawned entity's boots to gold boots of protection 5
+			set the last spawned entity's tool to gold sword of looting 5 named "<gold>Fortune Sword" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - Despoil"
+			set {_generic} to true
+		else if the name of the clicked item is "<gold>Treasure Skeleton":
+			spawn 1 skeleton at {sd.%{sdroom.%player%}%}
+			apply weakness 4 to the last spawned entity for 1 day
+			apply swiftness 4 to the last spawned entity for 1 day
+			set the last spawned entity's helmet to gold helmet of protection 5
+			set the last spawned entity's chestplate to gold chestplate of protection 5
+			set the last spawned entity's leggings to gold leggings of protection 5
+			set the last spawned entity's boots to gold boots of protection 5
+			set the last spawned entity's tool to bow of looting 5 named "<gold>Fortune Bow" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - Despoil"
+			set {_generic} to true
+		if {_generic} is set:
+			if {sd.dolevelscaling.%player%} is true:
+				set {_moblvl} to 1
+				add {lvl.%player%} to {_moblvl}
+				add ({promoted.%player%} * 15) to {_moblvl}
+				set {_mob} to the last spawned entity
+				loop {_moblvl} times:
+					#add 1 to {t_str.%entity%}
+					chance of 80%:
+						add 1 to {t_str.%{_mob}%}
+					#add 1 to {t_def.%entity%}
+					chance of 50%:
+						add 1 to {t_def.%{_mob}%}
+					#add 1 to {t_spd.%entity%}
+					chance of 60%:
+						add 1 to {t_spd.%{_mob}%}
+					#add 1 to {t_skl.%entity%}
+					chance of 70%:
+						add 1 to {t_skl.%{_mob}%}
+					#add 1 to {t_res.%entity%}
+					chance of 50%:
+						add 1 to {t_res.%{_mob}%}
+					#add 0.5 to the entity's maximum health
+					chance of 80%:
+						add 0.5 to {_mob}'s maximum health
+				set {t_lvl.%{_mob}%} to {_moblvl}
+				heal {_mob} by 9999

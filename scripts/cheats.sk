@@ -1,0 +1,115 @@
+function startQuest(PLR: player , QUEST: text , DESC: text):
+	set {quests.%{_PLR}%::%{_QUEST}%} to 1
+	send title "<white><bold>New Quest: %{_QUEST}%" with subtitle "%{_DESC}%" to {_PLR} for 5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+	play sound "entity.fireworkrocket.launch" with volume 0.75 and pitch 1 at {_PLR} for {_PLR}
+	play sound "entity.fireworkrocket.twinkle" with volume 0.4 and pitch 1.5 at {_PLR} for {_PLR}
+	play sound "entity.player.levelup" with volume 1 and pitch 1 at {_PLR} for {_PLR}
+	play 60 (firework spark with speed 1) at {_PLR}
+	play 60 (snow shovel with speed 1) at {_PLR}
+
+function setQuestProgress(PLR: player , QUEST: text , STAGE: number, INFO: text):
+	set {quests.%{_PLR}%::%{_QUEST}%} to {_STAGE}
+	send title "" with subtitle "%{_INFO}%" to {_PLR} for 2.5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+	play sound "entity.player.levelup" with volume 0.5 and pitch 1.5 at {_PLR} for {_PLR}
+	play sound "entity.fireworkrocket.twinkle" with volume 0.4 and pitch 1.5 at {_PLR} for {_PLR}
+	play 10 (firework spark with speed 1) at {_PLR}
+	play 10 (snow shovel with speed 1) at {_PLR}
+	
+function finishQuest(PLR: player , QUEST: text , DESC: text):
+	set {quests.%{_PLR}%::%{_QUEST}%} to 999
+	send title "<gold><bold>Quest Complete: %{_QUEST}%" with subtitle "%{_DESC}%" to {_PLR} for 5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+	play sound "entity.player.levelup" with volume 1 and pitch 0.75 at {_PLR} for {_PLR}
+	play sound "entity.fireworkrocket.twinkle" with volume 1 and pitch 1.5 at {_PLR} for {_PLR}
+	play 60 (firework spark with speed 1) at {_PLR}
+	play 60 (snow shovel with speed 1) at {_PLR}
+	
+function failQuest(PLR: player , QUEST: text , DESC: text):
+	set {quests.%{_PLR}%::%{_QUEST}%} to 998
+	send title "<light red><bold>Quest Failed: %{_QUEST}%" with subtitle "%{_DESC}%" to {_PLR} for 5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+	play 60 (red wool break with speed 1) at {_PLR}
+	show mob spawner flames on {_PLR}
+
+
+command /cheats <text>:
+	trigger:
+		if arg 1 is "unlockallthings":
+			finishQuest(player,"Knights of Silgrid","")
+			finishQuest(player,"Days of Training","")
+			finishQuest(player,"Proving Grounds","")
+			finishQuest(player,"Home Sweet Home","")
+			finishQuest(player,"A Scarred Land","")
+			finishQuest(player,"A History Lesson","")
+			finishQuest(player,"Seeking the Light","")
+			finishQuest(player,"Greats Guide You","")
+			finishQuest(player,"Journey to Nifl","")
+			finishQuest(player,"A Lord's Worth","")
+			finishQuest(player,"Awakening","")
+			finishQuest(player,"Liberation","")
+			finishQuest(player,"A Deadly Test of Might","")
+			finishQuest(player,"Revelations","")
+			finishQuest(player,"A Hero's Destiny","")
+			finishQuest(player,"Land of Shadow","")
+			finishQuest(player,"Inheritors of Light","")
+			finishQuest(player,"Light and Shadow","")
+			finishQuest(player,"Legacy","")
+			finishQuest(player,"A Villager's Request","")
+			finishQuest(player,"Invisible Ties","")
+			finishQuest(player,"Fuel for the Fire","")
+			finishQuest(player,"Monster Hunt","")
+			finishQuest(player,"Path of the Greats","")
+			finishQuest(player,"The Wizard of House Silgrid","")
+			send "<gold>All items unlocked!"
+		else if arg 1 is "idkfa":
+			set {weapongrade.%player%::swords} to "<gold><bold>S"
+			set {weapongrade.%player%::lances} to "<gold><bold>S"
+			set {weapongrade.%player%::axes} to "<gold><bold>S"
+			set {weapongrade.%player%::bows} to "<gold><bold>S"
+			set {weapongrade.%player%::magic} to "<gold><bold>S"
+			set {weapongrade.%player%::staves} to "<gold><bold>S"
+			set {weaponrank.%player%::swords} to 999999
+			set {weaponrank.%player%::lances} to 999999
+			set {weaponrank.%player%::axes} to 999999
+			set {weaponrank.%player%::bows} to 999999
+			set {weaponrank.%player%::magic} to 999999
+			set {weaponrank.%player%::staves} to 9999999
+			send "<gold>All weapons can now be wielded!"
+		else if arg 1 is "rosebud":
+			add 1000 to the player's balance
+			send "<gold>$1000 obtained!"
+		else if arg 1 is "gearup":
+			give 1 iron sword to the player
+			give 1 iron helmet to the player
+			give 1 iron chestplate to the player
+			give 1 iron leggings to the player
+			give 1 iron boots to the player
+			give 1 bow to the player
+			give 64 arrow to the player
+			send "<gold>Ready for adventure!"
+		else if arg 1 is "diamondlife":
+			give 1 diamond sword of sharpness 10 to the player
+			give 1 diamond helmet of protection 10 to the player
+			give 1 diamond chestplate of protection 10 to the player
+			give 1 diamond leggings of protection 10 to the player
+			give 1 diamond boots of protection 10 to the player
+			give 1 bow of power 10 to the player
+			give 64 arrow to the player
+			send "<gold>Cover me in diamond!"
+		else if arg 1 is "blingbling":
+			open chest with 2 rows named "<gold><bold>Select a ring." for the player
+			set slot 0 of the player's current inventory to 1 music disc far with name "<light green><bold>Life Ring" with lore "<white>While in your inventory:", "<light green>Recover 10%% of your max HP every 15 seconds."
+			set slot 1 of the player's current inventory to 1 music disc wait named "<light blue><bold>Elite Ring" with lore "<white>While in your inventory:", "<light blue>Gain bonus experience for slaying monsters."
+			set slot 2 of the player's current inventory to 1 music disc 13 named "<yellow><bold>Thief Ring" with lore "<white>While in your inventory:", "<yellow>Slain monsters have a chance to drop extra money."
+			set slot 3 of the player's current inventory to 1 music disc mall named "<light purple><bold>Return Ring" with lore "<white>While in your inventory:", "<light purple>Teleport to a custom location.", "<light purple>Hold Sneak and Right-click to set the warp destination.", "<light purple>Right-click without sneaking to warp."
+			set slot 4 of the player's current inventory to 1 music disc wait named "<light cyan><bold>Speed Ring" with lore "<white>While in your inventory:", "<light cyan>Grants Swiftness 2."
+			set slot 5 of the player's current inventory to 1 music disc chirp named "<light red><bold>Power Ring" with lore "<white>While in your inventory:", "<light green>Grants Strength 2."
+			set slot 6 of the player's current inventory to 1 music disc strad named "<white><bold>Shield Ring" with lore "<white>While in your inventory:", "<white>Grants Resistance 2."
+			set slot 7 of the player's current inventory to 1 music disc 13 named "<orange><bold>Prayer Ring" with lore "<white>While in your inventory:", "<orange>Attacks while below 50%% health will always be critical hits."
+			set slot 8 of the player's current inventory to 1 music disc cat named "<green><bold>Pursuit Ring" with lore "<white>While in your inventory:", "<green>Automatically perform a follow-up attack in combat.", "<green>Auto follow-ups deal 50%% less damage."
+		else if arg 1 is "inamerica":
+			set {perdiff.%player%} to "Thracian"
+			send "<light green>Personal Difficulty increased to Thracian!"
+			send "<light yellow>On Thracian difficulty, your attacks have a chance to miss based on your SPD and SKL."
+			send "<light yellow>Lunatic damage multipliers are also active."
+		else:
+			send "<light red>Your code was not recognized."
+		

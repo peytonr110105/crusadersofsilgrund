@@ -1,0 +1,1304 @@
+#===============================================
+#=		Adds Holy Weapons to the game.		   =
+#===============================================
+
+#Skill Slot Check Function
+function checkSlots(PLR: player , skill: text) :: number:
+	if {skillslot1.%{_PLR}%} contains "%{_skill}%":
+		return 1
+	else if {skillslot2.%{_PLR}%} contains "%{_skill}%":
+		return 1
+	else if {skillslot3.%{_PLR}%} contains "%{_skill}%":
+		return 1
+	else if {skillslot4.%{_PLR}%} contains "%{_skill}%":
+		return 1
+	else if {skillslot5.%{_PLR}%} contains "%{_skill}%":
+		return 1
+	else:
+		return 0
+
+
+#Add Holy Weapons to a player's inventory
+command /holyweapon <text> [<text="">]:
+	description: Generate a Holy Weapon of your choosing, at the cost of $7500. You can also repair worn-out Holy Weapons for $5000.
+	usage: /holyweapon (buy/repair/list) (weapon name)
+	executable by: players
+	aliases: /hw
+	trigger:
+		set {_cash} to player's money
+		if arg 1 contains "buy":
+			if {_cash} is less than 7500:
+				send "<red><bold>You lack the required funds to buy a Holy Weapon."
+				send "<red>Required funds: $7500 | You have %player's money%."
+			else:
+				#Falchion Special Description
+				if arg 2 contains "Falchion":
+					send "<gold><bold>Generated the Holy Weapon %arg 2%!"
+					send "The legendary Falchion, wielded by a legendary Hero-King from another world."
+					wait a tick
+					send "- Grants effective damage against End-type creatures."
+					wait a tick
+					send "- Able to deal random critical damage based on your skill."
+					wait a tick
+					send "- Right-click while wielding Falchion to restore health."
+					wait a tick
+					send "<light blue>Unique Refine: Grants Strength, Swiftness and Resistance 2 to all party members in a 10 block radius."
+					give stone sword of unbreaking 100 named "<light blue><bold>Broken Sword" with lore "A broken sword.", "When repaired:", "Broken Sword --> Falchion" to the player
+				#Ragnell Special Description
+				else if arg 2 contains "Ragnell":
+					send "<gold><bold>Generated the Holy Weapon %arg 2%!"
+					send "- The mighty greatsword Ragnell, once used by a boy who became a legendary general." 
+					wait a tick
+					send "- Grants +4 attack damage."
+					wait a tick
+					send "- Grants Radiant Aether, a unique version of Aether that activates more often."
+					wait a tick
+					send "<light blue>Unique Refine: Able to fire magicical shockwaves by right-clicking."
+					give stone sword of unbreaking 100 named "<light blue><bold>Broken Sword" with lore "A broken sword.", "When repaired:", "Broken Sword --> Ragnell" to the player
+				else if arg 2 contains "Tyrfing":
+					send "<gold><bold>Generated the Holy Weapon %arg 2%!"
+					send "The holy sword Tyrfing, passed down through generations."
+					wait a tick
+					send "- Grants the Miracle ability, saving you from death with an activation chance based on your skill. Consumes 50 durability."
+					wait a tick
+					send "- Reduces incoming ranged damage significantly."
+					wait a tick
+					send "- Increases damage slightly."
+					wait a tick
+					send "<light blue>Unique Refine: While within 10 blocks of a party member, grants STR/DEF +40."
+					give stone sword of unbreaking 100 named "<light blue><bold>Broken Sword" with lore "A broken sword.", "When repaired:", "Broken Sword --> Tyrfing" to the player
+				else if arg 2 contains "Light Brand":
+					send "<gold><bold>Generated the Holy Weapon %arg 2%!"
+					wait a tick
+					send "The Light Brand, a blade able to summon the wrath of the heavens."
+					wait a tick
+					send "- Grants SKL +10."
+					wait a tick
+					send "- Right-click to strike lightning at any mobs nearby."
+					wait a tick
+					send "<yellow>- Grants bonus damage equal to your resistance / 8. Damage bonus caps at +7 damage."
+					wait a tick
+					send "<light blue>Unique Refine: Transforms the Light Brand into Leif's Blade."
+					give stone sword of unbreaking 100 named "<light blue><bold>Broken Sword" with lore "A broken sword.", "When repaired:", "Broken Sword --> Light Brand" to the player
+				else if arg 2 contains "Binding Blade":
+					send "<gold><bold>Generated the Holy Weapon %arg 2%!"
+					send "The Binding Blade, also known as the Sword of Seals. Once used by an unassuming commander fresh from study."
+					wait a tick
+					send "- Grants +4 attack damage."
+					wait a tick
+					send "- Right-click while wielding the Binding Blade to heal a high amount of health over time."
+					wait a tick
+					send "- Effective against End-type monsters."
+					wait a tick
+					send "<light blue>Unique Refine: Grants Resistance 2 while equipped. Right-click to launch flames that ignite victims on-hit."
+					give stone sword of unbreaking 100 named "<light blue><bold>Broken Sword" with lore "A broken sword.", "When repaired:", "Broken Sword --> Binding Blade" to the player
+				else if arg 2 contains "Armads":
+					send "<gold><bold>Generated the Holy Weapon %arg 2%!"
+					send "The legendary axe Armads. Wielded by a general who died valliantly in battle."
+					wait a tick
+					send "- Decreases incoming damage by 66%%."
+					wait a tick
+					send "- Increases damage dealt by 50%%."
+					wait a tick
+					send "<light blue>Unique Refine: Counter-attack at any distance. Automatically make a follow-up attack when attacked."
+					give diamond axe named "<gold><bold>Armads" with lore "Slot A - Empty", "Slot B - Empty", "Slot C - Empty", "Slot D - Sturdy" to player
+				else if arg 2 contains "Parthia":
+					send "<gold><bold>Generated the Holy Weapon %arg 2%!"
+					send "The timeless bow Parthia. Once wielded by a world-class archer."
+					wait a tick
+					send "- Decreases ranged damage by 80%%."
+					wait a tick
+					send "- Grants +4 attack damage."
+					wait a tick
+					send "- Gain bonus experience for every kill."
+					wait a tick
+					send "<light blue>Unique Refine: Grants +6 attack damage against opponents using a bow or magic. Inflicts Weakness 2 for 5 seconds on-hit."
+					give bow named "<gold><bold>Parthia" with lore "Slot A - Empty", "Slot B - Empty", " Slot C - Empty", "Slot D - Elite" to player
+				else if arg 2 contains "Axtinguisher":
+					send "<gold><bold>Generated the Holy Weapon %arg 2%!"
+					send "An axe stolen from a questionablly insane pyromaniac."
+					wait a tick
+					send "- Deals 1.5X damage to targets that are on fire."
+					wait a tick
+					send "- Deal 1/2 damage to targets that aren't on fire."
+					wait a tick
+					send "- Right-click to launch someone into the air."
+					wait a tick
+					send "- Attacking a target that is on fire extinguishes them."
+					give diamond axe named "<gold><bold>Axtinguisher" with lore "Slot A - Empty", "Slot B - Empty", "Slot C - Empty", "Slot D - Extinguisher" to player
+				else if arg 2 contains "Love is Blue":
+					send "<light blue><bold>Generated the weapon set Love is Blue!"
+					send "Guns crafted by a famed demon-smith. Capable of incredibly rapid fire via magic."
+					wait a tick
+					send "- Uses your XP as ammunition."
+					wait a tick
+					send "- High-damage attacks using Love is Blue will restore XP."
+					wait a tick
+					send "- Unbreakable."
+					give diamond horse armor named "<light blue><bold>Love is Blue" with lore "Slot A - Empty", "Slot B - Empty", "Slot C - Empty", "Slot D - Climax" to the player
+				else if arg 2 contains "Scarborough Fair":
+					send "<light blue><bold>Generated the weapon set Scarborough Fair!"
+					send "Guns crafted by a famed demon-smith. Capable of incredibly rapid fire via magic."
+					wait a tick
+					send "- Uses your XP as ammunition."
+					wait a tick
+					send "- High-damage attacks using Scarborough Fair will restore XP."
+					wait a tick
+					send "- Unbreakable."
+					give gold horse armor named "<light red><bold>Scarborough Fair" with lore "Slot A - Empty", "Slot B - Empty", "Slot C - Empty", "Slot D - Climax" to the player
+				else if arg 2 contains "Crowbar":
+					send "<orange><bold>Generated the Crowbar!"
+					send "A plain old crowbar to the average man. For the rest of us, this is a piece of history."
+					wait a tick
+					send "- Base movement speed increased while equipped."
+					wait a tick
+					send "- Attacks much more quickly than other weapons."
+					wait a tick
+					send "- Plays a distinct sound on hit."
+					give diamond hoe named "<gold><bold>Crowbar" with lore "Slot A - Empty", "Slot B - Empty", "Slot C - Empty", "Slot D - Light Feet" to the player
+				else if arg 2 contains "Super Shotgun":
+					send "<red><bold><magic>Generated the Super Shotgun!"
+					wait a tick
+					send "<red><bold>The double-barreled classic. Plenty of risk and plenty of reward."
+					wait a tick
+					send "<red><bold>Uses gold nuggets for ammunition. Needs to reload after two shots."
+					wait a tick
+					send "<red><bold>Left-Click to reload a barrel. Costs 6 gold nuggets."
+					wait a tick
+					send "<red><bold>Skills cannot be equipped on this weapon."
+					wait a tick
+					send "<red><bold>No refines are available for this weapon."
+					give iron horse armor named "<red><bold>Super Shotgun | Clip: 2/2" with lore "<red>Left-Click to reload. Costs 6 gold nuggets.", "<red>Right-Click to fire. Shots have spread." to the player
+				else if arg 2 contains "Siegmund":
+					send "<red><bold>Generated the Holy Weapon Siegmund!"
+					wait a tick
+					send "<red><bold>A sacred lance imbued with terrifying power. The twin lance of Sieglinde."
+					wait a tick
+					send "<light blue><bold>Grants attack damage +5."
+					wait a tick
+					send "<light blue><bold>Right-Click an ally to boost their attack power temporarily."
+					wait a tick
+					send "<light blue><bold>Deals effective damage against monsters."
+					wait a tick
+					send "<light blue>Unique Refine: When initating combat, if the number of enemies within 10 blocks is greater than the number of party members within 10 blocks, the player automatically makes a follow-up attack and is granted Strength 2 for 5 seconds."
+					give diamond shovel named "<gold><bold>Siegmund" with lore "Slot A - Empty", "Slot B - Empty", "Slot C - Empty", "Slot D - Rally Strength" to the player
+				else if arg 2 contains "Sieglinde":
+					send "<gold><bold>Generated the Holy Weapon Sieglinde!"
+					wait a tick
+					send "<gold><bold>A sacred blade imbued with terrifying power. The twin sword of Siegmund."
+					wait a tick
+					send "<light blue><bold>Grants attack damage +5."
+					wait a tick
+					send "<light blue><bold>Right-Click an ally to boost their attack power temporarily."
+					wait a tick
+					send "<light blue><bold>Deals effective damage against monsters."
+					wait a tick
+					send "<light blue>Unique Refine: Rallying an ally also applies the rally to yourself. Rally skills also apply in a 7-block radius."
+					give diamond sword named "<gold><bold>Sieglinde" with lore "Slot A - Empty", "Slot B - Empty", "Slot C - Empty", "Slot D - Rally Strength" to the player
+				else if arg 2 contains "Durandal":
+					send "<red><bold>Generated the Holy Weapon Durandal!"
+					wait a tick
+					send "<red><bold>An incredibly powerful blade built to slay dragons. Sealed away in fear of its immense power."
+					wait a tick
+					send "- Grants attack power +5."
+					wait a tick
+					send "- Effective against end-type monsters and dragons."
+					wait a tick
+					send "<gold><bold>- Melee attacks with Durandal that deal over 4.5 hearts of damage will add to your next special activation chance. Resets on a special activation."
+					wait a tick
+					send "<light blue>Unique Refine: Transforms the Durandal into the Blazing Durandal."
+					give diamond sword named "<gold><bold>Durandal" with lore "Slot A - Empty", "Slot B - Empty", "Slot C - Empty", "Slot D - Rally Strength", "", "Refined - Crushing" to the player
+				else if arg 2 contains "Gae Bolg":
+					send "<gold><bold>Generated the Holy Weapon Gae Bolg!"
+					wait a tick
+					send "<gold><bold>A lance once wielded by a legendary crusader. Contains great power, but at a cost. Requires the Crusader's Blood perk to equip."
+					wait a tick
+					send "<light blue>- Grants STR,DEF,SKL +30"
+					wait a tick
+					send "<light blue>- Bestows the Guard and Vantage skills during combat while equipped."
+					wait a tick
+					send "<light blue>- Party bonuses have no effect while this weapon is equipped. This also nullifies the effects of Bond skills, but guarantees Solo skills activate."
+					wait a tick
+					send "<light blue>Unique Refine: Inflicts Weakness 2 to foes in a 10 block radius. Outgoing damage increased by 25%%."
+					give diamond shovel named "<gold><bold>Gae Bolg" with lore "Slot A - Empty", "Slot B - Empty", "Slot C - Empty", "" to the player
+				else if arg 2 contains "Mercurius":
+					send "<gold><bold>Generated the Holy Weapon Mercurius!"
+					wait a tick
+					send "<gold><bold>A long-lost blade of high quality."
+					wait a tick
+					send "- Weapon has +4 attack damage."
+					wait a tick
+					send "<yellow>- Grants the Paragon skill while equipped."
+					give diamond sword named "<gold><bold>Mercurius" with lore "Slot A - Empty", "Slot B - Empty", "Slot C - Empty", "Slot D - Empty" to the player
+				else if arg 2 contains "Gradivus":
+					send "<gold><bold>Generated the Holy Weapon Gradivus!"
+					wait a tick
+					send "<gold><bold>A long-lost lance of high quality."
+					wait a tick
+					send "- Weapon has +4 attack damage."
+					wait a tick
+					send "<yellow>- Grants the Paragon skill while equipped."
+					give diamond shovel named "<gold><bold>Gradivus" with lore "Slot A - Empty", "Slot B - Empty", "Slot C - Empty", "Slot D - Empty" to the player
+				else if arg 2 contains "Hauteclere":
+					send "<gold><bold>Generated the Holy Weapon Hauteclere!"
+					wait a tick
+					send "<gold><bold>A long-lost axe of high quality."
+					wait a tick
+					send "- Weapon has +2 attack damage."
+					wait a tick
+					send "- Grants SKL +15 while equipped."
+					give diamond axe named "<gold><bold>Hauteclere" with lore "Slot A - Empty", "Slot B - Empty", "Slot C - Empty", "Slot D - Empty" to the player
+				else if arg 2 contains "Folkvangr":
+					send "<gold><bold>Generated the Holy Weapon Folkvangr!"
+					wait a tick
+					send "<gold><bold>An otherworldly royal blade that can forge bonds stronger than steel. Requires the Lord's Blood perk to equip."
+					wait a tick
+					send "- Weapon has +4 attack damage."
+					wait a tick
+					send "<yellow>- While within 10 blocks of a party member, grants +6 attack damage."
+					wait a tick
+					send "<light blue>Unique Refine: While below 70%% HP, grants STR/DEF +40."
+					give diamond sword named "<gold><bold>Folkvangr" with lore "Slot A - Empty", "Slot B - Empty", "Slot C - Empty", "Slot D - Empty" to the player
+				else if arg 2 contains "Fensalir":
+					send "<gold><bold>Generated the Holy Weapon Fensalir!"
+					wait a tick
+					send "<gold><bold>An otherworldly royal lance that can forge bonds stronger than steel. Requires the Lord's Blood perk to equip."
+					wait a tick
+					send "- Weapon has +4 attack damage."
+					wait a tick
+					send "<yellow>- While within 10 blocks of a party member, grants +6 attack damage."
+					wait a tick
+					send "<light blue>Unique Refine: While within 10 blocks of a party member, grants DEF/SKL +30."
+					give diamond shovel named "<gold><bold>Fensalir" with lore "Slot A - Empty", "Slot B - Empty", "Slot C - Empty", "Slot D - Empty" to the player
+				else if arg 2 contains "Basilikos":
+					send "<gold><bold>Generated the Holy Weapon Basilikos!"
+					wait a tick
+					send "<gold><bold>A long-forgotten axe of unknown origin. Once used to aid the fight against a terrifying dragon."
+					wait a tick
+					send "- Weapon has +5 attack damage."
+					give diamond axe named "<gold><bold>Basilikos" with lore "Slot A - Empty", "Slot B - Empty", "Slot C - Empty", "Slot D - Empty" to the player
+				else if arg 2 contains "Mystletainn":
+					send "<gold><bold>Generated the Holy Weapon Mystletainn!"
+					wait a tick
+					send "<gold><bold>A blade once wielded by a holy crusader. Nicknamed the Demon Sword."
+					wait a tick
+					send "- Grants SKL +40 while equipped."
+					wait a tick
+					send "<yellow>- While below 75%% HP, grants SKL +20. Stacks with Wrath."
+					wait a tick
+					send "<light blue>Unique Refine: Transforms the Mystletainn into the Dark Mystletainn."
+					give diamond sword named "<gold><bold>Mystletainn" with lore "Slot A - Empty", "Slot B - Empty", "Slot C - Empty", "Slot D - Empty" to the player
+				else:
+					set {_failed} to 1
+				if {_failed} is 1:
+					send "<red><bold>Failed to generate a Holy Weapon! Check your spelling and make sure you use capital letters!"
+					send "<red><bold>Example: /hw buy Falchion"
+				else:
+					remove 7500 from the player's balance
+					wait a tick
+					send "<bold><light blue>Paid $7500 to generate this weapon. New balance: %player's money%"
+#On Damage Skills
+on damage:
+	#Cobalt Blade
+	if the name of the attacker's tool is "<gold><bold>Cobalt Blade":
+		set damage to damage + 5
+		apply swiftness 2 to the attacker for 5 seconds
+		apply strength 2 to the attacker for 5 seconds
+		apply resistance 2 to the attacker for 5 seconds
+		if the 6th line of the lore of the attacker's tool contains "Unique":
+			set damage to damage + 5
+			ignite the victim
+			if damage is more than 15:
+				apply strength 4 to the attacker for 5 seconds
+	#Binding Shield
+	if the name of the attacker's offhand tool is "<gold><bold>Binding Shield":
+		if victim is an ender dragon:
+			set damage to damage * 2
+			apply slowness 5 to the victim for 5 seconds
+	#Binding Shield DEF
+	if the name of the victim's offhand tool is "<gold><bold>Binding Shield":
+		set damage to damage - 1.5
+	#Fire Emblem
+	if the name of the victim's offhand tool is "<gold><bold>Fire Emblem":
+		set damage to damage - 1.5
+	#Blessed Sword
+	if the name of the victim's tool is "<gold><bold>Blessed Sword":
+		set damage to damage - 1.5
+	if the name of the attacker's tool is "<gold><bold>Blessed Sword":
+		if victim is monster:
+			set damage to damage * 2
+	#Devil Axe
+	if the name of the attacker's tool is "<gold><bold>Devil Axe":
+		set damage to damage + 4.5
+		if the attacker's health is more than 3:
+			damage the attacker by 1.5 heart with fake cause attack
+		else:
+			set the attacker's health to 0.5
+		apply wither 4 to the victim for 4 seconds
+		if the 6th line of the lore of the attacker's tool contains "Unique":
+			set damage to damage + 6
+			if the attacker's health is more than 6:
+				damage the attacker by 3 heart with fake cause attack
+			else:
+				set the attacker's health to 0.5
+	#Crusader's Lance
+	if the name of the attacker's tool is "<gold><bold>Crusader's Lance":
+		set damage to damage + 4
+		if the 6th line of the lore of the attacker's tool contains "Unique":
+			if attacker's health is more than (attacker's maximum health * 0.5):
+				set damage to damage * 1.5
+	if the name of the victim's tool is "<gold><bold>Crusader's Lance":
+		set damage to damage * 0.7
+		if the 6th line of the lore of the victim's tool contains "Unique":
+			set damage to damage * 0.8
+	#Lunar Bow
+	if the name of the attacker's tool is "<gold><bold>Lunar Bow":
+		set damage to damage + 1.5
+	#Balder Sidesword
+	if the name of the victim's tool is "<gold><bold>Balder Side Sword":
+		if {BSS.%victim%} is true:
+			cancel event
+			send "<gold>Parried the enemy's attack!" to the victim
+			send "<red>The enemy parried your attack!" to the attacker
+			set {BSSBonus.%victim%} to true
+			clear {BSS.%victim%}
+	if the name of the attacker's tool is "<gold><bold>Balder Side Sword":
+		set damage to damage + 1
+		if {BSSBonus.%attacker%} is true:
+			set damage to damage * 2
+	#Ragnell
+	if the name of the attacker's tool contains "<gold><bold>Ragnell":
+		set damage to damage + 3
+	#Meisterschwert
+	if the name of the attacker's tool is "<gold><bold>Meisterschwert":
+		set damage to damage * 2
+		if the 6th line of the lore of the attacker's tool contains "Unique":
+			if attacker's health + {spd.%attacker%} + {spdbuff.%attacker%} is more than (victim's health + {spd.%victim%} + {spdbuff.%victim%}):
+				set damage to damage * 2
+	#Dire Thunder (Fallen Hero)
+	if the name of the attacker's tool is "<gold><bold>Dire Thunder":
+		set damage to damage * 2
+		if the 6th line of the lore of the attacker's tool contains "Unique":
+			if attacker's health + {spd.%attacker%} + {spdbuff.%attacker%} is more than (victim's health + {spd.%victim%} + {spdbuff.%victim%}):
+				set damage to damage * 2
+	#DC Weapons
+	if projectile exists:
+		loop entities in radius 4 of the victim:
+			if loop-entity is the attacker:
+				set {_noDC} to true
+		if the name of the victim's tool is "<gold><bold>Tomahawk":
+			if {_noDC} is not set:
+				damage the attacker by damage * 0.5
+		else if the name of the victim's tool is "<gold><bold>Javelin":
+			if {_noDC} is not set:
+				damage the attacker by damage * 0.5
+		else if the name of the victim's tool is "<gold><bold>Tornado Blade":
+			if {_noDC} is not set:
+				damage the attacker by damage * 0.5
+	#Mystletainn
+	if the name of the attacker's tool is "<gold><bold>Mystletainn":
+		set damage to damage + 2
+		if the 6th line of the lore of the attacker's tool contains "Unique":
+			if the attacker's health is more than 3:
+				damage the attacker by 1.5 heart with fake cause attack
+			else:
+				set the attacker's health to 0.5
+	#Brave Bow
+	if the name of the attacker's tool is "<gold><bold>Brave Bow":
+		set damage to (damage - 1.5) * 2
+	#Guard Bow
+	if the name of the victim's tool is "<gold><bold>Guard Bow":
+		set damage to damage - 1.5
+	#Rex Hasta
+	if the name of the attacker's tool is "<gold><bold>Rex Hasta":
+		if the 6th line of the lore of the attacker's tool contains "Unique":
+			set damage to damage + 2
+	#Rhomphaia
+	if the name of the attacker's tool is "<gold><bold>Rhomphaia":
+		set damage to damage + (({spd.%attacker%} + {spdbuff.%attacker%}) * 0.25)
+	#Falchion
+	if the name of the attacker's tool contains "<gold><bold>Falchion":
+		set {_damage} to damage
+		chance of ({skl.%attacker%} * 0.50) - 5%:
+			set {_damage} to damage * 2
+			send "<yellow><bold>Dealt critical damage!" to attacker
+			play sound "entity.generic.explode" with volume 0.5 and pitch 1.5 at victim for attacker
+		if the victim is ender dragon or enderman:
+			set damage to {_damage} * 1.5
+			send "<light blue>Dealt effective against damage!" to attacker
+			play sound "entity.generic.explode" with volume 0.5 and pitch 1.5 at victim for attacker
+	#Binding Blade
+	if the name of the victim's tool contains "<gold><bold>Binding Blade":
+		if the 6th line of the lore of the victim's tool contains "<white><bold>Refined: Unique":
+			if the victim's health is more than (victim's maximum health * 0.7):
+				if attacker is entity:
+					damage the attacker by damage * 0.25
+					push the attacker upwards at speed 0.25
+					push the attacker backwards at speed 0.5
+					ignite the attacker
+	if the name of the attacker's tool contains "<gold><bold>Binding Blade":
+		set damage to damage + 2
+		if the victim is ender dragon or enderman:
+			set damage to damage * 1.5
+			send "<light blue>Dealt effective against damage!" to attacker
+			play sound "entity.generic.explode" with volume 0.5 and pitch 1.5 at victim for attacker
+	#Parthia
+	if the name of the attacker's tool contains "<gold><bold>Parthia":
+		set damage to damage + 1
+		if the 6th line of the lore of the attacker's tool contains "<white><bold>Refined: Unique":
+			set damage to damage + 3
+			loop all entities in radius 5 of the attacker:
+				if the loop-entity is the victim:
+					set damage to damage - 3
+					exit 1 loop
+			apply weakness 2 to the victim for 5 seconds
+	if the name of the victim's tool contains "<gold><bold>Parthia":
+		if projectile exists:
+			set damage to damage * 0.25
+	#Armads
+	if the name of the victim's tool contains "<gold><bold>Armads":
+		if the 6th line of the lore of the victim's tool contains "<white><bold>Refined: Unique":
+			damage the attacker by damage / 4
+			push the attacker upwards at speed 0.25
+			push the attacker backwards at speed 1
+			loop all entities in radius 5 of the victim:
+				if loop-entity is the attacker:
+					set {_DC} to 1
+					exit 1 loop
+			if {_DC} is not set:
+				damage the attacker by damage * 0.5
+	if the name of the attacker's tool contains "<gold><bold>Armads":
+		set damage to damage + 3
+	#Axtinguisher
+	if the name of the attacker's tool contains "<gold><bold>Axtinguisher":
+		if victim is burning:
+			set damage to (damage * 1.5)
+		else:
+			set damage to (damage * 0.5)
+	#Love is Blue
+	if the name of the attacker's tool contains "<light blue><bold>Love is Blue":
+		if damage cause is attack:
+			set damage to damage+3
+			add 5 to xp of attacker
+		else if projectile exists:
+			set damage to damage-1
+	#Scarborough Fair
+	if the name of the attacker's tool contains "<light blue><bold>Scarborough Fair":
+		if damage cause is attack:
+			set damage to damage+3
+			add 5 to xp of attacker
+		else if projectile exists:
+			set damage to damage-1
+	#Crowbar
+	if the name of the attacker's tool contains "<gold><bold>Crowbar":
+		set damage to damage + 2.5
+		set {_cbHitPitch} to a random number between 2 and 0.25
+		play sound "entity.experience_orb.pickup" with volume 3 and pitch {_cbHitPitch} at victim for attacker
+		play sound "entity.experience_orb.pickup" with volume 3 and pitch {_cbHitPitch} at victim for victim
+	#Siegmund & Sieglinde
+	if the name of the attacker's tool contains "<gold><bold>Siegmund":
+		set damage to damage + 2.5
+		if victim is monster:
+			set damage to damage * 1.5
+		loop all entities in radius 10 of the attacker:
+			if {party.%loop-entity%} is {party.%attacker%}:
+				add 1 to {_ally}
+			else if {party.%loop-entity%} is not {party.%attacker%}:
+				add 1 to {_foe}
+		if {_ally} is more than {_foe}:
+			set damage to damage * 1.5
+			apply strength 2 to the attacker for 5 seconds
+			send "<light blue>Siegmund's effect activated!" to the attacker
+	if the name of the attacker's tool contains "<gold><bold>Sieglinde":
+		set damage to damage + 2.5
+		if victim is monster:
+			set damage to damage * 1.5
+	#Light Brand RES Bonus
+	if the name of the attacker's tool contains "<gold><bold>Light Brand":
+		set {_bonus} to ceil({res.%attacker%} / 4)
+		if {_bonus} is more than 7:
+			set {_bonus} to 7
+		set damage to damage + {_bonus}
+	#Regalia damage bonus
+	if the name of the attacker's tool contains "<gold><bold>Mercurius":
+		set damage to damage + 2
+	else if the name of the attacker's tool contains "<gold><bold>Hauteclere":
+		set damage to damage + 1
+	else if the name of the attacker's tool contains "<gold><bold>Gradivus":
+		set damage to damage + 2
+	else if the name of the attacker's tool contains "<gold><bold>Basilikos":
+		set damage to damage + 2.5
+		if the 6th line of the lore of the attacker's tool contains "Unique":
+			set damage to damage * 1.5
+	if the name of the victim's tool contains "<gold><bold>Basilikos":
+		if the 6th line of the lore of the attacker's tool contains "Unique":
+			set damage to damage * 1.5
+	#Super Shotgun Damage Bonus
+	if projectile exists:
+		set {_sstest} to metadata value "SUPERSHOTGUN" of projectile
+		if {_sstest} is 1:
+			set damage to damage + 15
+			play 20 (critical hit with speed 0) at the victim
+			play 20 (lava drip with speed 0) at the victim
+	#Durandal
+	else if the name of the attacker's tool contains "<gold><bold>Durandal":
+		set damage to damage + 1
+		if the 6th line of the lore of the attacker's tool contains "<white><bold>Refined: Unique":
+			remove strength from the attacker
+			remove swiftness from the attacker
+			apply strength 2 to the attacker for 10 seconds
+			apply swiftness 2 to the attacker for 10 seconds
+		if damage is more than 4.5:
+			add damage * 0.5 to {crushing.%attacker%}
+	#Fensalir
+	if the name of the attacker's tool contains "<gold><bold>Fensalir":
+		set damage to damage + 2
+		loop all players in radius 10 of the attacker:
+			if {party.%loop-player%} is {party.%attacker%}:
+				set damage to damage + 3
+				if the 6th line of the lore of the attacker's tool contains "<white><bold>Refined: Unique":
+					add 30 to {strbuff.%attacker%}
+					add 30 to {sklbuff.%attacker%}
+					wait 1 second
+					subtract 30 from {strbuff.%attacker%}
+					subtract 30 from {sklbuff.%attacker%}
+				exit 1 loop
+			
+on damage:
+	#Folkvangr
+	if the name of the attacker's tool contains "<gold><bold>Folkvangr":
+		set damage to damage + 2
+		loop all players in radius 10 of the attacker:
+			if {party.%loop-player%} is {party.%attacker%}:
+				set damage to damage + 3
+				exit 1 loop
+	if the name of the victim's tool contains "<gold><bold>Folkvangr":
+		if the 6th line of the lore of the victim's tool contains "<white><bold>Refined: Unique":
+			if (victim's health - damage) is less than (victim's health * 0.7):
+				if {folkvangr.%victim%} is not set:
+					set {folkvangr.%victim%} to 1
+					add 40 to {strbuff.%victim%}
+					add 40 to {defbuff.%victim%}
+					send "<yellow>Folkvangr's effect activated!" to the victim
+					show mob spawner flames on the victim
+	#Mystletainn
+	if the name of the victim's tool contains "<gold><bold>Mystletainn":
+		if (victim's health - damage) is less than (victim's health * 0.7):
+			if {mystletainn.%victim%} is not set:
+				set {mystletainn.%victim%} to 1
+				add 30 to {sklbuff.%victim%}
+				send "<yellow>Mystletainn's effect activated!" to the victim
+				show mob spawner flames on the victim
+	if the name of the attacker's tool contains "<gold><bold>Mystletainn":
+		set damage to damage + 2
+
+on damage:
+	#Gae Bolg
+	if the name of the victim's tool contains "<gold><bold>Gae Bolg":
+		if victim's health is less than (victim's maximum health * 0.5):
+			if {vanready.%victim%} is not set:
+				cancel event
+				send "<gold>%victim%'s Vantage skill activated!" to the attacker
+				send "<gold>%victim%'s Vantage skill activated!" to the victim
+				damage the attacker by (damage * 0.5)
+				push the attacker backwards at speed 1.5
+				set {vanready.%victim%} to 1
+				wait 15 seconds
+				clear {vanready.%victim%}
+		subtract 50 from {sklbuff.%attacker%}
+		wait 1 second
+		add 50 to {sklbuff.%attacker%}
+
+on damage:
+	#Kindled-Fire Sword
+	if the name of the attacker's tool is "<gold><bold>Kindled-Fire Sword":
+		set damage to damage * 2
+		if the 6th line of the lore of the attacker's tool contains "Unique":
+			if {SWLance.%attacker%} is not set:
+				add 20 to {strbuff.%attacker%}
+				add 20 to {defbuff.%attacker%}
+				set {KFSword.%attacker%} to true
+				wait 5 seconds
+				subtract 20 from {strbuff.%attacker%}
+				subtract 20 from {defbuff.%attacker%}
+				wait 10 seconds
+				clear {KFSword.%attacker%}
+				send "<gold>Kindled-Fire Sword's unique refine is recharged!"
+	#Swift-Winds Lance
+	if the name of the attacker's tool is "<gold><bold>Swift-Winds Lance":
+		if the 6th line of the lore of the attacker's tool contains "Unique":
+			if {SWLance.%attacker%} is not set:
+				add 20 to {strbuff.%attacker%}
+				add 20 to {spdbuff.%attacker%}
+				set {SWLance.%attacker%} to true
+				wait 5 seconds
+				subtract 20 from {strbuff.%attacker%}
+				subtract 20 from {spdbuff.%attacker%}
+				wait 10 seconds
+				clear {SWLance.%attacker%}
+				send "<gold>Swift-Wind Lance's unique refine is recharged!"
+		
+on damage:
+	#Tyrfing
+	if the name of the victim's tool contains "<gold><bold>Tyrfing":
+		if projectile exists:
+			set damage to damage * 0.25
+		if (victim's health - damage) < 0.5:
+			set {_level} to {skl.%victim%} / 1.5
+			if {_level} is greater than 50:
+				set {_level} to 50
+			chance of {_level}%:
+				cancel event
+				heal the victim by 10 hearts
+				send "<light yellow><bold>Miracle was activated!" to victim
+				play sound "item.totem.use" with volume 0.5 and pitch 1.5 at victim for victim
+	if the name of the attacker's tool contains "<gold><bold>Tyrfing":
+		set damage to damage + 2
+		if the 6th line of the lore of the victim's tool contains "<white><bold>Refined: Unique":
+			loop all players in radius 10 of the attacker:
+				if {party.%loop-player%} is {party.%attacker%}:
+					add 40 to {strbuff.%attacker%}
+					add 40 to {defbuff.%attacker%}
+					wait 1 second
+					subtract 40 from {strbuff.%attacker%}
+					subtract 40 from {defbuff.%attacker%}
+					exit 1 loop
+#HP Dependent effects
+on heal:
+	if player's health is more than (player's max health * 0.7):
+		if the name of the player's tool contains "<gold><bold>Folkvangr":
+			if {folkvangr.%player%} is 1:
+				subtract 40 from {strbuff.%player%}
+				subtract 40 from {defbuff.%player%}
+				send "<yellow>Folkvangr's effect wore off!" to the player
+				clear {folkvangr.%player%}
+		else if the name of the player's tool contains "<gold><bold>Mystletainn":
+			if {mystletainn.%player%} is 1:
+				subtract 30 from {sklbuff.%player%}
+				send "<yellow>Mystletainn's effect wore off!" to the player
+				clear {mystletainn.%player%}
+
+#On Right-Click Skills
+on rightclick:
+	#Balder Side Sword
+	if the name of the player's tool contains "<gold><bold>Balder Side Sword":
+		if {BSSCooldown.%player%} is not set:
+			send "<gold>Parrying attacks!" to the player
+			set {BSS.%player%} to true
+			set {BSSCooldown.%player%} to true
+			wait 0.65 seconds
+			clear {BSS.%player%}
+			send "<red>The parry wore off!" to the player
+			wait 0.65 seconds
+			clear {BSSCooldown.%player%}
+			send "<gold>Ready to parry again!" to the player
+	#Ragnell
+	if the name of the player's tool contains "<gold><bold>Ragnell":
+		if the 6th line of the lore of the player's tool contains "<white><bold>Refined: Unique":
+			set {_temp} to the damage value of the player's tool
+			if {_temp} is more than or equal to 1531:
+				cancel event
+				send "<red>Your tool is too worn down to use this ability!"
+				send "<red>Current Durability: %1561 -{_temp}%"
+			else:
+				shoot an arrow from the player at speed 1.35
+				damage the player's tool by 20
+	#Falchion
+	if the name of the player's tool contains "<gold><bold>Falchion":
+		set {_temp} to the damage value of the player's tool
+		if {_temp} is more than or equal to 1531:
+			cancel event
+			send "<red>Your tool is too worn down to use this ability!"
+			send "<red>Current Durability: %1561 -{_temp}%"
+		else:
+			apply regeneration 4 to the player for 3 seconds
+			damage player's tool by 20
+	#Light Brand
+	if the name of the player's tool contains "<gold><bold>Light Brand":
+		set {_temp} to the damage value of the player's tool
+		if {_temp} is more than or equal to 1531:
+			cancel event
+			send "<red>Your tool is too worn down to use this ability!"
+			send "<red>Current Durability: %1561 -{_temp}%"
+		else:
+			strike lightning at all monsters within 17 meters of the player
+			damage the player's tool by 10
+	#Binding Blade
+	if the name of the player's tool contains "<gold><bold>Binding Blade":
+		set {_temp} to the damage value of the player's tool
+		if {_temp} is more than or equal to 1531:
+			cancel event
+			send "<red>Your tool is too worn down to use this ability!"
+			send "<red>Current Durability: %1561 -{_temp}%"
+		else:
+			apply regeneration 4 to the player for 5 seconds
+			damage player's tool by 30
+	#Axtinguisher
+	if the name of the player's tool contains "<gold><bold>Axtinguisher":
+		push the target upwards at speed 0.5
+		damage the player's tool by 10
+	#Love is Blue
+	if the name of the player's tool contains "<light blue><bold>Love is Blue":
+		if player's xp is greater than 5:
+			execute console command "/xp -5 %player%"
+			shoot an arrow from the player
+			play sound "entity.blaze.shoot" with volume 1 and pitch 2 at the player
+			loop 5 times:
+				play large smoke at the player
+				play flame at the player
+				play magical critical hit at the player
+				wait a tick
+	#Scarborough Fair
+	if the name of the player's tool contains "<light red><bold>Scarborough Fair":
+		if player's xp is greater than 5:
+			execute console command "/xp -5 %player%"
+			shoot an arrow from the player
+			play sound "entity.blaze.shoot" with volume 1 and pitch 2 at the player
+			loop 5 times:
+				play large smoke at the player
+				play flame at the player
+				play magical critical hit at the player
+				wait a tick
+	#Super Shotgun
+	if the name of the player's tool contains "<red><bold>Super Shotgun | Clip: 2/2":
+		play sound "entity.blaze.shoot" with volume 4 and pitch 0.5 at the player
+		play sound "block.dispenser.fire" with volume 2 and pitch 0.5 at the player
+		set the name of the player's tool to "<red><bold>Super Shotgun | Clip: 1/2"
+		push the player backwards at speed 0.5
+		shoot an arrow from the player with speed 6
+		play 10 (lava pop with speed 0) at the player
+		play 10 (void fog with speed 0) at the player
+		set metadata value "SUPERSHOTGUN" of the last shot projectile to 1
+		set {_spread} to checkSlots(player,"Controlled Shot")
+		loop 7 times:
+			if {_spread} is 1:
+				set {_ShotSpreadX} to random number between -1 and 1
+				set {_ShotSpreadY} to random number between -0.5 and 0.5
+			else:
+				set {_ShotSpreadX} to random number between -2 and 2
+				set {_ShotSpreadY} to random number between -1 and 1
+			shoot an arrow from the player with speed 6
+			push the last shot projectile right at speed {_ShotSpreadX}
+			push the last shot projectile up at speed {_ShotSpreadY}
+			set metadata value "SUPERSHOTGUN" of the last shot projectile to 1
+		wait 4 ticks
+	else if the name of the player's tool contains "<red><bold>Super Shotgun | Clip: 1/2":
+		play sound "entity.blaze.shoot" with volume 4 and pitch 0.5 at the player
+		play sound "block.dispenser.fire" with volume 2 and pitch 0.5 at the player
+		set the name of the player's tool to "<red><bold>Super Shotgun | Clip: 0/2"
+		play 10 (lava pop with speed 0) at the player
+		play 10 (void fog with speed 0) at the player
+		push the player backwards at speed 0.5
+		shoot an arrow from the player with speed 6
+		set {_spread} to checkSlots(player,"Controlled Shot")
+		set metadata value "SUPERSHOTGUN" of the last shot projectile to 1
+		loop 7 times:
+			if {_spread} is 1:
+				set {_ShotSpreadX} to random number between -1 and 1
+				set {_ShotSpreadY} to random number between -0.5 and 0.5
+			else:
+				set {_ShotSpreadX} to random number between -2 and 2
+				set {_ShotSpreadY} to random number between -1 and 1
+			shoot an arrow from the player with speed 6
+			push the last shot projectile right at speed {_ShotSpreadX}
+			push the last shot projectile up at speed {_ShotSpreadY}
+			set metadata value "SUPERSHOTGUN" of the last shot projectile to 1
+		wait 4 ticks
+	else if the name of the player's tool contains "<red><bold>Super Shotgun | Clip: 0/2":
+		play sound "block.dispenser.dispense" with volume 4 and pitch 0.5 at the player
+		play smoke at the player
+		
+
+on right click on a player:
+	#Balder Side Sword
+	if the name of the player's tool contains "<gold><bold>Balder Side Sword":
+		if {BSSCooldown.%player%} is not set:
+			send "<gold>Parrying attacks!" to the player
+			set {BSS.%player%} to true
+			set {BSSCooldown.%player%} to true
+			wait 0.25 seconds
+			clear {BSS.%player%}
+			send "<red>The parry wore off!" to the player
+			wait 0.5 seconds
+			clear {BSSCooldown.%player%}
+			send "<gold>Ready to parry again!" to the player
+	#Siegmund & Sieglinde
+	if the name of the player's tool contains "<gold><bold>Siegmund":
+		apply strength 2 to the target for 15 seconds
+		damage the player's tool by 5
+	if the name of the player's tool contains "<gold><bold>Sieglinde":
+		if the 6th line of the lore of the player's tool contains "<white><bold>Refined: Unique":
+			loop all players in radius 10 of the player:
+				if {party.%loop-player%} is {party.%player%}:
+					apply strength 2 to the loop-player for 15 seconds
+					if the 2nd line of the lore of the player's tool contains "Rally Speed":
+						apply swiftness 2 to the loop-player for 15 seconds
+					if the 2nd line of the lore of the player's tool contains "Rally Resistance":
+						apply resistance 2 to the loop-player for 15 seconds
+					if the 2nd line of the lore of the player's tool contains "Rally Spectrum":
+						apply resistance 1 to the loop-player for 15 seconds
+						apply swiftness 1 to the loop-player for 15 seconds
+					damage the player's tool by 5
+			apply strength 2 to the player for 15 seconds
+			if the 2nd line of the lore of the player's tool contains "Rally Speed":
+				apply swiftness 2 to the player for 15 seconds
+			else if the 2nd line of the lore of the player's tool contains "Rally Resistance":
+				apply resistance 2 to the player for 15 seconds
+		else:
+			apply strength 2 to the target for 15 seconds
+			damage the player's tool by 5
+
+#On Left-Click
+on leftclick:
+	set {_gunslinger} to checkSlots(player,"Resourceful")
+	if the name of the player's tool contains "<red><bold>Super Shotgun | Clip: 1/2":
+		if {_gunslinger} is 1:
+			set {_reload} to 3
+		else:
+			set {_reload} to 6
+		if the player has 12 gold nuggets:
+			set {reloading.%player%} to 1
+			set {_quick} to checkSlots(player,"Fast Fingers")
+			if {_quick} is 1:
+				play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+				wait 0.5 seconds
+				play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+				wait 0.5 seconds
+				play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+			else:
+				play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+				wait a second
+				play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+				wait a second
+				play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+			set {_nugs} to "%{_reload}% gold nuggets" parsed as item
+			remove {_nugs} from the player
+			set the name of the player's tool to "<red><bold>Super Shotgun | Clip: 2/2"
+			send "<red><bold>Locked and loaded! Find some meat!"
+			set {reloading.%player%} to 0
+		else:
+			send "<red><bold>Not enough ammo!"
+	else if the name of the player's tool contains "<red><bold>Super Shotgun | Clip: 0/2":
+		if {_gunslinger} is 1:
+			set {_reload} to 6
+		else:
+			set {_reload} to 12
+		if the player has 12 gold nuggets:
+			set {reloading.%player%} to 1
+			set {_quick} to checkSlots(player,"Fast Fingers")
+			if {_quick} is 1:
+				play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+				wait 0.5 seconds
+				play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+				wait 0.5 seconds
+				play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+			else:
+				play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+				wait a second
+				play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+				wait a second
+				play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+			set {_nugs} to "%{_reload}% gold nuggets" parsed as item
+			remove {_nugs} from the player
+			set the name of the player's tool to "<red><bold>Super Shotgun | Clip: 2/2"
+			send "<red><bold>Locked and loaded! Find some meat!"
+			set {reloading.%player%} to 0
+		else if the player has 6 gold nuggets:
+			set {reloading.%player%} to 1
+			set {_quick} to checkSlots(player,"Fast Fingers")
+			if {_quick} is 1:
+				play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+				wait 0.5 seconds
+				play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+				wait 0.5 seconds
+				play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+			else:
+				play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+				wait a second
+				play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+				wait a second
+				play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+			set {_reload} to {_reload} / 2
+			set {_nugs} to "%{_reload}% gold nuggets" parsed as item
+			remove {_nugs} from the player
+			set the name of the player's tool to "<red><bold>Super Shotgun | Clip: 1/2"
+			send "<red><bold>Could only load one barrel!"
+			set {reloading.%player%} to 0
+		else:
+			send "<red><bold>Not enough ammo!"
+	else if the name of the player's tool contains "<red><bold>Super Shotgun | Clip: 2/2":
+		send "<red><bold>Already loaded! Find some meat!"
+
+#Holy Weapons become Broken Weapons instead of Dissapearing
+on tool break:
+	if the name of the event-item contains "<gold><bold>Binding Blade":
+		give stone sword of unbreaking 100 named "<light blue><bold>Broken Sword" with lore "A broken sword.", "This is all that remains of the Binding Blade." to the player
+	else if the name of the event-item contains "<gold><bold>Falchion":
+		give stone sword of unbreaking 100 named "<light blue><bold>Broken Sword" with lore "A broken sword.", "This is all that remains of Falchion." to the player
+	else if the name of the event-item contains "<gold><bold>Ragnell":
+		give stone sword of unbreaking 100 named "<light blue><bold>Broken Sword" with lore "A broken sword.", "This is all that remains of Ragnell." to the player
+	else if the name of the event-item contains "<gold><bold>Tyrfing":
+		give stone sword of unbreaking 100 named "<light blue><bold>Broken Sword" with lore "A broken sword.", "This is all that remains of Tyrfing" to the player
+	else if the name of the event-item contains "<gold><bold>Light Brand":
+		give stone sword of unbreaking 100 named "<light blue><bold>Broken Sword" with lore "A broken sword.", "This is all that remains of the Light Brand." to the player
+	else if the name of the event-item contains "<gold><bold>Armads":
+		give stone axe of unbreaking 100 named "<light blue><bold>Broken Axe" with lore "A broken axe.", "This is all that remains of Armads." to the player
+	else if the name of the event-item contains "<gold><bold>Parthia":
+		give bow of unbreaking 100 named "<light blue><bold>Broken Bow" with lore "A broken bow.", "This is all that remains of Parthia." to the player
+	else if the name of the event-item contains "<gold><bold>Leif's Blade":
+		give stone sword of unbreaking 100 named "<light blue><bold>Broken Sword" with lore "A broken sword.", "When repaired:", "Broken Sword --> Leif's Blade" to the player
+	else if the name of the event-item contains "<gold><bold>Siegmund":
+		give stone shovel of unbreaking 100 named "<light blue><bold>Broken Lance" with lore "A broken lance.", "This is all that remains of Siegmund." to the player
+	else if the name of the event-item contains "<gold><bold>Sieglinde":
+		give stone sword of unbreaking 100 named "<light blue><bold>Broken Sword" with lore "A broken sword.", "This is all that remains of the Sieglinde." to the player
+	else if the name of the event-item contains "<gold><bold>Durandal":
+		give stone sword of unbreaking 100 named "<light blue><bold>Broken Sword" with lore "A broken sword.", "This is all that remains of Durandal." to the player
+	else if the name of the event-item contains "<gold><bold>Blazing Durandal":
+		give stone sword of unbreaking 100 named "<light blue><bold>Broken Sword" with lore "A broken sword.", "When repaired:", "Broken Sword --> Blazing Durandal" to the player
+	else if the name of the event-item contains "<gold><bold>Gae Bolg":
+		give stone shovel of unbreaking 100 named "<light blue><bold>Broken Lance" with lore "A broken lance.", "This is all that remains of the Gae Bolg." to the player
+	else if the name of the event-item contains "<gold><bold>Gradivus":
+		give stone shovel of unbreaking 100 named "<light blue><bold>Broken Lance" with lore "A broken lance.", "This is all that remains of Gradivus." to the player
+	else if the name of the event-item contains "<gold><bold>Hauteclere":
+		give stone axe of unbreaking 100 named "<light blue><bold>Broken Axe" with lore "A broken axe.", "This is all that remains of the Hauteclere." to the player
+	else if the name of the event-item contains "<gold><bold>Folkvangr":
+		give stone sword of unbreaking 100 named "<light blue><bold>Broken Sword" with lore "A broken sword.", "This is all that remains of Folkvangr." to the player
+	else if the name of the event-item contains "<gold><bold>Fensalir":
+		give stone shovel of unbreaking 100 named "<light blue><bold>Broken Lance" with lore "A broken lance.", "This is all that remains of Fensalir." to the player
+	else if the name of the event-item contains "<gold><bold>Basilikos":
+		give stone axe of unbreaking 100 named "<light blue><bold>Broken Axe" with lore "A broken axe.", "This is all that remains of the Basilikos." to the player
+	else if the name of the event-item contains "<gold><bold>Mystletainn":
+		give stone sword of unbreaking 100 named "<light blue><bold>Broken Sword" with lore "A broken sword.", "This is all that remains of Mystletainn." to the player
+	else if the name of the event-item contains "<gold><bold>Dark Mystletainn":
+		give stone sword of unbreaking 100 named "<light blue><bold>Broken Sword" with lore "A broken sword.", "When repaired:", "Broken Sword --> Dark Mystletainn" to the player
+		
+#On Equip
+on tool change:
+	#Light Brand
+	if the name of the player's tool contains "<gold><bold>Light Brand":
+		if {weaponrank.%player%::lances} is less than 3750:
+			send "<light red>You need at least B rank or higher in Swords to wield the Light Brand."
+			cancel event
+		else if {lightbrandEQ.%player%} is not set:
+			add 20 to {sklbuff.%player%}
+			set {lightbrandEQ.%player%} to 1
+	else if {lightbrandEQ.%player%} is 1:
+		subtract 20 from {sklbuff.%player%}
+		clear {lightbrandEQ.%player%}
+	#Gae Bolg
+	else if the name of the player's tool contains "<gold><bold>Gae Bolg":
+		set {_slot} to checkSlots(player,"Crusader's Blood")
+		if {_slot} is 0:
+			if {weapongrade.%player%::lances} is not "<gold><bold>S":
+				send "<light red>You need an S rank in Lances OR a Crusader's Blood to wield the Gae Bolg." to the player
+				cancel event
+			else if {gaebolgEQ.%player%} is not set:
+				add 30 to {strbuff.%player%}
+				add 30 to {defbuff.%player%}
+				add 30 to {sklbuff.%player%}
+				set {gaebolgEQ.%player%} to 1
+		else if {gaebolgEQ.%player%} is not set:
+			add 30 to {strbuff.%player%}
+			add 30 to {defbuff.%player%}
+			add 30 to {sklbuff.%player%}
+			set {gaebolgEQ.%player%} to 1
+	else if {gaebolgEQ.%player%} is 1:
+		subtract 30 from {sklbuff.%player%}
+		subtract 30 from {strbuff.%player%}
+		subtract 30 from {defbuff.%player%}
+		clear {gaebolgEQ.%player%}
+	#Tyrfing Crusader's Blood
+	if the name of the player's tool contains "<gold><bold>Tyrfing":
+		set {_slot} to checkSlots(player,"Crusader's Blood")
+		if {_slot} is 0:
+			if {weaponrank.%player%::swords} is less than 7500:
+				send "<light red>You need at least an A rank in Swords OR a Crusader's blood to wield Tyrfing." to the player
+				cancel event
+	#Mystletainn Crusader's Blood
+	else if the name of the player's tool contains "<gold><bold>Mystletainn":
+		set {_slot} to checkSlots(player,"Crusader's Blood")
+		if {_slot} is 0:
+			if {weaponrank.%player%::swords} is less than 7500:
+				send "<light red>You need at least an A rank in Swords OR a Crusader's blood to wield Mystletainn." to the player
+				cancel event
+			else if {mystletainnEQ.%player%} is not set:
+				add 40 to {sklbuff.%player%}
+				set {mystletainnEQ.%player%} to 1
+				if the 6th line of the lore of the player's tool contains "Unique":
+					add 20 to {strbuff.%player%}
+					add 20 to {spdbuff.%player%}
+					add 20 to {sklbuff.%player%}
+					add 20 to {defbuff.%player%}
+					add 20 to {resbuff.%player%}
+					set {mystletainnRefine.%player%} to 1
+					show mob spawner flames at the player
+		else if {mystletainnEQ.%player%} is not set:
+			add 40 to {sklbuff.%player%}
+			set {mystletainnEQ.%player%} to 1
+			if the 6th line of the lore of the player's tool contains "Unique":
+				add 20 to {strbuff.%player%}
+				add 20 to {spdbuff.%player%}
+				add 20 to {sklbuff.%player%}
+				add 20 to {defbuff.%player%}
+				add 20 to {resbuff.%player%}
+				show mob spawner flames at the player
+	else if {mystletainnEQ.%player%} is 1:
+		subtract 40 from {sklbuff.%player%}
+		clear {mystletainnEQ.%player%}
+		if {mystletainnRefine.%player%} is 1:
+			subtract 20 from {strbuff.%player%}
+			subtract 20 from {spdbuff.%player%}
+			subtract 20 from {sklbuff.%player%}
+			subtract 20 from {defbuff.%player%}
+			subtract 20 from {resbuff.%player%}
+			clear {mystletainnRefine.%player%}
+	#Falchion Lord's Blood
+	if the name of the player's tool contains "<gold><bold>Falchion":
+		set {_slot} to checkSlots(player,"Lord's Blood")
+		if {_slot} is 0:
+			if {weaponrank.%player%::swords} is less than 7500:
+				send "<light red>You need at least A rank in Swords OR a Lord's blood to wield Falchion." to the player
+				cancel event
+	#Binding Blade Lord's Blood
+	else if the name of the player's tool contains "<gold><bold>Binding Blade":
+		set {_slot} to checkSlots(player,"Lord's Blood")
+		if {_slot} is 0:
+			if {weaponrank.%player%::swords} is less than 7500:
+				send "<light red>You need at least A rank in Swords OR a Lord's blood to wield the Binding Blade." to the player
+				cancel event
+	#Sieglinde Lord's Blood
+	else if the name of the player's tool contains "<gold><bold>Sieglinde":
+		set {_slot} to checkSlots(player,"Lord's Blood")
+		if {_slot} is 0:
+			if {weaponrank.%player%::swords} is less than 7500:
+				send "<light red>You need at least A rank in Swords OR a Lord's blood to wield Sieglinde." to the player
+				cancel event
+	#Siegmund Lord's Blood
+	else if the name of the player's tool contains "<gold><bold>Siegmund":
+		set {_slot} to checkSlots(player,"Lord's Blood")
+		if {_slot} is 0:
+			if {weaponrank.%player%::lances} is less than 7500:
+				send "<light red>You need at least A rank in Lances OR a Lord's blood to wield Siegmund." to the player
+				cancel event
+	#Folkvangr Lord's Blood
+	else if the name of the player's tool contains "<gold><bold>Folkvangr":
+		set {_slot} to checkSlots(player,"Lord's Blood")
+		if {_slot} is 0:
+			if {weaponrank.%player%::swords} is less than 7500:
+				send "<light red>You need at least A rank in Swords OR a Lord's blood to wield Folkvangr." to the player
+				cancel event
+	#Fensalir Lord's Blood
+	else if the name of the player's tool contains "<gold><bold>Fensalir":
+		set {_slot} to checkSlots(player,"Lord's Blood")
+		if {_slot} is 0:
+			if {weaponrank.%player%::lances} is less than 7500:
+				send "<light red>You need at least A rank in Lances OR a Lord's blood to wield Fensalir." to the player
+				cancel event
+	#Ragnell
+	else if the name of the player's tool is "<gold><bold>Ragnell":
+		if {weaponrank.%player%::swords} is less than 7500:
+			send "<light red>You need at least A rank in Swords to wield Ragnell."
+			cancel event
+	#Armads
+	else if the name of the player's tool is "<gold><bold>Armads":
+		if {weaponrank.%player%::axes} is less than 7500:
+			send "<light red>You need at least A rank in Axes to wield Armads."
+			cancel event
+	#Parthia
+	else if the name of the player's tool is "<gold><bold>Parthia":
+		if {weaponrank.%player%::bows} is less than 3750:
+			send "<light red>You need at least B rank in Bows to wield Parthia."
+			cancel event
+	#Durandal
+	else if the name of the player's tool is "<gold><bold>Durandal":
+		if {weaponrank.%player%::swords} is less than 7500:
+			send "<light red>You need at least A rank in Swords to wield Durandal."
+			cancel event
+	#Mercurius
+	else if the name of the player's tool is "<gold><bold>Mercurius":
+		if {weaponrank.%player%::swords} is less than 3750:
+			send "<light red>You need at least B rank in Swords to wield Mercurius."
+			cancel event
+	#Basilikos
+	else if the name of the player's tool is "<gold><bold>Basilikos":
+		if {weaponrank.%player%::axes} is less than 3750:
+			send "<light red>You need at least B rank in Axes to wield Basilikos."
+			cancel event
+	#Basilikos
+	else if the name of the player's tool is "<gold><bold>Basilikos":
+		if {weaponrank.%player%::axes} is less than 3750:
+			send "<light red>You need at least B rank in Axes to wield Basilikos."
+			cancel event
+	#Gradivus
+	else if the name of the player's tool is "<gold><bold>Gradivus":
+		if {weaponrank.%player%::lances} is less than 3750:
+			send "<light red>You need at least B rank in Lances to wield Gradivus."
+			cancel event
+	#BSS
+	else if the name of the player's tool is "<gold><bold>Balder Side Sword":
+		if {weaponrank.%player%::swords} is less than 3750:
+			send "<light red>You need at least B rank in Swords to wield the Balder Side Sword."
+			cancel event
+	#Fujin Yumi
+	else if the name of the player's tool is "<gold><bold>Fujin Yumi":
+		if {weaponrank.%player%::bows} is less than 3750:
+			send "<light red>You need at least B rank in Bows to wield the Fujin Yumi."
+			cancel event
+	#Rex Hasta
+	else if the name of the player's tool is "<gold><bold>Rex Hasta":
+		if {weaponrank.%player%::lances} is less than 7500:
+			send "<light red>You need at least B rank in Lances to wield the Rex Hasta."
+			cancel event
+	#Meisterschwert
+	else if the name of the player's tool is "<gold><bold>Meisterschwert":
+		if {weaponrank.%player%::swords} is less than 3750:
+			send "<light red>You need at least B rank in Lances to wield the Meisterschwert."
+			cancel event
+	#Dire Thunder
+	else if the name of the player's tool is "<gold><bold>Dire Thunder":
+		if {weaponrank.%player%::magic} is less than 3750:
+			send "<light red>You need at least B rank in Magic to cast Dire Thunder."
+			cancel event
+	#Rhomphaia
+	else if the name of the player's tool is "<gold><bold>Rhomphaia":
+		if {weaponrank.%player%::lances} is less than 3750:
+			send "<light red>You need at least B rank in Lances to wield Rhomphaia."
+			cancel event
+	#Alondite
+	else if the name of the player's tool is "<gold><bold>Alondite":
+		if {weaponrank.%player%::swords} is less than 7500:
+			send "<light red>You need at least A rank in Swords to wield Alondite."
+			cancel event
+	#Guard Bow
+	else if the name of the player's tool is "<gold><bold>Guard Bow":
+		if {weaponrank.%player%::bows} is less than 1875:
+			send "<light red>You need at least C rank in Bows to wield a Guard Bow."
+			cancel event
+	#Fujin Yumi
+	else if the name of the player's tool is "<gold><bold>Fujin Yumi":
+		if {weaponrank.%player%::bows} is less than 3750:
+			send "<light red>You need at least B rank in Bows to wield the Fujin Yumi."
+			cancel event
+		else if {FYEQ.%player%} is not set:
+			add 20 to {resbuff.%player%}
+			set {FYEQ.%player%} to 1
+	else if {FYEQ.%player%} is 1:
+		clear {FYEQ.%player%}
+		subtract 20 from {resbuff.%player%}
+	#Brave Bow
+	if the name of the player's tool is "<gold><bold>Brave Bow":
+		if {weaponrank.%player%::bow} is less than 1875:
+			send "<light red>You need at least C rank in Bows to wield a Brave Bow."
+			cancel event
+		else:
+			set {BraveBowEQ.%player%} to true
+			subtract 15 from {spdbuff.%player%}
+	else if {BraveBowEQ.%player%} is true:
+		add 15 to {spdbuff.%player%}
+		clear {BraveBowEQ.%player%}
+	#Crowbar
+	else if the name of the player's tool contains "<gold><bold>Crowbar":
+		apply swiftness 1 to the player for 9999 seconds
+		apply haste 4 to the player for 9999 seconds
+		set {crowbareq.%player%} to 1
+	else if {crowbareq.%player%} is 1:
+		remove swiftness from the player
+		remove haste from the player
+		set {crowbareq.%player%} to 0
+	#Hauteclere
+	if the name of the player's tool contains "<gold><bold>Hauteclere":
+		if {weaponrank.%player%::Axes} is less than 3750:
+			send "<light red>You need at least B rank in Axes to wield Hauteclere."
+			cancel event
+		else:
+			add 15 to {sklbuff.%player%}
+			set {hauteclereEQ.%player%} to 1
+	else if {hauteclereEQ.%player%} is 1:
+		subtract 15 from {sklbuff.%player%}
+		clear {hauteclereEQ.%player%}
+	#Dracoshield
+	if the name of the player's offhand tool contains "<gold><bold>Dracoshield":
+		if {dracoshieldEQ.%player%} is not set:
+			add 20 to {defbuff.%player%}
+			add 20 to {resbuff.%player%}
+			set {dracoshieldEQ.%player%} to true
+	else if {dracoshieldEQ.%player%} is set:
+		subtract 20 from {defbuff.%player%}
+		subtract 20 from {resbuff.%player%}
+	#
+	#Prevent Hotswaps While Reloading
+	if {reloading.%player%} is 1:
+		cancel event
+		send "<red><bold>Can't swap weapons while reloading!"
+	#Holy Weapons produce particles
+	if the name of the player's tool contains "<gold><bold>":
+		#strike lightning effect at the player
+		play 30 (firework spark with speed 0) at the player
+		play 30 (critical hit with speed 0) at the player
+		play 30 (snow shovel with speed 0) at the player
+		
+every 1 second:
+	loop all players:
+		if the name of loop-player's tool contains "<gold><bold>":
+			play 40 (firework spark with speed 0) at loop-player
+			play 40 (critical hit with speed 0) at loop-player
+			play 40 (snow shovel with speed 0) at loop-player
+		loop all entities in radius 8 of loop-player:
+			if loop-entity-2 is npc:
+				if the name of loop-entity-2's tool contains "<gold><bold>":
+					play 40 (firework spark with speed 0) at loop-entity-2
+					play 40 (critical hit with speed 0) at loop-entity-2
+					play 40 (snow shovel with speed 0) at loop-entity-2
+
+every 1 second:
+	loop all players:
+		if the name of loop-player's tool is "<gold><bold>Blessed Sword":
+			if the 6th line of the lore of loop-player's tool contains "Unique":
+				apply regeneration 2 to loop-player for 1 second
+				remove weakness from loop-player
+				remove slowness from loop-player
+				remove poison from loop-player
+				remove wither from loop-player
+
+on projectile hit:
+	if the name of the shooter's tool is "<gold><bold>Fujin Yumi":
+		if the 6th line of the lore of the shooter's tool contains "Unique":
+			if the shooter is sneaking:
+				teleport the shooter to the projectile
+		
+every 5 seconds:
+	loop all players:
+		if the name of loop-player's tool contains "<gold><bold>Binding Blade":
+			if the 6th line of the lore of loop-player's tool contains "<white><bold>Refined: Unique":
+				apply resistance 2 to the loop-player for 5 seconds
+		else if the name of loop-player's tool contains "<gold><bold>Armads":
+			apply resistance 2 to the loop-player for 5 seconds
+		else if the name of loop-player's tool contains "<gold><bold>Falchion":
+			if the 6th line of the lore of loop-player's tool contains "<white><bold>Refined: Unique":
+				loop all players in radius 8 of loop-player-1:
+					if {party.%loop-entity-2%} is {party.%loop-player-1%}:
+						apply swiftness 1 to the loop-entity-2 for 5 seconds
+						apply resistance 1 to the loop-entity-2 for 5 seconds
+						apply strength 1 to the loop-entity-2 for 5 seconds
+						play 20 (firework spark with speed 0) at loop-entity-2
+						play 20 (critical hit with speed 0) at loop-entity-2
+						play 20 (snow shovel with speed 0) at loop-entity-2
+		
+on death of a monster:
+	if the name of the attacker's tool contains "<gold><bold>Mercurius":
+		set {_xp} to ceil(attacker's level ^ 1.01)
+		make console execute command "/xp %{_xp}% %attacker%"
+		send "<light green>Gained a bonus %{_xp}% experience!" to the attacker
+	else if the name of the attacker's tool contains "<gold><bold>Gradivus":
+		set {_xp} to ceil(attacker's level ^ 1.01)
+		make console execute command "/xp %{_xp}% %attacker%"
+		send "<light green>Gained a bonus %{_xp}% experience!" to the attacker
+	else if the name of the attacker's tool contains "<gold><bold>Parthia":
+		set {_xp} to ceil(attacker's level ^ 1.01)
+		make console execute command "/xp %{_xp}% %attacker%"
+		send "<light green>Gained a bonus %{_xp}% experience!" to the attacker
+	else if the name of the attacker's tool contains "<gold><bold>Blessed Sword":
+		chance of (50 + ({res.%attacker%} + {resbuff.%attacker%} / 2))%:
+			drop 1 steak at the victim
+			increase the player's food level by 2
+			send "<yellow>Plenitude activated!" to the attacker

@@ -1,0 +1,9 @@
+#Training Tower handler
+
+command /tt [<text="help">] [<number=0>]:
+	description: Take on a multi-story challenge that will push your abilities to their limits.
+	usage: /tt [Challenge Name] [BOOLEAN: Enable Level Scaling]
+	executable by: players
+	trigger:
+		if arg 1 is "help":
+			open chest with 4 rows named "<gold>Training Tower" for the player

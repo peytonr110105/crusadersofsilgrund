@@ -1,0 +1,88 @@
+#Workbench - A World Editing Tool
+
+command /delblock <item> <number>:
+	trigger:
+		set {_rad} to arg 2
+		set {_loc} to player's location
+		send "<light green>Performing task..."
+		loop all blocks in radius {_rad} of {_loc}:
+			if loop-block is arg 1:
+				set loop-block to air
+				add 1 to {_blocks}
+				wait 1 tick
+				send "<light green>Working..."
+			else:
+				send "<light blue>Working..."
+		send "<gold>%{_blocks}% %arg 1%s were removed."
+		
+command /replaceblock <item> <item> <number>:
+	trigger:
+		set {_rad} to arg 3
+		set {_loc} to player's location
+		send "<light green>Performing task..."
+		loop all blocks in radius {_rad} of {_loc}:
+			if loop-block is arg 1:
+				set loop-block to arg 2
+				add 1 to {_blocks}
+				send "<light green>Working..."
+			else:
+				send "<light blue>Working..."
+			wait 1 tick
+		send "<gold>%{_blocks}% blocks replaced."
+	
+command /demoss <number>:
+	trigger:
+		set {_rad} to arg 1
+		set {_loc} to player's location
+		send "<light green>Demossing..."
+		loop all blocks in radius {_rad} of {_loc}:
+			if loop-block is mossy stone brick:
+				set loop-block to stone brick
+				add 1 to {_blocks}
+				send "<light green>Working.."
+			else if loop-block is mossy cobblestone:
+				set loop-block to cobblestone
+				add 1 to {_blocks}
+				send "<light green>Working..."
+			else:
+				send "<light blue>Working..."
+			wait 1 tick
+		send "<gold>%{_blocks}% blocks demossed."
+		
+command /ruinify <number>:
+	trigger:
+		set {_rad} to arg 1
+		set {_loc} to player's location
+		send "<light green>Generating ruins..."
+		loop all blocks in radius {_rad} of {_loc}:
+			if loop-block is any stone brick:
+				chance of 30%:
+					set loop-block to mossy stone brick
+					chance of 50%:
+						set loop-block to cracked stone brick
+					add 1 to {_blocks}
+					send "<light green>Working.."
+			else if loop-block is any stone:
+				chance of 15%:
+					set loop-block to cobblestone
+					chance of 15%:
+						set loop-block to dirt
+					add 1 to {_blocks}
+					send "<light green>Working.."
+			else:
+				send "<light blue>Working..."
+			wait 1 tick
+		send "<gold>%{_blocks}% blocks modified."
+	
+command /replacedioritewithandesite <number>:
+	trigger:
+		set {_rad} to arg 1
+		set {_loc} to player's location
+		loop all blocks in radius {_rad} of {_loc}:
+			if loop-block is smooth diorite:
+				set loop-block to smooth andesite
+				send "<light green>Working..."
+			else:
+				send "<light blue>Working..."
+			wait 1 tick
+		send "<gold>Finished."

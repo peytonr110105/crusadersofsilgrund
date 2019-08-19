@@ -1,0 +1,124 @@
+#Adds per-person difficulty modifiers.
+
+on join:
+	if {perdiff.%player%} is not set:
+		set {perdiff.%player%} to 2
+
+command /pd [<text="Help">]:
+	description: Set a personal difficulty modifier to fine-tune the game's difficulty
+	usage: /pd (difficulty)
+	executable by: players
+	trigger:
+		if arg 1 is "Help":
+			send "<bold>Personal Difficulties:"
+			send "<green>Relaxed: You take 0.5x damage and deal 1.5x damage."
+			send "Normal: No damage changes."
+			send "<light red>Hard: You take 1.5x damage and deal 0.5x damage. Recommended to players seeking responsive gameplay."
+			send "<purple>Lunatic: You take 3x damage and deal 0.25x damage. Recommended only for true veterans."
+			if {generation.%player%} is more than 1:
+				send "<light yellow>Thracian: You and your foe's attacks have a chance to miss based on both party's SKL and SPD stat."
+				send "<yellow><bold>Infernal Thracian: Thracian mode with insidious damage modifiers. Take 3x more damage and deal 0.25x damage. Only for true masters."
+			else if {mqComplete.%player%} is 1:
+				send "<gold><bold>Legendary Holy Knight: Take 5x more damage, and deal 0.25x damage. Enemies' levels are increased by 10."
+		else if arg 1 is "Relaxed":
+			set {perdiff.%player%} to 0
+			send "Difficulty set to Relaxed!"
+		else if arg 1 is "Easy":
+			set {perdiff.%player%} to 1
+			send "Difficulty set to Easy!"
+		else if arg 1 is "Normal":
+			set {perdiff.%player%} to 2
+			send "Difficulty set to Normal!"
+		else if arg 1 is "Hard":
+			set {perdiff.%player%} to 3
+			send "Difficulty set to Hard! You will recieve bonus EXP and money."
+		else if arg 1 is "Lunatic":
+			set {perdiff.%player%} to 4
+			send "Difficulty set to Lunatic! You will recieve bonus EXP and money."
+		else if arg 1 is "Infernal":
+			set {perdiff.%player%} to 5
+			send "Difficulty set to Infernal! You will recieve bonus EXP and money."
+		else if arg 1 is "Thracian":
+			set {perdiff.%player%} to 6
+			send "Difficulty set to Thracian! You will recieve bonus EXP and money."
+		else if arg 1 is "Lunatic Thracian":
+			set {perdiff.%player%} to 7
+			send "Difficulty set to Lunatic (Thracian)! You will recieve bonus EXP and money."
+		else if arg 1 is "Infernal Thracian":
+			set {perdiff.%player%} to 8
+			send "Difficulty set to Infernal (Thracian)! You will recieve bonus EXP and money."
+on damage:
+	if damage cause is attack:
+		if {perdiff.%victim%} is 0:
+			set damage to damage * 0.5
+		else if {perdiff.%victim%} is 1:
+			set damage to damage * 0.75
+		else if {perdiff.%victim%} is 2:
+			set damage to damage * 1
+		else if {perdiff.%victim%} is 3:
+			set damage to damage * 1.25
+		else if {perdiff.%victim%} is 4:
+			set damage to damage * 1.5
+		else if {perdiff.%victim%} is 5:
+			set damage to damage * 2
+		else if {perdiff.%victim%} is 6:
+			set damage to damage * 2
+		else if {perdiff.%victim%} is 7:
+			set damage to damage * 2
+		else if {perdiff.%victim%} is 8:
+			set damage to damage * 3
+		if {perdiff.%attacker%} is 0:
+			set damage to damage * 1.5
+		else if {perdiff.%attacker%} is 1:
+			set damage to damage * 1.25
+		else if {perdiff.%attacker%} is 2:
+			set damage to damage * 1
+		else if {perdiff.%attacker%} is 3:
+			set damage to damage * 0.75
+		else if {perdiff.%attacker%} is 4:
+			set damage to damage * 0.5
+		else if {perdiff.%attacker%} is 5:
+			set damage to damage * 0.25
+		else if {perdiff.%attacker%} is 6:
+			set damage to damage * 0.75
+		else if {perdiff.%attacker%} is 7:
+			set damage to damage * 0.5
+		else if {perdiff.%attacker%} is 8:
+			set damage to damage * 0.25
+	else if projectile exists:
+		if {perdiff.%victim%} is 0:
+			set damage to damage * 0.5
+		else if {perdiff.%victim%} is 1:
+			set damage to damage * 0.75
+		else if {perdiff.%victim%} is 2:
+			set damage to damage * 1
+		else if {perdiff.%victim%} is 3:
+			set damage to damage * 1.25
+		else if {perdiff.%victim%} is 4:
+			set damage to damage * 1.5
+		else if {perdiff.%victim%} is 5:
+			set damage to damage * 2
+		else if {perdiff.%victim%} is 6:
+			set damage to damage * 1.25
+		else if {perdiff.%victim%} is 7:
+			set damage to damage * 1.5
+		else if {perdiff.%victim%} is 8:
+			set damage to damage * 2
+		if {perdiff.%attacker%} is 0:
+			set damage to damage * 1.5
+		else if {perdiff.%attacker%} is 1:
+			set damage to damage * 1.25
+		else if {perdiff.%attacker%} is 2:
+			set damage to damage * 1
+		else if {perdiff.%attacker%} is 3:
+			set damage to damage * 0.75
+		else if {perdiff.%attacker%} is 4:
+			set damage to damage * 0.5
+		else if {perdiff.%attacker%} is 5:
+			set damage to damage * 0.25
+		else if {perdiff.%attacker%} is 6:
+			set damage to damage * 0.75
+		else if {perdiff.%attacker%} is 7:
+			set damage to damage * 0.5
+		else if {perdiff.%attacker%} is 8:
+			set damage to damage * 0.25

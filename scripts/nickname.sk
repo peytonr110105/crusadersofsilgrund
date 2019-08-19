@@ -1,0 +1,13 @@
+command /name [<text="%player%">]:
+	description: Set a custom name! This will be assigned to any characters you save.
+	usage: /name (name) [You can add colours too!]
+	aliases: /nn, /alias, /username
+	trigger:
+		set the player's display name to coloured arg 1
+		set the player's tablist name to coloured arg 1
+		send "<light blue>[Nicknamer]<reset> Set your username to %arg 1%!"
+		set {nickname.%player%} to arg 1
+		
+on join:
+	set the player's display name to coloured "%{nickname.%player%}%"
+	set the player's tablist name to coloured "%{nickname.%player%}%"

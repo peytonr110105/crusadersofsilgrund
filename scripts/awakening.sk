@@ -1,0 +1,504 @@
+command /quests-awakening:
+	trigger:
+		if {quests.%player%::A Lord's Worth} is 2:
+			loop all items in the player's inventory:
+				if the name of the loop-item contains "Unusual":
+					send "<gold>Nothing seems to be happening... Maybe I should try placing the gemstone inside the slot."
+					set {_flag} to 1
+			if {_flag} is not set:
+				strike lightning effect at the player
+				send "<light yellow>Cinder: ...I can now teach you... the rite of Awakening..."
+				wait 4.5 seconds
+				send "<light yellow>Cinder: ..."
+				wait 2 seconds
+				send "<green>Knowledge begins to flood through your mind..."
+				wait 3 seconds
+				send "<green>Hundreds of enchantments and spells romp throughout your consciousness..."
+				wait 4 seconds
+				send "<light yellow>Cinder: ...stand before the table... realize your power... and awaken the Gemstone..."
+				wait 5 seconds
+				set {awakeningReady.%player%} to 1
+				setQuestProgress(player,"A Lord's Worth",3,"Right-click the Enchantment Table with the Gemstone to perform an Awakening.")		
+		else if {quests.%player%::Awakening} is set:
+			loop all items in the player's inventory:
+				if the name of the loop-item contains "Gemstone":
+					send "<gold>Nothing seems to be happening... Maybe I should try placing the gemstone inside the slot."
+					set {_flag} to 1
+			if {_flag} is not set:
+				send "<green>The gemstone slots neatly into place."
+				set {awakeningReady.%player%} to 1
+
+on inventory click:
+	if {lockTool.%player%} is set:
+		cancel event
+		close the player's inventory
+		send "<light red>You must focus on the Awakening..."
+	
+on tool change:
+	if {lockTool.%player%} is set:
+		cancel event
+		send "<light red>You can't change your held item during an Awakening!"
+	
+command /awaken <text> <number> <number>:
+	trigger:
+		if player's level is more than arg 3:
+			set {lockTool.%player%} to 1
+			send "<green>You pour your energy into the Enchanting Table..."
+			loop (arg 2 / 2) times:
+				damage the player by 0.5 hearts with fake cause fire
+				play 30 (red wool break with speed 1) at the player
+				wait 0.5 seconds
+				if the player is not alive:
+					set {_dead} to 1
+					send "<red>The effort proved too great, and you were slain..."
+					clear {lockTool.%player%}
+					exit 1 loop
+			if {_dead} is not set:
+				send "<green>You were able to survive the Awakening!"
+				loop arg 3 times:
+					make player execute command "/xp -1l"
+					play 30 (light blue wool break with speed 1) at the player
+					play sound "entity.experience_orb.pickup" with volume 2 and pitch 0.5 at the player for the player
+					wait 0.2 seconds
+				send "<green>Magical energy swirls through the air..."
+				strike lightning effect at the player
+				wait 1 second
+				strike lightning effect at the player
+				wait 0.45 second
+				strike lightning effect at the player
+				wait 1 second
+				set {_pitch} to 0.4
+				loop 10 times:
+					play mob spawner flames at the player
+					play 40 (critical hit with speed 1) at the player
+					play 20 (yellow wool break with speed 1) at the player
+					play sound "entity.experience_orb.pickup" with volume 0.4 and pitch {_pitch} at player for player
+					wait 0.3 seconds
+					play sound "block.enchantment_table.use" with volume 2 and pitch {_pitch} at player for player
+					play 80 (flying glyph with speed 1) at the player
+					add .2 to {_pitch}
+				play sound "entity.experience_orb.pickup" with volume 2 and pitch 2 at player for player
+				strike lightning effect at the player
+				clear {awakeningReady.%player%}
+				clear {lockTool.%player%}
+				if arg 1 is "Gemstone":
+					delete the player's tool
+					give 1 diamond of power 10 named "<light yellow>Cinder's Gemstone" with lore "<white>Right-click to communicate with Cinder." to the player
+					finishQuest(player,"A Lord's Worth","You can now Awaken the Holy Weapons.")
+					send "<light yellow>Cinder: Ah, wonderful. I sound much clearer now, yes?"
+					wait 4 seconds
+					send "<light yellow>Cinder: As you've most likely guessed already, you can perform that same rite to awaken my weapons. Though I must warn you that the effort will be much greater than reviving a measly gemstone."
+					wait 6 seconds
+					send "<light yellow>Cinder: In fact, I can sense that you've already collected one of my weapons. If you have the power with you yet, you can awaken it here."
+					wait 3 seconds
+					startQuest(player,"Awakening","Awaken a Holy Weapon.")
+					send "<light yellow>Cinder: The process is simple enough. Place my Gemstone inside the slot you see before you, then lay the weapon to be Awakened on the table."
+					wait 4 seconds
+					send "<light yellow>Cinder: If you manage to survive the process, do not forget to take my gemstone with you. You will need to place it back inside the slot each time you wish to perform an Awakening."
+				else if arg 1 is "Falchion":
+					delete the player's tool
+					set {_weap} to "Falchion"
+					give 1 diamond sword named "<gold><bold>Falchion" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "Mystletainn":
+					delete the player's tool
+					set {_weap} to "Mystletainn"
+					give 1 diamond sword named "<gold><bold>Mystletainn" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "BindingBlade":
+					delete the player's tool
+					set {_weap} to "Binding Blade"
+					give 1 diamond sword named "<gold><bold>Binding Blade" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "BalderSideSword":
+					delete the player's tool
+					set {_weap} to "Balder Side Sword"
+					give 1 diamond sword named "<gold><bold>Balder Side Sword" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "Mercurius":
+					delete the player's tool
+					set {_weap} to "Mercurius"
+					give 1 diamond sword named "<gold><bold>Mercurius" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "Tyrfing":
+					delete the player's tool
+					set {_weap} to "Tyrfing"
+					give 1 diamond sword named "<gold><bold>Tyrfing" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "Ragnell":
+					delete the player's tool
+					set {_weap} to "Ragnell"
+					give 1 diamond sword named "<gold><bold>Ragnell" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "LightBrand":
+					delete the player's tool
+					set {_weap} to "Light Brand"
+					give 1 diamond sword named "<gold><bold>Light Brand" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "Armads":
+					delete the player's tool
+					set {_weap} to "Armads"
+					give 1 diamond axe named "<gold><bold>Armads" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "Parthia":
+					delete the player's tool
+					set {_weap} to "Parthia"
+					give 1 bow named "<gold><bold>Parthia" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "Siegmund":
+					delete the player's tool
+					set {_weap} to "Siegmund"
+					give 1 diamond shovel named "<gold><bold>Siegmund" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "Sieglinde":
+					delete the player's tool
+					give 1 diamond sword named "<gold><bold>Sieglinde" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "Durandal":
+					delete the player's tool
+					give 1 diamond sword named "<gold><bold>Durandal" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "GaeBolg":
+					delete the player's tool
+					set {_weap} to "Gae Bolg"
+					give 1 diamond shovel named "<gold><bold>Gae Bolg" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "Basilikos":
+					delete the player's tool
+					give 1 diamond axe named "<gold><bold>Basilikos" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "Hauteclere":
+					delete the player's tool
+					give 1 diamond axe named "<gold><bold>Hauteclere" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "Fensalir":
+					delete the player's tool
+					give 1 diamond shovel named "<gold><bold>Fensalir" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "Folkvangr":
+					delete the player's tool
+					give 1 diamond sword named "<gold><bold>Folkvangr" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "Gradivus":
+					delete the player's tool
+					give 1 diamond shovel named "<gold><bold>Gradivus" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "FujinYumi":
+					delete the player's tool
+					set {_weap} to "Fujin Yumi"
+					give 1 bow named "<gold><bold>Fujin Yumi" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "RexHasta":
+					delete the player's tool
+					set {_weap} to "Rex Hasta"
+					give 1 diamond shovel named "<gold><bold>Rex Hasta" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "Meisterschwert":
+					delete the player's tool
+					give 1 diamond sword named "<gold><bold>Meisterschwert" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "Rhomphaia":
+					delete the player's tool
+					give 1 diamond shovel named "<gold><bold>Rhomphaia" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "Alondite":
+					delete the player's tool
+					give 1 diamond sword named "<gold><bold>Alondite" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "Javelin":
+					delete the player's tool
+					give 1 diamond shovel named "<gold><bold>Javelin" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "TornadoBlade":
+					delete the player's tool
+					give 1 diamond sword named "<gold><bold>Tornado Blade" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "Tomahawk":
+					delete the player's tool
+					give 1 diamond axe named "<gold><bold>Tomahawk" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "GuardBow":
+					delete the player's tool
+					set {_weap} to "Guard Bow"
+					give 1 bow named "<gold><bold>Guard Bow" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "BraveBow":
+					delete the player's tool
+					set {_weap} to "Brave Bow"
+					give 1 bow named "<gold><bold>Brave Bow" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				#Tomes
+				else if arg 1 is "DireThunder":
+					delete the player's tool
+					set {_weap} to "Dire Thunder"
+					give 1 book named "<gold><bold>Dire Thunder" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined", "<white>Casts the Dire Thunder spell on right-click.", "<white>Uses:", "1000" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "Excalibur":
+					delete the player's tool
+					give 1 book named "<gold><bold>Excalibur" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined", "<white>Casts the Excalibur spell on right-click.", "<white>Uses:", "1200" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "Aura":
+					delete the player's tool
+					give 1 book named "<gold><bold>Aura" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined", "<white>Casts the Aura spell on right-click.", "<white>Uses:", "1200" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "Naga":
+					delete the player's tool
+					give 1 book named "<gold><bold>Naga" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined", "<white>Casts the Naga spell on right-click.", "<white>Uses:", "1000" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "Loptous":
+					delete the player's tool
+					give 1 book named "<gold><bold>Loptous" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined", "<white>Casts the Loptous spell on right-click.", "<white>Uses:", "1000" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "Starlight":
+					delete the player's tool
+					give 1 book named "<gold><bold>Starlight" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined", "<white>Casts the Starlight spell on right-click.", "<white>Uses:", "1200" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				#PRF Weapons
+				else if arg 1 is "BlessedSword":
+					delete the player's tool
+					set {_weap} to "Blessed Sword"
+					give 1 diamond sword named "<gold><bold>Blessed Sword" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "DevilAxe":
+					delete the player's tool
+					set {_weap} to "Devil Axe"
+					give 1 diamond axe named "<gold><bold>Devil Axe" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "CrusadersLance":
+					delete the player's tool
+					set {_weap} to "Crusader's Lance"
+					give 1 diamond shovel named "<gold><bold>Crusader's Lance" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				else if arg 1 is "LunarBow":
+					delete the player's tool
+					set {_weap} to "Lunar Bow"
+					give 1 bow named "<gold><bold>Lunar Bow" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - None", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white><bold>Refined: Unrefined" to the player
+					if {quests.%player%::Awakening} is 1:
+						set {_quest} to 1
+				if {_weap} is set:
+					send "<gold><bold>The %{_weap}% was awakened!"
+				else:
+					send "<gold><bold>The %arg 1% was awakened!"
+				if {_quest} is 1:
+					setQuestProgress(player,"Awakening",2,"Deliver the news of the Awakening to Lord Kiln.")
+					wait 6 seconds
+					startQuest(player,"The Wizard of House Silgrid","Locate House Silgrid's Grand Wizard, Bramimund.")
+					send "<light yellow>Cinder: Well done. Now we must discuss the matter of locating the rest of my weapons. We must find a wizard with enough magical talent for me to teach them how to locate my weapons. Bring me to them."
+		else:
+			send "<red>You don't have enough experience levels to perform an Awakening."
+		
+command /unlocktool:
+	trigger:
+		clear {lockTool.%player%}
+		send "<light green>Tool unlocked manually."
+		
+on right-click on enchantment table:
+	if {awakeningReady.%player%} is 1:
+		cancel event
+		if {quests.%player%::A Lord's Worth} is 3:
+			if the name of the player's tool does not contain "Unusual":
+				send "<gold>Nothing seems to be happening... Maybe I need to be holding the item I want to Awaken."
+			else:
+				send "<green>The gemstone begins to pulse..."
+				wait 3.5 seconds
+				send "<run command:/awaken Gemstone 5 1><gold><bold>Awakening this item will cost 5 hearts & 1 experience level. Click here to proceed."
+		else if {quests.%player%::Awakening} is set:
+			if the name of the player's tool contains "<light blue><bold>Broken":
+				if the 2nd line of the lore of the player's tool contains "Falchion":
+					send "<green>The gemstone begins to pulse..."
+					wait 3.5 seconds
+					send "<run command:/awaken Falchion 30 20><gold><bold>Awakening Falchion will cost 30 hearts & 20 experience levels. Click here to proceed."
+				else if the 2nd line of the lore of the player's tool contains "Binding Blade":
+					send "<green>The gemstone begins to pulse..."
+					wait 3.5 seconds
+					send "<run command:/awaken BindingBlade 30 20><gold><bold>Awakening the Binding Blade will cost 30 hearts & 20 experience levels. Click here to proceed."
+				else if the 2nd line of the lore of the player's tool contains "Mystletainn":
+					send "<green>The gemstone begins to pulse..."
+					wait 3.5 seconds
+					send "<run command:/awaken Mystletainn 20 10><gold><bold>Awakening Mystletainn will cost 20 hearts & 10 experience levels. Click here to proceed."
+				else if the 2nd line of the lore of the player's tool contains "Mercurius":
+					send "<green>The gemstone begins to pulse..."
+					wait 3.5 seconds
+					send "<run command:/awaken Mercurius 20 10><gold><bold>Awakening the Mercurius will cost 20 hearts & 10 experience levels. Click here to proceed."
+				else if the 2nd line of the lore of the player's tool contains "Basilikos":
+					send "<green>The gemstone begins to pulse..."
+					wait 3.5 seconds
+					send "<run command:/awaken Basilikos 20 10><gold><bold>Awakening the Basilikos will cost 20 hearts & 10 experience levels. Click here to proceed."
+				else if the 2nd line of the lore of the player's tool contains "Tyrfing":
+					send "<green>The gemstone begins to pulse..."
+					wait 3.5 seconds
+					send "<run command:/awaken Tyrfing 40 20><gold>Awakening Tyrfing will cost 40 hearts & 20 experience levels. Click here to proceed."
+				else if the 2nd line of the lore of the player's tool contains "Ragnell":
+					send "<green>The gemstone begins to pulse..."
+					wait 3.5 seconds
+					send "<run command:/awaken Ragnell 40 30><gold>Awakening Ragnell will cost 40 hearts & 30 experience levels. Click here to proceed."
+				else if the 2nd line of the lore of the player's tool contains "Light Brand":
+					send "<green>The gemstone begins to pulse..."
+					wait 3.5 seconds
+					send "<run command:/awaken LightBrand 20 10><gold>Awakening the Light Brand will cost 15 hearts & 10 experience levels. Click here to proceed."
+				else if the 2nd line of the lore of the player's tool contains "Armads":
+					send "<green>The gemstone begins to pulse..."
+					wait 3.5 seconds
+					send "<run command:/awaken Armads 30 20><gold>Awakening Armads will cost 30 hearts & 20 experience levels. Click here to proceed."
+				else if the 2nd line of the lore of the player's tool contains "Parthia":
+					send "<green>The gemstone begins to pulse..."
+					wait 3.5 seconds
+					send "<run command:/awaken Parthia 20 10><gold>Awakening Parthia will cost 20 hearts & 10 experience levels. Click here to proceed."
+				else if the 2nd line of the lore of the player's tool contains "Siegmund":
+					send "<green>The gemstone begins to pulse..."
+					wait 3.5 seconds
+					send "<run command:/awaken Siegmund 30 20><gold>Awakening Siegmund will cost 30 hearts & 20 experience levels. Click here to proceed."
+				else if the 2nd line of the lore of the player's tool contains "Sieglinde":
+					send "<green>The gemstone begins to pulse..."
+					wait 3.5 seconds
+					send "<run command:/awaken Sieglinde 30 20><gold>Awakening Sieglinde will cost 30 hearts & 20 experience levels. Click here to proceed."
+				else if the 2nd line of the lore of the player's tool contains "Durandal":
+					send "<green>The gemstone begins to pulse..."
+					wait 3.5 seconds
+					send "<run command:/awaken Durandal 20 10><gold>Awakening Durandal will cost 20 hearts & 10 experience levels. Click here to proceed."
+				else if the 2nd line of the lore of the player's tool contains "Gae Bold":
+					send "<green>The gemstone begins to pulse..."
+					wait 3.5 seconds
+					send "<run command:/awaken Gae Bolg 60 30><gold>Awakening the Gae Bolg will cost 60 hearts & 30 experience levels. Click here to proceed."
+				else if the 2nd line of the lore of the player's tool contains "Hauteclere":
+					send "<green>The gemstone begins to pulse..."
+					wait 3.5 seconds
+					send "<run command:/awaken Hauteclere 20 10><gold>Awakening the Hauteclere will cost 20 hearts & 10 experience levels. Click here to proceed."
+				else if the 2nd line of the lore of the player's tool contains "Fensalir":
+					send "<green>The gemstone begins to pulse..."
+					wait 3.5 seconds
+					send "<run command:/awaken Fensalir 30 20><gold>Awakening Fensalir will cost 30 hearts & 20 experience levels. Click here to proceed."
+				else if the 2nd line of the lore of the player's tool contains "Folkvangr":
+					send "<green>The gemstone begins to pulse..."
+					wait 3.5 seconds
+					send "<run command:/awaken Folkvangr 30 20><gold>Awakening Armads will cost 30 hearts & 20 experience levels. Click here to proceed."
+				else if the 2nd line of the lore of the player's tool contains "Gradivus":
+					send "<green>The gemstone begins to pulse..."
+					wait 3.5 seconds
+					send "<run command:/awaken Gradivus 20 10><gold>Awakening Gradivus will cost 20 hearts & 10 experience levels. Click here to proceed."
+				else if the 2nd line of the lore of the player's tool contains "Balder Side Sword":
+					send "<green>The gemstone begins to pulse..."
+					wait 3.5 seconds
+					send "<run command:/awaken BalderSideSword 20 10><gold>Awakening the Balder Side Sword will cost 20 hearts & 10 experience levels. Click here to proceed."
+				else if the 2nd line of the lore of the player's tool contains "Fujin Yumi":
+					send "<green>The gemstone begins to pulse..."
+					wait 3.5 seconds
+					send "<run command:/awaken FujinYumi 30 20><gold>Awakening the Fujin Yumi will cost 30 hearts & 20 experience levels. Click here to proceed."
+				else if the 2nd line of the lore of the player's tool contains "Rex Hasta":
+					send "<green>The gemstone begins to pulse..."
+					wait 3.5 seconds
+					send "<run command:/awaken RexHasta 30 20><gold>Awakening the Rex Hasta will cost 30 hearts & 20 experience levels. Click here to proceed."
+				else if the 2nd line of the lore of the player's tool contains "Meisterschwert":
+					send "<green>The gemstone begins to pulse..."
+					wait 3.5 seconds
+					send "<run command:/awaken Meisterschwert 30 20><gold>Awakening the Meisterschwert will cost 30 hearts & 20 experience levels. Click here to proceed."
+				else if the 2nd line of the lore of the player's tool contains "Dire Thunder":
+					send "<green>The gemstone begins to pulse..."
+					wait 3.5 seconds
+					send "<run command:/awaken DireThunder 30 20><gold>Awakening Dire Thunder will cost 30 hearts & 20 experience levels. Click here to proceed."
+				else if the 2nd line of the lore of the player's tool contains "Rhomphaia":
+					send "<green>The gemstone begins to pulse..."
+					wait 3.5 seconds
+					send "<run command:/awaken Rhomphaia 30 20><gold>Awakening Rhomphaia will cost 30 hearts & 20 experience levels. Click here to proceed."
+				else if the 2nd line of the lore of the player's tool contains "Alondite":
+					send "<green>The gemstone begins to pulse..."
+					wait 3.5 seconds
+					send "<run command:/awaken Alondite 40 25><gold>Awakening Alondite will cost 40 hearts & 25 experience levels. Click here to proceed."
+				else if the 2nd line of the lore of the player's tool contains "Guard Bow":
+					send "<green>The gemstone begins to pulse..."
+					wait 3.5 seconds
+					send "<run command:/awaken GuardBow 5 2><gold>Awakening the Guard Bow will cost 5 hearts & 2 experience levels. Click here to proceed."
+				else if the 2nd line of the lore of the player's tool contains "Brave Bow":
+					send "<green>The gemstone begins to pulse..."
+					wait 3.5 seconds
+					send "<run command:/awaken BraveBow 5 2><gold>Awakening the Brave Bow will cost 5 hearts & 2 experience levels. Click here to proceed."
+				else if the 2nd line of the lore of the player's tool contains "Tomahawk":
+					send "<green>The gemstone begins to pulse..."
+					wait 3.5 seconds
+					send "<run command:/awaken Tomahawk 5 2><gold>Awakening the Tomahawk will cost 5 hearts & 2 experience levels. Click here to proceed."
+				else if the 2nd line of the lore of the player's tool contains "Javelin":
+					send "<green>The gemstone begins to pulse..."
+					wait 3.5 seconds
+					send "<run command:/awaken Javelin 5 2><gold>Awakening the Javelin will cost 5 hearts & 2 experience levels. Click here to proceed."
+				else if the 2nd line of the lore of the player's tool contains "Tornado Blade":
+					send "<green>The gemstone begins to pulse..."
+					wait 3.5 seconds
+					send "<run command:/awaken TornadoBlade 5 2><gold>Awakening the Tornado Blade will cost 5 hearts & 2 experience levels. Click here to proceed."
+				else if the 2nd line of the lore of the player's tool contains "Blessed Sword":
+					send "<green>The gemstone begins to pulse..."
+					wait 3.5 seconds
+					send "<run command:/awaken BlessedSword 0 0><gold><bold>Awaken the Blessed Sword? (Click here to confirm)"
+				else if the 2nd line of the lore of the player's tool contains "Devil Axe":
+					send "<green>The gemstone begins to pulse..."
+					wait 3.5 seconds
+					send "<run command:/awaken DevilAxe 0 0><gold><bold>Awaken the Devil Axe? (Click here to confirm)"
+				else if the 2nd line of the lore of the player's tool contains "Crusader's Lance":
+					send "<green>The gemstone begins to pulse..."
+					wait 3.5 seconds
+					send "<run command:/awaken CrusadersLance 0 0><gold><bold>Awaken the Crusader's Lance? (Click here to confirm)"
+				else if the 2nd line of the lore of the player's tool contains "Lunar Bow":
+					send "<green>The gemstone begins to pulse..."
+					wait 3.5 seconds
+					send "<run command:/awaken LunarBow 0 0><gold><bold>Awaken the Lunar Bow? (Click here to confirm)"
+				else:
+					send "<light red>Nothing seems to be happening. This must not be a Holy Weapon..."
+					wait 2.5 seconds
+					send "<light red>I should try a different weapon and see what happens."
+			else if the name of the player's tool contains "Hunter's Blade":
+				send "<green>The gemstone begins to pulse..."
+				wait 3.5 seconds
+				send "<run command:/awaken BlessedSword 0 0><gold><bold>Awaken the Hunter's Blade? (Click here to confirm)"
+			else if the name of the player's tool contains "Rusted Axe":
+				send "<green>The gemstone begins to pulse..."
+				wait 3.5 seconds
+				send "<run command:/awaken DevilAxe 0 0><gold><bold>Awaken the Rusted Axe? (Click here to confirm)"
+			else if the name of the player's tool contains "Soldier's Lance":
+				send "<green>The gemstone begins to pulse..."
+				wait 3.5 seconds
+				send "<run command:/awaken CrusadersLance 0 0><gold><bold>Awaken the Soldier's Lance? (Click here to confirm)"
+			else if the name of the player's tool contains "Forest Bow":
+				send "<green>The gemstone begins to pulse..."
+				wait 3.5 seconds
+				send "<run command:/awaken LunarBow 0 0><gold><bold>Awaken the Forest Bow? (Click here to confirm)"
+			else:
+				send "<light red>Nothing seems to be happening. This must not be a Holy Weapon..."
+				wait 2.5 seconds
+				send "<light red>I should try a different weapon and see what happens."

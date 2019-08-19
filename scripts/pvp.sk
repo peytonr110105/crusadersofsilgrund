@@ -1,0 +1,38 @@
+#PVP Toggle V0.1
+command /pvp <number>:
+	description: Toggles PVP for a player.
+	usage: /pvp
+	executable by: players
+	trigger:
+		if {peaceful.%player%} is 1:
+			set {peaceful.%player%} to 0
+			send "<light blue><bold>PVP enabled! You can damage and be damaged by other players again."
+		else:
+			set {peaceful.%player%} to 1
+			send "<light blue><bold>PVP disabled! You will no longer be damaged or be able to damage other players."
+
+command /pvptoggle <number>:
+	trigger:
+		if arg 1 is 1:
+			set {peaceful.%player%} to 0
+			send "<light blue><bold>PVP enabled! You can damage and be damaged by other players again."
+		else:
+			set {peaceful.%player%} to 1
+			send "<light blue><bold>PVP disabled! You will no longer be damaged or be able to damage other players."
+
+#Peaceful Toggle States:
+#1 = PVP Disabled
+#0 = PVP Enabled
+			
+#Effect
+on damage:
+	if attacker is player:
+		if victim is player:
+			if attacker is not npc:
+				if victim is not npc:
+					if {peaceful.%victim%} is 1:
+						cancel event
+						send "<light red><bold>This player has PVP disabled! You cannot harm them until they re-enable PVP!" to the attacker
+					else if {peaceful.%attacker%} is 1:
+						cancel event
+						send "<light red><bold>You have PVP disabled! You cannot harm other players until you re-enable PVP!" to the attacker

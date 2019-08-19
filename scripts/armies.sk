@@ -1,0 +1,241 @@
+#Build an army. Trust nobody. Fire Emblem, now for Gameboy Advance!
+
+#Variable List:
+#{x.members::*} Group member list
+#{x.owner} Group owner
+#{x.storage::*} The party's shared storage
+#{party.%player%} The player's current group
+#{x.name} The group's name
+#{mastergrouplist::*} Master list of all groups
+#{x.needInvite} 1 = Players need invites to join | 0 = Players can freely join
+#{x.invite.%player%} Player has recieved an invite to the specified party
+#{x.invites::*} List of invited players
+
+on inventory close:
+	if the name of the event-inventory contains "Group Storage":
+		clear {%{party.%player%}%.storage::*}
+		loop all items in event-inventory:
+			add loop-item to {%{party.%player%}%.storage::*}
+
+command /group <text> [<text=null>]:
+	description: Build an army. Trust nobody. Fire Emblem, now for Gameboy Advance!
+	usage: /group help
+	aliases: /army, /team
+	trigger:
+		if arg 1 is "help":
+			send "<yellow><bold>Group Help:"
+			if arg 2 is "null":
+				send "<yellow>/group create (group name): Create your very own group."
+				send "<yellow>/group invite (player name): Invite other players into your group."
+				#send "<yellow>/group manage: Opens the group management screen."
+				send "<yellow>/group storage: Opens the group's shared storage."
+				send "<yellow>/group disband: Disbands your current group."
+				send "<yellow>/group leave: Leaves your current group."
+				send "<yellow>/group join (group name): Joins the specified group."
+				send "<yellow>/group members: Shows all members of your current group"
+				send "<yellow>Page 1/2"
+			else if arg 2 is "2":
+				send "<yellow>/group invites: Lists all invited players."
+				send "<yellow>/group delinvite (player name): Deletes the invite for the specified player."
+				send "<yellow>/group kick (player name): Kicks a player from the group."
+				send "<yellow>/group needinvite (true/false): Set if players need to have an invite to join the group."
+				#send "<yellow>"
+				send "<yellow>Page 2/2"
+		#Admin Disband
+		else if arg 1 is "adisband":
+			clear {%arg 2%.name}
+			clear {%arg 2%.owner}
+			clear {%arg 2%.storage::*}
+			loop {mastergrouplist::*}:
+				if loop-value is arg 2:
+					clear {mastergrouplist::%loop-index%}
+					clear {mastergrouplist::%loop-value%}
+					send "debug"
+					exit 1 loop
+			loop {%arg 2%.members::*}:
+				send "<yellow>Your group has been disbanded." to loop-value
+				clear {party.%loop-value%}
+				clear {%arg 2%.members::%loop-value%}
+				clear {%arg 2%.members::%loop-index%}
+			loop {%arg 2%.invites::*}:
+				clear {%arg 2%.invite.%loop-value%}
+			clear {%arg 2%.invites::*}
+			send "<light green>%arg 2% was disbanded successfully."
+		#Group storage
+		else if arg 1 is "storage":
+			if {party.%player%} is not set:
+				send "<light red>You aren't in a party!"
+			else:
+				open chest with 6 rows named "%{party.%player%}% Group Storage" for the player
+				loop {%{party.%player%}%.storage::*}:
+					add 1 to {_slot}
+					set slot {_slot} of player's current inventory to loop-value
+		#Kick a member
+		else if arg 1 is "kick":
+			set {_t} to arg 2 parsed as player
+			loop {%{party.%player%}%.members::*}:
+				if loop-value is arg 2:
+					set {_g} to 1
+			if {_t} is the player:
+				send "<light red>You can't kick yourself from the group!"
+			else if {_g} is 1:
+				loop {%{party.%player%}%.members::*}:
+					if loop-value is arg 2:
+						clear {%{party.%player%}%.members::%loop-value%}
+						clear {%{party.%player%}%.members::%loop-index%}
+						exit 1 loop
+				loop {%{party.%player%}%.members::*}:
+					send "<yellow>%player% has been kicked from your group." to loop-value
+				send "<yellow>You were kicked from %{party.%player%}%."
+				clear {party.%arg 2%}
+			else:
+				send "<light red>That player isn't a member of your group!"
+		#Need invite toggle
+		else if arg 1 is "needinvite":
+			if arg 2 is "false":
+				set {%{party.%player%}%.needInvite} to 0
+				send "<yellow>Players no longer need invites to join the group."
+			else if arg 2 is "true":
+				set {%{party.%player%}%.needInvite} to 1
+				send "<yellow>Players now need invites to join the group."
+			else:
+				send "<light red>An error occurred."
+		#Delete invite
+		else if arg 1 is "delinvite":
+			if {%{party.%player%}%.invite.%arg 2%} is not set:
+				send "<light red>That player hasn't been invited to the party!"
+			else:
+				loop {%{party.%player%}%.invites::*}:
+					if loop-value is arg 2:
+						clear {%{party.%player%}%.invite.%arg 2%}
+						send "<yellow>Your party invite to %{party.%player%}% was revoked." to loop-value
+						exit 1 loop
+				send "<yellow>Invite deleted successfully."
+		#Create group
+		else if arg 1 is "create":
+			if {party.%player%} is not set:
+				if arg 2 is "null":
+					send "<light red>Your group has to have a name!"
+				else:
+					loop {mastergrouplist::*}:
+						if loop-value is arg 2:
+							send "<light red>A group with that name already exists!"
+							set {_cancel} to 1
+							exit 1 loop
+					if {_cancel} is not set:
+						set {party.%player%} to arg 2
+						add the player to {%arg 2%.members::*}
+						set {%arg 2%.owner} to the player
+						set {%arg 2%.needInvite} to 1
+						set {%arg 2%.name} to arg 2
+						add {%arg 2%.name} to {mastergrouplist::*}
+						send "<light green>Group created successfully!"
+			else:
+				send "<light red>You're already in a group!"
+		#Join a group
+		else if arg 1 is "join":
+			if {party.%player%} is set:
+				send "<light red>You're already in a group!"
+			if {%arg 2%.name} is not set:
+				send "<light red>That group doesn't exist!"
+			else:
+				if {%arg 2%.needInvite} is 0:
+					loop {%arg 2%.members::*}:
+						send "<yellow>%player% joined your group!" to loop-value
+					add the player to {%arg 2%.members::*}
+					send "<yellow>Joined {%arg 2%.name} successfully!"
+				else:
+					if {%arg 2%.invite.%player%} is 1:
+						loop {%arg 2%.members::*}:
+							send "<yellow>%player% joined your group!" to loop-value
+						add the player to {%arg 2%.members::*}
+						clear {%arg 2%.invite.%player%}
+						set {party.%player%} to arg 2
+						send "<yellow>Joined %{%arg 2%.name}% successfully!"
+					else:
+						send "<light red>You need an invite to join this group!"
+		#Invite to group
+		else if arg 1 is "invite":
+			set {_temp} to arg 2 parsed as player
+			if arg 2 is "null":
+				send "<light red>You need to specify a player!"
+			else if {_temp} is offline:
+				send "<light red>You can only send invites to online players:"
+			else if {class.%arg 2%} is not set:
+				send "<light red>Failed to find that player!"
+			else:
+				loop {%{party.%player%}%.members::*}:
+					if loop-value is arg 2:
+						send "<light red>That player is already a member of your group!"
+						set {_cancel} to 1
+						exit 1 loop
+				if {_cancel} is not set:
+					set {%{party.%player%}%.invite.%{_temp}%} to 1
+					send "<yellow><run command:/group join %{party.%player%}%>%player% has invited you to their group: %{party.%player%}%. Click here to accept." to {_temp}
+					add {_temp} to {%{party.%player%}%.invites::*}
+		#List group members
+		else if arg 1 is "members":
+			if {party.%player%} is set:
+				send "<yellow><bold>%{party.%player%}%'s members:"
+				send "<yellow>%{%{party.%player%}%.members::*}%"
+			else:
+				send "<light red>You aren't in a group!"
+		#List all groups
+		else if arg 1 is "list":
+			send "<yellow>All groups:"
+			loop {mastergrouplist::*}:
+				if {%loop-value%.needInvite} is 1:
+					send "<yellow>%loop-value% | Invite Required"
+				else:
+					send "<yellow>%loop-value% | No Invite Required"
+		#Leave a group
+		else if arg 1 is "leave":
+			if {%{party.%player%}%.owner} is the player:
+				send "<light red>You can't leave a group that you're the owner of!"
+			else:
+				loop {%{party.%player%}%.members::*}:
+					if loop-value is the player:
+						delete {%{party.%player%}%.members::loop-index}
+						exit 1 loop
+				loop {%{party.%player%}%.members::*}:
+					send "<yellow>%player% has left your group." to loop-value
+				send "<yellow>Left %{party.%player%}%."
+				clear {party.%player%}
+		#Disband a group
+		else if arg 1 is "disband":
+			if {party.%player%} is set:
+				if {%{party.%player%}%.owner} is the player:
+					clear {%{party.%player%}%.owner}
+					loop {mastergrouplist::*}:
+						if loop-value is {%{party.%player%}%.name}:
+							delete {mastergrouplist::%loop-index%}
+							delete {mastergrouplist::%loop-value%}
+							exit 1 loop
+					loop {%{party.%player%}%.members::*}:
+						clear {party.%loop-value%}
+						clear {%{party.%player%}%.members::%loop-index%}
+						clear {%{party.%player%}%.members::%loop-value%}
+						send "<yellow>Removed %loop-value% from your group."
+						send "<yellow>Your group has been disbanded" to loop-value
+					clear {%{party.%player%}%.members::*}
+					clear {%{party.%player%}%.storage::*}
+					loop {%{party.%player%}%.invites::*}:
+						clear {%{party.%player%}%.invite.%loop-value%}
+					clear {%{party.%player%}%.name}
+					send "<yellow>Disbanded your group."
+			else:
+				send "<light red>You aren't the owner of your current group!"
+				
+on inventory open:
+	while the name of the player's current inventory contains "Group Storage":
+		clear {%{party.%player%}%.storage::*}
+		loop all items in player's current inventory:
+			add loop-item to {%{party.%player%}%.storage::*}
+		wait 1 tick
+		loop {%{party.%player%}%.storage::*}:
+			add 1 to {_slot}
+			set slot {_slot} of player's current inventory to loop-value
+		
+on damage:
+	if {party.%attacker%} is {party.%victim%}:
+		cancel event

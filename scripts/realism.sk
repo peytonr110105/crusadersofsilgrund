@@ -1,0 +1,252 @@
+#Overhauls survival to be more challenging, implementing a temperature system, thirst, and other additions.
+
+command /realism <number>:
+	trigger:
+		if arg 1 is 1:
+			set {realism.%player%} to 1
+			send "<gold>Realism mode enabled."
+		else:
+			set {realism.%player%} to 0
+			send "<gold>Realism mode disabled."
+
+function helmetType(PLR: player) :: number:
+	if {_PLR} is wearing a leather helmet:
+		return 0.2
+	else if {_PLR} is wearing a chain helmet:
+		return 0
+	else if {_PLR} is wearing an iron helmet:
+		return -0.15
+	else if {_PLR} is wearing a gold helmet:
+		return -0.15
+	else if {_PLR} is wearing a diamond helmet:
+		return 0
+		
+function chestplateType(PLR: player) :: number:
+	if {_PLR} is wearing a leather chestplate:
+		return 0.25
+	else if {_PLR} is wearing a chain chestplate:
+		return 0
+	else if {_PLR} is wearing an iron chestplate:
+		return -0.25
+	else if {_PLR} is wearing a gold chestplate:
+		return -0.25
+	else if {_PLR} is wearing a diamond chestplate:
+		return 0
+
+function leggingType(PLR: player) :: number:
+	if {_PLR} is wearing leather leggings:
+		return 0.2
+	else if {_PLR} is wearing chain leggings:
+		return 0
+	else if {_PLR} is wearing iron leggings:
+		return -0.2
+	else if {_PLR} is wearing gold leggings:
+		return -0.2
+	else if {_PLR} is wearing diamond leggings:
+		return 0
+		
+function bootType(PLR: player) :: number:
+	if {_PLR} is wearing leather boots:
+		return 0.15
+	else if {_PLR} is wearing chain boots:
+		return 0
+	else if {_PLR} is wearing iron boots:
+		return -0.15
+	else if {_PLR} is wearing gold boots:
+		return -0.15
+	else if {_PLR} is wearing diamond boots:
+		return 0
+	
+
+on load:
+	register new shaped recipe for stick named "<bold>Thermometor" with lore "Right-click to check your temperature. 71-129 is healthy." using air, iron ingot, air, air, redstone, air, air, iron ingot, air
+
+on respawn:
+	set {temperature.%player%} to 100
+	set {thirst.%player%} to 100
+
+on right click with stick:
+	if the name of the player's tool is "<bold>Thermometor":
+		set {_h.%player%} to helmetType(player)
+		set {_c.%player%} to chestplateType(player)
+		set {_l.%player%} to leggingType(player)
+		set {_b.%player%} to bootType(player)
+		add {_h.%player%} to {_exposure.%player%}
+		add {_c.%player%} to {_exposure.%player%}
+		add {_l.%player%} to {_exposure.%player%}
+		add {_b.%player%} to {_exposure.%player%}
+		send "<gray>Temperature: %{temperature.%player%}%"
+		send "<gray>Exposure: %{_exposure.%player%}%"
+	else:
+		send "<gray>This biome's temperature: %temperature of the targeted block%" to the player
+		send "<gray>Altitude: %altitude of the player%"
+	
+on consume:
+	if {realism.%player%} is 1:
+		if event-item is potion:
+			if {temperature.%player%} is more than 100:
+				subtract 10 from {temperature.%player%}
+				send "<light blue>-10 Temperature"
+			if the name of the event-item is "<light blue>Purified Water":
+				if {thirst.%player%} is less than 99:
+					add 20 to {thirst.%player%}
+					send "<light blue>+20 Thirst"
+			else:
+				if {thirst.%player%} is less than 99:
+					add 10 to {thirst.%player%}
+					send "<light blue>+10 Thirst"
+				chance of 50%:
+					apply poison 2 to the player for 1 second
+					send "<light red>The water had a strange taste..."
+			if {thirst.%player%} is more than 100:
+				set {thirst.%player%} to 100
+			send "<light blue>Thirst Level: %{thirst.%player%}%"
+		else:
+			if {temperature.%player%} is less than 100:
+				send "<orange>+10 Temperature"
+				add 10 to {temperature.%player%}
+
+on mine:
+	if {realism.%player%} is 1:
+		add 0.1 to {thirstexhaustion.%player%}
+
+on damage of a player:
+	if {realism.%victim%} is 1:
+		add 0.25 to {thirstexhaustion.%victim%}
+	if {realism.%attacker%} is 1:
+		add 0.15 to {thirstexhaustion.%attacker%}
+		
+on food bar change:
+	if {realism.%player%} is 1:
+		set the player's food level to the player's food level - 0.5
+	
+on heal:
+	if {realism.%player%} is 1:
+		#set {_healing.%player%} to event-item
+		#set {_healing.%player%} to {_healing.%player%} / 2
+		#cancel event
+		#heal the player by {_healing.%player%}
+		add 0.25 to {thirstexhaustion.%player%}
+	
+on sprint toggle:
+	if {realism.%player%} is 1:
+		add 0.15 to {thirstexhaustion.%player%}
+	
+every 25 seconds:
+	loop all players:
+		if {realism.%loop-player%} is 1:
+			subtract ({thirstexhaustion.%loop-player%} / 2) + 0.5 from {thirst.%loop-player%}
+			if {thirst.%loop-player%} is less than 70:
+				if {thirst.%loop-player%} is more than 55:
+					send "<light blue>You're starting to get thirsty." to loop-player
+				else if {thirst.%loop-player%} is more than 25:
+					send "<light blue>Your throat is dry..." to loop-player
+				else if {thirst.%loop-player%} is more than 10:
+					send "<light blue>You need to drink something, and fast!" to loop-player
+				else:
+					send "<light blue>You need to drink something! You'll die from thirst!" to loop-player
+					damage loop-player by 1 heart
+			send "<light blue>Current thirst level: %{thirst.%loop-player%}%" to loop-player
+			clear {thirstexhaustion.%loop-player%}
+	
+			
+every 7.5 seconds:
+	loop all players:
+		if {realism.%loop-player%} is 1:
+			set {_loc} to loop-player's location
+			set {_localtemp.%loop-player%} to the temperature of the block at {_loc}
+			set {_fire.%loop-player%} to 0
+			set {_h.%loop-player%} to helmetType(loop-player)
+			set {_c.%loop-player%} to chestplateType(loop-player)
+			set {_l.%loop-player%} to leggingType(loop-player)
+			set {_b.%loop-player%} to bootType(loop-player)
+			add {_h.%loop-player%} to {_exposure.%loop-player%}
+			add {_c.%loop-player%} to {_exposure.%loop-player%}
+			add {_l.%loop-player%} to {_exposure.%loop-player%}
+			add {_b.%loop-player%} to {_exposure.%loop-player%}
+			subtract 0.25 from {_localtemp.%loop-player%}
+			if weather in world "adventure" is rain:
+				if temperature of the block at loop-player is less than 0.4:
+					subtract 0.4 from {_localtemp.%loop-player%}
+				else:
+					subtract 0.2 from {_localtemp.%loop-player%}
+			if weather in world "adventure" is thunder:
+				subtract 0.2 from {_localtemp.%loop-player%}
+			if world is "world_nether":
+				add 0.2 to {_localtemp.%loop-player%}
+			if sunlight level at the loop-player is less than 9:
+				subtract 0.25 from {_localtemp.%loop-player%}
+			loop blocks in radius 8 of the loop-player:
+				if loop-block is fire:
+					add 0.1 to {_localtemp.%loop-player%}
+				if loop-block is torch:
+					add 0.05 to {_localtemp.%loop-player%}
+				if loop-block is lava:
+					add 0.15 to {_localtemp.%loop-player%}
+				if loop-block is lit furnace:
+					add 0.1 to {_localtemp.%loop-player%}
+			if altitude of loop-player is more than 160:
+				subtract (0.1 * (altitude of loop-player ^ 0.35)) from {_localtemp.%loop-player%}
+			if altitude of loop-player is less than 45:
+				add (0.1 * (abs(altitude of loop-player - 45)) ^ 0.35) to {_localtemp.%loop-player%}
+			loop blocks in radius 2 of the loop-player:
+				loop-block is water
+				subtract 0.05 from {_localtemp.%loop-player%}
+			if loop-player is sprinting:
+				add 0.1 to {_localtemp.%loop-player%}
+			if loop-player is on fire:
+				add 0.4 to {_localtemp.%loop-player%}
+			if {_localtemp.%loop-player%} is more than 3.5:
+				set {_localtemp.%loop-player%} to 3.5
+			else if {_localtemp.%loop-player%} is less than -0.5:
+				set {_localtemp.%loop-player%} to -0.5
+			if {_localtemp.%loop-player%} is more than 1.2:
+				loop blocks in radius 7 of the loop-player:
+					if loop-block is fire:
+						add 1 to {_fire.%loop-player%}
+					else if loop-block is fire:
+						add 2 to {_fire.%loop-player%}
+					else if loop-block is torch:
+						add 0.5 to {_fire.%loop-player%}
+				#else if time is between 7:00 and 17:00 in world:
+				#	subtract (abs({_localtemp.%loop-player%}) * 2) from {temperature.%loop-player%}
+				add abs({_localtemp.%loop-player%}) to {temperature.%loop-player%} 				
+			else if {_localtemp.%loop-player%} + ({_exposure.%loop-player%} / 1.5) is less than 0.5:
+				subtract (abs({_localtemp.%loop-player%}) + 1) from {temperature.%loop-player%}
+			else:
+				if {temperature.%loop-player%} is more than 100:
+					subtract (abs({_localtemp.%loop-player%}) * 15) from {temperature.%loop-player%}
+				else if {temperature.%loop-player%} is less than 100:
+					add ((abs({_localtemp.%loop-player%}) * 15) + {_exposure.%loop-player%}) to {temperature.%loop-player%}
+			if {temperature.%loop-player%} is less than 30:
+				apply slowness 3 to loop-player for 10 seconds
+				apply mining fatigue 2 to loop-player for 10 seconds
+				damage loop-player by 1 heart
+				send "<cyan>You are suffering from severe frostbite." to loop-player
+			else if {temperature.%loop-player%} is less than 50:
+				apply slowness 2 to loop-player for 10 seconds
+				apply mining fatigue 1 to loop-player for 10 seconds
+				send "<cyan>You are starting to suffer from frostbite." to loop-player
+			else if {temperature.%loop-player%} is less than 70:
+				apply slowness 1 to loop-player for 10 seconds
+				send "<cyan>You are getting cold." to loop-player
+			if {temperature.%loop-player%} is more than 129:
+				if {temperature.%loop-player%} is less than 150:
+					apply slowness 1 to loop-player for 10 seconds
+					send "<light red>You are getting hot." to loop-player
+				else if {temperature.%loop-player%} is less than 170:
+					apply slowness 2 to loop-player for 10 seconds
+					apply mining fatigue 1 to loop-player for 10 seconds
+					send "<light red>You are developing heat stroke." to loop-player
+				else if {temperature.%loop-player%} is less than 200:
+					apply slowness 3 to loop-player for 10 seconds
+					apply mining fatigue 2 to loop-player for 10 seconds
+					damage loop-player by 1 heart
+					send "<light red><bold>You are suffering from severe heat stroke." to loop-player
+			if {temperature.%loop-player%} is less than 0:
+				set {temperature.%loop-player%} to 0
+			if {temperature.%loop-player%} is more than 200:
+				set {temperature.%loop-player%} to 200
+			if the name of loop-player's tool is "<bold>Thermometor":
+				send "DEBUG | Local Temperature: %{_localtemp.%loop-player%}%" to loop-player
+			

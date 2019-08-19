@@ -1,0 +1,98 @@
+#various visual enhancements
+#Ores sparkle
+#Leaves fall
+#Hurt players bleed
+#Water and lava flowing
+#Crops grow with sparkles
+#Entities combust more violently
+#Filling buckets produces particles
+#Decaying blocks produce particles
+#Toggling flight spawns particles
+#Jumping produces a particles
+#Placing blocks produces particles
+#Spawned monsters are covered in smoke
+#Blocks forming have particles
+
+
+command /vt:
+	trigger:
+		if {vt.%player%} is true:
+			clear {vt.%player%}
+			send "<gold>Visual Treatment disabled."
+		else:
+			set {vt.%player%} to true
+			send "<gold>Visual Treatment enabled."
+			
+every 0.25 seconds:
+	loop all players:
+		if {vt.%loop-player%} is true:
+			loop all blocks in radius 10 of loop-player:
+				if loop-block is any ore:
+					play 2 (firework spark with speed 0) at the loop-block
+				else if loop-block is any leaves:
+					chance of 7%:
+						play 1 (oak leaf break with speed 0) at the loop-block
+			if loop-player's health is less than (loop-player's maximum health * 0.5):
+				play 2 (redstone block break with speed 0) at the loop-player
+				
+on flow:
+	loop all players in radius 10 of the event-block:
+		if {vt.%loop-player%} is true:
+			exit 1 loop
+			if event-block is water:
+				play 10 (water splash with speed 2) at the event-block
+			else if event-block is lava:
+				play 10 (lava pop with speed 2) at the event-block
+		
+on crop growth:
+	loop all players in radius 7 of the event-block:
+		if {vt.%loop-player%} is true:
+			exit 1 loop
+			play 10 (happy villager with speed 1) at the event-block
+			
+on combust:
+	loop all players in radius 15 of the event-entity:
+		if {vt.%loop-player%} is true:
+			exit 1 loop
+			play 10 (small smoke with speed 0) at the event-entity
+			play 2 (mob spawner flames with speed 1) at the event-entity
+			
+on bucket fill:
+	if {vt.%player%} is true:
+		if event-block is water:
+			play 20 water splash at the event-block
+		else if event-block is lava:
+			play 20 lava pop at the event-block
+			
+on fade:
+	loop all players in radius 10 of the event-block:
+		if {vt.%loop-player%} is true:
+			exit 1 loop
+			play 10 (snow block break with speed 1) at the event-block
+			
+on flight toggle:
+	if {vt.%player%} is true:
+		play 20 (snow block break with speed 1) at the player
+	
+on leaves decay:
+	loop all players in radius 10 of the event-block:
+		if {vt.%loop-player%} is true:
+			exit 1 loop
+			play 20 (oak leaves break with speed 1) at the event-block
+		
+on form:
+	loop all players in radius 10 of the event-block:
+		if {vt.%loop-player%} is true:
+			exit 1 loop
+			if event-block is any stone:
+				play 20 (cloud with speed 0) at the event-block
+			else if event-block is any ice:
+				play 10 (ice block break with speed 0) at the event-block
+			else if event-block is snow block:
+				play 10 (snow block break with speed 0) at the event-block
+				
+on spawn of a monster:
+	loop all players in radius 10 of the entity:
+		if {vt.%loop-player%} is true:
+			exit 1 loop
+			play 20 (small smoke with speed 0) at the entity

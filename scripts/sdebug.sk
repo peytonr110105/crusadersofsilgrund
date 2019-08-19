@@ -1,0 +1,115 @@
+command /sdebug <text> [<text="Alstair">]:
+	description: Debug Command
+	usage: /sdebug
+	executable by: players, console
+	trigger:
+		if arg 1 is "resetbuffs":
+			set {strbuff.%player%} to 0
+			set {defbuff.%player%} to 0
+			set {spdbuff.%player%} to 0
+			set {resbuff.%player%} to 0
+			set {sklbuff.%player%} to 0
+			set {hpbuff.%player%} to 0
+			set player's maximum health to {hp.%player%} / 2 + {hpbuff.%player%} / 2
+			set {skillslot1.%player%} to "Empty"
+			set {skillslot2.%player%} to "Empty"
+			set {skillslot3.%player%} to "Empty"
+			set {skillslot4.%player%} to "Empty"
+			set {skillslot5.%player%} to "Empty"
+			clear {RES +5SET.%player%}
+			clear {STR +5SET.%player%}
+			clear {STR +20SET.%player%}
+			clear {SPD +5SET.%player%}
+			clear {SKL +5SET.%player%}
+			clear {DEF +5SET.%player%}
+			clear {HP +5SET.%player%}
+			clear {Fortress DefenderSET.%player%}
+			clear {Life and DeathSET.%player%}
+			clear {supportbuffset.%player%}
+			clear {clearbonus.%player%}
+			send "<bold><green>[S-DEBUG]<reset> Reset class buffs for your current character."
+		else if arg 1 is "resetwand":
+			clear {spellcooldown.%player%}
+			send "<bold><green>[S-DEBUG]<reset> Reset wand cooldown."
+		else if arg 1 is "resetgrouplist":
+			clear {mastergrouplist::*}
+			send "<bold><green>[S-DEBUG]<reset> Cleared master group list."
+		else if arg 1 is "fixblowskills":
+			clear {DBCD.%player%}
+			clear {ABCD.%player%}
+			clear {DBCD.%player%}
+			send "<bold><green>[S-DEBUG]<reset> Fixed blow skill cooldowns."
+		else if arg 1 is "fixflying":
+			clear {flying.%player%}
+			send "<bold><green>[S-DEBUG]<reset> Fixed flying variable."
+		else if arg 1 is "killbosses":
+			loop all monsters in radius 256 of the player:
+				if {isBoss.%loop-monster%} is true:
+					kill the loop-monster
+					send "<light green>Killed a boss." to the player
+				wait 1 ticks
+			send "<light green>Purged all bosses within 256 blocks of your location."
+		else if arg 1 is "damagecause":
+			if {debugDamageCause} is not set:
+				set {debugDamageCause} to true
+				send "<bold><green>[S-DEBUG]<reset> Now broadcasting damage causes."
+			else:
+				clear {debugDamageCause}
+				send "<bold><green>[S-DEBUG]<reset> Stopped broadcasting damage causes."
+		else if arg 1 is "butcher":
+			loop all monsters in radius 256 of the player:
+				kill the loop-monster
+				add 1 to {_kills}
+			send "<bold><green>[S-DEBUG]<reset> Killed %{_kills}% mobs."
+		else if arg 1 is "nukeworld":
+			set {_world} to arg 2 parsed as world
+			loop all monsters in world {_world}:
+				kill the loop-monster
+				add 1 to {_kills}
+			send "<bold><green>[S-DEBUG]<reset> Killed all %{_kills}% mobs in %{_world}%."
+		else if arg 1 is "fixfirstspells":
+			clear {startingspells.%player%}
+			send "<bold><green>[S-DEBUG]<reset> Reset starting spells variable."
+		else if arg 1 is "setvar":
+			set {%arg 2%.%player%} to 1
+			send "<bold><green>[S-DEBUG]<reset> Set %arg 2% to 1."
+		else if arg 1 is "clearvariable":
+			clear {%arg 2%.%player%}
+			send "<bold><green>[S-DEBUG]<reset> Cleared the variable %arg 2%"
+		else if arg 1 is "initializeWR":
+			set {weapongrade.%player%::swords} to "E"
+			set {weapongrade.%player%::lances} to "E"
+			set {weapongrade.%player%::axes} to "E"
+			set {weapongrade.%player%::bows} to "E"
+			set {weapongrade.%player%::magic} to "-"
+			set {weapongrade.%player%::staves} to "-"
+			send "<bold><green>[S-DEBUG]<reset> Initialized your Weapon Ranks."
+			set {weaponrank.%player%::swords} to 0
+			set {weaponrank.%player%::lances} to 0
+			set {weaponrank.%player%::axes} to 0
+			set {weaponrank.%player%::bows} to 0
+			set {weaponrank.%player%::magic} to 0
+			set {weaponrank.%player%::staves} to 0
+		else if arg 1 is "setlvl":
+			set {lvl.%player%} to arg 2
+			send "<bold><green>[S-DEBUG]<reset> Set your class level to %arg 2%."
+		else if arg 1 is "setlvlcap":
+			set {lvlcap.%player%} to arg 2
+			send "<bold><green>[S-DEBUG]<reset> Set level cap to %arg 2%."
+		else if arg 1 is "reclass":
+			set {promotionready.%player%} to 1
+			make player execute command "/class promote Journeyman_Reclass"
+		else if arg 1 is "forceSRank":
+			set {kills.%player%} to 501
+			set {deaths.%player%} to 0
+			set {hoursplayed.%player%} to 2
+			send "<bold><green>[S-DEBUG]<reset> You will now receive an S rank during the ending credits."
+		else if arg 1 is "maxhealth":
+			set the player's maximum health to "%arg 2%" parsed as integer
+			send "<bold><green>[S-DEBUG]<reset> Max health set to %arg 2%."
+				
+on damage:
+	if {debugDamageCause} is true:
+		if projectile exists:
+			broadcast "Projectile!"
+		broadcast "<bold><green>[S-DEBUG]<reset> %victim%'s Damage cause: %damage cause%"
