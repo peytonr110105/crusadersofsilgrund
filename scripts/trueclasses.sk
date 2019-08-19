@@ -56,6 +56,7 @@ on join:
 		set {allyEnemyDefeated3.%player%} to "..."
 		set {allyHurtLarge1.%player%} to "..?"
 		set {allyHurtLarge2.%player%} to "..?!"
+		#0 = Male, 1 = Female
 		set {sex.%player%} to 0
 	#if {hasCrest.%player%} is not set:
 	#	give nether star named "<gold><bold>Journey's Crest" with lore "Used to promote Journeymen to a higher class." to player
@@ -93,8 +94,8 @@ command /charsetup [<number=0>] [<number=0>]:
 				set {pts_SPD.%player%} to 10
 				set {pts_SKL.%player%} to 10
 				make player execute command "/charsetup 1 0"
-			else:
-				set {csetup_pts.%player%} to (({gen.%player%} / 1.5) * 240)
+			else if arg 2 is 1:
+				set {csetup_pts.%player%} to 360
 				set {pts_MAG.%player%} to 10
 				set {pts_HP.%player%} to 100
 				set {pts_STR.%player%} to 10
@@ -114,8 +115,30 @@ command /charsetup [<number=0>] [<number=0>]:
 				set slot 6 of the player's current inventory to 1 hopper named "<green><bold>Reset Points" with lore "<white>Clears all allocated points."
 				set slot 7 of the player's current inventory to 1 diamond named "<white><bold>Points to spend:" with lore "<gold><bold>%{csetup_pts.%player%}%"
 				set slot 8 of the player's current inventory to 1 book named "<white>Click a stat to adjust your proficiency in it." with lore "<white>10 points = +5%% growth rate, +3 to stat cap,", "<white>+1 to base amount.", "<white>Each stat must have at least 10 points.", "<white>Your class will further adjust your proficiency."
+				set slot 9 of the player's current inventory to 1 chest named "<bold>Presets" with lore "<white>Automatically allocate points based on your desired class."
+				set slot 10 of the player's current inventory to 1 totem of undying named "<bold>Gender" with lore "<white>Select which pronouns NPC's will refer to you by.", "<white>NOTE: Your gender will not impact your ability to support other players."
+				set slot 11 of the player's current inventory to 1 iron sword named "<green>Preferred Weapon" with lore "<white>Specialize in a particular weapon type.", "<white>Your chosen weapon type recieves bonus damage and critical chance."
+				if {dr.%player%} is 1:
+					set slot 12 of the player's current inventory to 1 green wool named "<green>Dodge Rolling" with lore "<white>Allows you to perform invincible rolls by double-tapping the sneak key.", "<white>Dodge Rolling is currently enabled."
+				else:
+					set slot 12 of the player's current inventory to 1 red wool named "<red>Dodge Rolling" with lore "<white>Allows you to perform invincible rolls by double-tapping the sneak key.", "<white>Dodge Rolling is currently disabled."
+				set slot 13 of the player's current inventory to 1 eye of ender named "<purple>Difficulty" with lore "<white>Fine-tune how difficult the game will be."
+				if {realism.%player%} is 1:
+					set slot 14 of the player's current inventory to 1 water bottle named "<light green>Realism" with lore "<white>Makes survival more difficult by adding new mechanics.", "<white>Hunger depletes faster and is harder to replenish.", "<white>Thirst must be quenched occasionally.", "<white>Becoming too hot or cold can lead to death.", "<light green>Realism is currently enabled."
+				else:
+					set slot 14 of the player's current inventory to 1 water bottle named "<light red>Realism" with lore "<white>Makes survival more difficult by adding new mechanics.", "<white>Hunger depletes faster and is harder to replenish.", "<white>Thirst must be quenched occasionally.", "<white>Becoming too hot or cold can lead to death.", "<light red>Realism is currently disabled."
+				if {tips.%player%} is 1:
+					set slot 15 of the player's current inventory to 1 book named "<light yellow>Hints" with lore "<white>Prints periodic tips to the chat.", "<white>This option is currently enabled."
+				else:
+					set slot 15 of the player's current inventory to 1 obsidian named "<light yellow>Hints" with lore "<white>Prints periodic tips to the chat.", "<white>This option is currently disabled."
+				if {farewells.%player%} is 1:
+					set slot 16 of the player's current inventory to 1 potion of healing named "<light green>Assist Type" with lore "<light blue>Assist Type: Bleedout", "<white>Upon taking mortal damage, you can be revived by another player for 15 seconds.", "<white>If no-one comes to your aid, you will die normally."
+				else if {bhealth.%player%} is 1:
+					set slot 16 of the player's current inventory to 1 potion of healing named "<light green>Assist Type" with lore "<light blue>Assist Type: Last Stand", "<white>While above 1/2 heart:", "<white>Attacks that would normally kill you will be survived with 1/2 heart.", "<white>After activating, Last Stand needs 30 seconds to recharge."
+				else:
+					set slot 16 of the player's current inventory to 1 potion of healing named "<light green>Assist Type" with lore "<white>Click to cycle between Bleedout, Last Stand, or no assists.", "<white>Assist Type: None"
 				if {csetup_pts.%player%} is 0:
-					set slot 13 of the player's current inventory to 1 emerald named "<gold><bold>Confirm Allocations" with lore "<white>Clicking this will confirm your point allocations.", "<white>You may reallocate your points later."
+					set slot 17 of the player's current inventory to 1 emerald named "<gold><bold>Confirm Allocations" with lore "<white>Clicking this will confirm your point allocations.", "<white>You may reallocate your points later."
 			else if arg 2 is 1:
 				open chest with 1 row named "<gold><bold>HP Configuration" for the player
 				set slot 0 of the player's current inventory to 1 red glass pane named "<bold>Go Back" with lore "<white>Return to the previous menu."
