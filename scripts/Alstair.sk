@@ -1,5 +1,3 @@
-#Add garbage data to test git commit.
-
 command /fe <number> <number>:
 	description: Summon a fallen hero.
 	trigger:
