@@ -158,7 +158,7 @@ command /boah <number>:
 				npcChat(player,"<light blue>Azelle: I guess I could help you out with it. Now, I've just got one simple question: Who, are you?")
 				wait 3.5 seconds
 				clear {inConvo.%player%}
-				make player execute command "/fsetup"
+				make player execute command "/charsetup"
 			else if arg 1 is 5:
 				set {inConvo.%player%} to true
 				npcChat(player,"<light blue>Azelle: You think that puny thing is supposed to intimidate me? You'd have better luck smashing it in half and using the shards.")

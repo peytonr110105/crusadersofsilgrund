@@ -95,7 +95,7 @@ command /charsetup [<number=0>] [<number=0>]:
 				set {pts_SKL.%player%} to 10
 				make player execute command "/charsetup 1 0"
 			else if arg 2 is 1:
-				set {csetup_pts.%player%} to 360
+				set {csetup_pts.%player%} to ({generation.%player%} * 120) + 120
 				set {pts_MAG.%player%} to 10
 				set {pts_HP.%player%} to 100
 				set {pts_STR.%player%} to 10
@@ -114,23 +114,26 @@ command /charsetup [<number=0>] [<number=0>]:
 				set slot 5 of the player's current inventory to green wool named "<green><bold>MAG" with lore "<white>Adeptness with magic.", "<white>Magical attacks calculate damage using this stat."
 				set slot 6 of the player's current inventory to 1 hopper named "<green><bold>Reset Points" with lore "<white>Clears all allocated points."
 				set slot 7 of the player's current inventory to 1 diamond named "<white><bold>Points to spend:" with lore "<gold><bold>%{csetup_pts.%player%}%"
-				set slot 8 of the player's current inventory to 1 book named "<white>Click a stat to adjust your proficiency in it." with lore "<white>10 points = +5%% growth rate, +3 to stat cap,", "<white>+1 to base amount.", "<white>Each stat must have at least 10 points.", "<white>Your class will further adjust your proficiency."
-				set slot 9 of the player's current inventory to 1 chest named "<bold>Presets" with lore "<white>Automatically allocate points based on your desired class."
-				set slot 10 of the player's current inventory to 1 totem of undying named "<bold>Gender" with lore "<white>Select which pronouns NPC's will refer to you by.", "<white>NOTE: Your gender will not impact your ability to support other players."
+				set slot 8 of the player's current inventory to 1 book named "<white>Click a stat to adjust your proficiency in it." with lore "<white>10 points = +5%% growth rate,", "<white>+3 to stat cap,", "<white>+1 to base amount.", "<white>Each stat must have at least 10 points.", "<white>Your class will further adjust your proficiency."
+				set slot 9 of the player's current inventory to 1 chest named "<light yellow><bold>Presets" with lore "<white>Automatically allocate points based on your desired class."
+				if {sex.%player%} is 1:
+					set slot 10 of the player's current inventory to 1 totem of undying named "<bold>Gender: Male" with lore "<white>Select which pronouns NPC's will refer to you by.", "<white>NOTE: Your gender will not impact your ability to support other players."
+				else:
+					set slot 10 of the player's current inventory to 1 totem of undying named "<bold>Gender: Female" with lore "<white>Select which pronouns NPC's will refer to you by.", "<white>NOTE: Your gender will not impact your ability to support other players."
 				set slot 11 of the player's current inventory to 1 iron sword named "<green>Preferred Weapon" with lore "<white>Specialize in a particular weapon type.", "<white>Your chosen weapon type recieves bonus damage and critical chance."
-				if {dr.%player%} is 1:
+				if {drenable.%player%} is 1:
 					set slot 12 of the player's current inventory to 1 green wool named "<green>Dodge Rolling" with lore "<white>Allows you to perform invincible rolls by double-tapping the sneak key.", "<white>Dodge Rolling is currently enabled."
 				else:
 					set slot 12 of the player's current inventory to 1 red wool named "<red>Dodge Rolling" with lore "<white>Allows you to perform invincible rolls by double-tapping the sneak key.", "<white>Dodge Rolling is currently disabled."
 				set slot 13 of the player's current inventory to 1 eye of ender named "<purple>Difficulty" with lore "<white>Fine-tune how difficult the game will be."
 				if {realism.%player%} is 1:
-					set slot 14 of the player's current inventory to 1 water bottle named "<light green>Realism" with lore "<white>Makes survival more difficult by adding new mechanics.", "<white>Hunger depletes faster and is harder to replenish.", "<white>Thirst must be quenched occasionally.", "<white>Becoming too hot or cold can lead to death.", "<light green>Realism is currently enabled."
+					set slot 14 of the player's current inventory to 1 water bottle named "<light blue>Realism: Enabled" with lore "<white>Makes survival more difficult by adding new mechanics.", "<white>Hunger depletes faster and is harder to replenish.", "<white>Thirst must be quenched occasionally.", "<white>Becoming too hot or cold can lead to death."
 				else:
-					set slot 14 of the player's current inventory to 1 water bottle named "<light red>Realism" with lore "<white>Makes survival more difficult by adding new mechanics.", "<white>Hunger depletes faster and is harder to replenish.", "<white>Thirst must be quenched occasionally.", "<white>Becoming too hot or cold can lead to death.", "<light red>Realism is currently disabled."
+					set slot 14 of the player's current inventory to 1 water bottle named "<light blue>Realism: Disabled" with lore "<white>Makes survival more difficult by adding new mechanics.", "<white>Hunger depletes faster and is harder to replenish.", "<white>Thirst must be quenched occasionally.", "<white>Becoming too hot or cold can lead to death."
 				if {tips.%player%} is 1:
-					set slot 15 of the player's current inventory to 1 book named "<light yellow>Hints" with lore "<white>Prints periodic tips to the chat.", "<white>This option is currently enabled."
+					set slot 15 of the player's current inventory to 1 book named "<light yellow>Hints: Enabled" with lore "<white>Prints periodic tips to the chat."
 				else:
-					set slot 15 of the player's current inventory to 1 obsidian named "<light yellow>Hints" with lore "<white>Prints periodic tips to the chat.", "<white>This option is currently disabled."
+					set slot 15 of the player's current inventory to 1 obsidian named "<light yellow>Hints: Disabled" with lore "<white>Prints periodic tips to the chat."
 				if {farewells.%player%} is 1:
 					set slot 16 of the player's current inventory to 1 potion of healing named "<light green>Assist Type" with lore "<light blue>Assist Type: Bleedout", "<white>Upon taking mortal damage, you can be revived by another player for 15 seconds.", "<white>If no-one comes to your aid, you will die normally."
 				else if {bhealth.%player%} is 1:
@@ -184,7 +187,7 @@ command /charsetup [<number=0>] [<number=0>]:
 		if arg 1 is 2:
 			if arg 2 is 0:
 				open chest with 2 rows named "<gold><bold>Select a ring." for the player
-				set slot 0 of the player's current inventory to 1 music disc far with name "<light green><bold>Life Ring" with lore "<white>While in your inventory:", "<light green>Recover 10%% of your max HP every 15 seconds."
+				set slot 0 of the player's current inventory to 1 music disc far named "<light green><bold>Life Ring" with lore "<white>While in your inventory:", "<light green>Recover 10%% of your max HP every 15 seconds."
 				set slot 1 of the player's current inventory to 1 music disc wait named "<light blue><bold>Elite Ring" with lore "<white>While in your inventory:", "<light blue>Gain bonus experience for slaying monsters."
 				set slot 2 of the player's current inventory to 1 music disc 13 named "<yellow><bold>Thief Ring" with lore "<white>While in your inventory:", "<yellow>Slain monsters have a chance to drop extra money."
 				set slot 3 of the player's current inventory to 1 music disc mall named "<light purple><bold>Return Ring" with lore "<white>While in your inventory:", "<light purple>Teleport to a custom location.", "<light purple>Hold Sneak and Right-click to set the warp destination.", "<light purple>Right-click without sneaking to warp."
@@ -194,11 +197,18 @@ command /charsetup [<number=0>] [<number=0>]:
 				set slot 7 of the player's current inventory to 1 music disc 13 named "<orange><bold>Prayer Ring" with lore "<white>While in your inventory:", "<orange>Attacks while below 50%% health will always be critical hits."
 				set slot 8 of the player's current inventory to 1 music disc cat named "<green><bold>Pursuit Ring" with lore "<white>While in your inventory:", "<green>Automatically perform a follow-up attack in combat.", "<green>Auto follow-ups deal 50%% less damage."
 			else if arg 2 is 1:
-				open chest with 1 row named "<gold><bold>Select an heirloom." for the player
-				set slot 0 of the player's current inventory to 1 wooden sword of unbreaking 100 named "<light blue><bold>Hunter's Blade" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - Plenitude", "<yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<bold>Refine: Unrefined", "<white>A rustic, home-made sword.", "<white>Built for hunting, the blade always seems to bring home enough to eat.", "<white>Onlookers swear that sacred spirits inhabit the blade."
-				set slot 1 of the player's current inventory to 1 wooden axe of unbreaking 100 named "<light blue><bold>Rusted Axe" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - Poison Strike", "<yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<bold>Refine: Unrefined", "<white>An old, rusted axe.", "<white>The dulled head won't do much damage, but it works in a pinch.", "<white>You swear some sort of voice calls out as you grip the handle."
-				set slot 2 of the player's current inventory to 1 wooden shovel of unbreaking 100 named "<light blue><bold>Soldier's Lance" with lore "<light red><bold>Slot A - Defiant Strength", "<light blue><bold>Slot B - None", "<yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - Swap", "<bold>Refine: Unrefined", "<white>An old lance once made for soldiers.", "<white>Throwing it like a javelin now would probably break it.", "<white>The faded patterns and inscriptions on the weapon hint towards a greater purpose."
-				set slot 3 of the player's current inventory to 1 bow of unbreaking 100 named "<light blue><bold>Forest Bow" with lore "<light red><bold>Slot A - Sorcery Aura", "<light blue><bold>Slot B - None", "<yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<bold>Refine: Unrefined", "<white>A charming old bow made of wood.", "<white>An odd, magical power has been imbued inside.", "<white>You can't seem to shake the feeling that the bow is concealing a higher power."
+				open chest with 1 row named "<gold><bold>Select a Difficulty." for the player
+				set slot 0 of the player's current inventory to 1 wooden sword named "<light green>Relaxed" with lore "<white>A laid-back mode for casual play.", "<white><bold>Damage dealt increased by 1.5x.", "<white><bold>Damage received reduced by 0.5x."
+				set slot 1 of the player's current inventory to 1 stone sword named "<light gray>Normal" with lore "<white>The default Minecraft difficulty."
+				set slot 2 of the player's current inventory to 1 iron sword named "<light red>Hard" with lore "<white>Recommended for fast and responsive gameplay.", "<white><bold>Damage dealt decreased by 0.5x.", "<white><bold>Damage received increased by 1.5x.", "<gold>Bonus EXP and Gold will be earned!"
+				set slot 3 of the player's current inventory to 1 gold sword named "<red>Lunatic" with lore "<white>Recommended only for masters of combat and survival.", "<white><bold>Damage dealt decreased by 0.25x.", "<white><bold>Damage received increased by 3x.", "<gold>Bonus EXP and Gold will be earned!"
+				if {generation.%player%} is more than 1:
+					set slot 4 of the player's current inventory to 1 gold sword named "<light yellow>Thracian" with lore "<white>A specialty mode that adds a hidden AVOID stat, allowing units to dodge attacks.", "<gold>Bonus EXP and Gold will be earned!"
+					set slot 5 of the player's current inventory to 1 gold sword named "<yellow>Lunatic Thracian" with lore "<white>Thracian mode with the Lunatic damage modifiers.", "<gold>Bonus EXP and Gold will be earned."
+				if {mqComplete.%player%} is 1:
+					set slot 6 of the player's current inventory to 1 diamond sword named "<light purple>Infernal" with lore "<white>"
+					set slot 7 of the player's current inventory to 1 diamond sword named "<gold><bold>Legendary Holy Knight" with lore "<white>Your skills will be pushed to their limits.", "<white><bold>Damage dealt decreased by 0.25x.", "<white><bold>Damage received increased by 5x.", "<light red><bold>Enemies will scale more aggressively to your level!", "<gold>Bonus EXP and Gold will be earned!"
+				set slot 8 to 1 red glass pane named "<white><bold>Go Back"
 			else if arg 2 is 2:
 				open chest with 1 row named "<gold><bold>Elite Mode Toggle" for the player
 				set slot 0 of the player's current inventory to 1 book named "<light blue>Information" with lore "<white>Elite mode boosts XP gained for kills.", "<white>If you feel that level-ups are too slow,", "<white>enable Elite Mode.", "<white>Click the wool to toggle Elite Mode."
@@ -212,14 +222,14 @@ command /charsetup [<number=0>] [<number=0>]:
 					set slot 8 of the player's current inventory to 1 green glass pane named "<light green>Select Class" with lore "<light green>Select your class, adjusting stat growths and weapon proficiency."
 			else if arg 2 is 3:
 				open chest with 1 row named "<gold><bold>Select Class" for the player
-				set slot 0 of the player's current inventory to 1 nether star named "<gold>Mercenary" with lore "<white>A well-balanced infantry unit specializing in swords.", "<light blue>Boons: N/A", "<light red>Banes: N/A"
-				set slot 1 of the player's current inventory to 1 nether star named "<gold>Knight" with lore "<white>Highly defensive armoured unit with a preference for lances.", "<light blue>Boons: HP, DEF", "<light red>Banes: SPD, MAG"
-				set slot 2 of the player's current inventory to 1 nether star named "<gold>Bladesman" with lore "<white>Quick-footed sword wielding infantry.", "<light blue>Boons: SPD, SKL", "<light red>Banes: DEF, MAG"
-				set slot 3 of the player's current inventory to 1 nether star named "<gold>Fighter" with lore "<white>Strong-armed axe wielding infantry.", "<light blue>Boons: STR, HP", "<light red>Banes: SKL, SPD"
+				set slot 0 of the player's current inventory to 1 nether star named "<gold>Mercenary" with lore "<white>A well-balanced infantry class.", "<light blue>Boons: None", "<light red>Banes: None"
+				set slot 1 of the player's current inventory to 1 nether star named "<gold>Knight" with lore "<white>A slow, but sturdy infantry class.", "<light blue>Boons: HP, DEF", "<light red>Banes: SPD, MAG"
+				set slot 2 of the player's current inventory to 1 nether star named "<gold>Bladesman" with lore "<white>Quick-footed infantry with a focus on evasion.", "<light blue>Boons: SPD, SKL", "<light red>Banes: DEF, MAG"
+				set slot 3 of the player's current inventory to 1 nether star named "<gold>Fighter" with lore "<white>Strong-armed infantry with devastating blows.", "<light blue>Boons: STR, HP", "<light red>Banes: SKL, SPD"
 				set slot 4 of the player's current inventory to 1 nether star named "<gold>Mage" with lore "<white>Magic wielders utilizing wands and tomes.", "<light blue>Boons: MAG, SKL", "<light red>Banes: DEF, STR"
 				set slot 5 of the player's current inventory to 1 nether star named "<gold>Cleric" with lore "<white>Noncombatants wielding staves to heal the injured.", "<light blue>Boons: MAG, HP", "<light red>Banes: DEF, SPD, STR"
-				set slot 6 of the player's current inventory to 1 nether star named "<gold>Archer" with lore "<white>Ranged infantry wielding bows.", "<light blue>Boons: DEF", "<light red>Banes: SKL"
-				set slot 7 of the player's current inventory to 1 nether star named "<gold>Cavalier" with lore "<white>Mounted units wielding both swords and lances.", "<light blue>Boons: SKL", "<light red>Banes: DEF, MAG"
+				set slot 6 of the player's current inventory to 1 nether star named "<gold>Archer" with lore "<white>An infantry class with a focus on ranged mastery.", "<light blue>Boons: DEF", "<light red>Banes: SKL"
+				set slot 7 of the player's current inventory to 1 nether star named "<gold>Cavalier" with lore "<white>A well-balanced horse riding class.", "<light blue>Boons: None", "<light red>Banes: None"
 				set slot 8 of the player's current inventory to 1 green glass pane named "<light green>Confirm Character" with lore "<light green>Finishes all required character setup."
 
 #MARKER - Character Config				
@@ -273,6 +283,7 @@ on inventory click:
 			make player execute command "/class promote Journeyman"
 	else if the name of the player's current inventory is "<gold><bold>Character Configuration":
 		cancel event
+		#Stats
 		if the name of the clicked item contains "HP":
 			play sound "ui.button.click" with volume 1 and pitch 1 at the player for the player
 			make player execute command "/charsetup 1 1"
@@ -294,7 +305,7 @@ on inventory click:
 		else if the name of the clicked item contains "Reset":
 			play sound "ui.button.click" with volume 0.25 and pitch 1 at the player for the player
 			play sound "entity.zombie_villager.cure" with volume 0.5 and pitch 1 at the player for the player
-			set {csetup_pts.%player%} to 300
+			set {csetup_pts.%player%} to ({generation.%player%} * 120) + 120
 			set {pts_MAG.%player%} to 10
 			set {pts_HP.%player%} to 100
 			set {pts_STR.%player%} to 10
@@ -302,8 +313,69 @@ on inventory click:
 			set {pts_SPD.%player%} to 10
 			set {pts_SKL.%player%} to 10
 			set slot 7 of the player's current inventory to 1 diamond named "<white><bold>Points to spend:" with lore "<gold><bold>%{csetup_pts.%player%}%"
+		#Confirm
 		else if the name of the clicked item contains "Confirm":
 			make player execute command "/charsetup 2 0"
+		#Gender
+		else if the name of the clicked item is "<bold>Gender: Male":
+			set {sex.%player%} to 0
+			set slot 10 of the player's current inventory to 1 totem of undying named "<bold>Gender: Female" with lore "<white>Select which pronouns NPC's will refer to you by.", "<white>NOTE: Your gender will not impact your ability to support other players."
+			play sound "ui.button.click" with volume 0.25 and pitch 1 at the player for the player
+		else if the name of the clicked item is "<bold>Gender: Female":
+			set {sex.%player%} to 1
+			set slot 10 of the player's current inventory to 1 totem of undying named "<bold>Gender: Male" with lore "<white>Select which pronouns NPC's will refer to you by.", "<white>NOTE: Your gender will not impact your ability to support other players."
+			play sound "ui.button.click" with volume 0.25 and pitch 1 at the player for the player
+		#Point Presets
+		else if the name of the clicked item is "<light yellow><bold>Presets":
+			play sound "ui.button.click" with volume 0.25 and pitch 1 at the player for the player
+			make player execute command "/charsetup 1 7"
+		#PRF Weapon
+		else if the name of the clicked item is "<light green>Preferred Weapon":
+			play sound "ui.button.click" with volume 0.25 and pitch 1 at the player for the player
+			make player execute command "/charsetup 1 8"
+		#Dodge Roll
+		else if the name of the clicked item is "<green>Dodge Rolling":
+			play sound "ui.button.click" with volume 0.25 and pitch 1 at the player for the player
+			if {drenable.%player%} is 1:
+				clear {dr.%player%}
+				set slot 12 of the player's current inventory to 1 red wool named "<red>Dodge Rolling" with lore "<white>Allows you to perform invincible rolls by double-tapping the sneak key.", "<white>Dodge Rolling is currently disabled."
+			else:
+				set {drenable.%player%} to 1
+				set slot 12 of the player's current inventory to 1 green wool named "<green>Dodge Rolling" with lore "<white>Allows you to perform invincible rolls by double-tapping the sneak key.", "<white>Dodge Rolling is currently enabled."
+		#Realism
+		else if the name of the clicked item is "<light blue>Realism: Disabled":
+			play sound "ui.button.click" with volume 0.25 and pitch 1 at the player for the player
+			set {realism.%player%} to 1
+			set slot 14 of the player's current inventory to 1 water bottle named "<light blue>Realism: Enabled" with lore "<white>Makes survival more difficult by adding new mechanics.", "<white>Hunger depletes faster and is harder to replenish.", "<white>Thirst must be quenched occasionally.", "<white>Becoming too hot or cold can lead to death."
+		else if the name of the clicked item is "<light blue>Realism: Enabled":
+			play sound "ui.button.click" with volume 0.25 and pitch 1 at the player for the player
+			clear {realism.%player%}
+			set slot 14 of the player's current inventory to 1 water bottle named "<light blue>Realism: Disabled" with lore "<white>Makes survival more difficult by adding new mechanics.", "<white>Hunger depletes faster and is harder to replenish.", "<white>Thirst must be quenched occasionally.", "<white>Becoming too hot or cold can lead to death."
+		#Hints
+		else if the name of the clicked item is "<light yellow>Hints: Enabled":
+			play sound "ui.button.click" with volume 0.25 and pitch 1 at the player for the player
+			clear {tips.%player%}
+			set slot 15 of the player's current inventory to 1 obsidian named "<light yellow>Hints: Disabled" with lore "<white>Prints periodic tips to the chat."
+		else if the name of the clicked item is "<light yellow>Hints: Disabled":
+			play sound "ui.button.click" with volume 0.25 and pitch 1 at the player for the player
+			set {tips.%player%} to 1
+			set slot 15 of the player's current inventory to 1 book named "<light yellow>Hints: Enabled" with lore "<white>Prints periodic tips to the chat."
+		#Assist Type
+		else if the name of the clicked item is "<light green>Assist Type":
+			play sound "ui.button.click" with volume 0.25 and pitch 1 at the player for the player
+			if {bhealth.%player%} is not set:
+				if {farewells.%player%} is not set:
+					set {farewells.%player%} to 1
+					set slot 16 of the player's current inventory to 1 potion of healing named "<light green>Assist Type" with lore "<light blue>Assist Type: Bleedout", "<white>Upon taking mortal damage, you can be revived by another player for 15 seconds.", "<white>If no-one comes to your aid, you will die normally."
+				else:
+					clear {farewells.%player%}
+					set {bhealth.%player%} to 1
+					set slot 16 of the player's current inventory to 1 potion of healing named "<light green>Assist Type" with lore "<light blue>Assist Type: Last Stand", "<white>While above 1/2 heart:", "<white>Attacks that would normally kill you will be survived with 1/2 heart.", "<white>After activating, Last Stand needs 30 seconds to recharge."
+			else:
+				clear {bhealth.%player%}
+				clear {farewells.%player%}
+				set slot 16 of the player's current inventory to 1 potion of healing named "<light green>Assist Type" with lore "<white>Click to cycle between Bleedout, Last Stand, or no assists.", "<white>Assist Type: None"
+	#HP Config
 	else if the name of the player's current inventory is "<gold><bold>HP Configuration":
 		if the name of the clicked item is "<bold>Go Back":
 			make player execute command "/charsetup 1 0"
@@ -322,6 +394,7 @@ on inventory click:
 				set slot 4 of the player's current inventory to 1 emerald named "<white><bold>HP" with lore "<white>Points Invested:", "<white>%{pts_HP.%player%}%"
 				set slot 8 of the player's current inventory to 1 diamond named "<white><bold>Points to spend:" with lore "<gold><bold>%{csetup_pts.%player%}%"
 		cancel event
+	#STR Config
 	else if the name of the player's current inventory is "<gold><bold>STR Configuration":
 		if the name of the clicked item is "<bold>Go Back":
 			make player execute command "/charsetup 1 0"
@@ -341,6 +414,7 @@ on inventory click:
 				set slot 4 of the player's current inventory to 1 emerald named "<white><bold>STR" with lore "<white>Points Invested:", "<white>%{pts_STR.%player%}%"
 				set slot 8 of the player's current inventory to 1 diamond named "<white><bold>Points to spend:" with lore "<gold><bold>%{csetup_pts.%player%}%"
 		cancel event
+	#DEF Config
 	else if the name of the player's current inventory is "<gold><bold>DEF Configuration":
 		cancel event
 		if the name of the clicked item is "<bold>Go Back":
@@ -359,6 +433,7 @@ on inventory click:
 				add 10 to {pts_DEF.%player%}
 				set slot 4 of the player's current inventory to 1 emerald named "<white><bold>DEF" with lore "<white>Points Invested:", "<white>%{pts_DEF.%player%}%"
 				set slot 8 of the player's current inventory to 1 diamond named "<white><bold>Points to spend:" with lore "<gold><bold>%{csetup_pts.%player%}%"
+	#SKL Config
 	else if the name of the player's current inventory is "<gold><bold>SKL Configuration":
 		cancel event
 		if the name of the clicked item is "<bold>Go Back":
@@ -377,6 +452,7 @@ on inventory click:
 				add 10 to {pts_SKL.%player%}
 				set slot 4 of the player's current inventory to 1 emerald named "<white><bold>SKL" with lore "<white>Points Invested:", "<white>%{pts_SKL.%player%}%"
 				set slot 8 of the player's current inventory to 1 diamond named "<white><bold>Points to spend:" with lore "<gold><bold>%{csetup_pts.%player%}%"
+	#SPD Config
 	else if the name of the player's current inventory is "<gold><bold>SPD Configuration":
 		cancel event
 		if the name of the clicked item is "<bold>Go Back":
@@ -395,6 +471,7 @@ on inventory click:
 				add 10 to {pts_SPD.%player%}
 				set slot 4 of the player's current inventory to 1 emerald named "<white><bold>SPD" with lore "<white>Points Invested:", "<white>%{pts_SPD.%player%}%"
 				set slot 8 of the player's current inventory to 1 diamond named "<white><bold>Points to spend:" with lore "<gold><bold>%{csetup_pts.%player%}%"
+	#MAG Config
 	else if the name of the player's current inventory is "<gold><bold>MAG Configuration":
 		cancel event
 		if the name of the clicked item is "<bold>Go Back":
@@ -926,7 +1003,7 @@ command /cosmetics [<number=0>] [<number=0>] [<number=0>]:
 					set {skillquote3.%player%} to "Your villany ends here!"
 					set {skillquote4.%player%} to "This is it!"
 					set {lowHPQuote.%player%} to "So fatigued... But I can't just give up now..."
-					set {healedQuote.%player%} to "Thank you! I'll do everything I can for you."
+					set {healedQuote.%player%} to "Thank you! I'll do everything I can to make it up to you."
 					set {mediumHPQuote.%player%} to "I have to keep fighting..."
 					set {downedQuote.%player%} to "Grrgh... I'm still not strong enough... I need help..."
 					set {allyDownedQuote.%player%} to "I won't let you sacrifice your life for mine. You're coming with us, no matter what!"
@@ -1608,8 +1685,8 @@ command /class <text> [<text="Journeyman">]:
 				else if arg 2 is "Cavalier":
 					set {hpgrowth.%player%} to {pts_HP.%player%} + 35
 					set {strgrowth.%player%} to {pts_STR.%player%} + 25
-					set {defgrowth.%player%} to {pts_DEF.%player%} + 20
-					set {sklgrowth.%player%} to {pts_SKL.%player%} + 30
+					set {defgrowth.%player%} to {pts_DEF.%player%} + 25
+					set {sklgrowth.%player%} to {pts_SKL.%player%} + 25
 					set {spdgrowth.%player%} to {pts_SPD.%player%} + 20
 					set {maggrowth.%player%} to {pts_MAG.%player%} + 25
 					add 17 to {hpcap.%player%}

@@ -1,6 +1,6 @@
 #Any hit above 1/2 heart of health that would normally kill you instead brings you down to 1/2 heart. Prevents instant kills.
 command /bhealth [<number=0>]:
-	description: Bayonetta style instant kill prevention
+	description: Bayonetta-style death prevention
 	usage: /bhealth
 	executable by: players
 	trigger:
