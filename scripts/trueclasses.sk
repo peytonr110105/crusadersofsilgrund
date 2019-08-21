@@ -77,10 +77,12 @@ on join:
 #1-4: SKL Config
 #1-5: SPD Config
 #1-6: MAG Config
-#1-7: Preset Config
-#2-1: Ring Selection
-#2-2: Weapon Selection
-#2-3: Elite Mode Toggle
+#1-7: Presets
+#1-8: Preferred Weapon
+#2-0: Ring Selection
+#2-1: Difficulty Select
+#2-2: Elite Mode Toggle
+#2-3: Gen 1 Class Select
 
 command /charsetup [<number=0>] [<number=0>]:
 	trigger:
@@ -197,7 +199,7 @@ command /charsetup [<number=0>] [<number=0>]:
 				set slot 7 of the player's current inventory to 1 music disc 13 named "<orange><bold>Prayer Ring" with lore "<white>While in your inventory:", "<orange>Attacks while below 50%% health will always be critical hits."
 				set slot 8 of the player's current inventory to 1 music disc cat named "<green><bold>Pursuit Ring" with lore "<white>While in your inventory:", "<green>Automatically perform a follow-up attack in combat.", "<green>Auto follow-ups deal 50%% less damage."
 			else if arg 2 is 1:
-				open chest with 1 row named "<gold><bold>Select a Difficulty." for the player
+				open chest with 1 row named "<gold><bold>Select Difficulty" for the player
 				set slot 0 of the player's current inventory to 1 wooden sword named "<light green>Relaxed" with lore "<white>A laid-back mode for casual play.", "<white><bold>Damage dealt increased by 1.5x.", "<white><bold>Damage received reduced by 0.5x."
 				set slot 1 of the player's current inventory to 1 stone sword named "<light gray>Normal" with lore "<white>The default Minecraft difficulty."
 				set slot 2 of the player's current inventory to 1 iron sword named "<light red>Hard" with lore "<white>Recommended for fast and responsive gameplay.", "<white><bold>Damage dealt decreased by 0.5x.", "<white><bold>Damage received increased by 1.5x.", "<gold>Bonus EXP and Gold will be earned!"
@@ -240,7 +242,7 @@ on inventory click:
 		cancel event
 		if the name of the clicked item contains "Ring":
 			give clicked item to the player
-			make player execute command "/charsetup 2 1"
+			make player execute command "/charsetup 2 2"
 	else if the name of the player's current inventory is "<gold><bold>Select an heirloom.":
 		cancel event
 		if the name of the clicked item contains "<light blue><bold>":
@@ -316,6 +318,9 @@ on inventory click:
 		#Confirm
 		else if the name of the clicked item contains "Confirm":
 			make player execute command "/charsetup 2 0"
+		#Difficulty
+		else if the name of the clicked item contains "Difficulty":
+			make player execute command "/charsetup 2 1"
 		#Gender
 		else if the name of the clicked item is "<bold>Gender: Male":
 			set {sex.%player%} to 0
@@ -375,6 +380,9 @@ on inventory click:
 				clear {bhealth.%player%}
 				clear {farewells.%player%}
 				set slot 16 of the player's current inventory to 1 potion of healing named "<light green>Assist Type" with lore "<white>Click to cycle between Bleedout, Last Stand, or no assists.", "<white>Assist Type: None"
+	#Difficulty
+	else if the name of the player's current inventory is "<gold><bold>Select Difficulty":
+		
 	#HP Config
 	else if the name of the player's current inventory is "<gold><bold>HP Configuration":
 		if the name of the clicked item is "<bold>Go Back":
