@@ -4,6 +4,15 @@
 #999 - Complete
 #998 - Failed
 
+#{betaTestActive} = Determines is the server should change certain settings for testing.
+
+command /enablebetatesting <number>:
+	trigger:
+		if arg 1 is 0:
+			set {betaTestActive} to false
+		else:
+			set {betaTestActive} to true
+
 function getHelmet(PLR: player) :: number:
 	if {_PLR} is wearing a leather helmet:
 		return 1
@@ -102,6 +111,7 @@ function npcChat(PLR: player , TXT: text):
 	send {_TXT} to {_PLR}
 	
 command /setupcheck-gen1:
+	executable by: players, server
 	trigger:
 		if {quests.%player%::Birth of a Hero} is not 999:
 			teleport the player to location at 790.5, 72, -1718 in world "GenOne"
@@ -111,17 +121,50 @@ command /setQuestProgress <number> <text>:
 	trigger:
 		setQuestProgress(player,arg 2,arg 1,"Progress updated manually.")
 	
+on death of a monster:
+	if {quests.%attacker%::Beta Test - Monster Hunting} is not 999:
+		if {quests.%attacker%::Beta Test - Monster Hunting} is set:
+			setQuestProgress(attacker,"Beta Test - Monster Hunting",{quests.%attacker%::Beta Test - Monster Hunting} + 1,"%{quests.%attacker%::Beta Test - Monster Hunting}%/50 monsters slain.")
+			if {quests.%attacker%::Beta Test - Monster Hunting} is 51:
+				finishQuest(attacker,"Beta Test - Monster Hunting","+2,000,000 Gold earned.")
+				add 2000000 to the attacker's money
+			if {party.%attacker%} is set:
+				loop {%{party.%attacker%}%.members::}:
+					if loop-value is not the attacker:
+						if {quests.%loop-value%::Beta Test - Monster Hunting} is not 999:
+							if {quests.%loop-value%::Beta Test - Monster Hunting} is set:
+								setQuestProgress(loop-value,"Beta Test - Monster Hunting",{quests.%loop-value%::Beta Test - Monster Hunting} + 1,"%{quests.%loop-value%::Beta Test - Monster Hunting%/50 monsters slain.")
+								if {quests.%loop-value%::Beta Test - Monster Hunting} is 51:
+									finishQuest(loop-value,"Beta Test - Monster Hunting","+2,000,000 Gold earned.")
+									add 2000000 to loop-value's money
+
 on join:
-	if {questbook.%player%} is not set:
+	if {betaTestActive} is set:
+		loop {playedBeta::*}:
+			if loop-value is the player:
+				set {_skip} to true
+				exit 1 loop
+		if {_skip} is not set:
+			add the player to {playedBeta::*}
+			make player execute command "/cheats unlockallthings"
+			give 1 leather helmet to the player
+			give 1 leather chestplate to the player
+			give 1 leather leggings to the player
+			give 1 leather boots to the player
+			give 1 wooden sword to the player
+			give 1 book named "<gold>Journal" with lore "<white>A rugged journal good for keeping notes." to the player
+			startQuest(player,"Beta Test - Monster Hunting","A beta test is active! Check the discord for details.")
+	else if {questbook.%player%} is not set:
 		set the player's maximum health to 3
 		set {questbook.%player%} to true
 		teleport the player to location at 718, 63, -1598 in world "GenOne"
 		startQuest(player,"Birth of a Hero","Locate House Aideen in the northwest.")
 		
 #New players have a hidden Miracle perk before creating a character.
-on death of a player:
+on damage of a player:
 	if {quests.%victim%::Birth of a Hero} is not 999:
-		cancel event
+		if final damage is more than or equal to victim's health:
+			cancel event
 		
 command /boah <number>:
 	trigger:

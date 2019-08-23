@@ -83,10 +83,10 @@ command /group <text> [<text=null>]:
 					if loop-value is arg 2:
 						clear {%{party.%player%}%.members::%loop-value%}
 						clear {%{party.%player%}%.members::%loop-index%}
+						send "<yellow>You were kicked from %{party.%player%}%." to {_g}
 						exit 1 loop
 				loop {%{party.%player%}%.members::*}:
 					send "<yellow>%player% has been kicked from your group." to loop-value
-				send "<yellow>You were kicked from %{party.%player%}%."
 				clear {party.%arg 2%}
 			else:
 				send "<light red>That player isn't a member of your group!"

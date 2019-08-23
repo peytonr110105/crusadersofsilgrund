@@ -208,11 +208,38 @@ command /charsetup [<number=0>] [<number=0>]:
 				set slot 5 of the player's current inventory to 1 diamond sword named "<purple>Infernal" with lore "<white>Your skills will be pushed to their absolute limits.", "<white><bold>Damage dealt decreased by 0.25x.", "<white><bold>Damage received increased by 5x.", "<gold>Bonus EXP and Gold will be earned!"
 				if {generation.%player%} is more than 1:
 					set slot 9 of the player's current inventory to 1 book named "<gold>Difficulty Modifiers" with lore "<white>This row contains toggleable modifiers to spice up your play.", "<white>Some toggles may be incompatible with others."
-					set slot 10 of the player's current inventory to 1 gold sword named "<light yellow>Thracian" with lore "<white>A toggleable mode that adds a hidden Avoid stat, allowing units to dodge attacks."
+					set slot 16 of the player's current inventory to 1 book named "<gold>Active Toggles"
+					if {thraciamode.%player%} is true:
+						set slot 10 of the player's current inventory to 1 emerald block named "<light yellow>Thracian" with lore "<white>A toggleable mode that adds a hidden Avoid stat, allowing units to dodge attacks."
+						set the 1st line of the lore of slot 16 of the player's current inventory to "<light yellow>Thracian: Enabled"
+					else:
+						set slot 10 of the player's current inventory to 1 gold sword named "<light yellow>Thracian" with lore "<white>A toggleable mode that adds a hidden Avoid stat, allowing units to dodge attacks."
 				if {mqComplete.%player%} is 1:
-					set slot 11 of the player's current inventory to 1 diamond sword of sharpness 10 named "<gold><bold>Legendary Holy Knight" with lore "<white>Enemies' levels are increased by +10.", "<white>All monsters have a 25%% chance to split into two more monsters when killed."
-					set slot 12 of the player's current inventory to 1 fire charge named "<purple><bold>All Will Rot" with lore "<white>Spawned monsters will be automatically upgraded to their Purgia-class counterparts."
-					set slot 13 of the player's current inventory to 1 fishing rod named "<purple><bold>Reversal" with lore "<white>All monsters gain a hidden Vantage perk."
+					if {legholyknightmode.%player%} is true:
+						set slot 11 of the player's current inventory to 1 emerald block named "<gold><bold>Legendary Holy Knight" with lore "<white>Enemies' levels are increased by +10.", "<white>All monsters have a 25%% chance to split into two more monsters when killed."
+						set the 2nd line of the lore of slot 16 of the player's current inventory to "<gold>Legendary Holy Knight: Enabled"
+					else:
+						set slot 11 of the player's current inventory to 1 diamond sword of sharpness 10 named "<gold><bold>Legendary Holy Knight" with lore "<white>Enemies' levels are increased by +10.", "<white>All monsters have a 25%% chance to split into two more monsters when killed."
+					if {allwillrotmode.%player%} is true:
+						set slot 12 of the player's current inventory to 1 emerald block named "<purple><bold>All Will Rot" with lore "<white>Spawned monsters will be automatically upgraded to their Purgia-class counterparts."
+						set the 3rd line of the lore of slot 16 of the player's current inventory to "<purple>All Will Rot: Enabled"
+					else:
+						set slot 12 of the player's current inventory to 1 fire charge named "<purple><bold>All Will Rot" with lore "<white>Spawned monsters will be automatically upgraded to their Purgia-class counterparts."
+					if {reversalmode.%player%} is true:
+						set slot 13 of the player's current inventory to 1 emerald block named "<purple><bold>Reversal" with lore "<white>All monsters gain a hidden Vantage perk."
+						set the 4th line of the lore of slot 16 of the player's current inventory to "<purple>Reversal: Enabled"
+					else:
+						set slot 13 of the player's current inventory to 1 fishing rod named "<purple><bold>Reversal" with lore "<white>All monsters gain a hidden Vantage perk."
+					if {nogrowths.%player%} is true:
+						set slot 14 of the player's current inventory to 1 emerald block named "<light green><bold>0%% Growths" with lore "<white>Growth Rates for all stats will be set to 0%%."
+						set the 5th line of the lore of slot 16 of the player's current inventory to "<light green>0%% Growths: Enabled"
+					else:
+						set slot 14 of the player's current inventory to 1 barrier named "<light green><bold>0%% Growths" with lore "<white>Growth Rates for all stats will be set to 0%%."
+					if {negativegrowths.%player%} is true:
+						set slot 15 of the player's current inventory to 1 emerald block named "<light blue><bold>Negative Growths" with lore "<white>Growth Rates will be inverted.","<white>Stats will DECREASE when they would normally increase.","<white>Promotions and stat-boosting items are unaffected."
+						set the 5th line of the lore of slot 16 of the player's current inventory to "<light blue>Negative Growths: Enabled"
+					else:
+						set slot 15 of the player's current inventory to 1 stick named "<light blue><bold>Negative Growths" with lore "<white>Growth Rates will be inverted.","<white>Stats will DECREASE when they would normally increase.","<white>Promotions and stat-boosting items are unaffected."
 				set slot 17 to 1 red glass pane named "<white><bold>Go Back"
 			else if arg 2 is 2:
 				open chest with 1 row named "<gold><bold>Elite Mode Toggle" for the player
@@ -285,7 +312,7 @@ on inventory click:
 			set {spd.%player%} to ({pts_SPD.%player%} / 5)
 			set {res.%player%} to ({pts_MAG.%player%} / 5)
 			set {promotionready.%player%} to 1
-			make player execute command "/class promote Journeyman"
+			make player execute command "/class promote %{class.%player%}%"
 	else if the name of the player's current inventory is "<gold><bold>Character Configuration":
 		cancel event
 		#Stats
@@ -385,7 +412,45 @@ on inventory click:
 				set slot 16 of the player's current inventory to 1 potion of healing named "<light green>Assist Type" with lore "<white>Click to cycle between Bleedout, Last Stand, or no assists.", "<white>Assist Type: None"
 	#Difficulty
 	else if the name of the player's current inventory is "<gold><bold>Select Difficulty":
-		
+		play sound "ui.button.click" with volume 1 and pitch 1 at the player for the player
+		if the name of the clicked item contains "Relaxed":
+			set {perdiff.%player%} to 0
+		else if the name of the clicked item contains "Normal":
+			set {perdiff.%player%} to 2
+		else if the name of the clicked item contains "Hard":
+			set {perdiff.%player%} to 3
+		else if the name of the clicked item contains "Lunatic":
+			set {perdiff.%player%} to 4
+		else if the name of the clicked item contains "Infernal":
+			set {perdiff.%player%} to 5
+		else if the name of the clicked item contains "Thracian":
+			if {thraciamode.%player%} is not set:
+				set {thraciamode.%player%} to true
+				set slot 10 of the player's current inventory to 1 emerald block named "<light yellow>Thracian" with lore "<white>A toggleable mode that adds a hidden Avoid stat, allowing units to dodge attacks."
+			else:
+				set slot 10 of the player's current inventory to 1 gold sword named "<light yellow>Thracian" with lore "<white>A toggleable mode that adds a hidden Avoid stat, allowing units to dodge attacks."
+				clear {thraciamode.%player%}
+		else if the name of the clicked item contains "Holy Knight":
+			if {legholyknightmode.%player%} is not set:
+				set {legholyknightmode.%Player%} to true
+			else:
+				set slot 11 of the player's current inventory to 1 emerald block named "<gold><bold>Legendary Holy Knight" with lore "<white>Enemies' levels are increased by +10.", "<white>All monsters have a 25%% chance to split into two more monsters when killed."
+				clear {legholyknightmode.%player%}
+		else if the name of the clicked item contains "Rot"
+			if {allwillrotmode.%player%} is not set:
+				set {allwillrotmode.%player%} to true
+				set slot 12 of the player's current inventory to 1 emerald block named "<purple><bold>All Will Rot" with lore "<white>Spawned monsters will be automatically upgraded to their Purgia-class counterparts."
+			else:
+				set slot 12 of the player's current inventory to 1 fire charge named "<purple><bold>All Will Rot" with lore "<white>Spawned monsters will be automatically upgraded to their Purgia-class counterparts."
+				clear {allwillrotmode.%player%}
+		else if the name of the clicked item contains "Reversal":
+			if {reversalmode.%player%} is not set:
+				set {reversalmode.%player%} to true
+				set slot 13 of the player's current inventory to 1 emerald block named "<purple><bold>Reversal" with lore "<white>All monsters gain a hidden Vantage perk."
+			else:
+				clear {reversalmode.%player%}
+				set slot 13 of the player's current inventory to 1 fishing rod named "<purple><bold>Reversal" with lore "<white>All monsters gain a hidden Vantage perk."
+		make player execute command "/charsetup 2 1"
 	#HP Config
 	else if the name of the player's current inventory is "<gold><bold>HP Configuration":
 		if the name of the clicked item is "<bold>Go Back":
@@ -501,6 +566,25 @@ on inventory click:
 				add 10 to {pts_MAG.%player%}
 				set slot 4 of the player's current inventory to 1 emerald named "<white><bold>MAG" with lore "<white>Points Invested:", "<white>%{pts_MAG.%player%}%"
 				set slot 8 of the player's current inventory to 1 diamond named "<white><bold>Points to spend:" with lore "<gold><bold>%{csetup_pts.%player%}%"
+	#Class Selecting
+	else if the name of the player's current inventory is "<gold><bold>Select Class":
+		play sound "ui.button.click" with volume 1 and pitch 1 at the player for the player
+		if the name of the clicked item contains "Mercenary":
+			set {class.%player%} to "Mercenary"
+		else if the name of the clicked item contains "Knight":
+			set {class.%player%} to "Knight"
+		else if the name of the clicked item contains "Bladesman":
+			set {class.%player%} to "Bladesman"
+		else if the name of the clicked item contains "Fighter":
+			set {class.%player%} to "Fighter"
+		else if the name of the clicked item contains "Mage":
+			set {class.%player%} to "Mage"
+		else if the name of the clicked item contains "Cleric":
+			set {class.%player%} to "Cleric"
+		else if the name of the clicked item contains "Archer":
+			set {class.%player%} to "Archer"
+		else if the name of the clicked item contains "Cavalier":
+			set {class.%player%} to "Cavalier"
 		
 #MARKER - Cosmetics
 
