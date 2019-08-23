@@ -199,18 +199,21 @@ command /charsetup [<number=0>] [<number=0>]:
 				set slot 7 of the player's current inventory to 1 music disc 13 named "<orange><bold>Prayer Ring" with lore "<white>While in your inventory:", "<orange>Attacks while below 50%% health will always be critical hits."
 				set slot 8 of the player's current inventory to 1 music disc cat named "<green><bold>Pursuit Ring" with lore "<white>While in your inventory:", "<green>Automatically perform a follow-up attack in combat.", "<green>Auto follow-ups deal 50%% less damage."
 			else if arg 2 is 1:
-				open chest with 1 row named "<gold><bold>Select Difficulty" for the player
-				set slot 0 of the player's current inventory to 1 wooden sword named "<light green>Relaxed" with lore "<white>A laid-back mode for casual play.", "<white><bold>Damage dealt increased by 1.5x.", "<white><bold>Damage received reduced by 0.5x."
-				set slot 1 of the player's current inventory to 1 stone sword named "<light gray>Normal" with lore "<white>The default Minecraft difficulty."
-				set slot 2 of the player's current inventory to 1 iron sword named "<light red>Hard" with lore "<white>Recommended for fast and responsive gameplay.", "<white><bold>Damage dealt decreased by 0.5x.", "<white><bold>Damage received increased by 1.5x.", "<gold>Bonus EXP and Gold will be earned!"
-				set slot 3 of the player's current inventory to 1 gold sword named "<red>Lunatic" with lore "<white>Recommended only for masters of combat and survival.", "<white><bold>Damage dealt decreased by 0.25x.", "<white><bold>Damage received increased by 3x.", "<gold>Bonus EXP and Gold will be earned!"
+				open chest with 2 rows named "<gold><bold>Select Difficulty" for the player
+				set slot 0 of the player's current inventory to 1 book named "<gold>Difficulty Modes" with lore "<white>This row of modes selects your core difficulty.", "<white>This will tweak damage dealt/recieved,", "<white>and determine how much bonus EXP/Gold you can recieve."
+				set slot 1 of the player's current inventory to 1 wooden sword named "<light green>Relaxed" with lore "<white>A laid-back mode for casual play.", "<white><bold>Damage dealt increased by 1.5x.", "<white><bold>Damage received reduced by 0.5x."
+				set slot 2 of the player's current inventory to 1 stone sword named "<light gray>Normal" with lore "<white>The default Minecraft difficulty."
+				set slot 3 of the player's current inventory to 1 iron sword named "<light red>Hard" with lore "<white>Recommended for fast and responsive gameplay.", "<white><bold>Damage dealt decreased by 0.5x.", "<white><bold>Damage received increased by 1.5x.", "<gold>Bonus EXP and Gold will be earned!"
+				set slot 4 of the player's current inventory to 1 gold sword named "<red>Lunatic" with lore "<white>Recommended only for masters of combat and survival.", "<white><bold>Damage dealt decreased by 0.25x.", "<white><bold>Damage received increased by 3x.", "<gold>Bonus EXP and Gold will be earned!"
+				set slot 5 of the player's current inventory to 1 diamond sword named "<purple>Infernal" with lore "<white>Your skills will be pushed to their absolute limits.", "<white><bold>Damage dealt decreased by 0.25x.", "<white><bold>Damage received increased by 5x.", "<gold>Bonus EXP and Gold will be earned!"
 				if {generation.%player%} is more than 1:
-					set slot 4 of the player's current inventory to 1 gold sword named "<light yellow>Thracian" with lore "<white>A specialty mode that adds a hidden AVOID stat, allowing units to dodge attacks.", "<gold>Bonus EXP and Gold will be earned!"
-					set slot 5 of the player's current inventory to 1 gold sword named "<yellow>Lunatic Thracian" with lore "<white>Thracian mode with the Lunatic damage modifiers.", "<gold>Bonus EXP and Gold will be earned."
+					set slot 9 of the player's current inventory to 1 book named "<gold>Difficulty Modifiers" with lore "<white>This row contains toggleable modifiers to spice up your play.", "<white>Some toggles may be incompatible with others."
+					set slot 10 of the player's current inventory to 1 gold sword named "<light yellow>Thracian" with lore "<white>A toggleable mode that adds a hidden Avoid stat, allowing units to dodge attacks."
 				if {mqComplete.%player%} is 1:
-					set slot 6 of the player's current inventory to 1 diamond sword named "<light purple>Infernal" with lore "<white>"
-					set slot 7 of the player's current inventory to 1 diamond sword named "<gold><bold>Legendary Holy Knight" with lore "<white>Your skills will be pushed to their limits.", "<white><bold>Damage dealt decreased by 0.25x.", "<white><bold>Damage received increased by 5x.", "<light red><bold>Enemies will scale more aggressively to your level!", "<gold>Bonus EXP and Gold will be earned!"
-				set slot 8 to 1 red glass pane named "<white><bold>Go Back"
+					set slot 11 of the player's current inventory to 1 diamond sword of sharpness 10 named "<gold><bold>Legendary Holy Knight" with lore "<white>Enemies' levels are increased by +10.", "<white>All monsters have a 25%% chance to split into two more monsters when killed."
+					set slot 12 of the player's current inventory to 1 fire charge named "<purple><bold>All Will Rot" with lore "<white>Spawned monsters will be automatically upgraded to their Purgia-class counterparts."
+					set slot 13 of the player's current inventory to 1 fishing rod named "<purple><bold>Reversal" with lore "<white>All monsters gain a hidden Vantage perk."
+				set slot 17 to 1 red glass pane named "<white><bold>Go Back"
 			else if arg 2 is 2:
 				open chest with 1 row named "<gold><bold>Elite Mode Toggle" for the player
 				set slot 0 of the player's current inventory to 1 book named "<light blue>Information" with lore "<white>Elite mode boosts XP gained for kills.", "<white>If you feel that level-ups are too slow,", "<white>enable Elite Mode.", "<white>Click the wool to toggle Elite Mode."
