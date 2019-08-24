@@ -232,6 +232,8 @@ on right click on an entity:
 			apply regeneration 3 to the player for 2 seconds
 		heal the target by ceil((({res.%player%} / 10) / 2) + 2)
 		add 1 to {weaponrank.%player%::staves}
+		if {prfWeaponType.%player%} is 5:
+			add 0.5 to {weaponrank.%player%::staves}
 		staffRank(player,target)
 #Mend
 	else if the name of the player's tool contains "<yellow><bold>Mend":
@@ -243,6 +245,8 @@ on right click on an entity:
 			apply regeneration 3 to the player for 4 seconds
 		heal the target by ceil((({res.%player%} / 10) / 2) + 2)
 		add 2 to {weaponrank.%player%::staves}
+		if {prfWeaponType.%player%} is 5:
+			add 1 to {weaponrank.%player%::staves}
 		staffRank(player,target)
 #Rehabilitate
 	else if the name of the player's tool contains "<yellow><bold>Rehabilitate":
@@ -254,6 +258,8 @@ on right click on an entity:
 			apply regeneration 3 to the player for 6 seconds
 		heal the target by ceil((({res.%player%} / 10) / 2) + 2)
 		add 3 to {weaponrank.%player%::staves}
+		if {prfWeaponType.%player%} is 5:
+			add 1.5 to {weaponrank.%player%::staves}
 		staffRank(player,target)
 #Wrys
 	else if the name of the player's tool contains "<yellow><bold>Wrys":
@@ -265,6 +271,8 @@ on right click on an entity:
 			apply regeneration 4 to the player for 6 seconds
 		heal the target by ceil((({res.%player%} / 10) / 2) + 2)
 		add 3.5 to {weaponrank.%player%::staves}
+		if {prfWeaponType.%player%} is 5:
+			add 1.75 to {weaponrank.%player%::staves}
 		staffRank(player,target)
 #Imbue
 	else if the name of the player's tool contains "<yellow><bold>Imbue":
@@ -276,6 +284,8 @@ on right click on an entity:
 			apply regeneration 3 to the player for 8 seconds
 		heal the target by ceil((({res.%player%} / 10) / 2) + 2)
 		add 4 to {weaponrank.%player%::staves}
+		if {prfWeaponType.%player%} is 5:
+			add 2 to {weaponrank.%player%::staves}
 		staffRank(player,target)
 #Physic
 	else if the name of the player's tool contains "<yellow><bold>Physic":
@@ -288,6 +298,8 @@ on right click on an entity:
 			apply regeneration 3 to the player for 9 seconds
 		heal the target by ceil((({res.%player%} / 10) / 2) + 2)
 		add 4.5 to {weaponrank.%player%::staves}
+		if {prfWeaponType.%player%} is 5:
+			add 2.25 to {weaponrank.%player%::staves}
 		staffRank(player,target)
 #Renewal
 	else if the name of the player's tool contains "<yellow><bold>Renewal":
@@ -299,6 +311,8 @@ on right click on an entity:
 			apply regeneration 3 to the player for 11 seconds
 		heal the target by ceil((({res.%player%} / 10) / 2) + 2)
 		add 5 to {weaponrank.%player%::staves}
+		if {prfWeaponType.%player%} is 5:
+			add 2.5 to {weaponrank.%player%::staves}
 		staffRank(player,target)
 #Miracle
 	else if the name of the player's tool contains "<yellow><bold>Miracle":
@@ -310,6 +324,8 @@ on right click on an entity:
 			apply regeneration 3 to the player for 14 seconds
 		heal the target by ceil((({res.%player%} / 10) / 2) + 2)
 		add 6 to {weaponrank.%player%::staves}
+		if {prfWeaponType.%player%} is 5:
+			add 3 to {weaponrank.%player%::staves}
 		staffRank(player,target)
 #Aum
 	else if the name of the player's tool contains "<yellow><bold>Aum":
@@ -322,8 +338,10 @@ on right click on an entity:
 			apply regeneration 4 to the player for 15 seconds
 		heal the target by ceil((({res.%player%} / 10) / 2) + 2)
 		add 7 to {weaponrank.%player%::staves}
+		if {prfWeaponType.%player%} is 5:
+			add 4.5 to {weaponrank.%player%::staves}
 		staffRank(player,target)
-#Restore
+#Physic
 	else if the name of the player's tool contains "<yellow><bold>Physic":
 		apply regeneration 3 to the target for 5 seconds
 		damage player's tool by 35
@@ -336,7 +354,9 @@ on right click on an entity:
 		if {_checkSlots} is 1:
 			apply regeneration 3 to the player for 5 seconds
 		heal the target by ceil((({res.%player%} / 10) / 2) + 2)
-		add 4.5 to {weaponrank.%player%::staves}
+		add 5 to {weaponrank.%player%::staves}
+		if {prfWeaponType.%player%} is 5:
+			add 2.5 to {weaponrank.%player%::staves}
 		staffRank(player,target)
 #Fortify
 	else if the name of the player's tool contains "<yellow><bold>Fortify":
@@ -350,6 +370,8 @@ on right click on an entity:
 			apply resistance 3 to the player for 30 seconds
 		heal the target by ceil((({res.%player%} / 10) / 2) + 2)
 		add 5 to {weaponrank.%player%::staves}
+		if {prfWeaponType.%player%} is 5:
+			add 2.5 to {weaponrank.%player%::staves}
 		staffRank(player,target)
 #Hasten
 	else if the name of the player's tool contains "<yellow><bold>Hasten":
@@ -363,6 +385,8 @@ on right click on an entity:
 			apply swiftness 3 to the player for 15 seconds
 		heal the target by ceil((({res.%player%} / 10) / 2) + 2)
 		add 5 to {weaponrank.%player%::staves}
+		if {prfWeaponType.%player%} is 5:
+			add 2.5 to {weaponrank.%player%::staves}
 		staffRank(player,target)
 #Enrage
 	else if the name of the player's tool contains "<yellow><bold>Enrage":
@@ -376,4 +400,6 @@ on right click on an entity:
 			apply strength 3 to the player for 15 seconds
 		heal the target by ceil((({res.%player%} / 10) / 2) + 2)
 		add 5 to {weaponrank.%player%::staves}
+		if {prfWeaponType.%player%} is 5:
+			add 2.5 to {weaponrank.%player%::staves}
 		staffRank(player,target)

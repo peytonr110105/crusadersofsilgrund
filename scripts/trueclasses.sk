@@ -22,6 +22,8 @@ on join:
 	if {class.%player%} is not set:
 		set the player's level to 1
 		set {lvl.%player%} to 1
+		set {ctoggle.%player%} to 1
+		set {generation.%player%} to 1
 		set {class.%player%} to "Freelancer"
 		set {weapongrade.%player%::swords} to "E"
 		set {weapongrade.%player%::lances} to "E"
@@ -186,6 +188,27 @@ command /charsetup [<number=0>] [<number=0>]:
 				set slot 4 of the player's current inventory to 1 emerald named "<white><bold>MAG" with lore "<white>Points Invested:", "<white>%{pts_MAG.%player%}%"
 				set slot 6 of the player's current inventory to 1 green wool named "<bold>Add 10 Points"
 				set slot 8 of the player's current inventory to 1 diamond named "<white><bold>Points to spend:" with lore "<gold><bold>%{csetup_pts.%player%}%"
+			else if arg 2 is 8:
+				open chest with 1 row named "<gold><bold>Preferred Weapon" for the player
+				set slot 0 of the player's current inventory to 1 iron sword named "<bold>Swords" with lore "<white>A classic weapon with unmatched versatility.", "<white>The best at crowd control."
+				set slot 1 of the player's current inventory to 1 iron axe named "<bold>Axes" with lore "<white>A slow, but powerful single-hit weapon.", "<white>Highest single-target damage."
+				set slot 2 of the player's current inventory to 1 iron shovel named "<bold>Lances" with lore "<white>A low damage, but versatile melee and ranged weapon.", "<white>Can be thrown with right-click."
+				set slot 3 of the player's current inventory to 1 bow named "<bold>Bows" with lore "<white>A classic weapon for ranged combat.", "<white>Well-balanced accuracy, range, and ease of use."
+				set slot 4 of the player's current inventory to 1 blaze rod named "<bold>Magic" with lore "<white>Arcane spells with a variety of effects.", "<white>Highy-damaging, but with long cooldowns.","<white>Requires specific classes to wield."
+				set slot 5 of the player's current inventory to 1 iron hoe named "<bold>Staves" with lore "<white>Magical staves with healing properties.", "<white>Cannot deal damage, but instead heals allies.","<white>Only Clerics may wield these."
+				if {prfWeaponType.%player%} is 0:
+					set slot 7 of the player's current inventory to 1 iron sword named "<gold>Your Preferred Weapon: Swords"
+				else if {prfWeaponType.%player%} is 1:
+					set slot 7 of the player's current inventory to 1 iron axe named "<gold>Your Preferred Weapon: Axes"
+				else if {prfWeaponType.%player%} is 2:
+					set slot 7 of the player's current inventory to 1 iron shovel named "<gold>Your Preferred Weapon: Lances"
+				else if {prfWeaponType.%player%} is 3:
+					set slot 7 of the player's current inventory to 1 bow named "<gold>Your Preferred Weapon: Bows"
+				else if {prfWeaponType.%player%} is 4:
+					set slot 7 of the player's current inventory to 1 blaze rod named "<gold>Your Preferred Weapon: Magic"
+				else if {prfWeaponType.%player%} is 5:
+					set slot 7 of the player's current inventory to 1 iron hoe named "<gold>Your Preferred Weapon: Staves"
+				set slot 8 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
 		if arg 1 is 2:
 			if arg 2 is 0:
 				open chest with 2 rows named "<gold><bold>Select a ring." for the player
@@ -206,6 +229,16 @@ command /charsetup [<number=0>] [<number=0>]:
 				set slot 3 of the player's current inventory to 1 iron sword named "<light red>Hard" with lore "<white>Recommended for fast and responsive gameplay.", "<white><bold>Damage dealt decreased by 0.5x.", "<white><bold>Damage received increased by 1.5x.", "<gold>Bonus EXP and Gold will be earned!"
 				set slot 4 of the player's current inventory to 1 gold sword named "<red>Lunatic" with lore "<white>Recommended only for masters of combat and survival.", "<white><bold>Damage dealt decreased by 0.25x.", "<white><bold>Damage received increased by 3x.", "<gold>Bonus EXP and Gold will be earned!"
 				set slot 5 of the player's current inventory to 1 diamond sword named "<purple>Infernal" with lore "<white>Your skills will be pushed to their absolute limits.", "<white><bold>Damage dealt decreased by 0.25x.", "<white><bold>Damage received increased by 5x.", "<gold>Bonus EXP and Gold will be earned!"
+				if {perdiff.%player%} is 0:
+					set slot 8 of the player's current inventory to 1 book named "<light green>Difficulty Selected: Relaxed"
+				else if {perdiff.%player%} is 2:
+					set slot 8 of the player's current inventory to 1 book named "<light gray>Difficulty Selected: Normal"
+				else if {perdiff.%player%} is 3:
+					set slot 8 of the player's current inventory to 1 book named "<light red>Difficulty Selected: Hard"
+				else if {perdiff.%player%} is 4:
+					set slot 8 of the player's current inventory to 1 book named "<red>Difficulty Selected: Lunatic"
+				else if {perdiff.%player%} is 5:
+					set slot 8 of the player's current inventory to 1 book named "<purple>Difficulty Selected: Infernal"
 				if {generation.%player%} is more than 1:
 					set slot 9 of the player's current inventory to 1 book named "<gold>Difficulty Modifiers" with lore "<white>This row contains toggleable modifiers to spice up your play.", "<white>Some toggles may be incompatible with others."
 					set slot 16 of the player's current inventory to 1 book named "<gold>Active Toggles"
@@ -240,7 +273,7 @@ command /charsetup [<number=0>] [<number=0>]:
 						set the 5th line of the lore of slot 16 of the player's current inventory to "<light blue>Negative Growths: Enabled"
 					else:
 						set slot 15 of the player's current inventory to 1 stick named "<light blue><bold>Negative Growths" with lore "<white>Growth Rates will be inverted.","<white>Stats will DECREASE when they would normally increase.","<white>Promotions and stat-boosting items are unaffected."
-				set slot 17 to 1 red glass pane named "<white><bold>Go Back"
+				set slot 17 of the player's current inventory to 1 red glass pane named "<white><bold>Go Back"
 			else if arg 2 is 2:
 				open chest with 1 row named "<gold><bold>Elite Mode Toggle" for the player
 				set slot 0 of the player's current inventory to 1 book named "<light blue>Information" with lore "<white>Elite mode boosts XP gained for kills.", "<white>If you feel that level-ups are too slow,", "<white>enable Elite Mode.", "<white>Click the wool to toggle Elite Mode."
@@ -248,7 +281,7 @@ command /charsetup [<number=0>] [<number=0>]:
 					set slot 4 of the player's current inventory to 1 red wool named "<light red>Elite Mode" with lore "<light red>Elite mode is currently OFF."
 				else:
 					set slot 4 of the player's current inventory to 1 blue wool named "<light blue>Elite Mode" with lore "<light blue>Elite mode is currently ON."
-				if {currentGen.%player%} is not 1:
+				if {generation.%player%} is not 1:
 					set slot 8 of the player's current inventory to 1 green glass pane named "<light green>Confirm Character" with lore "<light green>Finishes all required character setup."
 				else:
 					set slot 8 of the player's current inventory to 1 green glass pane named "<light green>Select Class" with lore "<light green>Select your class, adjusting stat growths and weapon proficiency."
@@ -291,6 +324,8 @@ on inventory click:
 			else:
 				clear {elitemode.%player%}
 				set slot 4 of the player's current inventory to 1 red wool named "<light red>Elite Mode" with lore "<light red>Elite mode is currently OFF."
+		else if the name of the clicked item contains "Select Class":
+			make player execute command "/charsetup 2 3"
 		else if the name of the clicked item is "<light green>Confirm Character":
 			close the player's inventory
 			set {pts_HP.%player%} to ({pts_HP.%player%} / 2)
@@ -334,7 +369,7 @@ on inventory click:
 		else if the name of the clicked item contains "MAG":
 			play sound "ui.button.click" with volume 1 and pitch 1 at the player for the player
 			make player execute command "/charsetup 1 6"
-		else if the name of the clicked item contains "Reset":
+		else if the name of the clicked item is "<green><bold>Reset Points":
 			play sound "ui.button.click" with volume 0.25 and pitch 1 at the player for the player
 			play sound "entity.zombie_villager.cure" with volume 0.5 and pitch 1 at the player for the player
 			set {csetup_pts.%player%} to ({generation.%player%} * 120) + 120
@@ -365,11 +400,11 @@ on inventory click:
 			play sound "ui.button.click" with volume 0.25 and pitch 1 at the player for the player
 			make player execute command "/charsetup 1 7"
 		#PRF Weapon
-		else if the name of the clicked item is "<light green>Preferred Weapon":
+		else if the name of the clicked item contains "Preferred Weapon":
 			play sound "ui.button.click" with volume 0.25 and pitch 1 at the player for the player
 			make player execute command "/charsetup 1 8"
 		#Dodge Roll
-		else if the name of the clicked item is "<green>Dodge Rolling":
+		else if the name of the clicked item contains "Dodge Rolling":
 			play sound "ui.button.click" with volume 0.25 and pitch 1 at the player for the player
 			if {drenable.%player%} is 1:
 				clear {dr.%player%}
@@ -410,19 +445,42 @@ on inventory click:
 				clear {bhealth.%player%}
 				clear {farewells.%player%}
 				set slot 16 of the player's current inventory to 1 potion of healing named "<light green>Assist Type" with lore "<white>Click to cycle between Bleedout, Last Stand, or no assists.", "<white>Assist Type: None"
+	#PRF Weapon
+	else if the name of the player's current inventory is "<gold><bold>Preferred Weapon":
+		cancel event
+		if the name of the clicked item contains "Swords":
+			set {prfWeaponType.%player%} to 0
+		else if the name of the clicked item contains "Axes":
+			set {prfWeaponType.%player%} to 1
+		else if the name of the clicked item contains "Lances":
+			set {prfWeaponType.%player%} to 2
+		else if the name of the clicked item contains "Bows":
+			set {prfWeaponType.%player%} to 3
+		else if the name of the clicked item contains "Magic":
+			set {prfWeaponType.%player%} to 4
+		else if the name of the clicked item contains "Staves":
+			set {prfWeaponType.%player%} to 5
+		else if the name of the clicked item contains "Go Back":
+			make player execute command "/charsetup 1 0"
 	#Difficulty
 	else if the name of the player's current inventory is "<gold><bold>Select Difficulty":
+		cancel event
 		play sound "ui.button.click" with volume 1 and pitch 1 at the player for the player
 		if the name of the clicked item contains "Relaxed":
 			set {perdiff.%player%} to 0
+			make player execute command "/charsetup 2 1"
 		else if the name of the clicked item contains "Normal":
 			set {perdiff.%player%} to 2
+			make player execute command "/charsetup 2 1"
 		else if the name of the clicked item contains "Hard":
 			set {perdiff.%player%} to 3
+			make player execute command "/charsetup 2 1"
 		else if the name of the clicked item contains "Lunatic":
 			set {perdiff.%player%} to 4
+			make player execute command "/charsetup 2 1"
 		else if the name of the clicked item contains "Infernal":
 			set {perdiff.%player%} to 5
+			make player execute command "/charsetup 2 1"
 		else if the name of the clicked item contains "Thracian":
 			if {thraciamode.%player%} is not set:
 				set {thraciamode.%player%} to true
@@ -430,19 +488,22 @@ on inventory click:
 			else:
 				set slot 10 of the player's current inventory to 1 gold sword named "<light yellow>Thracian" with lore "<white>A toggleable mode that adds a hidden Avoid stat, allowing units to dodge attacks."
 				clear {thraciamode.%player%}
+			make player execute command "/charsetup 2 1"
 		else if the name of the clicked item contains "Holy Knight":
 			if {legholyknightmode.%player%} is not set:
 				set {legholyknightmode.%Player%} to true
 			else:
 				set slot 11 of the player's current inventory to 1 emerald block named "<gold><bold>Legendary Holy Knight" with lore "<white>Enemies' levels are increased by +10.", "<white>All monsters have a 25%% chance to split into two more monsters when killed."
 				clear {legholyknightmode.%player%}
-		else if the name of the clicked item contains "Rot"
+			make player execute command "/charsetup 2 1"
+		else if the name of the clicked item contains "Rot":
 			if {allwillrotmode.%player%} is not set:
 				set {allwillrotmode.%player%} to true
 				set slot 12 of the player's current inventory to 1 emerald block named "<purple><bold>All Will Rot" with lore "<white>Spawned monsters will be automatically upgraded to their Purgia-class counterparts."
 			else:
 				set slot 12 of the player's current inventory to 1 fire charge named "<purple><bold>All Will Rot" with lore "<white>Spawned monsters will be automatically upgraded to their Purgia-class counterparts."
 				clear {allwillrotmode.%player%}
+			make player execute command "/charsetup 2 1"
 		else if the name of the clicked item contains "Reversal":
 			if {reversalmode.%player%} is not set:
 				set {reversalmode.%player%} to true
@@ -450,7 +511,9 @@ on inventory click:
 			else:
 				clear {reversalmode.%player%}
 				set slot 13 of the player's current inventory to 1 fishing rod named "<purple><bold>Reversal" with lore "<white>All monsters gain a hidden Vantage perk."
-		make player execute command "/charsetup 2 1"
+			make player execute command "/charsetup 2 1"
+		else if the name of the clicked item contains "Go Back":	
+			make player execute command "/charsetup 1 0"
 	#HP Config
 	else if the name of the player's current inventory is "<gold><bold>HP Configuration":
 		if the name of the clicked item is "<bold>Go Back":
@@ -569,6 +632,7 @@ on inventory click:
 	#Class Selecting
 	else if the name of the player's current inventory is "<gold><bold>Select Class":
 		play sound "ui.button.click" with volume 1 and pitch 1 at the player for the player
+		cancel event
 		if the name of the clicked item contains "Mercenary":
 			set {class.%player%} to "Mercenary"
 		else if the name of the clicked item contains "Knight":
@@ -585,6 +649,28 @@ on inventory click:
 			set {class.%player%} to "Archer"
 		else if the name of the clicked item contains "Cavalier":
 			set {class.%player%} to "Cavalier"
+		else if the name of the clicked item is "<light green>Confirm Character":
+			close the player's inventory
+			set {pts_HP.%player%} to ({pts_HP.%player%} / 2)
+			set {pts_STR.%player%} to ({pts_STR.%player%} / 2)
+			set {pts_DEF.%player%} to ({pts_DEF.%player%} / 2)
+			set {pts_SKL.%player%} to ({pts_SKL.%player%} / 2)
+			set {pts_SPD.%player%} to ({pts_SPD.%player%} / 2)
+			set {pts_MAG.%player%} to ({pts_MAG.%player%} / 2)
+			set {hpcap.%player%} to (({pts_HP.%player%} / 5) * 3)
+			set {strcap.%player%} to (({pts_STR.%player%} / 5) * 4)
+			set {defcap.%player%} to (({pts_DEF.%player%} / 5) * 4)
+			set {sklcap.%player%} to (({pts_SKL.%player%} / 5) * 4)
+			set {spdcap.%player%} to (({pts_SPD.%player%} / 5) * 4)
+			set {rescap.%player%} to (({pts_MAG.%player%} / 5) * 4)
+			set {hp.%player%} to ({pts_HP.%player%} / 5)
+			set {str.%player%} to ({pts_STR.%player%} / 5)
+			set {def.%player%} to ({pts_DEF.%player%} / 5)
+			set {skl.%player%} to ({pts_SKL.%player%} / 5)
+			set {spd.%player%} to ({pts_SPD.%player%} / 5)
+			set {res.%player%} to ({pts_MAG.%player%} / 5)
+			set {promotionready.%player%} to 1
+			make player execute command "/class promote %{class.%player%}%"
 		
 #MARKER - Cosmetics
 
@@ -2711,7 +2797,7 @@ command /class <text> [<text="Journeyman">]:
 
 
 on level change:
-	if {ctoggle.%player%} is 1:
+	if player is alive:
 		if player's level is more than {lvl.%player%}:
 			if {lvl.%player%} is less than {lvlcap.%player%}:
 				play sound "entity.player.levelup" with volume 2 and pitch 1 at player for player

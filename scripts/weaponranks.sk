@@ -1,12 +1,8 @@
 #Increases the effectiveness of a specific weapon type the more you use them.
 on damage:
-	set {_tmp} to (20 - {lvl.%attacker%})
+	set {_tmp} to (5 - {lvl.%attacker%})
 	if {_tmp} is less than 1:
 		set {_tmp} to 1
-	#Swords WR
-	chance of ({skl.%attacker%} + {sklbuff.%attacker%} ^ 0.35)%:
-		set damage to damage * 2
-		send "<gold><bold>CRITICAL HIT!" to the attacker
 	if the attacker's tool is a sword:
 		if {weaponrank.%attacker%::swords} is more than or equal to 15000:
 			if {weapongrade.%attacker%::swords} is not "<gold><bold>S":
@@ -43,7 +39,14 @@ on damage:
 				send title "<bold>---===Weapon Rank Up!===---" with subtitle "<bold>Swords increased to D rank." to attacker for 2 seconds with fade in 0.25 seconds and fade out 0.25 seconds
 				set {weapongrade.%attacker%::swords} to "D"
 			set damage to damage + 1
-		add ((final damage * 2) + {_tmp}) to {weaponrank.%attacker%::swords}
+		#Swords Critical
+		chance of ({skl.%attacker%} + {sklbuff.%attacker%} + ({weaponrank.%attacker%::swords} ^ 0.3) ^ 0.25)%:
+			set damage to damage * 2
+			send "<gold><bold>CRITICAL HIT!" to the attacker
+		if {prfWeaponType.%attacker%} is 0:
+			add ceil((final damage * 2.35) + {_tmp}) to {weaponrank.%attacker%::swords}
+		else:
+			add floor((final damage * 2) + {_tmp}) to {weaponrank.%attacker%::swords}
 	#Axes WR
 	else if the attacker's tool is an axe:
 		if {weaponrank.%attacker%::axes} is more than or equal to 15000:
@@ -81,7 +84,14 @@ on damage:
 				send title "<bold>---===Weapon Rank Up!===---" with subtitle "<bold>Axes increased to D rank." to attacker for 2 seconds with fade in 0.25 seconds and fade out 0.25 seconds
 				set {weapongrade.%attacker%::axes} to "D"
 			set damage to damage + 1
-		add ((final damage * 2) + {_tmp}) to {weaponrank.%attacker%::axes}
+		#Axes Critical
+		chance of ({skl.%attacker%} + {sklbuff.%attacker%} + ({weaponrank.%attacker%::axes} ^ 0.3) ^ 0.25)%:
+			set damage to damage * 2
+			send "<gold><bold>CRITICAL HIT!" to the attacker
+		if {prfWeaponType.%attacker%} is 1:
+			add ceil((final damage * 2.35) + {_tmp}) to {weaponrank.%attacker%::axes}
+		else:
+			add floor((final damage * 2) + {_tmp}) to {weaponrank.%attacker%::axes}
 	#Lances WR
 	else if the attacker's tool is a shovel:
 		if {weaponrank.%attacker%::lances} is more than or equal to 15000:
@@ -119,7 +129,14 @@ on damage:
 				send title "<bold>---===Weapon Rank Up!===---" with subtitle "<bold>Lances increased to D rank." to attacker for 2 seconds with fade in 0.25 seconds and fade out 0.25 seconds
 				set {weapongrade.%attacker%::lances} to "D"
 			set damage to damage + 1
-		add ((final damage * 2) + {_tmp}) to {weaponrank.%attacker%::lances}
+		#Lances Critical
+		chance of ({skl.%attacker%} + {sklbuff.%attacker%} + ({weaponrank.%attacker%::lances} ^ 0.3) ^ 0.25)%:
+			set damage to damage * 2
+			send "<gold><bold>CRITICAL HIT!" to the attacker
+		if {prfWeaponType.%attacker%} is 2:
+			add ceil((final damage * 2.35) + {_tmp}) to {weaponrank.%attacker%::lances}
+		else:
+			add floor((final damage * 2) + {_tmp}) to {weaponrank.%attacker%::lances}
 	#Bows WR
 	else if the attacker's tool is a bow:
 		if {weaponrank.%attacker%::bows} is more than or equal to 15000:
@@ -157,7 +174,14 @@ on damage:
 				send title "<bold>---===Weapon Rank Up!===---" with subtitle "<bold>Bows increased to D rank." to attacker for 2 seconds with fade in 0.25 seconds and fade out 0.25 seconds
 				set {weapongrade.%attacker%::bows} to "D"
 			set damage to damage + 1
-		add ((final damage * 2) + {_tmp}) to {weaponrank.%attacker%::bows}
+		#Bows Critical
+		chance of ({skl.%attacker%} + {sklbuff.%attacker%} + ({weaponrank.%attacker%::bows} ^ 0.3) ^ 0.25)%:
+			set damage to damage * 2
+			send "<gold><bold>CRITICAL HIT!" to the attacker
+		if {prfWeaponType.%attacker%} is 3:
+			add ceil((final damage * 2.35) + {_tmp}) to {weaponrank.%attacker%::bows}
+		else:
+			add floor((final damage * 2) + {_tmp}) to {weaponrank.%attacker%::bows}
 	#Magic WR
 	else if the name of the attacker's tool is "<yellow><bold>Magic Wand":
 		if {weaponrank.%attacker%::magic} is more than or equal to 15000:
@@ -195,4 +219,10 @@ on damage:
 				send title "<bold>---===Weapon Rank Up!===---" with subtitle "<bold>Magic increased to D rank." to attacker for 2 seconds with fade in 0.25 seconds and fade out 0.25 seconds
 				set {weapongrade.%attacker%::magic} to "D"
 			set damage to damage + 1
-		add ((final damage * 2) + {_tmp}) to {weaponrank.%attacker%::magic}
+		#Magic Critical
+		chance of ({skl.%attacker%} + {sklbuff.%attacker%} + ({weaponrank.%attacker%::magic} ^ 0.3) ^ 0.25)%:
+			set damage to damage * 2
+			send "<gold><bold>CRITICAL HIT!" to the attacker
+		if {prfWeaponType.%attacker%} is 4:
+			add ceil((final damage * 2.35) + {_tmp}) to {weaponrank.%attacker%::magic}
+		add floor((final damage * 2) + {_tmp}) to {weaponrank.%attacker%::magic}

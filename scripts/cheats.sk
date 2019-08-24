@@ -18,8 +18,8 @@ function setQuestProgress(PLR: player , QUEST: text , STAGE: number, INFO: text)
 function finishQuest(PLR: player , QUEST: text , DESC: text):
 	set {quests.%{_PLR}%::%{_QUEST}%} to 999
 	send title "<gold><bold>Quest Complete: %{_QUEST}%" with subtitle "%{_DESC}%" to {_PLR} for 5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-	play sound "entity.player.levelup" with volume 1 and pitch 0.75 at {_PLR} for {_PLR}
-	play sound "entity.fireworkrocket.twinkle" with volume 1 and pitch 1.5 at {_PLR} for {_PLR}
+	#play sound "entity.player.levelup" with volume 1 and pitch 0.75 at {_PLR} for {_PLR}
+	#play sound "entity.fireworkrocket.twinkle" with volume 1 and pitch 1.5 at {_PLR} for {_PLR}
 	play 60 (firework spark with speed 1) at {_PLR}
 	play 60 (snow shovel with speed 1) at {_PLR}
 	
@@ -58,6 +58,8 @@ command /cheats <text>:
 			finishQuest(player,"Monster Hunt","")
 			finishQuest(player,"Path of the Greats","")
 			finishQuest(player,"The Wizard of House Silgrid","")
+			#set {generation.%player%} to 2
+			set {mqComplete.%player%} to true
 			send "<gold>All items unlocked!"
 		else if arg 1 is "idkfa":
 			set {weapongrade.%player%::swords} to "<gold><bold>S"

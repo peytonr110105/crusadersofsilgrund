@@ -6,11 +6,15 @@
 
 #{betaTestActive} = Determines is the server should change certain settings for testing.
 
-command /enablebetatesting <number>:
+command /setBetaStatus <number>:
+	executable by: players, console
 	trigger:
 		if arg 1 is 0:
+			broadcast "<gold>Server no longer in testing mode! Resuming normal functionality..."
 			set {betaTestActive} to false
+			clear {playedBeta::*}
 		else:
+			broadcast "<gold>Server is now in testing mode!"
 			set {betaTestActive} to true
 
 function getHelmet(PLR: player) :: number:
@@ -111,7 +115,7 @@ function npcChat(PLR: player , TXT: text):
 	send {_TXT} to {_PLR}
 	
 command /setupcheck-gen1:
-	executable by: players, server
+	executable by: players, console
 	trigger:
 		if {quests.%player%::Birth of a Hero} is not 999:
 			teleport the player to location at 790.5, 72, -1718 in world "GenOne"
@@ -129,42 +133,58 @@ on death of a monster:
 				finishQuest(attacker,"Beta Test - Monster Hunting","+2,000,000 Gold earned.")
 				add 2000000 to the attacker's money
 			if {party.%attacker%} is set:
-				loop {%{party.%attacker%}%.members::}:
+				loop {%{party.%attacker%}%.members::*}:
+					#broadcast "%loop-value%"
 					if loop-value is not the attacker:
-						if {quests.%loop-value%::Beta Test - Monster Hunting} is not 999:
-							if {quests.%loop-value%::Beta Test - Monster Hunting} is set:
-								setQuestProgress(loop-value,"Beta Test - Monster Hunting",{quests.%loop-value%::Beta Test - Monster Hunting} + 1,"%{quests.%loop-value%::Beta Test - Monster Hunting%/50 monsters slain.")
-								if {quests.%loop-value%::Beta Test - Monster Hunting} is 51:
-									finishQuest(loop-value,"Beta Test - Monster Hunting","+2,000,000 Gold earned.")
-									add 2000000 to loop-value's money
-
+						if loop-value is online:
+							if {quests.%loop-value%::Beta Test - Monster Hunting} is not 999:
+								if {quests.%loop-value%::Beta Test - Monster Hunting} is set:
+									send title "" with subtitle "%{quests.%loop-value%::Beta Test - Monster Hunting} + 1%/50 monsters slain." to loop-value for 5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+									add 1 to {quests.%loop-value%::Beta Test - Monster Hunting}
+									if {quests.%{_plr}%::Beta Test - Monster Hunting} is 51:
+										set {quests.%loop-value%::Beta Test - Monster Hunting} to 999
+										send title "<gold><bold>Quest Complete: Beta Test - Monster Hunting" with subtitle "+2,000,000 Gold earned." to loop-value for 5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+										add 2000000 to loop-value's money
+										play sound "entity.player.levelup" with volume 1 and pitch 0.75 at loop-value for loop-value
+										play sound "entity.fireworkrocket.twinkle" with volume 1 and pitch 1.5 at loop-value for loop-value
+										play 60 (firework spark with speed 1) at loop-value
+										play 60 (snow shovel with speed 1) at loop-value
+						else:
+							#broadcast "%loop-value% is offline."
 on join:
-	if {betaTestActive} is set:
+	if {betaTestActive} is 1:
 		loop {playedBeta::*}:
 			if loop-value is the player:
 				set {_skip} to true
 				exit 1 loop
 		if {_skip} is not set:
-			add the player to {playedBeta::*}
+			set {generation.%player%} to 1
+			clear the player's inventory
+			#add the player to {playedBeta::*}
 			make player execute command "/cheats unlockallthings"
+			teleport the player to location at 718, 63, -1600 in world "GenOne"
 			give 1 leather helmet to the player
 			give 1 leather chestplate to the player
 			give 1 leather leggings to the player
 			give 1 leather boots to the player
 			give 1 wooden sword to the player
 			give 1 book named "<gold>Journal" with lore "<white>A rugged journal good for keeping notes." to the player
+			set {quests.%player%::Birth of a Hero} to 1
 			startQuest(player,"Beta Test - Monster Hunting","A beta test is active! Check the discord for details.")
+			set the player's maximum health to 3
 	else if {questbook.%player%} is not set:
 		set the player's maximum health to 3
 		set {questbook.%player%} to true
+		set {generation.%player%} to 1
 		teleport the player to location at 718, 63, -1598 in world "GenOne"
 		startQuest(player,"Birth of a Hero","Locate House Aideen in the northwest.")
 		
 #New players have a hidden Miracle perk before creating a character.
 on damage of a player:
-	if {quests.%victim%::Birth of a Hero} is not 999:
-		if final damage is more than or equal to victim's health:
-			cancel event
+	if victim is not npc:
+		if {quests.%victim%::Birth of a Hero} is not 999:
+			if final damage is more than or equal to victim's health:
+				cancel event
 		
 command /boah <number>:
 	trigger:
@@ -236,3 +256,12 @@ on right click on an entity:
 					wait 3 seconds
 					clear {inConvo.%player%}
 					send "<run command:/boah 1><gold>1 - Is this the entrance to House Aideen?" to the player
+					
+on right-click with book:
+	if the name of the player's tool is "<gold>Journal":
+		if {betaTestActive} is true:
+			open chest with 1 row named "<gold>Beta Test Quests" for the player
+			if {quests.%player%::Beta Test - Monster Hunting} is 999:
+				set slot 0 of the player's current inventory to 1 emerald block named "<light green>Beta Test - Monster Hunting" with lore "<white>You killed 50 monsters, and have finished the tests.", "<white>You may retry this quest by reconnecting to the server."
+			else:
+				set slot 0 of the player's current inventory to 1 lapis block named "<light blue>Beta Test - Monster Hunting" with lore "<white>Monsters Slain: %{quests.%player%::Beta Test - Monster Hunting} - 1%/50"
