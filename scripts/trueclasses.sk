@@ -1536,7 +1536,16 @@ command /cstats [<offlineplayer=%player%>] [<number=1>]:
 				send "Deaths: %{deaths.%arg 1%}%"
 				send "Most Damage Dealt in One Hit: %{highestdamage.%arg 1%}%"
 				send "Most Damage Taken in One Hit: %{highestsuffered.%arg 1%}%"
+				send "<run command:/cstats %arg 1% 7><gold>Next Page"
 				send "<run command:/cstats %arg 1% 5><gold>Previous Page"
+			else if arg 2 is 7:
+				send "<gold><bold>%arg 1%'s Supports"
+				if {supportpartner.%arg 1%} is set:
+					send "<light yellow>Support Partner: %{supportpartner.%arg 1%}%"
+					send "<light yellow>Support Rank: %{PTPSupportRank.%arg 1%}%"
+					send "<light yellow>Support Points: %{PTPSupportPoints.%arg 1%}%"
+				else:
+					send "<light gray>%arg 1% isn't supporting anyone."
 				
 				
 #MARKER - Promotion Items

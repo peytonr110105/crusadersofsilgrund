@@ -7,32 +7,215 @@
 #{PTPTradePartner.%player%}: Player <--> Player Trade Partner (Other player being traded with)
 #{PTPTradeReady.%player%}: Player <--> Player Trade Ready (Boolean, sent to trade partner via {PTPTradePartner.%player%})
 
-command /support [<number=0>] <onlineplayer>:
+#Function defs go here
+
+#Buff handler for supports
+function supportBonusHandler(PLR: player, RANK: text):
+	broadcast "<bold>Running Support Handler for %{_PLR}%"
+	#S-Support: +10 all stats
+	if {_RANK} is "S":
+		add 10 to {strbuff.%{_PLR}%}
+		add 10 to {defbuff.%{_PLR}%}
+		add 10 to {spdbuff.%{_PLR}%}
+		add 10 to {sklbuff.%{_PLR}%}
+		add 10 to {resbuff.%{_PLR}%}
+		add 10 to {hpbuff.%{_PLR}%}
+		set {PTPSupportBonusActive.%{_PLR}%} to true
+		wait 1 minecraft hour
+		if {PTPSupportBonusActive.%{_PLR}%} is true:
+			subtract 10 from {strbuff.%{_PLR}%}
+			subtract 10 from {defbuff.%{_PLR}%}
+			subtract 10 from {spdbuff.%{_PLR}%}
+			subtract 10 from {sklbuff.%{_PLR}%}
+			subtract 10 from {resbuff.%{_PLR}%}
+			subtract 10 from {hpbuff.%{_PLR}%}
+			clear {PTPSupportBonusActive.%{_PLR}%}
+	#A-Support: +10 DEF/SKL/MAG/HP/SPD
+	else if {_RANK} is "A":
+		add 10 to {defbuff.%{_PLR}%}
+		add 10 to {sklbuff.%{_PLR}%}
+		add 10 to {resbuff.%{_PLR}%}
+		add 10 to {spdbuff.%{_PLR}%}
+		add 10 to {hpbuff.%{_PLR}%}
+		set {PTPSupportBonusActive.%{_PLR}%} to true
+		wait 1 minecraft hour
+		if {PTPSupportBonusActive.%{_PLR}%} is true:
+			subtract 10 from {defbuff.%{_PLR}%}
+			subtract 10 from {sklbuff.%{_PLR}%}
+			subtract 10 from {resbuff.%{_PLR}%}
+			subtract 10 from {spdbuff.%{_PLR}%}
+			subtract 10 from {hpbuff.%{_PLR}%}
+			clear {PTPSupportBonusActive.%{_PLR}%}
+	#B-Support: +10 DEF/SKL/MAG/HP
+	else if {_RANK} is "B":
+		add 10 to {defbuff.%{_PLR}%}
+		add 10 to {sklbuff.%{_PLR}%}
+		add 10 to {resbuff.%{_PLR}%}
+		add 10 to {hpbuff.%{_PLR}%}
+		set {PTPSupportBonusActive.%{_PLR}%} to true
+		wait 1 minecraft hour
+		if {PTPSupportBonusActive.%{_PLR}%} is true:
+			subtract 10 from {defbuff.%{_PLR}%}
+			subtract 10 from {sklbuff.%{_PLR}%}
+			subtract 10 from {resbuff.%{_PLR}%}
+			subtract 10 from {hpbuff.%{_PLR}%}
+			clear {PTPSupportBonusActive.%{_PLR}%}
+	#C-Support: +10 SKL/MAG/HP
+	else if {_RANK} is "C":
+		add 10 to {sklbuff.%{_PLR}%}
+		add 10 to {resbuff.%{_PLR}%}
+		add 10 to {hpbuff.%{_PLR}%}
+		set {PTPSupportBonusActive.%{_PLR}%} to true
+		wait 1 minecraft hour
+		if {PTPSupportBonusActive.%{_PLR}%} is true:
+			subtract 10 from {sklbuff.%{_PLR}%}
+			subtract 10 from {resbuff.%{_PLR}%}
+			subtract 10 from {hpbuff.%{_PLR}%}
+			clear {PTPSupportBonusActive.%{_PLR}%}
+	#C-Support: +10 SKL/HP
+	else if {_RANK} is "D":
+		add 10 to {sklbuff.%{_PLR}%}
+		set {PTPSupportBonusActive.%{_PLR}%} to true
+		wait 1 minecraft hour
+		if {PTPSupportBonusActive.%{_PLR}%} is true:
+			subtract 10 from {sklbuff.%{_PLR}%}
+			subtract 10 from {hpbuff.%{_PLR}%}
+			clear {PTPSupportBonusActive.%{_PLR}%}
+
+#Hidden Supports configurator command.
+command /support [<number=0>] <player>:
 	trigger:
 		if {supportpartner.%player%} is set:
 			if arg 1 is 0:
 				send "<light red>You're already supporting another player!"
 				send "<light red>You can choose to change your support partner, but your support bonuses and rank will reset."
 				wait 2.5 seconds
-				send "<run command:/support 1 %arg 2%><red>Click here to change your support partner to %arg 2's name%."
+				send "<run command:/support 1 %arg 2%><red>Click here to change your support partner to %arg 2%."
 			else if arg 1 is 1:
-				send "<r
-				#set {supportpartner.%player%} to arg 2
-				#set {PTPSupportRank.%player%} to "D"
-				#set {PTPSupportPoints.%player%} to 0
-				#send "<gold>
+				send "<light yellow>%player% wants to form a support with you!" to arg 2
+				if {supportpartner.%arg 2%} is set:
+					send "<light red>You can accept %player%'s support request, but it will reset your support rank with %{supportpartner.%arg 2%}%." to arg 2
+				send "<run command:/support 2 %player%><gold>Click here to confirm their request and form a support." to arg 2
+			else if arg 1 is 2:
+				send title "<light yellow>Support formed with %arg 2%!" to the player for 1.5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+				send title "<light yellow>Support formed with %player%!" to arg 2 for 1.5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+				if {supportpartner.%player%} is set:
+					send "<light red>%player% disbanded their support with you." to {supportpartner.%player%}
+				if {supportpartner.%arg 2%} is set:
+					send "<light red>%arg 2% disbanded their support with you." to {supportpartner.%arg 2%}
+				clear {PTPSupportRank.%{supportpartner.%player%}%}
+				clear {PTPSupportPoints.%{supportpartner.%player%}%}
+				clear {supportpartner.%{supportpartner.%player%}%}
+				clear {PTPSupportRank.%{supportpartner.%arg 2%}%}
+				clear {PTPSupportPoints.%{supportpartner.%arg 2%}%}
+				clear {supportpartner.%{supportpartner.%arg 2%}%}
+				set {PTPSupportRank.%player%} to "D"
+				set {PTPSupportRank.%arg 2%} to "D"
+				set {PTPSupportPoints.%player%} to 0
+				set {PTPSupportPoints.%arg 2%} to 0
+				set {supportpartner.%player%} to arg 2
+				set {supportpartner.%arg 2%} to the player
 		else:
+			if arg 1 is 0:
+				send "<light yellow>Support request sent to %arg 2%."
+				send "<bold><light yellow>%player% wants to form a support with you!" to arg 2
+				send "<run command:/support 1 %player%><gold>Click here to confirm their request and form a support." to arg 2
+			else if arg 1 is 1:
+				send title "<light yellow>Support formed with %arg 2%!" to the player for 1.5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+				send title "<light yellow>Support formed with %player%!" to arg 2 for 1.5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+				set {PTPSupportRank.%player%} to "D"
+				set {PTPSupportRank.%arg 2%} to "D"
+				set {supportpartner.%player%} to arg 2
+				set {supportpartner.%arg 2%} to the player
+				set {PTPSupportPoints.%player%} to 0
+				set {PTPSupportPoints.%arg 2%} to 0
+				
+#Hidden command to handle whispers.
+command /cos_whisper <player> <text>:
+	trigger:
+		if arg 2 is "SETVAR":
+			send "<bold>Type the message you wish to send to %arg 1%."
+			set {PTPWhisperToggle.%player%} to true
+			set {PTPWhisperTarget.%player%} to arg 1
+		else:
+			send "<bold><italics>%player% whispers:<reset> %arg 2%" to the player
+			send "<bold><italics>%player% whispers:<reset> %arg 2%" to arg 1
+			if {supportpartner.%player%} is arg 2:
+				add 3 to {PTPSupportPoints.%player%}
+				add 3 to {PTPSupportPoints.%arg 2%}
+		
+#Whisper handler		
+on chat:
+	if {PTPWhisperToggle.%player%} is true:
+		cancel event
+		make player execute command "/cos_whisper %{PTPWhisperTarget.%player%}% %chat message%"
+		clear {PTPWhisperTarget.%player%}
+		clear {PTPWhisperToggle.%player%}
+
+#Mob death handler
+on death of a monster:
+	if {supportpartner.%attacker%} is set:
+		if {supportpartner.%attacker%} is online:
+			add 1.5 to {PTPSupportPoints.%attacker%}
+			add 1.5 to {PTPSupportPoints.%{supportpartner.%attacker%}%}
+
+#Increase support level for every in-game hour both players are online.			
+every minecraft hour:
+	loop all players:
+		if {supportpartner.%loop-player%} is set:
+			if {supportpartner.%loop-player%} is online:
+				clear {PTPBlockWhisperSupport.%loop-player%}
+				clear {PTPBlockWhisperSupport.%{supportpartner.%loop-player%}%}
+				add 1.5 to {PTPSupportPoints.%loop-player%}
+				add 1.5 to {PTPSupportPoints.%{supportpartner.%loop-player%}%}
+				if {PTPSupportPoints.%loop-player%} is more than 240:
+					if {PTPSupportRank.%loop-player%} is not "S":
+						set {PTPSupportRank.%loop-player%} to "S"
+						set {PTPSupportRank.%{supportpartner.%loop-player%}%} to "S"
+						send title "<gold>Support Rank increased!" with subtitle "<white>Support with %{supportpartner.%loop-player%}% increased to S." to loop-player for 3.5 seconds with fade in 0.25 seconds and fade out 0.5 seconds
+						send title "<gold>Support Rank increased!" with subtitle "<white>Support with %loop-player% increased to S." to {supportpartner.%loop-player%} for 3.5 seconds with fade in 0.25 seconds and fade out 0.5 seconds
+				else if {PTPSupportPoints.%loop-player%} is more than 180:
+					if {PTPSupportRank.%loop-player%} is not "A":
+						set {PTPSupportRank.%loop-player%} to "A"
+						set {PTPSupportRank.%{supportpartner.%loop-player%}%} to "A"
+						send title "<gold>Support Rank increased!" with subtitle "<white>Support with %{supportpartner.%loop-player%}% increased to A." to loop-player for 3.5 seconds with fade in 0.25 seconds and fade out 0.5 seconds
+						send title "<gold>Support Rank increased!" with subtitle "<white>Support with %loop-player% increased to A." to {supportpartner.%loop-player%} for 3.5 seconds with fade in 0.25 seconds and fade out 0.5 seconds
+				else if {PTPSupportPoints.%loop-player%} is more than 100:
+					if {PTPSupportRank.%loop-player%} is not "B":
+						set {PTPSupportRank.%loop-player%} to "B"
+						set {PTPSupportRank.%{supportpartner.%loop-player%}%} to "B"
+						send title "<gold>Support Rank increased!" with subtitle "<white>Support with %{supportpartner.%loop-player%}% increased to B." to loop-player for 3.5 seconds with fade in 0.25 seconds and fade out 0.5 seconds
+						send title "<gold>Support Rank increased!" with subtitle "<white>Support with %loop-player% increased to B." to {supportpartner.%loop-player%} for 3.5 seconds with fade in 0.25 seconds and fade out 0.5 seconds
+				else if {PTPSupportPoints.%loop-player%} is more than 40:
+					if {PTPSupportRank.%loop-player%} is not "C":
+						set {PTPSupportRank.%loop-player%} to "C"
+						set {PTPSupportRank.%{supportpartner.%loop-player%}%} to "C"
+						send title "<gold>Support Rank increased!" with subtitle "<white>Support with %{supportpartner.%loop-player%}% increased to C." to loop-player for 3.5 seconds with fade in 0.25 seconds and fade out 0.5 seconds
+						send title "<gold>Support Rank increased!" with subtitle "<white>Support with %loop-player% increased to C." to {supportpartner.%loop-player%} for 3.5 seconds with fade in 0.25 seconds and fade out 0.5 seconds
+				supportBonusHandler(loop-player,{PTPSupportRank.%loop-player%})
 	
-	
+#Player2Player interactions handler.
 on right-click on a player:
-	if the player's tool is air:
-		if {inConvo.%player%} is set:
-			send "<light red>%target% is already in a conversation." to the player
-		else:
-			send "<run command:/trade %target%><light blue>Trade with %target's name%" to the player
-			if {supportpartner.%player%} is the target:
-				send "<light yellow>Support Rank: %{PTPSupportRank.%player%}%" to the player
-			else if {supportpartner.%player%} is set:
-				send "<gray>Offer to Support %target's name%" to the player
+	#exclude npcs from p2p
+	if target is not npc:
+		#Player must be unarmed to trigger P2P interactions.
+		if the player's tool is air:
+			#Prevents other players from interrupting NPC dialouge.
+			if {inConvo.%player%} is set:
+				send "<light red>%target% is already in a conversation." to the player
 			else:
-				send "<light yellow>Offer to Support %target's name%." to the player
+				#Offer a trade (Not Implemented)
+				#send "<run command:/trade %target%><light blue>Trade with %target's name%" to the player
+				#Display support rank if the target is being supported by the player.
+				if {supportpartner.%player%} is the target:
+					send "<light yellow>Support Rank: %{PTPSupportRank.%player%}%" to the player
+				#Gray out support option if the player and/or target are supporting other players.
+				else if {supportpartner.%player%} is set:
+					send "<run command:/support 0 %target%><gray>> Offer to Support %target's name%" to the player
+				else if {supportpartner.%target%} is set:
+					send "<gray>> Offer to Support %target's name%" to the player
+				#Allow player to send support request if both players do not have a support partner.
+				else:
+					send "<run command:/support 0 %target%><light yellow>> Offer to Support %target's name%." to the player
+				#Whispers
+				send "<run command:/cos_whisper %target% SETVAR><light yellow>> Whisper to %target%." to the player

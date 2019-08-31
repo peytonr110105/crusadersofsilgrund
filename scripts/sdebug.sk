@@ -10,6 +10,7 @@ command /sdebug <text> [<text="Alstair">]:
 			set {resbuff.%player%} to 0
 			set {sklbuff.%player%} to 0
 			set {hpbuff.%player%} to 0
+			clear {PTPSupportBonusActive.%{_PLR}%}
 			set player's maximum health to {hp.%player%} / 2 + {hpbuff.%player%} / 2
 			set {skillslot1.%player%} to "Empty"
 			set {skillslot2.%player%} to "Empty"

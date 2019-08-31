@@ -41,7 +41,7 @@ every 0.5 seconds:
 			if {comboscore.%loop-player%} is more than 0:
 				if {combograde.%loop-player%} is 0:
 					if {comboscalar.%loop-player%} is more than 3:
-						set {comboscale.%loop-player%} to floor({comboscore.%loop-player%} / 4.5)
+						set {comboscale.%loop-player%} to floor({comboscore.%loop-player%} / 5)
 						set {combograde.%loop-player%} to 1
 						set {comboscalar.%loop-player%} to 0
 				else:
@@ -98,7 +98,7 @@ on damage:
 				subtract (damage * 2) from {comboscore.%victim%}
 			else if projectile exists:
 				subtract (damage * 2) from {comboscore.%victim%}
-			send action bar "<bold>Style Points: <reset><gold>%{comboscore.%victim%}%<reset><bold> | Points for next Stylish Rank:<reset><gold> %(((({combograde.%victim%} + 1) * 2) * {comboscale.%victim%}))%<reset><bold> | Points To Maintain: <reset><gold>%((({combograde.%victim%} * 2.5) * {comboscale.%victim%}))%" to victim
+			send action bar "<bold>Style Points: <reset><gold>%{comboscore.%victim%}%<reset><bold> | Points for next Stylish Rank:<reset><gold> %(((({combograde.%victim%} + 1) * 2.5) * {comboscale.%victim%}))%<reset><bold> | Points To Maintain: <reset><gold>%((({combograde.%victim%} * 2.5) * {comboscale.%victim%}))%" to victim
 	if {combosenabled.%attacker%} is 1:
 		if {combograde.%attacker%} is 0:
 			add damage to {comboscore.%attacker%}
@@ -149,4 +149,4 @@ on damage:
 						set {combomult.%attacker%} to 1
 						send title "<light gray>Don't Worry" with subtitle "" to attacker for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
 						play sound "entity.experience_orb.pickup" with volume 1 and pitch 0.5 at attacker for attacker
-			send action bar "<bold>Style Points: <reset><gold>%{comboscore.%attacker%}%<reset><bold> | Points for next Stylish Rank:<reset><gold> %(((({combograde.%attacker%} + 1) * 2) * {comboscale.%attacker%}))%<reset><bold> | Points To Maintain: <reset><gold>%((({combograde.%attacker%} * 2.5) * {comboscale.%attacker%}))%" to attacker
+			send action bar "<bold>Style Points: <reset><gold>%{comboscore.%attacker%}%<reset><bold> | Points for next Stylish Rank:<reset><gold> %(((({combograde.%attacker%} + 1) * 2.5) * {comboscale.%attacker%}))%<reset><bold> | Points To Maintain: <reset><gold>%((({combograde.%attacker%} * 2.5) * {comboscale.%attacker%}))%" to attacker
