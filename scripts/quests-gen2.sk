@@ -136,13 +136,13 @@ on death of a monster:
 					finishQuest(attacker,"Proving Grounds","")
 					wait 6 seconds
 					startQuest(attacker,"Home Sweet Home","Settle down and build a home using the resources nearby.")
-	else if {quests.%attacker%::Path of the Greats} is not 999:
+	if {quests.%attacker%::Path of the Greats} is not 999:
 		if {quests.%attacker%::Path of the Greats} is more than 1:
-			if the 1st line of the lore of the attacker's tool contains "Slot A - ":
+			if the lore of the attacker's tool contains "Slot":
 				setQuestProgress(attacker,"Path of the Greats",{quests.%attacker%::Path of the Greats} + 1,"%{quests.%attacker%::Path of the Greats} - 2%/10 monsters slain using weapon skills.")
 			if {quests.%attacker%::Path of the Greats} is 12:
 				finishQuest(attacker,"Path of the Greats","Weapon Skills are now unlocked at all blacksmiths.")
-	else if {quests.%attacker%::Liberation} is not 999:
+	if {quests.%attacker%::Liberation} is not 999:
 		if {quests.%attacker%::Liberation} is set:
 			if the name of the attacker's tool contains "<gold><bold>":
 				setQuestProgress(attacker,"Liberation",{quests.%attacker%::Liberation} + 1,"%{quests.%attacker%::Liberation} - 1%/30 monsters slain using Holy Weapons.")
@@ -162,7 +162,7 @@ on death of a monster:
 				send "<light yellow>Cinder: Before you go running off, you should think about taking a trip to Alstair's old castle: House Aideen. It's out past Colony 5." to the attacker
 				wait 5 seconds
 				send "<light yellow>Cinder: There should be a set of rings buried there that will help you. And if you ask me, I think you'll need them. I've got a bad feeling about what we'll find inside Summoner's Sword." to the attacker
-	else if {quests.%attacker%::Invisible Ties} is more than 4:
+	if {quests.%attacker%::Invisible Ties} is more than 4:
 		if {kilnRecruitable.%attacker%} is not set:
 			if {quests.%attacker%::Invisible Ties} is less than 54:
 				add 1 to {quests.%attacker%::Invisible Ties}

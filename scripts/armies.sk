@@ -17,7 +17,7 @@ on inventory close:
 		loop all items in event-inventory:
 			add loop-item to {%{party.%player%}%.storage::*}
 
-command /group <text> [<text=null>]:
+command /group <text> <onlineplayer>:
 	description: Build an army. Trust nobody. Fire Emblem, now for Gameboy Advance!
 	usage: /group help
 	aliases: /army, /team
@@ -86,7 +86,7 @@ command /group <text> [<text=null>]:
 						send "<yellow>You were kicked from %{party.%player%}%." to {_g}
 						exit 1 loop
 				loop {%{party.%player%}%.members::*}:
-					send "<yellow>%player% has been kicked from your group." to loop-value
+					send "<yellow>%arg 2% has been kicked from your group." to loop-value
 				clear {party.%arg 2%}
 			else:
 				send "<light red>That player isn't a member of your group!"
@@ -160,7 +160,7 @@ command /group <text> [<text=null>]:
 			if arg 2 is "null":
 				send "<light red>You need to specify a player!"
 			else if {_temp} is offline:
-				send "<light red>You can only send invites to online players:"
+				send "<light red>You can only send invites to online players!"
 			else if {class.%arg 2%} is not set:
 				send "<light red>Failed to find that player!"
 			else:
@@ -172,6 +172,7 @@ command /group <text> [<text=null>]:
 				if {_cancel} is not set:
 					set {%{party.%player%}%.invite.%{_temp}%} to 1
 					send "<yellow><run command:/group join %{party.%player%}%>%player% has invited you to their group: %{party.%player%}%. Click here to accept." to {_temp}
+					send "<yellow>Invited %arg 2% to your group." to the player
 					add {_temp} to {%{party.%player%}%.invites::*}
 		#List group members
 		else if arg 1 is "members":
@@ -201,6 +202,7 @@ command /group <text> [<text=null>]:
 					send "<yellow>%player% has left your group." to loop-value
 				send "<yellow>Left %{party.%player%}%."
 				clear {party.%player%}
+
 		#Disband a group
 		else if arg 1 is "disband":
 			if {party.%player%} is set:
@@ -224,7 +226,7 @@ command /group <text> [<text=null>]:
 					clear {%{party.%player%}%.name}
 					send "<yellow>Disbanded your group."
 			else:
-				send "<light red>You aren't the owner of your current group!"
+				send "<light red>You aren't the leader of your current group!"
 				
 on inventory open:
 	while the name of the player's current inventory contains "Group Storage":

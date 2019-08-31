@@ -1075,8 +1075,6 @@ on damage:
 			add damage * 0.33 to {crushing.%attacker%}
 			if {crushing.%attacker%} is more than 25:
 				set {crushing.%attacker%} to 25
-	else if the 6th line of the lore of the attacker's tool contains "Stylish":
-		add damage / 2 to {comboscore.%attacker%}
 	#Focus Loss
 	if the 1st line of the lore of the victim's tool contains "Focus":
 		if the 1st line of the lore of the victim's tool contains "STR":
@@ -1101,7 +1099,7 @@ on damage:
 				clear {focusMag.%victim%}
 	#Closes
 	if damage cause is attack:
-		loop monsters in radius 4 of the victim:
+		loop entities in radius 4 of the victim:
 			if loop-entity is the attacker:
 				set {_CD} to true
 		#Close Defence

@@ -165,13 +165,13 @@ command /skills [<text="TopMenu">] [<text="NULL">] [<number=0>]:
 			set slot 17 of the player's current inventory to 1 gold sword named "<light purple><bold>Subdue" with lore "<white>Increases damage dealt by 10 hearts.", "<white>Special activation cannot kill foes.", "<white>Activation chance: (SKL ^ 0.7)", "<white>Max: 60%%."
 			set slot 18 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
 		else if arg 1 is "Assists":
-			open chest with 2 rows named "<light green><bold>Skills Menu | Assist Skills" for the player
+			open chest with 3 rows named "<light green><bold>Skills Menu | Assist Skills" for the player
 			set slot 0 of the player's current inventory to 1 diamond sword named "<light green><bold>Drag Back" with lore "<white>Drags the victim backwards.", "<light green><bold>Melee only."
 			set slot 1 of the player's current inventory to 1 diamond sword named "<light green><bold>Hit and Run" with lore "<white>Pushes you backwards.", "<light green><bold>Melee only."
 			set slot 2 of the player's current inventory to 1 iron sword named "<light green><bold>Reposition" with lore "<white>Warps target behind you when right-clicked."
 			set slot 3 of the player's current inventory to 1 iron sword named "<light green><bold>Swap" with lore "<white>Swap positions with the target on right-click."
-			set slot 4 of the player's current inventory to 1 iron sword named "<light green><bold>Shove" with lore "<white>Push the target up and away on right-click."
-			set slot 5 of the player's current inventory to 1 iron sword named "<light green><bold>Launcher" with lore "<white>Launch the target upwards on right-click.", "<white>Hold Sneak to launch alongside the target."
+			set slot 4 of the player's current inventory to 1 iron sword named "<light green><bold>Shove" with lore "<white>Push the target up and away on right-click.", "<light blue>Grants bonus Stylish Points to Devil Hunters."
+			set slot 5 of the player's current inventory to 1 iron sword named "<light green><bold>Launcher" with lore "<white>Launch the target upwards on right-click.", "<white>Hold Sneak to launch alongside the target.", "<light blue>Grants a large bonus of Stylish Points to Devil Hunters."
 			set slot 6 of the player's current inventory to 1 potion of healing named "<light green><bold>Fortify Health" with lore "<white>On right-click:", "<white>Grants Absorption 2."
 			set slot 7 of the player's current inventory to 1 splash potion of healing named "<light green><bold>Ardent Sacrifice" with lore "<white>Heals target by 2 hearts on right-click.", "<white>Damages user by 2 hearts."
 			set slot 8 of the player's current inventory to 1 potion of healing named "<light green><bold>Restore" with lore "<white>Heals the user on right-click.", "<white>Damages tool."
@@ -179,19 +179,21 @@ command /skills [<text="TopMenu">] [<text="NULL">] [<number=0>]:
 			set slot 10 of the player's current inventory to 1 potion of strength named "<light green><bold>Rally Strength" with lore "<white>Grants Strength 1 to target on right-click.", "<white>Damages tool."
 			set slot 11 of the player's current inventory to 1 potion of fire resistance named "<light green><bold>Rally Resistance" with lore "<white>Grants Resistance 1 to target on right-click.", "<white>Damages tool."
 			set slot 12 of the player's current inventory to 1 dragon breath named "<light green><bold>Rally Spectrum" with lore "<white>Grants on right-click:", "<white>Strength/Swiftness/Resistance 1 to target.", "<white>Damages tool."
-			set slot 13 of the player's current inventory to 1 firework named "<light green><bold>Stinger" with lore "<white>Right-click to dash forwards."
+			set slot 13 of the player's current inventory to 1 firework named "<light green><bold>Stinger" with lore "<white>Right-click to dash forwards.", "<light blue>Grants bonus Stylish Points to Devil Hunters."
 			set slot 14 of the player's current inventory to 1 lead named "<light green><bold>Capture" with lore "<white>Right-click to set your weapon to Capture mode.", "<white>While in Capture mode, attacks deal 50%% less damage.", "<white>If the opponent is killed while you are in Capture mode,", "<white>Their equipment will be dropped on the ground for you to collect."
 			set slot 15 of the player's current inventory to 1 bow named "<light green><bold>Ethreal Grip" with lore "<white>Warps foes to your position when hit with an arrow.", "<white>Reduces damage dealt by 50%%.", "<light green><bold>Bows only."
-			set slot 16 of the player's current inventory to 1 iron sword named "<light green><bold>Smite" with lore "<white>Shoves the target forwards a great distance when right-clicked."
-			set slot 17 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
+			set slot 16 of the player's current inventory to 1 iron sword named "<light green><bold>Smite" with lore "<white>Shoves the target forwards a great distance when right-clicked.", "<light blue>Grants bonus Stylish Points to Devil Hunters."
+			set slot 17 of the player's current inventory to 1 firework named "<light green><bold>Taunt" with lore "<white>Stand still and taunt your foe.", "Grants STR/SPD + 10 for 10 seconds if completed.", "<light blue>Also grants bonus Stylish Points to Devil Hunters."
+			set slot 18 of the player's current inventory to 1 firework of fortune 3 named "<light green><bold>MAX-Taunt" with lore "<white>Taunt for an extended period of time.", "<white>Grants STR/SPD +20 for 10 seconds if completed.", "<light blue>Grants a large amount of Style Points to Devil Hunters."
+			set slot 26 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
 		else if arg 1 is "Armour":
 			open chest with 3 rows named "<cyan><bold>Skills Menu | Armour Skills" for the player
-			set slot 0 of the player's current inventory to 1 diamond boots named "<cyan><bold>Quick Stomp" with lore "<white>Fly towards the ground.", "Negates fall damage while stomping."
+			set slot 0 of the player's current inventory to 1 diamond boots named "<cyan><bold>Quick Stomp" with lore "<white>Shoot towards the ground.", "Negates fall damage while stomping."
 			set slot 1 of the player's current inventory to 1 diamond boots named "<cyan><bold>Boost Jump" with lore "<white>Leap into the sky."
 			set slot 2 of the player's current inventory to 1 diamond boots named "<cyan><bold>Long Jump" with lore "<white>Spring forwards a large distance."
 			set slot 3 of the player's current inventory to 1 diamond boots named "<cyan><bold>Hover" with lore "<white>Hold sneak to hover in mid-air.", "Consumes hunger while hovering."
-			set slot 4 of the player's current inventory to 1 diamond boots named "<cyan><bold>Quickened Pulse" with lore "Slows down time after dodging an attack."
-			set slot 5 of the player's current inventory to 1 diamond boots named "<purple><bold>Witch Time" with lore "<white>Slows down time after dodging an attack."
+			set slot 4 of the player's current inventory to 1 diamond boots named "<cyan><bold>Quickened Pulse" with lore "Slows down time after dodging an attack.", "<light blue>Grants a large bonus of Stylish Points to Devil Hunters."
+			set slot 5 of the player's current inventory to 1 diamond boots named "<purple><bold>Witch Time" with lore "<white>Slows down time after dodging an attack.", "<light blue>Grants a large bonus of Stylish Points to Devil Hunters."
 			set slot 6 of the player's current inventory to 1 diamond chestplate named "<cyan><bold>Glory Kills" with lore "<white>Unarmed kills grant:", "<white>Strength/Resistance 1, Speed 2, Haste 4"
 			set slot 7 of the player's current inventory to 1 diamond leggings named "<cyan><bold>Regeneration" with lore "<white>Grants Regeneration 2 while equipped."
 			set slot 8 of the player's current inventory to 1 diamond leggings named "<cyan><bold>Swiftness" with lore "<white>Grants Swiftness 2 while equipped."
@@ -1244,6 +1246,18 @@ command /skill <text> [<number=0>]:
 				else:
 					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Shield Pulse"
 					remove 50 from the player's balance
+			else if arg 1 is "Taunt":
+				if {_cash} is less than 100:
+					send "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
+				else:
+					set line 4 of the player's current inventory's lore to "<light green><bold>Assist - Taunt"
+					remove 100 from the player's balance
+			else if arg 1 is "MAX-Taunt":
+				if {_cash} is less than 200:
+					send "<red><bold>You lack the required funds to purchase this skill. You need $200, but you only have %player's money%."
+				else:
+					set line 4 of the player's current inventory's lore to "<light green><bold>Assist - Taunt"
+					remove 200 from the player's balance
 			else if arg 1 contains "Brash Assault":
 				if {_cash} is less than 50:
 					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."

@@ -1,0 +1,38 @@
+#Variables Used:
+#{supportpartner.%player%}: Player <--> Player Support Partner (parsed as player)
+#{npcSupport.%player%::*}: Index = NPC, Value = Support Rank.
+#{PTPSupportRank.%player%}: Player <--> Player Support Rank (D --> S)
+#{PTPSupportPoints.%player%}: Player <--> Player Support Points (numerical representation of support rank)
+#{PTPTradeOffer.%player%}: Player <--> Player Trade Offer (As Inventory)
+#{PTPTradePartner.%player%}: Player <--> Player Trade Partner (Other player being traded with)
+#{PTPTradeReady.%player%}: Player <--> Player Trade Ready (Boolean, sent to trade partner via {PTPTradePartner.%player%})
+
+command /support [<number=0>] <onlineplayer>:
+	trigger:
+		if {supportpartner.%player%} is set:
+			if arg 1 is 0:
+				send "<light red>You're already supporting another player!"
+				send "<light red>You can choose to change your support partner, but your support bonuses and rank will reset."
+				wait 2.5 seconds
+				send "<run command:/support 1 %arg 2%><red>Click here to change your support partner to %arg 2's name%."
+			else if arg 1 is 1:
+				send "<r
+				#set {supportpartner.%player%} to arg 2
+				#set {PTPSupportRank.%player%} to "D"
+				#set {PTPSupportPoints.%player%} to 0
+				#send "<gold>
+		else:
+	
+	
+on right-click on a player:
+	if the player's tool is air:
+		if {inConvo.%player%} is set:
+			send "<light red>%target% is already in a conversation." to the player
+		else:
+			send "<run command:/trade %target%><light blue>Trade with %target's name%" to the player
+			if {supportpartner.%player%} is the target:
+				send "<light yellow>Support Rank: %{PTPSupportRank.%player%}%" to the player
+			else if {supportpartner.%player%} is set:
+				send "<gray>Offer to Support %target's name%" to the player
+			else:
+				send "<light yellow>Offer to Support %target's name%." to the player

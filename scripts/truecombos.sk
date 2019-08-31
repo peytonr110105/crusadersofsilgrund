@@ -41,12 +41,12 @@ every 0.5 seconds:
 			if {comboscore.%loop-player%} is more than 0:
 				if {combograde.%loop-player%} is 0:
 					if {comboscalar.%loop-player%} is more than 3:
-						set {comboscale.%loop-player%} to floor({comboscore.%loop-player%} / 4)
+						set {comboscale.%loop-player%} to floor({comboscore.%loop-player%} / 4.5)
 						set {combograde.%loop-player%} to 1
 						set {comboscalar.%loop-player%} to 0
 				else:
 					subtract ({comboscore.%loop-player%} / ({comboscale.%loop-player%} + {combograde.%loop-player%})) from {comboscore.%loop-player%}
-					if {comboscore.%loop-player%} is less than (({combograde.%loop-player%} * 2) * {comboscale.%loop-player%}):
+					if {comboscore.%loop-player%} is less than (({combograde.%loop-player%} * 2.5) * {comboscale.%loop-player%}):
 						subtract 1 from {combograde.%loop-player%}
 						if {combograde.%loop-player%} is 7:
 							send title "<red><bold>Smokin' Sick Style!!!" with subtitle "<gold><bold>[3x Damage Multiplier!]" to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
@@ -98,18 +98,20 @@ on damage:
 				subtract (damage * 2) from {comboscore.%victim%}
 			else if projectile exists:
 				subtract (damage * 2) from {comboscore.%victim%}
-			send action bar "<bold>Style Points: <reset><gold>%{comboscore.%victim%}%<reset><bold> | Points for next Stylish Rank:<reset><gold> %(((({combograde.%victim%} + 1) * 2) * {comboscale.%victim%}))%<reset><bold> | Points To Maintain: <reset><gold>%((({combograde.%victim%} * 2) * {comboscale.%victim%}))%" to victim
+			send action bar "<bold>Style Points: <reset><gold>%{comboscore.%victim%}%<reset><bold> | Points for next Stylish Rank:<reset><gold> %(((({combograde.%victim%} + 1) * 2) * {comboscale.%victim%}))%<reset><bold> | Points To Maintain: <reset><gold>%((({combograde.%victim%} * 2.5) * {comboscale.%victim%}))%" to victim
 	if {combosenabled.%attacker%} is 1:
 		if {combograde.%attacker%} is 0:
 			add damage to {comboscore.%attacker%}
 			add 1 to {comboscalar.%attacker%}
 		else:
-			add damage to {comboscore.%attacker%}
+			add (damage * 1.15) to {comboscore.%attacker%}
+			if the 6th line of the lore of the attacker's tool contains "Stylish":
+				add (damage * 1.15) / 2 to {comboscore.%attacker%}
 			#subtract ({comboscale.%attacker%} / 2) from {comboscore.%attacker%}
 			set damage to (damage * {combomult.%attacker%})
 			if {comboscore.%attacker%} is more than {combobank.%attacker%}:
 				set {combobank.%attacker%} to {comboscore.%attacker%}
-			if {comboscore.%attacker%} is more than ((({combograde.%attacker%} + 1) * 2) * {comboscale.%attacker%}):
+			if {comboscore.%attacker%} is more than ((({combograde.%attacker%} + 1) * 2.5) * {comboscale.%attacker%}):
 				if {combograde.%attacker%} is less than 7:
 					add 1 to {combograde.%attacker%}
 					if {combograde.%attacker%} is 7:
@@ -147,4 +149,4 @@ on damage:
 						set {combomult.%attacker%} to 1
 						send title "<light gray>Don't Worry" with subtitle "" to attacker for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
 						play sound "entity.experience_orb.pickup" with volume 1 and pitch 0.5 at attacker for attacker
-			send action bar "<bold>Style Points: <reset><gold>%{comboscore.%attacker%}%<reset><bold> | Points for next Stylish Rank:<reset><gold> %(((({combograde.%attacker%} + 1) * 2) * {comboscale.%attacker%}))%<reset><bold> | Points To Maintain: <reset><gold>%((({combograde.%attacker%} * 2) * {comboscale.%attacker%}))%" to attacker
+			send action bar "<bold>Style Points: <reset><gold>%{comboscore.%attacker%}%<reset><bold> | Points for next Stylish Rank:<reset><gold> %(((({combograde.%attacker%} + 1) * 2) * {comboscale.%attacker%}))%<reset><bold> | Points To Maintain: <reset><gold>%((({combograde.%attacker%} * 2.5) * {comboscale.%attacker%}))%" to attacker
