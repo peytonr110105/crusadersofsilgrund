@@ -162,6 +162,7 @@ on left-click:
 			make player execute command "/delwarp %{ARBuildMap.%player%}%"
 			make player execute command "/setwarp %{ARBuildMap.%player%}%"
 		cancel event
+
 on right-click:
 	if the name of the player's tool is "<gold>[AR] Place Enemy":
 		if {ARBuildUnitType.%player%} is 1:

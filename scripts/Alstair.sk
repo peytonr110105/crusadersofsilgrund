@@ -1326,21 +1326,33 @@ on spawn of a monster:
 				#add 1 to {t_str.%entity%}
 				chance of 80%:
 					add 1 to {t_str.%entity%}
+					chance of 35%:
+						add 1 to {t_str.%entity%}
 				#add 1 to {t_def.%entity%}
-				chance of 50%:
+				chance of 65%:
 					add 1 to {t_def.%entity%}
+					chance of 25%:
+						add 1 to {t_def.%entity%}
 				#add 1 to {t_spd.%entity%}
 				chance of 60%:
 					add 1 to {t_spd.%entity%}
+					chance of 20%:
+						add 1 to {t_spd.%entity%}
 				#add 1 to {t_skl.%entity%}
 				chance of 70%:
 					add 1 to {t_skl.%entity%}
+					chance of 40%:
+						add 1 to {t_skl.%entity%}
 				#add 1 to {t_res.%entity%}
-				chance of 50%:
+				chance of 65%:
 					add 1 to {t_res.%entity%}
-				#add 0.5 to the entity's maximum health
+					chance of 25%:
+						add 1 to {t_res.%entity%}
+				add 0.5 to the entity's maximum health
 				chance of 80%:
 					add 0.5 to the entity's maximum health
+					chance of 30%:
+						add 0.5 to the entity's maximum health
 			set {t_lvl.%entity%} to {_moblvl}
 			heal the entity by 999
 			if the entity's maximum health is more than 1000:
@@ -2303,7 +2315,7 @@ on player portal:
 		wait 4 seconds
 		send title "<light cyan><bold>THE CRUSADERS OF SILGRUND" with subtitle "<light cyan>Produced and hosted by Flamecrest Games." to the player for 6 seconds with fade in 0.25 seconds and fade out 0.25 seconds
 		wait 6.5 seconds
-		send title "<light cyan>Lead Developer: IAmTheMostWanted" with subtitle "<light cyan>Programming: IAmTheMostWanted,Sil3ntAssassin7" to the player for 3.5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+		send title "<light cyan>Lead Developer: IAmTheMostWanted" with subtitle "<light cyan>Programming: IAmTheMostWanted" to the player for 3.5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
 		wait 4 seconds
 		send title "<light cyan>Skill/Perk Creation: IAmTheMostWanted,Skiddlezz" with subtitle "<light cyan>Skill/Perk Balancing: IAmTheMostWanted,Skiddlezz,rockgraham101" to the player for 3.5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
 		wait 4 seconds
@@ -2341,7 +2353,7 @@ on player portal:
 			set {_diff} to "<light yellow><bold>Lunatic (Thracian)"
 		else if {perdiff.%player%} is 8:
 			set {_diff} to "<gold><bold>Infernal (Thracian)"
-		send title "<gold>Promotion Tier: %{promoted.%player%}%" with subtitle "<gold>Personal Difficulty: %{_diff}%" to the player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+		send title "<gold>Promotion Tier: %{promoted.%player%}%" with subtitle "<gold>Difficulty: %{_diff}%" to the player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
 		wait 3.5 seconds
 		send title "<gold>Blocks Mined: %{blocksmined.%player%}%" with subtitle "<gold>Tools Broken: %{toolbreaktally.%player%}%" to the player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
 		wait 3.5 seconds

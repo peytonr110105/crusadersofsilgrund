@@ -11,7 +11,7 @@
 
 #Buff handler for supports
 function supportBonusHandler(PLR: player, RANK: text):
-	broadcast "<bold>Running Support Handler for %{_PLR}%"
+	#broadcast "<bold>Running Support Handler for %{_PLR}%"
 	#S-Support: +10 all stats
 	if {_RANK} is "S":
 		add 10 to {strbuff.%{_PLR}%}
@@ -156,8 +156,8 @@ on chat:
 on death of a monster:
 	if {supportpartner.%attacker%} is set:
 		if {supportpartner.%attacker%} is online:
-			add 1.5 to {PTPSupportPoints.%attacker%}
-			add 1.5 to {PTPSupportPoints.%{supportpartner.%attacker%}%}
+			add 0.75 to {PTPSupportPoints.%attacker%}
+			add 0.75 to {PTPSupportPoints.%{supportpartner.%attacker%}%}
 
 #Increase support level for every in-game hour both players are online.			
 every minecraft hour:
@@ -166,8 +166,8 @@ every minecraft hour:
 			if {supportpartner.%loop-player%} is online:
 				clear {PTPBlockWhisperSupport.%loop-player%}
 				clear {PTPBlockWhisperSupport.%{supportpartner.%loop-player%}%}
-				add 1.5 to {PTPSupportPoints.%loop-player%}
-				add 1.5 to {PTPSupportPoints.%{supportpartner.%loop-player%}%}
+				add 1 to {PTPSupportPoints.%loop-player%}
+				add 1 to {PTPSupportPoints.%{supportpartner.%loop-player%}%}
 				if {PTPSupportPoints.%loop-player%} is more than 240:
 					if {PTPSupportRank.%loop-player%} is not "S":
 						set {PTPSupportRank.%loop-player%} to "S"

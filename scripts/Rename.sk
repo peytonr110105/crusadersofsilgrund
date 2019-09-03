@@ -4,7 +4,7 @@ command /rename [<text="NULL">]:
 	trigger:
 		if arg 1 is not "NULL":
 			set the name of the player's tool to coloured arg 1
-			send "<light green>Renamed your tool to %arg 1%!"
+			send "Renamed your tool to %colored arg 1%!"
 			
 command /editlore [<number=0>] [<text="Empty">]:
 	usage: /relore (line) (lore)

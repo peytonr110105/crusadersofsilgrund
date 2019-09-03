@@ -198,7 +198,8 @@ on rightclick with book:
 			send "<light red>You need to be a magic user to use tomes!"
 			
 on rightclick with blaze rod:
-	set {_checkClass} to checkClass(player)
+	#set {_checkClass} to checkClass(player)
+	set {_checkClass} to 1
 	if the name of the player's tool is "<yellow><bold>Magic Wand":
 		if {_checkClass} is 1:
 			if {spellcooldown.%player%} is not set:

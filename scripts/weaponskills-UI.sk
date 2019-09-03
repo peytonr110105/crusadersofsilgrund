@@ -1250,13 +1250,13 @@ command /skill <text> [<number=0>]:
 				if {_cash} is less than 100:
 					send "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
 				else:
-					set line 4 of the player's current inventory's lore to "<light green><bold>Assist - Taunt"
+					set line 4 of slot 4 of the player's current inventory's lore to "<light green><bold>Assist - Taunt"
 					remove 100 from the player's balance
 			else if arg 1 is "MAX-Taunt":
 				if {_cash} is less than 200:
 					send "<red><bold>You lack the required funds to purchase this skill. You need $200, but you only have %player's money%."
 				else:
-					set line 4 of the player's current inventory's lore to "<light green><bold>Assist - Taunt"
+					set line 4 of slot 4 of the player's current inventory's lore to "<light green><bold>Assist - MAX-Taunt"
 					remove 200 from the player's balance
 			else if arg 1 contains "Brash Assault":
 				if {_cash} is less than 50:

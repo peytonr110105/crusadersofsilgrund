@@ -1,0 +1,104 @@
+#Re-implementation of MobArena, with support for most CoS features.
+#Variables Used:
+#{BPArenas::*} List of arenas.
+#{currentArena.%player%} Name of the arena being played
+#{arena.x.mobspawns::*} Location of each mob spawner.
+#{arena.x.miscWarps::Entry/Exit/Other} Extra memory for warping players
+#{arena.x.spawnpoints::*} Locations for player spawns. If more than 1 is defined, players will be randomly spawned in each location.
+#{arena.x.playarea} WorldEdit region, defines playable area.
+#{arena.x.rewards.waveF::*}, where F is any integer. Rewards to be given out after death, dependent on progress through the arena.
+#{arena.x.mobsleft} Number of mobs left to be killed.
+#{arena.x.players::*} Players currently playing in the arena
+#{arena.x.isPlayable} BOOLEAN: Can this arena be played?
+#{arena.x.waveF::mobtype}, where F is any integer, and mobtype is any valid monster. Defines how many mobs to spawn, and which types to spawn.
+#{arena.x.chests::*} Location of loot chests. Index determines the chest's ID, and value determines where that chest is located.
+#{arena.x.chestLoot::Randomize?/Chest ID} Determines what to place inside each chest ID. If the Randomize index is set to true, the inventories of each chest will be randomized based on the items registered.
+#{arena.x.currentWave} = X, where X is any integer. Defines the current wave for the arena.
+#{arena.x.difficulty}:
+#1 - Easy, Mob levels reduced by 10. Rewards are also halved.
+#2 - Normal. No changes.
+#3 - Hard, Mob levels increased by 15. Rewards increased by 1.5x.
+#4 - Lunatic, Mob levels increased by 30. Rewards increased by 3x.
+
+
+#Admin command for configuring & building arenas.
+command /bpbuild [<text="done">]:
+	trigger:
+		#Enable BP Build mode
+		if {BPBuildMode.%player%} is not set:
+			if arg 1 is not "done":
+				send "<gold>Entered Bloody Palace build mode!"
+				set the player's game mode to creative
+				set {BPBuildMode.%player%} to arg 1
+				clear {BPBackup.%player%::*}
+				loop all items in player's inventory:
+					add loop-item to {BPBackup.%player%::*}
+				clear the player's inventory
+				give 1 carrot on a stick named "<white><bold>[BP] Region Maker" with lore "<white>Left-click: Mark point 1","<white>Right-click: Mark point 2","<white>Use the /rg create command to define the region.","<white>For simplicity, set the region name to the same name as the arena." to the player
+				give 1 diamond hoe named "<white><bold>[BP] Mark as Loot Chest" with lore "<white>Left-click to mark a chest as a loot chest.","<white>Sneak + left-click to remove the loot chest.","<white>Right-click to update the loot inside the chest." to the player
+				give 1 iron hoe named "<white><bold>[BP] Set Spawns" with lore "<white>Right-click to mark your position as a spawn point.", "<white>Left-click to cycle the already set spawnpoints.", "<white>Sneak + right-click to clear the selected spawn point." to the player
+				give 1 iron sword named "<white><bold>[BP] Set Monster Spawnpoint" with lore "<white>Right-click to mark the block as a monster spawnpoint.", "<white>Left-click to remove the spawnpoint.","<gold>Monster spawnpoints will be highlighted when holding this tool." to the player
+		else:
+			clear the player's inventory
+			clear {BPBuildMode.%player%}
+			loop {BPBackup.%player%::*}:
+				give loop-value to the player
+			set the player's game mode to survival
+			send "<gold>Exited BP Build Mode."
+			
+#Defines additional information for an arena.
+command /bpdefine <text> <text> <number> <number>:
+	trigger:
+		if {BPBuildMode.%player%} is set:
+			if arg 1 is "help":
+				send "<gold>BPDefine Help:"
+				send "<gold>Wave - MobType, Amount, Wave Number"
+				send "<gold>Rewards - ItemType, Amount, Wave Given"
+				send "<gold>ChestLoot - Randomize, True/False, Any Integer"
+			else if arg 1 is "waves":
+				set {arena.%{BPBuildMode.%player%}%.wave%arg 4%::%arg 2%} to arg 3
+				send "Updated %arg 2% quota."
+			else if arg 1 is "rewards":
+				set {arena.%{BPBuildMode.%player%}%.rewards.wave%arg 4%::%arg 2%} to arg 3
+				send "Arena will now give out %arg 3% %arg 2% on wave %arg 4%."
+			else if arg 1 is "ChestLoot":
+				set {arena.%{BPBuildMode.%player%}%.chestLoot::Randomize} to arg 3
+				send "Updated arena chest randomization."
+		else:
+			send "<red>Must be in BP Build Mode to define arena settings!"
+
+on damage of a player:
+	if final damage is more than victim's health:
+		if {currentArena.%victim%} is set:
+			cancel event
+			teleport the victim to {arena.%{currentArena.%victim%}%.miscWarps::Exit}
+			send "<light red>You were defeated..." to the victim
+			send "<gold>Waves survived: %{arena.%{currentArena.%victim%}%.currentWave} - 1%"
+			send "<gold>Money Earned: $%({arena.%{currentArena.%victim%}%.currentWave} - 1) * 5%"
+			send "<gold>EXP Earned: +%({arena.%{currentArena.%victim%}%.currentWave} - 1) * 2.5%"
+			remove the victim from {arena.%{currentArena.%victim%}%.players::*}
+			subtract 1 from {arena.%{currentArena.%victim%}%.players::total}
+			if {arena.%{currentArena.%victim%}%.players::total} is 0:
+				loop all monsters in radius 100 of the victim:
+					kill the loop-monster
+				clear {arena.%{currentArena.%victim%}%.players::*}
+				clear {arena.%{currentArena.%victim%}%.currentWave}
+				set {arena.%{currentArena.%victim%}%.difficulty} to 2
+				clear {arena.%{currentArena.%victim%}%.mobsleft}
+				broadcast "<white><bold>%{currentArena.%victim%}% has finished!"
+			else:
+				loop {arena.%{currentArena.%victim%}%.players::*}:
+					send "<light red><bold>%victim% was slain!" to loop-value
+					send "<light red><bold>Only %{arena.%{currentArena.%victim%}%.players::total}% players left." to loop-value
+			clear {currentArena.%victim%}
+			
+
+#End-user arena command.
+#arg 1 - defines option (join/leave/help/etc...)
+#arg 2 - additional argument (arena name, vote type, etc...)
+#arg 3 - callvote argument (any valid text for that vote)
+command /bp <text> <text> [<text="none">]:
+	description: A custom implementation of MobArena that interfaces with most standard CoS features.
+	usage: /bp help
+	trigger:
+		if arg 1 is "join":

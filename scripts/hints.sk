@@ -164,150 +164,149 @@ command /tip:
 	aliases: /hint
 	executable by: players
 	trigger:
-			set {_tip} to a random integer between 1 and 67
-			if {_tip} is 1:
-				send "<gold>[TIP]<reset> null" to player
-			else if {_tip} is 2:
-				send "<gold>[TIP]<reset> Weapon skills give a wide range of benefits, from self-healing to powerful debuffs. Lord Kiln at House Silgrid may be able to help you obtain them after you do favors for him." to player
-			else if {_tip} is 3:
-				send "<gold>[TIP]<reset> Equip up to five perks to your character with /perks. Perks grant a wide variety of benefits, from no-cost dodge rolls to the gift of flight." to player
-			else if {_tip} is 4:
-				send "<gold>[TIP]<reset> Tired of mining? Try out some alternative activities with /quickplay." to player
-			else if {_tip} is 5:
-				send "<gold>[TIP]<reset> Complete Heroic Challenges to earn unique rewards. Discover a Heroic Challenge in the world to play one." to player
-			else if {_tip} is 6:
-				send "<gold>[TIP]<reset> Ladders are affected by gravity. Use this to your advantage by creating pillars using gravel and ladders to excavate pits safely." to player
-			else if {_tip} is 7:
-				send "<gold>[TIP]<reset> Want to start fresh? You can create multiple characters with /char." to player
-			else if {_tip} is 8:
-				send "<gold>[TIP]<reset> Join a group by using /group. Being a member of a group grants many benefits and unlocks new skills." to player
-			else if {_tip} is 9:
-				send "<gold>[TIP]<reset> Some skills, like Escape Route, require a group to use. Join a group by using /group." to player
-			else if {_tip} is 10:
-				send "<gold>[TIP]<reset> Weapon refines grant powerful bonuses. Talk to a blacksmith to have a weapon refined." to player
-			else if {_tip} is 11:
-				send "<gold>[TIP]<reset> Are mobs too tough? Lower your difficulty by using /pd." to player
-			else if {_tip} is 12:
-				send "<gold>[TIP]<reset> Feeling gutsy? Turn up your personal difficulty for bonus experience and cash using /pd." to player
-			else if {_tip} is 13:
-				send "<gold>[TIP]<reset> Each class has a unique perk to learn. Use a Trainee's Enrollment to reclass and unlock them all!" to player
-			else if {_tip} is 14:
-				send "<gold>[TIP]<reset> Combine glowstone dust and sugar in a workbench to create a cleansing dust that allows you to remove enchantments from tools." to player
-			else if {_tip} is 15:
-				send "<gold>[TIP]<reset> Tired of mobs getting the upper hand? Enable bleed-out using /bleedout. However, this disables instant-kill prevention from /bhealth." to player
-			else if {_tip} is 16:
-				send "<gold>[TIP]<reset> Instant kills got you down? Survive all lethal attacks with 1/2 a heart by using /bhealth. Be careful, as this disables bleeding out!" to player
-			else if {_tip} is 17:
-				send "<gold>[TIP]<reset> Got money to burn? Pull up the store by using /store." to player
-			else if {_tip} is 18:
-				send "<gold>[TIP]<reset> Lances can be crafted similarly to other tools, with two sticks and the material of choice in a triangle at the top. You can throw them by right-clicking." to player
-			else if {_tip} is 19:
-				send "<gold>[TIP]<reset> Craft spare magic wands with blaze powder and a stick. Remember, only mages can use them!" to player
-			else if {_tip} is 20:
-				send "<gold>[TIP]<reset> Caves are much more expansive, and more dangerous. Take plenty of torches with you before braving the depths." to player
-			else if {_tip} is 21:
-				send "<gold>[TIP]<reset> Mobs with flames surrounding them are much more powerful than regular mobs. Kill them for a large cash reward!" to player
-			else if {_tip} is 22:
-				send "<gold>[TIP]<reset> The Crusader's Ward perk reduces all incoming damage by 50%%. Promote to a Crusader to learn it!" to player
-			else if {_tip} is 23:
-				send "<gold>[TIP]<reset> Check your character's stats or the stats of another player using /cstats." to player
-			else if {_tip} is 24:
-				send "<gold>[TIP]<reset> Double-tap the sneak key to perform a dodge roll! The distance and direction is influenced by where you are looking. Toggle it by using /dr." to player
-			else if {_tip} is 25:
-				send "<gold>[TIP]<reset> Feeling stylish? Enable combos by promoting to a Devil Hunter. The faster and more stylish your actions, the greater the rewards!" to player
-			else if {_tip} is 26:
-				send "<gold>[TIP]<reset> Set your character's name using /name. You can use colour codes or <> to add colours to your name." to player
-			else if {_tip} is 27:
-				send "<gold>[TIP]<reset> Using a Trainee's Enrollment lets you return to being a Journeyman and choose a new class to play. You can also choose to re-allocate your character's stat points." to player
-			else if {_tip} is 28:
-				send "<gold>[TIP]<reset> Need to cycle through more tips? Use /tip to read more helpful hints like this." to player
-			else if {_tip} is 29:
-				send "<gold>[TIP]<reset> Most towns and villages in the world are guarded from monsters by NPC's. Consider staying at a town's inn for a safe place to rest during the night." to player
-			else if {_tip} is 30:
-				send "<gold>[TIP]<reset> Survivalists may be weak, but their perks are incredibly useful for survival. Their Scavenger perk can grant them bonus ores when mining." to player
-			else if {_tip} is 31:
-				send "<gold>[TIP]<reset> You can enchant furnaces to improve their smelting capabilities. Keep an eye out for the Silk Touch and Fortune enchantments in particular!" to player
-			else if {_tip} is 32:
-				send "<gold>[TIP]<reset> Reaching a high enough Speed stat gives you a permanent movement bonus. Consider using the Bladesman or Mercenary classes to reach the threshold." to player
-			else if {_tip} is 33:
-				send "<gold>[TIP]<reset> The Silk Touch enchantment not only drops the exact blocks you mine, but it can also pick up monster spawners!" to player
-			else if {_tip} is 34:
-				send "<gold>[TIP]<reset> Carrying too many items? Open up a vault with /pv." to player
-			else if {_tip} is 35:
-				send "<gold>[TIP]<reset> Knights have excellent defensive capabilities, but struggle to deal damage. Using a Skill like Life and Death can prove to be useful, as your extra durability makes up for the damage vulnerability penalty." to player
-			else if {_tip} is 36:
-				send "<gold>[TIP]<reset> Cavaliers have an easier time taming and using animals, but are less effective than other classes without a mount. Equip the Mount perk to be able to summon a horse whenever you need one." to player
-			else if {_tip} is 37:
-				send "<gold>[TIP]<reset> Bladesmen are extremely fast and have high skill, but have lackluster defensive capabilities. Consider using skills such as Desperation or Vantage to take advantage of your high-risk playstyle." to player
-			else if {_tip} is 38:
-				send "<gold>[TIP]<reset> Fighters are staggeringly strong, but can't do much else outside of hitting hard. Try skills such as Armoured Blow or Defiant Speed to mitigate this." to player
-			else if {_tip} is 39:
-				send "<gold>[TIP]<reset> Mercenaries are great all-rounders, and have superb combat abilities. Their Double Lion perk is extremely powerful, letting them attack twice when initiating combat." to player
-			else if {_tip} is 40:
-				send "<gold>[TIP]<reset> Gold Lances have the highest damage of all lances when thrown. However, they can only be thrown a few times before breaking." to player
-			else if {_tip} is 41:
-				send "<gold>[TIP<reset> The Sorcery Blade weapon skill calculates damage using MAG instead of DEF. Mages in particular will enjoy the bonus." to player
-			else if {_tip} is 42: 
-				send "<gold>[TIP]<reset> Set a home usng /home. You can then teleport to any homes you've set previously." to player
-			else if {_tip} is 43:
-				if {realism.%player%} is 1:
-					send "<gold>[TIP]<reset> Hotter biomes and heat-emitting blocks like lava and torches increases your temperature. If it gets too high, you will develop heatstroke." to player
-				else:
-					send "<gold>[TIP]<reset> Realism mode adds extra challenges to survival, including thirst and a body temperature system. If you're looking for a challenge, consider enabling it." to player
-			else if {_tip} is 44:
-				send "<gold>[TIP]<reset> You can harvest crops and automatically replant them by right-clicking." to player
-			else if {_tip} is 45:
-				if {realism.%player%} is 1:
-					send "<gold>[TIP]<reset> Staying outside at night or in cold biomes decreases your temperature. If it gets too low, you will develop frostbite." to player
-				else:
-					send "<gold>[TIP]<reset> Realism mode adds extra challenges to survival, including thirst and a body temperature system. If you're looking for a challenge, consider enabling it." to player
-			else if {_tip} is 46:
-				if {realism.%player%} is 1:
-					send "<gold>[TIP]<reset> Beds help warm you up while sleeping. If you're getting too cold, consider crafting one." to player
-				else:
-					send "<gold>[TIP]<reset> Realism mode adds extra challenges to survival, including thirst and a body temperature system. If you're looking for a challenge, consider enabling it." to player
-			else if {_tip} is 47:
-				send "<gold>[TIP]<reset> Want to duel another player? Enable bleed-out and join a PVP arena using /quickplay." to player
-			else if {_tip} is 48:
-				send "<gold>[TIP]<reset> Two-wide doors open as a pair. Get creative with your structures and make truly unique buildings." to player
-			else if {_tip} is 49:
-				send "<gold>[TIP]<reset> Crafting cars can be expensive, but are well worth the effort to do so. Consider crafting some once you have a large supply of iron." to player
-			else if {_tip} is 50:
-				send "<gold>[TIP]<reset> New crafting recipes can be found in the #recipies channel of the discord server. Check back often for new updates." to player
-			else if {_tip} is 51:
-				send "<gold>[TIP]<reset> You can create tempered versions of iron, gold, and diamond by smelting a block of the resource in a furnace. You can use this to craft tool frames and upgrade your pre-existing tools." to player
-			else if {_tip} is 52:
-				send "<gold>[TIP]<reset> Aether Raids are custom Heroic Challenges made by the community. To play Aether Raids, find the Aether Raid Hub in the Adventure world after certain conditions have been met." to player
-			else if {_tip} is 53:
-				send "<gold>[TIP]<reset> When building an Aether Raid, keep in mind that NPCs will follow after targets once they're found. Try gating in your archers to keep them from running into danger!" to player
-			else if {_tip} is 54:
-				send "<gold>[TIP]<reset> You can use the Inherit Skill option inside the Weapon Skills menu to pass down skills and refinements to other tools. If you find a weapon with skills, inherit them and put them to work!" to player
-			else if {_tip} is 55:
-				send "<gold>[TIP]<reset> When building an Aether Raid, sometimes the best defense is a good offense! Try building choke points to funnel players into high-damage Swordmasters." to player
-			else if {_tip} is 56:
-				send "<gold>[TIP]<reset> When building an Aether Raid, try placing traps to force players to make risky decisions! A lava river can be a great deterrent to pesky dodge rollers." to player
-			else if {_tip} is 57:
-				send "<gold>[TIP]<reset> You can build Tool Handles by combining a stick and an iron ingot. You can use these along with Tempered ores to craft tool and armour frames." to player
-			else if {_tip} is 58:
-				send "<gold>[TIP]<reset> You can merge a tool with a maximum of 10 tool frames. If you're running low on diamond, creating a +10 iron tool instead might be something to consider." to player
-			else if {_tip} is 59:
-				send "<gold>[TIP]<reset> Some Heroic Challenges may have hidden loot scattered around the playing field. Be sure to visit villages so you don't miss some high-value gear!" to player
-			else if {_tip} is 60:
-				send "<gold>[TIP]<reset> Some special weapons won't dissapear when breaking. However, they will lose all enchantments and skills they had. Be careful!" to player
-			else if {_tip} is 61:
-				send "<gold>[TIP]<reset> You can access the in-game store at any time by typing /store. You can buy Weapon Skills, equip Perks, and even level up your character's stats if certain conditions are met." to player
-			else if {_tip} is 62:
-				send "<gold>[TIP]<reset> Certain worlds may give you more EXP and Gold while fighting inside them. Scout them out to find the best spots to grind." to player
-			else if {_tip} is 63:
-				if {generation.%player%} is more than 1:
-					send "<gold>[TIP]<reset> Very rarely, a Fallen Hero may spawn near you. These undead monstrosities have Perks, Weapon Skills, and classes just as the living do. If you're unfortunate enough to encounter one, prepare for an unforgettable battle!" to player
-			else if {_tip} is 64:
-				send "<gold>[TIP]<reset> Special Weapon Skills are randomly activated based on your SKL stat. Bladesmen, Mercenaries and Cavaliers all have excellent SKL growths, so give them a try!" to player
-			else if {_tip} is 65:
-				send "<gold>[TIP]<reset> Every 5 points of STR adds 1 extra heart of damage to your attacks. Axemen have great STR growths, so try playing as one and going all-out!" to player
-			else if {_tip} is 66:
-				send "<gold>[TIP]<reset> Every 5 points of DEF reduces the damage you take by 1 heart. Knights have superb DEF growths, which makes them great for generous souls who enjoy protecting their allies." to player
-			else if {_tip} is 67:
-				send "<gold>[TIP]<reset> Magical attacks calculate damage using the attacker and foe's MAG stat. Knights in particular are very vulnerable to magic, so choose your fights carefully!" to player
-	
-	
+		set {_tip} to a random integer between 1 and 67
+		if {_tip} is 1:
+			send "<gold>[TIP]<reset> null" to player
+		else if {_tip} is 2:
+			send "<gold>[TIP]<reset> Weapon skills give a wide range of benefits, from self-healing to powerful debuffs. Lord Kiln at House Silgrid may be able to help you obtain them after you do favors for him." to player
+		else if {_tip} is 3:
+			send "<gold>[TIP]<reset> Equip up to five perks to your character with /perks. Perks grant a wide variety of benefits, from no-cost dodge rolls to the gift of flight." to player
+		else if {_tip} is 4:
+			send "<gold>[TIP]<reset> Tired of mining? Try out some alternative activities with /quickplay." to player
+		else if {_tip} is 5:
+			send "<gold>[TIP]<reset> Complete Heroic Challenges to earn unique rewards. Discover a Heroic Challenge in the world to play one." to player
+		else if {_tip} is 6:
+			send "<gold>[TIP]<reset> Ladders are affected by gravity. Use this to your advantage by creating pillars using gravel and ladders to excavate pits safely." to player
+		else if {_tip} is 7:
+			send "<gold>[TIP]<reset> Want to start fresh? You can create multiple characters with /char." to player
+		else if {_tip} is 8:
+			send "<gold>[TIP]<reset> Join a group by using /group. Being a member of a group grants many benefits and unlocks new skills." to player
+		else if {_tip} is 9:
+			send "<gold>[TIP]<reset> Some skills, like Escape Route, require a group to use. Join a group by using /group." to player
+		else if {_tip} is 10:
+			send "<gold>[TIP]<reset> Weapon refines grant powerful bonuses. Talk to a blacksmith to have a weapon refined." to player
+		else if {_tip} is 11:
+			send "<gold>[TIP]<reset> Are mobs too tough? Lower your difficulty by using /pd." to player
+		else if {_tip} is 12:
+			send "<gold>[TIP]<reset> Feeling gutsy? Turn up your personal difficulty for bonus experience and cash using /pd." to player
+		else if {_tip} is 13:
+			send "<gold>[TIP]<reset> Each class has a unique perk to learn. Use a Trainee's Enrollment to reclass and unlock them all!" to player
+		else if {_tip} is 14:
+			send "<gold>[TIP]<reset> Combine glowstone dust and sugar in a workbench to create a cleansing dust that allows you to remove enchantments from tools." to player
+		else if {_tip} is 15:
+			send "<gold>[TIP]<reset> Tired of mobs getting the upper hand? Enable bleed-out using /bleedout. However, this disables instant-kill prevention from /bhealth." to player
+		else if {_tip} is 16:
+			send "<gold>[TIP]<reset> Instant kills got you down? Survive all lethal attacks with 1/2 a heart by using /bhealth. Be careful, as this disables bleeding out!" to player
+		else if {_tip} is 17:
+			send "<gold>[TIP]<reset> Got money to burn? Pull up the store by using /store." to player
+		else if {_tip} is 18:
+			send "<gold>[TIP]<reset> Lances can be crafted similarly to other tools, with two sticks and the material of choice in a triangle at the top. You can throw them by right-clicking." to player
+		else if {_tip} is 19:
+			send "<gold>[TIP]<reset> Craft spare magic wands with blaze powder and a stick. Remember, only mages can use them!" to player
+		else if {_tip} is 20:
+			send "<gold>[TIP]<reset> Caves are much more expansive, and more dangerous. Take plenty of torches with you before braving the depths." to player
+		else if {_tip} is 21:
+			send "<gold>[TIP]<reset> Mobs with flames surrounding them are much more powerful than regular mobs. Kill them for a large cash reward!" to player
+		else if {_tip} is 22:
+			send "<gold>[TIP]<reset> The Crusader's Ward perk reduces all incoming damage by 50%%. Promote to a Crusader to learn it!" to player
+		else if {_tip} is 23:
+			send "<gold>[TIP]<reset> Check your character's stats or the stats of another player using /cstats." to player
+		else if {_tip} is 24:
+			send "<gold>[TIP]<reset> Double-tap the sneak key to perform a dodge roll! The distance and direction is influenced by where you are looking. Toggle it by using /dr." to player
+		else if {_tip} is 25:
+			send "<gold>[TIP]<reset> Feeling stylish? Enable combos by promoting to a Devil Hunter. The faster and more stylish your actions, the greater the rewards!" to player
+		else if {_tip} is 26:
+			send "<gold>[TIP]<reset> Set your character's name using /name. You can use colour codes or <> to add colours to your name." to player
+		else if {_tip} is 27:
+			send "<gold>[TIP]<reset> Using a Trainee's Enrollment lets you return to being a Journeyman and choose a new class to play. You can also choose to re-allocate your character's stat points." to player
+		else if {_tip} is 28:
+			send "<gold>[TIP]<reset> Need to cycle through more tips? Use /tip to read more helpful hints like this." to player
+		else if {_tip} is 29:
+			send "<gold>[TIP]<reset> Most towns and villages in the world are guarded from monsters by NPC's. Consider staying at a town's inn for a safe place to rest during the night." to player
+		else if {_tip} is 30:
+			send "<gold>[TIP]<reset> Survivalists may be weak, but their perks are incredibly useful for survival. Their Scavenger perk can grant them bonus ores when mining." to player
+		else if {_tip} is 31:
+			send "<gold>[TIP]<reset> You can enchant furnaces to improve their smelting capabilities. Keep an eye out for the Silk Touch and Fortune enchantments in particular!" to player
+		else if {_tip} is 32:
+			send "<gold>[TIP]<reset> Reaching a high enough Speed stat gives you a permanent movement bonus. Consider using the Bladesman or Mercenary classes to reach the threshold." to player
+		else if {_tip} is 33:
+			send "<gold>[TIP]<reset> The Silk Touch enchantment not only drops the exact blocks you mine, but it can also pick up monster spawners!" to player
+		else if {_tip} is 34:
+			send "<gold>[TIP]<reset> Carrying too many items? Open up a vault with /pv." to player
+		else if {_tip} is 35:
+			send "<gold>[TIP]<reset> Knights have excellent defensive capabilities, but struggle to deal damage. Using a Skill like Life and Death can prove to be useful, as your extra durability makes up for the damage vulnerability penalty." to player
+		else if {_tip} is 36:
+			send "<gold>[TIP]<reset> Cavaliers have an easier time taming and using animals, but are less effective than other classes without a mount. Equip the Mount perk to be able to summon a horse whenever you need one." to player
+		else if {_tip} is 37:
+			send "<gold>[TIP]<reset> Bladesmen are extremely fast and have high skill, but have lackluster defensive capabilities. Consider using skills such as Desperation or Vantage to take advantage of your high-risk playstyle." to player
+		else if {_tip} is 38:
+			send "<gold>[TIP]<reset> Fighters are staggeringly strong, but can't do much else outside of hitting hard. Try skills such as Armoured Blow or Defiant Speed to mitigate this." to player
+		else if {_tip} is 39:
+			send "<gold>[TIP]<reset> Mercenaries are great all-rounders, and have superb combat abilities. Their Double Lion perk is extremely powerful, letting them attack twice when initiating combat." to player
+		else if {_tip} is 40:
+			send "<gold>[TIP]<reset> Gold Lances have the highest damage of all lances when thrown. However, they can only be thrown a few times before breaking." to player
+		else if {_tip} is 41:
+			send "<gold>[TIP<reset> The Sorcery Blade weapon skill calculates damage using MAG instead of DEF. Mages in particular will enjoy the bonus." to player
+		else if {_tip} is 42: 
+			send "<gold>[TIP]<reset> Set a home usng /home. You can then teleport to any homes you've set previously." to player
+		else if {_tip} is 43:
+			if {realism.%player%} is 1:
+				send "<gold>[TIP]<reset> Hotter biomes and heat-emitting blocks like lava and torches increases your temperature. If it gets too high, you will develop heatstroke." to player
+			else:
+				send "<gold>[TIP]<reset> Realism mode adds extra challenges to survival, including thirst and a body temperature system. If you're looking for a challenge, consider enabling it." to player
+		else if {_tip} is 44:
+			send "<gold>[TIP]<reset> You can harvest crops and automatically replant them by right-clicking." to player
+		else if {_tip} is 45:
+			if {realism.%player%} is 1:
+				send "<gold>[TIP]<reset> Staying outside at night or in cold biomes decreases your temperature. If it gets too low, you will develop frostbite." to player
+			else:
+				send "<gold>[TIP]<reset> Realism mode adds extra challenges to survival, including thirst and a body temperature system. If you're looking for a challenge, consider enabling it." to player
+		else if {_tip} is 46:
+			if {realism.%player%} is 1:
+				send "<gold>[TIP]<reset> Beds help warm you up while sleeping. If you're getting too cold, consider crafting one." to player
+			else:
+				send "<gold>[TIP]<reset> Realism mode adds extra challenges to survival, including thirst and a body temperature system. If you're looking for a challenge, consider enabling it." to player
+		else if {_tip} is 47:
+			send "<gold>[TIP]<reset> Want to duel another player? Enable bleed-out and join a PVP arena using /quickplay." to player
+		else if {_tip} is 48:
+			send "<gold>[TIP]<reset> Two-wide doors open as a pair. Get creative with your structures and make truly unique buildings." to player
+		else if {_tip} is 49:
+			send "<gold>[TIP]<reset> Crafting cars can be expensive, but are well worth the effort to do so. Consider crafting some once you have a large supply of iron." to player
+		else if {_tip} is 50:
+			send "<gold>[TIP]<reset> New crafting recipes can be found in the #recipies channel of the discord server. Check back often for new updates." to player
+		else if {_tip} is 51:
+			send "<gold>[TIP]<reset> You can create tempered versions of iron, gold, and diamond by smelting a block of the resource in a furnace. You can use this to craft tool frames and upgrade your pre-existing tools." to player
+		else if {_tip} is 52:
+			send "<gold>[TIP]<reset> Aether Raids are custom Heroic Challenges made by the community. To play Aether Raids, find the Aether Raid Hub in the Adventure world after certain conditions have been met." to player
+		else if {_tip} is 53:
+			send "<gold>[TIP]<reset> When building an Aether Raid, keep in mind that NPCs will follow after targets once they're found. Try gating in your archers to keep them from running into danger!" to player
+		else if {_tip} is 54:
+			send "<gold>[TIP]<reset> You can use the Inherit Skill option inside the Weapon Skills menu to pass down skills and refinements to other tools. If you find a weapon with skills, inherit them and put them to work!" to player
+		else if {_tip} is 55:
+			send "<gold>[TIP]<reset> When building an Aether Raid, sometimes the best defense is a good offense! Try building choke points to funnel players into high-damage Swordmasters." to player
+		else if {_tip} is 56:
+			send "<gold>[TIP]<reset> When building an Aether Raid, try placing traps to force players to make risky decisions! A lava river can be a great deterrent to pesky dodge rollers." to player
+		else if {_tip} is 57:
+			send "<gold>[TIP]<reset> You can build Tool Handles by combining a stick and an iron ingot. You can use these along with Tempered ores to craft tool and armour frames." to player
+		else if {_tip} is 58:
+			send "<gold>[TIP]<reset> You can merge a tool with a maximum of 10 tool frames. If you're running low on diamond, creating a +10 iron tool instead might be something to consider." to player
+		else if {_tip} is 59:
+			send "<gold>[TIP]<reset> Some Heroic Challenges may have hidden loot scattered around the playing field. Be sure to visit villages so you don't miss some high-value gear!" to player
+		else if {_tip} is 60:
+			send "<gold>[TIP]<reset> Some special weapons won't dissapear when breaking. However, they will lose all enchantments and skills they had. Be careful!" to player
+		else if {_tip} is 61:
+			send "<gold>[TIP]<reset> You can access the in-game store at any time by typing /store. You can buy Weapon Skills, equip Perks, and even level up your character's stats if certain conditions are met." to player
+		else if {_tip} is 62:
+			send "<gold>[TIP]<reset> Certain worlds may give you more EXP and Gold while fighting inside them. Scout them out to find the best spots to grind." to player
+		else if {_tip} is 63:
+			if {generation.%player%} is more than 1:
+				send "<gold>[TIP]<reset> Very rarely, a Fallen Hero may spawn near you. These undead monstrosities have Perks, Weapon Skills, and classes just as the living do. If you're unfortunate enough to encounter one, prepare for an unforgettable battle!" to player
+		else if {_tip} is 64:
+			send "<gold>[TIP]<reset> Special Weapon Skills are randomly activated based on your SKL stat. Bladesmen, Mercenaries and Cavaliers all have excellent SKL growths, so give them a try!" to player
+		else if {_tip} is 65:
+			send "<gold>[TIP]<reset> Every 5 points of STR adds 1 extra heart of damage to your attacks. Axemen have great STR growths, so try playing as one and going all-out!" to player
+		else if {_tip} is 66:
+			send "<gold>[TIP]<reset> Every 5 points of DEF reduces the damage you take by 1 heart. Knights have superb DEF growths, which makes them great for generous souls who enjoy protecting their allies." to player
+		else if {_tip} is 67:
+			send "<gold>[TIP]<reset> Magical attacks calculate damage using the attacker and foe's MAG stat. Knights in particular are very vulnerable to magic, so choose your fights carefully!" to player
+		

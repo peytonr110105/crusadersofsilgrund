@@ -5,7 +5,7 @@ on damage:
 	if victim is npc:
 		if victim's name is "Todd":
 			set {toddRNG} to true
-			set damage to damage - 1.5
+			set damage to damage / 2
 
 command /bs-shop [<number=1>]:
 	trigger:
