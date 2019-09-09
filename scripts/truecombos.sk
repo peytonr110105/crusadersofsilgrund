@@ -35,7 +35,7 @@ on join:
 	clear {comboscale.%player%}
 	clear {comboscalar.%player%}
 
-every 0.55 seconds:
+every 0.75 seconds:
 	loop all players:
 		if {combosenabled.%loop-player%} is 1:
 			if {comboscore.%loop-player%} is more than 0:

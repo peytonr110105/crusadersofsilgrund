@@ -358,17 +358,21 @@ on damage:
 	if the name of the victim's tool is "<gold><bold>Balder Side Sword":
 		if {BSS.%victim%} is true:
 			cancel event
+			set {BSSBonus.%victim%} to damage
 			send "<gold>Parried the enemy's attack!" to the victim
 			send "<red>The enemy parried your attack!" to the attacker
-			set {BSSBonus.%victim%} to true
 			clear {BSS.%victim%}
 	if the name of the attacker's tool is "<gold><bold>Balder Side Sword":
-		set damage to damage + 1
-		if {BSSBonus.%attacker%} is true:
-			set damage to damage * 2
+		set damage to damage + 1.5
+		if {BSSBonus.%attacker%} is set:
+			set damage to damage + ({BSSBonus.%attacker%} * 2)
+			clear {BSSBonus.%attacker%}
 	#Ragnell
 	if the name of the attacker's tool contains "<gold><bold>Ragnell":
 		set damage to damage + 3
+	#Yamato
+	if the name of the attacker's tool is "<gold><bold>Yamato":
+		add 1.5 to damage
 	#Meisterschwert
 	if the name of the attacker's tool is "<gold><bold>Meisterschwert":
 		set damage to damage * 2
@@ -808,6 +812,73 @@ on rightclick:
 		play sound "block.dispenser.dispense" with volume 4 and pitch 0.5 at the player
 		play smoke at the player
 		
+#Judgement Cut
+on right click:
+	if the name of the player's tool is "<gold><bold>Yamato":
+		if the player is sneaking:
+			if ground state of player is true:
+				make player say "<Light blue>Slay all..."
+				apply slowness 100 to the player for 12 seconds
+				apply weakness 100 to the player for 12 seconds
+				apply blindness 1 to the player for 12 seconds
+				play sound "entity.generic.explode" with volume 1.5 and pitch 0.5 at the player
+				play large explosion at the player
+				loop 40 times:
+					if ground state of player is false:
+						exit loop
+					else if player is not sneaking:
+						exit loop
+					else:
+						add 1 to {_JCWait}
+						loop all blocks in radius 20 of the player:
+							if y coordinate of loop-block is more than or equal to y coordinate of the block at the player:
+								chance of 2%:
+									play 5 (cyan wool break with speed 1) at the loop-block
+									play 5 (blue wool break with speed 1) at the loop-block
+						loop all monsters in radius 20 of the player:
+							play 10 (white wool break with speed 1) at the loop-monster
+						loop all players in radius 20 of the player:
+							if loop-player is not the player:
+								play 10 (white wool break with speed 1) at the loop-player
+						wait 0.25 seconds
+						send action bar "<light blue><bold>JUDGEMENT CUT CHARGE: %%%{_JCWAIT} * 2.5%" to the player
+						play sound "entity.minecart.riding" with volume 0.5 and pitch 0.5 at the player
+				if {_JCWait} is more than 8:
+					play sound "entity.player.attack.sweep" with volume 2 and pitch 0.7 at the player
+					wait 0.3 seconds
+					play sound "entity.enderdragon.shoot" with volume 1.5 and pitch 0.7 at the player
+					play sound "entity.generic.explode" with volume 2 and pitch 0.5 at the player
+					play sound "block.end_portal.spawn" with volume 2 and pitch 1 at the player
+					loop all monsters in radius 20 of the player:
+						damage the loop-monster by (({_JCWait} * 2) ^ 1.55) + ({str.%player%} + {strbuff.%player%}) with fake cause attack
+						play 40 (cyan wool break with speed 1) at the loop-monster
+						play 40 (quartz block break with speed 1) at the loop-monster
+						play explosion at the loop-monster
+					loop all players in radius 20 of the player:
+						if loop-player is not the player:
+							damage the loop-player by ({_JCWait} * 2) + ({str.%player%} + {strbuff.%player%}) with fake cause attack
+							play 40 (cyan wool break with speed 1) at the loop-player
+							play 40 (quartz block break with speed 1) at the loop-player
+							play explosion at the loop-player
+					set {_rng} to a random integer between 1 and 4
+					if {_rng} is 1:
+						make player say "%{skillquote1.%player%}%"
+					else if {_rng} is 2:
+						make player say "%{skillquote2.%player%}%"
+					else if {_rng} is 3:
+						make player say "%{skillquote3.%player%}%"
+					else if {_rng} is 4:
+						make player say "%{skillquote4.%player%}%"
+					remove slowness from the player
+					remove weakness from the player
+					remove blindness from the player
+					#apply slowness 100 to the player for 2 seconds
+					#apply weakness 100 to the player for 2 seconds
+				else:
+					remove slowness from the player
+					remove weakness from the player
+					remove blindness from the player
+
 
 on right click on a player:
 	#Balder Side Sword
@@ -1237,7 +1308,7 @@ on tool change:
 		play 30 (critical hit with speed 0) at the player
 		play 30 (snow shovel with speed 0) at the player
 		
-every 1 second:
+every 0.25 second:
 	loop all players:
 		if the name of loop-player's tool contains "<gold><bold>":
 			play 40 (firework spark with speed 0) at loop-player

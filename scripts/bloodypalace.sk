@@ -34,9 +34,10 @@ command /bpbuild [<text="done">]:
 				loop all items in player's inventory:
 					add loop-item to {BPBackup.%player%::*}
 				clear the player's inventory
+				set {BPBuildMode.SpawnType.%player%} to 0
 				give 1 carrot on a stick named "<white><bold>[BP] Region Maker" with lore "<white>Left-click: Mark point 1","<white>Right-click: Mark point 2","<white>Use the /rg create command to define the region.","<white>For simplicity, set the region name to the same name as the arena." to the player
 				give 1 diamond hoe named "<white><bold>[BP] Mark as Loot Chest" with lore "<white>Left-click to mark a chest as a loot chest.","<white>Sneak + left-click to remove the loot chest.","<white>Right-click to update the loot inside the chest." to the player
-				give 1 iron hoe named "<white><bold>[BP] Set Spawns" with lore "<white>Right-click to mark your position as a spawn point.", "<white>Left-click to cycle the already set spawnpoints.", "<white>Sneak + right-click to clear the selected spawn point." to the player
+				give 1 iron hoe named "<white><bold>[BP] Set Spawns" with lore "<white>Right-click to mark your position as a spawn point.", "<white>Left-click to cycle between spawn types.", "<white>Sneak + right-click to clear a spawn point.","<white>Spawnpoint Type: Arena Spawn" to the player
 				give 1 iron sword named "<white><bold>[BP] Set Monster Spawnpoint" with lore "<white>Right-click to mark the block as a monster spawnpoint.", "<white>Left-click to remove the spawnpoint.","<gold>Monster spawnpoints will be highlighted when holding this tool." to the player
 		else:
 			clear the player's inventory
@@ -66,6 +67,49 @@ command /bpdefine <text> <text> <number> <number>:
 				send "Updated arena chest randomization."
 		else:
 			send "<red>Must be in BP Build Mode to define arena settings!"
+			
+#Prevent breaking blocks with BP Build Tools
+#on block break:
+#	if the name of the player's tool contains "[BP]":
+#		cancel event
+
+on left click:
+	if the name of the player's tool contains "Set Monster Spawnpoint":
+		loop {arena.%{BPBuildMode.%player%}%.mobspawns::*}:
+			if location of block at player is loop-value:
+				send "Removed %loop-value% from the mob spawnpoint list." to the player
+				clear {arena.%{BPBuildMode.%player%}%.mobspawns::%loop-index%}
+				set {_ptfound} to true
+				exit 1 loop
+		if {_ptfound} is not true:
+			send "<light red>No spawnpoint found."
+	else if the name of the player's tool is "<white><bold>[BP] Set Spawns":
+		if {BPBuildMode.SpawnType.%player%} is 0:
+			set {BpBuildMode.SpawnType.%player%} to 1
+			set the 4th line of the lore of the player's tool to "<white>Spawnpoint Type: Lobby Spawn"
+			send "<gold>Change to: Lobby Spawn"
+		else if {BpBuildMode.SpawnType.%player%} is 1:
+			set {BpBuildMode.SpawnType.%player%} to 2
+			set the 4th line of the lore of the player's tool to "<white>Spawnpoint Type: Exit Spawn"
+			send "<gold>Change to: Exit Spawn"
+		
+every 0.5 seconds in world "Salindrum":
+	loop all players:
+		#broadcast "%{BPBuildMode.%loop-player%}%"
+		#broadcast "test: %{arena.%{BPBuildMode.%loop-player%}%.mobspawns::*}%"
+		#loop {arena.%{BPBuildMode.%loop-player%}%.mobspawns::*}:
+			#broadcast "test: %loop-value-2%"
+		if the name of the loop-player's tool contains "Set Monster Spawnpoint":
+			loop {arena.%{BPBuildMode.%loop-player%}%.mobspawns::*}:
+				#broadcast "%loop-value-2%"
+				play 2 (mob spawner flames with speed 1) at loop-value-2
+				
+on right click:
+	if the name of the player's tool contains "Set Monster Spawnpoint":
+		if {BPBuildMode.%player%} is set:
+			add location of block at player to {arena.%{BPBuildMode.%player%}%.mobspawns::*}
+			send "<gold>Added %location of block at the player% to the list of mob spawn locations."
+	else if the name of the player's tool is "<white><bold>[BP] Set Spawns":
 
 on damage of a player:
 	if final damage is more than victim's health:

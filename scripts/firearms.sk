@@ -32,7 +32,7 @@ on right-click:
 			else:
 				set {_ShotSpreadX} to random number between -0.25 and 0.25
 				set {_ShotSpreadY} to random number between -0.25 and 0.25
-			shoot an arrow from the player
+			make the player shoot an arrow
 			push the last shot projectile right at speed {_ShotSpreadX}
 			push the last shot projectile up at speed {_ShotSpreadY}
 			set metadata value "gunType" of the last shot projectile to 1
@@ -52,7 +52,7 @@ on right-click:
 			else:
 				set {_ShotSpreadX} to random number between -0.35 and 0.35
 				set {_ShotSpreadY} to random number between -0.35 and 0.35
-			shoot an arrow from the player
+			make the player shoot an arrow
 			push the last shot projectile right at speed {_ShotSpreadX}
 			push the last shot projectile up at speed {_ShotSpreadY}
 			push the last shot projectile forwards at speed 1
@@ -73,7 +73,7 @@ on right-click:
 			else:
 				set {_ShotSpreadX} to random number between -0.25 and 0.25
 				set {_ShotSpreadY} to random number between -0.25 and 0.25
-			shoot an arrow from the player
+			make the player shoot an arrow
 			push the last shot projectile right at speed {_ShotSpreadX}
 			push the last shot projectile up at speed {_ShotSpreadY}
 			set metadata value "gunType" of the last shot projectile to 3
@@ -94,7 +94,7 @@ on right-click:
 				else:
 					set {_ShotSpreadX} to random number between -0.385 and 0.385
 					set {_ShotSpreadY} to random number between -0.385 and 0.385
-				shoot an arrow from the player
+				make the player shoot an arrow
 				push the last shot projectile right at speed {_ShotSpreadX}
 				push the last shot projectile up at speed {_ShotSpreadY}
 				set metadata value "gunType" of the last shot projectile to 4
@@ -117,7 +117,7 @@ on right-click:
 			else:
 				set {_ShotSpreadX} to random number between -0.25 and 0.25
 				set {_ShotSpreadY} to random number between -0.25 and 0.25
-			shoot an arrow from the player
+			make the player shoot an arrow
 			push the last shot projectile right at speed {_ShotSpreadX}
 			push the last shot projectile up at speed {_ShotSpreadY}
 			set metadata value "gunType" of the last shot projectile to "5"
@@ -135,7 +135,7 @@ on right-click:
 				play sound "entity.blaze.shoot" with volume 1 and pitch 0.5 at the player
 				play sound "entity.generic.explode" with volume 2 and pitch 0.7 at the player
 				play sound "block.dispenser.fire" with volume 2 and pitch 0.5 at the player
-				shoot an arrow from the player with speed 6
+				make the player shoot an arrow with speed 6
 				set {_spread} to checkSlots(player,"Controlled Shot")
 				set metadata value "gunType" of the last shot projectile to "6"
 				loop 5 times:
@@ -145,7 +145,7 @@ on right-click:
 					else:
 						set {_ShotSpreadX} to random number between -1 and 1
 						set {_ShotSpreadY} to random number between -0.7 and 0.7
-					shoot an arrow from the player with speed 6
+					make the player shoot an arrow with speed 6
 					push the last shot projectile right at speed {_ShotSpreadX}
 					push the last shot projectile up at speed {_ShotSpreadY}
 					set {shotType.%last shot projectile%} to "RSO"

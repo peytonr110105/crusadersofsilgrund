@@ -1,5 +1,3 @@
-#Let's try out some experimental combat tweaks.
-
 #Helmet Damage Resistance imported from weaponskills.sk
 function helmType(PLR: player) :: number:
 	if {_PLR} is wearing a leather helmet:
@@ -12,6 +10,7 @@ function helmType(PLR: player) :: number:
 		return 0.25
 	else if {_PLR} is wearing a diamond helmet:
 		return 0.8
+
 #Perform a Helm Splitter by attacking an enemy while sneaking, while airbourne.
 on damage:
 	if ground state of the attacker is false:
@@ -31,14 +30,14 @@ on left click:
 				if {inHangtime.%player%} is not true:
 					subtract 1 from {attackHangtimeCount.%player%}
 					send "<bold><italics>Air Hang: %{attackHangtimeCount.%player%}%"
-					push the player in horizontal direction of the player at speed 0.025
-					loop 5 times:
+					push the player in horizontal direction of the player at speed 0.03
+					loop 4 times:
 						set {_magnitude} to (y of player's velocity)
 						#Cap hangtime boost if it exceeds a specific amount, and take absolute value.
 						if {_magnitude} is less than 0:
 							set {_magnitude} to {_magnitude} * -1.05
 						else:
-							set {_magnitude} to 0.1
+							set {_magnitude} to 0.05
 						push the player upwards at speed {_magnitude}
 						wait 1 tick
 						set {inHangtime.%player%} to true
@@ -116,7 +115,7 @@ on right click:
 			send "<light red>Using this wouldn't benefit you right now."
 	if the name of the player's tool is "<light yellow><bold>Golden Herb":
 		if player's health is less than player's maximum health:
-			remove 1 yellow dye named "<light yellow><bold>Golden Herb" from the player
+			remove 1 of tool from tool
 			play sound "block.enchantment_table.use" with volume 3 and pitch 2 at the player for the player
 			play sound "entity.player.swim" with volume 1 and pitch 1.5 at the player for the player
 			play 30 (gold block break with speed 1) at the player
