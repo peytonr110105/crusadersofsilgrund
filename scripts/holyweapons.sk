@@ -850,13 +850,13 @@ on right click:
 					play sound "entity.generic.explode" with volume 2 and pitch 0.5 at the player
 					play sound "block.end_portal.spawn" with volume 2 and pitch 1 at the player
 					loop all monsters in radius 20 of the player:
-						damage the loop-monster by (({_JCWait} * 2) ^ 1.55) + ({str.%player%} + {strbuff.%player%}) with fake cause attack
+						make the player damage loop-monster by {_JCWait}
 						play 40 (cyan wool break with speed 1) at the loop-monster
 						play 40 (quartz block break with speed 1) at the loop-monster
 						play explosion at the loop-monster
 					loop all players in radius 20 of the player:
 						if loop-player is not the player:
-							damage the loop-player by ({_JCWait} * 2) + ({str.%player%} + {strbuff.%player%}) with fake cause attack
+							make the player damage loop-player by {_JCWait}
 							play 40 (cyan wool break with speed 1) at the loop-player
 							play 40 (quartz block break with speed 1) at the loop-player
 							play explosion at the loop-player

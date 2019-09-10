@@ -159,7 +159,7 @@ on death of a monster:
 				send "<light yellow>Cinder: Sorry about that prick, I needed some energy for a chat. Scouts have just come back from the Yied Desert. Reports say there's a large number of undead thralls coming from Summoner's Sword, one of the old fortresses Alstair constructed. Kiln says we should clear it out and look for something to point us towards whoever's leading this undead invasion." to the attacker
 				startQuest(attacker,"A Deadly Test of Might","Investigate Summoner's Sword inside the Yied Desert.")
 				wait 8 seconds
-				send "<light yellow>Cinder: Before you go running off, you should think about taking a trip to Alstair's old castle: House Aideen. It's out past Colony 5." to the attacker
+				send "<light yellow>Cinder: Before you go running off, you should think about taking a trip to Alstair's old castle: House Ulster. It's out past Colony 5." to the attacker
 				wait 5 seconds
 				send "<light yellow>Cinder: There should be a set of rings buried there that will help you. And if you ask me, I think you'll need them. I've got a bad feeling about what we'll find inside Summoner's Sword." to the attacker
 	if {quests.%attacker%::Invisible Ties} is more than 4:
@@ -1963,7 +1963,7 @@ command /quests <number>:
 			if {quests.%player%::New Arrival} is 999:
 				set slot 1 of the player's current inventory to 1 emerald block named "<green>New Arrival" with lore "<white>I've finished applying as a Knight.", "<white>I should head to the training grounds for my examination."
 			else if {quests.%player%::New Arrival} is 1:
-				set slot 1 of the player's current inventory to 1 lapis block named "<light blue>New Arrival" with lore "<white>After a long journey to House Aideen, I'm almost ready to become a Knight.", "<white>All I need to do now is complete my application."
+				set slot 1 of the player's current inventory to 1 lapis block named "<light blue>New Arrival" with lore "<white>After a long journey to House Ulster, I'm almost ready to become a Knight.", "<white>All I need to do now is complete my application."
 			#Days of Training
 			if {quests.%player%::Days of Training} is 999:
 				set slot 2 of the player's current inventory to 1 emerald block named "<green>Days of Training" with lore "<white>I've completed my training, and now feel more confident in my combat skills."
@@ -1995,7 +1995,7 @@ command /quests <number>:
 			if {quests.%player%::The Time to Act} is 999:
 				set slot 4 of the player's current inventory to 1 emerald block named "<green>The Time to Act" with lore "<white>I've dispatched the monster threat, and Grann is safe once again.", "<white>I should get some rest and head home."
 			else if {quests.%player%::The Time to Act} is 2:
-				set slot 4 of the player's current inventory to 1 lapis block named "<light blue>The Time to Act" with lore "<white>Monsters are ambushing the town!", "<white>Now is the time to demonstrate the might of the Knights of Aideen!."
+				set slot 4 of the player's current inventory to 1 lapis block named "<light blue>The Time to Act" with lore "<white>Monsters are ambushing the town!", "<white>Now is the time to demonstrate the might of the Knights of Ulster!."
 			else if {quests.%player%::The Time to Act} is 1:
 				set slot 4 of the player's current inventory to 1 lapis block named "<light blue>The Time to Act" with lore "<white>After a long day of travel and battle, it's time to return home.", "<white>There should be an inn to rest at inside Grann, located inside the dark forest."
 			else:

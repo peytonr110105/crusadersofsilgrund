@@ -13,14 +13,15 @@ function helmType(PLR: player) :: number:
 
 #Perform a Helm Splitter by attacking an enemy while sneaking, while airbourne.
 on damage:
-	if ground state of the attacker is false:
-		if attacker is sneaking:
-			add 1.5 to damage
-			add helmType(victim) to damage
-			push the attacker downwards at speed 2
-			push the victim downwards at speed 2
-			play sound "entity.generic.explode" with volume 1 and pitch 1.5 at the attacker for the attacker
-			set {inHangtime.%attacker%} to true
+	if attacker is player:
+		if ground state of the attacker is false:
+			if attacker is sneaking:
+				add 1.5 to damage
+				add helmType(victim) to damage
+				push the attacker downwards at speed 2
+				push the victim downwards at speed 2
+				play sound "entity.generic.explode" with volume 1 and pitch 1.5 at the attacker for the attacker
+				set {inHangtime.%attacker%} to true
 
 #Players can stall themselves in the air by attacking.
 on left click:
@@ -74,11 +75,6 @@ on jump:
 				exit 1 loop
 			wait 1 tick
 			
-
-#More FX on successful hits
-on damage of a monster:
-	if victim is alive:
-		play 60 (critical hit with speed 1) at the victim
 			
 #Gold/Green Herb Pickup Behavior
 on pick up:

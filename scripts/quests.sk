@@ -114,13 +114,16 @@ function bestWeapon(PLR: player) :: number:
 function npcChat(PLR: player , TXT: text):
 	send {_TXT} to {_PLR}
 	
+#Setup Check Helper
 command /setupcheck-gen1:
 	executable by: players, console
 	trigger:
+		#Block access to House Ulster if player has not finished setup
 		if {quests.%player%::Birth of a Hero} is not 999:
 			teleport the player to location at 790.5, 72, -1718 in world "GenOne"
-			send "<light red>You cannot enter House Aideen without registering. Speak with Azelle at the gate."
+			send "<light red>You cannot enter House Ulster without registering. Speak with Azelle at the gate."
 	
+#Manually update quest progress in case something breaks.
 command /setQuestProgress <number> <text>:
 	trigger:
 		setQuestProgress(player,arg 2,arg 1,"Progress updated manually.")
@@ -151,6 +154,8 @@ on death of a monster:
 										play 60 (snow shovel with speed 1) at loop-value
 						else:
 							#broadcast "%loop-value% is offline."
+							
+
 on join:
 	if {betaTestActive} is 1:
 		loop {playedBeta::*}:
@@ -177,7 +182,7 @@ on join:
 		set {questbook.%player%} to true
 		set {generation.%player%} to 1
 		teleport the player to location at 718, 63, -1598 in world "GenOne"
-		startQuest(player,"Birth of a Hero","Locate House Aideen in the northwest.")
+		startQuest(player,"Birth of a Hero","Locate House Ulster in the northwest.")
 		
 #New players have a hidden Miracle perk before creating a character.
 on damage of a player:
@@ -194,7 +199,7 @@ command /boah <number>:
 				npcChat(player,"<light blue>Azelle: Sure is. What're you here for?")
 				wait 3 seconds
 				clear {inConvo.%player%}
-				send "<run command:/boah 2><gold>1 - I'd like to join the Knights of Aideen."
+				send "<run command:/boah 2><gold>1 - I'd like to join the Knights of Ulster."
 				send "<run command:/boah 3><gold>2 - I'm lost. Do you have directions for the nearest town?"
 			else if arg 1 is 2:
 				set {inConvo.%player%} to true
@@ -207,7 +212,7 @@ command /boah <number>:
 				set {inConvo.%player%} to true
 				npcChat(player,"<light blue>Azelle: Well, there's a small village south of this 'ere castle. I doubt you'd find much of anything other than a blacksmith.")
 				wait 3 seconds
-				npcChat(player,"<light blue>Azelle: If you're looking for something more civilized, then House Aideen up the hill is your best bet. Though I've heard Alstair is locking the castle down since he's preparing for some sort of trip.")
+				npcChat(player,"<light blue>Azelle: If you're looking for something more civilized, then House Ulster up the hill is your best bet. Though I've heard Alstair is locking the castle down since he's preparing for some sort of trip.")
 				wait 4 seconds
 				npcChat(player,"<light blue>Azelle: But, if you really need to get into the castle, I heard Lord Alstair is hiring new members for his knights.")
 				wait 3 seconds
@@ -255,7 +260,7 @@ on right click on an entity:
 					npcChat(player,"<light yellow>Select one of the golden options to talk with other characters and interact with the world.")
 					wait 3 seconds
 					clear {inConvo.%player%}
-					send "<run command:/boah 1><gold>1 - Is this the entrance to House Aideen?" to the player
+					send "<run command:/boah 1><gold>1 - Is this the entrance to House Ulster?" to the player
 					
 on right-click with book:
 	if the name of the player's tool is "<gold>Journal":

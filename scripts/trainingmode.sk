@@ -122,7 +122,8 @@ command /sdhw:
 		set slot 37 of the player's current inventory to 1 diamond shovel named "<gold><bold>Swift-Winds Lance" with lore "<white>Grants <gold>[Sweeper]<white>.", "<bold><white>Unique Refine: Grants STR/SPD +20 for 5 seconds when initiating combat. Recharge duration: 10 seconds.", "<gold>[Sweeper]<white>: Disables foe's skills that guarantee counter-attacks during combat."
 		set slot 38 of the player's current inventory to 1 diamond sword named "<gold><bold>Kindled-Fire Sword" with lore "<white>Grants <gold>[Brave]<white>.", "<bold><white>Unique Refine:", "<white>Grants STR/DEF +20 for 5 seconds when initiating combat. Recharge duration: 10 seconds.", "<gold>[Brave]<white>: Inflicts SPD -15. Player attacks twice during combat."
 		set slot 39 of the player's current inventory to 1 diamond axe named "<gold><bold>Axtinguisher" with lore "<white>+50%% damage against burning targets.", "<white>-50%% damage against non-burning targets."
-		
+		set slot 40 of the player's current inventory to 1 diamond sword named "<gold><bold>Yamato" with lore "<white>+3 weapon might.", "<white>Grants <light blue><bold>[Judgement Cut]<reset><white>.", "<light blue><bold>[Judgement Cut]:<reset><white> Sneak and right-click to activate.", "<white>Gain power by holding sneak, then unleash it by standing up.", "<white>Targets all foes within 20 blocks. Damage based on charge time."
+
 on spawn of a slime:
 	if entity's world is "Salindrum":
 		cancel event
