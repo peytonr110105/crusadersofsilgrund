@@ -75,6 +75,7 @@ function supportBonusHandler(PLR: player, RANK: text):
 	#C-Support: +10 SKL/HP
 	else if {_RANK} is "D":
 		add 10 to {sklbuff.%{_PLR}%}
+		add 10 to {hpbuff.%{_PLR}%}
 		set {PTPSupportBonusActive.%{_PLR}%} to true
 		wait 1 minecraft hour
 		if {PTPSupportBonusActive.%{_PLR}%} is true:
@@ -156,8 +157,8 @@ on chat:
 on death of a monster:
 	if {supportpartner.%attacker%} is set:
 		if {supportpartner.%attacker%} is online:
-			add 0.75 to {PTPSupportPoints.%attacker%}
-			add 0.75 to {PTPSupportPoints.%{supportpartner.%attacker%}%}
+			add 0.5 to {PTPSupportPoints.%attacker%}
+			add 0.5 to {PTPSupportPoints.%{supportpartner.%attacker%}%}
 
 #Increase support level for every in-game hour both players are online.			
 every minecraft hour:

@@ -1,0 +1,33 @@
+#TF?rurururururu
+on damage:
+	if {capture.%attacker%} is set:
+		if the 4th line of the lore of the attacker's tool contains "Capture":
+			set damage to damage * 0.5
+	if {perdiff.%attacker%} is more than 5:
+		set {_th} to 1
+	else if {perdiff.%victim%} is more than 5:
+		set {_th} to 1
+	if {_th} is 1:
+		if {t_skl.%victim%} is set:
+			set {_foeAvoid} to ({t_spd.%victim%} + {t_spdbuff.%victim%}) + ({t_skl.%victim%} + {t_sklbuff.%victim%})
+		else:
+			set {_foeAvoid} to ({spd.%victim%} + {spdbuff.%victim%}) + ({skl.%victim%} + {sklbuff.%victim%})
+		if {_foeAvoid} is not set:
+			set {_foeAvoid} to 75
+		else if {_foeAvoid} is less than 1:
+			set {_foeAvoid} to 75
+		if {t_skl.%attacker%} is set:
+			set {_playerAvoid} to ({t_spd.%attacker%} + {t_spdbuff.%attacker%}) + ({t_skl.%attacker%} + {t_sklbuff.%attacker%})
+		else:
+			set {_playerAvoid} to ({spd.%attacker%} + {spdbuff.%attacker%}) + ({skl.%attacker%} + {sklbuff.%attacker%})
+		set {_Avoid} to ({_foeAvoid} - {_playerAvoid})
+		if {_Avoid} is less than 0:
+			set {_Avoid} to 0
+		set {_1RN} to a random integer between 0 and {_Avoid}
+		set {_2RN} to a random integer between 0 and {_Avoid}
+		set {_trueHit} to (({_1RN} + {_2RN}) / 2)
+		chance of {_trueHit}%:
+			cancel event
+			send "<light red>Your attack missed!" to the attacker
+			play 20 (cloud with speed 1) at the victim
+			send "<light blue>Dodged the opponent's attack!" to the victim

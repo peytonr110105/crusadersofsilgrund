@@ -56,19 +56,23 @@ on damage:
 		remove swiftness from the attacker
 		remove strength from the attacker
 	if metadata value "isRegret" of the victim is 1:
-		while victim is alive:
-			spawn 1 zombie at the victim
-			set the last spawned entity's health to (last spawned entity's maximum health * 0.5)
-			spawn 1 skeleton at the victim
-			set the last spawned entity's health to (last spawned entity's maximum health * 0.5)
-			play 40 (purple wool break with speed 1) at the victim
-			wait 20 seconds
+		if {t_RegretSpawner.%victim%} is not 1:
+			while victim is alive:
+				set {t_RegretSpawner.%victim%} to 1
+				spawn 1 zombie at the victim
+				set the last spawned entity's health to (last spawned entity's maximum health * 0.25)
+				spawn 1 skeleton at the victim
+				set the last spawned entity's health to (last spawned entity's maximum health * 0.25)
+				play 40 (purple wool break with speed 1) at the victim
+				wait 20 seconds
 	if metadata value "isFury" of the victim is 1:
-		while victim is alive:
-			spawn 1 blaze at the victim
-			set the last spawned entity's health to (last spawned entity's maximum health * 0.5)
-			play 10 (mob spawner flames with speed 1) at the victim
-			wait 10 seconds
+		if {t_FurySpawner.%victim%} is not 1:
+			while victim is alive:
+				set {t_FurySpawner.%victim%} to 1
+				spawn 1 blaze at the victim
+				set the last spawned entity's health to (last spawned entity's maximum health * 0.5)
+				play 10 (mob spawner flames with speed 1) at the victim
+				wait 10 seconds
 	if metadata value "isStalker" of the victim is 1:
 		if metadata value "ignoreDeathCondition" of the victim is not 1:
 			cancel event

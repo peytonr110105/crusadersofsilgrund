@@ -32,17 +32,3 @@ on right-click:
 			teleport the player to {RRWarp.%player%}
 			play sound "entity.enderman.teleport1" with volume 2 and pitch 1 at the player
 			play 20 (ender signal with speed 0) at the player
-			
-on damage:
-	loop all items in attacker's inventory:
-		if the name of the loop-item contains "Pursuit Ring":
-			if attacker's health is more than (attacker's maximum health * 0.5):
-				set damage to damage * 1.5
-				push the victim backwards at speed 1
-				exit 1 loop
-		else if the name of the loop-item contains "Prayer Ring":
-			if attacker's health is less than or equal to (attacker's maximum health * 0.5):
-				set damage to damage * 2
-				send "<light blue>The Prayer Ring caused a Critical Hit!" to the attacker
-				send "<light red>The Prayer Ring caused a Critical Hit!" to the victim
-				exit 1 loop

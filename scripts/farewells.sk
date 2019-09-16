@@ -48,42 +48,6 @@ command /fadmin:
 #0 = Classic Mode. Fallen players cannot be revived. Every decision counts.
 #1 = Casual Mode. Fallen players can be right-clicked to be revived.
 
-on damage of player:
-	if damage is more than or equal to victim's health:
-		if {farewells.%victim%} is 1:
-			if {farewellskip.%victim%} is 1:
-				apply resistance 5 to the victim for 15 seconds
-				apply weakness 99 to the victim for 15 seconds
-				apply blindness 1 to the victim for 15 seconds
-				apply slowness 99 to the victim for 15 seconds
-				apply mining fatigue 99 to the victim for 15 seconds
-				cancel event
-				set {bleedout.%victim%} to 1
-				heal the victim by 999
-				send "<red><bold>You have been critically wounded. You have 15 seconds to send messages before you die completely. Say your farewells..." to the victim
-				broadcast "<red><bold>%victim% has been downed!"
-				make victim say "%{downedQuote.%victim%}%"
-				loop 15 times:
-					if {bleedout.%victim%} is 0:
-						send "<light blue><bold>Another player saved you from imminent death." to the victim
-						make victim say "%{healedQuote.%victim%}%"
-						heal the victim by 5
-						apply regeneration 3 to the victim for 5 seconds
-						remove blindness from the victim
-						remove slowness from the victim
-						remove weakness from the victim
-						remove resistance from the victim
-						remove mining fatigue from the victim
-						set {farewellskip.%victim%} to 1
-						exit 1 loop
-					wait 1 second
-				if {bleedout.%victim%} is 1:
-					set {farewellskip.%victim%} to 0
-					#send "<red><bold>You were unable to be saved..."
-					kill the victim
-			else:
-				send "<red><bold>You were unable to be saved..."
-
 on player respawn:
 	set {farewellskip.%player%} to 1
 	set {bleedout.%player%} to 0

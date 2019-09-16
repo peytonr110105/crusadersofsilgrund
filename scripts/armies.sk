@@ -17,7 +17,7 @@ on inventory close:
 		loop all items in event-inventory:
 			add loop-item to {%{party.%player%}%.storage::*}
 
-command /group <text> <text>:
+command /group <text> [<text="null">]:
 	description: Build an army. Trust nobody. Fire Emblem, now for Gameboy Advance!
 	usage: /group help
 	aliases: /army, /team

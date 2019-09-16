@@ -156,10 +156,10 @@ on death of a monster:
 				send "<light yellow>Cinder: ..." to the attacker
 				wait 1.5 seconds
 				damage the attacker by 0.5
-				send "<light yellow>Cinder: Sorry about that prick, I needed some energy for a chat. Scouts have just come back from the Yied Desert. Reports say there's a large number of undead thralls coming from Summoner's Sword, one of the old fortresses Alstair constructed. Kiln says we should clear it out and look for something to point us towards whoever's leading this undead invasion." to the attacker
+				send "<light yellow>Cinder: Sorry about that prick, I needed some energy for a chat. Scouts have just come back from the Yied Desert. Reports say there's a large number of undead thralls coming from Summoner's Sword, one of the old fortresses Alastor constructed. Kiln says we should clear it out and look for something to point us towards whoever's leading this undead invasion." to the attacker
 				startQuest(attacker,"A Deadly Test of Might","Investigate Summoner's Sword inside the Yied Desert.")
 				wait 8 seconds
-				send "<light yellow>Cinder: Before you go running off, you should think about taking a trip to Alstair's old castle: House Ulster. It's out past Colony 5." to the attacker
+				send "<light yellow>Cinder: Before you go running off, you should think about taking a trip to Alastor's old castle: House Ulster. It's out past Colony 5." to the attacker
 				wait 5 seconds
 				send "<light yellow>Cinder: There should be a set of rings buried there that will help you. And if you ask me, I think you'll need them. I've got a bad feeling about what we'll find inside Summoner's Sword." to the attacker
 	if {quests.%attacker%::Invisible Ties} is more than 4:
@@ -189,7 +189,7 @@ on death of a monster:
 				add ({MHTarget.%player%} * 5) to the attacker's balance
 			
 every 1 minecraft hour:
-	set time in world "Alstair" to 24:00
+	set time in world "Alastor" to 24:00
 	loop all players:
 		if {quests.%loop-player%::Home Sweet Home} is not 999:
 			if {quests.%loop-player%::Home Sweet Home} is not 998:
@@ -749,11 +749,11 @@ command /conv-stl <number>:
 				wait 4 seconds
 				send "<light cyan>Riis: Long ago, Helmund from the shadowed lands of Elrid attempted to invade our realm with an army of necromancers at his side."
 				wait 4 seconds
-				send "<light cyan>Riis: After learning of the loss of his dear friend Alstair at Helmund's hands, Cinder used all of his magical prowess to forge the Holy Weapons."
+				send "<light cyan>Riis: After learning of the loss of his dear friend Alastor at Helmund's hands, Cinder used all of his magical prowess to forge the Holy Weapons."
 				wait 4 seconds
 				send "<light cyan>Riis: Unfortunately, the effort of creating the Holy Weapons would take Cinder's life. The weapons would go on to be used to drive back Helmund's forces and seal away Elrid."
 				wait 4 seconds
-				send "<light cyan>Riis: Cinder's son, Zacharias, would go on to prove himself worthy of inheriting his father's throne. Some would argue that his abilities with a sword were almost as great as Alstair himself."
+				send "<light cyan>Riis: Cinder's son, Zacharias, would go on to prove himself worthy of inheriting his father's throne. Some would argue that his abilities with a sword were almost as great as Alastor himself."
 				wait 4 seconds
 				send "<light cyan>Riis: The same cannot be said for his son Kiln, however. Don't tell him I said that, but it's the truth: he'll never be fit for combat."
 				wait 4 seconds
@@ -929,7 +929,7 @@ command /conv-dot <number>:
 			wait 4.5 seconds
 			send "<light cyan>Lord Kiln: I'm certain you already know by now, but recently these lands have been terrorized by undead monsters. While we are managing to stave off their attacks, I fear that our allies in the north may not be as well off."
 			wait 6 seconds
-			send "<light cyan>Lord Kiln: Ever since their leader, the Obsidian Knight Alstair, was slain, the Northern Isles have been in complete disarray. Silgrid depends upon the resources there, however, and if we were to lose our allies in the Northern Isles it would spell great trouble for the citizens here in the Southern Plains."
+			send "<light cyan>Lord Kiln: Ever since their leader, the Obsidian Knight Alastor, was slain, the Northern Isles have been in complete disarray. Silgrid depends upon the resources there, however, and if we were to lose our allies in the Northern Isles it would spell great trouble for the citizens here in the Southern Plains."
 			wait 7.5 seconds
 			send "<light cyan>Lord Kiln: Thus begins your role in this dilemma. Sail to the Northern Isles, and locate Colony 9. Once you find it, ask her residents of their current state of affairs. Then, return the information to me."
 			wait 6.5 seconds
@@ -1210,7 +1210,7 @@ on right click on an entity:
 				else if {_rng} is 4:
 					send "<light cyan>%target's name%: We might not be the largest colony, or the most advanced, or... Hm. We're just a colony I suppose." to the player
 				else if {_rng} is 5:
-					send "<light cyan>%target's name%: Stories say that old tower over there used to be an outpost for Alstair when he was still king of the Northern Isles. Guess Helmund didn't want it to stay up when he came through." to the player
+					send "<light cyan>%target's name%: Stories say that old tower over there used to be an outpost for Alastor when he was still king of the Northern Isles. Guess Helmund didn't want it to stay up when he came through." to the player
 				else if {_rng} is 6:
 					send "<light cyan>%target's name%: There's a group of thieves holed up in the castles nearby. Their leader even took the name of one of the Great Heroes! Can you imagine being that full of yourself?" to the player
 		#
@@ -1830,13 +1830,13 @@ command /quests <number>:
 				set slot 15 of the player's current inventory to 1 redstone block named "<light red>Land of Shadow" with lore "<white>Complete ""Threads of Fate"" to unlock."
 			#Inheritors of Light
 			if {quests.%player%::Inheritors of Light} is 999:
-				set slot 16 of the player's current inventory to 1 emerald block named "<green>Inheritors of Light" with lore "<white>Lord Cinder and Lord Alstair have been put back to rest.", "<white>Now, I must march to the throne room and see who's behind the invasion of Silgrund."
+				set slot 16 of the player's current inventory to 1 emerald block named "<green>Inheritors of Light" with lore "<white>Lord Cinder and Lord Alastor have been put back to rest.", "<white>Now, I must march to the throne room and see who's behind the invasion of Silgrund."
 			else if {quests.%player%::Inheritors of Light} is 3:
-				set slot 16 of the player's current inventory to 1 lapis block named "<light blue>Inheritors of Light" with lore "<white>Lord Alstair has been put back to rest.", "<white>Now I must defeat Cinder."
+				set slot 16 of the player's current inventory to 1 lapis block named "<light blue>Inheritors of Light" with lore "<white>Lord Alastor has been put back to rest.", "<white>Now I must defeat Cinder."
 			else if {quests.%player%::Inheritors of Light} is 2:
-				set slot 16 of the player's current inventory to 1 lapis block named "<light blue>Inheritors of Light" with lore "<white>Lord Cinder has been put back to rest.", "<white>Now I must defeat Alstair."
+				set slot 16 of the player's current inventory to 1 lapis block named "<light blue>Inheritors of Light" with lore "<white>Lord Cinder has been put back to rest.", "<white>Now I must defeat Alastor."
 			else if {quests.%player%::Inheritors of Light} is 1:
-				set slot 16 of the player's current inventory to 1 lapis block named "<light blue>Inheritors of Light" with lore "<white>The first Lords Cinder and Alstair have been resurrected through necromancy.", "<white>If the undead invasion is to be stopped, they must be slain."
+				set slot 16 of the player's current inventory to 1 lapis block named "<light blue>Inheritors of Light" with lore "<white>The first Lords Cinder and Alastor have been resurrected through necromancy.", "<white>If the undead invasion is to be stopped, they must be slain."
 			else:
 				set slot 16 of the player's current inventory to 1 redstone block named "<light red>Inheritors of Light" with lore "<white>Complete ""Land of Shadow"" to unlock."
 			#Light and Shadow
@@ -1970,25 +1970,25 @@ command /quests <number>:
 			else if {quests.%player%::Days of Training} is 1:
 				set slot 2 of the player's current inventory to 1 lapis block named "<light blue>Days of Training" with lore "<white>I should report to the training grounds for my evaluation.", "<white>They should be on the top floor of the castle."
 			else if {quests.%player%::Days of Training} is 998:
-				set slot 2 of the player's current inventory to 1 obsidian named "<red>Days of Training" with lore "<white>I decided to skip my training and aid Alstair as soon as I could."
+				set slot 2 of the player's current inventory to 1 obsidian named "<red>Days of Training" with lore "<white>I decided to skip my training and aid Alastor as soon as I could."
 			else:
 				set slot 2 of the player's current inventory to 1 redstone block named "<light red>Days of Training" with lore "<white>Complete ""New Arrival"" to unlock."
 			#Proving Grounds
 			if {quests.%player%::Proving Grounds} is 999:
-				set slot 3 of the player's current inventory to 1 emerald block named "<green>Proving Grounds" with lore "<white>I've slain the monsters hiding near the castle,", "<white>and proven my worth to Lord Alstair."
+				set slot 3 of the player's current inventory to 1 emerald block named "<green>Proving Grounds" with lore "<white>I've slain the monsters hiding near the castle,", "<white>and proven my worth to Lord Alastor."
 			else if {quests.%player%::Proving Grounds} is 998:
-				set slot 3 of the player's current inventory to 1 obsidian named "<red>Proving Grounds" with lore "<white>Lord Alstair has allowed me to focus on other tasks instead of slaying monsters nearby."
+				set slot 3 of the player's current inventory to 1 obsidian named "<red>Proving Grounds" with lore "<white>Lord Alastor has allowed me to focus on other tasks instead of slaying monsters nearby."
 			else if {quests.%player%::Proving Grounds} is set:
-				set slot 3 of the player's current inventory to 1 lapis block named "<light blue>Proving Grounds" with lore "<white>Lord Alstair has tasked me with slaying monsters near the castle.", "<white>Monsters slain: %{quests.%player%::Proving Grounds} - 1%/10"
+				set slot 3 of the player's current inventory to 1 lapis block named "<light blue>Proving Grounds" with lore "<white>Lord Alastor has tasked me with slaying monsters near the castle.", "<white>Monsters slain: %{quests.%player%::Proving Grounds} - 1%/10"
 			else:
 				set slot 3 of the player's current inventory to 1 redstone block named "<light red>Proving Grounds" with lore "<white>Complete ""Days of Training"" to unlock."
 			#Thoughts to a Friend
 			if {quests.%player%::Thoughts to a Friend} is 999:
-				set slot 4 of the player's current inventory to 1 emerald block named "<green>Thoughts to a Friend" with lore "<white>I successfully delivered Alstair's letter,", "<white>and assisted Lord Cinder in saving a nearby village.", "<white>I've earned the favor of both lords now, it seems."
+				set slot 4 of the player's current inventory to 1 emerald block named "<green>Thoughts to a Friend" with lore "<white>I successfully delivered Alastor's letter,", "<white>and assisted Lord Cinder in saving a nearby village.", "<white>I've earned the favor of both lords now, it seems."
 			else if {quests.%player%::Thoughts to a Friend} is 2:
-				set slot 4 of the player's current inventory to 1 lapis block named "<light blue>Thoughts to a Friend" with lore "<white>I've arrived at House Silgrid, and delivered Alstair's letter.", "<white>Before I could leave, however, a nearby village has come under attack.", "<white>Cinder is rallying the troops to assist the village, and he has asked for my help as well."
+				set slot 4 of the player's current inventory to 1 lapis block named "<light blue>Thoughts to a Friend" with lore "<white>I've arrived at House Silgrid, and delivered Alastor's letter.", "<white>Before I could leave, however, a nearby village has come under attack.", "<white>Cinder is rallying the troops to assist the village, and he has asked for my help as well."
 			else if {quests.%player%::Thoughts to a Friend} is 1:
-				set slot 4 of the player's current inventory to 1 lapis block named "<light blue>Thoughts to a Friend" with lore "<white>Alstair has sent me to Cinder's castle in Gallia to deliver a letter.", "<white>While not the most glamourous assignment, Alstair's orders are clear."
+				set slot 4 of the player's current inventory to 1 lapis block named "<light blue>Thoughts to a Friend" with lore "<white>Alastor has sent me to Cinder's castle in Gallia to deliver a letter.", "<white>While not the most glamourous assignment, Alastor's orders are clear."
 			else:
 				set slot 4 of the player's current inventory to 1 redstone block named "<light red>Thoughts to a Friend" with lore "<white>Complete ""Proving Grounds"" to unlock."
 			#The Time to Act

@@ -953,87 +953,6 @@ on shoot:
 			push the last shot projectile forwards at speed 3
 					
 on damage:
-	#Mystic Boost
-	set {_skl} to checkSlots(attacker,"Mystic Boost")
-	if {_skl} is 1:
-		heal the attacker by 1.5 hearts
-	#Nihl
-	set {_skl} to checkSlots(victim,"Nihl")
-	if {_skl} is 1:
-		if victim's health is more than (victim's maximum health * 0.5):
-			if victim's health - (final damage * 2) is less than 0.5:
-				cancel event
-				play sound "item.totem.use" with volume 1 and pitch 1 at victim for victim
-				send "<light blue>Nihl was activated!" to the victim
-				push the attacker backwards at speed 1.5
-				apply regeneration 4 to the victim for 4 seconds
-	#Canto
-	set {_sklcheck} to checkSlots(attacker,"Canto")
-	if {_sklcheck} is 1:
-		if attacker is riding:
-			set damage to damage * 1.5
-		else:
-			set damage to damage * 0.5
-	#Heavy Draw
-	set {_sklcheck} to checkSlots(attacker,"Heavy Draw")
-	if {_sklcheck} is 1:
-		if projectile exists:
-			set damage to damage + 1.5
-			set {_bonusDamage} to helmType(victim)
-			add chestType(victim) to {_bonusdamage}
-			add legType(victim) to {_bonusdamage}
-			add btType(victim) to {_bonusdamage}
-			set damage to damage + {_bonusdamage}
-	#Unbreakable
-	set {_sklcheck} to checkSlots(victim,"Unbreakable")
-	if {_sklcheck} is 1:
-		set damage to damage - 1.5
-	#Crusader's Ward
-	set {_sklcheck.%victim%} to checkSlots(victim,"Crusader's Ward")
-	if {_sklcheck.%victim%} is 1:
-		set damage to damage * 0.5
-	#Distant Defence
-	set {_sklcheck} to checkSlots(victim,"Distant Defence")
-	if {_sklcheck} is 1:
-		loop all entities in radius 4 of the victim:
-			if loop-entity is attacker:
-				set {_DD} to 1
-				exit 1 loop
-		if {_DD} is not set:
-			set damage to damage * 0.5
-	#Double Lion
-	set {_sklcheck.%attacker%} to checkSlots(attacker,"Double Lion")
-	if {_sklcheck.%attacker%} is 1:
-		if attacker's health is attacker's maximum health:
-			set damage to damage * 2
-			push the victim upwards at speed 0.25
-			push the victim backwards at speed 1
-			damage the attacker by 1 with fake cause fall
-	#Vantage
-	set {_sklcheck.%victim%} to checkSlots(victim,"Vantage")
-	if victim's health is less than (victim's health / 2):
-		if {_sklcheck.%victim%} is 1:
-			if {vanready.%victim%} is set:
-				cancel event
-				send "%victim%'s Vantage skill activated!" to the attacker
-				send "%victim%'s Vantage skill activated!" to the victim
-				damage the attacker by damage * 0.5
-				push the attacker backwards at speed 1
-				clear {vanready.%victim%}
-				wait 7.5 seconds
-				set {vanready.%victim%} to 1
-	#Miracle
-	if (victim's health - damage) < 0.1:
-		set {_slot} to checkSlots(victim,"Miracle")
-		if {_slot} is 1:
-			set {_level} to {skl.%victim%} * 0.5
-			if {_level} is greater than 50:
-				set {_level} to 50
-			chance of {_level}%:
-				cancel event
-				heal the victim by 10 hearts
-				send "<light yellow><bold>Miracle was activated!" to victim
-				play sound "item.totem.use" with volume 0.5 and pitch 1.5 at victim for victim
 	#Smooth Landing
 	if damage cause is fall:
 		add damage to {slfalltotal.%victim%}
@@ -1043,31 +962,6 @@ on damage:
 		set {_sklcheck.%victim%} to checkSlots(victim,"Smooth Landing")
 		if {_sklcheck.%victim%} is 1:
 			cancel event
-	#Crushing Offense
-	set {_sklcheck} to checkSlots(attacker,"Crushing Offense")
-	if {_sklcheck} is 1:
-		if damage is more than 7:
-			add (damage / 2) to {crushing.%attacker%}
-			send "+%(damage / 2)% SKL" to the attacker
-	#Gamble
-	set {_sklcheck} to checkSlots(attacker,"Gamble")
-	if {_sklcheck} is 1:
-		set {_foeAvoid} to ({spd.%victim%} + {spdbuff.%victim%}) + ({skl.%victim%} + {sklbuff.%victim%})
-		if {_foeAvoid} is not set:
-			set {_foeAvoid} to 75
-		else if {_foeAvoid} is less than 1:
-			set {_foeAvoid} to 75
-		set {_playerAvoid} to ({spd.%attacker%} + {spdbuff.%attacker%}) + ({skl.%attacker%} + {sklbuff.%attacker%})
-		set {_Avoid} to ({_foeAvoid} - {_playerAvoid})
-		if {_Avoid} is less than 0:
-			set {_Avoid} to 0
-		set {_1RN} to a random integer between 0 and {_Avoid}
-		set {_2RN} to a random integer between 0 and {_Avoid}
-		set {_trueHit} to (({_1RN} + {_2RN}) / 2)
-		chance of {_trueHit}%:
-			cancel event
-			send "<light red>Your Gamble perk caused the attack to miss!" to the attacker
-			send "<light blue>The opponent's Gamble perk caused their attack to miss!" to the victim
 	#Draconic Rage
 	set {_sklcheck} to checkSlots(victim,"Draconic Rage")
 	if {_sklcheck} is 1:
@@ -1111,38 +1005,6 @@ on damage:
 				wait 40 seconds
 				clear {dragonform.%victim%}
 				send "<light blue>Your draconic strength has returned." to the victim
-				
-on damage:
-	#Sword Mastery
-	set {_sklcheck.%attacker%} to checkSlots(attacker,"Sword Specialist")
-	if {_sklcheck.%attacker%} is 1:
-		if the attacker's tool is a sword:
-			set damage to damage * 1.25
-			chance of ({skl.%attacker%} ^ 0.5):
-				set damage to damage * 1.75
-				send "<cyan><bold>Critical hit!"
-	#Axe Mastery
-	set {_sklcheck.%attacker%} to checkSlots(attacker,"Axe Specialist")
-	if {_sklcheck.%attacker%} is 1:
-		if the attacker's tool is an axe:
-			set {_bonusDamage} to helmType(victim)
-			add chestType(victim) to {_bonusdamage}
-			add legType(victim) to {_bonusdamage}
-			add btType(victim) to {_bonusdamage}
-			set damage to damage + ({_bonusdamage} / 2)
-			chance of ({skl.%attacker%} ^ 0.5):
-				set damage to damage * 1.75
-				send "<cyan><bold>Critical hit!"
-	#Bow Mastery
-	set {_sklcheck.%attacker%} to checkSlots(attacker,"Ranged Specialist")
-	if {_sklcheck.%attacker%} is 1:
-		if the attacker's tool is a bow:
-			drop 1 arrow at the victim
-			#remove slowness from the victim
-			#apply slowness 1 to the victim for 5 seconds
-			chance of ({skl.%attacker%} ^ 0.5):
-				set damage to damage * 1.75
-				send "<cyan><bold>Critical hit!"
 				
 #Quick Draw
 on right click with bow:

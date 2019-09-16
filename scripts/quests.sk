@@ -203,7 +203,7 @@ command /boah <number>:
 				send "<run command:/boah 3><gold>2 - I'm lost. Do you have directions for the nearest town?"
 			else if arg 1 is 2:
 				set {inConvo.%player%} to true
-				npcChat(player,"<light blue>Azelle: 'Suppose I could help you with that, then. Before Alstair will even consider letting you join, you'll need to submit some basic identification. Have you got that on hand?")
+				npcChat(player,"<light blue>Azelle: 'Suppose I could help you with that, then. Before Alastor will even consider letting you join, you'll need to submit some basic identification. Have you got that on hand?")
 				wait 3.5 seconds
 				clear {inConvo.%player%}
 				send "<run command:/boah 4><gold>1 - I... don't have anything like that."
@@ -212,9 +212,9 @@ command /boah <number>:
 				set {inConvo.%player%} to true
 				npcChat(player,"<light blue>Azelle: Well, there's a small village south of this 'ere castle. I doubt you'd find much of anything other than a blacksmith.")
 				wait 3 seconds
-				npcChat(player,"<light blue>Azelle: If you're looking for something more civilized, then House Ulster up the hill is your best bet. Though I've heard Alstair is locking the castle down since he's preparing for some sort of trip.")
+				npcChat(player,"<light blue>Azelle: If you're looking for something more civilized, then House Ulster up the hill is your best bet. Though I've heard Alastor is locking the castle down since he's preparing for some sort of trip.")
 				wait 4 seconds
-				npcChat(player,"<light blue>Azelle: But, if you really need to get into the castle, I heard Lord Alstair is hiring new members for his knights.")
+				npcChat(player,"<light blue>Azelle: But, if you really need to get into the castle, I heard Lord Alastor is hiring new members for his knights.")
 				wait 3 seconds
 				clear {inConvo.%player%}
 				send "<run command:/boah 2><gold>1 - Could you help me with joining the knights?"
@@ -238,7 +238,7 @@ command /boah <number>:
 				send "<run command:/boah 6><gold>2 - I'll just leave, then."
 			else if arg 1 is 6:
 				set {inConvo.%player%} to true
-				npcChat(player,"<light blue>Azelle: Good riddance. Don't bother with coming back, by the way. Alstair won't be as merciful as I am.")
+				npcChat(player,"<light blue>Azelle: Good riddance. Don't bother with coming back, by the way. Alastor won't be as merciful as I am.")
 				wait 3 seconds
 				clear {inConvo.%player%}
 				clear {questbook.%player%}
@@ -261,6 +261,17 @@ on right click on an entity:
 					wait 3 seconds
 					clear {inConvo.%player%}
 					send "<run command:/boah 1><gold>1 - Is this the entrance to House Ulster?" to the player
+		#Test NPC
+		if {inConvo.%player%} is not set:
+			if the name of the target contains "Test NPC":
+				if {quests.%player%::NpcVis Test} is not set:
+					npcChat(player,"<light yellow>Test NPC: I am a test NPC. I should dissapear for a few seconds, but everyone else can still see me.")
+					wait 2 seconds
+					npcChat(player,"<light yellow>Test NPC: Woosh!")
+					hide the target from the player
+					wait 3 seconds
+					reveal the target for the player
+					npcChat(player,"<light yellow>Test NPC: I should reappear. Ta-da!")
 					
 on right-click with book:
 	if the name of the player's tool is "<gold>Journal":

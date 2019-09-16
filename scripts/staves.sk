@@ -208,17 +208,17 @@ on tool change:
 			send title "<bold>---===Weapon Rank Up!===---" with subtitle "<bold>Staves increased to E rank." to player for 2 seconds with fade in 0.25 seconds and fade out 0.25 seconds
 			set {weapongrade.%player%::staves} to "E"
 
-on damage:
-	set {_checkSlots} to checkSlots(attacker,"Wrathful Staff")
-	if {class.%attacker%} is "Cleric":
-		if {_checkSlots} is 0:
-			set damage to damage * 0.5
-	else if {class.%attacker%} is "Bishop":
-		if {_checkSlots} is 0:
-			set damage to damage * 0.5
-	else if {class.%attacker%} is "Sage":
-		if {_checkSlots} is 0:
-			set damage to damage * 0.5
+#on damage:
+	#set {_checkSlots} to checkSlots(attacker,"Wrathful Staff")
+	#if {class.%attacker%} is "Cleric":
+	#	if {_checkSlots} is 0:
+	#		set damage to damage * 0.5
+	#else if {class.%attacker%} is "Bishop":
+	#	if {_checkSlots} is 0:
+	#		set damage to damage * 0.5
+	#else if {class.%attacker%} is "Sage":
+	#	if {_checkSlots} is 0:
+	#		set damage to damage * 0.5
 
 on right click on an entity:
 	set {_checkSlots} to checkSlots(player,"Live to Serve")

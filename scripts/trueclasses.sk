@@ -1852,7 +1852,7 @@ command /class <text> [<text="Journeyman">]:
 					send "<gold><bold>Promoted to a Journeyman!"
 				else if arg 2 is "Knight":
 					set {hpgrowth.%player%} to {pts_HP.%player%} + 50
-					set {strgrowth.%player%} to {pts_STR.%player%} + 15
+					set {strgrowth.%player%} to {pts_STR.%player%} + 25
 					set {defgrowth.%player%} to {pts_DEF.%player%} + 60
 					set {sklgrowth.%player%} to {pts_SKL.%player%} + 15
 					set {spdgrowth.%player%} to {pts_SPD.%player%} + 10
@@ -2271,7 +2271,7 @@ command /class <text> [<text="Journeyman">]:
 					send "<gold><bold>Promoted to a Sorcerer!"
 				else if arg 2 is "Knight1":
 					set {hpgrowth.%player%} to {pts_HP.%player%} + 45
-					set {strgrowth.%player%} to {pts_STR.%player%} + 15
+					set {strgrowth.%player%} to {pts_STR.%player%} + 20
 					set {defgrowth.%player%} to {pts_DEF.%player%} + 50
 					set {sklgrowth.%player%} to {pts_SKL.%player%} + 15
 					set {spdgrowth.%player%} to {pts_SPD.%player%} + 10
@@ -2541,7 +2541,7 @@ command /class <text> [<text="Journeyman">]:
 					set {spdgrowth.%player%} to {pts_SPD.%player%} + 5
 					set {maggrowth.%player%} to {pts_MAG.%player%} + 5
 					add 40 to {hpcap.%player%}
-					add 7 to {strcap.%player%}
+					add 10 to {strcap.%player%}
 					add 22 to {defcap.%player%}
 					add 7 to {sklcap.%player%}
 					add 2 to {spdcap.%player%}
@@ -3017,6 +3017,7 @@ on level change:
 				if {lvl.%player%} is more than 79:
 					if {Sacred Boost.%player%} is not set:
 						make player execute command "/grantskill 0 Sacred Boost"
+				#Spells
 				#Fire spell at LVL 12
 				set {_isMagical} to checkClass(player)
 				if {_isMagical} is 1:
@@ -3121,7 +3122,8 @@ on respawn:
 		apply swiftness 5 to the player for 1 day
 
 on death:
-	add 1 to {kills.%attacker%}
+	if attacker is player:
+		add 1 to {kills.%attacker%}
 		
 on death of a player:
 	if victim is not npc:

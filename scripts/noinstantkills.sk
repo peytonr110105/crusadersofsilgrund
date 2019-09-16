@@ -14,16 +14,3 @@ command /bhealth [<number=0>]:
 			#send "Any hit that would normally kill you while you are above 0.5 hearts instead reduces your health to 0.5 hearts."
 			send "<green>[Bleedout]<reset> Bleedout has been disabled."
 			set {farewells.%player%} to 0
-			
-on damage of a player:
-	if damage >= victim's health:
-		if victim's health > 0.5:
-			if {bhealth.%victim%} is 1:
-				if {farewells.%victim%} is 0:
-					cancel event
-					set the victim's health to 1
-					set {bhealth.%victim%} to 0
-					send "<light red>You're on your last leg.." to the victim
-					wait 15 seconds
-					set {bhealth.%victim%} to 1
-					send "<light green>Your strength has returned." to the victim
