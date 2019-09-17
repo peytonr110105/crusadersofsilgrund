@@ -1,13 +1,190 @@
+function enchantArmor(MOB: entity):
+	chance of ({_LVL} + 65)%:
+		chance of 50%:
+			enchant {_MOB}'s helmet with protection 1
+		chance of 50%:
+			enchant {_MOB}'s chestplate with protection 1
+		chance of 50%:
+			enchant {_MOB}'s leggings with protection 1
+		chance of 50%:
+			enchant {_MOB}'s boots with protection 1
+	chance of ({_LVL} + 45)%:
+		chance of 50%:
+			enchant {_MOB}'s helmet with protection 2
+		chance of 50%:
+			enchant {_MOB}'s chestplate with protection 2
+		chance of 50%:
+			enchant {_MOB}'s leggings with protection 2
+		chance of 50%:
+			enchant {_MOB}'s boots with protection 2
+		chance of 50%:
+			enchant {_MOB}'s boots with feather falling 1
+		chance of 50%:
+			enchant {_MOB}'s boots with depth strider 1
+		chance of 50%:
+			enchant {_MOB}'s helmet with respiration 1
+	chance of ({_LVL} + 25)%:
+		chance of 50%:
+			enchant {_MOB}'s helmet with protection 3
+		chance of 50%:
+			enchant {_MOB}'s chestplate with protection 3
+		chance of 50%:
+			enchant {_MOB}'s leggings with protection 3
+		chance of 50%:
+			enchant {_MOB}'s boots with protection 3
+		chance of 50%:
+			enchant {_MOB}'s boots with feather falling 2
+		chance of 50%:
+			enchant {_MOB}'s boots with depth strider 2
+		chance of 50%:
+			enchant {_MOB}'s helmet with respiration 2
+	chance of ({_LVL} + 15)%:
+		chance of 50%:
+			enchant {_MOB}'s helmet with protection 4
+		chance of 50%:
+			enchant {_MOB}'s chestplate with protection 4
+		chance of 50%:
+			enchant {_MOB}'s leggings with protection 4
+		chance of 50%:
+			enchant {_MOB}'s boots with protection 4
+		chance of 50%:
+			enchant {_MOB}'s boots with feather falling 3
+		chance of 50%:
+			enchant {_MOB}'s boots with depth strider 3
+		chance of 50%:
+			enchant {_MOB}'s helmet with respiration 3
+	chance of {_diamondBlock}%:
+		chance of 50%:
+			enchant {_MOB}'s helmet with protection 5
+		chance of 50%:
+			enchant {_MOB}'s chestplate with protection 5
+		chance of 50%:
+			enchant {_MOB}'s leggings with protection 5
+		chance of 50%:
+			enchant {_MOB}'s boots with protection 5
+		chance of 50%:
+			enchant {_MOB}'s boots with feather falling 4
+		chance of 50%:
+			enchant {_MOB}'s boots with depth strider 4
+		chance of 50%:
+			enchant {_MOB}'s helmet with respiration 4
+	chance of ({_diamondBlock} - 15)%:
+		chance of 10%:
+			enchant {_MOB}'s helmet with mending
+		chance of 10%:
+			enchant {_MOB}'s chestplate with mending
+		chance of 10%:
+			enchant {_MOB}'s leggings with mending
+		chance of 10%:
+			enchant {_MOB}'s boots with mending
+	chance of ({_diamondBlock} - 35)%:
+		chance of 10%:
+			enchant {_MOB}'s helmet with thorns 1
+		chance of 10%:
+			enchant {_MOB}'s chestplate with thorns 1
+		chance of 10%:
+			enchant {_MOB}'s leggings with thorns 1
+		chance of 10%:
+			enchant {_MOB}'s boots with thorns 1
+
 function humanoidEquipmentHandler(MOB: entity, LVL: number, RANGE: number):
+	chance of ({_LVL} + 100)%:
+		chance of 50%:
+			set {_MOB}'s helmet to 1 leather helmet
+			#enchantArmor({_MOB})
+		chance of 50%:
+			set {_MOB}'s chestplate to 1 leather chestplate
+			#enchantArmor({_MOB})
+		chance of 50%:
+			set {_MOB}'s leggings to 1 leather leggings
+			#enchantArmor({_MOB})
+		chance of 50%:
+			set {_MOB}'s boots to 1 leather boots
+			#enchantArmor({_MOB})
+	chance of ({_LVL} + 65)%:
+		chance of 50%:
+			set {_MOB}'s helmet to 1 chainmail helmet
+			#enchantArmor({_MOB})
+		chance of 50%:
+			set {_MOB}'s chestplate to 1 chainmail chestplate
+			#enchantArmor({_MOB})
+		chance of 50%:
+			set {_MOB}'s leggings to 1 chainmail leggings
+			#enchantArmor({_MOB})
+		chance of 50%:
+			set {_MOB}'s boots to 1 chainmail boots
+			#enchantArmor({_MOB})
+	chance of ({_LVL} + 20)%:
+		chance of 50%:
+			set {_MOB}'s helmet to 1 iron helmet
+			#enchantArmor({_MOB})
+		chance of 50%:
+			set {_MOB}'s chestplate to 1 iron chestplate
+			#enchantArmor({_MOB})
+		chance of 50%:
+			set {_MOB}'s leggings to 1 iron leggings
+			#enchantArmor({_MOB})
+		chance of 50%:
+			set {_MOB}'s boots to 1 iron boots
+			#enchantArmor({_MOB})
+	set {_diamondBlock} to ({_LVL} - 5)
+	if {_diamondBlock} is more than 75:
+		set {_diamondBlock} to 75
+	chance of {_diamondBlock}%:
+		chance of 50%:
+			set {_MOB}'s helmet to 1 diamond helmet
+			#enchantArmor({_MOB})
+		chance of 50%:
+			set {_MOB}'s chestplate to 1 diamond chestplate
+			#enchantArmor({_MOB})
+		chance of 50%:
+			set {_MOB}'s leggings to 1 diamond leggings
+			#enchantArmor({_MOB})
+		chance of 50%:
+			set {_MOB}'s boots to 1 diamond boots
+			#enchantArmor({_MOB})
 	if {_RANGE} is 0:
+		set {_weapon} to a random integer from 1 to 3
 		chance of ({_LVL} + 100)%:
-			set {_MOB}'s tool to 1 wooden sword
-		chance of ({_LVL} + 70)%:
-			set {_MOB}'s tool to 1 stone sword
-		chance of ({_LVL} + 30)%:
-			set {_MOB}'s tool to 1 iron sword
-		chance of ({_LVL} + 10)%:
-			set {_MOB}'s tool to 1 diamond sword
+			if {_weapon} is 1:
+				set {_MOB}'s tool to 1 wooden sword
+			else if {_weapon} is 2:
+				set {_MOB}'s tool to 1 wooden axe
+			else if {_weapon} is 3:
+				set {_MOB}'s tool to 1 wooden shovel named "<bold>Wooden Lance"
+		chance of ({_LVL} + 65)%:
+			if {_weapon} is 1:
+				set {_MOB}'s tool to 1 stone sword
+			else if {_weapon} is 2:
+				set {_MOB}'s tool to 1 stone axe
+			else if {_weapon} is 3:
+				set {_MOB}'s tool to 1 stone shovel named "<bold>Stone Lance"
+		chance of ({_LVL} + 20)%:
+			if {_weapon} is 1:
+				set {_MOB}'s tool to 1 iron sword
+			else if {_weapon} is 2:
+				set {_MOB}'s tool to 1 iron axe
+			else if {_weapon} is 3:
+				set {_MOB}'s tool to 1 iron shovel named "<bold>Iron Lance"
+		chance of {_diamondBlock}%:
+			if {_weapon} is 1:
+				set {_MOB}'s tool to 1 diamond sword
+			else if {_weapon} is 2:
+				set {_MOB}'s tool to 1 diamond axe
+			else if {_weapon} is 3:
+				set {_MOB}'s tool to 1 diamond shovel named "<bold>Diamond Lance"
+		chance of ({_LVL} + 65)%:
+			enchant {_MOB}'s tool with sharpness 1
+		chance of ({_LVL} + 45)%:
+			enchant {_MOB}'s tool with sharpness 2
+		chance of ({_LVL} + 25)%:
+			enchant {_MOB}'s tool with sharpness 3
+		chance of ({_LVL} + 15)%:
+			enchant {_MOB}'s tool with sharpness 4
+		chance of ({_LVL} + 3)%:
+			enchant {_MOB}'s tool with sharpness 5
+		chance of ({_LVL} - 10)%:
+			enchant {_MOB}'s tool with fire aspect 1
 	else if {_RANGE} is 1:
 		set {_MOB}'s tool to 1 bow
 		chance of ({_LVL} + 70)%:
@@ -17,7 +194,7 @@ function humanoidEquipmentHandler(MOB: entity, LVL: number, RANGE: number):
 		chance of ({_LVL} + 20)%:
 			enchant {_MOB}'s tool with power 3
 			enchant {_MOB}'s tool with punch 1
-		chance of ({_LVL} + 5)%:
+		chance of {_diamondBlock}%:
 			enchant {_MOB}'s tool with power 4
 			enchant {_MOB}'s tool with punch 2
 	chance of ({_LVL} ^ 0.9)%:
@@ -186,7 +363,7 @@ function getBSlotSkill(RANGE: number) :: text:
 		return "<light blue><bold>Slot B - Wings of Mercy"
 		
 function getCSlotSkill(RANGE: number) :: text:
-	set {_RN} to a random integet from 1 to 32
+	set {_RN} to a random integer from 1 to 32
 	if {_RN} is 1:
 		return "<light yellow><bold>Slot C - Hone STR"
 	else if {_RN} is 2:

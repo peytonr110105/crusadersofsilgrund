@@ -2888,10 +2888,16 @@ on damage:
 			send "<light green>%attacker%'s blows were no match for your defenses." to the victim
 			play sound "entity.experience_orb.pickup" with volume 3 and pitch 2 at victim for attacker
 			play sound "entity.experience_orb.pickup" with volume 3 and pitch 2 at victim for victim
-	else if damage is less than victim's health:
-		send action bar "<bold>%victim% | Level: %{_lvl}% | HP: %victim's health - (final damage / 2)% / %victim's maximum health% | Damage Dealt: %final damage / 2%" to the attacker
+	if {t_lvl.%victim%} is set:
+		if damage is less than victim's health:
+			send action bar "<bold>%victim% | Level: %{t_lvl.%victim%}% | HP: %victim's health - (final damage / 2)% / %victim's maximum health% | Damage Dealt: %final damage / 2%" to the attacker
+		else:
+			send action bar "<gold><bold>%victim%<reset><bold> | Level: %{t_lvl.%victim%}% | HP: <gold><bold>0 / %victim's maximum health%<reset><bold> | Damage Dealt: %final damage / 2% | <gold><bold>Overkill: %abs(victim's health - (final damage / 2))%" to the attacker
 	else:
-		send action bar "<gold><bold>%victim%<reset><bold> | Level: %{_lvl}% | HP: <gold><bold>0 / %victim's maximum health%<reset><bold> | Damage Dealt: %final damage / 2% | <gold><bold>Overkill: %abs(victim's health - (final damage / 2))%" to the attacker
+		if damage is less than victim's health:
+			send action bar "<bold>%victim% | Level: %{_lvl}% | HP: %victim's health - (final damage / 2)% / %victim's maximum health% | Damage Dealt: %final damage / 2%" to the attacker
+		else:
+			send action bar "<gold><bold>%victim%<reset><bold> | Level: %{_lvl}% | HP: <gold><bold>0 / %victim's maximum health%<reset><bold> | Damage Dealt: %final damage / 2% | <gold><bold>Overkill: %abs(victim's health - (final damage / 2))%" to the attacker
 	#Sandbag
 	if the name of the victim contains "<gold><bold>Sandbag":
 		if {sandbagkillable.%attacker%} is 0:
