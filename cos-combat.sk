@@ -122,7 +122,7 @@ command /dr [<number=2>]:
 				send "<green><bold>Dodge Roll enabled! Double tap Sneak to roll backwards."
 
 #Dodge Roll Refresh and Double-Tap Check
-every 0.35 seconds:
+every 0.5 seconds:
 	loop all players:
 		if {dr.%loop-player%} is 1 or 2:
 			set {dr.%loop-player%} to 0
@@ -150,8 +150,8 @@ every 0.35 seconds:
 							add 20 to {resbuff.%loop-player-2%}
 							wait 0.5 seconds
 							subtract 20 from {resbuff.%loop-player-2%}
-					play 10 (lava pop with speed 0.5) at the loop-player-2
-					exit 1 loop
+						play 10 (lava pop with speed 0.5) at the loop-player-2
+						exit 1 loop
 		if the 3rd line of the lore of the loop-player's tool contains "Drive":
 			loop all players in radius 15 of the loop-player:
 				if loop-player-2 is not the loop-player-1:
@@ -182,28 +182,52 @@ every 0.35 seconds:
 				if loop-entity-2 is not loop-player-1:
 					if loop-entity-2 is not item:
 						if {party.%loop-entity-2%} is not {party.%loop-player-1%}:
-							if ({res.%loop-entity-2%} + {resbuff.%loop-entity-2%} + 10) is less than ({res.%loop-player-1%} + {resbuff.%loop-player-1%}):
-								if the 3rd line of the lore of the loop-player-1's tool contains "STR":
-									subtract 20 from {strbuff.%loop-entity-2%}
-									wait 0.5 seconds
-									add 20 to {strbuff.%loop-entity-2%}
-								else if the 3rd line of the lore of the loop-player-1's tool contains "SPD":
-									subtract 20 from {spdbuff.%loop-entity-2%}
-									wait 0.5 seconds
-									add 20 to {spdbuff.%loop-entity-2%}
-								else if the 3rd line of the lore of the loop-player-1's tool contains "SKL":
-									subtract 20 from {sklbuff.%loop-entity-2%}
-									wait 0.5 seconds
-									add 20 to {sklbuff.%loop-entity-2%}
-								else if the 3rd line of the lore of the loop-player-1's tool contains "DEF":
-									subtract 20 from {defbuff.%loop-entity-2%}
-									wait 0.5 seconds
-									add 20 to {defbuff.%loop-entity-2%}
-								else if the 3rd line of the lore of the loop-player-1's tool contains "MAG":
-									subtract 20 from {resbuff.%loop-entity-2%}
-									wait 0.5 seconds
-									add 20 to {resbuff.%loop-entity-2%}
-								play 10 (red wool break with speed 0) at the loop-entity-2
+							if ({res.%loop-entity-2%} + {resbuff.%loop-entity-2%} + 5) is less than ({res.%loop-player-1%} + {resbuff.%loop-player-1%}):
+								if {t_lvl.%loop-entity-2%} is not set:
+									if the 3rd line of the lore of the loop-player-1's tool contains "STR":
+										subtract 20 from {strbuff.%loop-entity-2%}
+										wait 0.5 seconds
+										add 20 to {strbuff.%loop-entity-2%}
+									else if the 3rd line of the lore of the loop-player-1's tool contains "SPD":
+										subtract 20 from {spdbuff.%loop-entity-2%}
+										wait 0.5 seconds
+										add 20 to {spdbuff.%loop-entity-2%}
+									else if the 3rd line of the lore of the loop-player-1's tool contains "SKL":
+										subtract 20 from {sklbuff.%loop-entity-2%}
+										wait 0.5 seconds
+										add 20 to {sklbuff.%loop-entity-2%}
+									else if the 3rd line of the lore of the loop-player-1's tool contains "DEF":
+										subtract 20 from {defbuff.%loop-entity-2%}
+										wait 0.5 seconds
+										add 20 to {defbuff.%loop-entity-2%}
+									else if the 3rd line of the lore of the loop-player-1's tool contains "MAG":
+										subtract 20 from {resbuff.%loop-entity-2%}
+										wait 0.5 seconds
+										add 20 to {resbuff.%loop-entity-2%}
+									play 10 (red wool break with speed 0) at the loop-entity-2
+								else:
+									if the 3rd line of the lore of the loop-player-1's tool contains "STR":
+										subtract 20 from {t_strbuff.%loop-entity-2%}
+										wait 0.5 seconds
+										add 20 to {t_strbuff.%loop-entity-2%}
+									else if the 3rd line of the lore of the loop-player-1's tool contains "SPD":
+										subtract 20 from {t_spdbuff.%loop-entity-2%}
+										wait 0.5 seconds
+										add 20 to {t_spdbuff.%loop-entity-2%}
+									else if the 3rd line of the lore of the loop-player-1's tool contains "SKL":
+										subtract 20 from {t_sklbuff.%loop-entity-2%}
+										wait 0.5 seconds
+										add 20 to {t_sklbuff.%loop-entity-2%}
+									else if the 3rd line of the lore of the loop-player-1's tool contains "DEF":
+										subtract 20 from {t_defbuff.%loop-entity-2%}
+										wait 0.5 seconds
+										add 20 to {t_defbuff.%loop-entity-2%}
+									else if the 3rd line of the lore of the loop-player-1's tool contains "MAG":
+										subtract 20 from {t_resbuff.%loop-entity-2%}
+										wait 0.5 seconds
+										add 20 to {t_resbuff.%loop-entity-2%}
+									play 10 (red wool break with speed 0) at the loop-entity-2
+
 		if the 3rd line of the lore of the loop-player's tool contains "Authority":
 			loop all players in radius 15 of the loop-player:
 				if loop-player-2 is not the loop-player-1:
@@ -231,11 +255,11 @@ every 0.35 seconds:
 								subtract (({lvl.%loop-player-1%} - {lvl.%loop-player-2%}) * 2) from {resbuff.%loop-player-2%}
 							play 10 (yellow wool break with speed 1) at the loop-player-2
 
+
 #DR = 0 - Prepped
 #DR = 1 - Ready to activated
 #DR = 2 - Exhausted, must recharge.
 #DRInvincible - Player is rolling with invincibility
-
 #Check Slots Function Imported From cskills.sk			
 function checkSlots(PLR: player , skill: text) :: number:
 	if {skillslot1.%{_PLR}%} contains "%{_skill}%":
@@ -441,7 +465,7 @@ function checkClass(PLR: player) :: number:
 		return 1
 	else if {class.%{_PLR}%} is "Sorcerer":
 		return 1
-	else if {class.%{_PLR}%} is "Mage Knight":
+	else if {class.%{_PLR}%} is "Archwizard":
 		return 1
 	else if {class.%{_PLR}%} is "Strategist":
 		return 1
@@ -3103,27 +3127,27 @@ on damage:
 on right click:
 	#Lance throw behavior
 	if the name of the player's tool contains "<bold>Wooden Lance":
-		make the player shoot an arrow with speed 1.2
+		make the player shoot an arrow with speed 1.75
 		set metadata value "JavType" of the last shot projectile to 1
 		damage the player's tool by 2
 	else if the name of the player's tool contains "<bold>Stone Lance":
-		make the player shoot an arrow with speed 1.2
+		make the player shoot an arrow with speed 1.75
 		set metadata value "JavType" of the last shot projectile to 2
 		damage the player's tool by 3
 	else if the name of the player's tool contains "<bold>Iron Lance":
-		make the player shoot an arrow with speed 1.2
+		make the player shoot an arrow with speed 1.75
 		set metadata value "JavType" of the last shot projectile to 3
 		damage the player's tool by 4
 	else if the name of the player's tool contains "<bold>Golden Lance":
-		make the player shoot an arrow with speed 1.2
+		make the player shoot an arrow with speed 1.75
 		set metadata value "JavType" of the last shot projectile to 4
 		damage the player's tool by 1
 	else if the name of the player's tool contains "<bold>Diamond Lance":
-		make the player shoot an arrow with speed 1.2
+		make the player shoot an arrow with speed 1.75
 		set metadata value "JavType" of the last shot projectile to 5
 		damage the player's tool by 5
 	else if the name of the player's tool contains "Crusader's Lance":
-		make the player shoot an arrow with speed 1.2
+		make the player shoot an arrow with speed 1.75
 		set metadata value "JavType" of the last shot projectile to 6
 	#Balder Side Sword Parry Behavior
 	if the name of the player's tool contains "<gold><bold>Balder Side Sword":
@@ -3146,7 +3170,7 @@ on right click:
 				send "<red>Your tool is too worn down to use this ability!"
 				send "<red>Current Durability: %1561 -{_temp}%"
 			else:
-				shoot an arrow from the player at speed 1.35
+				shoot an arrow from the player at speed 1.75
 				damage the player's tool by 20
 	#Falchion
 	if the name of the player's tool contains "<gold><bold>Falchion":
@@ -3417,11 +3441,11 @@ on right click:
 		#Fortify Health
 		if the 4th line of the lore of player's tool contains "Fortify Health":
 			apply absorption 2 to the player for 75 seconds
-			damage player's tool by 20
+			damage player's tool by 10
 		#Restore
 		if the 4th line of the lore of player's tool contains "Restore":
-			apply regeneration 3 to the player for 2 seconds
-			damage player's tool by 10
+			apply regeneration 4 to the player for 2 seconds
+			damage player's tool by 5
 	#Wings of Mercy
 	if the 2nd line of the lore of the player's tool contains "Wings of Mercy":
 		set {_health} to {support.%player%}'s health
@@ -3491,32 +3515,38 @@ on right click:
 			#EEEEEEEEEYAAAAAAAAAAAAAAAAAGH
 	#Capture
 	if the 4th line of the lore of the player's tool contains "Capture":
-		if {capture.%player%} is set:
-			clear {capture.%player%}
-			send "<light green>No longer attempting to Capture foes!"
-		else:
-			set {capture.%player%} to 1
-			send "<light green>Now attempting to Capture foes! Attacks will deal 50%% less damage."
+		if player is sneaking:
+			if {capture.%player%} is set:
+				clear {capture.%player%}
+				send "<light green>No longer attempting to Capture foes!"
+			else:
+				set {capture.%player%} to 1
+				send "<light green>Now attempting to Capture foes! Attacks will deal 50%% less damage."
+	#Taunt
+	if the 4th line of the lore of the player's tool contains "Taunt":
+		if player is sneaking:
+			if {isTaunting.%player%} is not set:
+				set {isTaunting.%player%} to true
 
 on right click on an entity:
 	#Rally Speed
 	if the 4th line of the lore of player's tool contains "Rally Speed":
-		apply speed 1 to the target for 60 seconds
-		damage the player's tool by 10
+		apply speed 1 to the target for 30 seconds
+		damage the player's tool by 5
 	#Rally Strength
 	else if the 4th line of the lore of player's tool contains "Rally Strength":
-		apply strength 1 to the target for 60 seconds
-		damage the player's tool by 10
+		apply strength 1 to the target for 30 seconds
+		damage the player's tool by 5
 	#Rally Defence
 	else if the 4th line of the lore of player's tool contains "Rally Defence":
-		apply resistance 1 to the target for 60 seconds
-		damage the player's tool by 10
+		apply resistance 1 to the target for 30 seconds
+		damage the player's tool by 5
 	#Rally Spectrum
 	else if the 4th line of the lore of player's tool contains "Rally Spectrum":
-		apply resistance 1 to the target for 60 seconds
-		apply strength 1 to the target for 60 seconds
-		apply speed 1 to the target for 60 seconds
-		damage the player's tool by 30	
+		apply resistance 1 to the target for 30 seconds
+		apply strength 1 to the target for 30 seconds
+		apply speed 1 to the target for 30 seconds
+		damage the player's tool by 15	
 	#Shove
 	else if the 4th line of the lore of player's tool contains "Shove":
 		push the target backwards at speed 0.5
@@ -3546,7 +3576,9 @@ on right click on an entity:
 		make target say "%{healedQuote.%target%}%"
 	#Swap
 	else if the 4th line of the lore of player's tool contains "Swap":
-		teleport the player to the target
+		set {_warp} to location of block at the target
+		teleport the target to the player
+		teleport the player to {_warp}
 		push the player forwards at speed 0.75
 		push the target backwards at speed 0.75
 	#Stomp
@@ -3569,19 +3601,19 @@ on right click on an entity:
 			loop all players in radius 10 of the player:
 				if {party.%loop-player%} is {party.%player%}:
 					apply strength 2 to the loop-player for 15 seconds
-					if the 2nd line of the lore of the player's tool contains "Rally Speed":
-						apply swiftness 2 to the loop-player for 15 seconds
-					if the 2nd line of the lore of the player's tool contains "Rally Resistance":
-						apply resistance 2 to the loop-player for 15 seconds
-					if the 2nd line of the lore of the player's tool contains "Rally Spectrum":
+					if the 4th line of the lore of the player's tool contains "Rally Speed":
+						apply swiftness 1 to the loop-player for 15 seconds
+					if the 4th line of the lore of the player's tool contains "Rally Resistance":
+						apply resistance 1 to the loop-player for 15 seconds
+					if the 4th line of the lore of the player's tool contains "Rally Spectrum":
 						apply resistance 1 to the loop-player for 15 seconds
 						apply swiftness 1 to the loop-player for 15 seconds
 					damage the player's tool by 5
 			apply strength 2 to the player for 15 seconds
-			if the 2nd line of the lore of the player's tool contains "Rally Speed":
-				apply swiftness 2 to the player for 15 seconds
-			else if the 2nd line of the lore of the player's tool contains "Rally Resistance":
-				apply resistance 2 to the player for 15 seconds
+			if the 4th line of the lore of the player's tool contains "Rally Speed":
+				apply swiftness 1 to the player for 15 seconds
+			else if the 4th line of the lore of the player's tool contains "Rally Resistance":
+				apply resistance 1 to the player for 15 seconds
 		else:
 			apply strength 2 to the target for 15 seconds
 			damage the player's tool by 5
@@ -3804,18 +3836,18 @@ on death of a monster:
 		#Leveled Monster Bonuses
 		if {lvl.%victim%} is set:
 			if ({lvl.%attacker%} - {lvl.%victim%}) is less than 0:
-				add ceil(({lvl.%victim%} - attacker's level) * 1.25) to {_xp}
-				add ceil({lvl.%victim%} - attacker's level * 1.25) to {_cash}
+				add -1 *(ceil(({lvl.%victim%} - attacker's level) * 1.25)) to {_xp}
+				add -1 * (ceil({lvl.%victim%} - attacker's level * 1.25)) to {_cash}
 			else:
-				add floor(attacker's level - {lvl.%victim%}) to {_xp}
-				add floor(attacker's level - {lvl.%victim%}) to {_cash}
+				add floor(attacker's level + 1 - {lvl.%victim%}) to {_xp}
+				add floor(attacker's level + 1 - {lvl.%victim%}) to {_cash}
 		else if {t_lvl.%victim%} is set:
 			if ({lvl.%attacker%} + ({promoted.%attacker%} * 10) - {t_lvl.%victim%}) is less than 0:
-				add floor(({t_lvl.%victim%} - attacker's level) * 1.05) to {_xp}
-				add floor(({t_lvl.%victim%} - attacker's level) * 1.05) to {_cash}
+				add -1 * (floor(({t_lvl.%victim%} - attacker's level) * 1.05)) to {_xp}
+				add -1 * (floor(({t_lvl.%victim%} - attacker's level) * 1.05)) to {_cash}
 			else:
-				add floor((attacker's level - {t_lvl.%victim%}) * 0.75) to {_xp}
-				add floor((attacker's level - {t_lvl.%victim%}) * 0.75) to {_cash}
+				add floor((attacker's level + 1 - {t_lvl.%victim%}) * 0.75) to {_xp}
+				add floor((attacker's level + 1 - {t_lvl.%victim%}) * 0.75) to {_cash}
 		#Alstair bonuses
 		if victim's world is "Alstair":
 			add ceil(attacker's level / 2 ^ 0.6) to {_xp}
@@ -3830,7 +3862,7 @@ on death of a monster:
 		#Paragon bonus
 		set {_slot} to checkSlots(attacker,"Paragon")
 		if {_slot} is 1:
-			add ceil(attacker's level / 2 ^ 0.5) to {_xp}
+			add ceil(attacker's level / 2 ^ 0.35) to {_xp}
 		#Personal Difficulty bonus
 		if {perdiff.%attacker%} is 3:
 			add ceil(attacker's level / 2 ^ 0.5) to {_xp}
@@ -3854,24 +3886,24 @@ on death of a monster:
 		if {_xp} is more than 0:
 			set {_xp} to floor({_xp} ^ 0.9)
 			make console execute command "/xp %{_xp}% %attacker%"
-			send "<light yellow>+%{_xp}% bonus EXP!" to the attacker
+			send "<light yellow>+%{_xp}% EXP earned." to the attacker
 		if {_cash} is more than 0:
 			set {_cash} to floor({_cash} ^ 0.9)
 			add {_cash} to attacker's balance
-			send "<light yellow>+$%{_cash}% bonus cash!" to the attacker
+			send "<light yellow>+$%{_cash}% gold earned." to the attacker
 	#Holy Weapon Paragon Bonuses
 	if the name of the attacker's tool contains "<gold><bold>Mercurius":
 		set {_xp} to ceil((attacker's level ^ 0.75) - floor(attacker's level ^ 0.3))
 		make console execute command "/xp %{_xp}% %attacker%"
-		send "<light green>Gained a bonus %{_xp}% experience!" to the attacker
+		send "<light green>Mercurius: +%{_xp}% bonus EXP." to the attacker
 	else if the name of the attacker's tool contains "<gold><bold>Gradivus":
 		set {_xp} to ceil((attacker's level ^ 0.75) - floor(attacker's level ^ 0.3))
 		make console execute command "/xp %{_xp}% %attacker%"
-		send "<light green>Gained a bonus %{_xp}% experience!" to the attacker
+		send "<light green>Gradivus: +%{_xp}% bonus EXP." to the attacker
 	else if the name of the attacker's tool contains "<gold><bold>Parthia":
 		set {_xp} to ceil((attacker's level ^ 0.75) - floor(attacker's level ^ 0.3))
 		make console execute command "/xp %{_xp}% %attacker%"
-		send "<light green>Gained a bonus %{_xp}% experience!" to the attacker
+		send "<light green>Parthia: +%{_xp}% bonus EXP." to the attacker
 	#Blessed Sword
 	else if the name of the attacker's tool contains "<gold><bold>Blessed Sword":
 		chance of (50 + ({res.%attacker%} + {resbuff.%attacker%} / 2))%:
@@ -3880,9 +3912,9 @@ on death of a monster:
 			send "<yellow>Plenitude activated!" to the attacker
 	#Experience Sapper
 	if the 2nd line of the lore of the attacker's tool contains "Experience Sapper":
-		set {_xp} to ceil(attacker's level ^ 1.05)
+		set {_xp} to ceil(attacker's level - 2 ^ 0.35)
 		make console execute command "/xp %{_xp}% %attacker%"
-		send "<light green>Gained a bonus %{_xp}% experience!" to the attacker
+		send "<light green>Experience Sapper: +%{_xp}% bonus EXP." to the attacker
 	#Plenitude
 	if the 2nd line of the lore of the attacker's tool contains "Plenitude":
 		chance of (50 + ({res.%attacker%} + {resbuff.%attacker%} / 2))%:
