@@ -1,148 +1,193 @@
-function enchantArmor(MOB: entity):
+function enchantHelmet(MOB: entity):
+	set {_diamondBlock} to ({_LVL} - 5)
+	if {_diamondBlock} is more than 75:
+		set {_diamondBlock} to 75
 	chance of ({_LVL} + 65)%:
 		chance of 50%:
 			enchant {_MOB}'s helmet with protection 1
-		chance of 50%:
-			enchant {_MOB}'s chestplate with protection 1
-		chance of 50%:
-			enchant {_MOB}'s leggings with protection 1
-		chance of 50%:
-			enchant {_MOB}'s boots with protection 1
 	chance of ({_LVL} + 45)%:
 		chance of 50%:
 			enchant {_MOB}'s helmet with protection 2
-		chance of 50%:
-			enchant {_MOB}'s chestplate with protection 2
-		chance of 50%:
-			enchant {_MOB}'s leggings with protection 2
-		chance of 50%:
-			enchant {_MOB}'s boots with protection 2
-		chance of 50%:
-			enchant {_MOB}'s boots with feather falling 1
-		chance of 50%:
-			enchant {_MOB}'s boots with depth strider 1
-		chance of 50%:
+		chance of 20%:
 			enchant {_MOB}'s helmet with respiration 1
 	chance of ({_LVL} + 25)%:
 		chance of 50%:
 			enchant {_MOB}'s helmet with protection 3
-		chance of 50%:
-			enchant {_MOB}'s chestplate with protection 3
-		chance of 50%:
-			enchant {_MOB}'s leggings with protection 3
-		chance of 50%:
-			enchant {_MOB}'s boots with protection 3
-		chance of 50%:
-			enchant {_MOB}'s boots with feather falling 2
-		chance of 50%:
-			enchant {_MOB}'s boots with depth strider 2
-		chance of 50%:
+		chance of 20%:
 			enchant {_MOB}'s helmet with respiration 2
+		chance of 5%:
+			enchant {_MOB}'s helmet with aqua affinity 1
 	chance of ({_LVL} + 15)%:
 		chance of 50%:
 			enchant {_MOB}'s helmet with protection 4
-		chance of 50%:
-			enchant {_MOB}'s chestplate with protection 4
-		chance of 50%:
-			enchant {_MOB}'s leggings with protection 4
-		chance of 50%:
-			enchant {_MOB}'s boots with protection 4
-		chance of 50%:
-			enchant {_MOB}'s boots with feather falling 3
-		chance of 50%:
-			enchant {_MOB}'s boots with depth strider 3
-		chance of 50%:
+		chance of 20%:
 			enchant {_MOB}'s helmet with respiration 3
+		chance of 15%:
+			enchant {_MOB}'s helmet with aqua affinity 1
 	chance of {_diamondBlock}%:
 		chance of 50%:
 			enchant {_MOB}'s helmet with protection 5
+		chance of 20%:
+			enchant {_MOB}'s helmet with respiration 4
+		chance of 25%:
+			enchant {_MOB}'s helmet with aqua affinity 1
+	chance of ({_diamondBlock} - 20)%:
+		chance of 8%:
+			enchant {_MOB}'s helmet with mending 1
+	chance of ({_diamondBlock} - 35)%:
+		chance of 8%:
+			enchant {_MOB}'s helmet with thorns 1
+			
+function enchantLeggings(MOB: entity):
+	set {_diamondBlock} to ({_LVL} - 5)
+	if {_diamondBlock} is more than 75:
+		set {_diamondBlock} to 75
+	chance of ({_LVL} + 65)%:
 		chance of 50%:
-			enchant {_MOB}'s chestplate with protection 5
+			enchant {_MOB}'s leggings with protection 1
+	chance of ({_LVL} + 45)%:
+		chance of 50%:
+			enchant {_MOB}'s leggings with protection 2
+	chance of ({_LVL} + 25)%:
+		chance of 50%:
+			enchant {_MOB}'s leggings with protection 3
+	chance of ({_LVL} + 15)%:
+		chance of 50%:
+			enchant {_MOB}'s leggings with protection 4
+	chance of {_diamondBlock}%:
 		chance of 50%:
 			enchant {_MOB}'s leggings with protection 5
+	chance of ({_diamondBlock} - 20)%:
+		chance of 8%:
+			enchant {_MOB}'s leggings with mending 1
+	chance of ({_diamondBlock} - 35)%:
+		chance of 8%:
+			enchant {_MOB}'s leggings with thorns 1
+			
+function enchantBoots(MOB: entity):
+	set {_diamondBlock} to ({_LVL} - 5)
+	if {_diamondBlock} is more than 75:
+		set {_diamondBlock} to 75
+	chance of ({_LVL} + 65)%:
+		chance of 50%:
+			enchant {_MOB}'s boots with protection 1
+	chance of ({_LVL} + 45)%:
+		chance of 50%:
+			enchant {_MOB}'s boots with protection 2
+		chance of 25%:
+			enchant {_MOB}'s boots with feather falling 1
+		chance of 15%:
+			enchant {_MOB}'s boots with depth strider 1
+	chance of ({_LVL} + 25)%:
+		chance of 50%:
+			enchant {_MOB}'s boots with protection 3
+		chance of 25%:
+			enchant {_MOB}'s boots with feather falling 2
+		chance of 15%:
+			enchant {_MOB}'s boots with depth strider 2
+	chance of ({_LVL} + 15)%:
+		chance of 50%:
+			enchant {_MOB}'s boots with protection 4
+		chance of 25%:
+			enchant {_MOB}'s boots with feather falling 3
+		chance of 15%:
+			enchant {_MOB}'s boots with depth strider 3
+	chance of {_diamondBlock}%:
 		chance of 50%:
 			enchant {_MOB}'s boots with protection 5
-		chance of 50%:
+		chance of 25%:
 			enchant {_MOB}'s boots with feather falling 4
-		chance of 50%:
+		chance of 15%:
 			enchant {_MOB}'s boots with depth strider 4
-		chance of 50%:
-			enchant {_MOB}'s helmet with respiration 4
 	chance of ({_diamondBlock} - 15)%:
-		chance of 10%:
-			enchant {_MOB}'s helmet with mending
-		chance of 10%:
-			enchant {_MOB}'s chestplate with mending
-		chance of 10%:
-			enchant {_MOB}'s leggings with mending
-		chance of 10%:
-			enchant {_MOB}'s boots with mending
+		chance of 8%:
+			enchant {_MOB}'s boots with mending 1
 	chance of ({_diamondBlock} - 35)%:
-		chance of 10%:
-			enchant {_MOB}'s helmet with thorns 1
-		chance of 10%:
-			enchant {_MOB}'s chestplate with thorns 1
-		chance of 10%:
-			enchant {_MOB}'s leggings with thorns 1
-		chance of 10%:
+		chance of 8%:
 			enchant {_MOB}'s boots with thorns 1
+			
+function enchantChestplate(MOB: entity):
+	set {_diamondBlock} to ({_LVL} - 5)
+	if {_diamondBlock} is more than 75:
+		set {_diamondBlock} to 75
+	chance of ({_LVL} + 65)%:
+		chance of 50%:
+			enchant {_MOB}'s chestplate with protection 1
+	chance of ({_LVL} + 45)%:
+		chance of 50%:
+			enchant {_MOB}'s chestplate with protection 2
+	chance of ({_LVL} + 25)%:
+		chance of 50%:
+			enchant {_MOB}'s chestplate with protection 3
+	chance of ({_LVL} + 15)%:
+		chance of 50%:
+			enchant {_MOB}'s chestplate with protection 4
+	chance of {_diamondBlock}%:
+		chance of 50%:
+			enchant {_MOB}'s chestplate with protection 5
+	chance of ({_diamondBlock} - 15)%:
+		chance of 8%:
+			enchant {_MOB}'s chestplate with mending
+	chance of ({_diamondBlock} - 35)%:
+		chance of 8%:
+			enchant {_MOB}'s chestplate with thorns 1
 
 function humanoidEquipmentHandler(MOB: entity, LVL: number, RANGE: number):
 	chance of ({_LVL} + 100)%:
 		chance of 50%:
 			set {_MOB}'s helmet to 1 leather helmet
-			#enchantArmor({_MOB})
+			enchantHelmet({_MOB})
 		chance of 50%:
 			set {_MOB}'s chestplate to 1 leather chestplate
-			#enchantArmor({_MOB})
+			enchantChestplate({_MOB})
 		chance of 50%:
 			set {_MOB}'s leggings to 1 leather leggings
-			#enchantArmor({_MOB})
+			enchantLeggings({_MOB})
 		chance of 50%:
 			set {_MOB}'s boots to 1 leather boots
-			#enchantArmor({_MOB})
+			enchantBoots({_MOB})
 	chance of ({_LVL} + 65)%:
 		chance of 50%:
 			set {_MOB}'s helmet to 1 chainmail helmet
-			#enchantArmor({_MOB})
+			enchantHelmet({_MOB})
 		chance of 50%:
 			set {_MOB}'s chestplate to 1 chainmail chestplate
-			#enchantArmor({_MOB})
+			enchantChestplate({_MOB})
 		chance of 50%:
 			set {_MOB}'s leggings to 1 chainmail leggings
-			#enchantArmor({_MOB})
+			enchantLeggings({_MOB})
 		chance of 50%:
 			set {_MOB}'s boots to 1 chainmail boots
-			#enchantArmor({_MOB})
+			enchantBoots({_MOB})
 	chance of ({_LVL} + 20)%:
 		chance of 50%:
 			set {_MOB}'s helmet to 1 iron helmet
-			#enchantArmor({_MOB})
+			enchantHelmet({_MOB})
 		chance of 50%:
 			set {_MOB}'s chestplate to 1 iron chestplate
-			#enchantArmor({_MOB})
+			enchantChestplate({_MOB})
 		chance of 50%:
 			set {_MOB}'s leggings to 1 iron leggings
-			#enchantArmor({_MOB})
+			enchantLeggings({_MOB})
 		chance of 50%:
 			set {_MOB}'s boots to 1 iron boots
-			#enchantArmor({_MOB})
+			enchantBoots({_MOB})
 	set {_diamondBlock} to ({_LVL} - 5)
 	if {_diamondBlock} is more than 75:
 		set {_diamondBlock} to 75
 	chance of {_diamondBlock}%:
 		chance of 50%:
 			set {_MOB}'s helmet to 1 diamond helmet
-			#enchantArmor({_MOB})
+			enchantHelmet({_MOB})
 		chance of 50%:
 			set {_MOB}'s chestplate to 1 diamond chestplate
-			#enchantArmor({_MOB})
+			enchantChestplate({_MOB})
 		chance of 50%:
 			set {_MOB}'s leggings to 1 diamond leggings
-			#enchantArmor({_MOB})
+			enchantLeggings({_MOB})
 		chance of 50%:
 			set {_MOB}'s boots to 1 diamond boots
-			#enchantArmor({_MOB})
+			enchantBoots({_MOB})
 	if {_RANGE} is 0:
 		set {_weapon} to a random integer from 1 to 3
 		chance of ({_LVL} + 100)%:
@@ -1728,7 +1773,7 @@ on spawn of a monster:
 						set {_deadlord}'s boots to diamond boots of protection 5
 					set {_lvlbal} to 0
 					loop all players in radius 256 of {_deadlord}:
-						if loop-player is not npc:
+						if loop-player is not a citizen:
 							add {lvl.%loop-player%} to {_lvlbal}
 							add ({promoted.%loop-player%} * 10) to {_lvlbal}
 							add 1 to {_players}
@@ -1774,7 +1819,7 @@ on spawn of a monster:
 		if {_deadlord} is not set:
 			if entity's world is "Alstair":
 				loop all players in world "Alstair":
-					if loop-player is not npc:
+					if loop-player is not a citizen:
 						add {lvl.%loop-player%} + 10 to {_moblvl}
 						add ({promoted.%loop-player%} * 10) to {_moblvl}
 						add 1 to {_players}
@@ -1785,7 +1830,7 @@ on spawn of a monster:
 				add floor({_balancer} / 2) to {_moblvl}
 			else if entity's world is "Alstair_Nether":
 				loop all players in world "Alstair_Nether":
-					if loop-player is not npc:
+					if loop-player is not a citizen:
 						add {lvl.%loop-player%} to {_moblvl}
 						add ({promoted.%loop-player%} * 10) to {_moblvl}
 						add 1 to {_players}
@@ -1796,7 +1841,7 @@ on spawn of a monster:
 				add floor({_balancer} / 2) to {_moblvl}
 			else if entity's world is "Alstair_End":
 				loop all players in world "Alstair_End":
-					if loop-player is not npc:
+					if loop-player is not a citizen:
 						add {lvl.%loop-player%} + 15 to {_moblvl}
 						add ({promoted.%loop-player%} * 10) to {_moblvl}
 						add 1 to {_players}
@@ -1807,7 +1852,7 @@ on spawn of a monster:
 				add floor({_balancer} / 2) to {_moblvl}
 			else if entity's world is "adventure":
 				loop all players in world "adventure":
-					if loop-player is not npc:
+					if loop-player is not a citizen:
 						add {lvl.%loop-player%} + 5 to {_moblvl}
 						add ({promoted.%loop-player%} * 10) to {_moblvl}
 						add 1 to {_players}
@@ -1820,7 +1865,7 @@ on spawn of a monster:
 				add floor({_balancer} / 2) to {_moblvl}
 			else if entity's world is "adventure_nether":
 				loop all players in world "adventure_nether":
-					if loop-player is not npc:
+					if loop-player is not a citizen:
 						add {lvl.%loop-player%} + 5 to {_moblvl}
 						add ({promoted.%loop-player%} * 10) to {_moblvl}
 						add 1 to {_players}
@@ -1831,7 +1876,7 @@ on spawn of a monster:
 				add floor({_balancer} / 2) to {_moblvl}
 			else if entity's world is "adventure_the_end":
 				loop all players in world "adventure_the_end":
-					if loop-player is not npc:
+					if loop-player is not a citizen:
 						add {lvl.%loop-player%} + 5 to {_moblvl}
 						add ({promoted.%loop-player%} * 10) to {_moblvl}
 						add 1 to {_players}
@@ -1842,7 +1887,7 @@ on spawn of a monster:
 				add floor({_balancer} / 2) to {_moblvl}
 			else if entity's world is "GenOne":
 				loop all players in world "GenOne":
-					if loop-player is not npc:
+					if loop-player is not a citizen:
 						add {lvl.%loop-player%} to {_moblvl}
 						add ({promoted.%loop-player%} * 10) to {_moblvl}
 						add 1 to {_players}

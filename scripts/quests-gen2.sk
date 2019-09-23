@@ -105,7 +105,7 @@ command /setupcheck:
 			send "<light red>You need to finish registering before you're allowed into Silgrid. Talk to Validar at the desk for more information."
 	
 on damage of a player:
-	if victim is npc:
+	if victim is a citizen:
 		if the name of the victim contains "Combat Trainer":
 			if {quests.%attacker%::Days of Training} is 2:
 				cancel event
@@ -938,7 +938,7 @@ command /conv-dot <number>:
 			
 			
 on right click on an entity:
-	if the target is npc:
+	if the target is a citizen:
 		#
 		#Lord Kiln
 		if the name of the target contains "Kiln":
@@ -1519,7 +1519,7 @@ command /adom-boss:
 			set {isBoss.%{_deadlord}%} to true
 			set {_lvlbal} to 0
 			loop all players in radius 256 of {_deadlord}:
-				if loop-player is not npc:
+				if loop-player is not a citizen:
 					add {lvl.%loop-player%} to {_lvlbal}
 					add 1 to {_players}
 			set {_lvlbal} to ({_lvlbal} / {_players}) + 10
@@ -1601,7 +1601,7 @@ on damage of a zombie:
 					set {lvl.%{_deadlord}%} to 40
 					apply swiftness 2 to {_deadlord} for 1 hour
 					loop all players in radius 256 of {_deadlord}:
-						if loop-player is not npc:
+						if loop-player is not a citizen:
 							add {lvl.%loop-player%} to {_lvlbal}
 							add ({promoted.%loop-player%} * 10) to {_lvlbal}
 							add 1 to {_players}
@@ -1935,17 +1935,17 @@ command /quests <number>:
 				set slot 27 of the player's current inventory to 1 redstone block named "<light red>The Dusty Palace" with lore "<white>Ask an innkeeper for the latest gossip."
 			#A Helping Hand
 			if {quests.%player%::A Helping Hand} is 999:
-				set slot 28 of the player's current inventory to 1 emerald block named "<green>A Helping Hand" with lore "<white>I donated some supplies to the refugees of Colony 6.", "<white>They were very grateful, and will welcome any additional aid I can give them."
+				set slot 28 of the player's current inventory to 1 emerald block named "<green>A Helping Hand" with lore "<white>I donated some supplies to the refugees of Grann.", "<white>They were very grateful, and will welcome any additional aid I can give them."
 			else if {quests.%player%::A Helping Hand} is 1:
-				set slot 28 of the player's current inventory to 1 lapis block named "<light blue>A Helping Hand" with lore "<white>The refugees from Colony 6 are in need of supplies.", "<white>Some basic building materials, like cobblestone and oak wood, should help them."
+				set slot 28 of the player's current inventory to 1 lapis block named "<light blue>A Helping Hand" with lore "<white>The refugees from Grann are in need of supplies.", "<white>Some basic building materials, like cobblestone and oak wood, should help them."
 			else:
 				set slot 28 of the player's current inventory to 1 redstone block named "<light red>A Helping Hand" with lore "<white>Speak to a group of refugees."
 			#
 			#Devils Never Cry
 			if {quests.%player%::Devils Never Cry} is 999:
-				set slot 29 of the player's current inventory to 1 emerald block named "<green>Devils Never Cry" with lore "<white>I helped a devil hunter named Tony Redgrave rescue his nephew Daniel Stuart from the depths of Harbindul.", "<white>Afterwards, the two vanished without a trace; but not before gifting me a set of weapons named ""Ebony and Ivory""."
+				set slot 29 of the player's current inventory to 1 emerald block named "<green>Devils Never Cry" with lore "<white>I helped a devil hunter named Tony Redgrave rescue his brother Daniel from the depths of Harbindul.", "<white>Afterwards, the two vanished without a trace; but not before gifting me a set of weapons named ""Ebony and Ivory""."
 			else if {quests.%player%::Devils Never Cry} is 1:
-				set slot 29 of the player's current inventory to 1 lapis block named "<light blue>Devils Never Cry" with lore "<white>I found a mercenary named Tony Redgrave near the entrance to Harbindul.", "<white>One of his relatives, Daniel Stuart, dove into Harbindul in a personal crusade against the monsters there.", "<white>He's begrudgingly accepted my aid to rescue Daniel."
+				set slot 29 of the player's current inventory to 1 lapis block named "<light blue>Devils Never Cry" with lore "<white>I found a mercenary named Tony Redgrave near an entrance to Harbindul.", "<white>One of his relatives, Daniel Redgrave, dove into Harbindul in a personal crusade against the monsters there.", "<white>He's begrudgingly accepted my aid to rescue Daniel."
 			else:
 				set slot 29 of the player's current inventory to 1 redstone block named "<light red>Devils Never Cry" with lore "<white>Locate a mysterious, red-coated mercenary."
 			#Requiem for the Brave
@@ -1956,7 +1956,7 @@ command /quests <number>:
 			else:
 				set slot 30 of the player's current inventory to 1 redstone block named "<light red>Requiem for the Brave" with lore "<white>Speak with Kiln's assistant after being promoted."
 			#Previous Generation
-			set slot 44 of the player's current inventory to 1 compass named "<white>Generation 1 Quests", "<white>You can view, but no longer complete these quests."
+			set slot 44 of the player's current inventory to 1 compass named "<white>Generation 1 Quests" with lore "<white>You can view, but no longer complete these quests."
 		else:
 			open chest with 5 rows named "<gold>Quest Log" for the player
 			#New Arrival

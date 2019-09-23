@@ -1,7 +1,7 @@
 #Quotes
 #Add friendly fire quote!
 on death of a monster:
-	if attacker is not npc:
+	if attacker is not a citizen:
 		if {isBoss.%victim%} is not set:
 			chance of 25%:
 				set {_rng} to a random integer between 0 and 1
@@ -37,7 +37,7 @@ on death of a monster:
 
 						
 on death of a player:
-	if victim is not npc:
+	if victim is not a citizen:
 		make victim say "%{deathQuote.%victim%}%"
 		loop all players in radius 20 of the victim:
 			if loop-player is not victim:
@@ -45,7 +45,7 @@ on death of a player:
 					make loop-player say "%{allyHardcoreDeathQuote.%loop-player%}%"
 				
 on damage of a player:
-	if victim is not npc:
+	if victim is not a citizen:
 		if final damage is more than (victim's maximum health * 0.25):
 			loop all players in radius 20 of the victim:
 				if loop-player is not player:
@@ -57,7 +57,7 @@ on damage of a player:
 							make loop-player say "%{allyHurtLarge2.%loop-player%}%"
 
 on heal:
-	if player is not npc:
+	if player is not a citizen:
 		if player's health is less than (player's maximum health * 0.25):
 			if {lowHPQuoteCooldown.%player%} is not set:
 				make player say "%{lowHPQuote.%player%}%"

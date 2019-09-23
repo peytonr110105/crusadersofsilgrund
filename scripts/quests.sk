@@ -128,6 +128,7 @@ command /setQuestProgress <number> <text>:
 	trigger:
 		setQuestProgress(player,arg 2,arg 1,"Progress updated manually.")
 	
+#Monster-hunting related quest progress
 on death of a monster:
 	if {quests.%attacker%::Beta Test - Monster Hunting} is not 999:
 		if {quests.%attacker%::Beta Test - Monster Hunting} is set:
@@ -152,11 +153,10 @@ on death of a monster:
 										play sound "entity.fireworkrocket.twinkle" with volume 1 and pitch 1.5 at loop-value for loop-value
 										play 60 (firework spark with speed 1) at loop-value
 										play 60 (snow shovel with speed 1) at loop-value
-						else:
-							#broadcast "%loop-value% is offline."
-							
 
+#First-Time Join Handler
 on join:
+	#Beta Test behavior
 	if {betaTestActive} is 1:
 		loop {playedBeta::*}:
 			if loop-value is the player:
@@ -177,6 +177,7 @@ on join:
 			set {quests.%player%::Birth of a Hero} to 1
 			startQuest(player,"Beta Test - Monster Hunting","A beta test is active! Check the discord for details.")
 			set the player's maximum health to 3
+	#Release behavior
 	else if {questbook.%player%} is not set:
 		set the player's maximum health to 3
 		set {questbook.%player%} to true
@@ -186,11 +187,12 @@ on join:
 		
 #New players have a hidden Miracle perk before creating a character.
 on damage of a player:
-	if victim is not npc:
+	if victim is not a citizen:
 		if {quests.%victim%::Birth of a Hero} is not 999:
 			if final damage is more than or equal to victim's health:
 				cancel event
-		
+
+#Birth of a Hero - Azelle Dialouge Tree		
 command /boah <number>:
 	trigger:
 		if {inConvo.%player%} is not set:
@@ -238,7 +240,7 @@ command /boah <number>:
 				send "<run command:/boah 6><gold>2 - I'll just leave, then."
 			else if arg 1 is 6:
 				set {inConvo.%player%} to true
-				npcChat(player,"<light blue>Azelle: Good riddance. Don't bother with coming back, by the way. Alastor won't be as merciful as I am.")
+				npcChat(player,"<light blue>Azelle: And good riddance, I say. Don't bother with coming back, Alastor won't be as merciful as I am.")
 				wait 3 seconds
 				clear {inConvo.%player%}
 				clear {questbook.%player%}
@@ -247,12 +249,224 @@ command /boah <number>:
 				set {inConvo.%player%} to true
 				npcChat(player,"<light blue>Azelle: Alright, then. Good luck. Come back later if you need any more help.")
 				clear {inConvo.%player%}
+
+#The Time to Act - Alastor Dialouge Tree
+command /TTTA <number>:
+	trigger:
+		set {inConvo.%player%} to true
+		if arg 1 is 1:
+			send "<light blue>Alastor: Join the Knights, eh? What's your credentials then, hotshot?"
+			wait 2 seconds
+			send "<run command:/TTTA 2><gold>1 - ...about that."
+			send "<run command:/TTA 4><gold>2 - Well, if you must know... [Bluff]"
+			if {mqComplete.%player%} is set:
+				send "<run command:/TTTA 99><gold>3 - There was that one time I saved the world... [Skip Tutorial Quests]"
+		else if arg 1 is 2:
+			send "<light blue>Alastor: So, let's recap this whole conversation then."
+			wait 1.5 seconds
+			send "<light blue>Alastor: You, a complete stranger, come up to me and ask for a position on the most talented and respected band of Knights on this side of Silgrund. And you don't even have a lick of experience on the field to justify it."
+			wait 4 seconds
+			send "<light blue>Alastor: Now, if this were any normal recruiting session, you'd already be out the gate on the way back to wherever you came from. But as luck would have it, I might have a position for you."
+			wait 3 seconds
+			send "<light blue>Alastor: My last mail carrier just retired, and I need a replacement. I figure a whelp like you can at least deliver letters. Are you up to the task?"
+			wait 3.5
+			send "<run command:/TTTA 3><gold>1 - I... suppose so."
+		else if arg 1 is 3:
+			send "<light blue>Alastor: Congratulations. You're the new mail carrier for House Ulster. Truly in the realm of the elites, aren't we?"
+			wait 3.5 seconds
+			send "<light blue>Alastor: Alright, I'll stop drilling you now. Here, take this letter over to Cinder in House Silgrid. If you can do this, then I suppose I'll think about letting you train under one of the senior knights."
+			wait 4 seconds
+			startQuest(player,"The Time to Act","Deliver Alastor's letter to Cinder.")
+			give 1 book named "<gold>Alastor's Letter" with lore "<white>A letter to Cinder from Alastor.", "<white>The handwriting is nigh-illegible, but the heart placed into every messy stroke makes up for it." to the player
+			send "<gold>Alastor's Letter obtained."
+			clear {inConvo.%player%}
+			wait 0.5 seconds
+			send "<light blue>Alastor: Keep moving straight ahead once you exit the castle, and you should bump into a village eventually. Follow the road from there, then cross the ocean once you find the lighthouse. If you get lost, the villagers over in Grann should be able to help you out."
+		else if arg 1 is 4:
+			send "<italics>You spin the tale of a world-ending disaster, with you as the story's hero. Alastor seems incredibly invested."
+			wait 2.5 seconds
+			send "<light blue>Alastor: ..."
+			wait 1 seconds
+			send "<italics>Suddenly, Alastor bursts out into laughter."
+			wait 1.5 seconds
+			send "<light blue>Alastor: That's got to be the dumbest story I've ever heard! I'll tell you one thing, kid: you're no bard."
+			wait 3 seconds
+			make player execute command "/TTTA 2"
+			
+#The Time to Act - Cinder Dialouge Tree
+command /TTTA-Cinder <number>:
+	trigger:
+		set {inConvo.%player%} to true
+		if arg 1 is 1:
+			send "<light blue>Cinder: Alastor, you say? Very well. The letter, then."
+			wait 2 seconds
+			send "<italics>Cinder takes the letter gently, as though it were a young animal. A poorly hidden smile widens across his face as he reads Alastor's letter."
+			wait 3.5 seconds
+			send "<light blue>Cinder (muttering): ...Yes, I suppose it <italics>is<reset><light blue> almost that time of month yet again."
+			wait 2 seconds
+			if {sex.%player%} is 0:
+				send "<light blue>Cinder: Thank you for this letter, madam. It brings me great joy to hear that Alastor is still doing well."
+			else if {sex.%player%} is 1:
+				send "<light blue>Cinder: You have my thanks for this litter, sir. It brings me joy to hear that Alastor remains in good health."
+			wait 3.3 seconds
+			send "<light blue>Cinder: Now, may I hazard a guess and assume that Alastor has not yet compensated you for this task?"
+			wait 2 seconds
+			send "<run command:/TTTA-Cinder 2><gold>1 - I wasn't even aware mail carriers were supposed to be paid."
+			send "<run command:/TTTA-Cinder 3><gold>2 - I suppose if being made a mail carrier counts, then I've been properly compensated."
+			send "<run command:/TTTA-Cinder 4><gold>3 - He has not, milord."
+		else if arg 1 is 2:
+			send "<light blue>Cinder: *chuckling* It would be a crime not to pay a brave warrior as yourself for such a deed."
+			wait 2 seconds
+			send "<light blue>Cinder: In all seriousness, however, Alastor sends all of his new recruits on missions such as this as their initiation test. One must learn to love the menial tasks in life, he claims. It builds discipline."
+			wait 3 seconds
+			set {inCutscene.%player%} to true
+			send "<light blue>Cinder: I suppose some gold pieces are in order for-"
+			create npc named "Silgrid Guard" with type player at {_AddCoordinatesLater}
+			wait 1 tick
+			make {NPCsFor.%player%::C_Silgrid Guard} move to location at {_TTTA-SilgridGuard-CS1-Loc} at speed 2
+			loop all players:
+				if loop-player is not the player
+					hide {NPCsFor.%player%::C_Silgrid Guard} from the loop-player
+			while {NPCsFor.%player%::C_Silgrid Guard} is navigating:
+				play sound "STONE FOOTSETPS"
+				wait 5 ticks
+			send "<light red>Castle Guard: Lord Cinder! Chalphy... the whole village is being attacked!"
+			wait 2 seconds
+			send "<light blue>Cinder: What?! Explain yourself!"
+			wait 1.25 seconds
+			send "<light red>Castle Guard: I ran here as fast as I could, milord... Chalphy is being attacked by a horde of monsters... We're completely outnumbered."
+			wait 3 seconds
+			send "<light blue>Cinder: ...I see. I pray that you have some basic knowledge of combat, %player's tablist name%<reset><light blue>. We have no choice but to fight."
+			
+			
+			
+#See all NPCs, even ones belonging to other players.
+command /showallnpcs:
+	trigger:
+		loop all npcs:
+			reveal the loop-citizen to the player
+
+#Forcefully exit any conversation at any time.
+command /exitconvo:
+	trigger:
+		clear {inConvo.%player%}
+		send "Left conversation."
+				
+				
+#Ultra-Jank Workaround for NPC Cloning (why can nobody figure this out)
+on citizen create:
+	wait 1 tick
+	set {_name} to the name of the event-citizen
+	#broadcast "A citizen was spawned."
+	loop all players in radius 20 of the event-citizen:
+		#Check for local players in cutscenes
+		if {inCutscene.%loop-player%} is true:
+			#Prevent assigning NPCS to players already watching a cutscene
+			if {NPCsFor.%loop-player%::C_%{_name}%} is not set:
+				#broadcast "Generated cutscene NPC of %name of event-citizen% for %loop-player%."
+				set {NPCsFor.%loop-player%::C_%{_name}%} to the event-citizen
+				exit 1 loop
+				
+#To take control of NPCs during cutscenes, they need to be written to the player's data while we manipulate them.
+#This is convinent, as we can also use this to hide the copied NPCs from everyone else by using a loop.
+#Cutscene NPC's are denoated inside the array using "C_".
+#Original NPC's should NEVER be moved or destroyed. Create a copy of the NPC and add it to the player's NPC array with a C_ prefix.
+#NPC's must be copied via their Citizens ID (separate from what is returned by Skript).
+command /npctests <number>:
+	executable by: players, console
+	usage:/npctest [Test ID]
+	trigger:
+		set {inConvo.%player%} to true
+		if arg 1 is 1:
+			send "<light yellow>Test NPC: I should dissapear, then reappear after a few seconds. This should only affect you."
+			wait 3 seconds
+			hide {NPCsFor.%player%::Test NPC} from the player
+			send "<light yellow>Test NPC: Woosh!"
+			wait 3 seconds
+			reveal {NPCsFor.%player%::Test NPC} to the player
+			send "<light yellow>Test NPC: ...And now I'm back! Ta-da!"
+			wait 1.5 seconds
+			send "<light yellow>Test NPC: What would you like me to do next?"
+			wait 1.5 seconds
+			clear {inConvo.%player%}
+			send "<run command:/npctests 1><gold>1 - NPC Visibility Test" to the player
+			send "<run command:/npctests 2><gold>2 - Cutscene Test" to the player
+			send "<run command:/npctests 3><gold>3 - Follower Test" to the player
+			send "<run command:/npctests 5><gold>4 - Broadcast ID" to the player
+			send "<run command:/npctests 4><gold>5 - Exit" to the player
+		else if arg 1 is 2:
+			set {inCutscene.%player%} to true
+			send "<light yellow>Test NPC: Okay. I'm going to run to the center of this area."
+			set {_origin} to location of {NPCsFor.%player%::Test NPC}
+			hide {NPCsFor.%player%::Test NPC} from the player
+			make console execute command "/npc sel %citizen id of {NPCsFor.%player%::Test NPC}%"
+			make console execute command "/npc copy"
+			while {NPCsFor.%player%::C_Test NPC} is not set:
+				add 1 to {_blockInfLoop}
+				wait 1 tick
+				send "<blue>Waiting for NPC..." to the player
+				if {_blockInfLoop} is more than 60:
+					send "<red>Failed to retrieve NPC!" to the player
+					exit 1 loop
+			send "<light blue>NPC Found! Beginning cutscene." to the player
+			#set {NPCsFor.%player%::C_Test NPC} to the last created citizen
+			loop all players:
+				if loop-player is not the player:
+					hide {NPCsFor.%player%::C_Test NPC} from the loop-player
+			make {NPCsFor.%player%::C_Test NPC} move to location at 789, 72, -1720 in world "GenOne" at speed 1
+			while {NPCsFor.%player%::C_Test NPC} is navigating:
+				wait 1 tick
+			send "<light yellow>Test NPC: Now, I'll equip a sword."
+			wait 2 seconds
+			set {NPCsFor.%player%::C_Test NPC}'s tool to 1 iron sword
+			send "<light yellow>Test NPC: Now I'll put it away."
+			wait 2 seconds
+			set {NPCsFor.%player%::C_Test NPC}'s tool to air
+			wait 2 seconds
+			send "<light yellow>Test NPC: Now I'll head back to my starting location, and sit down for a little while."
+			wait 2 seconds
+			make {NPCsFor.%player%::C_Test NPC} move to {_origin} at speed 0.5
+			while {NPCsFor.%player%::C_Test NPC} is navigating:
+				wait 1 tick
+			make {NPCsFor.%player%::C_Test NPC} sit
+			wait 2 seconds
+			send "<light yellow>Test NPC: I think I'll stand up now."
+			wait 1 seconds
+			make {NPCsFor.%player%::C_Test NPC} stop sitting
+			reveal {NPCsFor.%player%::Test NPC} to the player
+			send "<light yellow>Test NPC: What did you think? Did you like it?"
+			destroy {NPCsFor.%player%::C_Test NPC}
+			clear {NPCsFor.%player%::C_Test NPC}
+			clear {inConvo.%player%}
+			send "<light yellow>Test NPC: What would you like me to do next?"
+			wait 1.5 seconds
+			clear {inCutscene.%player%}
+			clear {inConvo.%player%}
+			send "<run command:/npctests 1><gold>1 - NPC Visibility Test" to the player
+			send "<run command:/npctests 2><gold>2 - Cutscene Test" to the player
+			send "<run command:/npctests 3><gold>3 - Follower Test" to the player
+			send "<run command:/npctests 5><gold>4 - Broadcast ID" to the player
+			send "<run command:/npctests 4><gold>5 - Exit" to the player
+		else if arg 1 is 5:
+			send "<light yellow>Test NPC: My NPC ID is %citizen id of {NPCsFor.%player%::Test NPC}%."
+			send "<light yellow>Test NPC: What would you like me to do next?"
+			wait 1.5 seconds
+			clear {inConvo.%player%}
+			send "<run command:/npctests 1><gold>1 - NPC Visibility Test" to the player
+			send "<run command:/npctests 2><gold>2 - Cutscene Test" to the player
+			send "<run command:/npctests 3><gold>3 - Follower Test" to the player
+			send "<run command:/npctests 5><gold>4 - Broadcast ID" to the player
+			send "<run command:/npctests 4><gold>5 - Exit" to the player
+		else if arg 1 is 4:
+			clear {NPCsFor.%player%::*}
+			clear {inConvo.%player%}
+			send "<light yellow>Test NPC: Okay then. See you later!"
 		
 on right click on an entity:
-	if the target is npc:
-		#
-		#Azelle (Gatekeeper)
+	if the target is a citizen:
 		if {inConvo.%player%} is not set:
+			clear {NPCsFor.%player%::*}
+			#Azelle (Gatekeeper)
 			if the name of the target contains "Azelle":
 				if {quests.%player%::Birth of a Hero} is 1:
 					set {inConvo.%player%} to true
@@ -261,18 +475,30 @@ on right click on an entity:
 					wait 3 seconds
 					clear {inConvo.%player%}
 					send "<run command:/boah 1><gold>1 - Is this the entrance to House Ulster?" to the player
-		#Test NPC
-		if {inConvo.%player%} is not set:
-			if the name of the target contains "Test NPC":
+			#Alastor
+			else if the name of the target contains "Alastor":
+				if {quests.%player%::Birth of a Hero} is 999:
+					send "<light blue>Alastor: Ah, a new face. Welcome to House Ulster. What're you here for?" to the player
+					wait 2.5 seconds
+					send "<run command:/TTTA 1><gold>1 - My name is %player's tablish name%<reset><run command:/TTTA 1><gold>. I'd like to join your Knights." to the player
+			else if the name of the target contains "Cinder":
+				if {quests.%player%::The Time to Act} is more than 1:
+					set {NPCsFor.%player%::Cinder} to the target
+					send "<light blue>Cinder: Oh? I don't believe I've seen you before."
+					wait 1.5 seconds
+					send "<run command: /TTTA-Cinder 1><gold>1 - I'm %player's tablist name%<reset><gold>. I have a message for you from Lord Alastor."
+			#Test NPC
+			else if the name of the target contains "Test NPC":
 				if {quests.%player%::NpcVis Test} is not set:
-					npcChat(player,"<light yellow>Test NPC: I am a test NPC. I should dissapear for a few seconds, but everyone else can still see me.")
-					wait 2 seconds
-					npcChat(player,"<light yellow>Test NPC: Woosh!")
-					hide the target from the player
+					npcChat(player,"<light yellow>Test NPC: I am a test NPC. What would you like me to do?")
 					wait 3 seconds
-					reveal the target for the player
-					npcChat(player,"<light yellow>Test NPC: I should reappear. Ta-da!")
+					send "<run command:/npctests 1><gold>1 - NPC Visibility Test" to the player
+					send "<run command:/npctests 2><gold>2 - Cutscene Test" to the player
+					send "<run command:/npctests 3><gold>3 - Follower Test" to the player
+					send "<run command:/npctests 5><gold>4 - Broadcast ID" to the player
+					set {NPCsFor.%player%::Test NPC} to the target
 					
+#Journal
 on right-click with book:
 	if the name of the player's tool is "<gold>Journal":
 		if {betaTestActive} is true:
@@ -281,3 +507,7 @@ on right-click with book:
 				set slot 0 of the player's current inventory to 1 emerald block named "<light green>Beta Test - Monster Hunting" with lore "<white>You killed 50 monsters, and have finished the tests.", "<white>You may retry this quest by reconnecting to the server."
 			else:
 				set slot 0 of the player's current inventory to 1 lapis block named "<light blue>Beta Test - Monster Hunting" with lore "<white>Monsters Slain: %{quests.%player%::Beta Test - Monster Hunting} - 1%/50"
+		else:
+			open chest with 2 rows named "<gold>Journal" for the player
+			if {quests.%player%::Birth of a Hero} is 999:
+				set slot 1 of the player's current inventory to 1 emerald block named "<light green>Birth of a Hero" with lore "<white>I've made it to House Ulster and completed my registration.", "<white>"

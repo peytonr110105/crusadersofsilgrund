@@ -359,17 +359,23 @@ on inventory click:
 				if slot 3 of the player's current inventory is not empty:
 					if slot 5 of the player's current inventory is not empty:
 						if line 1 of slot 5 of the player's current inventory's lore is set:
-							set {_inheritanceA-Skill} to line 1 of slot 5 of the player's current inventory's lore
+							if line 1 of slot 5 of the player's current inventory's lore is not "No Skill":
+								set {_inheritanceA-Skill} to line 1 of slot 5 of the player's current inventory's lore
 						if line 2 of slot 5 of the player's current inventory's lore is set:
-							set {_inheritanceB-Skill} to line 2 of slot 5 of the player's current inventory's lore
+							if line 2 of slot 5 of the player's current inventory's lore is not "No Skill":
+								set {_inheritanceB-Skill} to line 2 of slot 5 of the player's current inventory's lore
 						if line 3 of slot 5 of the player's current inventory's lore is set:
-							set {_inheritanceC-Skill} to line 3 of slot 5 of the player's current inventory's lore
+							if line 3 of slot 5 of the player's current inventory's lore is not "No Skill":
+								set {_inheritanceC-Skill} to line 3 of slot 5 of the player's current inventory's lore
 						if line 4 of slot 5 of the player's current inventory's lore is set:
-							set {_inheritanceAssist} to line 4 of slot 5 of the player's current inventory's lore
+							if line 4 of slot 5 of the player's current inventory's lore is not "No Skill":
+								set {_inheritanceAssist} to line 4 of slot 5 of the player's current inventory's lore
 						if line 5 of slot 5 of the player's current inventory's lore is set:
-							set {_inheritanceSpecial} to line 5 of slot 5 of the player's current inventory's lore
+							if line 5 of slot 5 of the player's current inventory's lore is not "No Skill":
+								set {_inheritanceSpecial} to line 5 of slot 5 of the player's current inventory's lore
 						if line 6 of slot 5 of the player's current inventory's lore is set:
-							set {_inheritanceRefine} to line 6 of slot 5 of the player's current inventory's lore
+							if line 6 of slot 5 of the player's current inventory's lore is not "No Skill":
+								set {_inheritanceRefine} to line 6 of slot 5 of the player's current inventory's lore
 						loop enchantments of slot 5 of the player's current inventory:
 							add loop-enchantment to {_enchants::*}
 							add 1 to {_tmp}

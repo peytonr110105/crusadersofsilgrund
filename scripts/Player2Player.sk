@@ -198,11 +198,11 @@ every minecraft hour:
 #Player2Player interactions handler.
 on right-click on a player:
 	#exclude npcs from p2p
-	if target is not npc:
+	if target is not a citizen:
 		#Player must be unarmed to trigger P2P interactions.
 		if the player's tool is air:
 			#Prevents other players from interrupting NPC dialouge.
-			if {inConvo.%player%} is set:
+			if {inConvo.%target%} is set:
 				send "<light red>%target% is already in a conversation." to the player
 			else:
 				#Offer a trade (Not Implemented)
