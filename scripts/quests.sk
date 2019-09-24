@@ -130,6 +130,7 @@ command /setQuestProgress <number> <text>:
 	
 #Monster-hunting related quest progress
 on death of a monster:
+	#Monster Hunting Beta Test
 	if {quests.%attacker%::Beta Test - Monster Hunting} is not 999:
 		if {quests.%attacker%::Beta Test - Monster Hunting} is set:
 			setQuestProgress(attacker,"Beta Test - Monster Hunting",{quests.%attacker%::Beta Test - Monster Hunting} + 1,"%{quests.%attacker%::Beta Test - Monster Hunting}%/50 monsters slain.")
@@ -153,7 +154,86 @@ on death of a monster:
 										play sound "entity.fireworkrocket.twinkle" with volume 1 and pitch 1.5 at loop-value for loop-value
 										play 60 (firework spark with speed 1) at loop-value
 										play 60 (snow shovel with speed 1) at loop-value
-
+	#Allied NPC kill handler
+	if attacker is a citizen:
+		if {alliedPlayer.%attacker%} is set:
+			broadcast "%{alliedPlayer.%attacker%}%"
+			#The Time to Act
+			if {quests.%{alliedPlayer.%attacker%}%::The Time to Act} is more than or equal to 2:
+				if {quests.%{alliedPlayer.%attacker%}%::The Time to Act} is not 999:
+					setQuestProgress({alliedPlayer.%attacker%},"The Time to Act",{quests.%{alliedPlayer.%attacker%}%::The Time to Act} + 1,"%{quests.%{alliedPlayer.%attacker%}%::The Time to Act} - 1%/16 monsters defeated.")
+					if {quests.%{alliedPlayer.%attacker%}%::The Time to Act} is more than 16:
+						finishQuest({alliedPlayer.%attacker%},"The Time to Act","Chalphy has been saved from the monster attack!")
+						send "<light blue>Cinder: ...That should be all of them, then. Well done, everyone!" to {alliedPlayer.%attacker%}
+						wait 2.25 seconds
+						send "<light blue>Cinder: Thank you for your help, %{alliedPlayer.%attacker%}'s tablist name%. You've done my people a great service, and those good deeds shall not go unrewarded." to {alliedPlayer.%attacker%}
+						wait 3 seconds
+						send "<gold>+100 Gold obtained!" to {alliedPlayer.%attacker%}
+						add 100 to {alliedPlayer.%attacker%}'s balance
+						wait 0.25 seconds
+						send "<light blue>Cinder: This is for your help today. When you return to House Ulster, please inform Alastor of what has happened. I'm certain it will help you establish yourself within his ranks." to {alliedPlayer.%attacker%}
+						wait 4 seconds
+						send "<light blue>Cinder: In the meantime, I will be investigating the root cause of this attack. Farewell and safe travels, %{AlliedPlayer.%attacker%}'s tablist name%." to {alliedPlayer.%attacker%}
+						make {NPCsFor.%{alliedPlayer.%attacker%}%::C_Cinder} move to location 513, 70, 392 with speed 1
+						make {NPCsFor.%{alliedPlayer.%attacker%}%::C_Silgrid Guard} move to location 513, 70, 392 with speed 1
+						while {NPCsFor.%{alliedPlayer.%attacker%}%::C_Cinder} is navigating:
+							wait 1 tick
+						reveal {NPCsFor.%{alliedPlayer.%attacker%}%::Cinder} to {alliedPlayer.%attacker%}
+						clear {str.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Silgrid Guard}%}
+						clear {spd.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Silgrid Guard}%}
+						clear {skl.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Silgrid Guard}%}
+						clear {def.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Silgrid Guard}%}
+						clear {res.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Silgrid Guard}%}
+						clear {str.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Cinder}%}
+						clear {spd.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Cinder}%}
+						clear {skl.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Cinder}%}
+						clear {def.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Cinder}%}
+						clear {res.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Cinder}%}
+						clear {NPCsFor.%{alliedPlayer.%attacker%}%::*}
+						clear {inCutscene.%{alliedPlayer.%attacker%}%}
+						clear {inConvo.%{alliedPlayer.%attacker%}%}
+						clear {alliedPlayer.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Cinder}%}
+						clear {alliedPlayer.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Silgrid Guard}%}
+						destroy {NPCsFor.%{alliedPlayer.%attacker%}%::C_Cinder}
+						destroy {NPCsFor.%{alliedPlayer.%attacker%}%::C_Silgrid Guard}
+	#The Time to Act
+	if {quests.%attacker%::The Time to Act} is more than or equal to 2:
+		if {quests.%attacker%::The Time to Act} is not 999:
+			setQuestProgress(attacker,"The Time to Act",{quests.%attacker%::The Time to Act} + 1,"%{quests.%attacker%::The Time to Act} - 1%/16 monsters defeated.")
+			if {quests.%attacker%::The Time to Act} is more than 16:
+				finishQuest(attacker,"The Time to Act","Chalphy has been saved from the monster attack!")
+				send "<light blue>Cinder: ...That should be all of them, then. Well done, everyone!" to attacker
+				wait 2.25 seconds
+				send "<light blue>Cinder: Thank you for your help, %attacker's tablist name%. You've done my people a great service, and those good deeds shall not go unrewarded." to attacker
+				wait 3 seconds
+				send "<gold>+100 Gold obtained!" to attacker
+				add 100 to attacker's balance
+				wait 0.25 seconds
+				send "<light blue>Cinder: This is for your help today. When you return to House Ulster, please inform Alastor of what has happened. I'm certain it will help you establish yourself within his ranks." to attacker
+				wait 4 seconds
+				send "<light blue>Cinder: In the meantime, I will be investigating the root cause of this attack. Farewell and safe travels, %attacker's tablist name%." to attacker
+				make {NPCsFor.%attacker%::C_Cinder} move to location 513, 70, 392 with speed 1
+				make {NPCsFor.%attacker%::C_Silgrid Guard} move to location 513, 70, 392 with speed 1
+				while {NPCsFor.%attacker%::C_Cinder} is navigating:
+					wait 1 tick
+				clear {str.%{NPCsFor.%attacker%::C_Silgrid Guard}%}
+				clear {spd.%{NPCsFor.%attacker%::C_Silgrid Guard}%}
+				clear {skl.%{NPCsFor.%attacker%::C_Silgrid Guard}%}
+				clear {def.%{NPCsFor.%attacker%::C_Silgrid Guard}%}
+				clear {res.%{NPCsFor.%attacker%::C_Silgrid Guard}%}
+				clear {str.%{NPCsFor.%attacker%::C_Cinder}%}
+				clear {spd.%{NPCsFor.%attacker%::C_Cinder}%}
+				clear {skl.%{NPCsFor.%attacker%::C_Cinder}%}
+				clear {def.%{NPCsFor.%attacker%::C_Cinder}%}
+				clear {res.%{NPCsFor.%attacker%::C_Cinder}%}
+				clear {alliedPlayer.%{NPCsFor.%attacker%::C_Cinder}%}
+				clear {alliedPlayer.%{NPCsFor.%attacker%::C_Silgrid Guard}%}
+				destroy {NPCsFor.%attacker%::C_Cinder}
+				destroy {NPCsFor.%attacker%::C_Silgrid Guard}
+				reveal {NPCsFor.%attacker%::Cinder} to the attacker
+				clear {NPCsFor.%attacker%::*}
+				clear {inCutscene.%attacker%}
+				clear {inConvo.%attacker%}
 #First-Time Join Handler
 on join:
 	#Beta Test behavior
@@ -184,6 +264,12 @@ on join:
 		set {generation.%player%} to 1
 		teleport the player to location at 718, 63, -1598 in world "GenOne"
 		startQuest(player,"Birth of a Hero","Locate House Ulster in the northwest.")
+		
+#Force-mark as Ally
+command /markasally:
+	trigger:
+		set {DEBUG_MarkAsAlly.%player%} to true
+		send "<gold>Right-click the NPC to mark as your ally."
 		
 #New players have a hidden Miracle perk before creating a character.
 on damage of a player:
@@ -255,11 +341,11 @@ command /TTTA <number>:
 	trigger:
 		set {inConvo.%player%} to true
 		if arg 1 is 1:
-			send "<light blue>Alastor: Join the Knights, eh? What's your credentials then, hotshot?"
+			send "<light blue>Alastor: Join the Knights, eh? What're your credentials then, hotshot?"
 			wait 2 seconds
 			send "<run command:/TTTA 2><gold>1 - ...about that."
 			send "<run command:/TTA 4><gold>2 - Well, if you must know... [Bluff]"
-			if {mqComplete.%player%} is set:
+			if {mqComplete.%player%} is 1:
 				send "<run command:/TTTA 99><gold>3 - There was that one time I saved the world... [Skip Tutorial Quests]"
 		else if arg 1 is 2:
 			send "<light blue>Alastor: So, let's recap this whole conversation then."
@@ -269,7 +355,7 @@ command /TTTA <number>:
 			send "<light blue>Alastor: Now, if this were any normal recruiting session, you'd already be out the gate on the way back to wherever you came from. But as luck would have it, I might have a position for you."
 			wait 3 seconds
 			send "<light blue>Alastor: My last mail carrier just retired, and I need a replacement. I figure a whelp like you can at least deliver letters. Are you up to the task?"
-			wait 3.5
+			wait 3.5 seconds
 			send "<run command:/TTTA 3><gold>1 - I... suppose so."
 		else if arg 1 is 3:
 			send "<light blue>Alastor: Congratulations. You're the new mail carrier for House Ulster. Truly in the realm of the elites, aren't we?"
@@ -281,7 +367,7 @@ command /TTTA <number>:
 			send "<gold>Alastor's Letter obtained."
 			clear {inConvo.%player%}
 			wait 0.5 seconds
-			send "<light blue>Alastor: Keep moving straight ahead once you exit the castle, and you should bump into a village eventually. Follow the road from there, then cross the ocean once you find the lighthouse. If you get lost, the villagers over in Grann should be able to help you out."
+			send "<light blue>Alastor: Keep moving straight ahead once you exit the castle, and you should bump into a village eventually. Follow the road from there, then cross the ocean once you find the acacia lighthouse. If you get lost, the villagers over in Grann should be able to help you out."
 		else if arg 1 is 4:
 			send "<italics>You spin the tale of a world-ending disaster, with you as the story's hero. Alastor seems incredibly invested."
 			wait 2.5 seconds
@@ -307,13 +393,19 @@ command /TTTA-Cinder <number>:
 			if {sex.%player%} is 0:
 				send "<light blue>Cinder: Thank you for this letter, madam. It brings me great joy to hear that Alastor is still doing well."
 			else if {sex.%player%} is 1:
-				send "<light blue>Cinder: You have my thanks for this litter, sir. It brings me joy to hear that Alastor remains in good health."
+				send "<light blue>Cinder: You have my thanks for this letter, sir. It brings me joy to hear that Alastor remains in good health."
 			wait 3.3 seconds
 			send "<light blue>Cinder: Now, may I hazard a guess and assume that Alastor has not yet compensated you for this task?"
 			wait 2 seconds
 			send "<run command:/TTTA-Cinder 2><gold>1 - I wasn't even aware mail carriers were supposed to be paid."
 			send "<run command:/TTTA-Cinder 3><gold>2 - I suppose if being made a mail carrier counts, then I've been properly compensated."
-			send "<run command:/TTTA-Cinder 4><gold>3 - He has not, milord."
+			send "<run command:/TTTA-Cinder 2><gold>3 - He has not, milord."
+		else if arg 1 is 3:
+			send "<light blue>Cinder: I see why Alastor chose you. Your words drip with sarcasm. He was much the same way with his fellow knights while he still served under me."
+			wait 2.5 seconds
+			send "<light blue>Cinder: So, I assume that Alastor has not yet paid you for this task?"
+			wait 2 seconds
+			send "<run command:/TTTA-Cinder 2><gold>3 - He has not, milord."
 		else if arg 1 is 2:
 			send "<light blue>Cinder: *chuckling* It would be a crime not to pay a brave warrior as yourself for such a deed."
 			wait 2 seconds
@@ -321,14 +413,35 @@ command /TTTA-Cinder <number>:
 			wait 3 seconds
 			set {inCutscene.%player%} to true
 			send "<light blue>Cinder: I suppose some gold pieces are in order for-"
-			create npc named "Silgrid Guard" with type player at {_AddCoordinatesLater}
-			wait 1 tick
-			make {NPCsFor.%player%::C_Silgrid Guard} move to location at {_TTTA-SilgridGuard-CS1-Loc} at speed 2
+			create npc named "Silgrid Guard" with type player at location 500, 70, 379
+			wait 2 ticks
+			make {NPCsFor.%player%::C_Silgrid Guard} move to location at 516, 70, 391 at speed 2
+			set {NPCsFor.%player%::C_Silgrid Guard}'s helmet to 1 chain helmet
+			set {NPCsFor.%player%::C_Silgrid Guard}'s chestplate to 1 chain chestplate
+			set {NPCsFor.%player%::C_Silgrid Guard}'s leggings to 1 chain leggings
+			set {NPCsFor.%player%::C_Silgrid Guard}'s boots to 1 chain boots
+			set {NPCsFor.%player%::C_Silgrid Guard}'s tool to 1 iron sword of sharpness 2
+			loop {lvl.%player%} times:
+				add 1 to {str.%{NPCsFor.%player%::C_Silgrid Guard}%}
+				add 1 to {spd.%{NPCsFor.%player%::C_Silgrid Guard}%}
+				add 1 to {skl.%{NPCsFor.%player%::C_Silgrid Guard}%}
+				add 1 to {def.%{NPCsFor.%player%::C_Silgrid Guard}%}
+				add 1 to {res.%{NPCsFor.%player%::C_Silgrid Guard}%}
+				chance of 5%:
+					add 1 to {str.%{NPCsFor.%player%::C_Silgrid Guard}%}
+				chance of 5%:
+					add 1 to {spd.%{NPCsFor.%player%::C_Silgrid Guard}%}
+				chance of 5%:
+					add 1 to {skl.%{NPCsFor.%player%::C_Silgrid Guard}%}
+				chance of 5%:
+					add 1 to {def.%{NPCsFor.%player%::C_Silgrid Guard}%}
+				chance of 5%:
+					add 1 to {res.%{NPCsFor.%player%::C_Silgrid Guard}%}
 			loop all players:
-				if loop-player is not the player
+				if loop-player is not the player:
 					hide {NPCsFor.%player%::C_Silgrid Guard} from the loop-player
 			while {NPCsFor.%player%::C_Silgrid Guard} is navigating:
-				play sound "STONE FOOTSETPS"
+				play sound "block.glass.step" with volume 1.5 and pitch 1 at {NPCsFor.%player%::C_Silgrid Guard} for the player
 				wait 5 ticks
 			send "<light red>Castle Guard: Lord Cinder! Chalphy... the whole village is being attacked!"
 			wait 2 seconds
@@ -336,7 +449,92 @@ command /TTTA-Cinder <number>:
 			wait 1.25 seconds
 			send "<light red>Castle Guard: I ran here as fast as I could, milord... Chalphy is being attacked by a horde of monsters... We're completely outnumbered."
 			wait 3 seconds
-			send "<light blue>Cinder: ...I see. I pray that you have some basic knowledge of combat, %player's tablist name%<reset><light blue>. We have no choice but to fight."
+			send "<light blue>Cinder: ...I see. I pray that you have some knowledge of combat, %player's tablist name%<reset><light blue>. We have no choice but to fight."
+			wait 4 seconds
+			send "<light blue>Cinder: Everyone, please, follow me! We haven't a second to lose!"
+			wait 0.25 seconds
+			hide {NPCsFor.%player%::Cinder} from the player
+			make console execute command "/npc sel %citizen id of {NPCsFor.%player%::Cinder}%"
+			make console execute command "/npc copy"
+			wait 2 ticks
+			set {NPCsFor.%player%::C_Cinder}'s tool to 1 diamond sword of sharpness 7 named "<gold><bold>Cobalt Blade" with lore "<light red><bold>Slot A - Distant Counter", "<light blue><bold>Slot B - Sabotage Defense"
+			loop {lvl.%player%} times:
+				add 1 to {str.%{NPCsFor.%player%::C_Cinder}%}
+				add 1 to {spd.%{NPCsFor.%player%::C_Cinder}%}
+				add 1 to {skl.%{NPCsFor.%player%::C_Cinder}%}
+				add 1 to {def.%{NPCsFor.%player%::C_Cinder}%}
+				add 1 to {res.%{NPCsFor.%player%::C_Cinder}%}
+				chance of 70%:
+					add 1 to {str.%{NPCsFor.%player%::C_Cinder}%}
+				chance of 70%:
+					add 1 to {spd.%{NPCsFor.%player%::C_Cinder}%}
+				chance of 70%:
+					add 1 to {skl.%{NPCsFor.%player%::C_Cinder}%}
+				chance of 70%:
+					add 1 to {def.%{NPCsFor.%player%::C_Cinder}%}
+				chance of 70%:
+					add 1 to {res.%{NPCsFor.%player%::C_Cinder}%}
+			make {NPCsFor.%player%::C_Cinder} move to location at 500, 70, 379 at speed 2
+			set {alliedPlayer.%{NPCsFor.%player%::C_Cinder}%} to the player
+			set {alliedPlayer.%{NPCsFor.%player%::C_Silgrid Guard}%} to the player
+			loop all players:
+				if loop-player is not the player:
+					hide {NPCsFor.%player%::C_Cinder} from the loop-player
+			make {NPCsFor.%player%::C_Silgrid Guard} move to location at 500, 70, 379 at speed 1.75
+			while {NPCsFor.%player%::C_Cinder} is navigating:
+				play sound "block.glass.step" with volume 0.5 and pitch 1 at {NPCsFor.%player%::C_Cinder} for the player
+				wait 5 ticks
+			make {NPCsFor.%player%::C_Cinder} move to location at 489, 68, 353 at speed 2
+			make {NPCsFor.%player%::C_Silgrid Guard} move to location at 489, 68, 353 at speed 1.75
+			while {NPCsFor.%player%::C_Cinder} is navigating:
+				play sound "block.glass.step" with volume 0.5 and pitch 1 at {NPCsFor.%player%::C_Cinder} for the player
+				wait 5 ticks
+			make {NPCsFor.%player%::C_Cinder} move to location at 543, 72, 349 at speed 2
+			make {NPCsFor.%player%::C_Silgrid Guard} move to location at 543, 72, 349 at speed 1.75
+			while {NPCsFor.%player%::C_Cinder} is navigating:
+				play sound "block.glass.step" with volume 0.5 and pitch 1 at {NPCsFor.%player%::C_Cinder} for the player
+				wait 5 ticks
+			make {NPCsFor.%player%::C_Cinder} move to location at 585, 79, 410 at speed 2
+			make {NPCsFor.%player%::C_Silgrid Guard} move to location at 585, 79, 410 at speed 1.75
+			while {NPCsFor.%player%::C_Cinder} is navigating:
+				play sound "block.glass.step" with volume 0.5 and pitch 1 at {NPCsFor.%player%::C_Cinder} for the player
+				wait 5 ticks
+			make {NPCsFor.%player%::C_Cinder} move to location at 624, 75, 410 at speed 2
+			make {NPCsFor.%player%::C_Silgrid Guard} move to location at 620, 75, 407 at speed 1.75
+			while {_playerClose} is not set:
+				loop all players in radius 8 of {NPCsFor.%player%::C_Cinder}:
+					if loop-player is the player:
+						set {_playerClose} to true
+					wait 5 ticks
+			loop 8 times:
+				spawn 1 zombie at location 692, 64, 423 in world "GenOne"
+				wait 1 tick
+				loop all players:
+					if loop-player is not the player:
+						hide the last spawned entity from loop-player
+			loop 8 times:
+				spawn 1 skeleton at location 692, 64, 423 in world "GenOne"
+				wait 1 tick
+				loop all players:
+					if loop-player is not the player:
+						hide the last spawned entity from loop-player
+			send "<light blue>Cinder: Are these the monsters you mentioned?"
+			wait 2 seconds
+			send "<light red>Silgrid Guard: Yessir."
+			wait 0.5 seconds
+			send "<light blue>Cinder: Very well... This should be easy, relatively speaking of course."
+			wait 2 seconds
+			send "<light blue>Cinder: Find your courage, everyone! It is time for us to take action! CHAAAAAAAAARGE!"
+			setQuestProgress(player,"The Time to Act",2,"Slay all 16 monsters terrorizing Chalphy! Cinder and the Silgrid Guard will aid you.")
+			make console execute command "/npc sel %citizen id of {NPCsFor.%player%::C_Cinder}%"
+			make console execute command "/trait add sentinel"
+			make console execute command "/sentinel guard %player%"
+			make console execute command "/sentinel addtarget MONSTERS"
+			make console execute command "/npc sel %citizen id of {NPCsFor.%player%::C_Silgrid Guard}%"
+			make console execute command "/trait add sentinel"
+			make console execute command "/sentinel guard %player%"
+			make console execute command "/sentinel addtarget MONSTERS"
+			
 			
 			
 			
@@ -372,6 +570,7 @@ on citizen create:
 #Cutscene NPC's are denoated inside the array using "C_".
 #Original NPC's should NEVER be moved or destroyed. Create a copy of the NPC and add it to the player's NPC array with a C_ prefix.
 #NPC's must be copied via their Citizens ID (separate from what is returned by Skript).
+#Rember to clear cutscene NPC stats if they're to be used as followers.
 command /npctests <number>:
 	executable by: players, console
 	usage:/npctest [Test ID]
@@ -464,6 +663,11 @@ command /npctests <number>:
 		
 on right click on an entity:
 	if the target is a citizen:
+		if {DEBUG_MarkAsAlly.%player%} is set:
+			set {alliedPlayer.%target%} to the player
+			clear {DEBUG_MarkAsAlly.%player%}
+			send "<gold>Marked %target% as your ally." to the player
+		broadcast "%{alliedPlayer.%target%}%"
 		if {inConvo.%player%} is not set:
 			clear {NPCsFor.%player%::*}
 			#Azelle (Gatekeeper)
@@ -480,13 +684,14 @@ on right click on an entity:
 				if {quests.%player%::Birth of a Hero} is 999:
 					send "<light blue>Alastor: Ah, a new face. Welcome to House Ulster. What're you here for?" to the player
 					wait 2.5 seconds
-					send "<run command:/TTTA 1><gold>1 - My name is %player's tablish name%<reset><run command:/TTTA 1><gold>. I'd like to join your Knights." to the player
+					send "<run command:/TTTA 1><gold>1 - My name is %player's tablist name%<reset><run command:/TTTA 1><gold>. I'd like to join your Knights." to the player
+			#Cinder
 			else if the name of the target contains "Cinder":
-				if {quests.%player%::The Time to Act} is more than 1:
+				if {quests.%player%::The Time to Act} is 1:
 					set {NPCsFor.%player%::Cinder} to the target
-					send "<light blue>Cinder: Oh? I don't believe I've seen you before."
+					send "<light blue>Cinder: Oh? I don't believe I've seen you before." to the player
 					wait 1.5 seconds
-					send "<run command: /TTTA-Cinder 1><gold>1 - I'm %player's tablist name%<reset><gold>. I have a message for you from Lord Alastor."
+					send "<run command:/TTTA-Cinder 1><gold>1 - I'm %player's tablist name%<reset><run command:/TTTA-Cinder 1><gold>. I have a message for you from Lord Alastor." to the player
 			#Test NPC
 			else if the name of the target contains "Test NPC":
 				if {quests.%player%::NpcVis Test} is not set:
@@ -509,5 +714,17 @@ on right-click with book:
 				set slot 0 of the player's current inventory to 1 lapis block named "<light blue>Beta Test - Monster Hunting" with lore "<white>Monsters Slain: %{quests.%player%::Beta Test - Monster Hunting} - 1%/50"
 		else:
 			open chest with 2 rows named "<gold>Journal" for the player
+			set slot 0 of the player's current inventory to 1 book named "<gold>Main Quests:"
 			if {quests.%player%::Birth of a Hero} is 999:
-				set slot 1 of the player's current inventory to 1 emerald block named "<light green>Birth of a Hero" with lore "<white>I've made it to House Ulster and completed my registration.", "<white>"
+				set slot 1 of the player's current inventory to 1 emerald block named "<light green>Birth of a Hero" with lore "<white>I've made it to House Ulster and completed my registration.", "<white>I should head into House Ulster and ask Alastor to be knighted."
+			else:
+				set slot 1 of the player's current inventory to 1 lapis block named "<light blue>Birth of a Hero" with lore "<white>After a long and ardous journey, I've made it to House Ulster.", "<white>Now, I just need to finish the last leg of the journey.", "<white>House Ulster should be north-east of camp."
+			if {quests.%player%::The Time to Act} is 999:
+				set slot 2 of the player's current inventory to 1 emerald block named "<light green>The Time to Act" with lore "<white>While I wasn't allowed into Alastor's knights, I was hired as a mail carrier.", "<white>I delivered Alastor's letter to Cinder inside Gallia successfully.", "<white>Just as I was about to leave, however, a local village was attacked.", "<white>We freed the village, and I earned the respect of Cinder.", "<white>This should make being knighted by Alastor a breeze."
+			else if {quests.%player%::The Time to Act} is more than 1:
+				set slot 2 of the player's current inventory to 1 lapis block named "<light blue>The Time to Act" with lore "<white>A local village is under attack!", "<white>With Cinder's help, I need to clear out the village of the intruders.", "<white>Monsters remaining: %{quests.%player%::The Time to Act} - 2%/16"
+			else if {quests.%player%::The Time to Act} is 1:
+				set slot 2 of the player's current inventory to 1 lapis block named "<light blue>The Time to Act" with lore "<white>My request to join the Knights of Ulster was flatly rejected by Alastor.", "<white>However, I was lucky enough to be hired as a mail carrier... if you could call that luck.", "<white>I need to deliver this letter to Cinder inside Gallia.", "<white>Heading south from House Ulster should eventually bring me to a lighthouse, from which I can sail to Gallia."
+			else:
+				set slot 2 of the player's current inventory to 1 redstone block named "<light red>The Time to Act" with lore "<white>Complete ""Birth of a Hero"" to unlock this quest."
+			
