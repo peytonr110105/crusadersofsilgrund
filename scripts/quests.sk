@@ -165,14 +165,14 @@ on death of a monster:
 					if {quests.%{alliedPlayer.%attacker%}%::The Time to Act} is more than 16:
 						finishQuest({alliedPlayer.%attacker%},"The Time to Act","Chalphy has been saved from the monster attack!")
 						send "<light blue>Cinder: ...That should be all of them, then. Well done, everyone!" to {alliedPlayer.%attacker%}
-						wait 2.25 seconds
+						wait 3	seconds
 						send "<light blue>Cinder: Thank you for your help, %{alliedPlayer.%attacker%}'s tablist name%. You've done my people a great service, and those good deeds shall not go unrewarded." to {alliedPlayer.%attacker%}
-						wait 3 seconds
+						wait 5 seconds
 						send "<gold>+100 Gold obtained!" to {alliedPlayer.%attacker%}
 						add 100 to {alliedPlayer.%attacker%}'s balance
 						wait 0.25 seconds
 						send "<light blue>Cinder: This is for your help today. When you return to House Ulster, please inform Alastor of what has happened. I'm certain it will help you establish yourself within his ranks." to {alliedPlayer.%attacker%}
-						wait 4 seconds
+						wait 6 seconds
 						send "<light blue>Cinder: In the meantime, I will be investigating the root cause of this attack. Farewell and safe travels, %{AlliedPlayer.%attacker%}'s tablist name%." to {alliedPlayer.%attacker%}
 						make {NPCsFor.%{alliedPlayer.%attacker%}%::C_Cinder} move to location 513, 70, 392 with speed 1
 						make {NPCsFor.%{alliedPlayer.%attacker%}%::C_Silgrid Guard} move to location 513, 70, 392 with speed 1
@@ -203,14 +203,14 @@ on death of a monster:
 			if {quests.%attacker%::The Time to Act} is more than 16:
 				finishQuest(attacker,"The Time to Act","Chalphy has been saved from the monster attack!")
 				send "<light blue>Cinder: ...That should be all of them, then. Well done, everyone!" to attacker
-				wait 2.25 seconds
-				send "<light blue>Cinder: Thank you for your help, %attacker's tablist name%. You've done my people a great service, and those good deeds shall not go unrewarded." to attacker
 				wait 3 seconds
+				send "<light blue>Cinder: Thank you for your help, %attacker's tablist name%. You've done my people a great service, and those good deeds shall not go unrewarded." to attacker
+				wait 5 seconds
 				send "<gold>+100 Gold obtained!" to attacker
 				add 100 to attacker's balance
 				wait 0.25 seconds
 				send "<light blue>Cinder: This is for your help today. When you return to House Ulster, please inform Alastor of what has happened. I'm certain it will help you establish yourself within his ranks." to attacker
-				wait 4 seconds
+				wait 6 seconds
 				send "<light blue>Cinder: In the meantime, I will be investigating the root cause of this attack. Farewell and safe travels, %attacker's tablist name%." to attacker
 				make {NPCsFor.%attacker%::C_Cinder} move to location 513, 70, 392 with speed 1
 				make {NPCsFor.%attacker%::C_Silgrid Guard} move to location 513, 70, 392 with speed 1
@@ -349,19 +349,19 @@ command /TTTA <number>:
 				send "<run command:/TTTA 99><gold>3 - There was that one time I saved the world... [Skip Tutorial Quests]"
 		else if arg 1 is 2:
 			send "<light blue>Alastor: So, let's recap this whole conversation then."
-			wait 1.5 seconds
+			wait 2.5 seconds
 			send "<light blue>Alastor: You, a complete stranger, come up to me and ask for a position on the most talented and respected band of Knights on this side of Silgrund. And you don't even have a lick of experience on the field to justify it."
-			wait 4 seconds
+			wait 6 seconds
 			send "<light blue>Alastor: Now, if this were any normal recruiting session, you'd already be out the gate on the way back to wherever you came from. But as luck would have it, I might have a position for you."
-			wait 3 seconds
+			wait 5 seconds
 			send "<light blue>Alastor: My last mail carrier just retired, and I need a replacement. I figure a whelp like you can at least deliver letters. Are you up to the task?"
-			wait 3.5 seconds
+			wait 4.5 seconds
 			send "<run command:/TTTA 3><gold>1 - I... suppose so."
 		else if arg 1 is 3:
 			send "<light blue>Alastor: Congratulations. You're the new mail carrier for House Ulster. Truly in the realm of the elites, aren't we?"
 			wait 3.5 seconds
 			send "<light blue>Alastor: Alright, I'll stop drilling you now. Here, take this letter over to Cinder in House Silgrid. If you can do this, then I suppose I'll think about letting you train under one of the senior knights."
-			wait 4 seconds
+			wait 5 seconds
 			startQuest(player,"The Time to Act","Deliver Alastor's letter to Cinder.")
 			give 1 book named "<gold>Alastor's Letter" with lore "<white>A letter to Cinder from Alastor.", "<white>The handwriting is nigh-illegible, but the heart placed into every messy stroke makes up for it." to the player
 			send "<gold>Alastor's Letter obtained."
@@ -370,13 +370,13 @@ command /TTTA <number>:
 			send "<light blue>Alastor: Keep moving straight ahead once you exit the castle, and you should bump into a village eventually. Follow the road from there, then cross the ocean once you find the acacia lighthouse. If you get lost, the villagers over in Grann should be able to help you out."
 		else if arg 1 is 4:
 			send "<italics>You spin the tale of a world-ending disaster, with you as the story's hero. Alastor seems incredibly invested."
-			wait 2.5 seconds
+			wait 3.2 seconds
 			send "<light blue>Alastor: ..."
-			wait 1 seconds
-			send "<italics>Suddenly, Alastor bursts out into laughter."
 			wait 1.5 seconds
+			send "<italics>Suddenly, Alastor bursts out into laughter."
+			wait 2 seconds
 			send "<light blue>Alastor: That's got to be the dumbest story I've ever heard! I'll tell you one thing, kid: you're no bard."
-			wait 3 seconds
+			wait 4 seconds
 			make player execute command "/TTTA 2"
 			
 #The Time to Act - Cinder Dialouge Tree

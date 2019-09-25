@@ -2112,6 +2112,9 @@ on damage:
 		set damage to damage * 0.5
 		apply resistance 4 to the attacker for 1 second
 		push victim (direction from victim to location of attacker) at speed 4
+	#Suspend
+	else if the 4th line of the lore of attacker's tool contains "Suspend":
+		push victim upwards at speed 0.65
 	#Hit and Run
 	if the 4th line of the lore of attacker's tool contains "Hit and Run":
 		push the attacker backwards at speed 1.5

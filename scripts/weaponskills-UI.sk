@@ -183,8 +183,9 @@ command /skills [<text="TopMenu">] [<text="NULL">] [<number=0>]:
 			set slot 14 of the player's current inventory to 1 lead named "<light green><bold>Capture" with lore "<white>Right-click to set your weapon to Capture mode.", "<white>While in Capture mode, attacks deal 50%% less damage.", "<white>If the opponent is killed while you are in Capture mode,", "<white>Their equipment will be dropped on the ground for you to collect."
 			set slot 15 of the player's current inventory to 1 bow named "<light green><bold>Ethreal Grip" with lore "<white>Warps foes to your position when hit with an arrow.", "<white>Reduces damage dealt by 50%%.", "<light green><bold>Bows only."
 			set slot 16 of the player's current inventory to 1 iron sword named "<light green><bold>Smite" with lore "<white>Shoves the target forwards a great distance when right-clicked.", "<light blue>Grants bonus Stylish Points to Devil Hunters."
-			set slot 17 of the player's current inventory to 1 firework named "<light green><bold>Taunt" with lore "<white>Stand still and taunt your foe.", "Grants STR/SPD + 10 for 10 seconds if completed.", "<light blue>Also grants bonus Stylish Points to Devil Hunters."
+			set slot 17 of the player's current inventory to 1 firework named "<light green><bold>Taunt" with lore "<white>Stand still and taunt your foe.", "Grants STR/SPD + 10 for 10 seconds if completed.", "<light blue>Grants bonus Stylish Points to Devil Hunters."
 			set slot 18 of the player's current inventory to 1 firework of fortune 3 named "<light green><bold>MAX-Taunt" with lore "<white>Taunt for an extended period of time.", "<white>Grants STR/SPD +20 for 10 seconds if completed.", "<light blue>Grants a large amount of Style Points to Devil Hunters."
+			set slot 19 of the player's current inventory to 1 feather named "<light green><bold>Suspend" with lore "<white>Pushes foes upwards when an attack connects."
 			set slot 26 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
 		else if arg 1 is "Armour":
 			open chest with 3 rows named "<cyan><bold>Skills Menu | Armour Skills" for the player
@@ -732,6 +733,12 @@ command /skill <text> [<number=0>]:
 					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 4 of slot 4 of the player's current inventory's lore to "<light green><bold>Assist - Rally Resistance"
+					remove 50 from the player's balance
+			else if arg 1 contains "Suspend":
+				if {_cash} is less than 50:
+					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+				else:
+					set line 4 of slot 4 of the player's current inventory's lore to "<light green><bold>Assist - Suspend"
 					remove 50 from the player's balance
 			else if arg 1 contains "Rally Spectrum":
 				if {_cash} is less than 50:
