@@ -10,10 +10,9 @@ command /salindrum:
 			if {quests.%player%::Awakening} is 999:
 				set slot 3 of the player's current inventory to 1 diamond sword named "<white>Test Holy Weapons"
 			set slot 8 of the player's current inventory to 1 tnt named "<white>Reset Session"
-			if {sd.invuln.%player%} is true:
-				set slot 7 of the player's current inventory to 1 totem of undying named "<white>Player Invincibility: ON" with lore "<white>You won't take damage from enemies.", "<white>Click to toggle."
-			else:
-				set slot 7 of the player's current inventory to 1 redstone block named "<white>Player Invincibility: OFF" with lore "<white>You will take damage from enemies.", "<white>Click to toggle."
+			set slot 7 of the player's current inventory to 1 totem of undying named "<white>Damage Modifiers" with lore "<white>Fine-tune how much damage you take from and deal to foes."
+			set slot 4 of the player's current inventory to 1 anvil named "<white>Fix Equipment" with lore "<white>Click to repair any damaged items in your inventory."
+			set slot 5 of the player's current inventory to 1 chest named "<white>Supply Crate" with lore "<white>Borrow weapons and ammo here."
 			if {sd.nohunger.%player%} is true:
 				set slot 6 of the player's current inventory to 1 steak named "<white>Infinite Hunger: ON" with lore "<white>Your hunger bar won't decrease.", "<white>Click to toggle."
 			else:
@@ -28,6 +27,56 @@ command /salindrum:
 				else:
 					set slot ({_roomnum} - 1) of the player's current inventory to 1 lapis block named "Room %{_roomnum}%" with lore "<white>Empty Room"
 				
+command /sdsupplies:
+	trigger:
+		open chest with 4 rows named "<red>Supply Crate" for the player
+		set slot 0 of the player's current inventory to 1 wooden sword of unbreaking 100
+		set slot 1 of the player's current inventory to 1 stone sword of unbreaking 100
+		set slot 2 of the player's current inventory to 1 iron sword of unbreaking 100
+		set slot 3 of the player's current inventory to 1 gold sword of unbreaking 100
+		set slot 4 of the player's current inventory to 1 diamond sword of unbreaking 100
+		set slot 5 of the player's current inventory to 1 wooden axe of unbreaking 100
+		set slot 6 of the player's current inventory to 1 stone axe of unbreaking 100
+		set slot 7 of the player's current inventory to 1 iron axe of unbreaking 100
+		set slot 8 of the player's current inventory to 1 gold axe of unbreaking 100
+		set slot 9 of the player's current inventory to 1 diamond axe of unbreaking 100
+		set slot 10 of the player's current inventory to 1 wooden shovel of unbreaking 100 named "<bold>Wooden Lance"
+		set slot 11 of the player's current inventory to 1 stone shovel of unbreaking 100 named "<bold>Stone Lance"
+		set slot 12 of the player's current inventory to 1 iron shovel of unbreaking 100 named "<bold>Iron Lance"
+		set slot 13 of the player's current inventory to 1 gold shovel of unbreaking 100 named "<bold>Golden Lance"
+		set slot 14 of the player's current inventory to 1 diamond shovel of unbreaking 100 named "<bold>Diamond Lance"
+		set slot 15 of the player's current inventory to 1 bow of unbreaking 100
+		set slot 16 of the player's current inventory to 1 iron horse armor named "<light gray>Flintlock Pistol" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 1):", "1"
+		set slot 17 of the player's current inventory to 1 iron horse armor named "<light gray>Iron Musket" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 1):", "1"
+		set slot 18 of the player's current inventory to 1 iron horse armor named "<light gray>Iron Pistol" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 8):", "8"
+		set slot 19 of the player's current inventory to 1 iron horse armor named "<light gray>Redstone Repeater" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 30):", "30"
+		set slot 20 of the player's current inventory to 1 iron horse armor named "<light gray>E-45s" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 18):", "18"
+		set slot 21 of the player's current inventory to 1 golden horse armor named "<light gray>Redgrave Sawn-Off" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 5):", "5"
+		set slot 22 of the player's current inventory to 64 arrow
+		set slot 23 of the player's current inventory to 64 arrow
+		set slot 24 of the player's current inventory to 64 iron nugget
+		set slot 25 of the player's current inventory to 64 iron nugget
+		set slot 26 of the player's current inventory to 64 gold nugget
+		set slot 27 of the player's current inventory to 64 gold nugget
+		set slot 28 of the player's current inventory to 64 gunpowder
+		set slot 29 of the player's current inventory to 64 gunpowder
+		set slot 34 of the player's current inventory to 1 chest named "<bold>Restock Supply Crate"
+		set slot 35 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
+
+command /sdmults:
+	trigger:
+		open chest with 2 rows named "<red>Damage Modifiers" for the player
+		set slot 4 of the player's current inventory to 1 iron sword named "<light green>Damage Dealt" with lore "<white>Current Modifier: %{sd.outgoingmult.%player%}%x"
+		set slot 3 of the player's current inventory to 1 red glass pane named "<light red>Decrease Damage Dealt by 0.1x"
+		set slot 5 of the player's current inventory to 1 light green glass pane named "<light green>Increase Damage Dealt by 0.1x"
+		set slot 13 of the player's current inventory to 1 iron chestplate named "<light red>Damage Taken" with lore "<white>Current Modifier: %{sd.incomingmult.%player%}%x"
+		set slot 12 of the player's current inventory to 1 red glass pane named "<light red>Decrease Damage Taken by 0.1x"
+		set slot 14 of the player's current inventory to 1 light green glass pane named "<light green>Increase Damage Taken by 0.1x"
+		set slot 17 of the player's current inventory to 1 hopper named "<light yellow>Reset Damage Taken Multiplier"
+		set slot 8 of the player's current inventory to 1 hopper named "<light yellow>Reset Damage Dealt Multiplier"
+		set slot 0 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
+		set slot 9 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
+
 command /sdsetup <number> <number> <number> <number>:
 	trigger:
 		set {sd.room %arg 1%} to location at (arg 2, arg 3, arg 4) in world "Salindrum"
@@ -198,12 +247,12 @@ on inventory click:
 			else:
 				clear {sd.nohunger.%player%}
 			make player execute command "/sd"
-		else if the name of the clicked item contains "Player Invincibility":
-			if {sd.invuln.%player%} is not set:
-				set {sd.invuln.%player%} to true
-			else:
-				clear {sd.invuln.%player%}
-			make player execute command "/sd"
+		else if the name of the clicked item contains "Damage Modifiers":
+			make player execute command "/sdmults"
+		else if the name of the clicked item contains "Fix Equipment":
+			make player execute command "/fix all"
+		else if the name of the clicked item contains "Supply Crate":
+			make player execute command "/sdsupplies"
 		else if the name of the clicked item is "<white>Spawn Monsters":
 			make player execute command "/sdmonsters"
 		else if the name of the clicked item is "<white>Test Skills":
@@ -234,6 +283,41 @@ on inventory click:
 		cancel event
 		if the name of the clicked item contains "<gold><bold>":
 			give clicked item to the player
+	else if the name of the player's current inventory is "<red>Damage Modifiers":
+		cancel event
+		if the name of the clicked item is "<light green>Increase Damage Dealt by 0.1x":
+			add 0.1 to {sd.outgoingmult.%player%}
+			play sound "ui.button.click" with volume 1 and pitch 1 at the player for the player
+			set slot 4 of the player's current inventory to 1 iron sword named "<light green>Damage Dealt" with lore "<white>Current Modifier: %{sd.outgoingmult.%player%}%x"
+		else if the name of the clicked item is "<light green>Increase Damage Taken by 0.1x":
+			add 0.1 to {sd.incomingmult.%player%}
+			play sound "ui.button.click" with volume 1 and pitch 1 at the player for the player
+			set slot 13 of the player's current inventory to 1 iron chestplate named "<light red>Damage Taken" with lore "<white>Current Modifier: %{sd.incomingmult.%player%}%x"
+		else if the name of the clicked item is "<light red>Decrease Damage Dealt by 0.1x":
+			subtract 0.1 from {sd.outgoingmult.%player%}
+			play sound "ui.button.click" with volume 1 and pitch 1 at the player for the player
+			set slot 4 of the player's current inventory to 1 iron sword named "<light green>Damage Dealt" with lore "<white>Current Modifier: %{sd.outgoingmult.%player%}%x"
+		else if the name of the clicked item is "<light red>Decrease Damage Taken by 0.1x":
+			subtract 0.1 from {sd.incomingmult.%player%}
+			play sound "ui.button.click" with volume 1 and pitch 1 at the player for the player
+			set slot 13 of the player's current inventory to 1 iron chestplate named "<light red>Damage Taken" with lore "<white>Current Modifier: %{sd.incomingmult.%player%}%x"
+		else if the name of the clicked item is "<light yellow>Reset Damage Taken Multiplier":
+			set {sd.incomingmult.%player%} to 1
+			play sound "ui.button.click" with volume 1 and pitch 1 at the player for the player
+			set slot 13 of the player's current inventory to 1 iron chestplate named "<light red>Damage Taken" with lore "<white>Current Modifier: %{sd.incomingmult.%player%}%x"
+		else if the name of the clicked item is "<light yellow>Reset Damage Dealt Multiplier":
+			set {sd.outgoingmult.%player%} to 1
+			play sound "ui.button.click" with volume 1 and pitch 1 at the player for the player
+			set slot 4 of the player's current inventory to 1 iron sword named "<light green>Damage Dealt" with lore "<white>Current Modifier: %{sd.outgoingmult.%player%}%x"
+		else if the name of the clicked item is "<bold>Go Back":
+			make player execute command "/sd"
+	else if the name of the player's current inventory is "<red>Supply Crate":
+		if the name of the clicked item contains "Go Back":
+			cancel event
+			make player execute command "/sd"
+		else if the name of the clicked item contains "Restock Supply Crate":
+			cancel event
+			make player execute command "/sdsupplies"
 	else if the name of the player's current inventory is "<red>Spawn Monsters":
 		cancel event
 		if the name of the clicked item is "<white>Salindrum Menu":
@@ -325,10 +409,14 @@ on inventory click:
 			spawn 1 zombie at {sd.%{sdroom.%player%}%}
 			set the name of the last spawned entity to "<white>Regret"
 			set metadata value "isRegret" of the last spawned entity to 1
-			set the last spawned entity's helmet to leather helmet of protection 3 colored gray
-			set the last spawned entity's chestplate to leather chestplate of protection 3 colored gray
-			set the last spawned entity's leggings to leather leggings of protection 3 colored gray
-			set the last spawned entity's boots to leather boots of protection 3 colored gray
+			set the last spawned entity's helmet to leather helmet of protection 3
+			dye the last spawned entity's helmet gray
+			set the last spawned entity's chestplate to leather chestplate of protection 3
+			dye the last spawned entity's chestplate gray
+			set the last spawned entity's leggings to leather leggings of protection 3
+			dye the last spawned entity's leggings gray
+			set the last spawned entity's boots to leather boots of protection 3
+			dye the last spawned entity's boots gray
 			set {_generic} to true
 		else if the name of the clicked item is "<white>Fury":
 			spawn 1 witch at {sd.%{sdroom.%player%}%}
@@ -442,3 +530,10 @@ on inventory click:
 						add 0.5 to {_mob}'s maximum health
 				set {t_lvl.%{_mob}%} to {_moblvl}
 				heal {_mob} by 9999
+				
+every 0.1 seconds:
+	loop all players:
+		if {sd.nohunger.%loop-player%} is true:
+			increase the loop-player's food level by 10
+			
+#Damage multipliers moved to truecombos.sk for compatibility.

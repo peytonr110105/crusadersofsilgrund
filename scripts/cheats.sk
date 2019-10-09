@@ -1,35 +1,3 @@
-function startQuest(PLR: player , QUEST: text , DESC: text):
-	set {quests.%{_PLR}%::%{_QUEST}%} to 1
-	send title "<white><bold>New Quest: %{_QUEST}%" with subtitle "%{_DESC}%" to {_PLR} for 5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-	play sound "entity.fireworkrocket.launch" with volume 0.75 and pitch 1 at {_PLR} for {_PLR}
-	play sound "entity.fireworkrocket.twinkle" with volume 0.4 and pitch 1.5 at {_PLR} for {_PLR}
-	play sound "entity.player.levelup" with volume 1 and pitch 1 at {_PLR} for {_PLR}
-	play 60 (firework spark with speed 1) at {_PLR}
-	play 60 (snow shovel with speed 1) at {_PLR}
-
-function setQuestProgress(PLR: player , QUEST: text , STAGE: number, INFO: text):
-	set {quests.%{_PLR}%::%{_QUEST}%} to {_STAGE}
-	send title "" with subtitle "%{_INFO}%" to {_PLR} for 2.5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-	play sound "entity.player.levelup" with volume 0.5 and pitch 1.5 at {_PLR} for {_PLR}
-	play sound "entity.fireworkrocket.twinkle" with volume 0.4 and pitch 1.5 at {_PLR} for {_PLR}
-	play 10 (firework spark with speed 1) at {_PLR}
-	play 10 (snow shovel with speed 1) at {_PLR}
-	
-function finishQuest(PLR: player , QUEST: text , DESC: text):
-	set {quests.%{_PLR}%::%{_QUEST}%} to 999
-	send title "<gold><bold>Quest Complete: %{_QUEST}%" with subtitle "%{_DESC}%" to {_PLR} for 5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-	#play sound "entity.player.levelup" with volume 1 and pitch 0.75 at {_PLR} for {_PLR}
-	#play sound "entity.fireworkrocket.twinkle" with volume 1 and pitch 1.5 at {_PLR} for {_PLR}
-	play 60 (firework spark with speed 1) at {_PLR}
-	play 60 (snow shovel with speed 1) at {_PLR}
-	
-function failQuest(PLR: player , QUEST: text , DESC: text):
-	set {quests.%{_PLR}%::%{_QUEST}%} to 998
-	send title "<light red><bold>Quest Failed: %{_QUEST}%" with subtitle "%{_DESC}%" to {_PLR} for 5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-	play 60 (red wool break with speed 1) at {_PLR}
-	show mob spawner flames on {_PLR}
-
-
 command /cheats <text>:
 	trigger:
 		if arg 1 is "unlockallthings":

@@ -113,7 +113,12 @@ command /bs-shop [<number=1>]:
 
 command /butchershop:
 	trigger:
-		open chest with 2 rows named "<gold>Butcher" for the player
+		open chest with 1 row named "<gold>Butcher" for the player
+		set slot 0 of the player's current inventory to 4 cooked beef with lore "<white>Cost:", "24"
+		set slot 1 of the player's current inventory to 4 cooked porkchop with lore "<white>Cost:", "24"
+		set slot 2 of the player's current inventory to 4 leather with lore "<white>Cost:", "10"
+		set slot 3 of the player's current inventory to 3 wool with lore "<white>Cost:", "9"
+		set slot 4 of the player's current inventory to 1 iron axe of looting 2 named "<light blue>Butcher's Axe" with lore "<white>Cost:", "140"
 			
 command /tradershop [<number=1>]:
 	trigger:
@@ -270,7 +275,7 @@ command /hwbuy <text> [<text="NULL">]:
 			set slot 3 of the player's current inventory to 1 emerald named "<gold><bold>Summon Weapon" with lore "<white>Price: %{_price}%"
 			set slot 4 of the player's current inventory to 1 cobblestone named "<gold><bold>%arg 2%"
 			set slot 5 of the player's current inventory to 1 nether star named "<gold><bold>Warp to Heroic Challenge"
-
+		
 on inventory click:
 	if the name of the player's current inventory is "<gold>Repair Tools":
 		if the name of the clicked item is "<green><bold>Repair Tool":

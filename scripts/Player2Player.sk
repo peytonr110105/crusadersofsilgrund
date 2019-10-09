@@ -198,7 +198,7 @@ every minecraft hour:
 #Player2Player interactions handler.
 on right-click on a player:
 	#exclude npcs from p2p
-	if target is not a citizen:
+	if target is not citizen:
 		#Player must be unarmed to trigger P2P interactions.
 		if the player's tool is air:
 			#Prevents other players from interrupting NPC dialouge.

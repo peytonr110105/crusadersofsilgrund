@@ -1,20 +1,4 @@
 #Combo System that hooks into Skills.sk and Classes.sk to provide a Devil May Cry / Bayonetta style combo meter.
-
-#Skill Slot Check Function
-function checkSlots(PLR: player , skill: text) :: number:
-	if {skillslot1.%{_PLR}%} contains "%{_skill}%":
-		return 1
-	else if {skillslot2.%{_PLR}%} contains "%{_skill}%":
-		return 1
-	else if {skillslot3.%{_PLR}%} contains "%{_skill}%":
-		return 1
-	else if {skillslot4.%{_PLR}%} contains "%{_skill}%":
-		return 1
-	else if {skillslot5.%{_PLR}%} contains "%{_skill}%":
-		return 1
-	else:
-		return 0
-
 command /combo [<text="toggle">]:
 	description: Toggle combo system.
 	usage: /combo
@@ -41,13 +25,13 @@ every 0.25 seconds:
 			if {comboscore.%loop-player%} is more than 0:
 				if {combograde.%loop-player%} is 0:
 					if {comboscalar.%loop-player%} is more than 3:
-						set {comboscale.%loop-player%} to floor({comboscore.%loop-player%} / 5)
+						set {comboscale.%loop-player%} to floor({comboscore.%loop-player%} / 4)
 						set {combograde.%loop-player%} to 1
 						set {comboscalar.%loop-player%} to 0
 						set {combobank.%loop-player%} to 0
 				else:
-					subtract (({comboscore.%loop-player%} / ({comboscale.%loop-player%} + {combograde.%loop-player%}) + ({combograde.%loop-player%} ^ 0.5)) / 4) from {comboscore.%loop-player%}
-					if {comboscore.%loop-player%} is less than (({combograde.%loop-player%} * 3.5) * {comboscale.%loop-player%}):
+					subtract (({comboscore.%loop-player%} / ({comboscale.%loop-player%} + {combograde.%loop-player%}) + ({combograde.%loop-player%} ^ 2)) / 6) from {comboscore.%loop-player%}
+					if {comboscore.%loop-player%} is less than (({combograde.%loop-player%} * 2.5) + ({combograde.%loop-player%} ^ 2) * {comboscale.%loop-player%}):
 						subtract 1 from {combograde.%loop-player%}
 						if {combograde.%loop-player%} is 7:
 							send title "<red><bold>Smokin' Sick Style!!!" with subtitle "<gold><bold>[3x Damage Multiplier!]" to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
@@ -80,7 +64,7 @@ every 0.25 seconds:
 							send title "<yellow>Total Style Points: %ceil({combobank.%loop-player%})%" with subtitle "+$%ceil({combobank.%loop-player%} ^ 0.725)% earned." to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
 							add ceil({combobank.%loop-player%} ^ 0.725) to loop-player's balance
 							set {combobank.%loop-player%} to 0
-					send action bar "<bold>Style Points: <reset><gold>%{comboscore.%loop-player%}%<reset><bold> | Points for next Stylish Rank:<reset><gold> %((({combograde.%loop-player%} + 1) * 3.5) + ({combograde.%loop-player%} ^ 0.5) * {comboscale.%loop-player%})%<reset><bold> | Points To Maintain: <reset><gold>%((({combograde.%loop-player%} * 3.5) + ({combograde.%loop-player%} ^ 0.5)) * {comboscale.%loop-player%}))%" to loop-player
+					send action bar "<bold>Style Points: <reset><gold>%{comboscore.%loop-player%}%<reset><bold> | Points for next Stylish Rank:<reset><gold> %((({combograde.%loop-player%} + 1) * 3.5) + (({combograde.%loop-player%} + 1) ^ 2) * {comboscale.%loop-player%})%<reset><bold> | Points To Maintain: <reset><gold>%(({combograde.%loop-player%} * 2.5) + ({combograde.%loop-player%} ^ 2) * {comboscale.%loop-player%})%" to loop-player
 			else:
 				clear {comboscore.%loop-player%}
 				set {comboscalar.%loop-player%} to 0
@@ -88,9 +72,10 @@ every 0.25 seconds:
 				set {combograde.%loop-player%} to 0
 				
 on death of a player:
-	set {combo.%player%} to 0
-	set {combograde.%player%} to 0
-	set {combomult.%player%} to 0
+	set {combo.%victim%} to 0
+	set {combograde.%victim%} to 0
+	set {combomult.%victim%} to 0
+	set {comboscore.%victim%} to 0
 
 on damage:
 	if {combosenabled.%victim%} is 1:
@@ -99,21 +84,33 @@ on damage:
 				subtract (damage * 2) from {comboscore.%victim%}
 			else if projectile exists:
 				subtract (damage * 2) from {comboscore.%victim%}
-			send action bar "<bold>Style Points: <reset><gold>%{comboscore.%victim%}%<reset><bold> | Points for next Stylish Rank:<reset><gold> %(((({combograde.%victim%} + 1) * 3.5) + ({combograde.%attacker%} ^ 0.5) * {comboscale.%victim%}))%<reset><bold> | Points To Maintain: <reset><gold>%((({combograde.%victim%} * 3.5) + ({combograde.%attacker%} ^ 0.5) * {comboscale.%victim%}))%" to victim
+			send action bar "<bold>Style Points: <reset><gold>%{comboscore.%victim%}%<reset><bold> | Points for next Stylish Rank:<reset><gold> %((({combograde.%victim%} + 1) * 3.5) + (({combograde.%victim%} + 1) ^ 2) * {comboscale.%victim%})%<reset><bold> | Points To Maintain: <reset><gold>%(({combograde.%victim%} * 2.5) + ({combograde.%victim%} ^ 2) * {comboscale.%victim%})%" to victim
 	if {combosenabled.%attacker%} is 1:
 		if {combograde.%attacker%} is 0:
 			add damage to {comboscore.%attacker%}
 			add 1 to {comboscalar.%attacker%}
+			if attacker is player:
+				if attacker's world is "Salindrum":
+					set damage to damage * {sd.outgoingmult.%attacker%}
+			else if victim is player:
+				if victim's world is "Salindrum":
+					set damage to damage * {sd.incomingmult.%attacker%}
 		else:
 			add damage to {comboscore.%attacker%}
+			add (damage / 2) to {combobank.%attacker%}
 			if the 6th line of the lore of the attacker's tool contains "Stylish":
 				add damage / 2 to {comboscore.%attacker%}
 			#subtract ({comboscale.%attacker%} / 2) from {comboscore.%attacker%}
 			set damage to (damage * {combomult.%attacker%})
+			if attacker is player:
+				if attacker's world is "Salindrum":
+					set damage to damage * {sd.outgoingmult.%attacker%}
+			else if victim is player:
+				if victim's world is "Salindrum":
+					set damage to damage * {sd.incomingmult.%attacker%}
 			#if {comboscore.%attacker%} is more than {combobank.%attacker%}:
 			#	set {combobank.%attacker%} to {comboscore.%attacker%}
-			add damage to {combobank.%attacker%}
-			if {comboscore.%attacker%} is more than ((({combograde.%attacker%} + 1) * 3.5) + ({combograde.%attacker%} ^ 0.5) * {comboscale.%attacker%}):
+			if {comboscore.%attacker%} is more than ((({combograde.%attacker%} + 1) * 3.5) + (({combograde.%attacker%} + 1) ^ 2) * {comboscale.%attacker%}):
 				if {combograde.%attacker%} is less than 7:
 					add 1 to {combograde.%attacker%}
 					if {combograde.%attacker%} is 7:
@@ -135,7 +132,7 @@ on damage:
 						play sound "entity.experience_orb.pickup" with volume 1 and pitch 1 at attacker for attacker
 					else if {combograde.%attacker%} is 4:
 						set {combomult.%attacker%} to 1.75
-						send title "<gold>Are you ready?!" with subtitle "<bold>[1.75x Damage Multiplier!]" to attacker for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+						send title "<gold>Ace!" with subtitle "<bold>[1.75x Damage Multiplier!]" to attacker for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
 						spawn 1 firework at the attacker
 						play sound "entity.generic.explode" with volume 1 and pitch 1 at attacker for attacker
 					else if {combograde.%attacker%} is 3:
@@ -151,4 +148,14 @@ on damage:
 						set {combomult.%attacker%} to 1
 						send title "<light gray>Don't Worry" with subtitle "" to attacker for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
 						play sound "entity.experience_orb.pickup" with volume 1 and pitch 0.5 at attacker for attacker
-			send action bar "<bold>Style Points: <reset><gold>%{comboscore.%attacker%}%<reset><bold> | Points for next Stylish Rank:<reset><gold> %(((({combograde.%attacker%} + 1) * 3.5) + ({combograde.%attacker%} ^ 0.5) * {comboscale.%attacker%}))%<reset><bold> | Points To Maintain: <reset><gold>%((({combograde.%attacker%} * 3.5) + ({combograde.%attacker%} ^ 0.5) * {comboscale.%attacker%}))%" to attacker
+					set {_bonus} to ((({combograde.%attacker%} + 1) * 3.5) + ({combograde.%attacker%} ^ 2) / {comboscale.%attacker%})
+					send "<light yellow>BONUS: %{_bonus}%" to the attacker
+					add {_bonus} to {comboscore.%attacker%}
+			send action bar "<bold>Style Points: <reset><gold>%{comboscore.%attacker%}%<reset><bold> | Points for next Stylish Rank:<reset><gold> %((({combograde.%attacker%} + 1) * 3.5) + (({combograde.%attacker%} + 1) ^ 2) * {comboscale.%attacker%})%<reset><bold> | Points To Maintain: <reset><gold>%(({combograde.%attacker%} * 2.5) + ({combograde.%attacker%} ^ 2) * {comboscale.%attacker%})%" to attacker
+	else:
+		if attacker is player:
+			if attacker's world is "Salindrum":
+				set damage to damage * {sd.outgoingmult.%attacker%}
+		else if victim is player:
+			if victim's world is "Salindrum":
+				set damage to damage * {sd.incomingmult.%attacker%}

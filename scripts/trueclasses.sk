@@ -1,35 +1,3 @@
-function startQuest(PLR: player , QUEST: text , DESC: text):
-	set {quests.%{_PLR}%::%{_QUEST}%} to 1
-	send title "<white><bold>New Quest: %{_QUEST}%" with subtitle "%{_DESC}%" to {_PLR} for 5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-	play sound "entity.fireworkrocket.launch" with volume 0.75 and pitch 1 at {_PLR} for {_PLR}
-	play sound "entity.fireworkrocket.twinkle" with volume 0.4 and pitch 1.5 at {_PLR} for {_PLR}
-	play sound "entity.player.levelup" with volume 1 and pitch 1 at {_PLR} for {_PLR}
-	play 60 (firework spark with speed 1) at {_PLR}
-	play 60 (snow shovel with speed 1) at {_PLR}
-
-function setQuestProgress(PLR: player , QUEST: text , STAGE: number, INFO: text):
-	set {quests.%{_PLR}%::%{_QUEST}%} to {_STAGE}
-	send title "" with subtitle "%{_INFO}%" to {_PLR} for 2.5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-	play sound "entity.player.levelup" with volume 0.5 and pitch 1.5 at {_PLR} for {_PLR}
-	play sound "entity.fireworkrocket.twinkle" with volume 0.4 and pitch 1.5 at {_PLR} for {_PLR}
-	play 10 (firework spark with speed 1) at {_PLR}
-	play 10 (snow shovel with speed 1) at {_PLR}
-	
-function finishQuest(PLR: player , QUEST: text , DESC: text):
-	set {quests.%{_PLR}%::%{_QUEST}%} to 999
-	send title "<gold><bold>Quest Complete: %{_QUEST}%" with subtitle "%{_DESC}%" to {_PLR} for 5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-	play sound "entity.player.levelup" with volume 1 and pitch 0.75 at {_PLR} for {_PLR}
-	play sound "entity.fireworkrocket.twinkle" with volume 1 and pitch 1.5 at {_PLR} for {_PLR}
-	play 60 (firework spark with speed 1) at {_PLR}
-	play 60 (snow shovel with speed 1) at {_PLR}
-	
-function failQuest(PLR: player , QUEST: text , DESC: text):
-	set {quests.%{_PLR}%::%{_QUEST}%} to 998
-	send title "<light red><bold>Quest Failed: %{_QUEST}%" with subtitle "%{_DESC}%" to {_PLR} for 5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-	play 60 (red wool break with speed 1) at {_PLR}
-	show mob spawner flames on {_PLR}
-
-
 #Crafting recipes for promotion items
 on load:
 	register new shaped recipe for nether star named "<gold><bold>Trainee's Enrollment" with lore "Used to return higher classes to humble origins." using iron block, iron block, iron block, gold block, redstone block, gold block, iron block, iron block, iron block
@@ -179,6 +147,7 @@ command /charsetup [<number=0>] [<number=0>]:
 					set slot 16 of the player's current inventory to 1 potion of healing named "<light green>Assist Type" with lore "<white>Click to cycle between Bleedout, Last Stand, or no assists.", "<white>Assist Type: None"
 				if {csetup_pts.%player%} is 0:
 					set slot 17 of the player's current inventory to 1 emerald named "<gold><bold>Confirm Allocations" with lore "<white>Clicking this will confirm your point allocations.", "<white>You may reallocate your points later."
+				set {blockMenuExit.%player%} to "/charsetup 1 0"
 			else if arg 2 is 1:
 				open chest with 1 row named "<gold><bold>HP Configuration" for the player
 				set slot 0 of the player's current inventory to 1 red glass pane named "<bold>Go Back" with lore "<white>Return to the previous menu."
@@ -186,6 +155,7 @@ command /charsetup [<number=0>] [<number=0>]:
 				set slot 4 of the player's current inventory to 1 emerald named "<white><bold>HP" with lore "<white>Points Invested:", "<white>%{pts_HP.%player%}%"
 				set slot 6 of the player's current inventory to 1 green wool named "<bold>Add 10 Points"
 				set slot 8 of the player's current inventory to 1 diamond named "<white><bold>Points to spend:" with lore "<gold><bold>%{csetup_pts.%player%}%"
+				set {blockMenuExit.%player%} to "/charsetup 1 1"
 			else if arg 2 is 2:
 				open chest with 1 row named "<gold><bold>STR Configuration" for the player
 				set slot 0 of the player's current inventory to 1 red glass pane named "<bold>Go Back" with lore "<white>Return to the previous menu."
@@ -193,6 +163,7 @@ command /charsetup [<number=0>] [<number=0>]:
 				set slot 4 of the player's current inventory to 1 emerald named "<white><bold>STR" with lore "<white>Points Invested:", "<white>%{pts_STR.%player%}%"
 				set slot 6 of the player's current inventory to 1 green wool named "<bold>Add 10 Points"
 				set slot 8 of the player's current inventory to 1 diamond named "<white><bold>Points to spend:" with lore "<gold><bold>%{csetup_pts.%player%}%"
+				set {blockMenuExit.%player%} to "/charsetup 1 2"
 			else if arg 2 is 3:
 				open chest with 1 row named "<gold><bold>DEF Configuration" for the player
 				set slot 0 of the player's current inventory to 1 red glass pane named "<bold>Go Back" with lore "<white>Return to the previous menu."
@@ -200,6 +171,7 @@ command /charsetup [<number=0>] [<number=0>]:
 				set slot 4 of the player's current inventory to 1 emerald named "<white><bold>DEF" with lore "<white>Points Invested:", "<white>%{pts_DEF.%player%}%"
 				set slot 6 of the player's current inventory to 1 green wool named "<bold>Add 10 Points"
 				set slot 8 of the player's current inventory to 1 diamond named "<white><bold>Points to spend:" with lore "<gold><bold>%{csetup_pts.%player%}%"
+				set {blockMenuExit.%player%} to "/charsetup 1 3"
 			else if arg 2 is 4:
 				open chest with 1 row named "<gold><bold>SKL Configuration" for the player
 				set slot 0 of the player's current inventory to 1 red glass pane named "<bold>Go Back" with lore "<white>Return to the previous menu."
@@ -207,6 +179,7 @@ command /charsetup [<number=0>] [<number=0>]:
 				set slot 4 of the player's current inventory to 1 emerald named "<white><bold>SKL" with lore "<white>Points Invested:", "<white>%{pts_SKL.%player%}%"
 				set slot 6 of the player's current inventory to 1 green wool named "<bold>Add 10 Points"
 				set slot 8 of the player's current inventory to 1 diamond named "<white><bold>Points to spend:" with lore "<gold><bold>%{csetup_pts.%player%}%"
+				set {blockMenuExit.%player%} to "/charsetup 1 4"
 			else if arg 2 is 5:
 				open chest with 1 row named "<gold><bold>SPD Configuration" for the player
 				set slot 0 of the player's current inventory to 1 red glass pane named "<bold>Go Back" with lore "<white>Return to the previous menu."
@@ -214,6 +187,7 @@ command /charsetup [<number=0>] [<number=0>]:
 				set slot 4 of the player's current inventory to 1 emerald named "<white><bold>SPD" with lore "<white>Points Invested:", "<white>%{pts_SPD.%player%}%"
 				set slot 6 of the player's current inventory to 1 green wool named "<bold>Add 10 Points"
 				set slot 8 of the player's current inventory to 1 diamond named "<white><bold>Points to spend:" with lore "<gold><bold>%{csetup_pts.%player%}%"
+				set {blockMenuExit.%player%} to "/charsetup 1 5"
 			else if arg 2 is 6:
 				open chest with 1 row named "<gold><bold>MAG Configuration" for the player
 				set slot 0 of the player's current inventory to 1 red glass pane named "<bold>Go Back" with lore "<white>Return to the previous menu."
@@ -221,6 +195,7 @@ command /charsetup [<number=0>] [<number=0>]:
 				set slot 4 of the player's current inventory to 1 emerald named "<white><bold>MAG" with lore "<white>Points Invested:", "<white>%{pts_MAG.%player%}%"
 				set slot 6 of the player's current inventory to 1 green wool named "<bold>Add 10 Points"
 				set slot 8 of the player's current inventory to 1 diamond named "<white><bold>Points to spend:" with lore "<gold><bold>%{csetup_pts.%player%}%"
+				set {blockMenuExit.%player%} to "/charsetup 1 6"
 			else if arg 2 is 8:
 				open chest with 1 row named "<gold><bold>Preferred Weapon" for the player
 				set slot 0 of the player's current inventory to 1 iron sword named "<bold>Swords" with lore "<white>A classic weapon with unmatched versatility.", "<white>The best at crowd control."
@@ -242,6 +217,7 @@ command /charsetup [<number=0>] [<number=0>]:
 				else if {prfWeaponType.%player%} is 5:
 					set slot 7 of the player's current inventory to 1 iron hoe named "<gold>Your Preferred Weapon: Staves"
 				set slot 8 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
+				set {blockMenuExit.%player%} to "/charsetup 1 8"
 		if arg 1 is 2:
 			if arg 2 is 0:
 				open chest with 2 rows named "<gold><bold>Select a ring." for the player
@@ -254,6 +230,7 @@ command /charsetup [<number=0>] [<number=0>]:
 				set slot 6 of the player's current inventory to 1 music disc strad named "<white><bold>Shield Ring" with lore "<white>While in your inventory:", "<white>Grants Resistance 2."
 				set slot 7 of the player's current inventory to 1 music disc 13 named "<orange><bold>Prayer Ring" with lore "<white>While in your inventory:", "<orange>Attacks while below 50%% health will always be critical hits."
 				set slot 8 of the player's current inventory to 1 music disc cat named "<green><bold>Pursuit Ring" with lore "<white>While in your inventory:", "<green>Automatically perform a follow-up attack in combat.", "<green>Auto follow-ups deal 50%% less damage."
+				set {blockMenuExit.%player%} to "/charsetup 2 0"
 			else if arg 2 is 1:
 				open chest with 2 rows named "<gold><bold>Select Difficulty" for the player
 				set slot 0 of the player's current inventory to 1 book named "<gold>Difficulty Modes" with lore "<white>This row of modes selects your core difficulty.", "<white>This will tweak damage dealt/recieved,", "<white>and determine how much bonus EXP/Gold you can recieve."
@@ -307,6 +284,7 @@ command /charsetup [<number=0>] [<number=0>]:
 					else:
 						set slot 15 of the player's current inventory to 1 stick named "<light blue><bold>Negative Growths" with lore "<white>Growth Rates will be inverted.","<white>Stats will DECREASE when they would normally increase.","<white>Promotions and stat-boosting items are unaffected."
 				set slot 17 of the player's current inventory to 1 red glass pane named "<white><bold>Go Back"
+				set {blockMenuExit.%player%} to "/charsetup 2 1"
 			else if arg 2 is 2:
 				open chest with 1 row named "<gold><bold>Elite Mode Toggle" for the player
 				set slot 0 of the player's current inventory to 1 book named "<light blue>Information" with lore "<white>Elite mode boosts XP gained for kills.", "<white>If you feel that level-ups are too slow,", "<white>enable Elite Mode.", "<white>Click the wool to toggle Elite Mode."
@@ -318,6 +296,7 @@ command /charsetup [<number=0>] [<number=0>]:
 					set slot 8 of the player's current inventory to 1 green glass pane named "<light green>Confirm Character" with lore "<light green>Finishes all required character setup."
 				else:
 					set slot 8 of the player's current inventory to 1 green glass pane named "<light green>Select Class" with lore "<light green>Select your class, adjusting stat growths and weapon proficiency."
+				set {blockMenuExit.%player%} to "/charsetup 2 2"
 			else if arg 2 is 3:
 				open chest with 1 row named "<gold><bold>Select Class" for the player
 				set slot 0 of the player's current inventory to 1 nether star named "<gold>Mercenary" with lore "<white>A well-balanced infantry class.", "<light blue>Boons: None", "<light red>Banes: None"
@@ -329,7 +308,7 @@ command /charsetup [<number=0>] [<number=0>]:
 				set slot 6 of the player's current inventory to 1 nether star named "<gold>Archer" with lore "<white>An infantry class with a focus on ranged mastery.", "<light blue>Boons: DEF", "<light red>Banes: SKL"
 				set slot 7 of the player's current inventory to 1 nether star named "<gold>Cavalier" with lore "<white>A well-balanced horse riding class.", "<light blue>Boons: None", "<light red>Banes: None"
 				set slot 8 of the player's current inventory to 1 green glass pane named "<light green>Confirm Character" with lore "<light green>Finishes all required character setup.", "<white>Your class: %{class.%player%}%"
-		set {blockMenuExit.%player%} to true
+				set {blockMenuExit.%player%} to "/charsetup 2 3"
 		
 
 #MARKER - Character Config				
@@ -736,7 +715,8 @@ on inventory click:
 #Prevent menu changes if bit is set.
 on inventory close:
 	if {blockMenuExit.%player%} is set:
-		cancel event
+		send "<light red>You cannot exit this menu currently!"
+		make player execute command {blockMenuExit.%player%}
 		
 #MARKER - Quotes
 
@@ -1089,7 +1069,7 @@ command /cosmetics [<number=0>] [<number=0>] [<number=0>]:
 					set {skillquote2.%player%} to "Wrong move!"
 					set {skillquote3.%player%} to "I've had it!"
 					set {skillquote4.%player%} to "No more!"
-					set {lowHPQuote.%player%} to "U-uhm... all right..."
+					set {lowHPQuote.%player%} to "U-um... all right..."
 					set {healedQuote.%player%} to "You're too kind."
 					set {mediumHPQuote.%player%} to "I'm still ready to go!"
 					set {downedQuote.%player%} to "Oh... I'm so sorry... I need help..."
@@ -1307,10 +1287,6 @@ command /cosmetics [<number=0>] [<number=0>] [<number=0>]:
 					set {allyEnemyDefeated3.%player%} to "..."
 					set {allyHurtLarge1.%player%} to "..?"
 					set {allyHurtLarge2.%player%} to "..?!"
-					set {tauntQuotes.%player%::1} to "..!"
-					set {tauntQuotes.%player%::2} to "..."
-					set {tauntQuotes.%player%::3} to "..?"
-					set {tauntQuotes.%player%::4} to "..!?"
 				else:
 					send "<light purple>Quote preset: Silent"
 					send "<light purple>This option silences your quotes, replacing them with simple punctuation."
@@ -1496,6 +1472,7 @@ command /cstats [<offlineplayer=%player%>] [<number=1>]:
 	aliases: /cinfo, /c, /class, /seestats, /level, /lvl
 	executable by: players, console
 	trigger:
+		set {_player} to arg 1
 		if {class.%arg 1%} is not set:
 			send "<red>Could not find classes data for that player. Please check your spelling and try again. The player may also have disabled classes for their character."
 		else:
@@ -1535,7 +1512,7 @@ command /cstats [<offlineplayer=%player%>] [<number=1>]:
 				else:
 					send "Magic: %{res.%arg 1%}% + %{resbuff.%arg 1%}% | Cap: %{rescap.%arg 1%}% | Growth Rate: %{maggrowth.%arg 1%}%"
 				send "BST: %{bst.%arg 1%}% (Max: %{_bstcap.%arg 1%}%)"
-				send "<run command:/cstats %arg 1% 2><gold>Next Page"
+				send formatted "<run command:/cstats %arg 1% 2><gold>Next Page"
 			else if arg 2 is 2:
 				if {perdiff.%arg 1%} is 0:
 					set {_diff} to "<green>Relaxed"
@@ -1561,8 +1538,8 @@ command /cstats [<offlineplayer=%player%>] [<number=1>]:
 				send "Tools Broken: %{toolbreaktally.%arg 1%}%"
 				send "Fall Damage Taken: %{slfalltotal.%arg 1%}%"
 				send "Promotion Tier: %{promoted.%arg 1%}%"
-				send "<run command:/cstats %arg 1% 3><gold>Next Page"
-				send "<run command:/cstats %arg 1% 1><gold>Previous Page"
+				send formatted "<run command:/cstats %arg 1% 3><gold>Next Page"
+				send formatted "<run command:/cstats %arg 1% 1><gold>Previous Page"
 			else if arg 2 is 3:
 				send "<bold>%arg 1%'s perks:"
 				send "Perks Unlocked: %{skillstotal.%arg 1%}%"
@@ -1571,8 +1548,8 @@ command /cstats [<offlineplayer=%player%>] [<number=1>]:
 				send "Perk Slot 3: %{skillslot3.%arg 1%}%"
 				send "Perk Slot 4: %{skillslot4.%arg 1%}%"
 				send "Perk Slot 5: %{skillslot5.%arg 1%}%"
-				send "<run command:/cstats %arg 1% 4><gold>Next Page"
-				send "<run command:/cstats %arg 1% 2><gold>Previous Page"
+				send formatted "<run command:/cstats %arg 1% 4><gold>Next Page"
+				send formatted "<run command:/cstats %arg 1% 2><gold>Previous Page"
 			else if arg 2 is 4:
 				if {party.%arg 1%} is not set:
 					send "<bold>%arg 1% is not a member of a group."
@@ -1587,8 +1564,8 @@ command /cstats [<offlineplayer=%player%>] [<number=1>]:
 					send "Group: %{party.%arg 1%}%"
 					send "Members: %{_members}%"
 					send "Invite Needed: %{_nI}%"
-				send "<run command:/cstats %arg 1% 5><gold>Next Page"
-				send "<run command:/cstats %arg 1% 3><gold>Previous Page"
+				send formatted "<run command:/cstats %arg 1% 5><gold>Next Page"
+				send formatted "<run command:/cstats %arg 1% 3><gold>Previous Page"
 			else if arg 2 is 5:
 				send "<gold><bold>%arg 1%'s Weapon Ranks"
 				send "Swords: %{weapongrade.%arg 1%::swords}% | Points: %{weaponrank.%arg 1%::swords}%"
@@ -1597,8 +1574,8 @@ command /cstats [<offlineplayer=%player%>] [<number=1>]:
 				send "Bows: %{weapongrade.%arg 1%::bows}% | Points: %{weaponrank.%arg 1%::bows}%"
 				send "Magic: %{weapongrade.%arg 1%::magic}% | Points: %{weaponrank.%arg 1%::magic}%"
 				send "Staves: %{weapongrade.%arg 1%::staves}% | Points: %{weaponrank.%arg 1%::staves}%"
-				send "<run command:/cstats %arg 1% 6><gold>Next Page"
-				send "<run command:/cstats %arg 1% 4><gold>Previous Page"
+				send formatted "<run command:/cstats %arg 1% 6><gold>Next Page"
+				send formatted "<run command:/cstats %arg 1% 4><gold>Previous Page"
 			else if arg 2 is 6:
 				send "<gold><bold>%arg 1%'s Misc. Records"
 				send "Hours played: %{hoursplayed.%arg 1%}%"
@@ -1606,8 +1583,8 @@ command /cstats [<offlineplayer=%player%>] [<number=1>]:
 				send "Deaths: %{deaths.%arg 1%}%"
 				send "Most Damage Dealt in One Hit: %{highestdamage.%arg 1%}%"
 				send "Most Damage Taken in One Hit: %{highestsuffered.%arg 1%}%"
-				send "<run command:/cstats %arg 1% 7><gold>Next Page"
-				send "<run command:/cstats %arg 1% 5><gold>Previous Page"
+				send formatted "<run command:/cstats %arg 1% 7><gold>Next Page"
+				send formatted "<run command:/cstats %arg 1% 5><gold>Previous Page"
 			else if arg 2 is 7:
 				send "<gold><bold>%arg 1%'s Supports"
 				if {supportpartner.%arg 1%} is set:
@@ -1616,6 +1593,7 @@ command /cstats [<offlineplayer=%player%>] [<number=1>]:
 					send "<light yellow>Support Points: %{PTPSupportPoints.%arg 1%}%"
 				else:
 					send "<light gray>%arg 1% isn't supporting anyone."
+				send formatted "<run command:/cstats %arg 1% 6><gold>Previous Page"
 				
 				
 #MARKER - Promotion Items
@@ -3045,6 +3023,10 @@ on level change:
 				if {lvl.%player%} is more than 12:
 					if {High Jumper.%player%} is not set:
 						make player execute command "/grantskill 0 High Jumper"
+				#Wall Kick at LVL 14
+				if {lvl.%player%} is more than 13:
+					if {Wall Kick.%player%} is not set:
+						make player execute command "/grantskill 0 Wall Kick"
 				#Brazen MAG at LVL 15
 				if {lvl.%player%} is more than 14:
 					if {Brazen MAG.%player%} is not set:

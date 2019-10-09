@@ -32,6 +32,9 @@ command /sdebug <text> [<text="Alstair">]:
 		else if arg 1 is "resetwand":
 			clear {spellcooldown.%player%}
 			send "<bold><green>[S-DEBUG]<reset> Reset wand cooldown."
+		else if arg 1 is "fixtaunts":
+			clear {isTaunting.%player%}
+			send "<bold><green>[S-DEBUG]<reset> Fixed taunting."
 		else if arg 1 is "resetgrouplist":
 			clear {mastergrouplist::*}
 			send "<bold><green>[S-DEBUG]<reset> Cleared master group list."

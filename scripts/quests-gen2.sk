@@ -3,100 +3,6 @@
 #1 - Incomplete
 #999 - Complete
 #998 - Failed
-
-function getHelmet(PLR: player) :: number:
-	if {_PLR} is wearing a leather helmet:
-		return 1
-	else if {_PLR} is wearing a chain helmet:
-		return 2
-	else if {_PLR} is wearing an iron helmet:
-		return 3
-	else if {_PLR} is wearing a gold helmet:
-		return 4
-	else if {_PLR} is wearing a diamond helmet:
-		return 5
-		
-function getChestplate(PLR: player) :: number:
-	if {_PLR} is wearing a leather chestplate:
-		return 1
-	else if {_PLR} is wearing a chain chestplate:
-		return 2
-	else if {_PLR} is wearing an iron chestplate:
-		return 3
-	else if {_PLR} is wearing a gold chestplate:
-		return 4
-	else if {_PLR} is wearing a diamond chestplate:
-		return 5
-
-function getLeggings(PLR: player) :: number:
-	if {_PLR} is wearing leather leggings:
-		return 1
-	else if {_PLR} is wearing chain leggings:
-		return 2
-	else if {_PLR} is wearing iron leggings:
-		return 3
-	else if {_PLR} is wearing gold leggings:
-		return 4
-	else if {_PLR} is wearing diamond leggings:
-		return 5
-		
-function getBoots(PLR: player) :: number:
-	if {_PLR} is wearing leather boots:
-		return 1
-	else if {_PLR} is wearing chain boots:
-		return 2
-	else if {_PLR} is wearing iron boots:
-		return 3
-	else if {_PLR} is wearing gold boots:
-		return 4
-	else if {_PLR} is wearing diamond boots:
-		return 5
-
-function startQuest(PLR: player , QUEST: text , DESC: text):
-	set {quests.%{_PLR}%::%{_QUEST}%} to 1
-	send title "<white><bold>New Quest: %{_QUEST}%" with subtitle "%{_DESC}%" to {_PLR} for 5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-	play sound "entity.fireworkrocket.launch" with volume 0.75 and pitch 1 at {_PLR} for {_PLR}
-	play sound "entity.fireworkrocket.twinkle" with volume 0.4 and pitch 1.5 at {_PLR} for {_PLR}
-	play sound "entity.player.levelup" with volume 1 and pitch 1 at {_PLR} for {_PLR}
-	play 60 (firework spark with speed 1) at {_PLR}
-	play 60 (snow shovel with speed 1) at {_PLR}
-
-function setQuestProgress(PLR: player , QUEST: text , STAGE: number, INFO: text):
-	set {quests.%{_PLR}%::%{_QUEST}%} to {_STAGE}
-	send title "" with subtitle "%{_INFO}%" to {_PLR} for 2.5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-	play sound "entity.player.levelup" with volume 0.5 and pitch 1.5 at {_PLR} for {_PLR}
-	play sound "entity.fireworkrocket.twinkle" with volume 0.4 and pitch 1.5 at {_PLR} for {_PLR}
-	play 10 (firework spark with speed 1) at {_PLR}
-	play 10 (snow shovel with speed 1) at {_PLR}
-	
-function finishQuest(PLR: player , QUEST: text , DESC: text):
-	set {quests.%{_PLR}%::%{_QUEST}%} to 999
-	send title "<gold><bold>Quest Complete: %{_QUEST}%" with subtitle "%{_DESC}%" to {_PLR} for 5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-	play sound "entity.player.levelup" with volume 1 and pitch 0.75 at {_PLR} for {_PLR}
-	play sound "entity.fireworkrocket.twinkle" with volume 1 and pitch 1.5 at {_PLR} for {_PLR}
-	play 60 (firework spark with speed 1) at {_PLR}
-	play 60 (snow shovel with speed 1) at {_PLR}
-	
-function failQuest(PLR: player , QUEST: text , DESC: text):
-	set {quests.%{_PLR}%::%{_QUEST}%} to 998
-	send title "<light red><bold>Quest Failed: %{_QUEST}%" with subtitle "%{_DESC}%" to {_PLR} for 5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-	play 60 (red wool break with speed 1) at {_PLR}
-	show mob spawner flames on {_PLR}
-	
-#Calculates the player's preferred/best weapon using their weapon ranks.
-function bestWeapon(PLR: player) :: number:
-	if ({weaponrank.%{_PLR}%::swords} + {weaponrank.%{_PLR}%::lances} + {weaponrank.%{_PLR}%::bows} + {weaponrank.%{_PLR}%::magic} + {weaponrank.%{_PLR}%::staves}) is more than ({weaponrank.%{_PLR}%::axes} + {weaponrank.%{_PLR}%::lances} + {weaponrank.%{_PLR}%::bows} + {weaponrank.%{_PLR}%::magic} + {weaponrank.%{_PLR}%::staves}):
-		return 1
-	else if ({weaponrank.%{_PLR}%::axes} + {weaponrank.%{_PLR}%::lances} + {weaponrank.%{_PLR}%::bows} + {weaponrank.%{_PLR}%::magic} + {weaponrank.%{_PLR}%::staves}) is more than ({weaponrank.%{_PLR}%::swords} + {weaponrank.%{_PLR}%::lances} + {weaponrank.%{_PLR}%::bows} + {weaponrank.%{_PLR}%::magic} + {weaponrank.%{_PLR}%::staves}):
-		return 2
-	else if ({weaponrank.%{_PLR}%::lances} + {weaponrank.%{_PLR}%::swords} + {weaponrank.%{_PLR}%::bows} + {weaponrank.%{_PLR}%::magic} + {weaponrank.%{_PLR}%::staves}) is more than ({weaponrank.%{_PLR}%::axes} + {weaponrank.%{_PLR}%::swords} + {weaponrank.%{_PLR}%::bows} + {weaponrank.%{_PLR}%::magic} + {weaponrank.%{_PLR}%::staves}):
-		return 3
-	else if ({weaponrank.%{_PLR}%::bows} + {weaponrank.%{_PLR}%::lances} + {weaponrank.%{_PLR}%::swords} + {weaponrank.%{_PLR}%::magic} + {weaponrank.%{_PLR}%::staves}) is more than ({weaponrank.%{_PLR}%::axes} + {weaponrank.%{_PLR}%::lances} + {weaponrank.%{_PLR}%::swords} + {weaponrank.%{_PLR}%::magic} + {weaponrank.%{_PLR}%::staves}):
-		return 4
-	else if ({weaponrank.%{_PLR}%::magic} + {weaponrank.%{_PLR}%::lances} + {weaponrank.%{_PLR}%::bows} + {weaponrank.%{_PLR}%::swords} + {weaponrank.%{_PLR}%::staves}) is more than ({weaponrank.%{_PLR}%::axes} + {weaponrank.%{_PLR}%::lances} + {weaponrank.%{_PLR}%::bows} + {weaponrank.%{_PLR}%::swords} + {weaponrank.%{_PLR}%::staves}):
-		return 5
-	else if ({weaponrank.%{_PLR}%::staves} + {weaponrank.%{_PLR}%::lances} + {weaponrank.%{_PLR}%::bows} + {weaponrank.%{_PLR}%::magic} + {weaponrank.%{_PLR}%::swords}) is more than ({weaponrank.%{_PLR}%::axes} + {weaponrank.%{_PLR}%::lances} + {weaponrank.%{_PLR}%::bows} + {weaponrank.%{_PLR}%::magic} + {weaponrank.%{_PLR}%::swords}):
-		return 6
 	
 command /setupcheck:
 	trigger:
@@ -189,7 +95,7 @@ on death of a monster:
 				add ({MHTarget.%player%} * 5) to the attacker's balance
 			
 every 1 minecraft hour:
-	set time in world "Alastor" to 24:00
+	set time in world "Alstair" to 24:00
 	loop all players:
 		if {quests.%loop-player%::Home Sweet Home} is not 999:
 			if {quests.%loop-player%::Home Sweet Home} is not 998:

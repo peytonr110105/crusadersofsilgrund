@@ -105,8 +105,8 @@ command /skills [<text="TopMenu">] [<text="NULL">] [<number=0>]:
 			set slot 21 of the player's current inventory to 1 minecart named "<light blue><bold>Earth Boost" with lore "<white>If defender's health is >= foe's health + 3 hearts:", "<white>Grants DEF/SPD/MAG +15 during combat."
 			set slot 22 of the player's current inventory to 1 minecart named "<light blue><bold>Aqua Boost" with lore "<white>If attacker's health is >= foe's health + 3 hearts:", "<white>Grants MAG/SPD/SKL +15 during combat."
 			set slot 23 of the player's current inventory to 1 fishing rod named "<light blue><bold>Vantage" with lore "<white>While below 50%% HP:", "<white>Nullify an enemy's attack, and counter-attack for 1/2 of the nullified damage.", "<white>This skill only activates if a counter-attack is possible.", "<white>EG: Bows cannot use Vantage against melee foes, and vice versa.", "<white>Cooldown: 10 seconds"
-			set slot 24 of the player's current inventory to 1 potion of weakness named "<light blue><bold>Seal SPD/SKL" with lore "<white>Reduces foe's SPD/SKL by -20 on-hit.", "<white>Duration: 3 seconds"
-			set slot 25 of the player's current inventory to 1 potion of weakness named "<light blue><bold>Seal DEF/MAG" with lore "<white>Reduces foe's DEF/MAG by -20 on-hit.", "<white>Duration: 3 seconds"
+			set slot 24 of the player's current inventory to 1 potion of weakness named "<light blue><bold>Seal SPD/SKL" with lore "<white>Reduces foe's SPD/SKL by 20 on-hit.", "<white>This debuff cannot stack.", "<white>Duration: 3 seconds"
+			set slot 25 of the player's current inventory to 1 potion of weakness named "<light blue><bold>Seal DEF/MAG" with lore "<white>Reduces foe's DEF/MAG by 20 on-hit.", "<white>This debuff cannot stack.", "<white>Duration: 3 seconds"
 			set slot 26 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
 		else if arg 1 is "C-Skills":
 			open chest with 4 rows named "<yellow><bold>Skills Menu | C-Slot Skills" for the player
@@ -181,10 +181,10 @@ command /skills [<text="TopMenu">] [<text="NULL">] [<number=0>]:
 			set slot 12 of the player's current inventory to 1 dragon breath named "<light green><bold>Rally Spectrum" with lore "<white>Grants on right-click:", "<white>Strength/Swiftness/Resistance 1 to target.", "<white>Damages tool."
 			set slot 13 of the player's current inventory to 1 firework named "<light green><bold>Stinger" with lore "<white>Right-click to dash forwards.", "<light blue>Grants bonus Stylish Points to Devil Hunters."
 			set slot 14 of the player's current inventory to 1 lead named "<light green><bold>Capture" with lore "<white>Right-click to set your weapon to Capture mode.", "<white>While in Capture mode, attacks deal 50%% less damage.", "<white>If the opponent is killed while you are in Capture mode,", "<white>Their equipment will be dropped on the ground for you to collect."
-			set slot 15 of the player's current inventory to 1 bow named "<light green><bold>Ethreal Grip" with lore "<white>Warps foes to your position when hit with an arrow.", "<white>Reduces damage dealt by 50%%.", "<light green><bold>Bows only."
+			set slot 15 of the player's current inventory to 1 bow named "<light green><bold>Ethreal Grip" with lore "<white>Slings foes to your position when hit with an arrow.", "<white>Reduces damage dealt by 50%%.", "<light green><bold>Bows only."
 			set slot 16 of the player's current inventory to 1 iron sword named "<light green><bold>Smite" with lore "<white>Shoves the target forwards a great distance when right-clicked.", "<light blue>Grants bonus Stylish Points to Devil Hunters."
-			set slot 17 of the player's current inventory to 1 firework named "<light green><bold>Taunt" with lore "<white>Stand still and taunt your foe.", "Grants STR/SPD + 10 for 10 seconds if completed.", "<light blue>Grants bonus Stylish Points to Devil Hunters."
-			set slot 18 of the player's current inventory to 1 firework of fortune 3 named "<light green><bold>MAX-Taunt" with lore "<white>Taunt for an extended period of time.", "<white>Grants STR/SPD +20 for 10 seconds if completed.", "<light blue>Grants a large amount of Style Points to Devil Hunters."
+			set slot 17 of the player's current inventory to 1 firework named "<light green><bold>Taunt" with lore "<white>Stand still and taunt your foe.", "<white>Grants STR/SPD + 15 for 10 seconds if completed.", "<light blue>Grants bonus Style Points to Devil Hunters."
+			set slot 18 of the player's current inventory to 1 firework of fortune 3 named "<light green><bold>MAX-Taunt" with lore "<white>Taunt for an extended period of time.", "<white>Grants STR/SPD +30 for 20 seconds if completed.", "<light blue>Grants a large amount of Style Points to Devil Hunters."
 			set slot 19 of the player's current inventory to 1 feather named "<light green><bold>Suspend" with lore "<white>Pushes foes upwards when an attack connects."
 			set slot 26 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
 		else if arg 1 is "Armour":
@@ -763,6 +763,18 @@ command /skill <text> [<number=0>]:
 					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Experience Sapper"
+					remove 50 from the player's balance
+			else if arg 1 contains "Seal SPD/SKL":
+				if {_cash} is less than 50:
+					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+				else:
+					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Seal SPD/SKL"
+					remove 50 from the player's balance
+			else if arg 1 contains "Seal DEF/MAG":
+				if {_cash} is less than 50:
+					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+				else:
+					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Seal DEF/MAG"
 					remove 50 from the player's balance
 			else if arg 1 contains "Plenitude":
 				if {_cash} is less than 50:

@@ -1,106 +1,3 @@
-function helmType(PLR: player) :: number:
-	if {_PLR} is wearing a leather helmet:
-		return 0.25
-	else if {_PLR} is wearing a chain helmet:
-		return 0.55
-	else if {_PLR} is wearing an iron helmet:
-		return 0.75
-	else if {_PLR} is wearing a gold helmet:
-		return 0.25
-	else if {_PLR} is wearing a diamond helmet:
-		return 0.8
-		
-function chestType(PLR: player) :: number:
-	if {_PLR} is wearing a leather chestplate:
-		return 0.25
-	else if {_PLR} is wearing a chain chestplate:
-		return 0.55
-	else if {_PLR} is wearing an iron chestplate:
-		return 1
-	else if {_PLR} is wearing a gold chestplate:
-		return 0.5
-	else if {_PLR} is wearing a diamond chestplate:
-		return 2
-
-function legType(PLR: player) :: number:
-	if {_PLR} is wearing leather leggings:
-		return 0.25
-	else if {_PLR} is wearing chain leggings:
-		return 0.55
-	else if {_PLR} is wearing iron leggings:
-		return 1
-	else if {_PLR} is wearing gold leggings:
-		return 0.5
-	else if {_PLR} is wearing diamond leggings:
-		return 2
-		
-function btType(PLR: player) :: number:
-	if {_PLR} is wearing leather boots:
-		return 0.25
-	else if {_PLR} is wearing chain boots:
-		return 0.55
-	else if {_PLR} is wearing iron boots:
-		return 0.75
-	else if {_PLR} is wearing gold boots:
-		return 0.25
-	else if {_PLR} is wearing diamond boots:
-		return 0.8
-		
-function startQuest(PLR: player , QUEST: text , DESC: text):
-	set {quests.%{_PLR}%::%{_QUEST}%} to 1
-	send title "<white><bold>New Quest: %{_QUEST}%" with subtitle "%{_DESC}%" to {_PLR} for 5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-	play sound "entity.firework_rocket.launch" with volume 0.75 and pitch 1 at {_PLR} for {_PLR}
-	play sound "entity.firework_rocket.twinkle" with volume 0.4 and pitch 1.5 at {_PLR} for {_PLR}
-	play sound "entity.player.levelup" with volume 1 and pitch 1 at {_PLR} for {_PLR}
-	play 60 (firework spark with speed 1) at {_PLR}
-	play 60 (snow shovel with speed 1) at {_PLR}
-
-function setQuestProgress(PLR: player , QUEST: text , STAGE: number, INFO: text):
-	set {quests.%{_PLR}%::%{_QUEST}%} to {_STAGE}
-	send title "" with subtitle "%{_INFO}%" to {_PLR} for 2.5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-	play sound "entity.player.levelup" with volume 0.5 and pitch 1.5 at {_PLR} for {_PLR}
-	#play sound "entity.firework_rocket.twinkle" with volume 0.4 and pitch 1.5 at the player for the player
-	play 10 (firework spark with speed 1) at {_PLR}
-	play 10 (snow shovel with speed 1) at {_PLR}
-	
-function finishQuest(PLR: player , QUEST: text , DESC: text):
-	set {quests.%{_PLR}%::%{_QUEST}%} to 999
-	send title "<gold><bold>Quest Complete: %{_QUEST}%" with subtitle "%{_DESC}%" to {_PLR} for 5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-	play sound "entity.player.levelup" with volume 1 and pitch 0.75 at {_PLR} for {_PLR}
-	play sound "entity.firework_rocket.twinkle" with volume 1 and pitch 1.5 at {_PLR} for {_PLR}
-	play 60 (firework spark with speed 1) at {_PLR}
-	play 60 (snow shovel with speed 1) at {_PLR}
-	
-function failQuest(PLR: player , QUEST: text , DESC: text):
-	set {quests.%{_PLR}%::%{_QUEST}%} to 998
-	send title "<light red><bold>Quest Failed: %{_QUEST}%" with subtitle "%{_DESC}%" to {_PLR} for 5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-	play 60 (red wool break with speed 1) at {_PLR}
-	show mob spawner flames on {_PLR}
-	
-function specialCheck(PLR: player, PCT: number, CAP: number) :: number:
-	set {_odds} to (({skl.%{_PLR}%} + {sklbuff.%{_PLR}%}) ^ {_PCT})
-	if {_odds} is more than {_CAP}:
-		set {_odds} to {_CAP}
-	if the 6th line of the lore of {_PLR}'s tool contains "Slaying":
-		add 10 to {_odds}
-	if the 2nd line of the lore of {_PLR}'s tool contains "Wrath":
-		if {_PLR}'s health is less than ({_PLR}'s maximum health * 0.5):
-			add ({_PLR}'s maximum health - {_PLR}'s health) to {_odds}
-	if the 6th line of the lore of {_PLR}'s tool contains "Crushing":
-		add {crushing.%{_PLR}%} to {_odds}
-	if the name of {_PLR}'s tool is "<gold><bold>Rex Hasta":
-		if the 6th line of the lore of {_PLR}'s tool contains "Unique":
-			add 20 to {_odds}
-	else if the name of {_PLR}'s tool is "<gold><bold>Hauteclere":
-		if the 6th line of the lore of {_PLR}'s tool contains "Unique":
-			add 20 to {_odds}
-	chance of {_odds}%:
-		return 1
-	else if {_odds} is more than 100:
-		return 1
-	else:
-		return 0
-		
 #Dodge Roll Toggle Command
 command /dr [<number=2>]:
 	description: Toggles your Dodge Roll on and off.
@@ -260,21 +157,6 @@ every 0.5 seconds:
 #DR = 1 - Ready to activated
 #DR = 2 - Exhausted, must recharge.
 #DRInvincible - Player is rolling with invincibility
-#Check Slots Function Imported From cskills.sk			
-function checkSlots(PLR: player , skill: text) :: number:
-	if {skillslot1.%{_PLR}%} contains "%{_skill}%":
-		return 1
-	else if {skillslot2.%{_PLR}%} contains "%{_skill}%":
-		return 1
-	else if {skillslot3.%{_PLR}%} contains "%{_skill}%":
-		return 1
-	else if {skillslot4.%{_PLR}%} contains "%{_skill}%":
-		return 1
-	else if {skillslot5.%{_PLR}%} contains "%{_skill}%":
-		return 1
-	else:
-		return 0
-
 #Dodge Roll
 on sneak toggle:
 	if {drenable.%player%} is 1:
@@ -297,7 +179,7 @@ on sneak toggle:
 						send "<light blue>You take to the skies!"
 						wait 1 second
 						while player's hunger is more than 3:
-							if ground state of player is true:
+							if player is on ground:
 								exit 1 loop
 							else if player is sneaking:
 								exit 1 loop
@@ -455,27 +337,6 @@ on load:
 	register new shaped recipe for iron horse armor named "<light gray>E-45s" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 18):", "18" using air, air, quartz block, quartz block, quartz block, leather, air, stick, leather
 	register new shaped recipe for golden horse armor named "<light gray>Redgrave Sawn-Off" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 5):", "5" using air, air, quartz block, gold ingot, gold ingot, iron ingot, air, stick, iron ingot
 
-
-
-#Magically-Inclined Class Check Function
-function checkClass(PLR: player) :: number:
-	if {class.%{_PLR}%} is "Mage":
-		return 1
-	else if {class.%{_PLR}%} is "Sage":
-		return 1
-	else if {class.%{_PLR}%} is "Sorcerer":
-		return 1
-	else if {class.%{_PLR}%} is "Archwizard":
-		return 1
-	else if {class.%{_PLR}%} is "Strategist":
-		return 1
-	else if {class.%{_PLR}%} is "Tactician":
-		return 1
-	else if {class.%{_PLR}%} is "Grandmaster":
-		return 1
-	else:
-		return 0
-
 #Lance damage correction
 on damage:
 	if projectile exists:
@@ -580,7 +441,7 @@ every 2 seconds:
 			subtract 10 from {defbuff.%loop-player%}
 		if the 2nd line of the lore of loop-player's tool contains "Brave Blade":
 			subtract 15 from {spdbuff.%loop-player%}
-			wait 1 second
+			wait 2 seconds
 			add 15 to {spdbuff.%loop-player%}
 			
 
@@ -1007,8 +868,8 @@ on damage:
 	#PVP Check
 	if attacker is player:
 		if victim is player:
-			if attacker is not a citizen:
-				if victim is not a citizen:
+			if attacker is not citizen:
+				if victim is not citizen:
 					if {peaceful.%victim%} is 1:
 						cancel event
 						send "<light red><bold>This player has PVP disabled! You cannot harm them until they re-enable PVP!" to the attacker
@@ -1046,18 +907,18 @@ on damage:
 		#Tomes
 		set {_tome} to metadata value "TomeEff" of the projectile
 		if {_tome} is "Fire":
-			add 6 to damage
+			add 8 to damage
 			play 40 (lava pop with speed 1) at the victim
 		else if {_tome} is "Elthunder":
 			strike lightning effect at the victim
-			add 8 to damage
+			add 10 to damage
 		else if {_tome} is "Excalibur":
 			play 60 (light green wool break with speed 1) at the victim
-			add 8.5 to damage
-			if ground state of victim is false:
+			add 13 to damage
+			if victim is not on ground:
 				set damage to damage * 1.5
 		else if {_tome} is "Dire Thunder":
-			add 8.5 to damage
+			add 15 to damage
 			set damage to damage * 2
 		set {_isSpell} to metadata value "SPELL" of projectile
 		if {_isSpell} is 1:
@@ -1072,31 +933,31 @@ on damage:
 				if {_spelleffect%{_forloop}%} is 1:
 					ignite the victim
 					play 5 (lava pop with speed 1) at the victim
-					set damage to damage + 2
+					set damage to damage + 3
 					add 0.5 to {_recoil}
 				#Spark
 				if {_spelleffect%{_forloop}%} is 2:
 					play 10 (critical hit with speed 1) at the victim
 					show firework's spark on the victim
-					set damage to damage + 3
+					set damage to damage + 6
 					add 1 to {_recoil}
 				#Frost
 				if {_spelleffect%{_forloop}%} is 3:
 					play 5 (ice break with speed 1) at the victim
 					apply slowness 1 to the victim for 5 seconds
 					send "<cyan><bold>%attacker% slowed you with a Frost spell!"
-					set damage to damage + 1
+					set damage to damage + 2
 				#Gust
 				if {_spelleffect%{_forloop}%} is 4:
 					play 5 (green wool break with speed 1) at the victim
 					push the victim backwards at speed 1.5
-					set damage to damage + 2
+					set damage to damage + 3
 					add 0.5 to {_recoil}
 				#Fire
 				if {_spelleffect%{_forloop}%} is 5:
 					play 15 (lava pop with speed 1) at the victim
 					ignite the victim
-					set damage to damage + 3
+					set damage to damage + 5
 					add 1 to {_recoil}
 					loop blocks in radius 1 of {_loc}:
 						loop-block is air
@@ -1105,34 +966,34 @@ on damage:
 				if {_spelleffect%{_forloop}%} is 6:
 					play 20 (critical hit with speed 1) at the victim
 					show firework's spark on the victim
-					set damage to damage + 4
+					set damage to damage + 8
 					add 1.5 to {_recoil}
 				#Hail
 				if {_spelleffect%{_forloop}%} is 7:
 					play 15 (ice break with speed 1) at the victim
 					apply slowness 2 to the victim for 5 seconds
 					send "<cyan><bold>%attacker% slowed you with a Hail spell!"
-					set damage to damage + 1.5
+					set damage to damage + 3
 					add 1 to {_recoil}
 				#Wind
 				if {_spelleffect%{_forloop}%} is 8:
 					play 15 (green wool break with speed 1) at the victim
 					push the victim backwards at speed 2
 					push the victim upwards at speed 0.5
-					set damage to damage + 2
+					set damage to damage + 4.5
 					add 1 to {_recoil}
 				#Elfire
 				if {_spelleffect%{_forloop}%} is 9:
 					ignite the victim
 					play 5 (mob spawner flames with speed 1) at the victim
-					set damage to damage + 4
+					set damage to damage + 9
 					add 1.5 to {_recoil}
 					loop blocks in radius 2 of {_loc}:
 						loop-block is air
 						set loop-block to fire
 				#Thoron
 				if {_spelleffect%{_forloop}%} is 10:
-					set damage to damage + 5
+					set damage to damage + 12
 					strike lightning effect at the victim
 					add 2.5 to {_recoil}
 				#Blizzard
@@ -1141,7 +1002,7 @@ on damage:
 					play 40 (snowball break with speed 1) at the victim
 					apply slowness 3 to the victim for 5 seconds
 					send "<cyan><bold>%attacker% slowed you with a Blizzard spell!"
-					set damage to damage + 2
+					set damage to damage + 4.5
 					add 1.5 to {_recoil}
 				#Tornado
 				if {_spelleffect%{_forloop}%} is 12:
@@ -1149,14 +1010,14 @@ on damage:
 					play 40 (green wool break with speed 1) at the victim
 					push the victim backwards at speed 3
 					push the victim upwards at speed 1.5
-					set damage to damage + 3
+					set damage to damage + 5.5
 					add 1.5 to {_recoil}
 				#Bolganone
 				if {_spelleffect%{_forloop}%} is 13:
 					ignite the victim
 					play 10 (mob spawner flames with speed 1) at the victim
 					play 20 (lava pop with speed 1) at the victim
-					set damage to damage + 5
+					set damage to damage + 13
 					add 2.5 to {_recoil}
 					loop blocks in radius 3 of {_loc}:
 						loop-block is air
@@ -1164,7 +1025,7 @@ on damage:
 				#Aurora
 				if {_spelleffect%{_forloop}%} is 14:
 					show 80 (firework's spark with speed 1) at the victim
-					set damage to damage + 6
+					set damage to damage + 14.5
 					strike lightning effect at the victim
 					strike lightning effect at the victim
 					add 2.5 to {_recoil}
@@ -1172,21 +1033,21 @@ on damage:
 				if {_spelleffect%{_forloop}%} is 15:
 					show 60 (purple wool break with speed 1) at the victim
 					show 60 (black wool break with speed 1) at the victim
-					set damage to damage + 2
+					set damage to damage + 3.5
 					heal the attacker by damage
 					add 1.5 to {_recoil}
 				#Spellblade
 				if {_spelleffect%{_forloop}%} is 17:
 					show 80 (light green wool break with speed 1) at the victim
 					show 80 (critical hit with speed 1) at the victim
-					set damage to damage + floor(({strbuff.%attacker%}) + ({defbuff.%attacker%} / 2) + ({resbuff.%attacker%} / 2) + ({spdbuff.%attacker%} / 2) + ({sklbuff.%attacker%} / 2))
+					set damage to damage + floor((({strbuff.%attacker%}) + ({defbuff.%attacker%} / 2) + ({resbuff.%attacker%} / 2) + ({spdbuff.%attacker%} / 2) + ({sklbuff.%attacker%} / 2)) ^ 0.75)
 					add damage / 2 to {_recoil}
 				#Forseti
 				if {_spelleffect%{_forloop}%} is 18:
 					show 80 (light green wool break with speed 1) at the victim
 					show 80 (critical hit with speed 1) at the victim
 					push the victim backwards at speed 2
-					set damage to damage + 3.5
+					set damage to damage + 7.5
 					add 3.5 to {_recoil}
 					if attacker's health is attacker's maximum health:
 						set damage to damage * 2
@@ -1196,16 +1057,34 @@ on damage:
 					show 80 (yellow wool break with speed 1) at the victim
 					show 80 (critical hit with speed 1) at the victim
 					show firework's spark on the victim
-					set damage to damage + 5
+					set damage to damage + 10
 					if victim is ender dragon:
 						set damage to damage * 2
 						send "<yellow>Dealt effective damage!" to the attacker
+					else if {class.%victim%} is "Dragonborn":
+						set damage to damage * 2
+						send "<yellow>Dealt effective damage!" to the attacker
+					else if {class.%victim%} is "Manakete":
+						set damage to damage * 2
+						send "<yellow>Dealt effective damage!" to the attacker
+					else if {class.%victim%} is "Divine Dragon":
+						set damage to damage * 2
+						send "<yellow>Dealt effective damage!" to the attacker
+					else if the lore of the victim's tool contains "Loptous":
+						set damage to damage * 2
+						send "<yellow>Dealt effective damage! (Loptous)" to the attacker
 					add 3.5 to {_recoil}
+				#Loptous
+				if {_spelleffect%{_forloop}%} is 20:
+					show 60 (obsidian break with speed 1) at the victim
+					show 40 (smoke with speed 0) at the victim
+					set damage to damage + 10
 				#Stone
 				if {_spelleffect%{_forloop}%} is 21:
 					show 80 (stone break with speed 1) at the victim
 					apply weakness 10 to the victim for 2 seconds
 					apply slowness 10 to the victim for 2 seconds
+					set damage to damage + 1.5
 					add 5 to {_recoil}
 				#Rescue:
 				if {_spelleffect%{_forloop}%} is 22:
@@ -1222,24 +1101,24 @@ on damage:
 				#Silence
 				if {_spelleffect%{_forloop}%} is 24:
 					show 60 (chest break with speed 1) at the victim
-					set damage to damage + 0.5
+					set damage to damage + 1.5
 					apply weakness 4 to the victim for 4 seconds
 					add 1.5 to {_recoil}
 				#Thief
 				if {_spelleffect%{_forloop}%} is 25:
 					show 60 (cobweb break with speed 1) at the victim
-					set damage to damage + 0.5
+					set damage to damage + 1.5
 					chance of 35%:
 						drop the victim's tool at the victim
 						damage the victim's tool by 9999
 				#Light
 				if {_spelleffect%{_forloop}%} is 16:
+					set damage to damage + 4.5
 					if victim is monster:
 						set damage to damage * 2
 						play 80 (glowstone break with speed 0) at the victim
 						add 3.5 to {_recoil}
 					else:
-						set damage to damage + 3
 						play 40 (glowstone break with speed 0) at the projectile
 						add 2 to {_recoil}
 				add 1 to {_forloop}
@@ -1698,14 +1577,14 @@ on damage:
 	if the name of the attacker's tool contains "<light blue><bold>Love is Blue":
 		if damage cause is attack:
 			set damage to damage+3
-			add 5 to xp of attacker
+			make attacker execute command "/xp 5"
 		else if projectile exists:
 			set damage to damage-1
 	#Scarborough Fair
-	if the name of the attacker's tool contains "<light blue><bold>Scarborough Fair":
+	if the name of the attacker's tool contains "<light red><bold>Scarborough Fair":
 		if damage cause is attack:
 			set damage to damage+3
-			add 5 to xp of attacker
+			make attacker execute command "/xp 5"
 		else if projectile exists:
 			set damage to damage-1
 	#Crowbar
@@ -1734,7 +1613,7 @@ on damage:
 			set damage to damage * 1.5
 	#Light Brand RES Bonus
 	if the name of the attacker's tool contains "<gold><bold>Light Brand":
-		set {_bonus} to ceil({res.%attacker%} / 4)
+		set {_bonus} to ceil({res.%attacker%} + {resbuff.%attacker%} / 4)
 		if {_bonus} is more than 7:
 			set {_bonus} to 7
 		set damage to damage + {_bonus}
@@ -1770,7 +1649,10 @@ on damage:
 					exit 1 loop
 				set damage to damage - 1
 	#Adaptive Damage Checks & Magical Denotation
-	set {_magical} to metadata value "SPELL" of projectile
+	if the lore of the attacker's tool contains "Spell 1:":
+		set {_magical} to 1
+	else if the lore of the attacker's tool contains "Spell 2:":
+		set {_magical} to 1
 	if the 1st line of the lore of the attacker's tool contains "Sorcery Aura":
 		set {_magical} to 1
 	if {class.%attacker%} is "Dragonborn":
@@ -1779,6 +1661,9 @@ on damage:
 		set {_magical} to 1
 	else if {class.%attacker%} is "Divine Dragon":
 		set {_magical} to 1
+	else if {lb_ranged.%attacker%} is true:
+		set {_magical} to 1
+		clear {lb_ranged.%attacker%}
 	if the name of the attacker's tool is "<gold><bold>Lunar Bow":
 		if the 6th line of the lore of the attacker's tool contains "Unique":
 			if ({res.%victim%} + {resbuff.%victim%}) is less than ({def.%victim%} + {defbuff.%victim%}):
@@ -1793,7 +1678,7 @@ on damage:
 				set {_magical} to 1
 	#Helm Splitter (Global, no skill needed)
 	if attacker is player:
-		if ground state of the attacker is false:
+		if attacker is not on ground:
 			if attacker is sneaking:
 				add 1.5 to damage
 				add helmType(victim) to damage
@@ -2114,7 +1999,10 @@ on damage:
 		push victim (direction from victim to location of attacker) at speed 4
 	#Suspend
 	else if the 4th line of the lore of attacker's tool contains "Suspend":
-		push victim upwards at speed 0.65
+		set {_magnitude} to (y of victim's velocity)
+		if {_magnitude} is less than 0:
+			set {_magnitude} to {_magnitude} * -1.05
+		push victim upwards at speed (({_magnitude} / 4) + 1)
 	#Hit and Run
 	if the 4th line of the lore of attacker's tool contains "Hit and Run":
 		push the attacker backwards at speed 1.5
@@ -2141,7 +2029,9 @@ on damage:
 			if loop-entity is alive:
 				if {party.%victim%} is not {party.%attacker%}:
 					if loop-entity is not the attacker:
-						apply levitation 2 to loop-entity for 3 seconds
+						if loop-entity is not the victim:
+							remove levitation from the loop-entity
+							apply levitation 2 to loop-entity for 3 seconds
 	#Fear
 	if the 3rd line of the lore of the attacker's tool contains "Fear":
 		loop all entities in radius 7 of the victim:
@@ -2733,6 +2623,10 @@ on damage:
 				send "<gold>Aegis was activated!" to victim
 				play 60 (crit with speed 1) at the victim
 				play sound "item.totem.use" with volume 0.5 and pitch 0.5 at victim for attacker
+	#Loptous Damage Reduction
+	if the lore of the victim's tool contains "Loptous":
+		set damage to damage * 0.5
+		play 10 (obsidian break with speed 1) at the victim
 	#
 	#Stat Calculations
 	if {_magical} is 1:
@@ -2930,6 +2824,25 @@ on damage:
 		if {sandbagkillable.%attacker%} is 0:
 			send "<light blue>Damage dealt that hit: %final damage%" to the attacker
 			cancel event
+	#Seals
+	if the 2nd line of the lore of the attacker's tool contains "Seal SPD/SKL":
+		if {SPDSKLdebuffed.%victim%} is not set:
+			subtract 20 from {spdbuff.%victim%}
+			subtract 20 from {sklbuff.%victim%}
+			set {SPDSKLdebuffed.%victim%} to true
+			wait 3 seconds
+			add 20 to {spdbuff.%victim%}
+			add 20 to {sklbuff.%victim%}
+			clear {SPDSKLdebuffed.%victim%}
+	else if the 2nd line of the lore of the attacker's tool contains "Seal DEF/MAG":
+		if {DEFMAGdebuffed.%victim%} is not set:
+			subtract 20 from {defbuff.%victim%}
+			subtract 20 from {resbuff.%victim%}
+			set {DEFMAGdebuffed.%victim%} to true
+			wait 3 seconds
+			add 20 to {defbuff.%victim%}
+			add 20 to {resbuff.%victim%}
+			clear {DEFMAGdebuffed.%victim%}
 	#Perks
 	#Nihl
 	set {_skl} to checkSlots(victim,"Nihl")
@@ -3025,6 +2938,47 @@ on damage:
 					wait 15 seconds
 					set {bhealth.%victim%} to 1
 					send "<light green>Your strength has returned." to the victim
+	#Battle Forecast
+	#Victim is Monster
+	if {t_str.%victim%} is set:
+		set name of sidebar of the attacker to "<gold>-=Battle Forecast=-"
+		set score "STR:" in sidebar of the attacker to ({t_str.%victim%} + {t_strbuff.%victim%})
+		set score "DEF:" in sidebar of the attacker to ({t_def.%victim%} + {t_defbuff.%victim%})
+		set score "SPD:" in sidebar of the attacker to ({t_spd.%victim%} + {t_spdbuff.%victim%})
+		set score "SKL:" in sidebar of the attacker to ({t_skl.%victim%} + {t_sklbuff.%victim%})
+		set score "MAG:" in sidebar of the attacker to ({t_res.%victim%} + {t_resbuff.%victim%})
+		wait 5 seconds
+		wipe the attacker's sidebar
+	#Victim is Player
+	else if {str.%victim%} is set:
+		set name of sidebar of the attacker to "<gold>-=Battle Forecast=-"
+		set score "STR:" in sidebar of the attacker to ({str.%victim%} + {strbuff.%victim%})
+		set score "DEF:" in sidebar of the attacker to ({def.%victim%} + {defbuff.%victim%})
+		set score "SPD:" in sidebar of the attacker to ({spd.%victim%} + {spdbuff.%victim%})
+		set score "SKL:" in sidebar of the attacker to ({skl.%victim%} + {sklbuff.%victim%})
+		set score "MAG:" in sidebar of the attacker to ({res.%victim%} + {resbuff.%victim%})
+		wait 5 seconds
+		wipe the attacker's sidebar
+	#Attacker is Player
+	if {str.%attacker%} is set:
+		set name of sidebar of the victim to "<gold>-=Battle Forecast=-"
+		set score "STR:" in sidebar of the attacker to ({str.%attacker%} + {strbuff.%attacker%})
+		set score "DEF:" in sidebar of the attacker to ({def.%attacker%} + {defbuff.%attacker%})
+		set score "SPD:" in sidebar of the attacker to ({spd.%attacker%} + {spdbuff.%attacker%})
+		set score "SKL:" in sidebar of the attacker to ({skl.%attacker%} + {sklbuff.%attacker%})
+		set score "MAG:" in sidebar of the attacker to ({res.%attacker%} + {resbuff.%attacker%})
+		wait 5 seconds
+		wipe the victim's sidebar
+	#Attacker is Monster
+	else if {t_str.%attacker%} is set:
+		set name of sidebar of the victim to "<gold>-=Battle Forecast=-"
+		set score "STR:" in sidebar of the attacker to ({t_str.%attacker%} + {t_strbuff.%attacker%})
+		set score "DEF:" in sidebar of the attacker to ({t_def.%attacker%} + {t_defbuff.%attacker%})
+		set score "SPD:" in sidebar of the attacker to ({t_spd.%attacker%} + {t_spdbuff.%attacker%})
+		set score "SKL:" in sidebar of the attacker to ({t_skl.%attacker%} + {t_sklbuff.%attacker%})
+		set score "MAG:" in sidebar of the attacker to ({t_res.%attacker%} + {t_resbuff.%attacker%})
+		wait 5 seconds
+		wipe the victim's sidebar
 	if {_lunaDEF} is set:
 		add {_lunaDEF} to {defbuff.%victim%}
 	if {_moonbowDEF} is set:
@@ -3084,7 +3038,10 @@ on damage:
 			set {_recoil} to 0
 		set {_recoil2} to {_recoil}
 		if {_EK} is true:
-			damage the attacker by {_recoil}
+			if attacker's health - {_recoil} is less than or equal to 0:
+				set attacker's health to 0.5
+			else:
+				damage the attacker by {_recoil}
 		else:
 			while {_recoil2} is more than 0:
 				send "<light blue>Recharged in: %{_recoil2}%" to the attacker
@@ -3158,79 +3115,91 @@ on right click:
 			send "<gold>Parrying attacks!" to the player
 			set {BSS.%player%} to true
 			set {BSSCooldown.%player%} to true
-			wait 0.25 seconds
+			wait 0.45 seconds
 			clear {BSS.%player%}
 			send "<red>The parry wore off!" to the player
-			wait 0.5 seconds
+			wait 0.6 seconds
 			clear {BSSCooldown.%player%}
 			send "<gold>Ready to parry again!" to the player
 	#Ragnell
 	if the name of the player's tool contains "<gold><bold>Ragnell":
 		if the 6th line of the lore of the player's tool contains "<white><bold>Refined: Unique":
+			if player is sneaking:
+				set {_temp} to the damage value of the player's tool
+				if {_temp} is more than or equal to 1531:
+					cancel event
+					send "<red>Your tool is too worn down to use this ability!"
+					#send "<red>Current Durability: %1561 -{_temp}%"
+				else:
+					shoot an arrow from the player at speed 1.75
+					damage the player's tool by 10
+	#Falchion
+	if the name of the player's tool contains "<gold><bold>Falchion":
+		if player is sneaking:
 			set {_temp} to the damage value of the player's tool
 			if {_temp} is more than or equal to 1531:
 				cancel event
 				send "<red>Your tool is too worn down to use this ability!"
-				send "<red>Current Durability: %1561 -{_temp}%"
+				#send "<red>Current Durability: %1561 -{_temp}%"
 			else:
-				shoot an arrow from the player at speed 1.75
-				damage the player's tool by 20
-	#Falchion
-	if the name of the player's tool contains "<gold><bold>Falchion":
-		set {_temp} to the damage value of the player's tool
-		if {_temp} is more than or equal to 1531:
-			cancel event
-			send "<red>Your tool is too worn down to use this ability!"
-			send "<red>Current Durability: %1561 -{_temp}%"
-		else:
-			apply regeneration 4 to the player for 3 seconds
-			damage player's tool by 20
+				apply regeneration 4 to the player for 3 seconds
+				damage player's tool by 10
 	#Light Brand
 	if the name of the player's tool contains "<gold><bold>Light Brand":
-		set {_temp} to the damage value of the player's tool
-		if {_temp} is more than or equal to 1531:
-			cancel event
-			send "<red>Your tool is too worn down to use this ability!"
-			send "<red>Current Durability: %1561 -{_temp}%"
-		else:
-			strike lightning at all monsters within 17 meters of the player
-			damage the player's tool by 10
+		if player is sneaking:
+			set {_temp} to the damage value of the player's tool
+			if {_temp} is more than or equal to 1531:
+				cancel event
+				send "<red>Your tool is too worn down to use this ability!"
+				#send "<red>Current Durability: %1561 -{_temp}%"
+			else:
+				loop all monsters in radius 10 of the player:
+					if {_temp} is less than 1531:
+						make the player damage loop-monster by 5
+						set {lb_ranged.%player%} to true
+						strike lightning effect at the loop-monster
+						damage the player's tool by 5
+						set {_temp} to the damage value of the player's tool
+					else:
+						send "<red>Your attack was cancelled due to low weapon durability."
+						exit 1 loop
 	#Binding Blade
 	if the name of the player's tool contains "<gold><bold>Binding Blade":
-		set {_temp} to the damage value of the player's tool
-		if {_temp} is more than or equal to 1531:
-			cancel event
-			send "<red>Your tool is too worn down to use this ability!"
-			send "<red>Current Durability: %1561 -{_temp}%"
-		else:
-			apply regeneration 4 to the player for 5 seconds
-			damage player's tool by 30
+		if player is sneaking:
+			set {_temp} to the damage value of the player's tool
+			if {_temp} is more than or equal to 1531:
+				cancel event
+				send "<red>Your tool is too worn down to use this ability!"
+				#send "<red>Current Durability: %1561 -{_temp}%"
+			else:
+				apply regeneration 4 to the player for 5 seconds
+				damage player's tool by 15
 	#Axtinguisher
 	if the name of the player's tool contains "<gold><bold>Axtinguisher":
 		push the target upwards at speed 0.5
-		damage the player's tool by 10
+		damage the player's tool by 1
 	#Love is Blue
-	if the name of the player's tool contains "<light blue><bold>Love is Blue":
-		if player's xp is greater than 5:
-			execute console command "/xp -5 %player%"
-			shoot an arrow from the player
-			play sound "entity.blaze.shoot" with volume 1 and pitch 2 at the player
-			loop 5 times:
-				play large smoke at the player
-				play flame at the player
-				play magical critical hit at the player
-				wait a tick
+	#if the name of the player's tool contains "<light blue><bold>Love is Blue":
+	#	if player has more than 5 xp:
+	#		execute console command "/xp -5 %player%"
+	#		shoot an arrow from the player
+	#		play sound "entity.blaze.shoot" with volume 1 and pitch 2 at the player
+	#		loop 5 times:
+	#			play large smoke at the player
+	#			play flame at the player
+	#			play magical critical hit at the player
+	#			wait a tick
 	#Scarborough Fair
-	if the name of the player's tool contains "<light red><bold>Scarborough Fair":
-		if player's xp is greater than 5:
-			execute console command "/xp -5 %player%"
-			shoot an arrow from the player
-			play sound "entity.blaze.shoot" with volume 1 and pitch 2 at the player
-			loop 5 times:
-				play large smoke at the player
-				play flame at the player
-				play magical critical hit at the player
-				wait a tick
+	#if the name of the player's tool contains "<light red><bold>Scarborough Fair":
+	#	if player has more than 5 xp:
+	#		execute console command "/xp -5 %player%"
+	#		shoot an arrow from the player
+	#		play sound "entity.blaze.shoot" with volume 1 and pitch 2 at the player
+	#		loop 5 times:
+	#			play large smoke at the player
+	#			play flame at the player
+	#			play magical critical hit at the player
+	#			wait a tick
 	#Super Shotgun
 	if the name of the player's tool contains "<red><bold>Super Shotgun | Clip: 2/2":
 		play sound "entity.blaze.shoot" with volume 4 and pitch 0.5 at the player
@@ -3526,38 +3495,70 @@ on right click:
 				set {capture.%player%} to 1
 				send "<light green>Now attempting to Capture foes! Attacks will deal 50%% less damage."
 	#Taunt
-	if the 4th line of the lore of the player's tool contains "Taunt":
+	if the 4th line of the lore of the player's tool is "<light green><bold>Assist - Taunt":
 		if player is sneaking:
 			if {isTaunting.%player%} is not set:
+				set {_rng} to a random integer from 1 to 4
+				if {_rng} is 1:
+					make player say {skillquote1.%player%}
+				else if {_rng} is 2:
+					make player say {skillquote2.%player%}
+				else if {_rng} is 3:
+					make player say {skillquote3.%player%}
+				else if {_rng} is 4:
+					make player say {skillquote4.%player%}
 				set {isTaunting.%player%} to true
 				while player is sneaking:
+					play sound "block.snow.hit" with volume 0.7 and pitch 0.8 at the player
 					add 1 to {_tauntTimer}
-					wait 1 tick
-					if {_tauntTimer} is more than or equal to 100:
+					wait 2 tick
+					if {_tauntTimer} is more than or equal to 18:
 						exit 1 loop
-				if {_tauntTimer} is more than or equal to 100:
-					add 10 to {strbuff.%player%}
-					add 10 to {sklbuff.%player%}
-					wait 5 seconds
-					subtract 10 from {strbuff.%player%}
-					subtract 10 from {sklbuff.%player%}
+				if {_tauntTimer} is more than or equal to 18:
+					buffSFX(player)
+					play mob spawner flames at the player
+					play 20 (redstone block break with speed 1) at the player
+					add 15 to {strbuff.%player%}
+					add 15 to {sklbuff.%player%}
+					wait 10 seconds
+					if {combograde.%player%} is more than 0:
+						add (9 * (8 - {combograde.%player%}) + ({comboscale.%player%})) to {comboscore.%player%}
+					subtract 15 from {strbuff.%player%}
+					subtract 15 from {sklbuff.%player%}
+					clear {isTaunting.%player%}
 					send "<light red>Taunt's bonus expired!"
 	#MAX-Taunt
-	if the 4th line of the lore of the player's tool contains "MAX-Taunt":
+	else if the 4th line of the lore of the player's tool contains "MAX-Taunt":
 		if player is sneaking:
 			if {isTaunting.%player%} is not set:
+				set {_rng} to a random integer from 1 to 4
+				if {_rng} is 1:
+					make player say {skillquote1.%player%}
+				else if {_rng} is 2:
+					make player say {skillquote2.%player%}
+				else if {_rng} is 3:
+					make player say {skillquote3.%player%}
+				else if {_rng} is 4:
+					make player say {skillquote4.%player%}
 				set {isTaunting.%player%} to true
 				while player is sneaking:
+					play sound "block.snow.hit" with volume 0.7 and pitch 0.8 at the player
 					add 1 to {_tauntTimer}
-					wait 1 tick
-					if {_tauntTimer} is more than or equal to 200:
+					wait 2 tick
+					if {_tauntTimer} is more than or equal to 36:
 						exit 1 loop
-				if {_tauntTimer} is more than or equal to 200:
-					add 20 to {strbuff.%player%}
-					add 20 to {sklbuff.%player%}
-					wait 10 seconds
-					subtract 20 from {strbuff.%player%}
-					subtract 20 from {sklbuff.%player%}
+				if {_tauntTimer} is more than or equal to 36:
+					buffSFX(player)
+					play 2 mob spawner flames at the player
+					play 40 (lapis block break with speed 1) at the player
+					add 30 to {strbuff.%player%}
+					add 30 to {sklbuff.%player%}
+					if {combograde.%player%} is more than 0:
+						add (18 * (7 - {combograde.%player%}) + ({comboscale.%player%})) to {comboscore.%player%}
+					wait 20 seconds
+					subtract 30 from {strbuff.%player%}
+					subtract 30 from {sklbuff.%player%}
+					clear {isTaunting.%player%}
 					send "<light red>MAX-Taunt's bonus expired!"
 				
 
@@ -4026,24 +4027,25 @@ on right-click with paper:
 		
 #Players can stall themselves in the air by attacking.
 on left click:
-	if ground state of the player is false:
+	if player is not on ground:
 		if player's tool is not air:
-			if {attackHangtimeCount.%player%} is more than 0:
-				if {inHangtime.%player%} is not true:
-					subtract 1 from {attackHangtimeCount.%player%}
-					send "<bold><italics>Air Hang: %{attackHangtimeCount.%player%}%"
-					push the player in horizontal direction of the player at speed 0.03
-					loop 4 times:
-						set {_magnitude} to (y of player's velocity)
-						#Cap hangtime boost if it exceeds a specific amount, and take absolute value.
-						if {_magnitude} is less than 0:
-							set {_magnitude} to {_magnitude} * -1.05
-						else:
-							set {_magnitude} to 0.05
-						push the player upwards at speed {_magnitude}
-						wait 1 tick
-						set {inHangtime.%player%} to true
-					clear {inHangtime.%player%}
+			if player's game mode is not creative:
+				if {attackHangtimeCount.%player%} is more than 0:
+					if {inHangtime.%player%} is not true:
+						subtract 1 from {attackHangtimeCount.%player%}
+						send "<bold><italics>Air Hang: %{attackHangtimeCount.%player%}%"
+						push the player in horizontal direction of the player at speed 0.06
+						loop 4 times:
+							set {_magnitude} to (y of player's velocity)
+							#Cap hangtime boost if it exceeds a specific amount, and take absolute value.
+							if {_magnitude} is less than 0:
+								set {_magnitude} to {_magnitude} * -1.05
+							else:
+								set {_magnitude} to 0.05
+							push the player upwards at speed {_magnitude}
+							wait 1 tick
+							set {inHangtime.%player%} to true
+						clear {inHangtime.%player%}
 	#Firearms Reload Behavior
 	set {_quick} to checkSlots(player,"Fast Fingers")
 	set {_gunslinger} to checkSlots(player,"Resourceful")
@@ -4367,23 +4369,32 @@ on projectile hit:
 		if the 6th line of the lore of the shooter's tool contains "Unique":
 			if the shooter is sneaking:
 				teleport the shooter to the projectile
+	if metadata value "gunType" of the projectile is set:
+		wait 1 tick
+		delete the projectile
+	else if metadata value "SUPERSHOTGUN" of the projectile is set:
+		wait 1 tick
+		delete the projectile
+	else if metadata value "JavType" of the projectile is set:
+		wait 1 tick
+		delete the projectile
 
 #Quarter-Second Periodicals
-every 0.25 seconds:
+every 0.1 seconds:
 	loop all players:
-		if ground state of loop-player is true:
-			set {attackHangtimeCount.%loop-player%} to 5
+		if loop-player is on ground:
+			set {attackHangtimeCount.%loop-player%} to 4
 			clear {inHangtime.%loop-player%}
 		if the name of loop-player's tool contains "<gold><bold>":
-			play 40 (firework spark with speed 0) at loop-player
-			play 40 (critical hit with speed 0) at loop-player
-			play 40 (snow shovel with speed 0) at loop-player
+			play 10 (firework spark with speed 0) at loop-player
+			play 10 (critical hit with speed 0) at loop-player
+			play 10 (snow shovel with speed 0) at loop-player
 		loop all entities in radius 8 of loop-player:
 			if loop-entity-2 is a citizen:
 				if the name of loop-entity-2's tool contains "<gold><bold>":
-					play 40 (firework spark with speed 0) at loop-entity-2
-					play 40 (critical hit with speed 0) at loop-entity-2
-					play 40 (snow shovel with speed 0) at loop-entity-2
+					play 10 (firework spark with speed 0) at loop-entity-2
+					play 10 (critical hit with speed 0) at loop-entity-2
+					play 10 (snow shovel with speed 0) at loop-entity-2
 					
 #5-Second Periodicals
 every 5 seconds:
@@ -4433,7 +4444,7 @@ on jump:
 			push the player in horizontal direction of the player at speed {_magnitude}
 			set {_magnitude} to {_magnitude} / (1.05 + {_decay})
 			#send "%{_magnitude}%"
-			if ground state of the player is true:
+			if player is on ground:
 				wait 1 tick
 				exit 1 loop
 			wait 1 tick
@@ -4723,6 +4734,76 @@ on tool change:
 		play 30 (firework spark with speed 0) at the player
 		play 30 (critical hit with speed 0) at the player
 		play 30 (snow shovel with speed 0) at the player
+		
+#Judgement Cut
+on right click:
+	if the name of the player's tool is "<gold><bold>Yamato":
+		if the player is sneaking:
+			if player is on ground:
+				if {JCActive.%player%} is not set:
+					set {JCActive.%player%} to true
+					make player say "<Light blue>Slay all..."
+					apply slowness 100 to the player for 12 seconds
+					apply weakness 100 to the player for 12 seconds
+					apply blindness 1 to the player for 12 seconds
+					play sound "entity.generic.explode" with volume 1.5 and pitch 0.5 at the player
+					play large explosion at the player
+					loop 40 times:
+						if player is not on ground:
+							exit loop
+						else if player is not sneaking:
+							exit loop
+						else:
+							add 1 to {_JCWait}
+							loop all blocks in radius 20 of the player:
+								if y coordinate of loop-block is more than or equal to y coordinate of the block at the player:
+									chance of 2%:
+										play 5 (cyan wool break with speed 1) at the loop-block
+										play 5 (blue wool break with speed 1) at the loop-block
+							loop all monsters in radius 20 of the player:
+								play 10 (white wool break with speed 1) at the loop-monster
+							loop all players in radius 20 of the player:
+								if loop-player is not the player:
+									play 10 (white wool break with speed 1) at the loop-player
+							wait 0.25 seconds
+							send action bar "<light blue><bold>JUDGEMENT CUT CHARGE: %%%{_JCWAIT} * 2.5%" to the player
+							play sound "entity.minecart.riding" with volume 0.5 and pitch 0.5 at the player
+					if {_JCWait} is more than 8:
+						play sound "entity.player.attack.sweep" with volume 2 and pitch 0.7 at the player
+						wait 0.3 seconds
+						play sound "entity.enderdragon.shoot" with volume 1.5 and pitch 0.7 at the player
+						play sound "entity.generic.explode" with volume 2 and pitch 0.5 at the player
+						play sound "block.end_portal.spawn" with volume 2 and pitch 1 at the player
+						loop all monsters in radius 20 of the player:
+							make the player damage loop-monster by {_JCWait}
+							play 40 (cyan wool break with speed 1) at the loop-monster
+							play 40 (quartz block break with speed 1) at the loop-monster
+							play explosion at the loop-monster
+						loop all players in radius 20 of the player:
+							if loop-player is not the player:
+								make the player damage loop-player by {_JCWait}
+								play 40 (cyan wool break with speed 1) at the loop-player
+								play 40 (quartz block break with speed 1) at the loop-player
+								play explosion at the loop-player
+						set {_rng} to a random integer between 1 and 4
+						if {_rng} is 1:
+							make player say "%{skillquote1.%player%}%"
+						else if {_rng} is 2:
+							make player say "%{skillquote2.%player%}%"
+						else if {_rng} is 3:
+							make player say "%{skillquote3.%player%}%"
+						else if {_rng} is 4:
+							make player say "%{skillquote4.%player%}%"
+						remove slowness from the player
+						remove weakness from the player
+						remove blindness from the player
+						#apply slowness 100 to the player for 2 seconds
+						#apply weakness 100 to the player for 2 seconds
+					else:
+						remove slowness from the player
+						remove weakness from the player
+						remove blindness from the player
+					clear {JCActive.%player%}
 		
 #Holy Weapons become Broken Weapons instead of Dissapearing
 on tool break:

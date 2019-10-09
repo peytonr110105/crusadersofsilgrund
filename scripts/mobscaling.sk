@@ -1362,10 +1362,14 @@ on spawn of a monster:
 						set {lvl.%{_deadlord}%} to 80
 						set the maximum health of {_deadlord} to 190
 						set {_deadlord}'s tool to diamond sword of sharpness 8 named "<gold><bold>Niur" with lore "Slot A - Distant Counter", "Slot B - Desperation", "Slot C - Pressure DEF","<light green><bold>Assist - None", "<light purple><bold>Special - Dragon Fang", "<purple><bold>Refined: Crushing"
-						set {_deadlord}'s helmet to leather helmet of protection 10 dyed black
-						set {_deadlord}'s chestplate to leather chestplate of protection 10 dyed black
-						set {_deadlord}'s leggings to leather leggings of protection 10 dyed black
-						set {_deadlord}'s boots to leather leggings of protection 10 dyed black
+						set {_deadlord}'s helmet to leather helmet of protection 10
+						set {_deadlord}'s chestplate to leather chestplate of protection 10
+						set {_deadlord}'s leggings to leather leggings of protection 10
+						set {_deadlord}'s boots to leather leggings of protection 10
+						dye {_deadlord}'s helmet black
+						dye {_deadlord}'s chestplate black
+						dye {_deadlord}'s leggings black
+						dye {_deadlord}'s boots black
 						set {class.%{_deadlord}%} to "Lord"
 						set {skillslot1.%{_deadlord}%} to "Double Lion"
 						set {skillslot3.%{_deadlord}%} to "Brazen Spectrum"

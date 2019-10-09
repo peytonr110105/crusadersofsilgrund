@@ -1,52 +1,3 @@
-#Equppable perks that do not require a weapon.
-#List:
-#Skill Slot Check Function
-function checkSlots(PLR: player , skill: text) :: number:
-	if {skillslot1.%{_PLR}%} is "%{_skill}%":
-		return 1
-	else if {skillslot2.%{_PLR}%} is "%{_skill}%":
-		return 1
-	else if {skillslot3.%{_PLR}%} is "%{_skill}%":
-		return 1
-	else if {skillslot4.%{_PLR}%} is "%{_skill}%":
-		return 1
-	else if {skillslot5.%{_PLR}%} is "%{_skill}%":
-		return 1
-	else:
-		return 0
-		
-function startQuest(PLR: player , QUEST: text , DESC: text):
-	set {quests.%{_PLR}%::%{_QUEST}%} to 1
-	send title "<white><bold>New Quest: %{_QUEST}%" with subtitle "%{_DESC}%" to {_PLR} for 5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-	play sound "entity.firework_rocket.launch" with volume 0.75 and pitch 1 at {_PLR} for {_PLR}
-	play sound "entity.firework_rocket.twinkle" with volume 0.4 and pitch 1.5 at {_PLR} for {_PLR}
-	play sound "entity.player.levelup" with volume 1 and pitch 1 at {_PLR} for {_PLR}
-	play 60 (firework spark with speed 1) at {_PLR}
-	play 60 (snow shovel with speed 1) at {_PLR}
-
-function setQuestProgress(PLR: player , QUEST: text , STAGE: number, INFO: text):
-	set {quests.%{_PLR}%::%{_QUEST}%} to {_STAGE}
-	send title "" with subtitle "%{_INFO}%" to {_PLR} for 2.5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-	play sound "entity.player.levelup" with volume 0.5 and pitch 1.5 at {_PLR} for {_PLR}
-	#play sound "entity.firework_rocket.twinkle" with volume 0.4 and pitch 1.5 at the player for the player
-	play 10 (firework spark with speed 1) at {_PLR}
-	play 10 (snow shovel with speed 1) at {_PLR}
-	
-function finishQuest(PLR: player , QUEST: text , DESC: text):
-	set {quests.%{_PLR}%::%{_QUEST}%} to 999
-	send title "<gold><bold>Quest Complete: %{_QUEST}%" with subtitle "%{_DESC}%" to {_PLR} for 5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-	play sound "entity.player.levelup" with volume 1 and pitch 0.75 at {_PLR} for {_PLR}
-	play sound "entity.firework_rocket.twinkle" with volume 1 and pitch 1.5 at {_PLR} for {_PLR}
-	play 60 (firework spark with speed 1) at {_PLR}
-	play 60 (snow shovel with speed 1) at {_PLR}
-	
-function failQuest(PLR: player , QUEST: text , DESC: text):
-	set {quests.%{_PLR}%::%{_QUEST}%} to 998
-	send title "<light red><bold>Quest Failed: %{_QUEST}%" with subtitle "%{_DESC}%" to {_PLR} for 5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-	play 60 (red wool break with speed 1) at {_PLR}
-	show mob spawner flames on {_PLR}
-	
-
 command /grantskill <number> <text>:
 	description: Grants a skill.
 	usage: This should not be displayed
@@ -254,9 +205,9 @@ command /perks [<number=1>]:
 			else:
 				set slot 27 of player's current inventory to 1 obsidian named "<bold>Combo System" with lore "<white>Chain attacks together to create stylish combos.", "Unlocked at: Promotion to Devil Hunter"
 			if {Air Hike.%player%} is 1:
-				set slot 28 of player's current inventory to 1 emerald block named "<bold>Air Hike" with lore "<white>Left-Click a wall while in the air and sneaking to jump off of it."
+				set slot 28 of player's current inventory to 1 emerald block named "<bold>Air Hike" with lore "<white>Allows double-jumps to be performed.", "<white>Double-jump by pressing the JUMP key twice.", "<white>Disables fall damage while equipped."
 			else:
-				set slot 28 of player's current inventory to 1 obsidian named "<bold>Air Hike" with lore "<white>Left-Click a wall while in the air and sneaking to jump off of it.", "Unlocked at: Promotion to Devil Hunter"
+				set slot 28 of player's current inventory to 1 obsidian named "<bold>Air Hike" with lore "<white>Allows double-jumps to be performed.", "<white>Double-jump by pressing the JUMP key twice.", "<white>Disables fall damage while equipped.", "Unlocked at: Promotion to Devil Hunter"
 			if {Witch Time.%player%} is 1:
 				set slot 29 of player's current inventory to 1 emerald block named "<bold>Witch Time" with lore "<white>Dodging an enemy's attack by Dodge Rolling slows down time for your attacker."
 			else:
@@ -435,6 +386,10 @@ command /perks [<number=1>]:
 				set slot 18 of player's current inventory to 1 emerald block named "<bold>Quick Revive" with lore "<white>Automatically revives the player upon death.", "<white>Cooldown: 3 minutes"
 			else:
 				set slot 18 of player's current inventory to 1 obsidian named "<bold>Quick Revive" with lore "<white>Automatically revives the player upon death.", "<white>Cooldown: 3 minutes", "Complete ""The Dusty Palace"" to unlock."
+			if {Wall Kick.%player%} is 1:
+				set slot 19 of player's current inventory to 1 emerald block named "<bold>Wall Kick" with lore "<white>Left-Click a wall while in the air and sneaking to jump off of it."
+			else:
+				set slot 19 of player's current inventory to 1 obsidian named "<bold>Wall Kick" with lore "<white>Left-Click a wall while in the air and sneaking to jump off of it.", "Unlocked at: Level 14"
 			#set slot 52 of player's current inventory to 1 red glass pane named "<bold>Main Menu"
 			set slot 53 of player's current inventory to 1 book named "<bold>Previous Page"
 		else if arg 1 is 3:
@@ -1018,6 +973,56 @@ on right click with bow:
 		else:
 			cancel event
 
+on flight toggle:
+	if the player's gamemode is not creative:
+		set {_ak} to checkSlots(player,"Air Hike")
+		if {_ak} is 1:
+			cancel event
+			if {AirHikeReady.%player%} is true:
+				play sound "entity.painting.place" with volume 1.5 and pitch 0.6 at the player for the player
+				wait 1 tick
+				set {AirHikeReady.%player%} to false
+				set {_magnitude} to (y of player's velocity)
+				if {_magnitude} is less than 0:
+					set {_magnitude} to {_magnitude} * -1.05
+				else:
+					set {_magnitude} to {_magnitude} / 4
+				play 60 (redstone block break with speed 1) at the player
+				push the player upwards at speed ({_magnitude} + 1.05)
+				set {_m2} to sqrt(((x of player's velocity) ^ 2) + ((z of player's velocity) ^ 2))
+				#add (z of player's velocity) to {_m2}
+				#broadcast "%{_m2}%"
+				push the player in horizontal direction of the player at speed {_m2}
+				play sound "entity.blaze.shoot" with volume 0.75 and pitch 0.7 at the player for the player
+				loop 10 times:
+					play 2 (redstone block break with speed 1) at the player
+					play 2 (cloud with speed 0) at the player
+					wait 1 tick
+			else:
+				push the player downwards at speed 0.05
+		set {_sl} to checkSlots(player,"Smooth Landing")
+		if {_sl} is 1:
+			cancel event
+			push the player downwards at speed 0.05
+
+every 0.1 seconds:
+	loop all players:
+		set {_ak} to checkSlots(loop-player,"Air Hike")
+		if {_ak} is 1:
+			if loop-player is on ground:
+				set {AirHikeReady.%loop-player%} to true
+	
+on jump:
+	player's gamemode is not creative:
+		if block below player is not air or water:
+			set {_ak} to checkSlots(player,"Air Hike")
+			set {_sl} to checkSlots(player,"Smooth Landing")
+			if {_ak} is 1:
+				set player's flight state to true
+				set {AirHikeReady.%player%} to true
+			else if {_sl} is 1:
+				set player's flight state to true
+
 on tame:
 	#Taming Mastery
 	set {_slot} to checkSlots(player,"Taming Mastery")
@@ -1046,19 +1051,20 @@ on tool break:
 			send "<red>You lacked the required funds to prevent this tool from breaking."
 
 on block damage:
-	set {_isStylish} to checkSlots(player,"Air Hike")
+	set {_isStylish} to checkSlots(player,"Wall Kick")
 	if {_isStylish} is 1:
-		if ground state of player is false:	
+		if player is not on ground:	
 			if player is sneaking:
-				if {airHikeReady.%player%} is not set:
+				if {WallKickReady.%player%} is not set:
+					set {AirHikeReady.%player%} to true
 					push the player backwards at speed 0.6
 					if {combograde.%player%} is more than 0:
-						add (1.5 * (7 - {combograde.%player%})) to {comboscore.%player%}
-					push the player upwards at speed 0.6
+						add (1.15 * (7 - {combograde.%player%})) to {comboscore.%player%}
+					push the player upwards at speed 0.7
 					remove resistance from the player
 					apply resistance 5 to the player for 2 seconds
 					#send "<light red>Air hike!" to the player
-					set {airHikeReady.%player%} to 1
+					set {WallKickReady.%player%} to 1
 					wait 0.35 seconds
-					clear {airHikeReady.%player%}
+					clear {WallKickReady.%player%}
 			

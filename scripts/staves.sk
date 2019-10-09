@@ -88,53 +88,6 @@ command /staff <text>:
 				remove 225 from the player's balance
 		send "<green><bold>New balance: %player's money%."
 		
-#Skill Slot Check Function
-function checkSlots(PLR: player , skill: text) :: number:
-	if {skillslot1.%{_PLR}%} contains "%{_skill}%":
-		return 1
-	else if {skillslot2.%{_PLR}%} contains "%{_skill}%":
-		return 1
-	else if {skillslot3.%{_PLR}%} contains "%{_skill}%":
-		return 1
-	else if {skillslot4.%{_PLR}%} contains "%{_skill}%":
-		return 1
-	else if {skillslot5.%{_PLR}%} contains "%{_skill}%":
-		return 1
-	else:
-		return 0
-
-function isStaff(NAME: text) :: number:
-	if {_NAME} contains "<yellow><bold>Heal":
-		return 1
-	else if {_NAME} contains "<yellow><bold>Mend":
-		return 1
-	else if {_NAME} contains "<yellow><bold>Rehabilitate":
-		return 1
-	else if {_NAME} contains "<yellow><bold>Wrys":
-		return 1
-	else if {_NAME} contains "<yellow><bold>Imbue":
-		return 1
-	else if {_NAME} contains "<yellow><bold>Renewal":
-		return 1
-	else if {_NAME} contains "<yellow><bold>Miracle":
-		return 1
-	else if {_NAME} contains "<yellow><bold>Aum":
-		return 1
-	else if {_NAME} contains "<yellow><bold>Fortify":
-		return 1
-	else:
-		return 0
-		
-function isCleric(PLR: player) :: number:
-	if {class.%{_PLR}%} is "Cleric":
-		return 1
-	else if {class.%{_PLR}%} is "Bishop":
-		return 1
-	else if {class.%{_PLR}%} is "Sage":
-		return 1
-	else:
-		return 0
-		
 function staffRank(PLR: player,TARGET: entity):
 	if {weaponrank.%{_PLR}%::staves} is more than or equal to 988:
 		if {weapongrade.%{_PLR}%::staves} is not "<gold><bold>S":
