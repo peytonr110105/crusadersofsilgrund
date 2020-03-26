@@ -1,0 +1,202 @@
+#Get recoil damage value for summons.
+function summonRecoil(MOB: text,PLR: player) :: number:
+	if {_MOB} is "Zombie":
+		set {_Recoil} to 9
+	else if {_MOB} is "Skeleton":
+		set {_Recoil} to 9
+	else if {_MOB} is "Mimicry":
+		set {_Recoil} to 27
+	if checkSlots({_PLR},"Demon Breeder") is 1:
+		set {_recoil} to {_recoil} / 2
+	return {_recoil}
+
+command /summons [<number=0>]:
+	description: Show all summons available.
+	trigger:
+		if arg 1 is 0:
+			open chest with 4 rows named "<light purple>Available Summons:" for the player
+		else:
+			open chest with 4 rows named "<light purple>Select a summon to equip:" for the player
+		set slot 0 of the player's current inventory to 1 emerald block named "<light purple>Zombie" with lore "<white>Basic melee summon. Moves slowly, but hits hard.", "<light yellow>Summon Cost: 1.5 Hearts", "<cyan>Movement Speed: <light red>Slow", "<light green>Attack Power: <light yellow>Medium"
+		set slot 1 of the player's current inventory to 1 emerald block named "<light purple>Skeleton" with lore "<white>Basic ranged summon. Moves quickly in a pinch.", "<light yellow>Summon Cost: 2 Hearts", "<cyan>Movement Speed: <light yellow>Medium", "<light green>Attack Power: <light yellow>Medium-Low"
+		set slot 2 of the player's current inventory to 1 emerald block named "<light purple>Mimicry" with lore "<white>Advanced summon that takes on the likeness of the summoner."
+
+#Focus a summon's attacks on a particular monster.
+on left click with blaze rod:
+	if the name of the player's tool contains "<light yellow>Summoner's Cane":
+		shoot an arrow from the player at speed 3
+		set metadata value "summonerTarget" of the last shot projectile to 1
+
+#Delete spare arrows from focus fire commands.
+on projectile hit:
+	if metadata value "summonerTarget" of the projectile is 1:
+		wait 1 tick
+		delete the projectile
+
+#Force a summon to target the damaged monster.
+on damage:
+	if projectile exists:
+		if metadata value "summonerTarget" of the projectile is 1:
+			if the 1st line of the lore of the attacker's tool contains "ACTIVE -> ":
+				remove "<bold>ACTIVE -> " from the 1st line of the lore of the attacker's tool
+				set {_mobtype} to the 1st line of the lore of the attacker's tool
+				set the 1st line of the lore of the attacker's tool to "<bold>ACTIVE -> <reset>%1st line of the lore of the attacker's tool%"
+			else if the 2nd line of the lore of the attacker's tool contains "ACTIVE -> ":
+				remove "<bold>ACTIVE -> " from the 2nd line of the lore of the attacker's tool
+				set {_mobtype} to the 2nd line of the lore of the attacker's tool
+				set the 2nd line of the lore of the attacker's tool to "<bold>ACTIVE -> <reset>%2nd line of the lore of the attacker's tool%"
+			else if the 3rd line of the lore of the attacker's tool contains "ACTIVE -> ":
+				remove "<bold>ACTIVE -> " from the 3rd line of the lore of the attacker's tool
+				set {_mobtype} to the 3rd line of the lore of the attacker's tool
+				set the 3rd line of the lore of the attacker's tool to "<bold>ACTIVE -> <reset>%3rd line of the lore of the attacker's tool%"
+			remove "<bold>ACTIVE -> " from {_mobtype}
+			set {_mobtype} to decolorize({_mobtype})
+			broadcast "TEST %{_mobtype}%"
+			if {NPCsFor.%attacker%::C_%{_mobtype}% Summon} is set:
+				make {NPCsFor.%attacker%::C_%{_mobtype}% Summon} attack the victim
+				play 40 (purple wool break with speed 1) at {NPCsFor.%attacker%::C_%{_mobtype}% Summon}
+				teleport {NPCsFor.%attacker%::C_%{_mobtype}% Summon} to the victim
+				play 40 (purple wool break with speed 1) at the victim
+				send "<light blue>Summon now focusing on %victim%."
+			else:
+				send "<light red>This monster isn't summoned!"
+			cancel event
+		
+
+on right click with blaze rod:
+	if the name of the player's tool contains "<light yellow>Summoner's Cane":
+		if player is sneaking:
+			if the 1st line of the lore of the player's tool contains "ACTIVE -> ":
+				remove "<bold>ACTIVE -> " from the 1st line of the lore of the player's tool
+				send "<light purple>ACTIVE SUMMON: %2nd line of the lore of the player's tool%"
+				set the 2nd line of the lore of the player's tool to "<bold>ACTIVE -> <reset>%2nd line of the lore of the player's tool%"
+			else if the 2nd line of the lore of the player's tool contains "ACTIVE -> ":
+				remove "<bold>ACTIVE -> " from the 2nd line of the lore of the player's tool
+				send "<light purple>ACTIVE SUMMON: %3rd line of the lore of the player's tool%"
+				set the 3rd line of the lore of the player's tool to "<bold>ACTIVE -> <reset>%3rd line of the lore of the player's tool%"
+			else if the 3rd line of the lore of the player's tool contains "ACTIVE -> ":
+				send "<light purple>ACTIVE SUMMON: %1st line of the lore of the player's tool%"
+				remove "<bold>ACTIVE -> " from the 3rd line of the lore of the player's tool
+				set the 1st line of the lore of the player's tool to "<bold>ACTIVE -> <reset>%1st line of the lore of the player's tool%"
+			else:
+				send "<light purple>ACTIVE SUMMON: %1st line of the lore of the player's tool%"
+				set the 1st line of the lore of the player's tool to "<bold>ACTIVE -> <reset>%1st line of the lore of the player's tool%"
+			play sound "entity.zombie.infect" with volume 1 and pitch 1 at the player for the player
+		else:
+			if the 1st line of the lore of the player's tool contains "ACTIVE -> ":
+				remove "<bold>ACTIVE -> " from the 1st line of the lore of the player's tool
+				set {_mobtype} to the 1st line of the lore of the player's tool
+				set the 1st line of the lore of the player's tool to "<bold>ACTIVE -> <reset>%1st line of the lore of the player's tool%"
+			else if the 2nd line of the lore of the player's tool contains "ACTIVE -> ":
+				remove "<bold>ACTIVE -> " from the 2nd line of the lore of the player's tool
+				set {_mobtype} to the 2nd line of the lore of the player's tool
+				set the 2nd line of the lore of the player's tool to "<bold>ACTIVE -> <reset>%2nd line of the lore of the player's tool%"
+			else if the 3rd line of the lore of the player's tool contains "ACTIVE -> ":
+				remove "<bold>ACTIVE -> " from the 3rd line of the lore of the player's tool
+				set {_mobtype} to the 3rd line of the lore of the player's tool
+				set the 3rd line of the lore of the player's tool to "<bold>ACTIVE -> <reset>%3rd line of the lore of the player's tool%"
+			remove "<bold>ACTIVE -> " from {_mobtype}
+			broadcast "%{_mobtype}%"
+			set {_mobtype} to decolorize({_mobtype})
+			broadcast "%{_mobtype}% - %summonRecoil({_mobtype},player)%"
+			if {NPCsFor.%player%::C_%{_mobtype}% Summon} is not set:
+				if summonRecoil({_mobtype},player) is less than the player's health:
+					damage the player by summonRecoil({_mobtype},player)
+					set {inCutscene.%player%} to true
+					set {summoningMonster.%player%} to true
+					set {_location} to vector of location of block at player
+					make player execute command "/npc create %{_mobtype}% Summon --at %x of {_location}%,%y of {_location}%,%z of {_location}% --trait Sentinel"
+					set {_rawType} to {_mobtype}
+					set {_mobtype} to "%{_mobtype}% Summon"
+					while {summoningMonster.%player%} is set:
+						add 1 to {_break}
+						wait 1 tick
+						send "<light red>waiting for summon..."
+						if {_break} is more than 90:
+							send "fuck"
+							exit 1 loop
+							send "<light red>fuck"
+					set {str.%{NPCsFor.%player%::C_%{_mobtype}%}%} to floor({str.%player%} / 4)
+					set {def.%{NPCsFor.%player%::C_%{_mobtype}%}%} to floor({def.%player%} / 4)
+					set {spd.%{NPCsFor.%player%::C_%{_mobtype}%}%} to floor({spd.%player%} / 4)
+					set {skl.%{NPCsFor.%player%::C_%{_mobtype}%}%} to floor({skl.%player%} / 4)
+					set {res.%{NPCsFor.%player%::C_%{_mobtype}%}%} to floor({res.%player%} / 4)
+					set {hp.%{NPCsFor.%player%::C_%{_mobtype}%}%} to floor({hp.%player%} / 4)
+					set {summonOwner.%{NPCsFor.%player%::C_%{_mobtype}%}%} to the player's name
+					broadcast "TEST: %{summonOwner.%{NPCsFor.%player%::C_%{_mobtype}%}%}%"
+					make console execute command "/npc sel %citizen id of {NPCsFor.%player%::C_%{_mobtype}%}%"
+					if {_rawType} contains "Mimicry":
+						if {weaponrank.%player%::swords} is more than {weaponrank.%player%::bows}:
+							set {NPCsFor.%player%::C_%{_mobtype}%}'s tool to 1 diamond sword
+						else:
+							set {NPCsFor.%player%::C_%{_mobtype}%}'s tool to 1 bow of power 4
+						set {_rawType} to player's name
+						set {str.%{NPCsFor.%player%::C_%{_mobtype}%}%} to floor({str.%player%} / 2)
+						set {def.%{NPCsFor.%player%::C_%{_mobtype}%}%} to floor({def.%player%} / 2)
+						set {spd.%{NPCsFor.%player%::C_%{_mobtype}%}%} to floor({spd.%player%} / 2)
+						set {skl.%{NPCsFor.%player%::C_%{_mobtype}%}%} to floor({skl.%player%} / 2)
+						set {res.%{NPCsFor.%player%::C_%{_mobtype}%}%} to floor({res.%player%} / 2)
+						set {hp.%{NPCsFor.%player%::C_%{_mobtype}%}%} to floor({hp.%player%} / 2)
+						make console execute command "/sentinel needammo false"
+						make console execute command "/sentinel avoidrange 8"
+						make console execute command "/sentinel range 12"
+					else if {_rawType} contains "Skeleton":
+						set {NPCsFor.%player%::C_%{_mobtype}%}'s tool to 1 bow
+						make console execute command "/sentinel needammo false"
+						make console execute command "/sentinel avoidrange 8"
+						make console execute command "/sentinel chaseclose false"
+						make console execute command "/sentinel range 12"
+					else:
+						set {NPCsFor.%player%::C_%{_mobtype}%}'s tool to 1 iron sword
+					make console execute command "/npc skin %{_rawType}%"
+					make console execute command "/sentinel addtarget MONSTERS"
+					make console execute command "/sentinel guard %player%"
+					make console execute command "/sentinel speed 1.25"
+					loop {%{party.%player%}%.members::*}:
+						make console execute command "/sentinel addignore PLAYER:%loop-value%"
+					loop {lvl.%player%} times:
+						chance of (40 + (summonRecoil({_mobtype},player) * 2.5))%:
+							add 1 to {str.%{NPCsFor.%player%::C_%{_mobtype}%}%}
+						chance of (40 + (summonRecoil({_mobtype},player) * 2.5))%:
+							add 1 to {spd.%{NPCsFor.%player%::C_%{_mobtype}%}%}
+						chance of (40 + (summonRecoil({_mobtype},player) * 2.5))%:
+							add 1 to {skl.%{NPCsFor.%player%::C_%{_mobtype}%}%}
+						chance of (40 + (summonRecoil({_mobtype},player) * 2.5))%:
+							add 1 to {def.%{NPCsFor.%player%::C_%{_mobtype}%}%}
+						chance of (40 + (summonRecoil({_mobtype},player) * 2.5))%:
+							add 1 to {res.%{NPCsFor.%player%::C_%{_mobtype}%}%}
+						chance of (80 + (summonRecoil({_mobtype},player) * 3.5))%:
+							add 1 to {hp.%{NPCsFor.%player%::C_%{_mobtype}%}%}
+					broadcast "%{str.%{NPCsFor.%player%::C_%{_mobtype}%}%}%"
+					play 40 (purple wool break with speed 1) at {NPCsFor.%player%::C_%{_mobtype}%}
+					play sound "entity.zombie_villager.cure" with volume 1 and pitch 1.2 at the player
+					make console execute command "/sentinel health %{hp.%{NPCsFor.%player%::C_%{_mobtype}%}%}%"
+					clear {inCutscene.%player%}
+					clear {summoningMonster.%player%}
+				else:
+					send "<light red>You don't have enough health to summon this monster!"
+			else:
+				set {_rawType} to {_mobtype}
+				set {_mobtype} to "%{_mobtype}% Summon"
+				play 40 (purple wool break with speed 1) at {NPCsFor.%player%::C_%{_mobtype}%}
+				play 40 (smoke with speed 1) at {NPCsFor.%player%::C_%{_mobtype}%}
+				make console execute command "/npc sel %citizen id of {NPCsFor.%player%::C_%{_mobtype}%}%"
+				make console execute command "/npc remove"
+				clear {str.%{NPCsFor.%player%::C_%{_mobtype}%}%}
+				clear {spd.%{NPCsFor.%player%::C_%{_mobtype}%}%}
+				clear {def.%{NPCsFor.%player%::C_%{_mobtype}%}%}
+				clear {res.%{NPCsFor.%player%::C_%{_mobtype}%}%}
+				clear {skl.%{NPCsFor.%player%::C_%{_mobtype}%}%}
+				clear {hp.%{NPCsFor.%player%::C_%{_mobtype}%}%}
+				clear {summonOwner.%{NPCsFor.%player%::C_%{_mobtype}%}%}
+				clear {NPCsFor.%player%::C_%{_mobtype}%}
+				heal the player by (summonRecoil({_rawtype},player) / 2)
+				play sound "entity.zombie_villager.cure" with volume 1 and pitch 0.8 at the player
+				send formatted "<light blue>Recalled %{_mobtype}%."
+				
+#Stop players from attacking allied summons.
+#on damage:
+#	if {NPCsFor.%attacker%::C_%victim's name%} is set:
+#		send "<light red>You can't damage your own summons!" to the attacker
+#		cancel event
+			

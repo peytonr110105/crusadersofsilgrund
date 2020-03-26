@@ -34,7 +34,6 @@ every 0.25 seconds:
 						play 1 (oak leaf break with speed 0) at the loop-block
 			if loop-player's health is less than (loop-player's maximum health * 0.5):
 				play 2 (redstone block break with speed 0) at the loop-player
-				
 on flow:
 	loop all players in radius 10 of the event-block:
 		if {vt.%loop-player%} is true:
@@ -60,9 +59,9 @@ on combust:
 on bucket fill:
 	if {vt.%player%} is true:
 		if event-block is water:
-			play 20 water splash at the event-block
+			play 20 water splash at the player
 		else if event-block is lava:
-			play 20 lava pop at the event-block
+			play 20 lava pop at the player
 			
 on fade:
 	loop all players in radius 10 of the event-block:

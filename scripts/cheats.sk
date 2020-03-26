@@ -27,8 +27,22 @@ command /cheats <text>:
 			finishQuest(player,"Path of the Greats","")
 			finishQuest(player,"The Wizard of House Silgrid","")
 			#set {generation.%player%} to 2
+			set {unlockedClasses.%player%::Dragonborn} to 1
+			set {unlockedClasses.%player%::Gunslinger} to 1
+			set {unlockedClasses.%player%::Devil Hunter} to 1
+			set {unlockedClasses.%player%::Survivor} to 1
+			set {unlockedClasses.%player%::Summoner} to 1
+			set {unlockedClasses.%player%::Strategist} to 1
 			set {mqComplete.%player%} to true
-			send "<gold>All items unlocked!"
+			send formatted "<gold>All items unlocked!"
+		else if arg 1 is "unlockallclasses":
+			set {unlockedClasses.%player%::Dragonborn} to 1
+			set {unlockedClasses.%player%::Gunslinger} to 1
+			set {unlockedClasses.%player%::Devil Hunter} to 1
+			set {unlockedClasses.%player%::Survivor} to 1
+			set {unlockedClasses.%player%::Summoner} to 1
+			set {unlockedClasses.%player%::Strategist} to 1
+			send formatted "<gold>All classes now available!"
 		else if arg 1 is "idkfa":
 			set {weapongrade.%player%::swords} to "<gold><bold>S"
 			set {weapongrade.%player%::lances} to "<gold><bold>S"
@@ -42,10 +56,10 @@ command /cheats <text>:
 			set {weaponrank.%player%::bows} to 999999
 			set {weaponrank.%player%::magic} to 999999
 			set {weaponrank.%player%::staves} to 9999999
-			send "<gold>All weapons can now be wielded!"
+			send formatted "<gold>All weapons can now be wielded!"
 		else if arg 1 is "rosebud":
 			add 1000 to the player's balance
-			send "<gold>$1000 obtained!"
+			send formatted "<gold>$1000 obtained!"
 		else if arg 1 is "gearup":
 			give 1 iron sword to the player
 			give 1 iron helmet to the player
@@ -54,7 +68,7 @@ command /cheats <text>:
 			give 1 iron boots to the player
 			give 1 bow to the player
 			give 64 arrow to the player
-			send "<gold>Ready for adventure!"
+			send formatted "<gold>Ready for adventure!"
 		else if arg 1 is "diamondlife":
 			give 1 diamond sword of sharpness 10 to the player
 			give 1 diamond helmet of protection 10 to the player
@@ -63,7 +77,7 @@ command /cheats <text>:
 			give 1 diamond boots of protection 10 to the player
 			give 1 bow of power 10 to the player
 			give 64 arrow to the player
-			send "<gold>Cover me in diamond!"
+			send formatted "<gold>Cover me in diamond!"
 		else if arg 1 is "blingbling":
 			open chest with 2 rows named "<gold><bold>Select a ring." for the player
 			set slot 0 of the player's current inventory to 1 music disc far with name "<light green><bold>Life Ring" with lore "<white>While in your inventory:", "<light green>Recover 10%% of your max HP every 15 seconds."
@@ -77,9 +91,12 @@ command /cheats <text>:
 			set slot 8 of the player's current inventory to 1 music disc cat named "<green><bold>Pursuit Ring" with lore "<white>While in your inventory:", "<green>Automatically perform a follow-up attack in combat.", "<green>Auto follow-ups deal 50%% less damage."
 		else if arg 1 is "inamerica":
 			set {perdiff.%player%} to "Thracian"
-			send "<light green>Personal Difficulty increased to Thracian!"
-			send "<light yellow>On Thracian difficulty, your attacks have a chance to miss based on your SPD and SKL."
-			send "<light yellow>Lunatic damage multipliers are also active."
+			send formatted "<light green>Personal Difficulty increased to Thracian!"
+			send formatted "<light yellow>On Thracian difficulty, your attacks have a chance to miss based on your SPD and SKL."
+			send formatted "<light yellow>Lunatic damage multipliers are also active."
+		else if arg 1 is "thedarksoulsofminecraftservers":
+			give 1 diamond sword named "<gold><bold>Estoc" with lore "<light red><bold>Slot A - Power Within", "<light blue><bold>Slot B - Bonus Blade", "<light yellow><bold>Slot C - Bold Fighter", "<light green><bold>Assist - Stinger", "<light purple><bold>Special - Dragon Fang", "<light red><bold>Refined - Reinforced", "<white>Grants bonus damage equal to 25%% of your STR.", "<white>Nullifies foe's bonuses granted by armour." to the player
+			send "<light green><bold>Obtained <reset><gold><bold>Estoc<reset><light green><bold>!" to the player
 		else:
-			send "<light red>Your code was not recognized."
+			send formatted "<light red>Your code was not recognized."
 		

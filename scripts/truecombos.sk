@@ -30,7 +30,9 @@ every 0.25 seconds:
 						set {comboscalar.%loop-player%} to 0
 						set {combobank.%loop-player%} to 0
 				else:
-					subtract (({comboscore.%loop-player%} / ({comboscale.%loop-player%} + {combograde.%loop-player%}) + ({combograde.%loop-player%} ^ 2)) / 6) from {comboscore.%loop-player%}
+					add 0.25 to {t_comboDowntime.%loop-player%}
+					set {t_comboDowntimePenalty.%loop-player%} to (((({t_comboDowntime.%loop-player%} * {t_comboDowntime.%loop-player%}) + 0.1) / (100 / ({t_comboDowntime.%loop-player%} + 0.1))) / (7 - {combograde.%loop-player%}))
+					subtract (({comboscore.%loop-player%} / ({comboscale.%loop-player%} + {combograde.%loop-player%}) + ({combograde.%loop-player%} ^ 2)) / 6) + {t_comboDowntimePenalty.%loop-player%} from {comboscore.%loop-player%}
 					if {comboscore.%loop-player%} is less than (({combograde.%loop-player%} * 2.5) + ({combograde.%loop-player%} ^ 2) * {comboscale.%loop-player%}):
 						subtract 1 from {combograde.%loop-player%}
 						if {combograde.%loop-player%} is 7:
@@ -44,7 +46,7 @@ every 0.25 seconds:
 							set {combomult.%loop-player%} to 2
 						else if {combograde.%loop-player%} is 4:
 							set {combomult.%loop-player%} to 1.75
-							send title "<gold>Are you ready?!" with subtitle "<bold>[1.75x Damage Multiplier!]" to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+							send title "<gold>Ace!" with subtitle "<bold>[1.75x Damage Multiplier!]" to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
 						else if {combograde.%loop-player%} is 3:
 							set {combomult.%loop-player%} to 1.5
 							send title "<light yellow>Bangin'!" with subtitle "<bold>[1.5x Damage Multiplier!]" to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
@@ -53,16 +55,18 @@ every 0.25 seconds:
 							send title "<bold>Cool!" with subtitle "<bold>[1.25x Damage Multiplier!]" to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
 						else if {combograde.%loop-player%} is 1:
 							set {combomult.%loop-player%} to 1
-							send title "<light gray>Don't Worry" with subtitle "" to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+							send title "<light gray>Dope!" with subtitle "" to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
 						else if {combograde.%loop-player%} is set:
 							send title "<light red>Combo Dropped..." with subtitle "" to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
 							clear {comboscore.%loop-player%}
 							set {comboscalar.%loop-player%} to 0
 							clear {comboscale.%loop-player%}
 							set {combograde.%loop-player%} to 0
+							clear {t_comboDowntime.%loop-player%}
+							clear {t_comboDowntimePenalty.%loop-player%}
 							wait 3.5 seconds
-							send title "<yellow>Total Style Points: %ceil({combobank.%loop-player%})%" with subtitle "+$%ceil({combobank.%loop-player%} ^ 0.725)% earned." to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-							add ceil({combobank.%loop-player%} ^ 0.725) to loop-player's balance
+							send title "<yellow>Total Style Points: %ceil({combobank.%loop-player%})%" with subtitle "+$%ceil({combobank.%loop-player%} ^ 0.825)% earned." to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+							add ceil({combobank.%loop-player%} ^ 0.825) to loop-player's balance
 							set {combobank.%loop-player%} to 0
 					send action bar "<bold>Style Points: <reset><gold>%{comboscore.%loop-player%}%<reset><bold> | Points for next Stylish Rank:<reset><gold> %((({combograde.%loop-player%} + 1) * 3.5) + (({combograde.%loop-player%} + 1) ^ 2) * {comboscale.%loop-player%})%<reset><bold> | Points To Maintain: <reset><gold>%(({combograde.%loop-player%} * 2.5) + ({combograde.%loop-player%} ^ 2) * {comboscale.%loop-player%})%" to loop-player
 			else:
@@ -72,18 +76,77 @@ every 0.25 seconds:
 				set {combograde.%loop-player%} to 0
 				
 on death of a player:
-	set {combo.%victim%} to 0
-	set {combograde.%victim%} to 0
-	set {combomult.%victim%} to 0
-	set {comboscore.%victim%} to 0
+	if {combosenabled.%victim%} is 1:
+		set {combo.%victim%} to 0
+		set {combograde.%victim%} to 0
+		set {combomult.%victim%} to 0
+		set {comboscore.%victim%} to 0
+		clear {dtMeter.%victim%}
+		set bossbar "dt.%victim's uuid%" progress to 0
+	
+#Devil Trigger activation
+on right click:
+	if player is sneaking:
+		if player's tool is air:
+			set {_dtCheck} to checkSlots(player,"Devil Trigger")
+			if {_dtCheck} is 1:
+				if {dtActive.%player%} is not set:
+					if {dtMeter.%player%} is more than 10:
+						set {dtActive.%player%} to true
+						play sound "entity.generic.explode" with volume 1 and pitch 1 at the player
+						play large explosion at the player
+						play mob spawner flames at the player
+						play 20 (redstone block break with speed 1) at the player
+						while {dtMeter.%player%} is more than 0:
+							add 30 to {strbuff.%player%}
+							add 30 to {spdbuff.%player%}
+							add 30 to {sklbuff.%player%}
+							heal the player by 0.5 heart
+							play 10 (redstone block break with speed 1) at the player
+							play mob spawner flames at the player
+							wait 0.5 seconds
+							subtract 30 from {strbuff.%player%}
+							subtract 30 from {spdbuff.%player%}
+							subtract 30 from {sklbuff.%player%}
+							set {_triggerHeart} to checkSlots(player,"Trigger Heart")
+							if {_triggerHeart} is 1:
+								subtract 5 from {dtMeter.%player%}
+							else:
+								subtract 10 from {dtMeter.%player%}
+							set {_dtMeterDisplay} to {dtMeter.%player%} / {dtMeterCap.%player%} * 100
+							set bossbar "dt.%player's uuid%" progress to {_dtMeterDisplay}
+							if {dtActive.%player%} is not set:
+								exit 1 loop
+						play sound "entity.generic.explode" with volume 1 and pitch 1 at the player
+						play large explosion at the player
+						play 20 (redstone block break with speed 1) at the player
+						clear {dtActive.%player%}
+						send "<light red>Devil Trigger wore off!"
+				else:
+					clear {dtActive.%player%}
+					play 20 (redstone block break with speed 1) at the player
+					
 
 on damage:
 	if {combosenabled.%victim%} is 1:
-		if {combograde.%victim%} is more than 0:
-			if damage cause is attack:
-				subtract (damage * 2) from {comboscore.%victim%}
-			else if projectile exists:
-				subtract (damage * 2) from {comboscore.%victim%}
+		if damage cause is attack:
+			if {dtMeter.%victim%} is more than 0:
+				subtract (damage / 4) from {dtMeter.%victim%}
+				set {_dtMeterDisplay} to {dtMeter.%attacker%} / {dtMeterCap.%attacker%} * 100
+				set bossbar "dt.%victim's uuid%" progress to {_dtMeterDisplay}
+			else:
+				set {dtMeter.%victim%} to 0
+			if {combograde.%victim%} is more than 0:
+				subtract (damage / 2) from {comboscore.%victim%}
+		else if projectile exists:
+			if {combograde.%victim%} is more than 0:
+				subtract (damage / 2) from {comboscore.%victim%}
+			if {dtMeter.%victim%} is more than 0:
+				subtract (damage / 4) from {dtMeter.%victim%}
+				set {_dtMeterDisplay} to {dtMeter.%attacker%} / {dtMeterCap.%attacker%} * 100
+				set bossbar "dt.%victim's uuid%" progress to {_dtMeterDisplay}
+			else:
+				set {dtMeter.%victim%} to 0
 			send action bar "<bold>Style Points: <reset><gold>%{comboscore.%victim%}%<reset><bold> | Points for next Stylish Rank:<reset><gold> %((({combograde.%victim%} + 1) * 3.5) + (({combograde.%victim%} + 1) ^ 2) * {comboscale.%victim%})%<reset><bold> | Points To Maintain: <reset><gold>%(({combograde.%victim%} * 2.5) + ({combograde.%victim%} ^ 2) * {comboscale.%victim%})%" to victim
 	if {combosenabled.%attacker%} is 1:
 		if {combograde.%attacker%} is 0:
@@ -96,7 +159,18 @@ on damage:
 				if victim's world is "Salindrum":
 					set damage to damage * {sd.incomingmult.%attacker%}
 		else:
-			add damage to {comboscore.%attacker%}
+			if {t_airComboBonus.%victim%} is not set:
+				set {t_airComboBonus.%victim%} to 1
+			if victim is not on ground:
+				if projectile exists:
+					add 1.88 to {t_airComboBonus.%victim%}
+				else:
+					add 1.2 to {t_airComboBonus.%victim%}
+				send "<red>Air Combo Bonus: %{t_airComboBonus.%victim%}%" to the attacker
+			else:
+				set {t_airComboBonus.%victim%} to 1
+			clear {t_comboDowntime.%attacker%}
+			add (damage * {t_airComboBonus.%victim%}) to {comboscore.%attacker%}
 			add (damage / 2) to {combobank.%attacker%}
 			if the 6th line of the lore of the attacker's tool contains "Stylish":
 				add damage / 2 to {comboscore.%attacker%}
@@ -118,8 +192,7 @@ on damage:
 						set {combomult.%attacker%} to 3
 						spawn 2 fireworks at the attacker
 						play sound "entity.enderdragon.growl" with volume 0.5 and pitch 1 at attacker for attacker
-						apply resistance 5 to the attacker for 2 seconds
-						create safe explosion of force 1 at attacker
+						apply strength 3 to the attacker for 3 seconds
 					if {combograde.%attacker%} is 6:
 						send title "<light red><bold>Sensational Style!!" with subtitle "<bold>[2.5x Damage Multiplier!]" to attacker for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
 						set {combomult.%attacker%} to 2.5
@@ -129,12 +202,13 @@ on damage:
 						send title "<light red>Showtime!!" with subtitle "<white>[2x Damage Multiplier!]" to attacker for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
 						set {combomult.%attacker%} to 2
 						spawn 1 firework at the attacker
-						play sound "entity.experience_orb.pickup" with volume 1 and pitch 1 at attacker for attacker
+						play sound "entity.experience_orb.pickup" with volume 1 and pitch 1.35 at attacker for attacker
 					else if {combograde.%attacker%} is 4:
 						set {combomult.%attacker%} to 1.75
 						send title "<gold>Ace!" with subtitle "<bold>[1.75x Damage Multiplier!]" to attacker for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
 						spawn 1 firework at the attacker
 						play sound "entity.generic.explode" with volume 1 and pitch 1 at attacker for attacker
+						play sound "entity.experience_orb.pickup" with volume 1 and pitch 1 at attacker for attacker
 					else if {combograde.%attacker%} is 3:
 						set {combomult.%attacker%} to 1.5
 						send title "<light yellow>Bangin'!" with subtitle "<bold>[1.5x Damage Multiplier!]" to attacker for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
@@ -144,14 +218,29 @@ on damage:
 						set {combomult.%attacker%} to 1.25
 						send title "<bold>Cool!" with subtitle "<bold>[1.25x Damage Multiplier!]" to attacker for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
 						spawn 1 firework at the attacker
+						play sound "entity.experience_orb.pickup" with volume 1 and pitch 0.65 at attacker for attacker
 					else if {combograde.%attacker%} is 1:
 						set {combomult.%attacker%} to 1
-						send title "<light gray>Don't Worry" with subtitle "" to attacker for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+						send title "<light gray>Dope!" with subtitle "" to attacker for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
 						play sound "entity.experience_orb.pickup" with volume 1 and pitch 0.5 at attacker for attacker
 					set {_bonus} to ((({combograde.%attacker%} + 1) * 3.5) + ({combograde.%attacker%} ^ 2) / {comboscale.%attacker%})
 					send "<light yellow>BONUS: %{_bonus}%" to the attacker
 					add {_bonus} to {comboscore.%attacker%}
 			send action bar "<bold>Style Points: <reset><gold>%{comboscore.%attacker%}%<reset><bold> | Points for next Stylish Rank:<reset><gold> %((({combograde.%attacker%} + 1) * 3.5) + (({combograde.%attacker%} + 1) ^ 2) * {comboscale.%attacker%})%<reset><bold> | Points To Maintain: <reset><gold>%(({combograde.%attacker%} * 2.5) + ({combograde.%attacker%} ^ 2) * {comboscale.%attacker%})%" to attacker
+			set {_dtCheck} to checkSlots(attacker,"Devil Trigger")
+			if {_dtCheck} is 1:
+				set {dtMeterCap.%attacker%} to ({lvl.%attacker%} * 10)
+				add (final damage / 4) to {dtMeter.%attacker%}
+				if {dtMeter.%attacker%} is more than {dtMeterCap.%attacker%}:
+					set {dtMeter.%attacker%} to {dtMeterCap.%attacker%}
+				set {_dtMeterDisplay} to {dtMeter.%attacker%} / {dtMeterCap.%attacker%} * 100
+				if {_dtMeterDisplay} is more than 100:
+					set {_dtMeterDisplay} to 100
+					play sound "block.end_portal.spawn" with volume 1 and pitch 1 at the attacker
+					send "<red>Trigger Meter full! Sneak + Right click with an empty hand to activate." to the attacker
+				set bossbar "dt.%attacker's uuid%" progress to {_dtMeterDisplay}
+				send "<red>Trigger Meter: %{dtMeter.%attacker%}% | Max Meter: %{dtMeterCap.%attacker%}%" to the attacker
+				
 	else:
 		if attacker is player:
 			if attacker's world is "Salindrum":

@@ -32,11 +32,11 @@ on damage:
 			set the victim's leggings to the attacker's leggings
 			set the victim's boots to the attacker's boots
 			set the victim's tool to the attacker's tool
-			set {t_str.%victim%} to floor({str.%attacker%} * 0.75)
-			set {t_def.%victim%} to floor({def.%attacker%} * 0.75)
-			set {t_skl.%victim%} to floor({skl.%attacker%} * 0.75)
-			set {t_spd.%victim%} to floor({spd.%attacker%} * 0.75)
-			set {t_res.%victim%} to floor({res.%attacker%} * 0.75)
+			set {t_str.%victim%} to floor({str.%attacker%} * 0.85)
+			set {t_def.%victim%} to floor({def.%attacker%} * 0.85)
+			set {t_skl.%victim%} to floor({skl.%attacker%} * 0.85)
+			set {t_spd.%victim%} to floor({spd.%attacker%} * 0.85)
+			set {t_res.%victim%} to floor({res.%attacker%} * 0.85)
 	if metadata value "isVenomSpider" of the attacker is 1:
 		apply wither 2 to the victim for 5 seconds
 	if metadata value "isMalediction" of the victim is 1:
@@ -58,30 +58,46 @@ on damage:
 	if metadata value "isRegret" of the victim is 1:
 		if {t_RegretSpawner.%victim%} is not 1:
 			while victim is alive:
-				set {t_RegretSpawner.%victim%} to 1
+				add 1 to {t_RegretSpawner.%victim%}
 				spawn 1 zombie at the victim
 				set the last spawned entity's health to (last spawned entity's maximum health * 0.25)
 				spawn 1 skeleton at the victim
 				set the last spawned entity's health to (last spawned entity's maximum health * 0.25)
 				play 40 (purple wool break with speed 1) at the victim
 				wait 20 seconds
+				if victim is not alive:
+					exit 1 loop
+				if {t_RegretSpawner.%victim%} is more than 4:
+					exit 1 loop
+					create safe explosion of force 3 at the victim
+					kill the victim
 	if metadata value "isFury" of the victim is 1:
 		if {t_FurySpawner.%victim%} is not 1:
 			while victim is alive:
-				set {t_FurySpawner.%victim%} to 1
+				add 1 t0 {t_FurySpawner.%victim%}
 				spawn 1 blaze at the victim
 				set the last spawned entity's health to (last spawned entity's maximum health * 0.5)
 				play 10 (mob spawner flames with speed 1) at the victim
 				wait 10 seconds
+				if victim is not alive:
+					exit 1 loop
+				if {t_RegretSpawner.%victim%} is more than 4:
+					exit 1 loop
+					create safe explosion of force 3 at the victim
+					kill the victim
 	if metadata value "isStalker" of the victim is 1:
 		if metadata value "ignoreDeathCondition" of the victim is not 1:
 			cancel event
 			set metadata value "ignoreDeathCondition" of the victim to 1
-			create safe explosion of force 3.5 at the victim
+			create safe explosion of force 3 at the victim
+			wait 10 ticks
+			create safe explosion of force 2 at the victim
+			wait 5 ticks
+			create safe explosion of force 2 at the victim
 			kill the victim
 	if metadata value "isZPurgia" of the victim is 1:
-		loop all entities in radius 3 of the victim:
-			if loop-entity is the attacker:
+		if distance from victim to attacker is less than or equal to 3:
+			if victim's health is more than (victim's maximum health * 0.7):
 				create safe explosion of force 1 at the victim
 				wait 1 tick
 				push the attacker backwards at speed 2

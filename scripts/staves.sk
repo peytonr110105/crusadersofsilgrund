@@ -174,185 +174,223 @@ on tool change:
 	#		set damage to damage * 0.5
 
 on right click on an entity:
-	set {_checkSlots} to checkSlots(player,"Live to Serve")
-#Heal
-	if the name of the player's tool contains "<yellow><bold>Heal":
-		apply regeneration 3 to the target for 2 seconds
-		damage player's tool by 5
-		show wolf hearts on the target
-		make target say "%{healedQuote.%target%}%"
-		if {_checkSlots} is 1:
-			apply regeneration 3 to the player for 2 seconds
-		heal the target by ceil((({res.%player%} / 10) / 2) + 2)
-		add 1 to {weaponrank.%player%::staves}
-		if {prfWeaponType.%player%} is 5:
-			add 0.5 to {weaponrank.%player%::staves}
-		staffRank(player,target)
-#Mend
-	else if the name of the player's tool contains "<yellow><bold>Mend":
-		apply regeneration 3 to the target for 4 seconds
-		damage player's tool by 10
-		show wolf hearts on the target
-		make target say "%{healedQuote.%target%}%"
-		if {_checkSlots} is 1:
-			apply regeneration 3 to the player for 4 seconds
-		heal the target by ceil((({res.%player%} / 10) / 2) + 2)
-		add 2 to {weaponrank.%player%::staves}
-		if {prfWeaponType.%player%} is 5:
+	if target's health is less than target's maximum health:
+		set {_checkSlots} to checkSlots(player,"Live to Serve")
+	#Heal
+		if the name of the player's tool contains "<yellow><bold>Heal":
+			apply regeneration 3 to the target for 2 seconds
+			damage player's tool by 5
+			show wolf hearts on the target
+			make target say "%{healedQuote.%target%}%"
+			if {_checkSlots} is 1:
+				apply regeneration 3 to the player for 2 seconds
+			set {_preHealHP} to the target's health
+			heal the target by ceil((({res.%player%} + {resbuff.%player%} / 10) / 2) + 2)
+			make server execute command "/xp %ceil(target's health - {_preHealHP})% %player%"
 			add 1 to {weaponrank.%player%::staves}
-		staffRank(player,target)
-#Rehabilitate
-	else if the name of the player's tool contains "<yellow><bold>Rehabilitate":
-		apply regeneration 3 to the target for 6 seconds
-		damage player's tool by 15
-		show wolf hearts on the target
-		make target say "%{healedQuote.%target%}%"
-		if {_checkSlots} is 1:
-			apply regeneration 3 to the player for 6 seconds
-		heal the target by ceil((({res.%player%} / 10) / 2) + 2)
-		add 3 to {weaponrank.%player%::staves}
-		if {prfWeaponType.%player%} is 5:
-			add 1.5 to {weaponrank.%player%::staves}
-		staffRank(player,target)
-#Wrys
-	else if the name of the player's tool contains "<yellow><bold>Wrys":
-		apply regeneration 4 to the target for 6 seconds
-		damage player's tool by 2
-		show wolf hearts on the target
-		make target say "%{healedQuote.%target%}%"
-		if {_checkSlots} is 1:
-			apply regeneration 4 to the player for 6 seconds
-		heal the target by ceil((({res.%player%} / 10) / 2) + 2)
-		add 3.5 to {weaponrank.%player%::staves}
-		if {prfWeaponType.%player%} is 5:
-			add 1.75 to {weaponrank.%player%::staves}
-		staffRank(player,target)
-#Imbue
-	else if the name of the player's tool contains "<yellow><bold>Imbue":
-		apply regeneration 3 to the target for 8 seconds
-		damage player's tool by 30
-		show wolf hearts on the target
-		make target say "%{healedQuote.%target%}%"
-		if {_checkSlots} is 1:
-			apply regeneration 3 to the player for 8 seconds
-		heal the target by ceil((({res.%player%} / 10) / 2) + 2)
-		add 4 to {weaponrank.%player%::staves}
-		if {prfWeaponType.%player%} is 5:
+			if {prfWeaponType.%player%} is 5:
+				add 0.5 to {weaponrank.%player%::staves}
+			staffRank(player,target)
+	#Mend
+		else if the name of the player's tool contains "<yellow><bold>Mend":
+			apply regeneration 3 to the target for 4 seconds
+			damage player's tool by 10
+			show wolf hearts on the target
+			make target say "%{healedQuote.%target%}%"
+			if {_checkSlots} is 1:
+				apply regeneration 3 to the player for 4 seconds
+			set {_preHealHP} to the target's health
+			heal the target by ceil((({res.%player%} + {resbuff.%player%} / 10) / 2) + 2)
+			make server execute command "/xp %ceil(target's health - {_preHealHP})% %player%"
 			add 2 to {weaponrank.%player%::staves}
-		staffRank(player,target)
-#Physic
-	else if the name of the player's tool contains "<yellow><bold>Physic":
-		apply regeneration 3 to the target for 9 seconds
-		heal the target by 1
-		damage player's tool by 42
-		show wolf hearts on the target
-		make target say "%{healedQuote.%target%}%"
-		if {_checkSlots} is 1:
-			apply regeneration 3 to the player for 9 seconds
-		heal the target by ceil((({res.%player%} / 10) / 2) + 2)
-		add 4.5 to {weaponrank.%player%::staves}
-		if {prfWeaponType.%player%} is 5:
-			add 2.25 to {weaponrank.%player%::staves}
-		staffRank(player,target)
-#Renewal
-	else if the name of the player's tool contains "<yellow><bold>Renewal":
-		apply regeneration 3 to the target for 11 seconds
-		damage player's tool by 40
-		show wolf hearts on the target
-		make target say "%{healedQuote.%target%}%"
-		if {_checkSlots} is 1:
-			apply regeneration 3 to the player for 11 seconds
-		heal the target by ceil((({res.%player%} / 10) / 2) + 2)
-		add 5 to {weaponrank.%player%::staves}
-		if {prfWeaponType.%player%} is 5:
-			add 2.5 to {weaponrank.%player%::staves}
-		staffRank(player,target)
-#Miracle
-	else if the name of the player's tool contains "<yellow><bold>Miracle":
-		apply regeneration 3 to the target for 14 seconds
-		damage player's tool by 65
-		show wolf hearts on the target
-		make target say "%{healedQuote.%target%}%"
-		if {_checkSlots} is 1:
-			apply regeneration 3 to the player for 14 seconds
-		heal the target by ceil((({res.%player%} / 10) / 2) + 2)
-		add 6 to {weaponrank.%player%::staves}
-		if {prfWeaponType.%player%} is 5:
+			if {prfWeaponType.%player%} is 5:
+				add 1 to {weaponrank.%player%::staves}
+			staffRank(player,target)
+	#Rehabilitate
+		else if the name of the player's tool contains "<yellow><bold>Rehabilitate":
+			apply regeneration 3 to the target for 6 seconds
+			damage player's tool by 15
+			show wolf hearts on the target
+			make target say "%{healedQuote.%target%}%"
+			if {_checkSlots} is 1:
+				apply regeneration 3 to the player for 6 seconds
+			set {_preHealHP} to the target's health
+			heal the target by ceil((({res.%player%} + {resbuff.%player%} / 10) / 2) + 2)
+			make server execute command "/xp %ceil(target's health - {_preHealHP})% %player%"
 			add 3 to {weaponrank.%player%::staves}
-		staffRank(player,target)
-#Aum
-	else if the name of the player's tool contains "<yellow><bold>Aum":
-		apply regeneration 4 to the target for 15 seconds
-		apply absorption 4 to the target for 30 seconds
-		damage player's tool by 150
-		show wolf hearts on the target
-		make target say "%{healedQuote.%target%}%"
-		if {_checkSlots} is 1:
-			apply regeneration 4 to the player for 15 seconds
-		heal the target by ceil((({res.%player%} / 10) / 2) + 2)
-		add 7 to {weaponrank.%player%::staves}
-		if {prfWeaponType.%player%} is 5:
+			if {prfWeaponType.%player%} is 5:
+				add 1.5 to {weaponrank.%player%::staves}
+			staffRank(player,target)
+	#Wrys
+		else if the name of the player's tool contains "<yellow><bold>Wrys":
+			apply regeneration 4 to the target for 6 seconds
+			damage player's tool by 2
+			show wolf hearts on the target
+			make target say "%{healedQuote.%target%}%"
+			if {_checkSlots} is 1:
+				apply regeneration 4 to the player for 6 seconds
+			set {_preHealHP} to the target's health
+			heal the target by ceil((({res.%player%} + {resbuff.%player%} / 10) / 2) + 2)
+			make server execute command "/xp %ceil(target's health - {_preHealHP})% %player%"
+			add 3.5 to {weaponrank.%player%::staves}
+			if {prfWeaponType.%player%} is 5:
+				add 1.75 to {weaponrank.%player%::staves}
+			staffRank(player,target)
+	#Imbue
+		else if the name of the player's tool contains "<yellow><bold>Imbue":
+			apply regeneration 3 to the target for 8 seconds
+			damage player's tool by 30
+			show wolf hearts on the target
+			make target say "%{healedQuote.%target%}%"
+			if {_checkSlots} is 1:
+				apply regeneration 3 to the player for 8 seconds
+			set {_preHealHP} to the target's health
+			heal the target by ceil((({res.%player%} + {resbuff.%player%} / 10) / 2) + 2)
+			make server execute command "/xp %ceil(target's health - {_preHealHP})% %player%"
+			add 4 to {weaponrank.%player%::staves}
+			if {prfWeaponType.%player%} is 5:
+				add 2 to {weaponrank.%player%::staves}
+			staffRank(player,target)
+	#Physic
+		else if the name of the player's tool contains "<yellow><bold>Physic":
+			apply regeneration 3 to the target for 9 seconds
+			heal the target by 1
+			damage player's tool by 42
+			show wolf hearts on the target
+			make target say "%{healedQuote.%target%}%"
+			if {_checkSlots} is 1:
+				apply regeneration 3 to the player for 9 seconds
+			set {_preHealHP} to the target's health
+			heal the target by ceil((({res.%player%} + {resbuff.%player%} / 10) / 2) + 2)
+			make server execute command "/xp %ceil(target's health - {_preHealHP})% %player%"
 			add 4.5 to {weaponrank.%player%::staves}
-		staffRank(player,target)
-#Physic
-	else if the name of the player's tool contains "<yellow><bold>Physic":
-		apply regeneration 3 to the target for 5 seconds
-		damage player's tool by 35
-		remove weakness from the target
-		remove slowness from the target
-		remove wither from the target
-		remove poison from the target
-		show wolf hearts on the target
-		make target say "%{healedQuote.%target%}%"
-		if {_checkSlots} is 1:
-			apply regeneration 3 to the player for 5 seconds
-		heal the target by ceil((({res.%player%} / 10) / 2) + 2)
-		add 5 to {weaponrank.%player%::staves}
-		if {prfWeaponType.%player%} is 5:
-			add 2.5 to {weaponrank.%player%::staves}
-		staffRank(player,target)
-#Fortify
-	else if the name of the player's tool contains "<yellow><bold>Fortify":
-		remove resistance from the target
-		apply resistance 3 to the target for 15 seconds
-		damage player's tool by 150
-		show wolf hearts on the target
-		make target say "%{healedQuote.%target%}%"
-		if {_checkSlots} is 1:
-			remove resistance from the player
-			apply resistance 3 to the player for 30 seconds
-		heal the target by ceil((({res.%player%} / 10) / 2) + 2)
-		add 5 to {weaponrank.%player%::staves}
-		if {prfWeaponType.%player%} is 5:
-			add 2.5 to {weaponrank.%player%::staves}
-		staffRank(player,target)
-#Hasten
-	else if the name of the player's tool contains "<yellow><bold>Hasten":
-		remove swiftness from the target
-		apply swiftness 3 to the target for 15 seconds
-		damage player's tool by 150
-		show wolf hearts on the target
-		make target say "%{healedQuote.%target%}%"
-		if {_checkSlots} is 1:
-			remove swiftness from the player
-			apply swiftness 3 to the player for 15 seconds
-		heal the target by ceil((({res.%player%} / 10) / 2) + 2)
-		add 5 to {weaponrank.%player%::staves}
-		if {prfWeaponType.%player%} is 5:
-			add 2.5 to {weaponrank.%player%::staves}
-		staffRank(player,target)
-#Enrage
-	else if the name of the player's tool contains "<yellow><bold>Enrage":
-		remove strength from the target
-		apply strength 3 to the target for 15 seconds
-		damage player's tool by 150
-		show wolf hearts on the target
-		make target say "%{healedQuote.%target%}%"
-		if {_checkSlots} is 1:
-			remove strength from the player
-			apply strength 3 to the player for 15 seconds
-		heal the target by ceil((({res.%player%} / 10) / 2) + 2)
-		add 5 to {weaponrank.%player%::staves}
-		if {prfWeaponType.%player%} is 5:
-			add 2.5 to {weaponrank.%player%::staves}
-		staffRank(player,target)
+			if {prfWeaponType.%player%} is 5:
+				add 2.25 to {weaponrank.%player%::staves}
+			staffRank(player,target)
+	#Renewal
+		else if the name of the player's tool contains "<yellow><bold>Renewal":
+			apply regeneration 3 to the target for 11 seconds
+			damage player's tool by 40
+			show wolf hearts on the target
+			make target say "%{healedQuote.%target%}%"
+			if {_checkSlots} is 1:
+				apply regeneration 3 to the player for 11 seconds
+			set {_preHealHP} to the target's health
+			heal the target by ceil((({res.%player%} + {resbuff.%player%} / 10) / 2) + 2)
+			make server execute command "/xp %ceil(target's health - {_preHealHP})% %player%"
+			add 5 to {weaponrank.%player%::staves}
+			if {prfWeaponType.%player%} is 5:
+				add 2.5 to {weaponrank.%player%::staves}
+			staffRank(player,target)
+	#Miracle
+		else if the name of the player's tool contains "<yellow><bold>Miracle":
+			apply regeneration 3 to the target for 14 seconds
+			damage player's tool by 65
+			show wolf hearts on the target
+			make target say "%{healedQuote.%target%}%"
+			if {_checkSlots} is 1:
+				apply regeneration 3 to the player for 14 seconds
+			set {_preHealHP} to the target's health
+			heal the target by ceil((({res.%player%} + {resbuff.%player%} / 10) / 2) + 2)
+			make server execute command "/xp %ceil(target's health - {_preHealHP})% %player%"
+			add 6 to {weaponrank.%player%::staves}
+			if {prfWeaponType.%player%} is 5:
+				add 3 to {weaponrank.%player%::staves}
+			staffRank(player,target)
+	#Aum
+		else if the name of the player's tool contains "<yellow><bold>Aum":
+			apply regeneration 4 to the target for 15 seconds
+			apply absorption 4 to the target for 30 seconds
+			damage player's tool by 150
+			show wolf hearts on the target
+			make target say "%{healedQuote.%target%}%"
+			if {_checkSlots} is 1:
+				apply regeneration 4 to the player for 15 seconds
+			set {_preHealHP} to the target's health
+			heal the target by ceil((({res.%player%} + {resbuff.%player%} / 10) / 2) + 2)
+			make server execute command "/xp %ceil(target's health - {_preHealHP})% %player%"
+			add 7 to {weaponrank.%player%::staves}
+			if {prfWeaponType.%player%} is 5:
+				add 4.5 to {weaponrank.%player%::staves}
+			staffRank(player,target)
+	#Physic
+		else if the name of the player's tool contains "<yellow><bold>Physic":
+			apply regeneration 3 to the target for 5 seconds
+			damage player's tool by 35
+			remove weakness from the target
+			remove slowness from the target
+			remove wither from the target
+			remove poison from the target
+			show wolf hearts on the target
+			make target say "%{healedQuote.%target%}%"
+			if {_checkSlots} is 1:
+				apply regeneration 3 to the player for 5 seconds
+			set {_preHealHP} to the target's health
+			heal the target by ceil((({res.%player%} + {resbuff.%player%} / 10) / 2) + 2)
+			make server execute command "/xp %ceil(target's health - {_preHealHP})% %player%"
+			add 5 to {weaponrank.%player%::staves}
+			if {prfWeaponType.%player%} is 5:
+				add 2.5 to {weaponrank.%player%::staves}
+			staffRank(player,target)
+	#Fortify
+		else if the name of the player's tool contains "<yellow><bold>Fortify":
+			remove resistance from the target
+			apply resistance 3 to the target for 15 seconds
+			damage player's tool by 150
+			show wolf hearts on the target
+			make target say "%{healedQuote.%target%}%"
+			if {_checkSlots} is 1:
+				remove resistance from the player
+				apply resistance 3 to the player for 30 seconds
+			set {_preHealHP} to the target's health
+			heal the target by ceil((({res.%player%} + {resbuff.%player%} / 10) / 2) + 2)
+			make server execute command "/xp %ceil(target's health - {_preHealHP})% %player%"
+			add 5 to {weaponrank.%player%::staves}
+			if {prfWeaponType.%player%} is 5:
+				add 2.5 to {weaponrank.%player%::staves}
+			staffRank(player,target)
+	#Hammerne
+		else if the name of the player's tool contains "<yellow><bold>Hammerne":
+			damage player's tool by 200
+			show wolf hearts on the target
+			make target execute command "/fix"
+			set {_preHealHP} to the target's health
+			heal the target by ceil((({res.%player%} + {resbuff.%player%} / 10) / 2) + 2)
+			make server execute command "/xp %ceil(target's health - {_preHealHP})% %player%"
+			if {prfWeaponType.%player%} is 5:
+				add 2.5 to {weaponrank.%player%::staves}
+			staffRank(player,target)
+	#Hasten
+		else if the name of the player's tool contains "<yellow><bold>Hasten":
+			remove swiftness from the target
+			apply swiftness 3 to the target for 15 seconds
+			damage player's tool by 150
+			show wolf hearts on the target
+			make target say "%{healedQuote.%target%}%"
+			if {_checkSlots} is 1:
+				remove swiftness from the player
+				apply swiftness 3 to the player for 15 seconds
+			set {_preHealHP} to the target's health
+			heal the target by ceil((({res.%player%} + {resbuff.%player%} / 10) / 2) + 2)
+			make server execute command "/xp %ceil(target's health - {_preHealHP})% %player%"
+			add 5 to {weaponrank.%player%::staves}
+			if {prfWeaponType.%player%} is 5:
+				add 2.5 to {weaponrank.%player%::staves}
+			staffRank(player,target)
+	#Enrage
+		else if the name of the player's tool contains "<yellow><bold>Enrage":
+			remove strength from the target
+			apply strength 3 to the target for 15 seconds
+			damage player's tool by 150
+			show wolf hearts on the target
+			make target say "%{healedQuote.%target%}%"
+			if {_checkSlots} is 1:
+				remove strength from the player
+				apply strength 3 to the player for 15 seconds
+			set {_preHealHP} to the target's health
+			heal the target by ceil((({res.%player%} + {resbuff.%player%} / 10) / 2) + 2)
+			make server execute command "/xp %ceil(target's health - {_preHealHP})% %player%"
+			add 5 to {weaponrank.%player%::staves}
+			if {prfWeaponType.%player%} is 5:
+				add 2.5 to {weaponrank.%player%::staves}
+			staffRank(player,target)

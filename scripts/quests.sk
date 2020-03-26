@@ -24,7 +24,7 @@ command /setupcheck-gen1:
 		#Block access to House Ulster if player has not finished setup
 		if {quests.%player%::Birth of a Hero} is not 999:
 			teleport the player to location at 790.5, 72, -1718 in world "GenOne"
-			send "<light red>You cannot enter House Ulster without registering. Speak with Azelle at the gate."
+			send formatted "<light red>You cannot enter House Ulster without registering. Speak with Azelle at the gate."
 	
 #Manually update quest progress in case something breaks.
 command /setQuestProgress <number> <text>:
@@ -58,127 +58,128 @@ on death of a monster:
 										play 60 (firework spark with speed 1) at loop-value
 										play 60 (snow shovel with speed 1) at loop-value
 	#Allied NPC kill handler
-	if attacker is a citizen:
+	if citizen id of the attacker is set:
 		if {alliedPlayer.%attacker%} is set:
-			#The Time to Act
-			if {quests.%{alliedPlayer.%attacker%}%::The Time to Act} is more than or equal to 2:
-				if {quests.%{alliedPlayer.%attacker%}%::The Time to Act} is not 999:
-					setQuestProgress({alliedPlayer.%attacker%},"The Time to Act",{quests.%{alliedPlayer.%attacker%}%::The Time to Act} + 1,"%{quests.%{alliedPlayer.%attacker%}%::The Time to Act} - 1%/16 monsters defeated.")
-					if {quests.%{alliedPlayer.%attacker%}%::The Time to Act} is more than 16:
-						finishQuest({alliedPlayer.%attacker%},"The Time to Act","Chalphy has been saved from the monster attack!")
-						send "<light blue>Cinder: ...That should be all of them, then. Well done, everyone!" to {alliedPlayer.%attacker%}
-						wait 3	seconds
-						send "<light blue>Cinder: Thank you for your help, %{alliedPlayer.%attacker%}'s tablist name%. You've done my people a great service, and those good deeds shall not go unrewarded." to {alliedPlayer.%attacker%}
-						wait 5 seconds
-						send "<gold>+100 Gold obtained!" to {alliedPlayer.%attacker%}
-						add 100 to {alliedPlayer.%attacker%}'s balance
-						wait 0.25 seconds
-						send "<light blue>Cinder: This is for your help today. When you return to House Ulster, please inform Alastor of what has happened. I'm certain it will help you establish yourself within his ranks." to {alliedPlayer.%attacker%}
-						wait 6 seconds
-						send "<light blue>Cinder: In the meantime, I will be investigating the root cause of this attack. Farewell and safe travels, %{AlliedPlayer.%attacker%}'s tablist name%." to {alliedPlayer.%attacker%}
-						make {NPCsFor.%{alliedPlayer.%attacker%}%::C_Cinder} move to location 513, 70, 392 with speed 1
-						make {NPCsFor.%{alliedPlayer.%attacker%}%::C_Silgrid Guard} move to location 513, 70, 392 with speed 1
-						while {NPCsFor.%{alliedPlayer.%attacker%}%::C_Cinder} is navigating:
-							wait 1 tick
-						reveal {NPCsFor.%{alliedPlayer.%attacker%}%::Cinder} to {alliedPlayer.%attacker%}
-						clear {str.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Silgrid Guard}%}
-						clear {spd.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Silgrid Guard}%}
-						clear {skl.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Silgrid Guard}%}
-						clear {def.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Silgrid Guard}%}
-						clear {res.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Silgrid Guard}%}
-						clear {str.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Cinder}%}
-						clear {spd.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Cinder}%}
-						clear {skl.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Cinder}%}
-						clear {def.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Cinder}%}
-						clear {res.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Cinder}%}
-						clear {NPCsFor.%{alliedPlayer.%attacker%}%::*}
-						clear {inCutscene.%{alliedPlayer.%attacker%}%}
-						clear {inConvo.%{alliedPlayer.%attacker%}%}
-						clear {alliedPlayer.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Cinder}%}
-						clear {alliedPlayer.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Silgrid Guard}%}
-						destroy {NPCsFor.%{alliedPlayer.%attacker%}%::C_Cinder}
-						destroy {NPCsFor.%{alliedPlayer.%attacker%}%::C_Silgrid Guard}
-	#The Time to Act
-	if {quests.%attacker%::The Time to Act} is more than or equal to 2:
-		if {quests.%attacker%::The Time to Act} is not 999:
-			setQuestProgress(attacker,"The Time to Act",{quests.%attacker%::The Time to Act} + 1,"%{quests.%attacker%::The Time to Act} - 1%/16 monsters defeated.")
-			if {quests.%attacker%::The Time to Act} is more than 16:
-				finishQuest(attacker,"The Time to Act","Chalphy has been saved from the monster attack!")
-				send "<light blue>Cinder: ...That should be all of them, then. Well done, everyone!" to attacker
-				wait 3 seconds
-				send "<light blue>Cinder: Thank you for your help, %attacker's tablist name%. You've done my people a great service, and those good deeds shall not go unrewarded." to attacker
-				wait 5 seconds
-				send "<gold>+100 Gold obtained!" to attacker
-				add 100 to attacker's balance
-				wait 0.25 seconds
-				send "<light blue>Cinder: This is for your help today. When you return to House Ulster, please inform Alastor of what has happened. I'm certain it will help you establish yourself within his ranks." to attacker
-				wait 6 seconds
-				send "<light blue>Cinder: In the meantime, I will be investigating the root cause of this attack. Farewell and safe travels, %attacker's tablist name%." to attacker
-				make {NPCsFor.%attacker%::C_Cinder} move to location 513, 70, 392 with speed 1
-				make {NPCsFor.%attacker%::C_Silgrid Guard} move to location 513, 70, 392 with speed 1
-				while {NPCsFor.%attacker%::C_Cinder} is navigating:
-					wait 1 tick
-				clear {str.%{NPCsFor.%attacker%::C_Silgrid Guard}%}
-				clear {spd.%{NPCsFor.%attacker%::C_Silgrid Guard}%}
-				clear {skl.%{NPCsFor.%attacker%::C_Silgrid Guard}%}
-				clear {def.%{NPCsFor.%attacker%::C_Silgrid Guard}%}
-				clear {res.%{NPCsFor.%attacker%::C_Silgrid Guard}%}
-				clear {str.%{NPCsFor.%attacker%::C_Cinder}%}
-				clear {spd.%{NPCsFor.%attacker%::C_Cinder}%}
-				clear {skl.%{NPCsFor.%attacker%::C_Cinder}%}
-				clear {def.%{NPCsFor.%attacker%::C_Cinder}%}
-				clear {res.%{NPCsFor.%attacker%::C_Cinder}%}
-				clear {alliedPlayer.%{NPCsFor.%attacker%::C_Cinder}%}
-				clear {alliedPlayer.%{NPCsFor.%attacker%::C_Silgrid Guard}%}
-				destroy {NPCsFor.%attacker%::C_Cinder}
-				destroy {NPCsFor.%attacker%::C_Silgrid Guard}
-				reveal {NPCsFor.%attacker%::Cinder} to the attacker
-				clear {NPCsFor.%attacker%::*}
-				clear {inCutscene.%attacker%}
-				clear {inConvo.%attacker%}
-#First-Time Join Handler
-on join:
-	#Beta Test behavior
-	if {betaTestActive} is 1:
-		loop {playedBeta::*}:
-			if loop-value is the player:
-				set {_skip} to true
-				exit 1 loop
-		if {_skip} is not set:
-			set {generation.%player%} to 1
-			clear the player's inventory
-			#add the player to {playedBeta::*}
-			make player execute command "/cheats unlockallthings"
-			teleport the player to location at 718, 63, -1600 in world "GenOne"
-			give 1 leather helmet to the player
-			give 1 leather chestplate to the player
-			give 1 leather leggings to the player
-			give 1 leather boots to the player
-			give 1 wooden sword to the player
-			give 1 book named "<gold>Journal" with lore "<white>A rugged journal good for keeping notes." to the player
-			set {quests.%player%::Birth of a Hero} to 1
-			startQuest(player,"Beta Test - Monster Hunting","A beta test is active! Check the discord for details.")
-			set the player's maximum health to 3
-	#Release behavior
-	else if {questbook.%player%} is not set:
-		set the player's maximum health to 3
-		set {questbook.%player%} to true
-		set {generation.%player%} to 1
-		teleport the player to location at 718, 63, -1598 in world "GenOne"
-		startQuest(player,"Birth of a Hero","Locate House Ulster in the northwest.")
+			#Expedition
+			if {quests.%{alliedPlayer.%attacker%}%::Expedition} is more than or equal to 2:
+				if {quests.%{alliedPlayer.%attacker%}%::Expedition} is not 999:
+					if {quests.%{alliedPlayer.%attacker%}%::Expedition} is not 997:
+						setQuestProgress({alliedPlayer.%attacker%},"Expedition",{quests.%{alliedPlayer.%attacker%}%::Expedition} + 1,"%{quests.%{alliedPlayer.%attacker%}%::Expedition} - 1%/8 monsters defeated.")
+						if {quests.%{alliedPlayer.%attacker%}%::Expedition} is more than 8:
+							finishQuest({alliedPlayer.%attacker%},"Expedition","Chalphy has been saved from the monster attack!")
+							send formatted "<light blue>Cinder: ...That should be all of them, then. Well done, everyone!" to {alliedPlayer.%attacker%}
+							wait 3	seconds
+							send formatted "<light blue>Cinder: Thank you for your help, %{alliedPlayer.%attacker%}'s name%. You've done my people a great service, and those good deeds shall not go unrewarded." to {alliedPlayer.%attacker%}
+							wait 5 seconds
+							send formatted "<gold>+100 Gold obtained!" to {alliedPlayer.%attacker%}
+							add 100 to {alliedPlayer.%attacker%}'s balance
+							wait 0.25 seconds
+							send formatted "<light blue>Cinder: This is for your help today. When you return to House Ulster, please inform Alastor of what has happened. I'm certain it will help you establish yourself within his ranks." to {alliedPlayer.%attacker%}
+							wait 6 seconds
+							send formatted "<light blue>Cinder: In the meantime, I will be investigating the root cause of this attack. Farewell and safe travels, %{AlliedPlayer.%attacker%}'s name%." to {alliedPlayer.%attacker%}
+							make console execute command "/npc sel %citizen id of {NPCsFor.%{alliedPlayer.%attacker%}%::C_Cinder}%"
+							make console execute command "/trait sentinel"
+							make console execute command "/npc sel %citizen id of {NPCsFor.%{alliedPlayer.%attacker%}%::C_Silgrid Guard}%"
+							make console execute command "/trait sentinel"
+							make {NPCsFor.%{alliedPlayer.%attacker%}%::C_Cinder} move to location at 513, 70, 392 with speed 1
+							make {NPCsFor.%{alliedPlayer.%attacker%}%::C_Silgrid Guard} move to location at 513, 70, 392 with speed 1
+							while {NPCsFor.%{alliedPlayer.%attacker%}%::C_Cinder} is navigating:
+								wait 1 tick
+							reveal {NPCsFor.%{alliedPlayer.%attacker%}%::Cinder} to {alliedPlayer.%attacker%}
+							clear {str.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Silgrid Guard}%}
+							clear {spd.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Silgrid Guard}%}
+							clear {skl.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Silgrid Guard}%}
+							clear {def.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Silgrid Guard}%}
+							clear {res.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Silgrid Guard}%}
+							clear {str.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Cinder}%}
+							clear {spd.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Cinder}%}
+							clear {skl.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Cinder}%}
+							clear {def.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Cinder}%}
+							clear {res.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Cinder}%}
+							clear {inCutscene.%{alliedPlayer.%attacker%}%}
+							clear {inConvo.%{alliedPlayer.%attacker%}%}
+							destroy {NPCsFor.%{alliedPlayer.%attacker%}%::C_Cinder}
+							destroy {NPCsFor.%{alliedPlayer.%attacker%}%::C_Silgrid Guard}
+							clear {alliedPlayer.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Cinder}%}
+							clear {alliedPlayer.%{NPCsFor.%{alliedPlayer.%attacker%}%::C_Silgrid Guard}%}
+							clear {NPCsFor.%{alliedPlayer.%attacker%}%::*}
+	#Expedition
+	if {quests.%attacker%::Expedition} is more than or equal to 2:
+		if {quests.%attacker%::Expedition} is not 999:
+			if {quests.%attacker%::Expedition} is not 997:
+				setQuestProgress(attacker,"Expedition",{quests.%attacker%::Expedition} + 1,"%{quests.%attacker%::Expedition} - 1%/8 monsters defeated.")
+				if {quests.%attacker%::Expedition} is more than 8:
+					finishQuest(attacker,"Expedition","Chalphy has been saved from the monster attack!")
+					send formatted "<light blue>Cinder: ...That should be all of them, then. Well done, everyone!" to attacker
+					wait 3 seconds
+					send formatted "<light blue>Cinder: Thank you for your help, %attacker's tablist name%. You've done my people a great service, and those good deeds shall not go unrewarded." to attacker
+					wait 5 seconds
+					send formatted "<gold>+100 Gold obtained!" to attacker
+					add 100 to attacker's balance
+					wait 0.25 seconds
+					send formatted "<light blue>Cinder: This is for your help today. When you return to House Ulster, please inform Alastor of what has happened. I'm certain it will help you establish yourself within his ranks." to attacker
+					wait 6 seconds
+					send formatted "<light blue>Cinder: In the meantime, I will be investigating the root cause of this attack. Farewell and safe travels, %attacker's tablist name%." to attacker
+					make console execute command "/npc sel %citizen id of {NPCsFor.%attacker%::C_Cinder}%"
+					make console execute command "/sentinel guard"
+					make console execute command "/npc sel %citizen id of {NPCsFor.%attacker%::C_Silgrid Guard}%"
+					make console execute command "/sentinel guard"
+					make {NPCsFor.%attacker%::C_Cinder} move to location at 513, 70, 392 with speed 1
+					make {NPCsFor.%attacker%::C_Silgrid Guard} move to location at 513, 70, 392 with speed 1
+					while {NPCsFor.%attacker%::C_Cinder} is navigating:
+						wait 1 tick
+					clear {str.%{NPCsFor.%attacker%::C_Silgrid Guard}%}
+					clear {spd.%{NPCsFor.%attacker%::C_Silgrid Guard}%}
+					clear {skl.%{NPCsFor.%attacker%::C_Silgrid Guard}%}
+					clear {def.%{NPCsFor.%attacker%::C_Silgrid Guard}%}
+					clear {res.%{NPCsFor.%attacker%::C_Silgrid Guard}%}
+					clear {str.%{NPCsFor.%attacker%::C_Cinder}%}
+					clear {spd.%{NPCsFor.%attacker%::C_Cinder}%}
+					clear {skl.%{NPCsFor.%attacker%::C_Cinder}%}
+					clear {def.%{NPCsFor.%attacker%::C_Cinder}%}
+					clear {res.%{NPCsFor.%attacker%::C_Cinder}%}
+					clear {alliedPlayer.%{NPCsFor.%attacker%::C_Cinder}%}
+					clear {alliedPlayer.%{NPCsFor.%attacker%::C_Silgrid Guard}%}
+					destroy {NPCsFor.%attacker%::C_Cinder}
+					destroy {NPCsFor.%attacker%::C_Silgrid Guard}
+					reveal {NPCsFor.%attacker%::Cinder} to the attacker
+					clear {NPCsFor.%attacker%::*}
+					clear {inCutscene.%attacker%}
+					clear {inConvo.%attacker%}
 		
 #Force-mark as Ally
 command /markasally:
 	trigger:
 		set {DEBUG_MarkAsAlly.%player%} to true
-		send "<gold>Right-click the NPC to mark as your ally."
+		send formatted "<gold>Right-click the NPC to mark as your ally."
 		
 #New players have a hidden Miracle perk before creating a character.
 on damage of a player:
-	if victim is not a citizen:
+	if citizen id of the victim is not set:
 		if {quests.%victim%::Birth of a Hero} is not 999:
 			if final damage is more than or equal to victim's health:
 				cancel event
+	else if the name of the victim contains "Cinder":
+		cancel event
+	if the name of the victim contains "Combat Trainer":
+		if {quests.%attacker%::Breaking the Ice} is 2:
+			cancel event
+			set {quests.%attacker%::Breaking the Ice} to 3
+			send formatted "<light blue>%victim's name%: ...Good thing you came here for training. You swing that thing around like it's a stick." to the attacker
+			wait 5 seconds
+			send formatted "<light blue>%victim's name%: Well, that one's simple to fix. Just keep practicing with your weapon, and your skills will improve. To make it simple for everyone, the Knights get a rank for each weapon type they use. Since you're just starting, you're going to have an ""E"" rank. With higher weapon ranks, you'll find it easier to deal more damage and land critical hits." to the attacker
+			wait 10 seconds
+			if {drenable.%attacker%} is 1:
+				send formatted "<light blue>%victim's name%: Now, let's see if you can do a Dodge Roll. All you need to do to roll is start sneaking twice in a row. Do it fast or else you won't be able to roll." to the attacker
+				setQuestProgress(attacker,"Breaking the Ice",3,"Perform a Dodge Roll by double-tapping your ""Sneak"" key (SHIFT by default).")
+			else:
+				send formatted "<light blue>%victim's name%: ...It says here in your registration that you're not going to be doing any Dodge Rolling. Your mistake. I'd go get that fixed later, Dodge Rolling will save your life if you learn it." to the attacker
+				wait 6 seconds
+				send formatted "<light blue>%victim's name%: Now I suppose we're going to have to talk about perks. You'll get these after leveling up or by getting a promotion from Alastor, and with one equipped you'll be able to enhance your abilities." to the attacker
+				wait 5 seconds
+				make attacker execute command "/xp 1l"
+				send formatted "<light blue>%victim's name%: Our practice should've earned you an extra level. Go ahead and equip your new HP +5 perk by using the command /perks." to the attacker
+				setQuestProgress(attacker,"Breaking the Ice",4,"Equip the HP +5 perk by using /perks.")
 
 #Birth of a Hero - Azelle Dialouge Tree		
 command /boah <number>:
@@ -186,141 +187,203 @@ command /boah <number>:
 		if {inConvo.%player%} is not set:
 			if arg 1 is 1:
 				set {inConvo.%player%} to true
-				npcChat(player,"<light blue>Azelle: Sure is. What're you here for?")
+				npcChat(player,"<light blue>Azelle: <white>Sure is. What're you here for?")
 				wait 3 seconds
 				clear {inConvo.%player%}
-				send "<run command:/boah 2><gold>1 - I'd like to join the Knights of Ulster."
-				send "<run command:/boah 3><gold>2 - I'm lost. Do you have directions for the nearest town?"
+				send formatted "<run command:/boah 2><gold>1 - I'd like to join the Knights of Ulster."
+				send formatted "<run command:/boah 3><gold>2 - I'm lost. Do you have directions for the nearest town?"
 			else if arg 1 is 2:
 				set {inConvo.%player%} to true
-				npcChat(player,"<light blue>Azelle: 'Suppose I could help you with that, then. Before Alastor will even consider letting you join, you'll need to submit some basic identification. Have you got that on hand?")
+				npcChat(player,"<light blue>Azelle: <white>'Suppose I could help you with that, then. Before Alastor will even consider letting you join, you'll need to submit some basic identification. Have you got that on hand?")
 				wait 3.5 seconds
 				clear {inConvo.%player%}
-				send "<run command:/boah 4><gold>1 - I... don't have anything like that."
-				send "<run command:/boah 5><gold>2 - Will my blade count as identification? (Intimidate)"
+				send formatted "<run command:/boah 4><gold>1 - I... don't have anything like that."
+				send formatted "<run command:/boah 5><gold>2 - Will my blade count as identification? (Intimidate)"
 			else if arg 1 is 3:
 				set {inConvo.%player%} to true
-				npcChat(player,"<light blue>Azelle: Well, there's a small village south of this 'ere castle. I doubt you'd find much of anything other than a blacksmith.")
+				npcChat(player,"<light blue>Azelle: <white>Well, there's a small village south of this 'ere castle. I doubt you'd find much of anything other than a blacksmith.")
 				wait 3 seconds
-				npcChat(player,"<light blue>Azelle: If you're looking for something more civilized, then House Ulster up the hill is your best bet. Though I've heard Alastor is locking the castle down since he's preparing for some sort of trip.")
+				npcChat(player,"<light blue>Azelle: <white>If you're looking for something more civilized, then House Ulster up the hill is your best bet. Though I've heard Alastor is locking the castle down since he's preparing for some sort of trip.")
 				wait 4 seconds
-				npcChat(player,"<light blue>Azelle: But, if you really need to get into the castle, I heard Lord Alastor is hiring new members for his knights.")
+				npcChat(player,"<light blue>Azelle: <white>But, if you really need to get into the castle, I heard Lord Alastor is hiring new members for his knights.")
 				wait 3 seconds
 				clear {inConvo.%player%}
-				send "<run command:/boah 2><gold>1 - Could you help me with joining the knights?"
-				send "<run command:/boah 7><gold>2 - I'll go take a look around, and try to find the village."
+				send formatted "<run command:/boah 2><gold>1 - Could you help me with joining the knights?"
+				send formatted "<run command:/boah 7><gold>2 - I'll go take a look around, and try to find the village."
 			else if arg 1 is 4:
 				set {inConvo.%player%} to true
-				npcChat(player,"<light blue>Azelle: Well, I don't blame you. Not much reason to keep those sorts of things on your person. That is, unless you think lugging around stacks of paper is fun.")
+				npcChat(player,"<light blue>Azelle: <white>Well, I don't blame you. Not much reason to keep those sorts of things on your person. That is, unless you think lugging around stacks of paper is fun.")
 				wait 3.5 seconds
-				npcChat(player,"<light blue>Azelle: I guess I could help you out with it. Now, I've just got one simple question: Who, are you?")
+				npcChat(player,"<light blue>Azelle: <white>I guess I could help you out with it. Now, I've just got one simple question: Who, are you?")
 				wait 3.5 seconds
 				clear {inConvo.%player%}
 				make player execute command "/charsetup"
 			else if arg 1 is 5:
 				set {inConvo.%player%} to true
-				npcChat(player,"<light blue>Azelle: You think that puny thing is supposed to intimidate me? You'd have better luck smashing it in half and using the shards.")
+				npcChat(player,"<light blue>Azelle: <white>You think that puny thing is supposed to intimidate me? You'd have better luck smashing it in half and using the shards.")
 				wait 3.5 seconds
-				npcChat(player,"<light blue>Azelle: Now, unless you plan on finding some sort of registration, I'm going to throw you out.")
+				npcChat(player,"<light blue>Azelle: <white>Now, unless you plan on finding some sort of registration, I'm going to throw you out.")
 				wait 3 seconds
 				clear {inConvo.%player%}
-				send "<run command:/boah 4><gold>1 - I... don't have anything like that."
-				send "<run command:/boah 6><gold>2 - I'll just leave, then."
+				send formatted "<run command:/boah 4><gold>1 - I... don't have anything like that."
+				send formatted "<run command:/boah 6><gold>2 - I'll just leave, then."
 			else if arg 1 is 6:
 				set {inConvo.%player%} to true
-				npcChat(player,"<light blue>Azelle: And good riddance, I say. Don't bother with coming back, Alastor won't be as merciful as I am.")
+				npcChat(player,"<light blue>Azelle: <white>And good riddance, I say. Don't bother with coming back, Alastor won't be as merciful as I am.")
 				wait 3 seconds
 				clear {inConvo.%player%}
 				clear {questbook.%player%}
 				kick the player
 			else if arg 1 is 7:
 				set {inConvo.%player%} to true
-				npcChat(player,"<light blue>Azelle: Alright, then. Good luck. Come back later if you need any more help.")
+				npcChat(player,"<light blue>Azelle: <white>Alright, then. Good luck. Come back later if you need any more help.")
 				clear {inConvo.%player%}
 
-#The Time to Act - Alastor Dialouge Tree
+#Proving Grounds
+command /Quests-WalkInTheWoods <number>:
+	trigger:
+		set {inConvo.%player%} to true
+		if arg 1 is 1:
+			send formatted "<light blue>Alastor: <white>Join the Knights, eh? What're your credentials then, hotshot?"
+			wait 2 seconds
+			send formatted "<run command:/Quests-WalkInTheWoods 2><gold>1 - ...about that."
+			send formatted "<run command:/Quests-WalkInTheWoods 4><gold>2 - Well, if you must know... [Bluff]"
+			if {mqComplete.%player%} is 1:
+				send formatted "<run command:/Quests-WalkInTheWoods 99><gold>3 - There was that one time I saved the world... [Skip Tutorial Quests]"
+		else if arg 1 is 2:
+			send formatted "<light blue>Alastor: <white>So, let's recap this whole conversation then."
+			wait 2.5 seconds
+			send formatted "<light blue>Alastor: <white>You, a complete stranger, come up to me and ask for a position on the most talented and respected band of Knights on this side of Silgrund. And you don't even have a lick of experience on the field to justify it."
+			wait 6 seconds
+			send formatted "<light blue>Alastor: <white>Now, if this were any normal recruiting session, you'd already be out the gate on the way back to wherever you came from. But as luck would have it, I might have a position for you."
+			wait 5 seconds
+			send formatted "<light blue>Alastor: <white>My last mail carrier just retired, and I need a replacement. I figure a whelp like you can at least deliver letters. Are you up to the task?"
+			wait 4.5 seconds
+			send formatted "<run command:/Quests-WalkInTheWoods 3><gold>1 - I... suppose so."
+		else if arg 1 is 3:
+			send formatted "<light blue>Alastor: <white>Congratulations. You're the new mail carrier for House Ulster. Truly in the realm of the elites, aren't we?"
+			wait 4.5 seconds
+			send formatted "<light blue>Alastor: <white>Here's your first task. There's a small village down the river from here. Take this package to the village's leader, near their smithy."
+			wait 6 seconds
+			startQuest(player,"Proving Grounds","Deliver Alastor's package to the nearby village.")
+			give 1 chest named "<gold>Alastor's Package" with lore "<white>A supply package with a little bit of everything in it." to the player
+			send formatted "<gold>Alastor's Package obtained."
+			clear {inConvo.%player%}
+			wait 0.5 seconds
+			send formatted "<light blue>Alastor: <white>Follow the river south until you reach the village. Remember, deliver the package to the leader of the village near the smithy. Once you're done, come back here for your next assignment." to the player
+		else if arg 1 is 4:
+			send formatted "<italics>You spin the tale of a world-ending disaster, with you as the story's hero. Alastor seems incredibly invested."
+			wait 3.2 seconds
+			send formatted "<light blue>Alastor: ..."
+			wait 1.5 seconds
+			send formatted "<italics>Suddenly, Alastor bursts out into laughter."
+			wait 2 seconds
+			send formatted "<light blue>Alastor: That's got to be the dumbest story I've ever heard! I'll tell you one thing, kid: you're no bard."
+			wait 4 seconds
+			make player execute command "/Quests-WalkInTheWoods 2"
+		else if arg 1 is 10:
+			send "<gold>Alastor's Package removed."
+			loop all items in the player's inventory:
+				if the name of the loop-item is "<gold>Alastor's Package":
+					remove loop-item from the player
+			send formatted "<light blue>Jagen: <white>Ah, good. We've been waiting on that delivery for a while now. Alastor runs through mail carriers faster than anyone I've ever seen, so it's taken a while for him to send support out to smaller villages such as mine."
+			wait 7.5 seconds
+			send formatted "<light blue>Jagen: <white>Here, I'll spare you some gold for running that delivery. You've helped us greatly with this."
+			add 50 to the player's balance
+			send "<gold>+50 Gold gained."
+			wait 3 seconds
+			send formatted "<light blue>Jagen: <white>Go ahead and report back to Alastor as soon as you get the chance. He doesn't like being kept waiting."
+			setQuestProgress(player,"Proving Grounds",2,"Report the successful delivery to Alastor.")
+		else if arg 1 is 11:
+			send "<light blue>Alastor: <white>Well, what are you waiting for? Go! Keep to the left of the river beneath the castle until you reach the village, and deliver that package!"
+		else if arg 1 is 20:
+			setQuestProgress(player,"Proving Grounds",3,"Locate the captain of the guard in Grann.")
+			send "<light blue>Alastor: <white>About time. Now, if you're ready for your next task, I need a status report from Grann down in the dark forests."
+			wait 4 seconds
+			send "<light blue>Alastor: <white>There's a small fishing community down near the lake, it's not far from here. A carriage driver is usually parked over there, and he should be able to take you to Grann. Now, get going."
+		else if arg 1 is 30:
+			send "<light blue>Grann Captain: <white>Well, it's been a while since he's sent couriers down here. He usually walks down here himself whenever it's convienent."
+			wait 5 seconds
+			send "<light blue>Grann Captain: <white>It's been fairly quiet around here. Economy is doing well, and we just got a new Questmaster posted inside the old townhouse."
+			wait 5.5 seconds
+			send "<light blue>Grann Captain: <white>Hopefully things stay like this for a while. It's been too long since we've had a peaceful summer."
+			setQuestProgress(player,"Proving Grounds",4,"Return the report to Alastor.")
+		else if arg 1 is 40:
+			send "<light blue>Alastor: <white>Good, though you could stand to be faster with these sorts things. One day you might find it could mean the difference between life or death."
+			wait 5 seconds
+			send "<light blue>Alastor: <white>Anyways, that's beside the point. Give me the report."
+			wait 3 seconds
+			send formatted "<run command:/Quests-WalkInTheWoods 41><gold>1 - The captain reports a quiet summer, and not much else."
+		else if arg 1 is 41:
+			finishQuest(player,"Proving Grounds","")
+			send "<light blue>Alastor: <white>Good to hear. Now, since you've proven yourself to be reliable, I think it's about time I let you in on something."
+			wait 4.5 seconds
+			send formatted "<light blue>Alastor: <white>You've passed the exam, %player's tablist name%<reset><white>. Welcome to the Knights of Ulster."
+			wait 3.5 seconds
+			send formatted "<light blue>Alastor: <White>Now, don't get high and mighty just yet. You're still a whelp compared to the rest of the team. Thankfully I've already equipped the castle to bring fresh blood like you up to speed with the rest of us."
+			wait 6 seconds
+			send formatted "<light blue>Alastor: <white>Head downstairs, and talk to the trainer. I've already let him in on the details. Make sure you pay attention to what he says, it'll save your life in the long run."
+			startQuest(player,"Breaking the Ice","Speak with the combat trainer in the basement of House Ulster.")
+
+#Expedition - Alastor Dialouge Tree
 command /TTTA <number>:
 	trigger:
 		set {inConvo.%player%} to true
 		if arg 1 is 1:
-			send "<light blue>Alastor: Join the Knights, eh? What're your credentials then, hotshot?"
-			wait 2 seconds
-			send "<run command:/TTTA 2><gold>1 - ...about that."
-			send "<run command:/TTA 4><gold>2 - Well, if you must know... [Bluff]"
-			if {mqComplete.%player%} is 1:
-				send "<run command:/TTTA 99><gold>3 - There was that one time I saved the world... [Skip Tutorial Quests]"
-		else if arg 1 is 2:
-			send "<light blue>Alastor: So, let's recap this whole conversation then."
-			wait 2.5 seconds
-			send "<light blue>Alastor: You, a complete stranger, come up to me and ask for a position on the most talented and respected band of Knights on this side of Silgrund. And you don't even have a lick of experience on the field to justify it."
-			wait 6 seconds
-			send "<light blue>Alastor: Now, if this were any normal recruiting session, you'd already be out the gate on the way back to wherever you came from. But as luck would have it, I might have a position for you."
+			send formatted "<light blue>Alastor: <white>I've got this letter for Lord Cinder that I need delivered, over at House Silgrid. It's a long walk, and you're the best person I've got for the job."
+			wait 5.5 seconds
+			send formatted "<light blue>Alastor: <white>That ah... didn't come out the way I wanted it to. Look, just get this letter over to him, It's important. I'll pay in advance."
 			wait 5 seconds
-			send "<light blue>Alastor: My last mail carrier just retired, and I need a replacement. I figure a whelp like you can at least deliver letters. Are you up to the task?"
-			wait 4.5 seconds
-			send "<run command:/TTTA 3><gold>1 - I... suppose so."
-		else if arg 1 is 3:
-			send "<light blue>Alastor: Congratulations. You're the new mail carrier for House Ulster. Truly in the realm of the elites, aren't we?"
-			wait 3.5 seconds
-			send "<light blue>Alastor: Alright, I'll stop drilling you now. Here, take this letter over to Cinder in House Silgrid. If you can do this, then I suppose I'll think about letting you train under one of the senior knights."
-			wait 5 seconds
-			startQuest(player,"The Time to Act","Deliver Alastor's letter to Cinder.")
+			startQuest(player,"Expedition","Deliver Alastor's letter to Cinder.")
 			give 1 book named "<gold>Alastor's Letter" with lore "<white>A letter to Cinder from Alastor.", "<white>The handwriting is nigh-illegible, but the heart placed into every messy stroke makes up for it." to the player
-			send "<gold>Alastor's Letter obtained."
+			send formatted "<gold>Alastor's Letter obtained."
+			send formatted "<gold>+70 Gold obtained."
+			add 70 to the player's money
 			clear {inConvo.%player%}
 			wait 0.5 seconds
-			send "<light blue>Alastor: Keep moving straight ahead once you exit the castle, and you should bump into a village eventually. Follow the road from there, then cross the ocean once you find the acacia lighthouse. If you get lost, the villagers over in Grann should be able to help you out."
-		else if arg 1 is 4:
-			send "<italics>You spin the tale of a world-ending disaster, with you as the story's hero. Alastor seems incredibly invested."
-			wait 3.2 seconds
-			send "<light blue>Alastor: ..."
-			wait 1.5 seconds
-			send "<italics>Suddenly, Alastor bursts out into laughter."
-			wait 2 seconds
-			send "<light blue>Alastor: That's got to be the dumbest story I've ever heard! I'll tell you one thing, kid: you're no bard."
-			wait 4 seconds
-			make player execute command "/TTTA 2"
+			send formatted "<light blue>Alastor: If you take a carriage to Grann, you can just follow the road until you hit Seros. It's a port town on the edge of the region. Check by the docks for a sailor, and let him know who you're afilliated with. He'll take you the rest of the way to House Silgrid." to the player
 			
-#The Time to Act - Cinder Dialouge Tree
+#Expedition - Cinder Dialouge Tree
 command /TTTA-Cinder <number>:
 	trigger:
 		set {inConvo.%player%} to true
 		if arg 1 is 1:
-			send "<light blue>Cinder: Alastor, you say? Very well. The letter, then."
+			send formatted "<light blue>Cinder: Alastor, you say? Very well. The letter, then."
 			wait 2 seconds
 			loop all items in the player's inventory:
 				if the name of the loop-item is "<gold>Alastor's Letter":
 					remove loop-item from the player
-			send "<gold>Alastor's Letter removed."
-			send "<italics>Cinder polietly accepts the letter, taking care to avoid tearing the parchment as he opens it. A poorly hidden smile widens across his face as he reads Alastor's letter."
+			send formatted "<gold>Alastor's Letter removed."
+			send formatted "<italics>Cinder polietly accepts the letter, taking care to avoid tearing the parchment as he opens it. A poorly hidden smile widens across his face as he reads Alastor's letter."
 			wait 3.5 seconds
-			send "<light blue>Cinder (muttering): ...Yes, I suppose it <italics>is<reset><light blue> almost that time yet again."
+			send formatted "<light blue>Cinder (muttering): ...Yes, I suppose it <italics>is<reset><light blue> almost that time yet again."
 			wait 3 seconds
 			if {sex.%player%} is 0:
-				send "<light blue>Cinder: Thank you for this letter, madam. It brings me great joy to hear that Alastor is still doing well."
+				send formatted "<light blue>Cinder: Thank you for this letter, madam. It brings me great joy to hear that Alastor is still doing well."
 			else if {sex.%player%} is 1:
-				send "<light blue>Cinder: You have my thanks for this letter, sir. It brings me joy to hear that Alastor remains in good health."
+				send formatted "<light blue>Cinder: You have my thanks for this letter, sir. It brings me joy to hear that Alastor remains in good health."
 			wait 3.3 seconds
-			send "<light blue>Cinder: Now, may I hazard a guess and assume that Alastor has not yet compensated you for this task?"
+			send formatted "<light blue>Cinder: Now, may I hazard a guess and assume that Alastor has not yet compensated you for this task?"
 			wait 2 seconds
-			send "<run command:/TTTA-Cinder 2><gold>1 - I wasn't even aware mail carriers were supposed to be paid."
-			send "<run command:/TTTA-Cinder 3><gold>2 - I suppose if being made a mail carrier counts, then I've been properly compensated."
-			send "<run command:/TTTA-Cinder 2><gold>3 - He has not, milord."
+			send formatted "<run command:/TTTA-Cinder 2><gold>1 - I wasn't even aware mail carriers were supposed to be paid."
+			send formatted "<run command:/TTTA-Cinder 3><gold>2 - I suppose if being made a mail carrier counts, then I've been properly compensated."
+			send formatted "<run command:/TTTA-Cinder 2><gold>3 - He has not, milord."
 		else if arg 1 is 3:
-			send "<light blue>Cinder: I see why Alastor chose you. Your words drip with sarcasm. He was much the same way with his fellow knights while he still served under me."
+			send formatted "<light blue>Cinder: I see why Alastor chose you. Your words drip with sarcasm. He was much the same way with his fellow knights while he still served under me."
 			wait 2.5 seconds
-			send "<light blue>Cinder: So, I assume that Alastor has not yet paid you for this task?"
+			send formatted "<light blue>Cinder: So, I assume that Alastor has not yet paid you for this task?"
 			wait 2 seconds
-			send "<run command:/TTTA-Cinder 2><gold>3 - He has not, milord."
+			send formatted "<run command:/TTTA-Cinder 2><gold>3 - He has not, milord."
 		else if arg 1 is 2:
-			send "<light blue>Cinder: *chuckling* It would be a crime not to pay a brave warrior as yourself for such a deed."
+			send formatted "<light blue>Cinder: *chuckling* It would be a crime not to pay a brave warrior as yourself for such a deed."
 			wait 2 seconds
-			send "<light blue>Cinder: In all seriousness, however, Alastor sends all of his new recruits on missions such as this as their initiation test. One must learn to love the menial tasks in life, he claims. It builds discipline."
+			send formatted "<light blue>Cinder: In all seriousness, however, Alastor sends all of his new recruits on missions such as this as their initiation test. One must learn to love the menial tasks in life, he claims. It builds discipline."
 			wait 3 seconds
 			set {inCutscene.%player%} to true
-			send "<light blue>Cinder: I suppose some gold pieces are in order for-"
+			send formatted "<light blue>Cinder: I suppose some gold pieces are in order for-"
 			create npc named "Silgrid Guard" with type player at location 500, 70, 379
-			wait 2 ticks
+			wait 1 tick
+			clear {inCutscene.%player%}
 			make {NPCsFor.%player%::C_Silgrid Guard} move to location at 516, 70, 391 at speed 2
 			set {NPCsFor.%player%::C_Silgrid Guard}'s helmet to 1 chain helmet
 			set {NPCsFor.%player%::C_Silgrid Guard}'s chestplate to 1 chain chestplate
@@ -333,43 +396,46 @@ command /TTTA-Cinder <number>:
 				add 1 to {skl.%{NPCsFor.%player%::C_Silgrid Guard}%}
 				add 1 to {def.%{NPCsFor.%player%::C_Silgrid Guard}%}
 				add 1 to {res.%{NPCsFor.%player%::C_Silgrid Guard}%}
-				chance of 5%:
+				chance of 35%:
 					add 1 to {str.%{NPCsFor.%player%::C_Silgrid Guard}%}
-				chance of 5%:
+				chance of 35%:
 					add 1 to {spd.%{NPCsFor.%player%::C_Silgrid Guard}%}
-				chance of 5%:
+				chance of 35%:
 					add 1 to {skl.%{NPCsFor.%player%::C_Silgrid Guard}%}
-				chance of 5%:
+				chance of 35%:
 					add 1 to {def.%{NPCsFor.%player%::C_Silgrid Guard}%}
-				chance of 5%:
+				chance of 35%:
 					add 1 to {res.%{NPCsFor.%player%::C_Silgrid Guard}%}
 			loop all players:
 				if loop-player is not the player:
 					hide {NPCsFor.%player%::C_Silgrid Guard} from the loop-player
+			set {alliedPlayer.%{NPCsFor.%player%::C_Silgrid Guard}%} to the player
 			while {NPCsFor.%player%::C_Silgrid Guard} is navigating:
 				play sound "block.glass.step" with volume 1.5 and pitch 1 at {NPCsFor.%player%::C_Silgrid Guard} for the player
 				wait 5 ticks
-			send "<light red>Castle Guard: Lord Cinder! Chalphy... the whole village is being attacked!"
+			send formatted "<light red>Castle Guard: Lord Cinder! Chalphy... the whole village is being attacked!"
 			wait 2 seconds
-			send "<light blue>Cinder: What?! Explain yourself!"
+			send formatted "<light blue>Cinder: What?! Explain yourself!"
 			wait 1.25 seconds
-			send "<light red>Castle Guard: I ran here as fast as I could, milord... Chalphy is being attacked by a horde of monsters... We're completely outnumbered."
+			send formatted "<light red>Castle Guard: I ran here as fast as I could, milord... Chalphy is being attacked by a horde of monsters... We're completely outnumbered."
 			wait 3 seconds
-			send "<light blue>Cinder: ...I see. I pray that you have some knowledge of combat, %player's tablist name%<reset><light blue>. We have no choice but to fight."
+			send formatted "<light blue>Cinder: ...I see. I pray that you have some knowledge of combat, %player's tablist name%<reset><light blue>. We have no choice but to fight."
 			wait 4 seconds
-			send "<light blue>Cinder: Everyone, please, follow me! We haven't a second to lose!"
+			send formatted "<light blue>Cinder: Everyone, please, follow me! We haven't a second to lose!"
 			wait 0.25 seconds
 			hide {NPCsFor.%player%::Cinder} from the player
+			set {inCutscene.%player%} to true
 			make console execute command "/npc sel %citizen id of {NPCsFor.%player%::Cinder}%"
 			make console execute command "/npc copy"
-			wait 2 ticks
-			set {NPCsFor.%player%::C_Cinder}'s tool to 1 diamond sword of sharpness 7 named "<gold><bold>Cobalt Blade" with lore "<light red><bold>Slot A - Distant Counter", "<light blue><bold>Slot B - Sabotage Defense"
+			wait 1 tick
+			set {alliedPlayer.%{NPCsFor.%player%::C_Cinder}%} to the player
+			set {NPCsFor.%player%::C_Cinder}'s tool to 1 diamond sword of sharpness 2 named "<gold><bold>Cobalt Blade" with lore "<light red><bold>Slot A - Distant Counter", "<light blue><bold>Slot B - Sabotage Defense"
 			loop {lvl.%player%} times:
-				add 1 to {str.%{NPCsFor.%player%::C_Cinder}%}
-				add 1 to {spd.%{NPCsFor.%player%::C_Cinder}%}
-				add 1 to {skl.%{NPCsFor.%player%::C_Cinder}%}
-				add 1 to {def.%{NPCsFor.%player%::C_Cinder}%}
-				add 1 to {res.%{NPCsFor.%player%::C_Cinder}%}
+				add 2 to {str.%{NPCsFor.%player%::C_Cinder}%}
+				add 2 to {spd.%{NPCsFor.%player%::C_Cinder}%}
+				add 2 to {skl.%{NPCsFor.%player%::C_Cinder}%}
+				add 2 to {def.%{NPCsFor.%player%::C_Cinder}%}
+				add 2 to {res.%{NPCsFor.%player%::C_Cinder}%}
 				chance of 70%:
 					add 1 to {str.%{NPCsFor.%player%::C_Cinder}%}
 				chance of 70%:
@@ -381,6 +447,7 @@ command /TTTA-Cinder <number>:
 				chance of 70%:
 					add 1 to {res.%{NPCsFor.%player%::C_Cinder}%}
 			make {NPCsFor.%player%::C_Cinder} move to location at 489, 67, 379 at speed 1.5
+			clear {inCutscene.%player%}
 			loop all players:
 				if loop-player is not the player:
 					hide {NPCsFor.%player%::C_Cinder} from the loop-player
@@ -388,51 +455,62 @@ command /TTTA-Cinder <number>:
 			while {NPCsFor.%player%::C_Cinder} is navigating:
 				play sound "block.glass.step" with volume 0.5 and pitch 1 at {NPCsFor.%player%::C_Cinder} for the player
 				wait 5 ticks
+			wait 1 tick
 			make {NPCsFor.%player%::C_Cinder} move to location at 489, 68, 353 at speed 1.5
 			make {NPCsFor.%player%::C_Silgrid Guard} move to location at 489, 68, 353 at speed 1.25
 			while {NPCsFor.%player%::C_Cinder} is navigating:
 				play sound "block.glass.step" with volume 0.5 and pitch 1 at {NPCsFor.%player%::C_Cinder} for the player
 				wait 5 ticks
-			make {NPCsFor.%player%::C_Cinder} move to location at 543, 72, 349 at speed 1.5
-			make {NPCsFor.%player%::C_Silgrid Guard} move to location at 543, 72, 349 at speed 1.25
+			wait 1 tick
+			make {NPCsFor.%player%::C_Cinder} move to location at 546, 72, 347 at speed 1.5
+			make {NPCsFor.%player%::C_Silgrid Guard} move to location at 546, 72, 345 at speed 1.25
 			while {NPCsFor.%player%::C_Cinder} is navigating:
 				play sound "block.glass.step" with volume 0.5 and pitch 1 at {NPCsFor.%player%::C_Cinder} for the player
 				wait 5 ticks
-			make {NPCsFor.%player%::C_Cinder} move to location at 585, 79, 410 at speed 1.5
-			make {NPCsFor.%player%::C_Silgrid Guard} move to location at 585, 79, 410 at speed 1.25
+			wait 1 tick
+			make {NPCsFor.%player%::C_Cinder} move to location at 562, 76, 377 at speed 1.5
+			make {NPCsFor.%player%::C_Silgrid Guard} move to location at 562, 79, 377 at speed 1.25
 			while {NPCsFor.%player%::C_Cinder} is navigating:
 				play sound "block.glass.step" with volume 0.5 and pitch 1 at {NPCsFor.%player%::C_Cinder} for the player
 				wait 5 ticks
+			wait 1 tick
+			make {NPCsFor.%player%::C_Cinder} move to location at 585, 79, 388 at speed 1.5
+			make {NPCsFor.%player%::C_Silgrid Guard} move to location at 585, 79, 388 at speed 1.25
+			while {NPCsFor.%player%::C_Cinder} is navigating:
+				play sound "block.glass.step" with volume 0.5 and pitch 1 at {NPCsFor.%player%::C_Cinder} for the player
+				wait 5 ticks
+			wait 1 tick
 			make {NPCsFor.%player%::C_Cinder} move to location at 624, 75, 410 at speed 1.5
 			make {NPCsFor.%player%::C_Silgrid Guard} move to location at 620, 75, 407 at speed 1.25
 			while {NPCsFor.%player%::C_Cinder} is navigating:
 				play sound "block.glass.step" with volume 0.5 and pitch 1 at {NPCsFor.%player%::C_Cinder} for the player
 				wait 5 ticks
+			wait 1 tick
 			while {_playerClose} is not set:
-				loop all players in radius 8 of {NPCsFor.%player%::C_Cinder}:
+				loop all players in radius 6 of {NPCsFor.%player%::C_Cinder}:
 					if loop-player is the player:
 						set {_playerClose} to true
 					wait 5 ticks
-			loop 8 times:
-				spawn 1 zombie at location 692, 64, 423 in world "GenOne"
+			loop 4 times:
+				spawn 1 zombie at location 692, 66, 423 in world "GenOne"
 				wait 1 tick
 				loop all players:
 					if loop-player is not the player:
 						hide the last spawned entity from loop-player
-			loop 8 times:
-				spawn 1 skeleton at location 692, 64, 423 in world "GenOne"
+			loop 4 times:
+				spawn 1 skeleton at location 692, 66, 423 in world "GenOne"
 				wait 1 tick
 				loop all players:
 					if loop-player is not the player:
 						hide the last spawned entity from loop-player
-			send "<light blue>Cinder: Are these the monsters you mentioned?"
-			wait 2 seconds
-			send "<light red>Silgrid Guard: Yessir."
-			wait 0.5 seconds
-			send "<light blue>Cinder: Very well... This should be easy, relatively speaking of course."
-			wait 2 seconds
-			send "<light blue>Cinder: Find your courage, everyone! It is time for us to take action! CHAAAAAAAAARGE!"
-			setQuestProgress(player,"The Time to Act",2,"Slay all 16 monsters terrorizing Chalphy! Cinder and the Silgrid Guard will aid you.")
+			send formatted "<light blue>Cinder: Are these the monsters you mentioned?"
+			wait 2.25 seconds
+			send formatted "<light red>Silgrid Guard: Yessir."
+			wait 0.75 seconds
+			send formatted "<light blue>Cinder: Very well... This should be easy. Relatively speaking, of course."
+			wait 2.5 seconds
+			send formatted "<light blue>Cinder: Find your courage, everyone! It is time for us to take action! CHARGE!"
+			setQuestProgress(player,"Expedition",2,"Slay the monsters terrorizing Chalphy! Cinder and the Silgrid Guard will aid you.")
 			make console execute command "/npc sel %citizen id of {NPCsFor.%player%::C_Cinder}%"
 			make console execute command "/trait add sentinel"
 			make console execute command "/sentinel guard %player%"
@@ -442,9 +520,116 @@ command /TTTA-Cinder <number>:
 			make console execute command "/sentinel guard %player%"
 			make console execute command "/sentinel addtarget MONSTERS"
 			
+#Banker Mini Quest
+command /mq-bankers <number>:
+	trigger:
+		if arg 1 is 1:
+			if {skl.%player%} + {sklbuff.%player%} is more than or equal to 20:
+				send formatted "<light blue>Banker: So, you've called my bluff. I will open my vaults to you, but only under one condition:"
+				wait 3.5 seconds
+				send formatted "<light blue>Banker: You must not speak of this to anyone else. If it were to become common knowledge that my services are free to the public, then I would be very quickly overwhelmed with storage requests. It would be an insurmountable effort to appease the masses."
+				wait 5 seconds
+				send formatted "<run command:/mq-bankers 4><gold>1 - Then I won't say a word."
+			else:
+				if {sex.%player%} is 1:
+					send formatted "<light blue>Banker: I believe the lie belongs to you, sir. These vaults are for the Knights of Ulster only."
+				else:
+					send formatted "<light blue>Banker: I believe the lie belongs to you, madam. These vaults are for the Knights of Ulster only."
+				wait 3 seconds
+				if player's money is more than or equal to 55:
+					send formatted "<run command:/mq-bankers 2><gold>2 - Would this be enough to change your mind? [55 Gold]" to the player
+				else:
+					send formatted "<light red>2 - Would this be enough to change your mind? [55 Gold]" to the player
+				send formatted "<run command:/mq-bankers 3><gold>3 - I'll just come back later, then." to the player
+		else if arg 1 is 2:
+			send formatted "<light blue>Banker: Well, then I suppose if we may sweep this under the rug..."
+			wait 2.5 seconds
+			set {quests.%player%::HIDDEN_Bankers} to 999
+			subtract 55 from the player's money
+			send formatted "<gold>Paid 55 gold to the banker. Current funds: %player's money%"
+			send formatted "<light blue>Banker: Consider my vaults yours. How may I help you, %player's tablist name%<reset><light blue>?"
+			wait 4 seconds
+			send formatted "<run command:/cvault open><gold>1 - Open my vault." to the player
+			send formatted "<run command:/cvault clear><gold>2 - Clear out my vault." to the player	
+		else if arg 1 is 3:
+			send formatted "<light blue>Banker: If you have not spoken with Alastor already, I have overheard that he is currently searching for new members to add to his army. Perhaps he may hazard a chance on you?"
+		else if arg 1 is 4:
+			set {quests.%player%::HIDDEN_Bankers} to 999
+			send formatted "<light blue>Banker: You have my gratitude. Now, how may I assist you today, %player's tablist name%<reset><light blue>?"
+			wait 4 seconds
+			send formatted "<run command:/cvault open><gold>1 - Open my vault." to the player
+			send formatted "<run command:/cvault clear><gold>2 - Clear out my vault." to the player		
 			
 			
-			
+#Seros Fisherman Mini Quest	
+command /serosfisherman <number>:
+	trigger:
+		if arg 1 is 0:
+			if {quests.%player%::HIDDEN_Seros Fisherman} is not 999:
+				send formatted "<light blue>Seros Fisherman: Hire me boat? Why, 'suppose I can getcha where you're needin' to go for a little bit 'o gold." 
+				wait 4.5 seconds
+				if {skl.%player%} + {sklbuff.%player%} is more than or equal to 10:
+					send formatted "<run command:/serosfisherman 1><light green>1 - Do you mind waiving that fee? I'm on a mission from Lord Alastor. [SKL >= 10]"
+				else:
+					send formatted "<run command:/serosfisherman 1><light red>1 - Do you mind waving that fee? I'm on a mission from Lord Alastor. [SKL >= 10]"
+				send formatted "<run command:/serosfisherman 2><gold>2 - Could you take me to House Silgrid? [10 Gold]"
+				send formatted "<run command:/serosfisherman 3><gold>3 - Could you take me to Nifil? [50 Gold]"
+			else:
+				send formatted "<light blue>Seros Fisherman: Why, 'o course! Where is 't that 'yer needin' to go?"
+				wait 3.5 seconds
+				send formatted "<run command:/serosfisherman 2><gold>1 - Could you take me to House Silgrid?"
+				send formatted "<run command:/serosfisherman 3><gold>2 - Could you take me to Nifl?"
+		else if arg 1 is 1:
+			if {skl.%player%} + {sklbuff.%player%} is more than or equal to 10:
+				send formatted "<light blue>Seros Fisherman: A Knight 'o Ulster? Alastor'd have me head if I didn't give ye a lift..."
+				wait 3 seconds
+				send formatted "<light blue>Seros Fisherman: What was 'yer name again? <reset>%player's tablist name%<reset><light blue>? Alright then, I'll waive that there fee for ye."
+				wait 4 seconds
+				set {quests.%player%::HIDDEN_Seros Fisherman} to 999
+				send formatted "<light blue>Seros Fisherman: Where was it that you were wantin' to go to, %player's tablist name%<reset><light blue>?"
+				wait 3 seconds
+				send formatted "<run command:/serosfisherman 2><gold>1 - Could you take me to House Silgrid?"
+				send formatted "<run command:/serosfisherman 3><gold>2 - Could you take me to Nifil?"
+			else:
+				if {sex.%player%} is 1:
+					send formatted "<light blue>Seros Fisherman: Sorry lad, but you don't quite look the type to be a Knight 'o Ulster."
+				else:
+					send formatted "<light red>Seros Fisherman: Sorry lass, you just don't look like the kind 'o girl to be a Knight 'o Ulster."
+				wait 4 seconds
+				send formatted "<light blue>Seros Fisherman: Now, I'll still be willin' to take you 'cross the ocean. But you'll need a spot 'o gold first."
+				wait 3.5 seconds
+				send formatted "<run command:/serosfisherman 2><gold>2 - Could you take me to House Silgrid? [10 Gold]"
+				send formatted "<run command:/serosfisherman 3><gold>3 - Could you take me to Nifil? [50 Gold]"
+		else if arg 1 is 3:
+			if {quests.%player%::HIDDEN_Seros Fisherman} is not 999:
+				if player's money is less than 50:
+					send formatted "<light blue>Seros Fisherman: Hold it right there, bucko'. You know you can't be goin' and hirin' my ship without having the gold first. Come back once you got enough."
+				else:
+					subtract 50 from player's money
+					send formatted "<gold>Paid 50 gold to hire a boat. Current Funds: %player's money%"
+					wait 1.5 seconds
+					send formatted "<light blue>Seros Fisherman: Alrighty then, let's get out into the water."
+					wait 3 seconds
+					teleport the player to location at 89, 71, 285 in world "GenOne"
+			else:
+				send formatted "<light blue>Seros Fisherman: Alrighty then, let's get out into the water."
+				wait 3 seconds
+				teleport the player to location at 89, 71, 285 in world "GenOne"
+		else if arg 1 is 2:
+			if {quests.%player%::HIDDEN_Seros Fisherman} is not 999:
+				if player's money is less than 10:
+					send formatted "<light blue>Seros Fisherman: Hold it right there, bucko'. You know you can't be goin' and hirin' my ship without having the gold first. Come back once you got enough."
+				else:
+					subtract 10 from player's money
+					send formatted "<gold>Paid 10 gold to hire a boat. Current Funds: %player's money%"
+					wait 1.5 seconds
+					send formatted "<light blue>Seros Fisherman: Alrighty then, let's get out into the water."
+					wait 3 seconds
+					teleport the player to location at 410, 64, 354 in world "GenOne"
+			else:
+				send formatted "<light blue>Seros Fisherman: Alrighty then, let's get out into the water."
+				wait 3 seconds
+				teleport the player to location at 410, 64, 354 in world "GenOne"
 #See all NPCs, even ones belonging to other players.
 command /showallnpcs:
 	trigger:
@@ -455,26 +640,381 @@ command /showallnpcs:
 command /exitconvo:
 	trigger:
 		clear {inConvo.%player%}
-		send "Left conversation."
+		send formatted "Left conversation."
 				
+#Suppresses warnings on citizen spawning as server starts.
+on load:
+	set {blockCitizenCreateDuringStartup} to true
+	wait 3 seconds
+	clear {blockCitizenCreateDuringStartup}
+	broadcast "<light green>Server fully operational!"
+
+#Block On Citizen Create event to reload the main Citizens plugin without errors.	
+command /DEBUG-BlockCitizenEvent:
+	executable by: console, players
+	trigger:
+		set {blockCitizenCreateDuringStartup} to true
+		wait 5 seconds
+		clear {blockCitizenCreateDuringStartup}
+		broadcast "<light green>Server fully operational!"
+		
+#Add an NPC to the global NPC index.
+command /addNPCToGlobalIndex [<text="addToIndex">]:
+	trigger:
+		if arg 1 is "addToIndex":
+			send "<light blue>Right-click the NPC to add to the global index."
+			set {addNPCToGlobalIndex.%player%} to true
+		else:
+			clear {globalNPCS::%arg 1%}
+			send "<light blue>Removed the global index entry for %arg 1%."
 				
 #Ultra-Jank Workaround for NPC Cloning (why can nobody figure this out)
 on citizen create:
-	wait 1 tick
-	set {_name} to the name of the event-citizen
-	#broadcast "A citizen was spawned."
-	loop all players in radius 20 of the event-citizen:
-		#Check for local players in cutscenes
-		if {inCutscene.%loop-player%} is true:
-			#Prevent assigning NPCS to players already watching a cutscene
-			if {NPCsFor.%loop-player%::C_%{_name}%} is not set:
-				#broadcast "Generated cutscene NPC of %name of event-citizen% for %loop-player%."
-				set {NPCsFor.%loop-player%::C_%{_name}%} to the event-citizen
-				exit 1 loop
+	if {blockCitizenCreateDuringStartup} is not set:
+		while {_name} is not set:
+			wait 1 tick
+			set {_name} to the name of the event-citizen
+		#broadcast "A citizen was spawned."
+		loop all players in radius 20 of the event-citizen:
+			#No clue if this fixes anything
+			if citizen id of the loop-player is not set:
+				#Check for local players in cutscenes
+				if {inCutscene.%loop-player%} is true:
+					#Interrupt thread to set the type of NPC (summon,follower,cutscene)
+					if {interruptNPCWizardry.%loop-player%} is not set:
+						#Prevent assigning NPCS to players already watching a cutscene
+						if {NPCsFor.%loop-player%::C_%{_name}%} is not set:
+							#Prevent Cutscene NPCS from being targeted (won't assign NPCS in cutscenes to another player)
+							if {isCutsceneNPC.%event-citizen%} is not true:
+								#broadcast "Generated cutscene NPC of %name of event-citizen% for %loop-player%."
+								set {NPCsFor.%loop-player%::C_%{_name}%} to the event-citizen
+								set {isCutsceneNPC.%event-citizen%} to true
+								exit 1 loop
+					#Highjack thread
+					else:
+						#Create Summoner Summon
+						if {summoningMonster.%loop-player%} is set:
+							while {_name} is not set:	
+								play 10 (purple wool break with speed 1) at the event-citizen
+								add 1 to {_ticks}
+								set {_name} to the name of the event-citizen
+								wait 1 tick
+							broadcast {_name}
+							#broadcast "Generated cutscene NPC of %name of event-citizen% for %loop-player%."
+							set {NPCsFor.%loop-player%::C_%{_name}%} to the event-citizen
+							clear {summoningMonster.%loop-player%}
+							exit 1 loop
+						#Add the NPC as a follower
+						else if {recruitNPCAsFollower.%loop-player%} is true:
+							set {NPCsFor.%loop-player%::F_%{_name}%} to the event-citizen
+							set {isFollowerUnit.%{NPCsFor.%loop-player%::F_%{_name}%}%} to loop-player
+							exit 1 loop
 				
+#Periodical Checks for distance-based cutscene triggers.
+every 4 ticks:
+	loop all players:
+		if {quests.%loop-player%::Proving Grounds} is 999:
+			if {quests.%loop-player%::Breaking the Ice} is 5:
+				loop all players in radius 8 of the loop-player:
+					set {_npcYCoord} to loop-player-2's y-coordinate
+					set {_playerYCoord} to loop-player-1's y-coordinate
+					if the name of the loop-player-2 contains "Irankata":
+						if {_npcYCoord} - {_playerYCoord} is less than 1:
+							if {NPCsFor.%loop-player-1%::Irankata} is not set:
+								set {NPCsFor.%loop-player-1%::Irankata} to loop-player-2
+								set {quests.%loop-player-1%::Meet the Team} to 1
+								make loop-player-1 execute command "/quests-MeetTheTeam 0"
+								exit 1 loop
+							
+command /quests-MeetTheTeam <number>:
+	trigger:
+		if arg 1 is 0:
+			set {inCutscene.%player%} to true
+			clear {interruptNPCWizardry.%player%}
+			clear {recruitNPCAsFollower.%player%}
+			make console execute command "/npc sel 4897"
+			make console execute command "/npc copy"
+			hide {NPCsFor.%player%::Irankata} from the player
+			while {NPCsFor.%player%::C_Irankata} is not set:
+				wait 1 tick
+			loop all players:
+				if loop-player is not the player:
+					hide {NPCsFor.%player%::C_Irankata} from loop-player
+			set {_playerLoc} to the player's location
+			subtract 2 from x of {_playerLoc}
+			subtract 2 from z of {_playerLoc}
+			make {NPCsFor.%player%::C_Irankata} move to {_playerLoc}
+			wait 5 ticks
+			send formatted "<light blue>Irankata:<white> Hey! You're that new recruit Alastor was talking about earlier, right?" to the player
+			wait 3 seconds
+			send formatted "<run command:/quests-MeetTheTeam 1><gold>1 - You know about me?" to the player
+		else if arg 1 is 1:
+			send formatted "<light blue>Irankata:<white> Well, duh! You can't just roll into a mountaintop castle like this without getting seen by <italics>someone!" to the player
+			wait 3 seconds
+			if {sex.%player%} is 1:
+				send formatted "<light blue>Irankata:<white> Okay, don't tell me.... Your name is... Marth! No, no, wait. Roy! Uh... Ike, maybe? Ephraim? Ah, wait, I've got it! Seliph, for sure! Wait, that can't be right... Leif? ...Still doesn't sound right."
+				wait 5.5 seconds
+				if player's tablist name contains "Marth":
+					set {_nameOK} to true
+				else if player's tablist name contains "Roy":
+					set {_nameOK} to true
+				else if player's tablist name contains "Ike":
+					set {_nameOK} to true
+				else if player's tablist name contains "Ephraim":
+					set {_nameOK} to true
+				else if player's tablist name contains "Seliph":
+					set {_nameOK} to true
+				else if player's tablist name contains "Leif":
+					set {_nameOK} to true
+			else:
+				send formatted "<light blue>Irankata: <white>Okay, don't tell me... Your name is... Eirika! No, no, wait. Celica! Uh... Edelgard, maybe? Lucina? Ah, wait! I've got it! Lyn, for sure! ...Still doesn't sound right."
+				wait 5.5 seconds
+				if player's tablist name contains "Eirika":
+					set {_nameOK} to true
+				else if player's tablist name contains "Celica":
+					set {_nameOK} to true
+				else if player's tablist name contains "Edelgard":
+					set {_nameOK} to true
+				else if player's tablist name contains "Lucina":
+					set {_nameOK} to true
+				else if player's tablist name contains "Lyn":
+					set {_nameOK} to true
+			send formatted "<light blue>Irankata: <white>Ugh. I'm out of ideas here. Were <italics>any<reset><white> of those right?"
+			wait 3 seconds
+			if {_nameOK} is true:
+				send formatted "<run command:/quests-MeetTheTeam 2><gold>1 - Actually, %player's tablist name%<reset><gold> was right."
+			else:
+				send formatted "<run command:/quests-MeetTheTeam 22><gold>1 - No, sorry."
+		else if arg 1 is 2:
+			send formatted "<light blue>Irankata: <white>Wait, really?! YES! That's the first time I've actually guessed someone's name right! Haha, this makes me so happy!"
+			wait 3 seconds
+			send formatted "<run command:/quests-MeetTheTeam 3><gold>1 - So you try this with everyone?"
+			send formatted "<run command:/quests-MeetTheTeam 33><gold>2 - Do you like my name, then?"
+		else if arg 1 is 22:
+			send formatted "<light blue>Irankata:<white> Aw, really? One of these days I'll get it on the first try."
+			wait 6 seconds
+			send formatted "<run command:/quests-MeetTheTeam 3><gold>1 - ...Do you do this with everyone?"
+		else if arg 1 is 3:
+			send formatted "<light blue>Irankata:<white> Well, yeah! Not a whole lot of people want to walk <italics>all the way<reset><white> up this mountain just to chat. The only visitors we get on the regular are people asking us to lop someone's head off for them. They're not exactly my idea of a person to hang around with, you know?"
+			wait 6 seconds
+			send formatted "<light blue>Irankata:<white> So, whenever someone new comes in that doesn't look like they're asking for a legal murder, I want to get to know them as soon as I can. That's not really <italics>weird<reset><white>, is it?"
+			send formatted "<run command:/quests-MeetTheTeam 45><gold>1 - Okay, yeah. That's pretty weird."
+			send formatted "<run command:/quests-MeetTheTeam 444><gold>2 - That sounds pretty reasonable."
+		else if arg 1 is 33:
+			send formatted "<light blue>Irankata:<white> I think it's a great name! Everyone tells me my name's weird, though. Do you think Irankata's weird?"
+			wait 3 seconds
+			send formatted "<run command:/quests-MeetTheTeam 4><gold>1 - Yeah, it's weird."
+			send formatted "<run command:/quests-MeetTheTeam 44><gold>2 - Sounds... foreign."
+			send formatted "<run command:/quests-MeetTheTeam 444><gold>3 - Seems fine to me."
+		else if arg 1 is 45:
+			send formatted "<light blue>Irankata:<white> *sigh...* That's what I get for trying to be friendly..."
+			wait 1.75 seconds
+			make player execute command "/quests-MeetTheTeam 5"
+		else if arg 1 is 444:
+			send formatted "<light blue>Irankata:<white> You know, I think you're the only one in this entire castle that agrees with me for once. You and I are definitely doing to get along well."
+			#Convo support bonus
+			send formatted "<light yellow><italics>Your favor with Irankata increased."
+			add 5 to {NPCSupportPoints.%player%::Irankata}
+			wait 3 seconds
+			make player execute command "/quests-MeetTheTeam 5"
+		else if arg 1 is 22:
+			send formatted "<light blue>Irankata:<white> I love it! It's a great fit for you."
+			wait 1.5 seconds
+			send formatted "<light blue>Irankata:<white> Ooh, hey! What do you think about my name: Irankata? People tell me it's weird, but I think it sounds pretty cool."
+			wait 3 seconds
+			send formatted "<run command:/quests-MeetTheTeam 4><gold>1 - Yeah, it's weird."
+			send formatted "<run command:/quests-MeetTheTeam 44><gold>2 - Sounds... foreign."
+			send formatted "<run command:/quests-MeetTheTeam 444><gold>3 - Seems fine to me."
+		else if arg 1 is 4:
+			send formatted "<light blue>Irankata: <white>Aww, really? <italics>everyone<reset><white> says that about my name! Sheesh, you guys are hard to please."
+			wait 3 seconds
+			make player execute command "/quests-MeetTheTeam 5"
+		else if arg 1 is 44:
+			send formatted "<light blue>Irankata:<white> I mean... sorta? My brother Kalus and I are from Nifl, but I wouldn't really call that foreign."
+			wait 3 seconds
+			make player execute command "/quests-MeetTheTeam 5"
+		else if arg 1 is 444:
+			send formatted "<light blue>Irankata:<white> Aww, thanks! That means a lot to me. Almost everyone else I've met has said my name sounded funky. That, or they thought I was some kind of foreigner."
+			wait 4 seconds
+			make player execute command "/quests-MeetTheTeam 5"
+		else if arg 1 is 5:
+			send formatted "<light blue>Irankata:<white> Anyways, enough about me. I should show you to the rest of the Knights!"
+			wait 1.75 seconds
+			make {NPCsFor.%player%::C_Irankata} move to location at 791, 122, -1803 in world "GenOne"
+			while {NPCsFor.%player%::C_Irankata} is navigating:
+				wait 1 tick
+			if {sex.%player%} is 0:
+				send formatted "<light blue>Irankata:<white> HEY GUYS! The new recruit got in! Come to the commons and meet her!"
+			else:
+				send formatted "<light blue>Irankata:<white> HEY GUYS! The new recruit got in! Come to the commons and meet him!"
+			set {inCutscene.%player%} to true
+			#Setup NPC Wizardry
+			set {_IrankataY} to {NPCsFor.%player%::C_Irankata}'s y-coordinate
+			loop all players in radius 25 of {NPCsFor.%player%::C_Irankata}:
+				if citizen id of loop-player is set:
+					if loop-player's name is not "Irankata":
+						set {_npcY} to loop-player's y-coordinate
+						#Only target NPCs on the same floor as the targeter.
+						if ({_IrankataY} - {_npcY}) is less than or equal to 0.5:
+							set {NPCsFor.%player%::%loop-player's name%} to loop-player
+							hide {NPCsFor.%player%::%loop-player's name%} from the player
+							make console execute command "/npc sel %citizen id of loop-player%"
+							make console execute command "/npc copy"
+			#Hide all cutscene NPCs automagically.
+			loop {NPCsFor.%player%::*}:
+				loop all players:
+					if loop-player is not the player:
+						hide {NPCsFor.%player%::%loop-index-1%} from loop-player
+			wait 1 tick
+			make {NPCsFor.%player%::C_Lex} move to location at 796, 122, -1800 in world "GenOne"
+			make {NPCsFor.%player%::C_Marty} move to location at 789, 122, -1802 in world "GenOne"
+			make {NPCsFor.%player%::C_Merriam} move to location at 789, 122, -1804 in world "GenOne"
+			while {NPCsFor.%player%::C_Lex} is navigating:
+				wait 1 tick
+			send "<light blue>Lex:<white> Jeez, lady! Are you <italics>trying<reset> to blow out our ears?"
+			wait 3 seconds
+			send "<light blue>Marty:<white> Don't be hard on her, Lex! She's just makin' sure everyone could hear her."
+			wait 3.1 seconds
+			send "<light blue>Lex:<white> Are you kidding?! People as far as Grann could've heard her shouting!"
+			wait 3 seconds
+			send "<light blue>Kyrie:<white> I-I agree... my ears are still ringing..."
+			wait 2.5 seconds
+			send "<light blue>Irankata:<white> ...Sorry."
+			wait 1.5 seconds
+			send "<light blue>Merriam:<white> Well, at least we're all here! ...Except for Kalus. Where's he gone off to?"
+			wait 3.5 seconds
+			send "<light blue>Irankata:<white> Probably off stuffing his face into a book somewhere. I'll go find him."
+			wait 3.5 seconds
+			make {NPCsFor.%player%::C_Irankata} move to location at 775, 116, -1797 in world "GenOne"
+			wait 2.25 seconds
+			send "<light blue>Lex: <white>I will <italics>never<reset><white> understand that woman."
+			wait 3 seconds
+			send "<light blue>Merriam: <white>At least she tries to be friendly, unlike someone I know..."
+			wait 3 seconds
+			send "<light blue>Lex: <white>Hey, I can be friendly! It just... depends on the person."
+			wait 3 seconds
+			send "<light blue>Lex: <white>Know what? I'll prove you wrong right now! How's your day been, rookie?"
+			wait 3.5 seconds
+			send formatted "<run command:/quests-MeetTheTeam 6><gold>1 - Sorry, I can't hear you over this ringing in my ears..."
+			send formatted "<run command:/quests-MeetTheTeam 66><gold>2 - I've had a long day."
+		else if arg 1 is 6:
+			send formatted "<light blue>Lex: <white>Haha! Hear that, Merriam? Three versus two on the crazy lady!"
+			wait 3 seconds
+			send formatted "<light blue>Kyrie: <white>I never said she was crazy, Lex! Just, a bit loud at times..."
+			wait 3 seconds
+			send formatted "<light blue>Merriam: <white>Lex, what happened to talking with the recruit?"
+			wait 4 seconds
+			send formatted "<light blue>Lex: <white>Jeez, can you give me a break for a second? I'm getting around to it!"
+			wait 3 seconds
+			send formatted "<run command:/quests-MeetTheTeam 7><gold>1 - Is he like this with everyone?"
+		else if arg 1 is 66:
+			send formatted "<light blue>Lex: <white>Yeah, you and me both. The whole team's been booked with defense missions lately. Doesn't help that the crazy lady's always giving me a headache with her shouting."
+			wait 4 seconds
+			send formatted "<light blue>Merriam: <white>You really can't let some things go, can you Lex?"
+			wait 3 seconds
+			send formatted "<light blue>Lex: <white>Look, it's not my fault she wants to be the center of attention all the time."
+			wait 3 seconds
+			send formatted "<run command:/quests-MeetTheTeam 7><gold>1 - Is he like this with everyone?"
+			send formatted "<run command:/quests-MeetTheTeam 77><gold>2 - You all sound like a friendly bunch."
+		else if arg 1 is 7:
+			send formatted "<light blue>Lex: <white>What? Of course not! Some people just drive me up the wall, y'know?"
+			wait 3.5 seconds
+			send formatted "<light blue>Merriam: <white>And lately, that's been everyone. I think the new recruit has a point."
+			wait 3.25 seconds
+			send formatted "<light blue>Marty: Our new friend hasn't even gotten to tell us their name yet, and you two are already using them as ammunition. Is that the impression you want to give them of the Knights?"
+			wait 3.5 seconds
+			send formatted "<light blue>Lex & Merriam: ...Sorry."
+			wait 1.2 seconds
+			send formatted "<light blue>Marty: Don't mind them. Lots of jobs lately has meant lots of stress. They'll lighten up once we figure out where these monsters are coming from."
+			wait 4.5 seconds
+			make player execute command "/quests-MeetTheTeam 8"
+		else if arg 1 is 77:
+			send formatted "<light blue>Kyrie: <white>They're not usually like this. We have all been awfully busy with jobs lately. Everyone is on edge from the stress."
+			wait 4 seconds
+			send formatted "<light blue>Marty: <white>Once Lord Cinder figures out where these monsters are comin' from, things should settle down around here. It's just going to take some time."
+			wait 5 seconds
+			make player execute command "/quests-MeetTheTeam 8"
+		else if arg 1 is 8:
+			send formatted "<light blue>Kyrie: <white>On that note, I think we should all introduce ourselves proper. I am Kyrie, a humble cleric. I pledge myself to help you both on and off the battlefield."
+			wait 4.25 seconds
+			send formatted "<light blue>Marty: <white>I'm Marty. If you need a shield, I'll give it my all."
+			wait 2.75 seconds
+			send formatted "<light blue>Lex: <white>The name's Lex, finest cavalier on this side of the continent. My axe swings are <italics>legendary!"
+			wait 3 seconds
+			send formatted "<light blue>Merriam: <white>My name is Merriam. I transferred here from the Mage's Circle under Lord Cinder. Good to meet you."
+			wait 3 seconds
+			send formatted "<light blue>Marty: <white>I'm not sure where they've gone off to, but our resident archer Kalus is Irankata's older brother. To tell you the truth, we don't know very much about them."
+			wait 3 seconds
+			send formatted "<light blue>Lex: <white>You got that one right. They just wound up here one day, Alastor said they were transfers from Cinder's army... I don't buy it."
+			wait 4 seconds
+			send formatted "<light blue>Marty: <white>Lex, we've talked about this."
+			wait 2.5 seconds
+			send formatted "<light blue>Lex: <white>Alright, alright! I get it, big guy."
+			wait 2.5 seconds
+			send formatted "<light blue>Marty: <white>Now, who are you, recruit?"
+			wait 1.5 seconds
+			send formatted "<run command:/quests-MeetTheTeam 9><gold>1 - My name is %player's tablist name%<reset><gold>, a %{class.%player%}%."
+		else if arg 1 is 9:
+			send formatted "<light blue>Marty: <white>Well then, It's nice to meet you %player's tablist name%<reset><white>. Having another set of hands to help out around here is good news."
+			wait 3.5 seconds
+			send formatted "<light blue>Kyrie: <white>Yes, it is a pleasure to meet you. If you ever need assistance, please feel free to come to us for help."
+			wait 4 seconds
+			send formatted "<run command:/quests-MeetTheTeam 10><gold>1 - Mind if I ask for a tour of the castle?"
+			send formatted "<run command:/quests-MeetTheTeam 101><gold>3 - Where can I get more assignments?"
+		else if arg 1 is 10:
+			send formatted "<light blue>Kyrie: <white>Ah, of course. The floor we're on currently is the commons area, where the knights gather after missions to relax."
+			wait 4 seconds
+			send formatted "<light blue>Kyrie: <white>Beyond this floor is the storage area, where we keep our spare equipment and items. There are also guest rooms inside each of the pillars, which you are free to use at any time."
+			wait 5 seconds
+			send formatted "<light blue>Kyrie: <white>The ground floor is Alastor's throne room. Off to the side is the war room with a map of the local area. I would suggest reviewing it before embarking on adventures."
+			wait 5 seconds
+			send formatted "<light blue>Kyrie: <white>Underneath the castle is the training area, which I believe is self-explanatory. Some vendors have also established themselves there, if you ever need supplies or extra storage."
+			wait 5 seconds
+			send formatted "<light blue>Kyrie: <white>I believe that should be everything at the castle. If you have any further questions, please feel free to chat with us at any time."
+			wait 4 seconds
+			make player execute command "/xp 1l"
+			finishQuest(player,"Breaking the Ice","You are now free to explore Silgrund at your leisure.")
+			loop {NPCsFor.%player%::*}:
+				if loop-index contains "C_":
+					make console execute command "/npc sel %citizen id of loop-value%"
+					make console execute command "/npc remove"
+					clear {NPCsFor.%player%::%loop-index%}
+				else:
+					reveal loop-value to the player
+		else if arg 1 is 101:
+			send formatted "<light blue>Kyrie: <white>Oh, goodness! Don't feel as though you need to work yourself to death, any of us would take a rest after a day like yours."
+			wait 4 seconds
+			send formatted "<light blue>Marty: <white>Judging by the fire in those eyes, I think %player's tablist name%<reset><white>'s just getting started. There's a notice board down in the war room that can set you up with extra missions, if you're feeling up to it."
+			wait 6 seconds
+			send formatted "<light blue>Merriam: <white>Kyrie does have a point, however. You should at least take a break before throwing yourself back into the fray."
+			wait 4 seconds
+			send formatted "<light blue>Lex: <white>Hey, if the new guy wants to be a hero, let 'em! We're knights after all, it's our duty to help the people when they need it."
+			wait 5 seconds
+			send formatted "<light blue>Merriam: <white>I suppose that's a good note to end on. If you have any more questions, feel free to ask us. We'll be happy to help!"
+			wait 3.5 seconds
+			make player execute command "/xp 1l"
+			finishQuest(player,"Breaking the Ice","You are now free to explore Silgrund at your leisure.")
+			loop {NPCsFor.%player%::*}:
+				if loop-index contains "C_":
+					make console execute command "/npc sel %citizen id of loop-value%"
+					make console execute command "/npc remove"
+					clear {NPCsFor.%player%::%loop-index%}
+				else:
+					reveal loop-value to the player
+					
+command /clearCutsceneNPCS:
+	trigger:
+		loop {NPCsFor.%player%::*}:
+			if loop-index contains "C_":
+				make console execute command "/npc sel %citizen id of loop-value%"
+				make console execute command "/npc remove"
+				clear {NPCsFor.%player%::%loop-index%}
+			else:
+				reveal loop-value to the player
+
 #To take control of NPCs during cutscenes, they need to be written to the player's data while we manipulate them.
 #This is convinent, as we can also use this to hide the copied NPCs from everyone else by using a loop.
-#Cutscene NPC's are denoated inside the array using "C_".
+#Cutscene NPC's are denoted inside the array using "C_".
 #Original NPC's should NEVER be moved or destroyed. Create a copy of the NPC and add it to the player's NPC array with a C_ prefix.
 #NPC's must be copied via their Citizens ID (separate from what is returned by Skript).
 #Rember to clear cutscene NPC stats if they're to be used as followers.
@@ -484,25 +1024,25 @@ command /npctests <number>:
 	trigger:
 		set {inConvo.%player%} to true
 		if arg 1 is 1:
-			send "<light yellow>Test NPC: I should dissapear, then reappear after a few seconds. This should only affect you."
+			send formatted "<light yellow>Test NPC: I should dissapear, then reappear after a few seconds. This should only affect you."
 			wait 3 seconds
 			hide {NPCsFor.%player%::Test NPC} from the player
-			send "<light yellow>Test NPC: Woosh!"
+			send formatted "<light yellow>Test NPC: Woosh!"
 			wait 3 seconds
 			reveal {NPCsFor.%player%::Test NPC} to the player
-			send "<light yellow>Test NPC: ...And now I'm back! Ta-da!"
+			send formatted "<light yellow>Test NPC: ...And now I'm back! Ta-da!"
 			wait 1.5 seconds
-			send "<light yellow>Test NPC: What would you like me to do next?"
+			send formatted "<light yellow>Test NPC: What would you like me to do next?"
 			wait 1.5 seconds
 			clear {inConvo.%player%}
-			send "<run command:/npctests 1><gold>1 - NPC Visibility Test" to the player
-			send "<run command:/npctests 2><gold>2 - Cutscene Test" to the player
-			send "<run command:/npctests 3><gold>3 - Follower Test" to the player
-			send "<run command:/npctests 5><gold>4 - Broadcast ID" to the player
-			send "<run command:/npctests 4><gold>5 - Exit" to the player
+			send formatted "<run command:/npctests 1><gold>1 - NPC Visibility Test" to the player
+			send formatted "<run command:/npctests 2><gold>2 - Cutscene Test" to the player
+			send formatted "<run command:/npctests 3><gold>3 - Follower Test" to the player
+			send formatted "<run command:/npctests 5><gold>4 - Broadcast ID" to the player
+			send formatted "<run command:/npctests 4><gold>5 - Exit" to the player
 		else if arg 1 is 2:
 			set {inCutscene.%player%} to true
-			send "<light yellow>Test NPC: Okay. I'm going to run to the center of this area."
+			send formatted "<light yellow>Test NPC: Okay. I'm going to run to the center of this area."
 			set {_origin} to location of {NPCsFor.%player%::Test NPC}
 			hide {NPCsFor.%player%::Test NPC} from the player
 			make console execute command "/npc sel %citizen id of {NPCsFor.%player%::Test NPC}%"
@@ -510,11 +1050,11 @@ command /npctests <number>:
 			while {NPCsFor.%player%::C_Test NPC} is not set:
 				add 1 to {_blockInfLoop}
 				wait 1 tick
-				send "<blue>Waiting for NPC..." to the player
+				send formatted "<blue>Waiting for NPC..." to the player
 				if {_blockInfLoop} is more than 60:
-					send "<red>Failed to retrieve NPC!" to the player
+					send formatted "<red>Failed to retrieve NPC!" to the player
 					exit 1 loop
-			send "<light blue>NPC Found! Beginning cutscene." to the player
+			send formatted "<light blue>NPC Found! Beginning cutscene." to the player
 			#set {NPCsFor.%player%::C_Test NPC} to the last created citizen
 			loop all players:
 				if loop-player is not the player:
@@ -522,95 +1062,924 @@ command /npctests <number>:
 			make {NPCsFor.%player%::C_Test NPC} move to location at 789, 72, -1720 in world "GenOne" at speed 1
 			while {NPCsFor.%player%::C_Test NPC} is navigating:
 				wait 1 tick
-			send "<light yellow>Test NPC: Now, I'll equip a sword."
+			send formatted "<light yellow>Test NPC: Now, I'll equip a sword."
 			wait 2 seconds
 			set {NPCsFor.%player%::C_Test NPC}'s tool to 1 iron sword
-			send "<light yellow>Test NPC: Now I'll put it away."
+			send formatted "<light yellow>Test NPC: Now I'll put it away."
 			wait 2 seconds
 			set {NPCsFor.%player%::C_Test NPC}'s tool to air
 			wait 2 seconds
-			send "<light yellow>Test NPC: Now I'll head back to my starting location, and sit down for a little while."
+			send formatted "<light yellow>Test NPC: Now I'll head back to my starting location, and sit down for a little while."
 			wait 2 seconds
 			make {NPCsFor.%player%::C_Test NPC} move to {_origin} at speed 0.5
 			while {NPCsFor.%player%::C_Test NPC} is navigating:
 				wait 1 tick
 			make {NPCsFor.%player%::C_Test NPC} sit
 			wait 2 seconds
-			send "<light yellow>Test NPC: I think I'll stand up now."
+			send formatted "<light yellow>Test NPC: I think I'll stand up now."
 			wait 1 seconds
 			make {NPCsFor.%player%::C_Test NPC} stop sitting
 			reveal {NPCsFor.%player%::Test NPC} to the player
-			send "<light yellow>Test NPC: What did you think? Did you like it?"
+			send formatted "<light yellow>Test NPC: What did you think? Did you like it?"
 			destroy {NPCsFor.%player%::C_Test NPC}
 			clear {NPCsFor.%player%::C_Test NPC}
 			clear {inConvo.%player%}
-			send "<light yellow>Test NPC: What would you like me to do next?"
+			send formatted "<light yellow>Test NPC: What would you like me to do next?"
 			wait 1.5 seconds
 			clear {inCutscene.%player%}
 			clear {inConvo.%player%}
-			send "<run command:/npctests 1><gold>1 - NPC Visibility Test" to the player
-			send "<run command:/npctests 2><gold>2 - Cutscene Test" to the player
-			send "<run command:/npctests 3><gold>3 - Follower Test" to the player
-			send "<run command:/npctests 5><gold>4 - Broadcast ID" to the player
-			send "<run command:/npctests 4><gold>5 - Exit" to the player
+			send formatted "<run command:/npctests 1><gold>1 - NPC Visibility Test" to the player
+			send formatted "<run command:/npctests 2><gold>2 - Cutscene Test" to the player
+			send formatted "<run command:/npctests 3><gold>3 - Follower Test" to the player
+			send formatted "<run command:/npctests 5><gold>4 - Broadcast ID" to the player
+			send formatted "<run command:/npctests 4><gold>5 - Exit" to the player
 		else if arg 1 is 5:
-			send "<light yellow>Test NPC: My NPC ID is %citizen id of {NPCsFor.%player%::Test NPC}%."
-			send "<light yellow>Test NPC: What would you like me to do next?"
+			send formatted "<light yellow>Test NPC: My NPC ID is %citizen id of {NPCsFor.%player%::Test NPC}%."
+			send formatted "<light yellow>Test NPC: What would you like me to do next?"
 			wait 1.5 seconds
 			clear {inConvo.%player%}
-			send "<run command:/npctests 1><gold>1 - NPC Visibility Test" to the player
-			send "<run command:/npctests 2><gold>2 - Cutscene Test" to the player
-			send "<run command:/npctests 3><gold>3 - Follower Test" to the player
-			send "<run command:/npctests 5><gold>4 - Broadcast ID" to the player
-			send "<run command:/npctests 4><gold>5 - Exit" to the player
+			send formatted "<run command:/npctests 1><gold>1 - NPC Visibility Test" to the player
+			send formatted "<run command:/npctests 2><gold>2 - Cutscene Test" to the player
+			send formatted "<run command:/npctests 3><gold>3 - Follower Test" to the player
+			send formatted "<run command:/npctests 5><gold>4 - Broadcast ID" to the player
+			send formatted "<run command:/npctests 4><gold>5 - Exit" to the player
 		else if arg 1 is 4:
 			clear {NPCsFor.%player%::*}
 			clear {inConvo.%player%}
-			send "<light yellow>Test NPC: Okay then. See you later!"
+			send formatted "<light yellow>Test NPC: Okay then. See you later!"
 		
+#With Pride in Your Heart - Alastor
+command /WPIYH <number>:
+	trigger:
+		if arg 1 is 1:
+			send formatted "<light blue>Alastor: <white>A rough day, huh? Good for you, then. What I need to know is this: did my letter get delivered to Cinder?"
+			wait 3.5 seconds
+			send formatted "<run command:/WPIYH 2><gold>1 - Your message to Cinder got delivered, don't worry." to the player
+		else if arg 1 is 2:
+			send formatted "<light blue>Alastor: <white>Good to know. Anything interesting happen while you were on that delivery run?"
+			wait 4.5 seconds
+			if {skl.%player%} + {sklbuff.%player%} is more than or equal to 15:
+				send formatted "<run command:/WPIYH 3><gold>1 - I had to save a village from some monsters. I think I deserve a raise. [SKL >= 15]" to the player
+			else:
+				send formatted "<run command:/WPIYH 3><light red>1 - I had to save a village from some monsters. I think I deserve a raise. [SKL >= 15]" to the player
+			send formatted "<run command:/WPIYH 4><gold>2 - A local village was attacked while I was giving your letter to Cinder."
+		else if arg 1 is 3:
+			if {skl.%player%} + {sklbuff.%player%} is more than or equal to 15:
+				send formatted "<light blue>Alastor: <white>Only a few days after induction, and you're already helping us out. I like your enthusiasm."
+				wait 3 seconds
+				send formatted "<light blue>Alastor: <white>I'm sure you'll find this more than enough compensation. Probably better than whatever little bag of gold Cinder gave to you, eh?"
+				set {_weap} to bestWeapon(player)
+				if {_weap} is 1:
+					give 1 iron sword of sharpness 1 named "<light blue>Steel Sword" to the player
+					send formatted "<gold>Steel Sword obtained!"
+				else if {_weap} is 2:
+					give 1 iron axe of sharpness 1 named "<light blue>Steel Axe" to the player
+					send formatted "<gold>Steel Axe obtained!"
+				else if {_weap} is 3:
+					give 1 iron shovel of sharpness 2 named "<light blue>Iron Lance" to the player
+					send formatted "<gold>Iron Lance obtained!"
+				else if {_weap} is 4:
+					give 1 bow of power 1 named "<light blue>Steel Bow" to the player
+					send formatted "<gold>Steel Bow obtained!"
+				else if {_weap} is 5:
+					send formatted "<gold>Elthunder tome obtained!" to the player
+					give 1 book named "<light yellow>Elthunder" with lore "","","","","","","<white>Right-click to cast the spell Elthunder.","<white>Uses left:","120" to the player
+				else if {_weap} is 6:
+					send formatted "<gold>Imbue staff obtained!" to the player
+					give 1 iron hoe named "<light yellow>Imbue" with lore "<white>Right-click to restore an ally's health." to the player
+				else:
+					give 1 iron sword of sharpness 1 named "<light blue>Sword of Broken Programming" to the player
+					send formatted "<gold>Horribly Mangled Code discovered!"
+				wait 3.5 seconds
+				make player execute command "/WPIYH 4"
+			else:
+				send formatted "<light blue>Alastor: <white>Only a few days after induction, and you're already helping us out. I like your enthusiasm, though you could've found a better way to say that Cinder took care of the village for you. It's the thought that counts though, eh?"
+				wait 4.5 seconds
+				make player execute command "/WPIYH 4"
+		else if arg 1 is 4:
+			send formatted "<light blue>Alastor: <white>Well, at the end of the day you've proved yourself worthy of being a Knight of Ulster."
+			wait 3 seconds
+			send formatted "<light blue>Alastor: If you ask me, that detour proves you at least know what you're doing. But, I just want to remind you that if you're feeling like you need some extra practice, the trainer downstairs is always willing to lend a hand."
+			wait 4.5 seconds
+			send formatted "<light blue>Alastor: <white>I don't have any more assignments for you just yet, so go take a load off upstairs. You've earned it."
+		else if arg 1 is 5:
+			send formatted "<light blue>Alastor: You're a smart one. There's a rack of spare equipment down there as well. Feel free to grab a set while you're down there training."
+			startQuest(player,"With Pride in Your Heart","Talk to the combat instructor downstairs.")
+		else if arg 1 is 6:
+			send formatted "<light blue>Alastor: I understand. No point in wasting your time training if you're already an expert, eh? Don't take that too seriously. I know I look cold, <italics>this whole damn mountain's cold...<reset><light blue> but I like to keep relations with the Knights more laid-back."
+			wait 4.5 seconds
+			finishQuest(player,"With Pride in Your Heart","Various services from vendors are now available.")
+			send formatted "<light blue>Alastor: Head upstairs and meet some of your fellow Knights. I'm sure they're eager to get to know you."
+		
+#Stuttgardt Prolouge Conversation
+command /quests-prolouge <number>:
+	trigger:
+		if arg 1 is 1:
+			if {hasPlayedProlouge.%player%} is not set:
+				send "<light blue>Stuttgardt: <white>Greetings. I assume you are one of the travelers from Silgrund, yes?"
+				wait 3.5 seconds
+				send "<run command:/quests-prolouge 2><gold>1 - Yes, I am."
+				send "<run command:/quests-prolouge 22><gold>2 - Never heard of them."
+			else:
+				send "<light blue>Stuttgardt: <white>We meet again. Is there something I may help you with?"
+				wait 3 seconds
+				send "<run command:/quests-prolouge 4><gold>1 - Could you open the gate again?"
+		else if arg 1 is 2:
+			send "<light blue>Stuttgardt: <white>I see. What is your name, then?"
+			wait 3 seconds
+			set {prolouge_edit_name.%player%} to true
+			send "<light yellow>Please enter the name you wish to use into the chat. You may change this later by using the command /cosmetics."
+		else if arg 1 is 22:
+			send "<light blue>Stuttgardt: <white>I see... My apologies for making assumptions."
+			wait 3.5 seconds
+			send "<light blue>Stuttgardt: <white>Many of the travelers we come across in this land come from Silgrund. In fact, I believe you are the first traveler I have seen in years to have never heard of Silgrund."
+			wait 7 seconds
+			send "<light blue>Stuttgardt: <white>Well, it changes very little at the end of the day. What is your name, traveler?"
+			wait 4.25 seconds
+			set {prolouge_edit_name.%player%} to true
+			send "<light yellow>Please enter the name you wish to use into the chat. You may change this later by using the command /cosmetics."
+		else if arg 1 is 3:
+			clear {inConvo.%player%}
+			send "<light blue>Stuttgardt: <white>%player's tablist name%, it is a pleasure to meet you."
+			wait 3.5 seconds
+			send "<light blue>Stuttgardt: <white>Allow me to be the first to welcome you into Arcadia. Please, proceed through to the central meeting area and enjoy yourself."
+			set block at location at -1508, 4, -724 in world "Salindrum" to air
+			play 10 (oak wood plank break with speed 1) at location -1508, 4, -724 in world "Salindrum"
+			set block at location at -1508, 5, -724 in world "Salindrum" to air
+			play 10 (oak wood plank break with speed 1) at location -1508, 5, -724 in world "Salindrum"
+			set block at location at -1509, 4, -724 in world "Salindrum" to air
+			play 10 (oak wood plank break with speed 1) at location -1509, 4, -724 in world "Salindrum"
+			set block at location at -1509, 5, -724 in world "Salindrum" to air
+			play 10 (oak wood plank break with speed 1) at location -1509, 5, -724 in world "Salindrum"
+			set block at location at -1510, 4, -724 in world "Salindrum" to air
+			play 10 (oak wood plank break with speed 1) at location -1510, 4, -724 in world "Salindrum"
+			set block at location at -1510, 5, -724 in world "Salindrum" to air
+			play 10 (oak wood plank break with speed 1) at location -1510, 5, -724 in world "Salindrum"
+			wait 10 seconds
+			set block at location at -1508, 4, -724 in world "Salindrum" to oak fence
+			play 10 (oak wood plank break with speed 1) at location -1508, 4, -724 in world "Salindrum"
+			set block at location at -1508, 5, -724 in world "Salindrum" to oak fence
+			play 10 (oak wood plank break with speed 1) at location -1508, 5, -724 in world "Salindrum"
+			set block at location at -1509, 4, -724 in world "Salindrum" to oak fence
+			play 10 (oak wood plank break with speed 1) at location -1509, 4, -724 in world "Salindrum"
+			set block at location at -1509, 5, -724 in world "Salindrum" to oak fence
+			play 10 (oak wood plank break with speed 1) at location -1509, 5, -724 in world "Salindrum"
+			set block at location at -1510, 4, -724 in world "Salindrum" to oak fence
+			play 10 (oak wood plank break with speed 1) at location -1510, 4, -724 in world "Salindrum"
+			set block at location at -1510, 5, -724 in world "Salindrum" to oak fence
+			play 10 (oak wood plank break with speed 1) at location -1510, 5, -724 in world "Salindrum"
+			set {hasPlayedProlouge.%player%} to true
+		else if arg 1 is 4:
+			clear {inConvo.%player%}
+			send "<light blue>Stuttgardt: <white>Of course. Please go on through."
+			wait 2 seconds
+			set block at location at -1508, 4, -724 in world "Salindrum" to air
+			play 10 (oak wood plank break with speed 1) at location -1508, 4, -724 in world "Salindrum"
+			set block at location at -1508, 5, -724 in world "Salindrum" to air
+			play 10 (oak wood plank break with speed 1) at location -1508, 5, -724 in world "Salindrum"
+			set block at location at -1509, 4, -724 in world "Salindrum" to air
+			play 10 (oak wood plank break with speed 1) at location -1509, 4, -724 in world "Salindrum"
+			set block at location at -1509, 5, -724 in world "Salindrum" to air
+			play 10 (oak wood plank break with speed 1) at location -1509, 5, -724 in world "Salindrum"
+			set block at location at -1510, 4, -724 in world "Salindrum" to air
+			play 10 (oak wood plank break with speed 1) at location -1510, 4, -724 in world "Salindrum"
+			set block at location at -1510, 5, -724 in world "Salindrum" to air
+			play 10 (oak wood plank break with speed 1) at location -1510, 5, -724 in world "Salindrum"
+			wait 10 seconds
+			set block at location at -1508, 4, -724 in world "Salindrum" to oak fence
+			play 10 (oak wood plank break with speed 1) at location -1508, 4, -724 in world "Salindrum"
+			set block at location at -1508, 5, -724 in world "Salindrum" to oak fence
+			play 10 (oak wood plank break with speed 1) at location -1508, 5, -724 in world "Salindrum"
+			set block at location at -1509, 4, -724 in world "Salindrum" to oak fence
+			play 10 (oak wood plank break with speed 1) at location -1509, 4, -724 in world "Salindrum"
+			set block at location at -1509, 5, -724 in world "Salindrum" to oak fence
+			play 10 (oak wood plank break with speed 1) at location -1509, 5, -724 in world "Salindrum"
+			set block at location at -1510, 4, -724 in world "Salindrum" to oak fence
+			play 10 (oak wood plank break with speed 1) at location -1510, 4, -724 in world "Salindrum"
+			set block at location at -1510, 5, -724 in world "Salindrum" to oak fence
+			play 10 (oak wood plank break with speed 1) at location -1510, 5, -724 in world "Salindrum"
+			set {hasPlayedProlouge.%player%} to true
+
+on chat:
+	if {prolouge_edit_name.%player%} is true:
+		clear {prolouge_edit_name.%player%}
+		set the player's display name to the chat message
+		set the player's tablist name to the chat message
+		cancel event
+		make player execute command "/quests-prolouge 3"
+		
+#Julius conversation
+command /convos-julius <number>:
+	trigger:
+		if arg 1 is 1:
+			send "<light blue>Julius: <white>Just a small fishing community. Nothing else to it. There's a carriage driver in the back if you need one."
+			wait 5 seconds
+			send formatted "<run command:/convos-julius 6><gold>1 - I'd like to ask you some more questions."
+		else if arg 1 is 2:
+			send "<light blue>Julius: <white>Well, if you go straight and to the right from your camp over there, you should bump into it soon enough."
+			wait 5 seconds
+			send "<light blue>Julius: <white>What's someone like you heading up there for, if you don't mind me asking?"
+			wait 4 seconds
+			send formatted "<run command:/convos-julius 3><gold>1 - I'm going to join the knights."
+			send formatted "<run command:/convos-julius 33><gold>2 - I'm just seeing the sights while I'm here."
+		else if arg 1 is 3:
+			send "<light blue>Julius: <white>That should be easy enough. I don't think anyone there will admit it, but their numbers are so small I bet they'd let anyone in."
+			wait 4.5 seconds
+			send formatted "<run command:/convos-julius 4><gold>1 - Then why don't you join?"
+			send formatted "<run command:/convos-julius 44><gold>2 - What's happened to them?"
+		else if arg 1 is 33:
+			send "<light blue>Julius: <white>Hm. Nothing wrong with that, I suppose. There's not much to see up there though. If you want to see something more interesting than a block of ice, the carriage driver behind us can take you to Grann. It's where most adventurers in these parts meet."
+			wait 8.5 seconds
+			send formatted "<run command:/convos-julius 6><gold>1 - I'd like to ask you some more questions."
+		else if arg 1 is 4:
+			send "<light blue>Julius: <white>Well, I'm not one for bloodshed. I'm happy here just fishing and taking the occasional ride into town."
+			wait 5 seconds
+			send formatted "<run command:/convos-julius 6><gold>1 - I'd like to ask you some more questions."
+		else if arg 1 is 44:
+			send "<light blue>Julius: <white>Lots of deaths, mostly. There's been an uptick in the number of monsters roaming around recently, and it's taken a toll on Alastor's forces."
+			wait 6 seconds
+			send "<light blue>Julius: <white>And now that prideful fool is trying to keep the whole situation under wraps to keep his public image clean. It's going to be his downfall, I guarantee it."
+			wait 6.5 seconds
+			send "<light blue>Julius: <white>Now don't let my complaining stop you from trying to join his army. Everyone in Yied could use the help, even if it's just running supplies."
+			wait 5 seconds
+			send formatted "<run command:/convos-julius 5><gold>1 - I'll start making my way up there, then."
+			send formatted "<run command:/convos-julius 6><gold>2 - I'd like to ask you some more questions."
+		else if arg 1 is 5:
+			send "<light blue>Julius: <white>Good luck to you. And hey, if you do make it in, come back and visit sometime. It gets boring around here, so the occasional story now and again would be welcome."
+		else if arg 1 is 6:
+			send "<light blue>Julius: <white>Alright then. Fire away."
+			wait 2 seconds
+			send "<run command:/convos-julius 1><gold>1 - What is this place?" to the player
+			send "<run command:/convos-julius 2><gold>2 - Could you show me where House Ulster is?" to the player
+			send "<run command:/convos-julius 7><gold>3 - What do you do around here?" to the player
+		else if arg 1 is 7:
+			send "<light blue>Julius: <white>I'm just a fisherman. I wake up, do some fishing, and take the occasional ride into town to sell to the local traders."
+			wait 4 seconds
+			send formatted "<run command:/convos-julius 6><gold>1 - I'd like to ask you some more questions."
+			
+#NPC Chats
 on right click on an entity:
-	if the target is a citizen:
+	if citizen id of the target is set:
+		clear {inConvo.%player%}
 		if {DEBUG_MarkAsAlly.%player%} is set:
 			set {alliedPlayer.%target%} to the player
 			clear {DEBUG_MarkAsAlly.%player%}
-			send "<gold>Marked %target% as your ally." to the player
-		broadcast "%{alliedPlayer.%target%}%"
+			send formatted "<gold>Marked %target% as your ally." to the player
+		else if {addNPCToGlobalIndex.%player%} is set:
+			set {globalNPCS::%target's name%} to the target
+			send formatted "<light blue>Added %target's name% to the global NPC index." to the player
+			clear {addNPCToGlobalIndex.%player%}
 		if {inConvo.%player%} is not set:
-			clear {NPCsFor.%player%::*}
+			#Stuttgardt (Prolouge)
+			if the name of the target contains "Stuttgardt":
+				set {inConvo.%player%} to true
+				npcChat(player,"<light yellow>During conversations, gold-coloured text indicates a clickable dialouge option.")
+				npcChat(player,"<light yellow>Click one of the gold-coloured options to talk with other characters and interact with the world.")
+				wait 3 seconds
+				clear {inConvo.%player%}
+				send "<run command:/quests-prolouge 1><gold>1 - Hello." to the player
+			#Julius
+			if the name of the target contains "Julius":
+				send "<light blue>Julius: <white>Hm?" to the player
+				wait 2 seconds
+				send "<run command:/convos-julius 1><gold>1 - What is this place?" to the player
+				send "<run command:/convos-julius 2><gold>2 - Could you show me where House Ulster is?" to the player
+				send "<run command:/convos-julius 7><gold>3 - What do you do around here?" to the player
 			#Azelle (Gatekeeper)
 			if the name of the target contains "Azelle":
 				if {quests.%player%::Birth of a Hero} is 1:
-					set {inConvo.%player%} to true
-					npcChat(player,"<light yellow>During conversations, gold-coloured text indicates a clickable dialouge option.")
-					npcChat(player,"<light yellow>Select one of the golden options to talk with other characters and interact with the world.")
+					send formatted "<light blue>Azelle: <white>Hey there. What can I do for you?" to the player
 					wait 3 seconds
-					clear {inConvo.%player%}
-					send "<run command:/boah 1><gold>1 - Is this the entrance to House Ulster?" to the player
+					send formatted "<run command:/boah 1><gold>1 - Is this the entrance to House Ulster?" to the player
 			#Alastor
 			else if the name of the target contains "Alastor":
-				if {quests.%player%::Birth of a Hero} is 999:
-					send "<light blue>Alastor: Ah, a new face. Welcome to House Ulster. What're you here for?" to the player
+				#Creeping Shadows
+				if {quests.%player%::Creeping Shadows} is 2:
+					send formatted "<light blue>Alastor: <white>%player's tablist name%, <reset><white>you're here." to the player
+					wait 3.5 seconds
+					send formatted "<light blue>Alastor: <white>Cinder says he's found the source of this monster infestation. His men have found old ruins being occupied by a massive army that's approaching from the desert." to the player
+					wait 6 seconds
+					send formatted "<light blue>Alastor: <white>If you ask me, I think whoever these guys are have picked the wrong country to set foot in. I think you and I will agree that these glorified bandits need to be taught a lesson." to the player
+					wait 7 seconds
+					send formatted "<light blue>Alastor: <white>Scouting reports told us that the main bulk of their army are captured mages being forced to perform necromancy. If we can shut down these bases where they're performing the rituals, we can start pushing them back to wherever they came." to the player
+					wait 8 seconds
+					send formatted "<light blue>Alastor: <white>Get out into the desert and find one of those ruins. It's going to be dangerous, so take someone with you. I've already filled in the rest of the knights on what's going on." to the player
+					setQuestProgress(player,"Creeping Shadows",3,"Locate the desert temple located near Colony 7.")
+					wait 7 seconds
+					send formatted "<light blue>Alastor: <white>Start your search near Colony 7, it's down the road from Grann. Follow the road right from the town entrance, and you should find yourself in the desert where all of this is happening." to the player
+				#Legend in the Making
+				if {quests.%player%::Legend in the Making} is 998:
+					set {quests.%player%::Legend in the Making} to 1
+				if {quests.%player%::Legend in the Making} is 1:
+					if {quests.%player%::Breaking the Ice} is 999:
+						send formatted "<light blue>Alastor: <white>I see you got my message. Good, that mage Merriam is starting to pull his weight." to the player
+						wait 3.5 seconds
+						send formatted "<light blue>Alastor: <white>I'll cut to the chase. We've gotten reports that a large number of monsters are converging on Grann as we speak. I've got my hands tied up here with forces moving in from Yied, so you're the only one I've got left to defend Grann." to the player
+						wait 8 seconds
+						send formatted "<light blue>Alastor: <white>Get to Grann as soon as possible, and let the guard's captain know who you're affiliated with. They'll provide some extra help. If you can pull this off, I might consider giving you a promotion." to the player
+						setQuestProgress(player,"Legend in the Making",2,"Speak with the captain of the Grann guards.")
+				#Turn-In Behavior
+				else if {quests.%player%::Legend in the Making} is 4:
+					if {quests.%player%::Breaking the Ice} is 999:
+						set {NPCsFor.%player%::Alastor} to the target
+						send formatted "<light blue>Alastor: <white>%player's tablist name%<reset><white>? You look like an absolute wreck. What the hell happened out here?" to the player
+						wait 3.5 seconds
+						send formatted "<run command:/Quests-LegendInTheMaking 4><gold>1 - We managed to defeat the monster siege. Grann and her people are safe." to the player
+				#Expedition Turn-In
+				else if {quests.%player%::Expedition} is 999:
+					if {quests.%player%::Legend in the Making} is not set:
+						send formatted "<light blue>Alastor: Well, well! %player's tablist name%<reset><light blue> returns in one piece... barely, by the looks of it." to the player
+						wait 3 seconds
+						send formatted "<run command:/WPIYH 1><gold>1 - I've had a rough day." to the player
+						send formatted "<run command:/WPIYH 2><gold>2 - Your message to Cinder got delivered, don't worry." to the player
+						if {skl.%player%} + {sklbuff.%player%} is more than or equal to 15:
+							send formatted "<run command:/WPIYH 3><gold>3 - I had to save a village from some monsters. I think I deserve a raise. [SKL >= 15]" to the player
+						else:
+							send formatted "<run command:/WPIYH 3><light red>3 - I had to save a village from some monsters. I think I deserve a raise. [SKL >= 15]" to the player
+				#Expedition Start
+				else if {quests.%player%::Expedition} is 997:
+					send formatted "<light blue>Alastor: <white>%player's tablist name%<reset><white>, good timing. I've got another job lined up for you, if you're willing." to the player
+					wait 4 seconds
+					send formatted "<run command:/TTTA 1><gold>1- I'm ready, sire. What do you need of me?" to the player
+				#Proving Grounds
+				else if {quests.%player%::Proving Grounds} is set:
+					send formatted "test" to the player
+					if {quests.%player%::Proving Grounds} is not 999:
+						send formatted "<light blue>Alastor: <white>You're back. Are you finished with that assignment yet?" to the player
+						wait 4 seconds
+						if {quests.%player%::Proving Grounds} is 1:
+							send formatted "<run command:/Quests-WalkInTheWoods 11><gold>1 - Not yet, sire." to the player
+						else if {quests.%player%::Proving Grounds} is 2:
+							send formatted "<run command:/Quests-WalkInTheWoods 20><gold>1 - Yes, sire. Your package has been delivered." to the player
+						else if {quests.%player%::Proving Grounds} is 4:
+							send formatted "<run command:/Quests-WalkInTheWoods 40><gold>1 - Yes, I have news from Grann's captain." to the player
+				#Birth of a Hero
+				else if {quests.%player%::Birth of a Hero} is 999:
+					send formatted "<light blue>Alastor: Ah, a new face. Welcome to House Ulster. What're you here for?" to the player
 					wait 2.5 seconds
-					send "<run command:/TTTA 1><gold>1 - My name is %player's tablist name%<reset><run command:/TTTA 1><gold>. I'd like to join your Knights." to the player
+					send formatted "<run command:/Quests-WalkInTheWoods 1><gold>1 - My name is %player's tablist name%<reset><run command:/Quests-WalkInTheWoods 1><gold>. I'd like to join your Knights." to the player
+			#Gordon (Creeping Shadows)
+			else if the name of the target is "Gordon":
+				if {quests.%player%::Creeping Shadows} is 3:
+					send "<light blue>Gordon: <white>..." to the player
+					wait 3 seconds
+					send formatted "<run command:/quests-CreepingShadows 1><gold>1 - ...Hello?" to the player
+				else if {quests.%player%::Creeping Shadows} is 999:
+					send "<light blue>Gordon: <white>You've done it! The facility is shut down for good." to the player
+					wait 3 seconds
+					send "<light blue>Gordon: <white>If you need an ally for any upcoming battles, then I'm certain I could help you." to the player
+					wait 3.5 seconds
+					send "<run command:/recruitFollower %target%><gold>1 - Follow me. I need your help." to the player
+			#Jagen (Proving Grounds)
+			else if the name of the target is "Jagen":
+				if {quests.%player%::Proving Grounds} is 1:
+					send formatted "<light blue>Jagen: <white>Welcome to the village. Do you have any requests of me?" to the player
+					wait 4 seconds
+					send formatted "<run command:/Quests-WalkInTheWoods 10><gold>1 - I have a delivery from Alastor." to the player
+			#Seros Fisherman
+			else if the name of the target is "Seros Fisherman":
+				if {sex.%player%} is 1:
+					send formatted "<light blue>Seros Fisherman: ...Mmm? What is it that ye need, lad?" to the player
+				else:
+					send formatted "<light blue>Seros Fisherman: ...Mmm? What is it that ye need, lass?" to the player
+				wait 3 seconds
+				send formatted "<run command:/serosfisherman 0><gold>1 - I'd like to hire your boat." to the player
+			#Grann Guard Captain
+			else if the name of the target is "Grann Captain":
+				if {quests.%player%::Legend in the Making} is 2:
+					send formatted "<light blue>Grann Captain: <white>Unless you're here to help defend Grann, you need to evacuate from the city." to the player
+					wait 3 seconds
+					send formatted "<run command:/quests-LegendInTheMaking 3><gold>1 - I'm %player's tablist name%<reset><run command:/quests-LegendInTheMaking 3><gold>. Alastor sent me here to aid your defense." to the player
+				else if {quests.%player%::Proving Grounds} is 3:
+					send formatted "<light blue>Grann Captain: <white>Fine day, today. What do you need?" to the player
+					wait 3 seconds
+					send formatted "<run command:/Quests-WalkInTheWoods 30><gold>1 - I've been sent by Alastor for a status report." to the player
+				else:
+					set {_RNG} to a random integer from 1 to 3
+					if {_RNG} is 1:
+						send "<light blue>Grann Captain: <white>Watch yourself on these roads. All manner of monsters roam around these parts." to the player
+					else if {_RNG} is 2:
+						send "<light blue>Grann Captain: <white>Mind your manners inside the city, or else you might find yourself without a sword arm." to the player
+					else if {_RNG} is 3:
+						send "<light blue>Grann Captain: <white>These streets get crowded quickly, so no lollygagging." to the player
+			#Innkeepers
+			else if the name of the target contains "Innkeeper":
+				send formatted "<light blue>Innkeeper: Welcome. We've got food, drink, and beds." to the player
+				wait 3 seconds
+				send formatted "<run command:/tavernshop><gold>1 - What do you have for sale?" to the player
+			#Enchanters
+			else if the name of the target contains "Enchanter":
+				send formatted "<light blue>Enchanter: In need of some enchantments? Perhaps I could be persuaded to help." to the player
+				wait 3 seconds
+				send formatted "<run command:/enchantershop 1><gold>1 - What do you have for sale?" to the player
+			#Bankers
+			else if the name of the target contains "Banker":
+				if {quests.%player%::Breaking the Ice} is not 999:
+					if {quests.%player%::HIDDEN_Bankers} is not 999:
+						send formatted "<light blue>Banker: Forgive me, but I must inform you that this bank is open only for members of Alastor's army." to the player
+						wait 4.5 seconds
+						if {skl.%player%} + {sklbuff.%player%} is more than or equal to 20:
+							send formatted "<run command:/mq-bankers 1><gold>1 - I think we both know that isn't true. [SKL >= 20]" to the player
+						else:
+							send formatted "<light red>1 - I think we both know that isn't true. [SKL >= 20]" to the player
+						if player's money is more than or equal to 55:
+							send formatted "<run command:/mq-bankers 2><gold>2 - Would this be enough to change your mind? [55 Gold]" to the player
+						else:
+							send formatted "<light red>2 - Would this be enough to change your mind? [55 Gold]" to the player
+						send formatted "<run command:/mq-bankers 3><gold>3 - I'll just come back later, then." to the player
+					else:
+						send formatted "<light blue>Banker: Welcome back, %player's tablist name%<reset><light blue>. How may I serve you?" to the player
+						wait 2 seconds
+						send formatted "<run command:/cvault open><gold>1 - Open my vault." to the player
+						send formatted "<run command:/cvault clear><gold>2 - Clear out my vault." to the player
+				else:
+					send formatted "<light blue>Banker: Welcome back, %player's tablist name%<reset><light blue>. How may I serve you?" to the player
+					wait 2 seconds
+					send formatted "<run command:/cvault open><gold>1 - Open my vault." to the player
+					send formatted "<run command:/cvault clear><gold>2 - Clear out my vault." to the player	
+			#Serosita Barkeep
+			else if the name of the target is "Serosita Barkeep":
+				set {_rng} to random integer from 1 to 3
+				if {_rng} is 1:
+					send formatted "<light blue>Serosita Barkeep: Welcome to the Serosita Brewery. What can I get for you?" to the player
+				else if {_rng} is 2:
+					send formatted "<light blue>Serosita Barkeep: We've got food and drink here for you. What would you like?" to the player
+				else:
+					if {sex.%player%} is 1:
+						send formatted "<light blue>Serosita Barkeep: Welcome to the Serosita Brewery, home of the Flametounge Brandy. What would you like off the menu, sir?" to the player
+					else:
+						send formatted "<light blue>Serosita Barkeep: Welcome to the Serosita Brewery, home of the Flametounge Brandy. What would you like off the menu, madam?" to the player
+				wait 3 seconds
+				send formatted "<run command:/serositabarkeep><gold>1 - What do you have for sale?" to the player
 			#Cinder
 			else if the name of the target contains "Cinder":
-				if {quests.%player%::The Time to Act} is 1:
+				if {quests.%player%::Expedition} is 1:
 					set {NPCsFor.%player%::Cinder} to the target
-					send "<light blue>Cinder: Oh? I don't believe I've seen you before." to the player
+					send formatted "<light blue>Cinder: Oh? I don't believe I've seen you before." to the player
 					wait 1.5 seconds
-					send "<run command:/TTTA-Cinder 1><gold>1 - I'm %player's tablist name%<reset><run command:/TTTA-Cinder 1><gold>. I have a message for you from Lord Alastor." to the player
+					send formatted "<run command:/TTTA-Cinder 1><gold>1 - I'm %player's tablist name%<reset><run command:/TTTA-Cinder 1><gold>. I have a message for you from Lord Alastor." to the player
+			#Combat Instructor
+			if the name of the target contains "Combat Trainer":
+				if {quests.%player%::Breaking the Ice} is 1:
+					set {inConvo.%player%} to true
+					send formatted "<light blue>%target's name%: So, you finally made it. Good, we can start your training right now." to the player
+					wait 3.5 seconds
+					send formatted "<light blue>%target's name%: Let's start with the basics, then. Go ahead and let me see how you handle a weapon. Strike me." to the player
+					clear {inConvo.%player%}
+					setQuestProgress(player,"Breaking the Ice",2,"Strike the combat instructor with your weapon.")
+				else:
+					send formatted "<light blue>%target's name%: Need some training?" to the player
+					wait 2 seconds
+					send formatted "<run command:/train swords><gold>1 - I need training in swords. (+100 pts for $100)" to the player
+					send formatted "<run command:/train axes><gold>2 - I need training in axes. (+100 pts for $100)" to the player
+					send formatted "<run command:/train lances><gold>3 - I need training in lances. (+100 pts for $100)" to the player
+					send formatted "<run command:/train bows><gold>4 - I need training in bows. (+100 pts for $100)" to the player
 			#Test NPC
 			else if the name of the target contains "Test NPC":
 				if {quests.%player%::NpcVis Test} is not set:
 					npcChat(player,"<light yellow>Test NPC: I am a test NPC. What would you like me to do?")
 					wait 3 seconds
-					send "<run command:/npctests 1><gold>1 - NPC Visibility Test" to the player
-					send "<run command:/npctests 2><gold>2 - Cutscene Test" to the player
-					send "<run command:/npctests 3><gold>3 - Follower Test" to the player
-					send "<run command:/npctests 5><gold>4 - Broadcast ID" to the player
+					send formatted "<run command:/npctests 1><gold>1 - NPC Visibility Test" to the player
+					send formatted "<run command:/npctests 2><gold>2 - Cutscene Test" to the player
+					send formatted "<run command:/npctests 3><gold>3 - Follower Test" to the player
+					send formatted "<run command:/npctests 5><gold>4 - Broadcast ID" to the player
 					set {NPCsFor.%player%::Test NPC} to the target
 					
-#Journal
+#Complimentary armour for joining the Knights of Ulster.
+on right-click on armor stand:
+	if the name of the target is "<light blue>Knights of Ulster Armour":
+		cancel event
+		if {UlsterComplimentaryArmourCooldown.%player%} is not set:
+			if {quests.%player%::Breaking the Ice} is more than or equal to 1:
+				give 1 chainmail helmet named "<light blue>Knights of Ulster Helmet" with lore "<white>Standard-issue armour given to the Knights of Ulster.", "<white>It's better than nothing." to the player
+				give 1 chainmail chestplate named "<light blue>Knights of Ulster Chestplate" with lore "<white>Standard-issue armour given to the Knights of Ulster.", "<white>It's better than nothing." to the player
+				give 1 chainmail leggings named "<light blue>Knights of Ulster Leggings" with lore "<white>Standard-issue armour given to the Knights of Ulster.", "<white>It's better than nothing." to the player		
+				give 1 chainmail boots named "<light blue>Knights of Ulster Helmet" with lore "<white>Standard-issue armour given to the Knights of Ulster.", "<white>It's better than nothing." to the player
+				give 1 stone sword named "<light blue>Decomissioned Blade" with lore "<white>An older design of the swords wielded by the Knights of Ulster.", "<white>It hasn't been kept in very good condition..." to the player
+				give 1 bow named "<light blue>Infantry Bow" with lore "<white>A completely average bow.", "<white>There's really not a whole lot to say about it." to the player
+				give 16 arrow to the player
+				play sound "entity.player.levelup" with volume 0.7 and pitch 1.5 at the player for the player
+				set {UlsterComplimentaryArmourCooldown.%player%} to 4
+				send formatted "<gold>Knights of Ulster equipment obtained!" to the player
+			else:
+				send formatted "<light red>This is for the Knights of Ulster. Alastor would have my head on a pike if I took this..." to the player
+			
+command /ucac:
+	trigger:
+		clear {UlsterComplimentaryArmourCooldown.%player%}
+		send formatted "<light green>You can re-obtain the KoU equipment."
+		
+command /exitcutscene:
+	trigger:
+		loop {NPCsFor.%player%::*}:
+			if loop-index contains "C_":
+				make console execute command "/npc sel %citizen id of loop-value%"
+				make console execute command "/npc remove"
+				clear {NPCsFor.%player%::%loop-index%}
+			else:
+				reveal loop-value to the player
+		send "<light blue>Forcefully left cutscene."
+		clear {inCutscene.%player%}
+		
+command /CreepingShadowsPumpBehavior <number>:
+	trigger:
+		#1 - lava, 2 - exhaust
+		if arg 1 is 1:
+			if {quests.%player%::Creeping Shadows} is 5:
+				send "<light yellow><italics>The lava pump has been shut down. I need to find the exhaust pump now."
+				setQuestProgress(player,"Creeping Shadows",6,"Locate the exhaust pump.")
+				wait 5 seconds
+				set the block at location 827, 30, -526 in world "GenOne" to lever
+			else if {quests.%player%::Creeping Shadows} is set:
+				send "<light red><italics>Aren't I missing a pump somewhere? I should go back and check for any missing pumps before I turn this one off..."
+		else if arg 1 is 2:
+			if {quests.%player%::Creeping Shadows} is 6:
+				send "<light yellow><italics>The exhaust pump has been shut down. All that's left is to start the emergency shutdown."
+				setQuestProgress(player,"Creeping Shadows",7,"Locate the main control room and initiate the emergency shutdown.")
+				wait 5 seconds
+				set the block at location 854, 11, -515 in world "GenOne" to lever
+			else if {quests.%player%::Creeping Shadows} is set:
+				send "<light red><italics>Aren't I missing a pump somewhere? I should go back and check for any missing pumps before I turn this one off..."
+			
+#Creeping Shadows terminals			
+command /CreepingShadowsTerminalAccess <number>:
+	trigger:
+		if arg 1 is 0:
+			if {quests.%player%::Creeping Shadows} is not 7:
+				send "<light red><italics>There's not much reason to mess around with this strange machine. I should look for a way to destroy this base instead."
+			else:
+				send "<light yellow><italics>The odd machine jumps to life with a pleasant chime. The box stacked in the middle suddenly flares with light, displaying countless lines of green text. Curious, you begin to read..."
+				wait 6 seconds
+				send "<green>--==INTER-FACTOY TERMINALS NOTICE==--"
+				wait 2 ticks
+				send "<green><italics>Use of this terminal is subject to all regulations and stipulations listed inside of the terms-of-service booklet included with this terminal."
+				send "<green><italics>Press any key to accept this warning."
+				wait 6 seconds
+				send "<light yellow><italics>A slim box suddenly juts out of a hidden compartment inside the machine. Hundreds of buttons are littered across its surface, each with a character that you can recognize embedded on it. The machine isn't doing anything else just by leaving it alone, so you need to try something to get it to progress."
+				send formatted "<run command:/CreepingShadowsTerminalAccess 1><gold>1 - Press the glowing box."
+				send formatted "<run command:/CreepingShadowsTerminalAccess 11><gold>2 - Press the big button."
+				send formatted "<run command:/CreepingShadowsTerminalAccess 111><gold>3 - Press one of the slim box's keys."
+		else if arg 1 is 1:
+			damage the player by 0.5 hearts
+			send formatted "<light yellow><italics>The box is hot to the touch, enough to mildly burn your finger. Worse yet, your finger burn hasn't caused the machine to budge an inch."
+			wait 5 seconds
+			send formatted "<light yellow><italics>You still need to figure out a way to get the machine to continue from its current state."
+			send formatted "<run command:/CreepingShadowsTerminalAccess 1><gold>1 - Press the glowing box."
+			send formatted "<run command:/CreepingShadowsTerminalAccess 11><gold>2 - Press the big button."
+			send formatted "<run command:/CreepingShadowsTerminalAccess 111><gold>3 - Press one of the slim box's keys."
+		else if arg 1 is 11:
+			send formatted "<light yellow><italics>The machine suddenly goes limp, and the large box ceases to glow... At least it isn't asking you to ""Press any key"" anymore."
+		else if arg 1 is 111:
+			send formatted "<green><italics>--==TERMINAL ACCESS==--"
+			wait 2 ticks
+			send formatted "<run command:/CreepingShadowsTerminalAccess 2><green><italics>1 - Mailbox"
+			wait 1 tick
+			send formatted "<run command:/CreepingShadowsTerminalAccess 3><green><italics>2 - Pump Control"
+			wait 1 tick
+			send formatted "<run command:/CreepingShadowsTerminalAccess 4><green><italics>3 - Administrative Access"
+			wait 3 seconds
+			send "<light yellow><italics>The machine isn't progressing any further. Some of the buttons on the slim box have numbers corresponding to the ones shown on-screen. Maybe pressing one of the keys will allow you to delve further into the machine's mysteries..."
+		else if arg 1 is 1111:
+			send formatted "<green><italics>--==TERMINAL ACCESS==--"
+			wait 2 ticks
+			send formatted "<run command:/CreepingShadowsTerminalAccess 2><green><italics>1 - Mailbox"
+			wait 1 tick
+			send formatted "<run command:/CreepingShadowsTerminalAccess 3><green><italics>2 - Pump Control"
+			wait 1 tick
+			send formatted "<run command:/CreepingShadowsTerminalAccess 4><green><italics>3 - Administrative Access"
+		else if arg 1 is 2:
+			send formatted "<green><italics>--==MAILBOX==--"
+			wait 2 ticks
+			send formatted "<run command:/CreepingShadowsTerminalAccess 22><green><italics>1 - Notice from Management"
+			wait 1 tick
+			send formatted "<run command:/CreepingShadowsTerminalAccess 222><green><italics>2 - Inquiry About Manufacturing"
+			wait 1 tick
+			send formatted "<run command:/CreepingShadowsTerminalAccess 2222><green><italics>3 - Small Request"
+			wait 1 tick
+			send formatted "<run command:/CreepingShadowsTerminalAccess 1111><green><italics>4 - Return"
+		else if arg 1 is 22:
+			send formatted "<green><italics>--==MAILBOX==--"
+			wait 2 ticks
+			send formatted "<green><italics>Notice from Management:"
+			wait 1 tick
+			send formatted "<green><italics>These are direct orders from Helmund. We've been informed that neighboring factories have come under attack recently, and the invaders have been slaughtering anyone left inside. We're under orders to abandon ship and initiate an emergency shutdown if any more factories are overrun."
+			wait 2 ticks
+			send formatted "<green><italics>Initiate the emergency shutdown from the Administrative Access page. I've only been told to ""ask politely"" with regards to the account's password. Once you're in, select emergency shutdown and leave the facility ASAP."
+			wait 3 ticks
+			send formatted "<green><italics>Stay safe out there. We don't want to lose anyone else to these brutes."
+			wait 3 ticks
+			send formatted "<green><italics>- Walter"
+			wait 7 seconds
+			make player execute command "/CreepingShadowsTerminalAccess 2"
+		else if arg 1 is 222:
+			send formatted "<green><italics>--==MAILBOX==--"
+			wait 2 ticks
+			send formatted "<green><italics>Inquiry About Manufacturing"
+			wait 1 tick
+			send formatted "<green><italics>What the hell are we making out here? I signed up for ore refinement, not whatever black magic we're doing now! If someone has the address for upper management, I've got a few words to put in with them."
+			wait 1 tick
+			send formatted "<green><italics>PS: Gary's been acting really weird lately. I think all this black magic is making him sick, and he won't respond to anything I try to say to him. If someone can look into this, maybe get a doctor, I'd appreciate it."
+			wait 1 tick
+			send formatted "<green><italics>- Eli"
+			wait 7 seconds
+			make player execute command "/CreepingShadowsTerminalAccess 2"
+		else if arg 1 is 2222:
+			send formatted "<green><italics>--==MAILBOX==--"
+			wait 2 ticks
+			send formatted "<green><italics>Small Request"
+			wait 1 tick
+			send formatted "<green><italics>Whoever is eating all of the donuts in the break room, cut it out. I have to buy those out of my own pocket, and importing through that portal we came through is VERY expensive."
+			wait 1 tick
+			send formatted "<green><italics>- Rosenberg"
+			wait 7 seconds
+			make player execute command "/CreepingShadowsTerminalAccess 2"
+		else if arg 1 is 3:
+			send formatted "<green><italics>--==PUMP CONTROL==--"
+			wait 2 ticks
+			send formatted "<green><italics>NOTICE: Pumps cannot be enabled or disabled remotely."
+			wait 1 tick
+			send formatted "<green><italics>WATER PUMP: Disabled"
+			wait 1 tick
+			send formatted "<green><italics>LAVA PUMP: Disabled"
+			wait 1 tick
+			send formatted "<green><italics>EXHAUST PUMP: Disabled"
+			wait 1 tick
+			send formatted "<green><italics>NOTICE: Disabled pumps should be reported to upper management. Disabling of too many pumps may cause damage to pipe structure."
+			wait 6 seconds
+			make player execute command "/CreepingShadowsTerminalAccess 1111"
+		else if arg 1 is 4:
+			send formatted "<green><italics>--==ADMINISTRATIVE ACCESS==--"
+			wait 2 ticks
+			send formatted "<green><italics>Administrative Password?: "
+			wait 3 seconds
+			send "<light yellow><italics>The machine is asking for a password, but you haven't the faintest idea of what it could be. What will you try?"
+			wait 3 seconds
+			send formatted "<run command:/CreepingShadowsTerminalAccess 44><gold>1 - Admin"
+			send formatted "<run command:/CreepingShadowsTerminalAccess 444><gold>2 - Please"
+			send formatted "<run command:/CreepingShadowsTerminalAccess 44><gold>3 - 12345"
+			send formatted "<run command:/CreepingShadowsTerminalAccess 44><gold>4 - wafasfDgaegadgFDSvC"
+			send formatted "<run command:/CreepingShadowsTerminalAccess 44><gold>5 - Yes"
+			send formatted "<run command:/CreepingShadowsTerminalAccess 44><gold>6 - No"
+			send formatted "<run command:/CreepingShadowsTerminalAccess 44><gold>7 - %player's tablist name%"
+			send formatted "<run command:/CreepingShadowsTerminalAccess 44><gold>8 - Alastor"
+			send formatted "<run command:/CreepingShadowsTerminalAccess 44><gold>9 - Surrender"
+			send formatted "<run command:/CreepingShadowsTerminalAccess 44><gold>10 - Password"
+			send formatted "<run command:/CreepingShadowsTerminalAccess 1111><green><italics>11 - Return"
+		else if arg 1 is 44:
+			send formatted "<green><italics>--==ACCESS DENIED==--"
+			wait 2 ticks
+			send formatted "<green><italics>The password supplied was incorrect. Returning to home menu."
+			wait 2 seconds
+			make player execute command "/CreepingShadowsTerminalAccess 1111"
+		else if arg 1 is 444:
+			send formatted "<green><italics>--==ACCESS GRANTED==--"
+			wait 8 ticks
+			send formatted "<green><italics>Please select an action to perform: "
+			wait 5 ticks
+			send formatted "<run command:/CreepingShadowsTerminalAccess 4444><green>1 - Initiate Emergency Shutdown"
+			wait 1 tick
+			send formatted "<run command:/CreepingShadowsTerminalAccess 44444><green>2 - Override Pump Flow Regulation"
+			wait 3 seconds
+			send formatted "<light yellow><italics>The machine waits yet again. What option should you choose?"
+		else if arg 1 is 4444:
+			send formatted "<green><italics>--==EMERGENCY SHUTDOWN==--"
+			wait 5 ticks
+			send formatted "<green><italics>Facility now under emergency shutdown. Closing all systems and notifying nearby facilities."
+			wait 3 seconds
+			send formatted "<light yellow><italics>The machine sighs its last breath, and the glowing box grows dim. By choosing to shut down the facility rather than override the pumps and destroy it, the nearby town could potentially take control and repurpose it to benefit the people of Gallia. However, it could also simply be re-activated for nefarious deeds in the future..."
+			wait 6 seconds
+			finishQuest(player,"Creeping Shadows","Report the mission's success to Alastor.")
+			make player execute command "/grantskill 0 Optimism"
+		else if arg 1 is 44444:
+			send formatted "<green><italics>--==PUMP FLOW OVERRIDE==--"
+			wait 5 ticks
+			send formatted "<green><italics>WARNING: Overriding pump flow regulation is unsupported. Poor judgment may cause irreparable damage to critical systems."
+			wait 1 second
+			send formatted "<light yellow><italics>You mash all of the buttons on the box to try and urge the machine into action. To your surprise, the rabid flailing was accepted by the machine. After a few seconds, the light from the machine snaps off..."
+			wait 6 seconds
+			play sound "entity.generic.explode" with volume 2 and pitch 0.5 at location 853, 36, -480 in world "GenOne" for the player
+			wait 2 seconds
+			send formatted "<light yellow><italics>That didn't sound good. It seems your flailing has caused the ""irreparable damage"" the machine described to you. Time to leave as quickly as you can before the factory takes you down with it."
+			loop 10 times:
+				play sound "entity.generic.explode" with volume 2 and pitch 0.8 at location 853, 36, -480 in world "GenOne" for the player
+				create safe explosion of force 3.5 at location 853, 36, -480 in world "GenOne"
+				play 10 (sandstone block break with speed 1) at the player
+				wait 1 second
+				if player is not alive:
+					exit 1 loop
+					set {_failed} to true
+			if {_failed} is not set:
+				send formatted "<light yellow><italics>You managed to escape the facility. By destroying the facility rather than merely disabling it, you've ensured that it can no longer be used as a tool for war by the enemy. This also means that the valuable resources inside can no longer be harvested by someone with a better nature..."
+				wait 6 seconds
+				finishQuest(player,"Creeping Shadows","Report the mission's success to Alastor.")
+				make player execute command "/grantskill 0 Pessimism"
+		
+#Creeping Shadows dialouge trees
+command /quests-CreepingShadows <number>:
+	trigger:
+		if arg 1 is 1:
+			send "<light blue>Gordon: <white>...I am not interested in whatever it is you have to say."
+			wait 3 seconds
+			send "<run command:/quests-CreepingShadows 2><gold>1 - I'll just leave you here to die, then."
+			send "<run command:/quests-CreepingShadows 2><gold>2 - I'm from the Knights of Ulster. We're here to rescue you and shut down this fortress."
+		else if arg 1 is 2:
+			send "<light blue>Gordon: <white>You're saying that as though I planned on escaping from here alive in the first place."
+			wait 4 seconds
+			send "<light blue>Gordon: <white>The security in this fortress is too extreme for someone like me. I am incredibly lucky to have been spared and sent here for work rather than been slain on the spot."
+			wait 5 seconds
+			send "<run command:/quests-CreepingShadows 3><gold>1 - What happened to you?"
+			send "<run command:/quests-CreepingShadows 4><gold>2 - Is there any way to shut this place down?"
+		else if arg 1 is 3:
+			send "<light blue>Gordon: <white>I once served under one of the minor lords of Yied, and did so for many years. However, we were eventually overrun by those abominations you've no doubt encountered already. I was captured and sent here to manage the facilities for their war effort."
+			wait 7 seconds
+			send "<light blue>Gordon: <white>They have stripped me of any armour and weapons I had, so escaping from this place is impossible for me. You, however, seem much more well-suited for that task."
+			wait 4 seconds
+			send "<run command:/quests-CreepingShadows 4><gold>1 - Is there any way to shut this place down?"
+		else if arg 1 is 4:
+			send "<light blue>Gordon: <white>There is, though it will be a very difficult process. If you are truly intent on destroying the factory, then you will need to shut off the water, lava, and exhaust pumps. Inside this room is the water pump, and you may be able to find the rest of the switches deeper into the facility."
+			wait 7.5 seconds
+			send "<light blue>Gordon: <white>Gaining access to the facility's depths is impossible from the main routes. However, you may be able to follow the piping to find an alternative way into the control rooms. The trap door you see on the floor will give you access to the piping, though you should be prepared to fend off quite the number of thralls. I personally lost my nerve long ago."
+			wait 8.25 seconds
+			send "<light blue>Gordon: <white>The button on the wall will cause this area's power to blink briefly, which will open the trap door."
+			wait 4.5 seconds
+			send "<light blue>Gordon: <white>If you can manage to close off all of the pumps, then an emergency shutdown procedure can be enacted from the main control room at the bottom of the facility. Begin the procedure, and the factory will be rendered useless."
+			wait 6.5 seconds
+			send "<light blue>Gordon: <white>I will take the liberty of disabling the water pump for you. Now, hurry and disable the rest of the facility's pumps!"
+			setQuestProgress(player,"Creeping Shadows",5,"Disable the lava and exhaust pumps inside the factory.")
+
+#Legend in the Making Dialouge Tree
+command /quests-LegendInTheMaking <number>:
+	trigger:
+		if arg 1 is 1:
+			send "<light blue>Merriam: <white>Alastor said he needed to speak with you, I don't know much else beyond that."
+			wait 3 seconds
+			send "<run command:/quests-LegendInTheMaking 2><gold>1 - I'm on my way."
+		else if arg 1 is 2:
+			send "<light blue>Merriam: <white>Good, I'll let him know you're coming. Though I'd try to be quick, he looks awfully angry..."
+			wait 3 seconds
+			startQuest(player,"Legend in the Making","Speak with Alastor as soon as possible.")
+		else if arg 1 is 3:
+			send formatted "<light blue>Grann Captain: <white>Sorry to tell you this, but it sounds like Alastor's sent you on a suicide mission. I've seen how many of those... things... are heading our way, and the odds of us making it out of here are slim to none."
+			wait 7 seconds
+			send formatted "<light blue>City Guard: <white>There they are! OPEN FIRE!"
+			wait 0.75 seconds
+			play sound "entity.generic.explode" with volume 1 and pitch 1 at the player for the player
+			wait 0.75 seconds
+			play sound "entity.generic.explode" with volume 1 and pitch 1 at the player for the player
+			send formatted "<light blue>Grann Captain: <white>Well, it's too late to back out now. Let's give 'em hell."
+			wait 2.5 seconds
+			send formatted "<light blue>Siegfried: <white>Your name was %player's tablist name%<reset><white>, yes? My name is Siegfried. It looks like we'll be working together on this mission. May the gods keep us safe."
+			wait 4 seconds
+			make player execute command "/admin_defendthrone LegendInTheMaking"
+		else if arg 1 is 4:
+			send formatted "<light blue>Alastor: <white>I don't even know what to say anymore. Time and time again, you seem to snatch victory out of impossible odds."
+			wait 4 seconds
+			send formatted "<light blue>Alastor: <white>I don't think I've ever had someone rise through the ranks as fast as you have. There's no denying it, you're a true knight."
+			wait 4 seconds
+			send formatted "<gold>Warrior's Proof obtained!"
+			send formatted "<light blue>Alastor: <white>Take this as proof of your courage, and grab some rest. You've earned it twice over."
+			give 1 nether star named "<gold><bold>Warrior's Proof" with lore "<white>Right-click to promote to your class's next tier.", "<white>Promoting grants a large boost in stats and increases your maximum potential." to the player
+			finishQuest(player,"Legend in the Making","Use the Warrior's Proof to recieve your promotion.")
+			wait 4 seconds
+			send formatted "<light blue>Alastor: <white>As for me? I've got a meeting with Lord Cinder. I'll be back in about a day's time. Get some rest until then, and feel free to tell the rest of the knights to cover for you."
+			wait 5.5 seconds
+			play 40 (gold block break with speed 1) at {NPCsFor.%player%::Alastor}
+			strike lightning effect at {NPCsFor.%player%::Alastor}
+			hide {NPCsFor.%player%::Alastor} from the player
+			send "<italics>Alastor is abruptly whisked away in a golden light. Lord Cinder must have used some sort of warp magic..."
+			wait 3 seconds
+			startQuest(player,"Creeping Shadows","Enjoy your relaxation period while Alastor is away.")
+			
+command /checkQuestProgress <number> <text>:
+	trigger:
+		if arg 2 is "Creeping Shadows":
+			if {quests.%player%::Creeping Shadows} is less than arg 1:
+				set {_blockMove} to true
+			else if {quests.%player%::Creeping Shadows} is not set:
+				set {_blockMove} to true
+			if {_blockMove} is true:
+				send "<light red>A fell magic prevents you from delving further into the dungeon..." to the player
+				teleport the player to location at 832, 56, -470 in world "GenOne"
+			
+command /quests-Expedition <number>:
+	trigger:
+		if arg 1 is 1:
+			send "<light blue>Merriam: <white>I overheard Alastor saying that he had another delivery mission for you. I thought it'd help you out if I told you in advance."
+			wait 4 seconds
+			send "<run command:/quests-Expedition 2><gold>1 - I'll speak with him as soon as I can."
+		else if arg 1 is 2:
+			send "<light blue>Merriam: <white>Awesome. Good luck with it, %player's tablist name%<white>!"
+			setQuestProgress(player,"Expedition",997,"Speak with Alastor whenever possible.")
+			
+#Manually start time-based quests
+on bed leave:
+	#Expedition
+	if {quests.%player%::Expedition} is not set:
+		if {quests.%player%::Breaking the Ice} is 999:
+			set {quests.%player%::Expedition} to 997
+			send formatted "<light blue>Merriam: <white>...%player's tablist name%<white? Can you hear me?" to the player
+			wait 2.5 seconds
+			send formatted "<run command:/quests-Expedition 1><gold>1 - Yes, what do you need?" to the player
+	#Legend in the Making
+	if {quests.%player%::Legend in the Making} is not set:
+		if {quests.%player%::Expedition} is 999:
+			set {quests.%player%::Legend in the Making} to 1
+			send formatted "<light blue>Merriam: <white>%player's tablist name%<white>, Got a second?"
+			wait 2.5 seconds
+			send formatted "<run command:/quests-LegendInTheMaking 1><gold>1 - Yes, what's going on?"
+	#Creeping Shadows
+	if {quests.%player%::Creeping Shadows} is set:
+		if {quests.%player%::Creeping Shadows} is less than 2:
+			add 1 to {quests.%player%::Creeping Shadows}
+		else:
+			play 40 (gold block break with speed 1) at {NPCsFor.%player%::Alastor}
+			strike lightning effect at {NPCsFor.%player%::Alastor}
+			reveal {NPCsFor.%player%::Alastor} to player
+			send formatted "<light blue>Merriam: <white>%player's tablist name%<white>? It's me again. Alastor needs you back at the castle, we're having a meeting. He wanted me to stress that it's urgent, so... hurry." to player
+			setQuestProgress(player,"Creeping Shadows",2,"Speak with Alastor.")
+			
+#Periodicals
+every minecraft day:
+	loop all players:
+		#Refresh KoU equipment
+		if {UlsterComplimentaryArmourCooldown.%loop-player%} is set:
+			subtract 1 from {UlsterComplimentaryArmourCooldown.%loop-player%}
+			if {UlsterComplimentaryArmourCooldown.%loop-player%} is less than or equal to 0:
+				clear {UlsterComplimentaryArmourCooldown.%loop-player%}
+		#Expedition startup
+		if {quests.%loop-player%::Expedition} is not set:
+			if {quests.%loop-player%::Breaking the Ice} is 999:
+				set {quests.%loop-player%::Expedition} to 997
+				send formatted "<light blue>Merriam: <white>...%loop-player's tablist name%<white? Can you hear me?" to loop-player
+				wait 2.5 seconds
+				send formatted "<run command:/quests-Expedition 1><gold>1 - Yes, what do you need?" to loop-player
+		#Legend in the Making startup
+		if {quests.%loop-player%::Legend in the Making} is not set:
+			if {quests.%loop-player%::Meet the Team} is 999:
+				set {quests.%loop-player%::Legend in the Making} to 1
+				send formatted "<light blue>Merriam: <white>%loop-player's tablist name%<white>, Got a second?" to loop-player
+				wait 2.5 seconds
+				send formatted "<run command:/quests-LegendInTheMaking 1><gold>1 - Yes, what's going on?" to loop-player
+		#Creeping Shadows
+		if {quests.%loop-player%::Creeping Shadows} is set:
+			if {quests.%loop-player%::Creeping Shadows} is less than 2:
+				add 1 to {quests.%loop-player%::Creeping Shadows}
+			else if {quests.%loop-player%::Creeping Shadows} is 2:
+				play 40 (gold block break with speed 1) at {NPCsFor.%loop-player%::Alastor}
+				strike lightning effect at {NPCsFor.%loop-player%::Alastor}
+				reveal {NPCsFor.%loop-player%::Alastor} to loop-player
+				send formatted "<light blue>Merriam: <white>%loop-player's tablist name%<white>? It's me again. Alastor needs you back at the castle, we're having a meeting. He wanted me to stress that it's urgent, so... hurry." to loop-player
+				setQuestProgress(loop-player,"Creeping Shadows",2,"Speak with Alastor.")
+			
+#Journal Menu			
+on inventory click:
+	if the name of the player's current inventory is "<gold>Primary Quests":
+		cancel event
+		if the name of the clicked item is "<gold>Misc. Quests":
+			open chest with 2 rows named "<gold>Misc. Quests" for the player
+			set slot 17 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
+			set {_uiSlot} to 0
+			loop {radiantQuestsOnOffer.%player%} times:
+				if {radiantQuest.%player%.%loop-value%::Completion} is set:
+					if {radiantQuest.%player%.%loop-value%::Completion} is not 999:
+						if {radiantQuest.%player%.%loop-value%::Type} is 0:
+							set slot {_uiSlot} of the player's current inventory to 1 chest named "<light yellow>Retrieve %{radiantQuest.%player%.%loop-value%::Amount}% %{radiantQuest.%player%.%loop-value%::Target}%." with lore "<white>Reward:", "<white>%{radiantQuest.%player%.%loop-value%::GoldReward}% gold", "<white>%{radiantQuest.%player%.%loop-value%::EXPReward}% EXP"
+						else if {radiantQuest.%player%.%loop-value%::Type} is 1:
+							set slot {_uiSlot} of the player's current inventory to 1 rotten flesh named "<light blue>Hunt %{radiantQuest.%player%.%loop-value%::Amount}% %{radiantQuest.%player%.%loop-value%::Target}%." with lore "<white>Rewards:", "<white>%{radiantQuest.%player%.%loop-value%::GoldReward}% gold", "<white>%{radiantQuest.%player%.%loop-value%::EXPReward}% EXP", "<light blue>Progress: %{radiantQuest.%player%.%loop-value%::Completion} - 1% targets slain."
+						add 1 to {_uiSlot}
+	else if the name of the player's current inventory is "<gold>Misc. Quests":
+		cancel event
+		if the name of the clicked item is "<bold>Go Back":
+			open chest with 2 rows named "<gold>Primary Quests" for the player
+			set slot 0 of the player's current inventory to 1 book named "<gold>Main Quests:"
+			if {quests.%player%::Birth of a Hero} is 999:
+				set slot 1 of the player's current inventory to 1 emerald block named "<light green>Birth of a Hero" with lore "<white>I've made it to House Ulster and completed my registration.", "<white>I should head into House Ulster and ask Alastor to be knighted."
+			else:
+				set slot 1 of the player's current inventory to 1 lapis block named "<light blue>Birth of a Hero" with lore "<white>After a long and ardous journey, I've made it to House Ulster.", "<white>Now, I just need to finish the last leg of the journey.", "<white>House Ulster should be north-east of camp."
+			if {quests.%player%::Expedition} is 999:
+				set slot 2 of the player's current inventory to 1 emerald block named "<light green>Expedition" with lore "<white>While I wasn't allowed into Alastor's knights, I was hired as a mail carrier.", "<white>I delivered Alastor's letter to Cinder inside Gallia successfully.", "<white>Just as I was about to leave, however, a local village was attacked.", "<white>We freed the village, and I earned the respect of Cinder.", "<white>This should make being knighted by Alastor a breeze."
+			else if {quests.%player%::Expedition} is more than 1:
+				set slot 2 of the player's current inventory to 1 lapis block named "<light blue>Expedition" with lore "<white>A local village is under attack!", "<white>With Cinder's help, I need to clear out the village of the intruders.", "<white>Monsters remaining: %{quests.%player%::Expedition} - 2%/8"
+			else if {quests.%player%::Expedition} is 1:
+				set slot 2 of the player's current inventory to 1 lapis block named "<light blue>Expedition" with lore "<white>My request to join the Knights of Ulster was flatly rejected by Alastor.", "<white>However, I was lucky enough to be hired as a mail carrier... if you could call that luck.", "<white>I need to deliver this letter to Cinder inside Gallia.", "<white>Heading south from House Ulster should eventually bring me to a lighthouse, from which I can sail to Gallia."
+			else:
+				set slot 2 of the player's current inventory to 1 redstone block named "<light red>Expedition" with lore "<white>Complete ""Birth of a Hero"" to unlock this quest."
+			if {quests.%player%::With Pride in Your Heart} is 999:
+				set slot 3 of the player's current inventory to 1 emerald block named "<light green>With Pride in Your Heart" with lore "<white>I've been inducted into the Knights of Ulster!", "<white>Now that my training has been completed, I can call myself a true Knight.", "<white>I should get to know some of my new allies a bit better before running off on more adventures..."
+			else if {quests.%player%::With Pride in Your Heart} is 1:
+				set slot 3 of the player's current inventory to 1 lapis block named "<light blue>With Pride in Your Heart" with lore "<white>Alastor was delighted to hear of my deeds,", "<white>and has officially inducted me into the Knights of Ulster.", "<white>I've been offered training underneath one of the senior knights."
+			else if {quests.%player%::With Pride in Your Heart} is set:
+				set slot 3 of the player's current inventory to 1 lapis block named "<light blue>With Pride in Your Heart" with lore "<white>Alastor was delighted to hear of my deeds,", "<white>and has officially inducted me into the Knights of Ulster.", "<white>I've been offered training underneath one of the senior knights."
+			else:
+				set slot 3 of the player's current inventory to 1 redstone block named "<light red>With Pride in Your Heart" with lore "<white>Complete ""Legend in the Making"" to unlock this quest."
+			if {quests.%player%::Legend In the Making} is 999:
+				set slot 4 of the player's current inventory to 1 emerald block named "<light green>Legend In the Making" with lore "<white>Siegfried and I helped defend Grann against a monster invasion.", "<white>He plans to accompany me on the way to House Ulster to join the Knights alongside me.", "<white>The shopkeepers at Grann are now willing to sell higher quality items to us, as well.", "<white>Hopefully I'll be able to catch some rest soon..."
+			else if {quests.%player%::Legend in the Making} is more than or equal to 1:
+				set slot 4 of the player's current inventory to 1 emerald block named "<light blue>Legend In the Making" with lore "<white>Grann is being attacked by monsters!", "<white>A mercenary named Siegfried has offered his support in defending Grann.", "<white>We just need to hold out a little longer..."
+			else:
+				set slot 4 of the player's current inventory to 1 redstone block named "<light red>Legend In the Making" with lore "<white>Complete ""Expedition"" to unlock this quest."
+			set slot 17 of the player's current inventory to 1 compass named "<gold>Misc. Quests" with lore "<white>Click to view the generic quests you have active."
+#Open Journal
 on right-click with book:
 	if the name of the player's tool is "<gold>Journal":
 		if {betaTestActive} is true:
@@ -620,18 +1989,127 @@ on right-click with book:
 			else:
 				set slot 0 of the player's current inventory to 1 lapis block named "<light blue>Beta Test - Monster Hunting" with lore "<white>Monsters Slain: %{quests.%player%::Beta Test - Monster Hunting} - 1%/50"
 		else:
-			open chest with 2 rows named "<gold>Journal" for the player
+			open chest with 2 rows named "<gold>Primary Quests" for the player
 			set slot 0 of the player's current inventory to 1 book named "<gold>Main Quests:"
+			#Birth of a Hero
 			if {quests.%player%::Birth of a Hero} is 999:
 				set slot 1 of the player's current inventory to 1 emerald block named "<light green>Birth of a Hero" with lore "<white>I've made it to House Ulster and completed my registration.", "<white>I should head into House Ulster and ask Alastor to be knighted."
 			else:
 				set slot 1 of the player's current inventory to 1 lapis block named "<light blue>Birth of a Hero" with lore "<white>After a long and ardous journey, I've made it to House Ulster.", "<white>Now, I just need to finish the last leg of the journey.", "<white>House Ulster should be north-east of camp."
-			if {quests.%player%::The Time to Act} is 999:
-				set slot 2 of the player's current inventory to 1 emerald block named "<light green>The Time to Act" with lore "<white>While I wasn't allowed into Alastor's knights, I was hired as a mail carrier.", "<white>I delivered Alastor's letter to Cinder inside Gallia successfully.", "<white>Just as I was about to leave, however, a local village was attacked.", "<white>We freed the village, and I earned the respect of Cinder.", "<white>This should make being knighted by Alastor a breeze."
-			else if {quests.%player%::The Time to Act} is more than 1:
-				set slot 2 of the player's current inventory to 1 lapis block named "<light blue>The Time to Act" with lore "<white>A local village is under attack!", "<white>With Cinder's help, I need to clear out the village of the intruders.", "<white>Monsters remaining: %{quests.%player%::The Time to Act} - 2%/16"
-			else if {quests.%player%::The Time to Act} is 1:
-				set slot 2 of the player's current inventory to 1 lapis block named "<light blue>The Time to Act" with lore "<white>My request to join the Knights of Ulster was flatly rejected by Alastor.", "<white>However, I was lucky enough to be hired as a mail carrier... if you could call that luck.", "<white>I need to deliver this letter to Cinder inside Gallia.", "<white>Heading south from House Ulster should eventually bring me to a lighthouse, from which I can sail to Gallia."
+			#Proving Grounds
+			if {quests.%player%::Proving Grounds} is 999:
+				set slot 2 of the player's current inventory to 1 emerald block named "<light green>Proving Grounds" with lore "<white>I've finished Alastor's bidding.", "<white>Surprisingly, he's agreed to let me begin training to become a full-fledged Knight of Ulster."
+			else if {quests.%player%::Proving Grounds} is 4:
+				set slot 2 of the player's current inventory to 1 lapis block named "<light blue>Proving Grounds" with lore "<white>I've recieved the report from Grann.", "<white>All that's left is to return the news to Alastor."
+			else if {quests.%player%::Proving Grounds} is 3:
+				set slot 2 of the player's current inventory to 1 lapis block named "<light blue>Proving Grounds" with lore "<white>Alastor has sent me to Grann, to speak with its captain.", "<white>He suggested I take the carriage at the lake near my camp to get to the town."
+			else if {quests.%player%::Proving Grounds} is 2:
+				set slot 2 of the player's current inventory to 1 lapis block named "<light blue>Proving Grounds" with lore "<white>I've delivered Alastor's letter to a nearby village.", "<white>I should report to Alastor as soon as possible."
+			else if {quests.%player%::Proving Grounds} is 1:
+				set slot 2 of the player's current inventory to 1 lapis block named "<light blue>Proving Grounds" with lore "<white>The lord of Gallia, Alastor, has tasked me with delivering a letter to a nearby village.", "<white>The village should be just down the river from the castle.", "<white>The letter is specifically for the captain of the guard, so it'd be best to hand it directly to him."
 			else:
-				set slot 2 of the player's current inventory to 1 redstone block named "<light red>The Time to Act" with lore "<white>Complete ""Birth of a Hero"" to unlock this quest."
-			
+				set slot 2 of the player's current inventory to 1 redstone block named "<light red>Proving Grounds" with lore "<white>Register with Azelle in front of House Ulster to unlock this quest."
+			#Breaking the Ice
+			if {quests.%player%::Breaking the Ice} is 999:
+				set slot 3 of the player's current inventory to 1 emerald block named "<light green>Breaking the Ice" with lore "<white>I've introduced myself to the Knights of Ulster.", "<white>Apart from some rough spots, they seem to be friendly enough.", "<white>I now have access to some very powerful allies for future adventures."
+			else if {quests.%player%::Breaking the Ice} is set:
+				set slot 3 of the player's current inventory to 1 lapis block named "<light blue>Breaking the Ice" with lore "<white>Alastor has opened up the castle as part of my induction into the Knights of Ulster.", "<white>I can recieve combat training downstairs as I please.", "<white>Once I'm finished, I should head upstairs to meet the rest of the Knights."
+			else:
+				set slot 3 of the player's current inventory to 1 redstone block named "<light red>Breaking the Ice" with lore "<white>Complete ""Proving Grounds"" to unlock this quest."
+			#Expedition
+			if {quests.%player%::Expedition} is 999:
+				set slot 4 of the player's current inventory to 1 emerald block named "<light green>Expedition" with lore "<white>While I wasn't allowed into Alastor's knights, I was hired as a mail carrier.", "<white>I delivered Alastor's letter to Cinder inside Gallia successfully.", "<white>Just as I was about to leave, however, a local village was attacked.", "<white>We freed the village, and I earned the respect of Cinder.", "<white>This should make being knighted by Alastor a breeze."
+			else if {quests.%player%::Expedition} is 997:
+				set slot 4 of the player's current inventory to 1 lapis block named "<light blue>Expedition" with lore "<white>Merriam told me that Alastor had another delivery mission for me.", "<white>I should make my way over to House Ulster and see what it is."
+			else if {quests.%player%::Expedition} is more than 1:
+				set slot 4 of the player's current inventory to 1 lapis block named "<light blue>Expedition" with lore "<white>A local village is under attack!", "<white>With Cinder's help, I need to clear out the village of the intruders.", "<white>Monsters remaining: %{quests.%player%::Expedition} - 2%/8"
+			else if {quests.%player%::Expedition} is 1:
+				set slot 4 of the player's current inventory to 1 lapis block named "<light blue>Expedition" with lore "<white>My request to join the Knights of Ulster was flatly rejected by Alastor.", "<white>However, I was lucky enough to be hired as a mail carrier... if you could call that luck.", "<white>I need to deliver this letter to Cinder inside Gallia.", "<white>Heading south from House Ulster should eventually bring me to a lighthouse, from which I can sail to Gallia."
+			else:
+				set slot 4 of the player's current inventory to 1 redstone block named "<light red>Expedition" with lore "<white>Complete ""Breaking the Ice"" to unlock this quest."
+			#Legend in the Making
+			if {quests.%player%::Legend In the Making} is 999:
+				set slot 5 of the player's current inventory to 1 emerald block named "<light green>Legend In the Making" with lore "<white>With the aid of Siegfried and the city guard,", "<white>Grann has been saved from the monster siege.", "<white>Tales of my good deeds are beginning to spread through the region,", "<white>and now shopkeepers are willing to sell higher-quality gear to me.", "<white>I suppose being a knight has perks after all."
+			else if {quests.%player%::Legend in the Making} is 1:
+				set slot 5 of the player's current inventory to 1 lapis block named "<light blue>Legend In the Making" with lore "<white>Merriam contacted me telepathically via magic.", "<white>I need to report to Alastor as soon as I can."
+			else if {quests.%player%::Legend in the Making} is 2:
+				set slot 5 of the player's current inventory to 1 lapis block named "<light blue>Legend In the Making" with lore "<white>Alastor has sent me to Grann to help defend against a monster invasion.", "<white>I need to notify the captain of the guard of my affiliation."
+			else if {quests.%player%::Legend in the Making} is 3:
+				set slot 5 of the player's current inventory to 1 lapis block named "<light blue>Legend In the Making" with lore "<white>Grann is under siege by monsters!", "<white>A mercenary named Siegfried has offered his support in defending Grann.", "<white>We just need to hold out a little longer..."			
+			else if {quests.%player%::Legend in the Making} is 4:
+				set slot 5 of the player's current inventory to 1 lapis block named "<light blue>Legend In the Making" with lore "<white>I've successfully defended Grann from the monster siege.", "<white>I need to report the good news to Alastor as soon as I can."
+			else if {quests.%player%::Legend in the Making} is 998:
+				set slot 5 of the player's current inventory to 1 obsidian named "<red>Legend In the Making" with lore "<white>You were defeated during the Grann siege.", "<white>You can retry this mission by speaking to Alastor again."
+			else:
+				set slot 5 of the player's current inventory to 1 redstone block named "<light red>Legend In the Making" with lore "<white>Rest in a bed after ""Meet the Team"" has been completed."
+			#Creeping Shadows
+			if {quests.%player%::Creeping Shadows} is 999:
+				set slot 6 of the player's current inventory to 1 emerald block named "<light green>Creeping Shadows" with lore "<white>After returning from his visit with Cinder,", "<white>Alastor informed us of the invasion planned by our otherworldy neighor: Elrid.", "<white>The Knights of Ulster were then assigned on missions to eliminate Elridian", "<white>strongholds littered throughout the deserts of Yied.", "<white>With their offensive powers weakened,", "<white>Alastor hopes we can now lead a pre-emptive strike on Elrid."
+			else if {quests.%player%::Creeping Shadows} is 8:
+				set slot 6 of the player's current inventory to 1 lapis block named "<light blue>Creeping Shadows" with lore "<white>I've initated the emergency shutdown!", "<white>I need to escape the facility and report to Alastor."
+			else if {quests.%player%::Creeping Shadows} is 7:
+				set slot 6 of the player's current inventory to 1 lapis block named "<light blue>Creeping Shadows" with lore "<white>All of the facility's pumps have been shut down.", "<white>Now to initiate the emergency shutdown."
+			else if {quests.%player%::Creeping Shadows} is 6:
+				set slot 6 of the player's current inventory to 1 lapis block named "<light blue>Creeping Shadows" with lore "<white>I've shut off the water and lava pumps.", "<white>I just have the exhaust pump left to go."
+			else if {quests.%player%::Creeping Shadows} is 5:
+				set slot 6 of the player's current inventory to 1 lapis block named "<light blue>Creeping Shadows" with lore "<white>I've shut off the factory's water pumps.", "<white>Now for the lava and exhaust pumps..."
+			else if {quests.%player%::Creeping Shadows} is 4:
+				set slot 6 of the player's current inventory to 1 lapis block named "<light blue>Creeping Shadows" with lore "<white>We've destroyed one of the Elridian outposts in the Yied Desert.", "<white>We should report the victory to Alastor as soon as possible."
+			else if {quests.%player%::Creeping Shadows} is 3:
+				set slot 6 of the player's current inventory to 1 lapis block named "<light blue>Creeping Shadows" with lore "<white>Alastor returned from his trip, and has informed us of a terrible truth:", "<white>Lord Cinder has discovered the origin of the monster threat.", "<white>The monsters are being created by otherworldly necromancers to prepare for a full-scale invasion.", "<white>Alastor has sent the Knights of Ulster on a series of missions,", "<white>where we must destroy Elridian strongholds littered throughout Yied.", "<white>He suggested the group operate in pairs, so I should talk with", "<white>one of the knights and ask them to assist me."
+			else if {quests.%player%::Creeping Shadows} is 2:
+				set slot 6 of the player's current inventory to 1 lapis block named "<light blue>Creeping Shadows" with lore "<white>Alastor has returned to House Ulster, and is calling a meeting with the knights.", "<white>I should get there as soon as I can."
+			else if {quests.%player%::Creeping Shadows} is 1:
+				set slot 6 of the player's current inventory to 1 lapis block named "<light blue>Creeping Shadows" with lore "<white>Alastor has departed on a trip to House Silgrid.", "<white>In the meantime, I should do whatever I can to assist the people of Yied.", "<white>I should also consider getting to know my fellow knights a little better."
+			else:
+				set slot 6 of the player's current inventory to 1 redstone block named "<light red>Creeping Shadows" with lore "<white>Complete ""Legend in the Making"" to unlock this quest."
+			#A Brush With Death
+			if {quests.%player%::A Brush With Death} is 999:
+				set slot 7 of the player's current inventory to 1 emerald block named "<light green>A Brush With Death" with lore "<white>Our attempt at a covert strike on the invading army failed in spectacular fashion.", "<white>The only entrance to our foe's world is through a border world inhabited by a fearsome dragon.", "<white>It's impossible for us to cross through with that dragon on the loose..."
+			else if {quests.%player%::A Brush With Death} is 3:
+				set slot 7 of the player's current inventory to 1 lapis block named "<light blue>A Brush With Death" with lore "<white>There's no hope of us killing that beast!", "<white>We need to leave before any more of us fall!"
+			else if {quests.%player%::A Brush With Death} is 2:
+				set slot 7 of the player's current inventory to 1 lapis block named "<light blue>A Brush With Death" with lore "<white>We've made it to the border world, but now a dragon is on the loose!", "<white>Will we even be able to scratch such a beast?!"
+			else if {quests.%player%::A Brush With Death} is 1:
+				set slot 7 of the player's current inventory to 1 lapis block named "<light blue>A Brush With Death" with lore "<white>Alastor has decided we must strike our enemy directly.", "<white>He's located a portal through which we can hopefully attack the incoming army's leader.", "<white>This sounds more like a suicide pact than a knightly quest."
+			else:
+				set slot 7 of the player's current inventory to 1 redstone block named "<light red>A Brush With Death" with lore "<white>Complete ""Creeping Shadows"" to unlock this quest."
+			#Another Path
+			if {quests.%player%::Another Path} is 999:
+				set slot 8 of the player's current inventory to 1 emerald block named "<light green>Another Path" with lore "<white>The Mage Knights of Silgrid are dead.", "<white>Their efforts to create a gateway directly into the lands of Elrid failed miserably.", "<white>The hellish fires of Harbindul are all that is left of their noble sacrifice.", "<white>Alastor has ordered us to remain at House Silgrid to ensure Lord Cinder's safety while he recovers from the losses."
+			else if {quests.%player%::Another Path} is 1:
+				set slot 8 of the player's current inventory to 1 lapis block named "<light blue>Another Path" with lore "<white>I and a portion of the knights have been stationed at House Silgrid to oversee the creation of an alternate path into Elrid."
+			else:
+				set slot 8 of the player's current inventory to 1 redstone block named "<light red>Another Path" with lore "<white>Complete ""A Brush With Death"" to unlock this quest."
+			#Lord's Advance
+			if {quests.%player%::Lord's Advance} is 999:
+				set slot 9 of the player's current inventory to 1 emerald block named "<light green>Lord's Advance" with lore "<white>Alastor has been slain at the hands of Helmund, the leader of the Elridian forces.", "<white>The Knights stationed at House Silgrid are all that are left of his army.", "<white>What will become of us now?"
+			else if {quests.%player%::Lord's Advance} is 1:
+				set slot 9 of the player's current inventory to 1 lapis block named "<light blue>Lord's Advance" with lore "<white>Alastor is meeting with the lord of Elrid and our current foe: Helmund.", "<white>Cinder is using his magical talents to have us listen in on the meeting.", "<white>I've never seen Lord Cinder this worried before."
+			else:
+				set slot 9 of the player's current inventory to 1 redstone block named "<light red>Lord's Advance" with lore "<white>Complete ""Another Path"" to unlock this quest."
+			#Piercing Through Darkness
+			if {quests.%player%::Piercing Through Darkness} is 999:
+				set slot 10 of the player's current inventory to 1 emerald block named "<light green>Piercing Through Darkness" with lore "<white>We've assembled the pieces needed for Lord Cinder's master plan.", "<white>He's fabricated a set of wondrous weapons that will help us turn the tide of this war.", "<white>There may be hope for us yet..."
+			else if {quests.%player%::Piercing Through Darkness} is 1:
+				set slot 10 of the player's current inventory to 1 lapis block named "<light blue>Piercing Through Darkness" with lore "<white>Lord Cinder has departed with Kalus and Irankata to search for a way to stop Helmund's advance.", "<white>The rest of the knights are to locate the following resources:", "<white>4x Diamonds", "<white>1x Trainee's Enrollment", "<white>3x Iron Blocks"
+			else:
+				set slot 10 of the player's current inventory to 1 redstone block named "<light red>Piercing Through Darkness" with lore "<white>Complete ""Lord's Advance"" to unlock this quest."
+			#Fight Against Fate
+			if {quests.%player%::Fight Against Fate} is 999:
+				set slot 11 of the player's current inventory to 1 emerald block named "<light green>Fight Against Fate" with lore "<white>Cinder's breakthrough has birthed a legendary set of weapons.", "<white>Using these new regalia, we've managed to free many of the towns across Silgrund.", "<white>Now, we must charge into the border world and seal off Elrid's gateway into Silgrid."
+			else if {quests.%player%::Fight Against Fate} is set:
+				set slot 11 of the player's current inventory to 1 lapis block named "<light blue>Fight Against Fate" with lore "<white>Cinder has used a newfound talent to forge a set of extraordinary weapons.", "<white>With these new weapons in hand, we can begin to free Silgrund from Helmund's advancing army.", "<light blue>Monsters Slain: %{quests.%player%::Fight Against Fate} - 1% / 50"
+			else:
+				set slot 11 of the player's current inventory to 1 redstone block named "<light red>Fight Against Fate" with lore "<white>Complete ""Piercing Through Darkness"" to unlock this quest."
+			#Sunset Soldiers
+			if {quests.%player%::Sunset Soldiers} is 999:
+				set slot 12 of the player's current inventory to 1 emerald block named "<light green>Sunset Soldiers" with lore "<white>Blood ravages the whites of the entry.", "<white>No more can be discerned from the pooling mass of red and black."
+			else if {quests.%player%::Sunset Soldiers} is 998:
+				set slot 12 of the player's current inventory to 1 emerald block named "<light green>Sunset Soldiers" with lore "<white>I escaped the massacre before the Sacred Seal could be completed.", "<white>My life has been preserved, but at a terrible cost...", "<white>Farewell, my friends. I hope to reunite with you all in the future."
+			else if {quests.%player%::Sunset Soldiers} is set:
+				set slot 12 of the player's current inventory to 1 lapis block named "<light blue>Sunset Soldiers" with lore "<white>We've made it to the border world, and now we need to create a seal on Elrid's entrance to this realm.", "<white>Monsters continue to flood the area... can we hold out against such a terrible foe?", "<light blue>Sacred Seal Progress: %{quests.%player%::Sunset Soldiers} - 1%%% complete.", "<light blue>Escape with your life by re-entering the portal.", "<light blue>Escaping will condemn the knights to failure, but preserve your own life..."
+			else:
+				set slot 12 of the player's current inventory to 1 redstone block named "<light red>Sunset Soldiers" with lore "<white>Complete ""Fight Against Fate"" to unlock this quest."
+			set slot 17 of the player's current inventory to 1 compass named "<gold>Misc. Quests" with lore "<white>Click to view the generic quests you have active."
+				

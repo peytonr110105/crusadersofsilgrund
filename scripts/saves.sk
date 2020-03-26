@@ -1,12 +1,5 @@
 #Adds individual characters for every player. This allows players to instantly swap progress between two different save states; changing classes, stats, and perks on the fly.
 
-#Load perk data from a save
-function loadPerk(PLR: player , ITEM: text , SLOT: number):
-	if {sslot%{_SLOT}%.%{_PLR}%::%{_ITEM}%} is set:
-		set {%{_ITEM}%.%{_PLR}%} to 1
-	else:
-		clear {%{_ITEM}%.%{_PLR}%}
-
 command /character [<text="list">] [<number=0>]:
 	description: Manage characters.
 	usage: /character (save/load/new/delete/list/inspect) (ID)
@@ -15,7 +8,10 @@ command /character [<text="list">] [<number=0>]:
 	trigger:
 		if arg 1 is "save":
 			#Classes
-			add 1 to {saves.%player%}
+			if {sslot%arg 2%.%player%::name} is not set:
+				add 1 to {saves.%player%}
+			set {sslot%arg 2%.%player%::hasPlayedProlouge} to {hasPlayedProlouge.%player%}
+			set {sslot%arg 2%.%player%::SessionType} to {SessionType.%player%}
 			set {sslot%arg 2%.%player%::name} to the display name of the player
 			set {sslot%arg 2%.%player%::str} to {str.%player%}
 			set {sslot%arg 2%.%player%::def} to {def.%player%}
@@ -116,185 +112,47 @@ command /character [<text="list">] [<number=0>]:
 			set {sslot%arg 2%.%player%::allyEnemyDefeated3} to {allyEnemyDefeated3.%player%}
 			set {sslot%arg 2%.%player%::allyHurtLarge1} to {allyHurtLarge1.%player%}
 			set {sslot%arg 2%.%player%::allyHurtLarge2} to {allyHurtLarge2.%player%}
+			set {sslot%arg 2%.%player%::generation} to {generation.%player%}
+			#Radiant Quests
+			set {sslot%arg 2%.%player%::RadiantQuestsOnOffer} to {radiantQuestsOnOffer.%player%}
+			set {sslot%arg 2%.%player%::RadiantQuestsRNG} to {radiantQuestsRNG.%player%}
+			loop {radiantQuestsOnOffer.%player%} times:
+				set {sslot%arg 2%.%player%.RQ.%loop-value%::Type} to {radiantQuest.%player%.%loop-value%::Type}
+				set {sslot%arg 2%.%player%.RQ.%loop-value%::Completion} to {radiantQuest.%player%.%loop-value%::Completion}
+				set {sslot%arg 2%.%player%.RQ.%loop-value%::Target} to {radiantQuest.%player%.%loop-value%::Target}
+				set {sslot%arg 2%.%player%.RQ.%loop-value%::GoldReward} to {radiantQuest.%player%.%loop-value%::GoldReward}
+				set {sslot%arg 2%.%player%.RQ.%loop-value%::EXPReward} to {radiantQuest.%player%.%loop-value%::EXPReward}
+				set {sslot%arg 2%.%player%.RQ.%loop-value%::Amount} to {radiantQuest.%player%.%loop-value%::Amount}
+			#Supports
+			set {sslot%arg 2%.%player%::PTPSupportBonusActive} to {PTPSupportBonusActive.%player%}
+			set {sslot%arg 2%.%player%::PTPSupportPoints} to {PTPSupportPoints.%player%}
+			set {sslot%arg 2%.%player%::PTPSupportRank} to {PTPSupportRank.%player%}
+			set {sslot%arg 2%.%player%::supportpartner} to {supportpartner.%player%}
+			#Discovered Carriages
+			loop {carriageLocs.%player%::*}:
+				set {sslot%arg 2%.%player%.carriageLocs::%loop-index%} to {carriageLocs.%player%::%loop-index%}
 			#Perks
-			if {Renewal.%player%} is set:
-				set {sslot%arg 2%.%player%::Renewal} to {Renewal.%player%}
-			if {Restock.%player%} is set:
-				set {sslot%arg 2%.%player%::Restock} to {Restock.%player%}
-			if {HP +5.%player%} is set:
-				set {sslot%arg 2%.%player%::HP +5} to {HP +5.%player%}
-			if {STR +5.%player%} is set:
-				set {sslot%arg 2%.%player%::STR +5} to {STR +5.%player%}
-			if {DEF +5.%player%} is set:
-				set {sslot%arg 2%.%player%::DEF +5} to {DEF +5.%player%}
-			if {SPD +5.%player%} is set:
-				set {sslot%arg 2%.%player%::SPD +5} to {SPD +5.%player%}
-			if {MAG +5.%player%} is set:
-				set {sslot%arg 2%.%player%::MAG +5} to {MAG +5.%player%}
-			if {SKL +5.%player%} is set:
-				set {sslot%arg 2%.%player%::SKL +5} to {SKL +5.%player%}
-			if {Smooth Landing.%player%} is set:
-				set {sslot%arg 2%.%player%::Smooth Landing} to {Smooth Landing.%player%}
-			if {Guard.%player%} is set:
-				set {sslot%arg 2%.%player%::Guard} to {Guard.%player%}
-			if {Fortress Defender.%player%} is set:
-				set {sslot%arg 2%.%player%::Fortress Defender} to {Fortress Defender.%player%}
-			if {Life and Death.%player%} is set:
-				set {sslot%arg 2%.%player%::Life and Death} to {Life and Death.%player%}
-			if {Vantage.%player%} is set:
-				set {sslot%arg 2%.%player%::Vantage} to {Vantage.%player%}
-			if {Everlasting Bond.%player%} is set:
-				set {sslot%arg 2%.%player%::Everlasting Bond.%player%} to {Everlasting Bond.%player%}
-			if {Hoard.%player%} is set:
-				set {sslot%arg 2%.%player%::Hoard} to {Hoard.%player%}
-			if {Light Feet.%player%} is set:
-				set {sslot%arg 2%.%player%::Light Feet} to {Light Feet.%player%}
-			if {Quickened Pulse.%player%} is set:
-				set {sslot%arg 2%.%player%::Quickened Pulse} to {Quickened Pulse.%player%}
-			if {Hammerne.%player%} is set:
-				set {sslot%arg 2%.%player%::Hammerne} to {Hammerne.%player%}
-			if {Double Lion.%player%} is set:
-				set {sslot%arg 2%.%player%::Double Lion} to {Double Lion.%player%}
-			if {Dancing Duel.%player%} is set:
-				set {sslot%arg 2%.%player%::Dancing Duel} to {Dancing Duel.%player%}
-			if {Friends With Benefits.%player%} is set:
-				set {sslot%arg 2%.%player%::Friends With Benefits} to {Friends With Benefits.%player%}
-			if {Rightful King.%player%} is set:
-				set {sslot%arg 2%.%player%::Rightful King} to {Rightful King.%player%}
-			if {Unbreakable.%player%} is set:
-				set {sslot%arg 2%.%player%::Unbreakable} to {Unbreakable.%player%}
-			if {Gamble.%player%} is set:
-				set {sslot%arg 2%.%player%::Gamble} to {Gamble.%player%}
-			if {Crushing Offense.%player%} is set:
-				set {sslot%arg 2%.%player%::Crushing Offense} to {Crushing Offense.%player%}
-			if {Haste.%player%} is set:
-				set {sslot%arg 2%.%player%::Haste} to {Haste.%player%}
-			if {Crusader's Blood.%player%} is set:
-				set {sslot%arg 2%.%player%::Crusader's Blood} to {Crusader's Blood.%player%}
-			if {Lord's Blood.%player%} is set:
-				set {sslot%arg 2%.%player%::Lord's Blood} to {Lord's Blood.%player%}
-			if {Crusader's Ward.%player%} is set:
-				set {sslot%arg 2%.%player%::Crusader's Ward} to {Crusader's Ward.%player%}
-			if {Miracle.%player%} is set:
-				set {sslot%arg 2%.%player%::Miracle} to {Miracle.%player%}
-			if {Brazen STR.%player%} is set:
-				set {sslot%arg 2%.%player%::Brazen STR} to {Brazen STR.%player%}
-			if {Brazen SPD.%player%} is set:
-				set {sslot%arg 2%.%player%::Brazen SPD} to {Brazen SPD.%player%}
-			if {Brazen SKL.%player%} is set:
-				set {sslot%arg 2%.%player%::Brazen SKL} to {Brazen SKL.%player%}
-			if {Brazen DEF.%player%} is set:
-				set {sslot%arg 2%.%player%::Brazen DEF} to {Brazen DEF.%player%}
-			if {Brazen MAG.%player%} is set:
-				set {sslot%arg 2%.%player%::Brazen MAG} to {Brazen MAG.%player%}
-			if {STR Smoke.%player%} is set:
-				set {sslot%arg 2%.%player%::STR Smoke} to {STR Smoke.%player%}
-			if {SPD Smoke.%player%} is set:
-				set {sslot%arg 2%.%player%::SPD Smoke} to {SPD Smoke.%player%}
-			if {DEF Smoke.%player%} is set:
-				set {sslot%arg 2%.%player%::DEF Smoke} to {DEF Smoke.%player%}
-			if {SKL Smoke.%player%} is set:
-				set {sslot%arg 2%.%player%::SKL Smoke} to {SKL Smoke.%player%}
-			if {Devilish Style.%player%} is set:
-				set {sslot%arg 2%.%player%::Devilish Style} to {Devilish Style.%player%}
-			if {Steady Breath.%player%} is set:
-				set {sslot%arg 2%.%player%::Steady Breath} to {Steady Breath.%player%}
-			if {Warding Breath.%player%} is set:
-				set {sslot%arg 2%.%player%::Warding Breath} to {Warding Breath.%player%}
-			if {Wrathful Staff.%player%} is set:
-				set {sslot%arg 2%.%player%::Wrathful Staff} to {Wrathful Staff.%player%}
-			if {Dazzling Staff.%player%} is set:
-				set {sslot%arg 2%.%player%::Dazzling Staff} to {Dazzling Staff.%player%}
-			if {Paragon.%player%} is set:
-				set {sslot%arg 2%.%player%::Paragon} to {Paragon.%player%}
-			if {Mount.%player%} is set:
-				set {sslot%arg 2%.%player%::Mount} to {Mount.%player%}
-			if {Live to Serve.%player%} is set:
-				set {sslot%arg 2%.%player%::Live to Serve} to {Live to Serve.%player%}
-			if {Magic Ward.%player%} is set:
-				set {sslot%arg 2%.%player%::Magic Ward} to {Magic Ward.%player%}
-			if {Elder Knowledge.%player%} is set:
-				set {sslot%arg 2%.%player%::Elder Knowledge} to {Elder Knowledge.%player%}
-			if {Brazen Spectrum.%player%} is set:
-				set {sslot%arg 2%.%player%::Brazen Spectrum} to {Brazen Spectrum.%player%}
-			if {Adaptable.%player%} is set:
-				set {sslot%arg 2%.%player%::Adaptable} to {Adaptable.%player%}
-			if {Ranged Specialist.%player%} is set:
-				set {sslot%arg 2%.%player%::Ranged Specialist} to {Ranged Specialist.%player%}
-			if {Lance Specialist.%player%} is set:
-				set {sslot%arg 2%.%player%::Lance Specialist} to {Lance Specialist.%player%}
-			if {Axe Specialist.%player%} is set:
-				set {sslot%arg 2%.%player%::Axe Specialist} to {Axe Specialist.%player%}
-			if {Sword Specialist.%player%} is set:
-				set {sslot%arg 2%.%player%::Sword Specialist} to {Sword Specialist.%player%}
-			if {High Jumper.%player%} is set:
-				set {sslot%arg 2%.%player%::High Jumper} to {High Jumper.%player%}
-			if {Awakening.%player%} is set:
-				set {sslot%arg 2%.%player%::Awakening} to 1
-			if {Air Hike.%player%} is set:
-				set {sslot%arg 2%.%player%::Air Hike} to 1
-			if {Combo System.%player%} is set:
-				set {sslot%arg 2%.%player%::Combo System} to 1
-			if {Witch Time.%player%} is set:
-				set {sslot%arg 2%.%player%::Witch Time} to 1
-			if {Devil Trigger.%player%} is 1:
-				set {sslot%arg 2%.%player%::Devil Trigger} to 1
-			if {Umbran Climax.%player%} is 1:
-				set {sslot%arg 2%.%player%::Umbran Climax} to 1
-			if {Fast Fingers.%player%} is 1:
-				set {sslot%arg 2%.%player%::Fast Fingers} to 1
-			if {Controlled Shot.%player%} is 1:
-				set {sslot%arg 2%.%player%::Controlled Shot} to 1
-			if {Resourceful.%player%} is 1:
-				set {sslot%arg 2%.%player%::Resourceful} to 1
-			if {Quick Draw.%player%} is 1:
-				set {sslot%arg 2%.%player%::Quick Draw} to 1
-			if {True Shot.%player%} is 1:
-				set {sslot%arg 2%.%player%::True Shot} to 1
-			if {Heavy Draw.%player%} is 1:
-				set {sslot%arg 2%.%player%::Heavy Draw} to 1
-			if {Rally Strength.%player%} is 1:
-				set {sslot%arg 2%.%player%::Rally Strength} to 1
-			if {Rally Speed.%player%} is 1:
-				set {sslot%arg 2%.%player%::Rally Speed} to 1
-			if {Rally Resistance.%player%} is 1:
-				set {sslot%arg 2%.%player%::Rally Resistance} to 1
-			if {Spectrum +10.%player%} is 1:
-				set {sslot%arg 2%.%player%::Spectrum +10} to 1
-			if {STR +20.%player%} is 1:
-				set {sslot%arg 2%.%player%::STR +20} to 1
-			if {Taming Mastery.%player%} is 1:
-				set {sslot%arg 2%.%player%::Taming Mastery} to 1
-			if {Flight.%player%} is 1:
-				set {sslot%arg 2%.%player%::Flight} to 1
-			if {Draconic Rage.%player%} is 1:
-				set {sslot%arg 2%.%player%::Draconic Rage} to 1
-			if {Scavenger.%player%} is 1:
-				set {sslot%arg 2%.%player%::Scavenger} to 1
-			if {Craftsmanship.%player%} is 1:
-				set {sslot%arg 2%.%player%::Craftsmanship} to 1
-			if {Efficiency.%player%} is 1:
-				set {sslot%arg 2%.%player%::Efficiency} to 1
-			if {Life and Death.%player%} is 1:
-				set {sslot%arg 2%.%player%::Life and Death} to 1
+			loop {perks.%player%::*}:
+				if {perks.%player%::%loop-index%} is 1:
+					set {sslot%arg 2%.%player%.perks::%loop-index%} to 1
+				else:
+					set {sslot%arg 2%.%player%.perks::%loop-index%} to 0
+			#Equipped Perk Bonuses
+			loop {perksEquipped.%player%::*}:
+				if {perksEquipped.%player%::%loop-index%} is 1:
+					set {sslot%arg 2%.%player%.perksEquipped::%loop-index%} to 1
+				else:
+					set {sslot%arg 2%.%player%.perksEquipped::%loop-index%} to 0
 			#Spells
-			set {sslot%arg 2%.%player%::Ember} to {Ember.%player%}
-			set {sslot%arg 2%.%player%::Frost} to {Frost.%player%}
-			set {sslot%arg 2%.%player%::Spark} to {Spark.%player%}
-			set {sslot%arg 2%.%player%::Gust} to {Gust.%player%}
-			set {sslot%arg 2%.%player%::Fire} to {Fire.%player%}
-			set {sslot%arg 2%.%player%::Hail} to {Hail.%player%}
-			set {sslot%arg 2%.%player%::Thunder} to {Thunder.%player%}
-			set {sslot%arg 2%.%player%::Wind} to {Wind.%player%}
-			set {sslot%arg 2%.%player%::Elfire} to {Elfire.%player%}
-			set {sslot%arg 2%.%player%::Aurora} to {Aurora.%player%}
-			set {sslot%arg 2%.%player%::Nosferatu} to {Nosferatu.%player%}
-			set {sslot%arg 2%.%player%::Light} to {Light.%player%}
-			set {sslot%arg 2%.%player%::Bolganone} to {Bolganone.%player%}
-			set {sslot%arg 2%.%player%::Spellblade} to {Spellblade.%player%}
+			loop {spells.%player%::*}:
+				if {spells.%player%::%loop-index%} is 1:
+					set {sslot%arg 2%.%player%.spells::%loop-index%} to 1
+				else:
+					set {sslot%arg 2%.%player%.spells::%loop-index%} to 0
 			#Misc
 			set {savepos%arg 2%.%player%} to location of block at player
 			clear {inv%arg 2%.%player%::*}
+			set {sslot%arg 2%.charvault.%player%::*} to {db_charvault.%player%::*}
 			loop all items in player's inventory:
 				add loop-item to {inv%arg 2%.%player%::*}
 			set {_cash} to the player's money
@@ -310,6 +168,65 @@ command /character [<text="list">] [<number=0>]:
 				set the player's tablist name to "%{sslot%arg 2%.%player%::name}%"
 				set the player's maximum health to ({sslot%arg 2%.%player%::hp} + {sslot%arg 2%.%player%::hpbuff}) / 2
 				heal the player by 999
+				clear {quests.%player%::*}
+				set {SessionType.%player%} to {sslot%arg 2%.%player%::SessionType}
+				set {hasPlayedProlouge.%player%} to {sslot%arg 2%.%player%::hasPlayedProlouge}
+				#Session Type handler
+				#Player joins MP session
+				if {SessionType.%player%} is "MP":
+					loop all players:
+						if citizen id of loop-player is not set:
+							reveal loop-player to player
+							reveal player to loop-player
+				#Player joins co-op session
+				else if {SessionType.%player%} is "COOP":
+					broadcast formatted "%player's tablist name%<reset><gold> (%player's name%) joined the game."
+					loop all players:
+						if citizen id of loop-player is not set:
+							loop {friendslist.%player%::*}:
+								if loop-player is loop-value-2:
+									reveal loop-player to the player
+									reveal player to loop-player
+									exit 1 loop
+								else:
+									hide loop-player from the player
+									hide player from loop-player
+							loop {%{party.%player%}%.members::*}:
+								if loop-value-2 is loop-player:
+									reveal the player to loop-player
+									reveal loop-player to the player
+								else:
+									hide player from loop-player
+									hide loop-player from the player
+				#Player joins SP session
+				else if {SessionType.%player%} is "SP":
+					loop all players:
+						if citizen id of the loop-player is not set:
+							if loop-player is not the player:
+								hide loop-player from the player
+								hide player from loop-player
+				#Hide player from others currently in SP/CO-OP sessions
+				loop all players:
+					if loop-player is not the player:
+						if citizen id of loop-player is not set:
+							if {SessionType.%loop-player%} is "SP":
+								hide the player from loop-player
+								hide loop-player from the player
+							else if {SessionType.%loop-player%} is "COOP":
+								if {party.%loop-player%} is not {party.%player%}:
+									hide player from loop-player
+									hide loop-player from the player
+								else:
+									loop {friendslist.%player%::*}:
+										if player is not loop-value-2:
+											hide player from loop-player
+											hide loop-player from the player
+										else:
+											reveal player to loop-player
+											reveal loop-player to the player
+							else:
+								reveal player to loop-player
+								reveal loop-player to player
 				set {hpgrowth.%player%} to {sslot%arg 2%.%player%::hpgrowth}
 				set {strgrowth.%player%} to {sslot%arg 2%.%player%::strgrowth}
 				set {defgrowth.%player%} to {sslot%arg 2%.%player%::defgrowth}
@@ -381,6 +298,17 @@ command /character [<text="list">] [<number=0>]:
 				set {boon.%player%} to {sslot%arg 2%.%player%::boon}
 				set {bane.%player%} to {sslot%arg 2%.%player%::bane}
 				set {charmade.%player%} to {sslot%arg 2%.%player%::charmade}
+				set {generation.%player%} to {sslot%arg 2%.%player%::generation}
+				#Radiant Quests
+				set {RadiantQuestsOnOffer.%player%} to {sslot%arg 2%.%player%::RadiantQuestsOnOffer}
+				set {RadiantQuestsRNG.%player%} to true
+				loop {radiantQuestsOnOffer.%player%} times:
+					set {radiantQuest.%player%.%loop-value%::Type} to {sslot%arg 2%.%player%.RQ.%loop-value%::Type}
+					set {radiantQuest.%player%.%loop-value%::Completion} to {sslot%arg 2%.%player%.RQ.%loop-value%::Completion}
+					set {radiantQuest.%player%.%loop-value%::Target} to {sslot%arg 2%.%player%.RQ.%loop-value%::Target}
+					set {radiantQuest.%player%.%loop-value%::GoldReward} to {sslot%arg 2%.%player%.RQ.%loop-value%::GoldReward}
+					set {radiantQuest.%player%.%loop-value%::EXPReward} to {sslot%arg 2%.%player%.RQ.%loop-value%::EXPReward}
+					set {radiantQuest.%player%.%loop-value%::Amount} to {sslot%arg 2%.%player%.RQ.%loop-value%::Amount}
 				#Quotes
 				set {badLevelQuote.%player%} to {sslot%arg 2%.%player%::badLevelQuote}
 				set {avgLevelQuote.%player%} to {sslot%arg 2%.%player%::avgLevelQuote}
@@ -409,102 +337,30 @@ command /character [<text="list">] [<number=0>]:
 				set {allyEnemyDefeated3.%player%} to {sslot%arg 2%.%player%::allyEnemyDefeated3}
 				set {allyHurtLarge1.%player%} to {sslot%arg 2%.%player%::allyHurtLarge1}
 				set {allyHurtLarge2.%player%} to {sslot%arg 2%.%player%::allyHurtLarge2}
+				#Supports
+				set {PTPSupportBonusActive.%player%} to {sslot%arg 2%.%player%::PTPSupportBonusActive} 
+				set {PTPSupportPoints.%player%} to {sslot%arg 2%.%player%::PTPSupportPoints}
+				set {PTPSupportRank.%player%} to {sslot%arg 2%.%player%::PTPSupportRank}
+				set {supportpartner.%player%} to {sslot%arg 2%.%player%::supportpartner}
+				#Discovered Carriages
+				clear {carriageLocs.%player%::*}
+				loop {sslot%arg 2%.%player%.carriageLocs::*}:
+					set {carriageLocs.%player%::%loop-index%} to {sslot%arg 2%.%player%.carriageLocs::%loop-index%}
 				#Perks
-				loadPerk(player,"Renewal",arg 2)
-				loadPerk(player,"Restock",arg 2)
-				loadPerk(player,"HP +5",arg 2)
-				loadPerk(player,"STR +5",arg 2)
-				loadPerk(player,"DEF +5",arg 2)
-				loadPerk(player,"SPD +5",arg 2)
-				loadPerk(player,"MAG +5",arg 2)
-				loadPerk(player,"SKL +5",arg 2)
-				loadPerk(player,"Smooth Landing",arg 2)
-				loadPerk(player,"Guard",arg 2)
-				loadPerk(player,"Fortress Defender",arg 2)
-				loadPerk(player,"Life and Death",arg 2)
-				loadPerk(player,"Vantage",arg 2)
-				loadPerk(player,"Everlasting Bond",arg 2)
-				loadPerk(player,"Hoard",arg 2)
-				loadPerk(player,"Light Feet",arg 2)
-				loadPerk(player,"Quickened Pulse",arg 2)
-				loadPerk(player,"Hammerne",arg 2)
-				loadPerk(player,"Double Lion",arg 2)
-				loadPerk(player,"Dancing Duel",arg 2)
-				loadPerk(player,"Friends With Benefits",arg 2)
-				loadPerk(player,"Rightful King",arg 2)
-				loadPerk(player,"Unbreakable",arg 2)
-				loadPerk(player,"Gamble",arg 2)
-				loadPerk(player,"Crushing Offense",arg 2)
-				loadPerk(player,"Haste",arg 2)
-				loadPerk(player,"Crusader's Blood",arg 2)
-				loadPerk(player,"Lord's Blood",arg 2)
-				loadPerk(player,"Crusader's Ward",arg 2)
-				loadPerk(player,"Miracle",arg 2)
-				loadPerk(player,"Brazen STR",arg 2)
-				loadPerk(player,"Brazen SPD",arg 2)
-				loadPerk(player,"Brazen SKL",arg 2)
-				loadPerk(player,"Brazen DEF",arg 2)
-				loadPerk(player,"Brazen MAG",arg 2)
-				loadPerk(player,"STR Smoke",arg 2)
-				loadPerk(player,"SPD Smoke",arg 2)
-				loadPerk(player,"DEF Smoke",arg 2)
-				loadPerk(player,"SKL Smoke",arg 2)
-				loadPerk(player,"Devilish Style",arg 2)
-				loadPerk(player,"Steady Breath",arg 2)
-				loadPerk(player,"Warding Breath",arg 2)
-				loadPerk(player,"Wrathful Staff",arg 2)
-				loadPerk(player,"Dazzling Staff",arg 2)
-				loadPerk(player,"Paragon",arg 2)
-				loadPerk(player,"Mount",arg 2)
-				loadPerk(player,"Adaptable",arg 2)
-				loadPerk(player,"Ranged Specialist",arg 2)
-				loadPerk(player,"Lance Specialist",arg 2)
-				loadPerk(player,"Axe Specialist",arg 2)
-				loadPerk(player,"Sword Specialist",arg 2)
-				loadPerk(player,"High Jumper",arg 2)
-				loadPerk(player,"Awakening",arg 2)
-				loadPerk(player,"Life and Death",arg 2)
-				loadPerk(player,"STR +20",arg 2)
-				loadPerk(player,"Taming Mastery",arg 2)
-				loadPerk(player,"Rally Strength",arg 2)
-				loadPerk(player,"Rally Speed",arg 2)
-				loadPerk(player,"Rally Resistance",arg 2)
-				loadPerk(player,"Spectrum +10",arg 2)
-				loadPerk(player,"Quick Draw",arg 2)
-				loadPerk(player,"True Shot",arg 2)
-				loadPerk(player,"Heavy Draw",arg 2)
-				loadPerk(player,"Fast Fingers",arg 2)
-				loadPerk(player,"Controlled Shot",arg 2)
-				loadPerk(player,"Resourceful",arg 2)
-				loadPerk(player,"Combo System",arg 2)
-				loadPerk(player,"Air Hike",arg 2)
-				loadPerk(player,"Witch Time",arg 2)
-				loadPerk(player,"Devil Trigger",arg 2)
-				loadPerk(player,"Umbran Climax",arg 2)
-				loadPerk(player,"Hoard",arg 2)
-				loadPerk(player,"Flight",arg 2)
-				loadPerk(player,"Draconic Rage",arg 2)
-				loadPerk(player,"Scavenger",arg 2)
-				loadPerk(player,"Efficiency",arg 2)
-				loadPerk(player,"Craftsmanship",arg 2)
+				clear {perks.%player%::*}
+				loop {sslot%arg 2%.%player%.perks::*}:
+					set {perks.%player%::%loop-index%} to {sslot%arg 2%.%player%.perks::%loop-index%}
+				#Active Perk Bonuses
+				clear {perksEquipped.%player%::*}
+				loop {sslot%arg 2%.%player%.perksEquipped::*}:
+					set {perksEquipped.%player%::%loop-index%} to {sslot%arg 2%.%player%.perksEquipped::%loop-index%}
 				#Spells
-				loadPerk(player,"Ember",arg 2)
-				loadPerk(player,"Frost",arg 2)
-				loadPerk(player,"Spark",arg 2)
-				loadPerk(player,"Gust",arg 2)
-				loadPerk(player,"Fire",arg 2)
-				loadPerk(player,"Hail",arg 2)
-				loadPerk(player,"Thunder",arg 2)
-				loadPerk(player,"Wind",arg 2)
-				loadPerk(player,"Elfire",arg 2)
-				loadPerk(player,"Aurora",arg 2)
-				loadPerk(player,"Nosferatu",arg 2)
-				loadPerk(player,"Light",arg 2)
-				loadPerk(player,"Bolganone",arg 2)
-				loadPerk(player,"Spellblade",arg 2)
+				clear {spells.%player%::*}
+				loop {sslot%arg 2%.%player%.spells::*}:
+					set {spells.%player%::%loop-index%} to {sslot%arg 2%.%player%.spells::%loop-index%}
 				#Misc
 				set {realism.%player%} to {sslot%arg 2%.%player%::realism}
-				make player execute command "/clear"
+				clear the player's inventory
 				send "%{sslot%arg 2%.%player%::cash}%"
 				set the player's level to {sslot%arg 2%.%player%::lvl}
 				teleport the player to {savepos%arg 2%.%player%}
@@ -512,6 +368,8 @@ command /character [<text="list">] [<number=0>]:
 				set {tutbonus.%player%} to {sslot%arg 2%.%player%::tutbonus}
 				set {playedTutorial.%player%} to {sslot%arg 2%.%player%::playedTutorial}
 				set {bhop.%player%} to {sslot%arg 2%.%player%::bhop}
+				set {db_charvault.%player%::*} to {sslot%arg 2%.charvault.%player%::*}
+				make player execute command "/perk 0 LoadSave"
 				wait 1 tick
 				open chest with 6 rows named "%{sslot%arg 2%.%player%::name}%'s Inventory" for the player
 				wait 1 tick
@@ -524,10 +382,11 @@ command /character [<text="list">] [<number=0>]:
 			#Classes
 			set the player's display name to the player's name
 			make player execute command "/xp -10000l"
-			make player execute command "/clear"
+			clear the player's inventory
 			make player execute command "/heal"
 			set the player's money to 0
 			#make player execute command "/kit tools"
+			clear {hasPlayedProlouge.%player%}
 			clear {str.%player%}
 			clear {def.%player%}
 			clear {res.%player%}
@@ -536,6 +395,7 @@ command /character [<text="list">] [<number=0>]:
 			clear {hp.%player%}
 			clear {bst.%player%}
 			clear {elitemode.%player%}
+			clear {SessionType.%player%}
 			clear {weaponrank.%player%::swords}
 			clear {weaponrank.%player%::lances}
 			clear {weaponrank.%player%::axes}
@@ -584,109 +444,22 @@ command /character [<text="list">] [<number=0>]:
 			clear {skillslot5.%player%}
 			clear {boon.%player%}
 			clear {bane.%player%}
+			clear {generation.%player%}
+			#Radiant Quests
+			loop {radiantQuestsOnOffer.%player%} times:
+				clear {radiantQuest.%player%.%loop-value%::*}
+			clear {radiantQuestsOnOffer.%player%}
+			set {radiantQuestsRNG.%player%} to true
 			#Supports
-			clear {support.%player%}
-			clear {supportrank.%player%}
-			clear {supportgrade.%player%}
+			clear {PTPSupportRank.%player%}
+			clear {supportpartner.%player%}
+			clear {PTPSupportPoints.%player%}
+			clear {PTPSupportBonusActive.%player%}
 			#Perks
-			clear {Renewal.%player%}
-			clear {Restock.%player%}
-			clear {HP +5.%player%}
-			clear {STR +5.%player%}
-			clear {DEF +5.%player%}
-			clear {SPD +5.%player%}
-			clear {MAG +5.%player%}
-			clear {SKL +5.%player%}
-			clear {Smooth Landing.%player%}
-			clear {Guard.%player%}
-			clear {Fortress Defender.%player%}
-			clear {Life and Death.%player%}
-			clear {Vantage.%player%}
-			clear {Everlasting Bond.%player%}
-			clear {Hoard.%player%}
-			clear {Light Feet.%player%}
-			clear {Quickened Pulse.%player%}
-			clear {Hammerne.%player%}
-			clear {Double Lion.%player%}
-			clear {Dancing Duel.%player%}
-			clear {Friends With Benefits.%player%}
-			clear {Rightful King.%player%}
-			clear {Unbreakable.%player%}
-			clear {Gamble.%player%}
-			clear {Crushing Offense.%player%}
-			clear {Haste.%player%}
-			clear {Crusader's Blood.%player%}
-			clear {Lord's Blood.%player%}
-			clear {Crusader's Ward.%player%}
-			clear {Miracle.%player%}
-			clear {Brazen STR.%player%}
-			clear {Brazen SPD.%player%}
-			clear {Brazen SKL.%player%}
-			clear {Brazen DEF.%player%}
-			clear {Brazen MAG.%player%}
-			clear {STR Smoke.%player%}
-			clear {SPD Smoke.%player%}
-			clear {DEF Smoke.%player%}
-			clear {SKL Smoke.%player%}
-			clear {Devilish Style.%player%}
-			clear {Warding Breath.%player%}
-			clear {Steady Breath.%player%}
-			clear {Wrathful Staff.%player%}
-			clear {Dazzling Staff.%player%}
-			clear {Paragon.%player%}
-			clear {Mount.%player%}
-			clear {Live to Serve.%player%}
-			clear {Elder Knowledge.%player%}
-			clear {Magic Ward.%player%}
-			clear {Brazen Spectrum.%player%}
-			clear {Ranged Specialist.%player%}
-			clear {Lance Specialist.%player%}
-			clear {Axe Specialist.%player%}
-			clear {Sword Specialist.%player%}
-			clear {High Jumper.%player%}
-			clear {Adaptable.%player%}
-			clear {Awakening.%player%}
-			clear {True Shot.%player%}
-			clear {Taming Mastery.%player%}
-			clear {STR +20.%player%}
-			clear {Life and Death.%player%}
-			clear {Hoard.%player%}
-			clear {Flight.%player%}
-			clear {Draconic Rage.%player%}
-			clear {Scavenger.%player%}
-			clear {Efficiency.%player%}
-			clear {Craftsmanship.%player%}
-			clear {Rally Strength.%player%}
-			clear {Rally Resistance.%player%}
-			clear {Rally Speed.%player%}
-			clear {Spectrum +10.%player%}
-			clear {Quick Draw.%player%}
-			clear {True Shot.%player%}
-			clear {Heavy Draw.%player%}
-			clear {Fast Fingers.%player%}
-			clear {Controlled Shot.%player%}
-			clear {Resourceful.%player%}
-			clear {Combo System.%player%}
-			clear {Air Hike.%player%}
-			clear {Witch Time.%player%}
-			clear {Devil Trigger.%player%}
-			clear {Umbran Climax.%player%}
-			
+			clear {perks.%player%::*}
+			clear {perksEquipped.%player%::*}
 			#Spells
-			clear {Ember.%player%}
-			clear {Frost.%player%}
-			clear {Spark.%player%}
-			clear {Gust.%player%}
-			clear {Fire.%player%}
-			clear {Hail.%player%}
-			clear {Thunder.%player%}
-			clear {Wind.%player%}
-			clear {Elfire.%player%}
-			clear {Aurora.%player%}
-			clear {Nosferatu.%player%}
-			clear {Light.%player%}
-			clear {Bolganone.%player%}
-			clear {Spellblade.%player%}
+			clear {spells.%player%::*}
 			#Misc
 			clear {tutbonus.%player%}
 			clear {realism.%player%}
@@ -722,8 +495,14 @@ command /character [<text="list">] [<number=0>]:
 			clear {allyEnemyDefeated3.%player%}
 			clear {allyHurtLarge1.%player%}
 			clear {allyHurtLarge2.%player%}
+			clear {db_charvault.%player%::*}
+			clear {childUnitParent.%player%}
+			clear {carriageLocs.%player%::*}
 			set {bhop.%player%} to 0
 			send "<light blue>[Characters]<light green> New character ready. Please log back into the server to start your new character."
+			if arg 2 is not 0:
+				set {hasPlayedProlouge.%player%} to true
+				send "<light blue>Skipping prolouge."
 		else if arg 1 is "list":
 			send "<light blue>[Characters]<reset> Your saved characters by ID:"
 			loop {saves.%player%} times:
@@ -731,9 +510,16 @@ command /character [<text="list">] [<number=0>]:
 					send "%loop-number%: %{sslot%loop-number%.%player%::name}% | Level %{sslot%loop-number%.%player%::lvl}% %{sslot%loop-number%.%player%::class}%"
 		else if arg 1 is "delete":
 			subtract 1 from {saves.%player%}
+			loop {sslot%arg 2%.%player%::RadiantQuestsOnOffer} times:
+				clear {sslot%arg 2%.%player%.RQ.%loop-value%::*}
 			clear {sslot%arg 2%.%player%::*}
 			clear {sslot%arg 2%.%player%.quests::*}
 			clear {inv%arg 2%.%player%::*}
+			clear {sslot%arg 2%.%player%.spells::*}
+			clear {sslot%arg 2%.%player%.perks::*}
+			clear {sslot%arg 2%.%player%.perksEquipped::*}
+			clear {sslot%arg 2%.%player%.carriageLocs::*}
+			clear {sslot%arg 2%.charvault.%player%::*}
 			send "<light blue>[Characters]<reset> Character deleted."
 		else if arg 1 is "help":
 			send "<light blue>[Characters]<reset> Usage: /character (save, load, list, delete, new, inspect) (Character Slot)"

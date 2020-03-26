@@ -1,0 +1,155 @@
+on join:
+	if {questbook.%player%} is not set:
+		if {hasPlayedProlouge.%player%} is not set:
+			teleport the player to location at -1509, 4, -622 in world "Salindrum"
+		else:
+			teleport the player to location at -1508, 4, -771 in world "Salindrum"
+	apply resistance 5 to the player for 2 seconds
+	wait 1 tick
+	send formatted "<gold>Welcome back, %player's tablist name%<reset><gold>!"
+	#Player joins MP session
+	if {SessionType.%player%} is "MP":
+		broadcast formatted "%player's tablist name%<reset><gold> (%player's name%) joined the game."
+		loop all players:
+			if {SessionType.%player%} is "MP":
+				reveal player to loop-player
+				reveal loop-player to player
+				add loop-player's tablist name to {_onlineplayers::*}
+		send formatted "<gold>Online players: %{_onlineplayers::*}%<reset><gold>."
+	#Player joins co-op session
+	else if {SessionType.%player%} is "COOP":
+		broadcast formatted "%player's tablist name%<reset><gold> (%player's name%) joined the game."
+		loop all players:
+			if citizen id of loop-player is not set:
+				loop {friendslist.%player%::*}:
+					if loop-player is loop-value-2:
+						reveal loop-player to the player
+						reveal player to loop-player
+						add loop-player's tablist name to {_onlineplayers::*}
+						exit 1 loop
+					else:
+						hide loop-player from the player
+						hide player from loop-player
+				loop {%{party.%player%}%.members::*}:
+					if loop-value-2 is loop-player:
+						reveal the player to loop-player
+						reveal loop-player to the player
+					else:
+						hide player from loop-player
+						hide loop-player from the player
+		send formatted "<gold>Friends Online: %{_onlineplayers::*}%<reset><gold>."
+	#Player joins SP session
+	else if {SessionType.%player%} is "SP":
+		loop all players:
+			if citizen id of the loop-player is not set:
+				if loop-player is not the player:
+					hide loop-player from the player
+					hide player from loop-player
+	#Hide player from others currently in SP/CO-OP sessions
+	loop all players:
+		if loop-player is not the player:
+			if citizen id of the loop-player is not set:
+				if {SessionType.%loop-player%} is "SP":
+					hide the player from loop-player
+					hide loop-player from the player
+				else if {SessionType.%loop-player%} is "COOP":
+					if {party.%loop-player%} is not {party.%player%}:
+						hide player from loop-player
+						hide loop-player from the player
+					else:
+						loop {friendslist.%player%::*}:
+							if player is not loop-value-2:
+								hide player from loop-player
+								hide loop-player from the player
+							else:
+								reveal player to loop-player
+								reveal loop-player to the player
+	
+on disconnect:
+	broadcast formatted "%player's tablist name%<reset><gold> (%player's name%) left the game."
+	
+command /startCosSession <text>:
+	description: Starts the Crusaders of Silgrund campaign in a specified mode.
+	usage: /startCosSession (MP/SP/COOP)
+	executable by: players
+	trigger:
+		#Beta Test behavior
+		if {betaTestActive} is 1:
+			loop {playedBeta::*}:
+				if loop-value is the player:
+					set {_skip} to true
+					exit 1 loop
+			if {_skip} is not set:
+				set {generation.%player%} to 1
+				clear the player's inventory
+				#add the player to {playedBeta::*}
+				make player execute command "/cheats unlockallthings"
+				teleport the player to location at 718, 63, -1600 in world "GenOne"
+				give 1 leather helmet to the player
+				give 1 leather chestplate to the player
+				give 1 leather leggings to the player
+				give 1 leather boots to the player
+				give 1 wooden sword to the player
+				give 1 book named "<gold>Journal" with lore "<white>A rugged journal good for keeping notes." to the player
+				set {quests.%player%::Birth of a Hero} to 1
+				startQuest(player,"Beta Test - Monster Hunting","A beta test is active! Check the discord for details.")
+				set the player's maximum health to 3
+		#Release behavior
+		else if {questbook.%player%} is not set:
+			set the player's maximum health to 5
+			set {questbook.%player%} to true
+			set {generation.%player%} to 1
+			teleport the player to location at 718, 63, -1598 in world "GenOne"
+			startQuest(player,"Birth of a Hero","Locate House Ulster in the northwest.")
+		if {generation.%player%} is not set:
+			set {generation.%player%} to 1
+			teleport the player to location at 718, 63, -1600 in world "GenOne"
+		else if ({generation.%player%} / 2) is not an integer:
+			teleport the player to location at 718, 63, -1600 in world "GenOne"
+		else:
+			teleport the player to location at 376, 61, 314 in world "adventure"
+		if arg 1 is "MP":
+			send "<light yellow>Started a public multiplayer session."
+			loop all players:
+				if loop-player is not the player:
+					#Hide all SP players
+					if {SessionType.%loop-player%} is "SP":
+						hide the player from loop-player
+						hide loop-player from the player
+					#Only show co-op players if they would be visible during a co-op session (friends list or party)
+					else if {SessionType.%loop-player%} is "COOP":
+						loop {friendslist.%player%::*}:
+							if loop-player is loop-value-2:
+								reveal the player to loop-player
+								reveal loop-player to the player
+							else:
+								hide loop-player from the player
+								hide player from loop-player
+						loop {%{party.%player%}%.members::*}:
+							if loop-value-2 is loop-player:
+								reveal the player to loop-player
+								reveal loop-player to the player
+							else:
+								hide player from loop-player
+								hide loop-player from the player
+					else:
+						reveal the loop-player to the player
+		else if arg 1 is "SP":
+			send "<light yellow>Started a private singleplayer session."
+			set {SessionType.%player%} to "SP"
+			loop all players:
+				if citizen id of the loop-player is not set:
+					if loop-player is not the player:
+						hide loop-player from the player
+						hide player from loop-player
+		else if arg 1 is "COOP":
+			send "<light yellow>Started a private co-op session."
+			set {SessionType.%player%} to "COOP"
+			loop all players:
+				loop {friendslist.%player%::*}:
+					if loop-player is loop-value-2:
+						reveal loop-player to the player
+						reveal player to loop-player
+					else:
+						hide loop-player from the player
+						hide player from loop-player

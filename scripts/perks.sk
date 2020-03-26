@@ -14,7 +14,7 @@ command /grantskill <number> <text>:
 				clear {SKL +5.%player%}
 				clear {Smooth Landing.%player%}
 				clear {Guard.%player%}
-				clear {Fortress Defender.%player%}
+				clear {Steady Breath.%player%}
 				clear {Life and Death.%player%}
 				clear {Vantage.%player%}
 				clear {Everlasting Bond.%player%}
@@ -56,14 +56,40 @@ command /grantskill <number> <text>:
 				set {skillslot3.%player%} to "Empty"
 				set {skillslot4.%player%} to "Empty"
 				set {skillslot5.%player%} to "Empty"
-				send "<bold>Reset all perk data."
+				send formatted "<bold>Reset all perk data."
 			else:
 				clear {%arg 2%.%player%}
-				send "<bold>Cleared perk %arg 2%."
+				send formatted "<bold>Cleared perk %arg 2%."
 		else:
-			set {%arg 2%.%player%} to 1
-			add 1 to {skillstotal.%player%}
-			send "<bold>Learned Perk: %arg 2%."
+			set {perks.%player%::%arg 2%} to 1
+			set {skillsTotal.%player%} to 0
+			loop {perks.%player%::*}:
+				if {perks.%player%::%loop-index%} is 1:
+					add 1 to {skillstotal.%player%}
+			send formatted "<bold>Learned Perk: %arg 2%."
+			play sound "entity.player.levelup" with volume 1 and pitch 1.5 at player for player
+			spawn a firework at the player
+			show large smoke on the player
+			show firework's spark on the player
+			
+command /grantspell <number> <text>:
+	description: Grants a skill.
+	usage: This should not be displayed
+	trigger:
+		if arg 1 is 1:
+			if arg 2 is "resetall":
+				clear {spells.%player%::*}
+			else:
+				clear {spells.%player%::%arg 2%}
+				send formatted "<bold>Cleared spell %arg 2%."
+		else:
+			set {spells.%player%::%arg 2%} to 1
+			set {spellsTotal.%player%} to 0
+			loop {spells.%player%::*}:
+				if {spells.%player%::%loop-index%} is 1:
+					add 1 to {spellsTotal.%player%}
+			send formatted "<bold>Learned Spell: %arg 2%."
+			play sound "entity.player.levelup" with volume 1 and pitch 1.5 at player for player
 			spawn a firework at the player
 			show large smoke on the player
 			show firework's spark on the player
@@ -86,311 +112,355 @@ command /perks [<number=1>]:
 	usage: /listperks
 	aliases: /seeallperks, /seeperks, /listskills, /perks
 	trigger:
-		open chest with 6 rows named "<bold>Your Perk List (%{skillstotal.%player%}% perks unlocked)" for the player
 		if arg 1 is 1:
-			if {Renewal.%player%} is 1:
+			open chest with 6 rows named "<bold>Universal Perks | (%{skillsTotal.%player%}% perks unlocked)" for the player
+			if {perks.%player%::Renewal} is 1:
 				set slot 0 of the player's current inventory to 1 emerald block named "<bold>Renewal" with lore "<white>Restores 1 heart every 15 seconds.", ""
 			else:
 				set slot 0 of the player's current inventory to 1 obsidian named "<bold>Renewal" with lore "<white>Restores 1 heart every 15 seconds.", "Unlocked at: Level 10"
-			if {Restock.%player%} is 1:
+			if {perks.%player%::Restock} is 1:
 				set slot 1 of the player's current inventory to 1 emerald block named "<bold>Restock" with lore "<white>Restores 1 hunger point every 15 seconds."
 			else:
 				set slot 1 of the player's current inventory to 1 obsidian named "<bold>Restock" with lore "<white>Restores 1 hunget point every 15 seconds.", "Unlocked at: Level 15"
-			if {HP +5.%player%} is 1:
+			if {perks.%player%::HP +5} is 1:
 				set slot 2 of the player's current inventory to 1 emerald block named "<bold>HP +5" with lore "<white>Grants +5 HP."
 			else:
 				set slot 2 of the player's current inventory to 1 obsidian named "<bold>HP +5" with lore "<white>Grants +5 HP.", "Unlocked at: Level 1"
-			if {STR +5.%player%} is 1:
+			if {perks.%player%::STR +5} is 1:
 				set slot 3 of the player's current inventory to 1 emerald block named "<bold>STR +5" with lore "<white>Grants +5 STR."
 			else:
 				set slot 3 of the player's current inventory to 1 obsidian named "<bold>STR +5" with lore "<white>Grants +5 STR.", "Unlocked at: Level 3"
-			if {DEF +5.%player%} is 1:
+			if {perks.%player%::DEF +5} is 1:
 				set slot 4 of the player's current inventory to 1 emerald block named "<bold>DEF +5" with lore "<white>Grants +5 DEF."
 			else:
 				set slot 4 of the player's current inventory to 1 obsidian named "<bold>DEF +5" with lore "<white>Grants +5 DEF.", "Unlocked at: Level 5"
-			if {SKL +5.%player%} is 1:
+			if {perks.%player%::SKL +5} is 1:
 				set slot 5 of the player's current inventory to 1 emerald block named "<bold>SKL +5" with lore "<white>Grants +5 SKL."
 			else:
 				set slot 5 of the player's current inventory to 1 obsidian named "<bold>SKL +5" with lore "<white>Grants +5 SKL.", "Unlocked at: Level 7"
-			if {SPD +5.%player%} is 1:
-				set slot 5 of the player's current inventory to 1 emerald block named "<bold>SPD +5" with lore "<white>Grants +5 SPD."
+			if {perks.%player%::SPD +5} is 1:
+				set slot 6 of the player's current inventory to 1 emerald block named "<bold>SPD +5" with lore "<white>Grants +5 SPD."
 			else:
-				set slot 5 of the player's current inventory to 1 obsidian named "<bold>SPD +5" with lore "<white>Grants +5 SPD.", "Unlocked at: Level 9"
-			if {MAG +5.%player%} is 1:
-				set slot 6 of the player's current inventory to 1 emerald block named "<bold>MAG +5" with lore "<white>Grants +5 MAG."
+				set slot 6 of the player's current inventory to 1 obsidian named "<bold>SPD +5" with lore "<white>Grants +5 SPD.", "Unlocked at: Level 9"
+			if {perks.%player%::MAG +5} is 1:
+				set slot 7 of the player's current inventory to 1 emerald block named "<bold>MAG +5" with lore "<white>Grants +5 MAG."
 			else:
-				set slot 6 of the player's current inventory to 1 obsidian named "<bold>MAG +5" with lore "<white>Grants +5 MAG.", "Unlocked at: Level 11"
-			if {Brazen MAG.%player%} is 1:
-				set slot 7 of the player's current inventory to 1 emerald block named "<bold>Brazen MAG" with lore "<white>In a pinch, grants MAG +30."
+				set slot 7 of the player's current inventory to 1 obsidian named "<bold>MAG +5" with lore "<white>Grants +5 MAG.", "Unlocked at: Level 11"
+			if {perks.%player%::Wall Kick} is 1:
+				set slot 8 of player's current inventory to 1 emerald block named "<bold>Wall Kick" with lore "<white>Left-Click a wall while in the air and sneaking to jump off of it."
 			else:
-				set slot 7 of the player's current inventory to 1 obsidian named "<bold>Brazen MAG" with lore "<white>In a pinch, grants MAG +30.", "Unlocked at: Level 15"
-			if {Brazen SKL.%player%} is 1:
-				set slot 8 of player's current inventory to 1 emerald block named "<bold>Brazen SKL" with lore "<white>In a pinch, grants SKL +30."
+				set slot 8 of player's current inventory to 1 obsidian named "<bold>Wall Kick" with lore "<white>Left-Click a wall while in the air and sneaking to jump off of it.", "Unlocked at: Level 14"
+			if {perks.%player%::Brazen MAG} is 1:
+				set slot 9 of the player's current inventory to 1 emerald block named "<bold>Brazen MAG" with lore "<white>In a pinch, grants MAG +30."
 			else:
-				set slot 8 of player's current inventory to 1 obsidian named "<bold>Brazen SKL" with lore "<white>In a pinch, grants SKL +30.", "Unlocked at: Level 20"
-			if {Brazen DEF.%player%} is 1:
-				set slot 9 of player's current inventory to 1 emerald block named "<bold>Brazen DEF" with lore "<white>In a pinch, grants DEF +30."
+				set slot 9 of the player's current inventory to 1 obsidian named "<bold>Brazen MAG" with lore "<white>In a pinch, grants MAG +30.", "Unlocked at: Level 15"
+			if {perks.%player%::Brazen SKL} is 1:
+				set slot 10 of player's current inventory to 1 emerald block named "<bold>Brazen SKL" with lore "<white>In a pinch, grants SKL +30."
 			else:
-				set slot 9 of player's current inventory to 1 obsidian named "<bold>Brazen DEF" with lore "<white>In a pinch, grants DEF +30.", "Unlocked at: Level 25"
-			if {Brazen SPD.%player%} is 1:
-				set slot 10 of player's current inventory to 1 emerald block named "<bold>Brazen SPD" with lore "<white>In a pinch, grants SPD +30."
+				set slot 10 of player's current inventory to 1 obsidian named "<bold>Brazen SKL" with lore "<white>In a pinch, grants SKL +30.", "Unlocked at: Level 20"
+			if {perks.%player%::Brazen DEF} is 1:
+				set slot 11 of player's current inventory to 1 emerald block named "<bold>Brazen DEF" with lore "<white>In a pinch, grants DEF +30."
 			else:
-				set slot 10 of player's current inventory to 1 obsidian named "<bold>Brazen SPD" with lore "<white>In a pinch, grants SPD +30.", "Unlocked at: Level 30"
-			if {Brazen STR.%player%} is 1:
-				set slot 11 of the player's current inventory to 1 emerald block named "<bold>Brazen STR" with lore "<white>In a pinch, grants STR +30."
+				set slot 11 of player's current inventory to 1 obsidian named "<bold>Brazen DEF" with lore "<white>In a pinch, grants DEF +30.", "Unlocked at: Level 25"
+			if {perks.%player%::Brazen SPD} is 1:
+				set slot 12 of player's current inventory to 1 emerald block named "<bold>Brazen SPD" with lore "<white>In a pinch, grants SPD +30."
 			else:
-				set slot 11 of the player's current inventory to 1 obsidian named "<bold>Brazen STR" with lore "<white>In a pinch, grants STR +30.", "Unlocked at: Level 35"
-			if {High Jumper.%player%} is 1:
-				set slot 12 of player's current inventory to 1 emerald block named "<bold>High Jumper" with lore "<white>Grants Jump Boost 2 while equipped."
+				set slot 12 of player's current inventory to 1 obsidian named "<bold>Brazen SPD" with lore "<white>In a pinch, grants SPD +30.", "Unlocked at: Level 30"
+			if {perks.%player%::Brazen STR} is 1:
+				set slot 13 of the player's current inventory to 1 emerald block named "<bold>Brazen STR" with lore "<white>In a pinch, grants STR +30."
 			else:
-				set slot 12 of player's current inventory to 1 obsidian named "<bold>High Jumper" with lore "<white>Grants Jump Boost 2 while equipped.", "Unlocked at: Level 40"
-			if {Ranged Specialist.%player%} is 1:
-				set slot 13 of player's current inventory to 1 emerald block named "<bold>Ranged Specialist" with lore "<white>Arrows drop at your foes when shot.", "<white>Inflicts foes with Slowness 1 on-hit.", "<white>Bows can perform Critical Hits."
+				set slot 13 of the player's current inventory to 1 obsidian named "<bold>Brazen STR" with lore "<white>In a pinch, grants STR +30.", "Unlocked at: Level 35"
+			if {perks.%player%::High Jumper} is 1:
+				set slot 14 of player's current inventory to 1 emerald block named "<bold>High Jumper" with lore "<white>Grants Jump Boost 2 while equipped."
 			else:
-				set slot 13 of player's current inventory to 1 obsidian named "<bold>Ranged Specialist" with lore "<white>Arrows drop at your foes when shot.", "<white>Inflicts foes with Slowness 1 on-hit.", "<white>Bows can perform Critical Hits.", "Unlocked at: Level 48"
-			if {Lance Specialist.%player%} is 1:
-				set slot 14 of player's current inventory to 1 emerald block named "<bold>Lance Specialist" with lore "<white>Reduces durability cost for throwing lances.", "<white>Lances can perform Critical Hits."
+				set slot 14 of player's current inventory to 1 obsidian named "<bold>High Jumper" with lore "<white>Grants Jump Boost 2 while equipped.", "Unlocked at: Level 40"
+			if {perks.%player%::Ranged Specialist} is 1:
+				set slot 15 of player's current inventory to 1 emerald block named "<bold>Ranged Specialist" with lore "<white>Arrows drop at your foes when shot.", "<white>Inflicts foes with Slowness 1 on-hit.", "<white>Bows can perform Critical Hits."
 			else:
-				set slot 14 of player's current inventory to 1 obsidian named "<bold>Lance Specialist" with lore "<white>Reduces durability cost for throwing lances.", "<white>Lances can perform Critical Hits.", "Unlocked at: Level 55"
-			if {Axe Specialist.%player%} is 1:
-				set slot 15 of player's current inventory to 1 emerald block named "<bold>Axe Specialist" with lore "<white>Axes ignore armour bonuses.", "<white>Axes can perform Critical Hits."
+				set slot 15 of player's current inventory to 1 obsidian named "<bold>Ranged Specialist" with lore "<white>Arrows drop at your foes when shot.", "<white>Inflicts foes with Slowness 1 on-hit.", "<white>Bows perform Critical Hits more often.", "Unlocked at: Level 48"
+			if {perks.%player%::Lance Specialist} is 1:
+				set slot 16 of player's current inventory to 1 emerald block named "<bold>Lance Specialist" with lore "<white>Reduces durability cost for throwing lances.", "<white>Lances perform Critical Hits more often."
 			else:
-				set slot 15 of player's current inventory to 1 obsidian named "<bold>Axe Specialist" with lore "<white>Axes ignore armour bonuses.", "<white>Axes can perform Critical Hits.", "Unlocked at: Level 60"
-			if {Sword Specialist.%player%} is 1:
-				set slot 16 of player's current inventory to 1 emerald block named "<bold>Sword Specialist" with lore "<white>Swords deal 25%% more damage.", "<white>Swords can perform Critical Hits."
+				set slot 16 of player's current inventory to 1 obsidian named "<bold>Lance Specialist" with lore "<white>Reduces durability cost for throwing lances.", "<white>Lances perform Critical Hits more often.", "Unlocked at: Level 55"
+			if {perks.%player%::Axe Specialist} is 1:
+				set slot 17 of player's current inventory to 1 emerald block named "<bold>Axe Specialist" with lore "<white>Axes ignore armour bonuses.", "<white>Axes perform Critical Hits more often."
 			else:
-				set slot 16 of player's current inventory to 1 obsidian named "<bold>Sword Specialist" with lore "<white>Swords deal 25%% more damage.", "<white>Swords can perform Critical Hits.", "Unlocked at: Level 65"
-			if {Rally Strength.%player%} is 1:
-				set slot 17 of player's current inventory to 1 emerald block named "<bold>Rally Strength" with lore "<white>Grant an ally Strength 2 by right-clicking them."
+				set slot 17 of player's current inventory to 1 obsidian named "<bold>Axe Specialist" with lore "<white>Axes ignore armour bonuses.", "<white>Axes perform Critical Hits more often.", "Unlocked at: Level 60"
+			if {perks.%player%::Sword Specialist} is 1:
+				set slot 18 of player's current inventory to 1 emerald block named "<bold>Sword Specialist" with lore "<white>Swords deal 25%% more damage.", "<white>Swords perform Critical Hits more often."
 			else:
-				set slot 17 of player's current inventory to 1 obsidian named "<bold>Rally Strength" with lore "<white>Grant an ally Strength 2 by right-clicking them.", "Unlocked at: Promotion to Strategist"
-			if {Rally Speed.%player%} is 1:
-				set slot 18 of player's current inventory to 1 emerald block named "<bold>Rally Speed" with lore "<white>Grant an ally Swiftness 2 by right-clicking them."
+				set slot 18 of player's current inventory to 1 obsidian named "<bold>Sword Specialist" with lore "<white>Swords deal 25%% more damage.", "<white>Swords perform Critical Hits more often.", "Unlocked at: Level 65"
+			if {perks.%player%::Mystic Boost} is 1:
+				set slot 19 of player's current inventory to 1 emerald block named "<bold>Mystic Boost" with lore "<white>Restores 1.5 hearts of health when attacking."
 			else:
-				set slot 18 of player's current inventory to 1 obsidian named "<bold>Rally Speed" with lore "<white>Grant an ally Swiftness 2 by right-clicking them.", "Unlocked at: Promotion to Tactician"
-			if {Rally Resistance.%player%} is 1:
-				set slot 19 of player's current inventory to 1 emerald block named "<bold>Rally Resistance" with lore "<white>Grant an ally Resistance 2 by right-clicking them."
+				set slot 19 of player's current inventory to 1 obsidian named "<bold>Mystic Boost" with lore "<white>Restores 1.5 hearts of health when attacking.", "Unlocked at: Level 70"
+			if {perks.%player%::Sacred Boost} is 1:
+				set slot 20 of player's current inventory to 1 emerald block named "<bold>Sacred Boost" with lore "<white>If HP = 100%%, grants:", "<white>STR/SPD/DEF/SKL/MAG +10 during combat."
 			else:
-				set slot 19 of player's current inventory to 1 obsidian named "<bold>Rally Resistance" with lore "<white>Grant an ally Resistance 2 by right-clicking them.", "Unlocked at: Promotion to Grandmaster"
-			if {Spectrum +10.%player%} is 1:
-				set slot 20 of player's current inventory to 1 emerald block named "<bold>Spectrum +10" with lore "<white>Raises all stats by +10."
+				set slot 20 of player's current inventory to 1 obsidian named "<bold>Sacred Boost" with lore "<white>If HP = 100%%, grants:", "<white>STR/SPD/DEF/SKL/MAG +10 during combat.", "Unlocked at: Level 80"
+			if {perks.%player%::Paragon} is 1:
+				set slot 21 of player's current inventory to 1 emerald block named "<bold>Paragon" with lore "<white>Grants bonus experience for slaying monsters."
 			else:
-				set slot 20 of player's current inventory to 1 obsidian named "<bold>Spectrum +10" with lore "<white>Raises all stats by +10.", "Unlocked at: Promotion to Grandmaster"
-			if {Quick Draw.%player%} is 1:
-				set slot 21 of player's current inventory to 1 emerald block named "<bold>Quick Draw" with lore "<white>Arrows fire from bows instantly, but have lower range."
+				set slot 21 of player's current inventory to 1 obsidian named "<bold>Paragon" with lore "<white>Grants bonus experience for slaying monsters.", "Exclusive to New Game+."
+			if {perks.%player%::Smooth Landing} is 1:
+				set slot 22 of player's current inventory to 1 emerald block named "<bold>Smooth Landing" with lore "<white>Nullifies fall damage."
 			else:
-				set slot 21 of player's current inventory to 1 obsidian named "<bold>Quick Draw" with lore "<white>Arrows fire from bows instantly, but have lower range.", "Unlocked at: Promotion to Archer"
-			if {True Shot.%player%} is 1:
-				set slot 22 of player's current inventory to 1 emerald block named "<bold>True Shot" with lore "<white>Arrows fly faster and have less drop-off."
+				set slot 22 of player's current inventory to 1 obsidian named "<bold>Smooth Landing" with lore "<white>Nullifies fall damage.", "Unlocked at: Take 100 total fall damage"
+			if {perks.%player%::Nihl} is 1:
+				set slot 23 of player's current inventory to 1 emerald block named "<bold>Nihl" with lore "<white>Prevents foes from doubling via SPD."
 			else:
-				set slot 22 of player's current inventory to 1 obsidian named "<bold>True Shot" with lore "<white>Arrows fly faster and have less drop-off.", "Unlocked at: Promotion to Ranger"
-			if {Heavy Draw.%player%} is 1:
-				set slot 23 of player's current inventory to 1 emerald block named "<bold>Heavy Draw" with lore "<white>Arrows have +3 damage and ignore armour."
+				set slot 23 of player's current inventory to 1 obsidian named "<bold>Nihl" with lore "<white>Prevents foes from doubling via SPD.", "Unlocked at: Level 75"
+			if {perks.%player%::Ancient Gift} is 1:
+				set slot 24 of player's current inventory to 1 emerald block named "<bold>Ancient Gift" with lore "<white>Attacks calculate damage using lower of foe's DEF or MAG."
 			else:
-				set slot 23 of player's current inventory to 1 obsidian named "<bold>Heavy Draw" with lore "<white>Arrows have +3 damage and ignore armour.", "Unlocked at: Promotion to Sniper"
-			if {Fast Fingers.%player%} is 1:
-				set slot 24 of player's current inventory to 1 emerald block named "<bold>Fast Fingers" with lore "<white>Halves reload time of all firearms."
+				set slot 24 of player's current inventory to 1 obsidian named "<bold>Ancient Gift" with lore "<white>Attacks calculate damage using lower of foe's DEF or MAG.", "Complete ""Requiem for the Brave"" to unlock."
+			if {perks.%player%::Champion of Silgrund} is 1:
+				set slot 25 of player's current inventory to 1 emerald block named "<bold>Champion of Silgrund" with lore "<gold>Grants +20 to all stats."
 			else:
-				set slot 24 of player's current inventory to 1 obsidian named "<bold>Fast Fingers" with lore "<white>Halves reload time of all firearms.", "Unlocked at: Promotion to Gunslinger"
-			if {Controlled Shot.%player%} is 1:
-				set slot 25 of player's current inventory to 1 emerald block named "<bold>Controlled Shot" with lore "<white>Firearms have less innate spread."
+				set slot 25 of player's current inventory to 1 obsidian named "<bold>Champion of Silgrund" with lore "<gold>Grants +20 to all stats.", "Complete the main story to unlock."
+			if {perks.%player%::Quick Revive} is 1:
+				set slot 26 of player's current inventory to 1 emerald block named "<bold>Quick Revive" with lore "<white>Automatically revives the player upon death.", "<white>Cooldown: 3 minutes"
 			else:
-				set slot 25 of player's current inventory to 1 obsidian named "<bold>Controlled Shot" with lore "<white>Firearms have less innate spread.", "Unlocked at: Promotion to Rifleman"
-			if {Resourceful.%player%} is 1:
-				set slot 26 of player's current inventory to 1 emerald block named "<bold>Resourceful" with lore "<white>Reload costs for all firearms is halved.", "<white>Enemies have a small chance to drop ammunition."
+				set slot 26 of player's current inventory to 1 obsidian named "<bold>Quick Revive" with lore "<white>Automatically revives the player upon death.", "<white>Cooldown: 3 minutes", "Complete ""The Dusty Palace"" to unlock."
+			if {perks.%player%::Quickened Pulse} is 1:
+				set slot 27 of player's current inventory to 1 emerald block named "<bold>Quickened Pulse" with lore "<white>Sucessfully dodging an attack with a Dodge Roll slows down time temporarily."
 			else:
-				set slot 26 of player's current inventory to 1 obsidian named "<bold>Resourceful" with lore "<white>Reload costs for all firearms is halved.", "<white>Enemies have a small chance to drop ammunition.", "Unlocked at: Promotion to Doom Slayer"
-			if {Combo System.%player%} is 1:
-				set slot 27 of player's current inventory to 1 emerald block named "<bold>Combo System" with lore "<white>Chain attacks together to create stylish combos."
+				set slot 27 of player's current inventory to 1 obsidian named "<bold>Quickened Pulse" with lore "<white>Sucessfully dodging an attack with a Dodge Roll slows down time temporarily.", "Unlocked at: Dodge 15 attacks by using Dodge Rolls"
+			if {perks.%player%::Hammerne} is 1:
+				set slot 28 of player's current inventory to 1 emerald block named "<bold>Hammerne" with lore "<white>Prevents tools from breaking, for a fee."
 			else:
-				set slot 27 of player's current inventory to 1 obsidian named "<bold>Combo System" with lore "<white>Chain attacks together to create stylish combos.", "Unlocked at: Promotion to Devil Hunter"
-			if {Air Hike.%player%} is 1:
-				set slot 28 of player's current inventory to 1 emerald block named "<bold>Air Hike" with lore "<white>Allows double-jumps to be performed.", "<white>Double-jump by pressing the JUMP key twice.", "<white>Disables fall damage while equipped."
+				set slot 28 of player's current inventory to 1 obsidian named "<bold>Hammerne" with lore "<white>Prevents tools from breaking, for a fee.", "Unlocked at: Break 10 tools"
+			if {perks.%player%::Haste} is 1:
+				set slot 29 of player's current inventory to 1 emerald block named "<bold>Haste" with lore "<white>Grants Haste 2."
 			else:
-				set slot 28 of player's current inventory to 1 obsidian named "<bold>Air Hike" with lore "<white>Allows double-jumps to be performed.", "<white>Double-jump by pressing the JUMP key twice.", "<white>Disables fall damage while equipped.", "Unlocked at: Promotion to Devil Hunter"
-			if {Witch Time.%player%} is 1:
-				set slot 29 of player's current inventory to 1 emerald block named "<bold>Witch Time" with lore "<white>Dodging an enemy's attack by Dodge Rolling slows down time for your attacker."
+				set slot 29 of player's current inventory to 1 obsidian named "<bold>Haste" with lore "<white>Grants Haste 2.", "Unlocked at: Break 750 blocks"
+			if {perks.%player%::Optimism} is 1:
+				set slot 30 of player's current inventory to 1 emerald block named "<bold>Optimism" with lore "<italics>Why let life get you down, when you could be making things better?", "<italics>Your hopeful outlook improves your critical strikes, but causes you to overlook your diminished base strength.", "<white>Grants SKL +10.", "<white>Accelerates Special skill activation (activation chance +10%%).", "<light red>Inflicts STR/MAG -10."
 			else:
-				set slot 29 of player's current inventory to 1 obsidian named "<bold>Witch Time" with lore "<white>Dodging an enemy's attack by Dodge Rolling slows down time for your attacker.", "Unlocked at: Promotion to Angel Slayer"
-			if {Devil Trigger.%player%} is 1:
-				set slot 30 of player's current inventory to 1 emerald block named "<bold>Devil Trigger" with lore "<white>When reaching SSS Combo score, damage and debuff all nearby enemies.", "<white>Gain Regeneration 3 for 15 seconds."
+				set slot 30 of player's current inventory to 1 obsidian block named "<bold>Optimism" with lore "<italics>Why let life get you down, when you could be making things better?", "<italics>Your hopeful outlook improves your critical strikes, but causes you to overlook your diminished base strength.", "<white>Grants SKL +10.", "<white>Accelerates Special skill activation (activation chance +10%%).", "<light red>Inflicts STR/MAG -10.", "Find a less destructive solution during ""Creeping Shadows""."
+			if {perks.%player%::Pessimism} is 1:
+				set slot 31 of player's current inventory to 1 emerald block named "<bold>Pessimism" with lore "<italics>It's a dog-eat-dog world out there, and you're not going roll over and get snatched up.", "<italics>Your hardened outlook improves your consistency in combat, but makes it harder to push yourself for critical strikes.", "<white>Grants STR +10.", "<white>Increases damage dealt by 15%% during combat.", "<light red>Inflicts SKL -20."
 			else:
-				set slot 30 of player's current inventory to 1 obsidian named "<bold>Devil Trigger" with lore "<white>When reaching SSS Combo score, damage and debuff all nearby enemies.", "<white>Gain Regeneration 3 for 15 seconds.", "Unlocked at: Promotion to Platinum Star"
-			if {Umbran Climax.%player%} is 1:
-				set slot 31 of player's current inventory to 1 emerald block named "<bold>Umbran Climax" with lore "<white>When reaching SSS Combo score, gain Swiftness, Strength, and Regeneration 3 for 15 seconds."
+				set slot 31 of player's current inventory to 1 obsidian block named "<bold>Pessimism" with lore "<italics>It's a dog-eat-dog world out there, and you're not going roll over and get snatched up.", "<italics>Your hardened outlook improves your consistency in combat, but makes it harder to push yourself for critical strikes.", "<white>Grants STR +10.", "<white>Increases damage dealt by 15%% during combat.", "<light red>Inflicts SKL -20.", "Find a more permanent solution during ""Creeping Shadows""."
+			if {perks.%player%::Fierce Posture} is 1:
+				set slot 32 of player's current inventory to 1 emerald block named "<bold>Fierce Posture" with lore "<white>Grants +10 STR/SPD.", "<light red>Inflicts -10 DEF/MAG."
 			else:
-				set slot 31 of player's current inventory to 1 obsidian named "<bold>Umbran Climax" with lore "<white>When reaching SSS Combo score, gain Swiftness, Strength, and Regeneration 3 for 15 seconds.", "Unlocked at: Promotion to Platinum Star"
-			if {Unbreakable.%player%} is 1:
-				set slot 32 of player's current inventory to 1 emerald block named "<bold>Unbreakable" with lore "<white>Reduces damage taken by 1.5 hearts."
+				set slot 32 of player's current inventory to 1 obsidian block named "<bold>Fierce Posture" with lore "<white>Grants +10 STR/SPD.", "<light red>Inflicts -10 DEF/MAG.", "Unlocked at: Level 38"
+			if {perks.%player%::Steady Posture} is 1:
+				set slot 33 of player's current inventory to 1 emerald block named "<bold>Steady Posture" with lore "<white>Grants +10 DEF/MAG.", "<light red>Inflicts -10 STR/SPD."
 			else:
-				set slot 32 of player's current inventory to 1 obsidian named "<bold>Unbreakable" with lore "<white>Reduces damage taken by 1.5 hearts.", "Unlocked at: Promotion to Knight"
-			if {Guard.%player%} is 1:
-				set slot 34 of player's current inventory to 1 emerald block named "<bold>Guard" with lore "<white>Applies a -50 SKL debuff to your opponent when you are hit."
+				set slot 33 of player's current inventory to 1 obsidian named "<bold>Steady Posture" with lore "<white>Grants +10 DEF/MAG.", "<light red>Inflicts -10 STR/SPD.", "Unlocked at: Level 42"
+			if {perks.%player%::Rally Strength} is 1:
+				set slot 34 of player's current inventory to 1 emerald block named "<bold>Rally Strength" with lore "<white>Grant Strength 2 to an ally by right-clicking them."
 			else:
-				set slot 34 of player's current inventory to 1 obsidian named "<bold>Guard" with lore "<white>Applies a -50 SKL debuff to your opponent when you are hit.", "Unlocked at: Promotion to Chieftain"
-			if {Fortress Defender.%player%} is 1:
-				set slot 33 of player's current inventory to 1 emerald block named "<bold>Fortress Defender" with lore "<white>Grants +30 DEF, Inflicts -30 STR."
+				set slot 34 of player's current inventory to 1 obsidian named "<bold>Rally Strength" with lore "<white>Grant Strength 2 to an ally by right-clicking them.", "Unlocked at: Level 18."
+			if {perks.%player%::Rally Speed} is 1:
+				set slot 35 of player's current inventory to 1 emerald block named "<bold>Rally Speed" with lore "<white>Grant Swiftness 2 to an ally by right-clicking them."
 			else:
-				set slot 33 of player's current inventory to 1 obsidian named "<bold>Fortress Defender" with lore "<white>Grants +30 DEF, Inflicts -30 STR.", "Unlocked at: Promotion to General"
-			if {Gamble.%player%} is 1:
-				set slot 35 of player's current inventory to 1 emerald block named "<bold>Gamble" with lore "<white>Grants +60 STR. Attacks may miss based on player and foe's SPD and SKL."
+				set slot 35 of player's current inventory to 1 obsidian named "<bold>Rally Speed" with lore "<white>Grant Swiftness 2 to an ally by right-clicking them.", "Unlocked at: Level 23."
+			if {perks.%player%::Rally Resistance} is 1:
+				set slot 36 of player's current inventory to 1 emerald block named "<bold>Rally Resistance" with lore "<white>Grant Resistance 2 to an ally by right-clicking them."
 			else:
-				set slot 35 of player's current inventory to 1 obsidian named "<bold>Gamble" with lore "<white>Grants +60 STR. Attacks may miss based on player and foe's SPD and SKL.", "Unlocked at: Promotion to Fighter"
-			if {Crushing Offense.%player%} is 1:
-				set slot 36 of player's current inventory to 1 emerald block named "<bold>Crushing Offense" with lore "<white>Attacks that deal over 7 hearts of damage adds a buff to your SKL.", "<white>Resets on a special activation."
+				set slot 36 of player's current inventory to 1 obsidian named "<bold>Rally Resistance" with lore "<white>Grant Resistance 2 to an ally by right-clicking them.", "Unlocked at Level 28."
+			if {perks.%player%::Vantage} is 1:
+				set slot 37 of player's current inventory to 1 emerald block named "<bold>Vantage" with lore "<white>In a pinch, counter-attacks an enemy before they can complete their attack."
 			else:
-				set slot 36 of player's current inventory to 1 obsidian named "<bold>Crushing Offense" with lore "<white>Attacks that deal over 7 hearts of damage adds a buff to your SKL.", "<white>Resets on a special activation.", "Unlocked at: Promotion to Barbarian"
-			if {STR +20.%player%} is 1:
-				set slot 37 of player's current inventory to 1 emerald block named "<bold>STR +20" with lore "<white>Grants STR +20."
-			else:
-				set slot 37 of player's current inventory to 1 obsidian named "<bold>STR +20" with lore "<white>Grants STR +20.", "Unlocked at: Promotion to Warrior"
-			if {Light Feet.%player%} is 1:
-				set slot 38 of player's current inventory to 1 emerald block named "<bold>Light Feet" with lore "<white>Dodge Rolls cost no hunger to perform."
-			else:
-				set slot 38 of player's current inventory to 1 obsidian named "<bold>Light Feet" with lore "<white>Dodge Rolls cost no hunger to perform.", "Unlocked at: Promotion to Bladesman"
-			if {Smooth Landing.%player%} is 1:
-				set slot 39 of player's current inventory to 1 emerald block named "<bold>Smooth Landing" with lore "<white>Nullifies fall damage."
-			else:
-				set slot 39 of player's current inventory to 1 obsidian named "<bold>Smooth Landing" with lore "<white>Nullifies fall damage.", "Unlocked at: Take 100 total fall damage"
-			if {Life and Death.%player%} is 1:
-				set slot 40 of player's current inventory to 1 emerald block named "<bold>Life and Death" with lore "<white>Grants +40 STR & SKL. Inflicts -40 DEF & MAG."
-			else:
-				set slot 40 of player's current inventory to 1 obsidian named "<bold>Life and Death" with lore "<white>Grants +40 STR & SKL. Inflicts -40 DEF & MAG.", "Unlocked at: Promotion to Myrmidon"
-			if {Vantage.%player%} is 1:
-				set slot 41 of player's current inventory to 1 emerald block named "<bold>Vantage" with lore "<white>In a pinch, nullify an enemy's attack and strike first instead."
-			else:
-				set slot 41 of player's current inventory to 1 obsidian named "<bold>Vantage" with lore "<white>In a pinch, nullify an enemy's attack and strike first instead.", "Unlocked at: Promotion to Swordmaster"
-			if {Mount.%player%} is 1:
-				set slot 42 of player's current inventory to 1 emerald block named "<bold>Mount" with lore "<white>Unlocks the /mount command, which summons a saddled horse."
-			else:
-				set slot 42 of player's current inventory to 1 obsidian named "<bold>Mount" with lore "<white>Unlocks the /mount command, which summons a saddled horse.", "Unlocked at: Promotion to Cavalier"
-			if {Canto.%player%} is 1:
-				set slot 43 of player's current inventory to 1 emerald block named "<bold>Canto" with lore "<white>While mounted, damage dealt is increased by 50%%.", "<white>While dismounted, damage dealt is decreased by 50%%."
-			else:
-				set slot 43 of player's current inventory to 1 obsidian named "<bold>Canto" with lore "<white>While mounted, damage dealt is increased by 50%%.", "<white>While dismounted, damage dealt is decreased by 50%%.", "Unlocked at: Promotion to Paladin"
-			if {Crusader's Blood.%player%} is 1:
-				set slot 44 of player's current inventory to 1 emerald block named "<bold>Crusader's Blood" with lore "<white>Grants +5 to all stats.", "<gold>Allows you to wield special Holy Weapons."
-			else:
-				set slot 44 of player's current inventory to 1 obsidian named "<bold>Crusader's Blood" with lore "<white>Grants +5 to all stats.", "<gold>Allows you to wield special Holy Weapons.", "Unlocked at: Promotion to Crusader"
-			if {Crusader's Ward.%player%} is 1:
-				set slot 45 of player's current inventory to 1 emerald block named "<bold>Crusader's Ward" with lore "<white>Incoming damage reduced by 50%%."
-			else:
-				set slot 45 of player's current inventory to 1 obsidian named "<bold>Crusader's Ward" with lore "<white>Incoming damage reduced by 50%%.", "Unlocked at: Promotion to Crusader"
-			if {Awakening.%player%} is 1:
-				set slot 46 of player's current inventory to 1 emerald block named "<bold>Awakening" with lore "<white>In a pinch, grants Strength and Swiftness 2."
-			else:
-				set slot 46 of player's current inventory to 1 obsidian named "<bold>Awakening" with lore "<white>In a pinch, grants Strength and Swiftness 2.", "Unlocked at: Promotion to Mercenary"
-			if {Double Lion.%player%} is 1:
-				set slot 47 of player's current inventory to 1 emerald block named "<bold>Double Lion" with lore "<white>If HP = 100%%, automatically make a follow-up attack.", "<white>Damages the user by 1 heart if activated."
-			else:
-				set slot 47 of player's current inventory to 1 obsidian named "<bold>Double Lion" with lore "<white>If HP = 100%%, automatically make a follow-up attack.", "<white>Damages the user by 1 heart if activated.", "Unlocked at: Promotion to Hero"
-			if {Lord's Blood.%player%} is 1:
-				set slot 48 of player's current inventory to 1 emerald block named "<bold>Lord's Blood" with lore "<white>Grants HP +10.", "<gold>Allows you to wield special Holy Weapons."
-			else:
-				set slot 48 of player's current inventory to 1 obsidian named "<bold>Lord's Blood" with lore "<white>Grants HP +10.", "<gold>Allows you to wield special Holy Weapons.", "Unlocked at: Promotion to Junior Lord"
-			if {Rightful King.%player%} is 1:
-				set slot 49 of player's current inventory to 1 emerald block named "<bold>Rightful King" with lore "<white><bold>Grants HP +15, SKL +20."
-			else:
-				set slot 49 of player's current inventory to 1 obsidian named "<bold>Rightful King" with lore "<white>Grants HP +15, SKL +20.", "Unlocked at: Promotion to Lord"
-			if {Magic Ward.%player%} is 1:
-				set slot 50 of player's current inventory to 1 emerald block named "<bold>Magic Ward" with lore "<white>Reduces the cooldown of all spells."
-			else:
-				set slot 50 of player's current inventory to 1 obsidian named "<bold>Magic Ward" with lore "<white>Reduces the cooldown of all spells.", "Unlocked at: Promotion to Mage"
-			if {Elder Knowledge.%player%} is 1:
-				set slot 51 of player's current inventory to 1 emerald block named "<bold>Elder Knowledge" with lore "<white>Nullifies spell cooldowns.", "<white>Damages the caster for 1/2 of the cast spell's cooldown time."
-			else:
-				set slot 51 of player's current inventory to 1 obsidian named "<bold>Elder Knowledge" with lore "<white>Nullifies spell cooldowns.", "<white>Damages the caster for 1/2 of the cast spell's cooldown time.", "Unlocked at: Promotion to Sorcerer"
-			if {Brazen Spectrum.%player%} is 1:
-				set slot 52 of player's current inventory to 1 emerald block named "<bold>Brazen Spectrum" with lore "<white>In a pinch, grants STR,SPD,SKL,DEF,MAG +20"
-			else:
-				set slot 52 of player's current inventory to 1 obsidian named "<bold>Brazen Spectrum" with lore "<white>In a pinch, grants STR,SPD,SKL,DEF,MAG +20", "Unlocked at: Promotion to Archwizard"
+				set slot 37 of player's current inventory to 1 obsidian named "<bold>Vantage" with lore "<white>In a pinch, counter-attacks an enemy before they attack.", "Unlocked at: Level 45"
 			set slot 53 of player's current inventory to 1 book named "<bold>Next Page"
 		else if arg 1 is 2:
-			if {Live to Serve.%player%} is 1:
-				set slot 0 of player's current inventory to 1 emerald block named "<bold>Live to Serve" with lore "<white>Healing staves also apply to yourself when used."	
+			open chest with 6 rows named "<bold>Class-Specific Perks | (%{skillsTotal.%player%}% perks unlocked)" for the player
+			#Mercenary
+			if {perks.%player%::Brazen STR/DEF} is 1:
+				set slot 0 of player's current inventory to 1 emerald block named "<bold>Brazen STR/DEF" with lore "<white>In a pinch, grants STR/DEF +20."
 			else:
-				set slot 0 of player's current inventory to 1 obsidian named "<bold>Live to Serve" with lore "<white>Healing staves also apply to yourself when used.", "Unlocked at: Promotion to Cleric"
-			if {Miracle.%player%} is 1:
-				set slot 1 of player's current inventory to 1 emerald block named "<bold>Miracle" with lore "<white>Survive a lethal attack with a chance based on your SKL."
+				set slot 0 of player's current inventory to 1 obsidian named "<bold>Brazen STR/DEF" with lore "<white>In a pinch, grants STR/DEF +20.", "Unlocked at: Promotion to Mercenary"
+			if {perks.%player%::Double Lion} is 1:
+				set slot 1 of player's current inventory to 1 emerald block named "<bold>Double Lion" with lore "<white>If HP = 100%%, automatically make a follow-up attack.", "<white>Damages the user by 1 heart if activated."
 			else:
-				set slot 1 of player's current inventory to 1 obsidian named "<bold>Miracle" with lore "<white>Survive a lethal attack with a chance based on your SKL.", "Unlocked at: Promotion to Bishop"
-			if {Wrathful Staff.%player%} is 1:
-				set slot 2 of player's current inventory to 1 emerald block named "<bold>Wrathful Staff" with lore "<white>Allows staff users to wield weapons with no penalty."
+				set slot 1 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Hero"
+			if {perks.%player%::Lord's Blood} is 1:
+				set slot 2 of player's current inventory to 1 emerald block named "<bold>Lord's Blood" with lore "<white>Grants HP +10.", "<gold>Allows you to wield special Sacred Treasures."
 			else:
-				set slot 2 of player's current inventory to 1 obsidian named "<bold>Wrathful Staff" with lore "<white>Allows staff users to wield weapons with no penalty.", "Unlocked at: Promotion to Sage"
-			if {Quickened Pulse.%player%} is 1:
-				set slot 3 of player's current inventory to 1 emerald block named "<bold>Quickened Pulse" with lore "<white>Sucessfully dodging an attack with a Dodge Roll slows down time temporarily."
+				set slot 2 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Prince"
+			if {perks.%player%::Rightful King} is 1:
+				set slot 3 of player's current inventory to 1 emerald block named "<bold>Rightful King" with lore "<white><bold>Grants HP +15, SKL +20."
 			else:
-				set slot 3 of player's current inventory to 1 obsidian named "<bold>Quickened Pulse" with lore "<white>Sucessfully dodging an attack with a Dodge Roll slows down time temporarily.", "Unlocked at: Dodge 15 attacks using Dodge Rolls"
-			if {Hammerne.%player%} is 1:
-				set slot 4 of player's current inventory to 1 emerald block named "<bold>Hammerne" with lore "<white>Prevents tools from breaking, for a fee."
+				set slot 3 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Lord"
+			#Knight
+			if {perks.%player%::Unbreakable} is 1:
+				set slot 4 of player's current inventory to 1 emerald block named "<bold>Unbreakable" with lore "<white>Reduces damage taken by 15%%."
 			else:
-				set slot 4 of player's current inventory to 1 obsidian named "<bold>Hammerne" with lore "<white>Prevents tools from breaking, for a fee.", "Unlocked at: Break 10 tools"
-			if {Haste.%player%} is 1:
-				set slot 5 of player's current inventory to 1 emerald block named "<bold>Haste" with lore "<white>Grants Haste 2."
+				set slot 4 of player's current inventory to 1 obsidian named "<bold>Unbreakable" with lore "<white>Reduces damage taken by 15%%.", "Unlocked at: Promotion to Knight"
+			if {perks.%player%::Guard} is 1:
+				set slot 5 of player's current inventory to 1 emerald block named "<bold>Guard" with lore "<white>Inflicts SKL -50 on foe during combat."
 			else:
-				set slot 5 of player's current inventory to 1 obsidian named "<bold>Haste" with lore "<white>Grants Haste 2.", "Unlocked at: Break 750 blocks"
-			#if {Dancing Duel.%player%} is 1:
-			#	set slot 6 of player's current inventory to 1 emerald block named "<bold>Dancing Duel" with lore "<white>Grants SPD +15, inflicts DEF -10."
-			#else:
-			#	set slot 6 of player's current inventory to 1 obsidian named "<bold>Dancing Duel" with lore "<white>Grants SPD +15, inflicts DEF -10.", "Unlocked at: Level 13"
-			if {Mystic Boost.%player%} is 1:
-				set slot 6 of player's current inventory to 1 emerald block named "<bold>Mystic Boost" with lore "<white>Restores 1.5 hearts of health when attacking."
+				set slot 5 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Chieftain"
+			if {perks.%player%::Steady Breath} is 1:
+				set slot 6 of player's current inventory to 1 emerald block named "<bold>Steady Breath" with lore "<white>Grants DEF +5.","<white>Converts 50%% of damage suffered during combat into a SKL bonus.", "<white>Bonus is reset when a Special skill activates."
 			else:
-				set slot 6 of player's current inventory to 1 obsidian named "<bold>Mystic Boost" with lore "<white>Restores 1.5 hearts of health when attacking.", "Unlocked at: Level 70"
-			if {Paragon.%player%} is 1:
-				set slot 7 of player's current inventory to 1 emerald block named "<bold>Paragon" with lore "<white>Grants bonus experience for slaying monsters."
+				set slot 6 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to General"
+			#Bladesman
+			if {perks.%player%::Light Feet} is 1:
+				set slot 7 of player's current inventory to 1 emerald block named "<bold>Light Feet" with lore "<white>Halves the hunger penalty for Dodge Rolling."
 			else:
-				set slot 7 of player's current inventory to 1 obsidian named "<bold>Paragon" with lore "<white>Grants bonus experience for slaying monsters.", "Unlocked at: Reclass to Journeyman"
-			if {Hoard.%player%} is 1:
-				set slot 8 of player's current inventory to 1 emerald block named "<bold>Hoard" with lore "<white>Periodically gain money equal to your MAG."
+				set slot 7 of player's current inventory to 1 obsidian named "<bold>Light Feet" with lore "<white>Halves the hunger penalty for Dodge Rolling.", "Unlocked at: Promotion to Bladesman"
+			if {perks.%player%::Life and Death} is 1:
+				set slot 8 of player's current inventory to 1 emerald block named "<bold>Life and Death" with lore "<white>Grants STR/SPD/SKL +20. Inflicts DEF/MAG -20."
 			else:
-				set slot 8 of player's current inventory to 1 obsidian named "<bold>Hoard" with lore "<white>Periodically gain money equal to your MAG.", "Unlocked at: Promotion to Dragonborn"
-			if {Flight.%player%} is 1:
-				set slot 9 of player's current inventory to 1 emerald block named "<bold>Flight" with lore "<white>Take to the skies for a limited time.", "<white>Disables Dodge Rolling."
+				set slot 8 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Myrmidon"
+			if {perks.%player%::Close Call} is 1:
+				set slot 9 of player's current inventory to 1 emerald block named "<bold>Close Call" with lore "<white>Grants SPD +5.", "<white>Grants a random chance to dodge an opponent's attack, based on SPD and SKL."
 			else:
-				set slot 9 of player's current inventory to 1 obsidian named "<bold>Flight" with lore "<white>Take to the skies for a limited time.", "<white>Disables Dodge Rolling.", "Unlocked at: Promotion to Manakete"
-			if {Draconic Rage.%player%} is 1:
-				set slot 10 of player's current inventory to 1 emerald block named "<bold>Draconic Rage" with lore "<white>In a pinch, transform into a dragon."
+				set slot 9 of player's current inventory to 1 obsidian block named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Swordmaster"
+			#Fighter
+			if {perks.%player%::Gamble} is 1:
+				set slot 10 of player's current inventory to 1 emerald block named "<bold>Gamble" with lore "<white>Grants +60 STR.", "<white>Attacks may miss based on player and foe's SPD and SKL."
 			else:
-				set slot 10 of player's current inventory to 1 obsidian named "<bold>Draconic Rage" with lore "<white>In a pinch, transform into a dragon.", "Unlocked at: Promotion to Divine Dragon"
-			if {Scavenger.%player%} is 1:
-				set slot 11 of player's current inventory to 1 emerald block named "<bold>Scavenger" with lore "<white>Broken ores can drop extra ore pieces."
+				set slot 10 of player's current inventory to 1 obsidian named "<bold>Gamble" with lore "<white>Grants +60 STR.", "<white>Attacks may miss based on player and foe's SPD and SKL.", "Unlocked at: Promotion to Fighter"
+			if {perks.%player%::Crushing Offense} is 1:
+				set slot 11 of player's current inventory to 1 emerald block named "<bold>Crushing Offense" with lore "<white>Attacks that deal over 7 hearts of damage adds a buff to your SKL.", "<white>Resets on a special activation."
 			else:
-				set slot 11 of player's current inventory to 1 obsidian named "<bold>Scavenger" with lore "<white>Broken ores can drop extra ore pieces.", "Unlocked at: Promotion to Survivor"
-			if {Efficiency.%player%} is 1:
-				set slot 12 of player's current inventory to 1 emerald block named "<bold>Efficiency" with lore "<white>Grants Swiftness and Haste 2."
+				set slot 11 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Berserker"
+			if {perks.%player%::Overwhelm} is 1:
+				set slot 12 of player's current inventory to 1 emerald block named "<bold>Overwhelm" with lore "<white>During combat, increases damage dealt by 25%% of the player's STR."
 			else:
-				set slot 12 of player's current inventory to 1 obsidian named "<bold>Efficiency" with lore "<white>Grants Swiftness and Haste 2.", "Unlocked at: Promotion to Builder"
-			if {Craftsmanship.%player%} is 1:
-				set slot 13 of player's current inventory to 1 emerald block named "<bold>Craftsmanship" with lore "<white>Gain bonus XP when crafting."
+				set slot 12 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Warrior"
+			#Mage
+			if {perks.%player%::Magic Ward} is 1:
+				set slot 13 of player's current inventory to 1 emerald block named "<bold>Magic Ward" with lore "<white>Reduces the cooldown of all spells."
 			else:
-				set slot 13 of player's current inventory to 1 obsidian named "<bold>Craftsmanship" with lore "<white>Gain bonus XP when crafting.", "Unlocked at: Promotion to Craftsman"
-			if {Nihl.%player%} is 1:
-				set slot 14 of player's current inventory to 1 emerald block named "<bold>Nihl" with lore "<white>If player's health is >= 50%%, grants:", "<white>If attack would kill the player, the player will survive with 1 HP."
+				set slot 13 of player's current inventory to 1 obsidian named "<bold>Magic Ward" with lore "<white>Reduces the cooldown of all spells.", "Unlocked at: Promotion to Mage"
+			if {perks.%player%::Elder Knowledge} is 1:
+				set slot 14 of player's current inventory to 1 emerald block named "<bold>Elder Knowledge" with lore "<white>Nullifies spell cooldowns.", "<white>Inflicts recoil damage for 1/2 of the cast spell's cooldown time."
 			else:
-				set slot 14 of player's current inventory to 1 obsidian named "<bold>Nihl" with lore "<white>If player's health is >= 50%%, grants:", "<white>If attack would kill the player, the player will survive with 1 HP.", "Unlocked at: Level 75"
-			if {Sacred Boost.%player%} is 1:
-				set slot 15 of player's current inventory to 1 emerald block named "<bold>Sacred Boost" with lore "<white>If HP = 100%%, grants:", "<white>STR/SPD/DEF/SKL/MAG +10 during combat."
+				set slot 14 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Sorcerer"
+			if {perks.%player%::Brazen Spectrum} is 1:
+				set slot 15 of player's current inventory to 1 emerald block named "<bold>Brazen Spectrum" with lore "<white>In a pinch, grants STR/SPD/SKL/DEF/MAG +20"
 			else:
-				set slot 15 of player's current inventory to 1 obsidian named "<bold>Sacred Boost" with lore "<white>If HP = 100%%, grants:", "<white>STR/SPD/DEF/SKL/MAG +10 during combat.", "Unlocked at: Level 80"
-			if {Ancient Gift.%player%} is 1:
-				set slot 16 of player's current inventory to 1 emerald block named "<bold>Ancient Gift" with lore "<white>Attacks calculate damage using lower of foe's DEF or MAG."
+				set slot 15 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Archwizard"
+			#Cleric
+			if {perks.%player%::Live to Serve} is 1:
+				set slot 16 of player's current inventory to 1 emerald block named "<bold>Live to Serve" with lore "<white>Healing staves also apply to yourself when used."	
 			else:
-				set slot 16 of player's current inventory to 1 obsidian named "<bold>Ancient Gift" with lore "<white>Attacks calculate damage using lower of foe's DEF or MAG.", "Complete ""Requiem for the Brave"" to unlock."
-			if {Champion of Silgrund.%player%} is 1:
-				set slot 17 of player's current inventory to 1 emerald block named "<bold>Champion of Silgrund" with lore "<gold>Grants +20 to all stats."
+				set slot 16 of player's current inventory to 1 obsidian named "<bold>Live to Serve" with lore "<white>Healing staves also apply to yourself when used.", "Unlocked at: Promotion to Cleric"
+			if {perks.%player%::Miracle} is 1:
+				set slot 17 of player's current inventory to 1 emerald block named "<bold>Miracle" with lore "<white>Survive a lethal attack with a chance based on your SKL."
 			else:
-				set slot 17 of player's current inventory to 1 obsidian named "<bold>Champion of Silgrund" with lore "<gold>Grants +20 to all stats.", "Complete the main story to unlock."
-			if {Quick Revive.%player%} is 1:
-				set slot 18 of player's current inventory to 1 emerald block named "<bold>Quick Revive" with lore "<white>Automatically revives the player upon death.", "<white>Cooldown: 3 minutes"
+				set slot 17 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Bishop"
+			if {perks.%player%::Wolf Fangs} is 1:
+				set slot 18 of player's current inventory to 1 emerald block named "<bold>Wolf Fangs" with lore "<white>If attacker's STR < foe's STR - 5:", "<white>Grants bonus damage equal to 50%% of the difference between the attacker and foe's STR.", "<white>Bonus damage caps at +20."
 			else:
-				set slot 18 of player's current inventory to 1 obsidian named "<bold>Quick Revive" with lore "<white>Automatically revives the player upon death.", "<white>Cooldown: 3 minutes", "Complete ""The Dusty Palace"" to unlock."
-			if {Wall Kick.%player%} is 1:
-				set slot 19 of player's current inventory to 1 emerald block named "<bold>Wall Kick" with lore "<white>Left-Click a wall while in the air and sneaking to jump off of it."
+				set slot 18 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Sage"
+			#Archer
+			if {perks.%player%::Quick Draw} is 1:
+				set slot 19 of player's current inventory to 1 emerald block named "<bold>Quick Draw" with lore "<white>Arrows fire from bows instantly, but have lower range."
 			else:
-				set slot 19 of player's current inventory to 1 obsidian named "<bold>Wall Kick" with lore "<white>Left-Click a wall while in the air and sneaking to jump off of it.", "Unlocked at: Level 14"
+				set slot 19 of player's current inventory to 1 obsidian named "<bold>Quick Draw" with lore "<white>Arrows fire from bows instantly, but have lower range.", "Unlocked at: Promotion to Archer"
+			if {perks.%player%::True Shot} is 1:
+				set slot 20 of player's current inventory to 1 emerald block named "<bold>True Shot" with lore "<white>Increases the damage arrows deal based on distance travelled."
+			else:
+				set slot 20 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Ranger"
+			if {perks.%player%::Heavy Draw} is 1:
+				set slot 21 of player's current inventory to 1 emerald block named "<bold>Heavy Draw" with lore "<white>Arrows deal +3 extra damage and ignore foe's bonuses from armour."
+			else:
+				set slot 21 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Sniper"
+			#Cavalier
+			if {perks.%player%::Mount} is 1:
+				set slot 22 of player's current inventory to 1 emerald block named "<bold>Mount" with lore "<white>Unlocks the /mount command, which summons a saddled horse."
+			else:
+				set slot 22 of player's current inventory to 1 obsidian named "<bold>Mount" with lore "<white>Unlocks the /mount command, which summons a saddled horse.", "Unlocked at: Promotion to Cavalier"
+			if {perks.%player%::Pursuit} is 1:
+				set slot 23 of player's current inventory to 1 emerald block named "<bold>Pursuit" with lore "<white>Reduces the SPD advantage needed to double foes to 1.", "<white>Defeating a foe while mounted grants Swiftness 4 for 4 seconds."
+			else:
+				set slot 23 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Paladin"
+			if {perks.%player%::Crusader's Blood} is 1:
+				set slot 24 of player's current inventory to 1 emerald block named "<bold>Crusader's Blood" with lore "<white>Grants +5 to all stats.", "<gold>Allows you to wield certain Sacred Treasures unconditionally."
+			else:
+				set slot 24 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Crusader"
+			if {perks.%player%::Crusader's Ward} is 1:
+				set slot 25 of player's current inventory to 1 emerald block named "<bold>Crusader's Charge" with lore "<white>If player initiates combat within 10 blocks of another Cavalier, and player's HP >= 70%%:", "<white>Grants +3 damage.", "<white>Player attacks twice."
+			else:
+				set slot 25 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Crusader"
+			#Gunslinger
+			if {perks.%player%::Fast Fingers} is 1:
+				set slot 26 of player's current inventory to 1 emerald block named "<bold>Fast Fingers" with lore "<white>Halves reload time of all firearms."
+			else:
+				set slot 26 of player's current inventory to 1 obsidian named "<bold>Fast Fingers" with lore "<white>Halves reload time of all firearms.", "Inherit this ability from Mustang or Sally."
+			if {perks.%player%::Controlled Shot} is 1:
+				set slot 27 of player's current inventory to 1 emerald block named "<bold>Controlled Shot" with lore "<white>Firearms have less innate spread."
+			else:
+				set slot 27 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Further the skills passed down from Mustang or Sally."
+			if {perks.%player%::Resourceful} is 1:
+				set slot 28 of player's current inventory to 1 emerald block named "<bold>Resourceful" with lore "<white>Weapons cost no ammo to reload."
+			else:
+				set slot 28 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Bite the bullet and fully embrace the new."
+			#Devil Hunter
+			if {perks.%player%::Combo System} is 1:
+				set slot 29 of player's current inventory to 1 emerald block named "<bold>Combo System" with lore "<white>Utilize stylish combos to earn extra damage and gold."
+			else:
+				set slot 29 of player's current inventory to 1 obsidian named "<bold>Combo System" with lore "<white>Utilize stylish combos to earn extra damage and gold.", "Inherit this ability from Alastor or Ifrit."
+			if {perks.%player%::Air Hike} is 1:
+				set slot 30 of player's current inventory to 1 emerald block named "<bold>Air Hike" with lore "<white>Allows double-jumps to be performed.", "<white>Double-jump by pressing the JUMP key twice.", "<white>Disables fall damage while equipped."
+			else:
+				set slot 30 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Inherit this ability from Alastor or Ifrit."
+			if {perks.%player%::Devil Trigger} is 1:
+				set slot 31 of player's current inventory to 1 emerald block named "<bold>Devil Trigger" with lore "<white>Fill the Trigger Gauge with high combo scores.", "<white>Sneak and right click with an empty hand to activate <gold>[Devil Trigger]<white>.", "<gold>[Devil Trigger]: <white>Grants STR/SPD/SKL +30 while active.", "<white>Restores 1 heart per second while active."
+			else:
+				set slot 31 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Further the power inherited from Alastor or Ifrit."
+			if {perks.%player%::Trigger Heart} is 1:
+				set slot 32 of player's current inventory to 1 emerald block named "<bold>Trigger Heart" with lore "<white>Increases the duration of <gold>[Devil Trigger]<reset><white>."
+			else:
+				set slot 32 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unleash the devil within."
+			#Strategist
+			if {perks.%player%::Rally Spectrum} is 1:
+				set slot 33 of player's current inventory to 1 emerald block named "<bold>Rally Spectrum" with lore "<white>Grant an ally Strength/Swiftness/Resistance 2 by right-clicking them."
+			else:
+				set slot 33 of player's current inventory to 1 obsidian named "<bold>Rally Spectrum" with lore "<white>Grant an ally Strength/Swiftness/Resistance 2 by right-clicking them.", "Unlocked at: Promotion to Strategist"
+			if {perks.%player%::Commanding Presence} is 1:
+				set slot 34 of player's current inventory to 1 emerald block named "<bold>Commanding Presence" with lore "<white>Grants the following bonuses to all allies within 10 blocks:", "<white>+10 STR/SPD/SKL/DEF/MAG"
+			else:
+				set slot 34 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Tactician"
+			if {perks.%player%::Spectrum +10} is 1:
+				set slot 35 of player's current inventory to 1 emerald block named "<bold>Spectrum +10" with lore "<white>Raises all stats by +10."
+			else:
+				set slot 35 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Grandmaster"
+			#Dragonborn
+			if {perks.%player%::Gale Soul} is 1:
+				set slot 36 of player's current inventory to 1 emerald block named "<bold>Gale Soul" with lore "<white>Transform into your draconic state by dealing damage.", "<white>Once the Transformation Meter is filled,", "<white>hold Sneak and Right-click with an empty hand to Transform into a <gold>[Gale Dragon]", "<light red>Only one Dragon Soul perk may be equipped at a time.", "<gold>[Gale Dragon]:<reset> Grants SPD/SKL +25.", "<white>If attacker's HP is >= foe's HP:", "<white>Projectiles deal +6 damage, pierce armour, and ignite foes.", "<white>Calculates damage using the lower of foe's DEF or MAG, and, if damage is calcuated using DEF:", "<white>Treats the player's STR as their MAG during combat."
+			else:
+				set slot 36 of player's current inventory to 1 obsidian named "<bold>Gale Soul" with lore "<white>???", "Inherit this ability from Kalus."
+			if {perks.%player%::Flame Soul} is 1:
+				set slot 37 of player's current inventory to 1 emerald block named "<bold>Flame Soul" with lore "<white>Transform into your draconic state by dealing damage.", "<white>Once the Transformation Meter is filled,", "<white>hold Sneak and Right-click with an empty hand to Transform into a <gold>[Flame Dragon]", "<light red>Only one Dragon Soul perk may be equipped at a time.", "<gold>[Flame Dragon]:<reset> Grants MAG/DEF +25.", "<white>If attacker's HP >= 50%%:", "<white>Attack twice when initiating combat with a melee weapon.", "<white>Grants Strength 5 for 4 seconds on-hit."
+			else:
+				set slot 37 of player's current inventory to 1 obsidian named "<bold>Flame Soul" with lore "<white>???", "Inherit this ability from Irankata."
+			if {perks.%player%::Aqua Soul} is 1:
+				set slot 38 of player's current inventory to 1 emerald block named "<bold>Aqua Soul" with lore "<white>Transform into your draconic state by dealing damage.", "<white>Once the Transformation Meter is filled,", "<white>hold Sneak and Right-click with an empty hand to Transform into a <gold>[Water Dragon]", "<light red>Only one Dragon Soul perk may be equipped at a time.", "<gold>[Water Dragon]:<reset> Grants MAG/SPD +25.", "<white>If attacker's HP <= 70%%:", "<white>Grants bonus damage equal to 25%% of health missing.", "<white>Grants damage resistance during combat that scales with damage suffered.", "<white>Grants Strength/Resistance 3 while transformed."
+			else:
+				set slot 38 of player's current inventory to 1 obsidian named "<bold>Aqua Soul" with lore "<white>???", "Inherit this ability from Phral."
+			if {perks.%player%::Flight} is 1:
+				set slot 39 of player's current inventory to 1 emerald block named "<bold>Flight" with lore "<white>Take to the skies for a limited time.", "<white>Disables Dodge Rolling."
+			else:
+				set slot 39 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???.", "Inherit this power from Kalus or Irankata."
+			if {perks.%player%::Draconic Aura} is 1:
+				set slot 40 of player's current inventory to 1 emerald block named "<bold>Draconic Aura" with lore "<white>Increases the duration of Transformations.", "<white>Grants <gold>[Slaying]<white> while transformed.", "<gold>[Slaying]:<white> Accelerates Special skill activations (Activation chance +10%%)."
+			else:
+				set slot 40 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Master your bloodline's abilities."
+			#Survivor
+			if {perks.%player%::Scavenger} is 1:
+				set slot 41 of player's current inventory to 1 emerald block named "<bold>Scavenger" with lore "<white>Broken ores occasionally drop more items.", "<white>Ores have an extremely rare chance to duplicate.", "<white>Activation chance is based on MAG."
+			else:
+				set slot 41 of player's current inventory to 1 obsidian named "<bold>Scavenger" with lore "<white>Broken ores occasionally drop more items.", "<white>Ores have an extremely rare chance to duplicate.", "<white>Activation chance is based on MAG.", "Unlocked at: Promotion to Survivor"
+			if {perks.%player%::Efficiency} is 1:
+				set slot 42 of player's current inventory to 1 emerald block named "<bold>Efficiency" with lore "<white>Grants Swiftness and Haste 2."
+			else:
+				set slot 42 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Builder"
+			if {perks.%player%::Craftsmanship} is 1:
+				set slot 43 of player's current inventory to 1 emerald block named "<bold>Craftsmanship" with lore "<white>Gain bonus XP when crafting."
+			else:
+				set slot 43 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Craftsman"
 			#set slot 52 of player's current inventory to 1 red glass pane named "<bold>Main Menu"
+			if {perks.%player%::Adaptable} is 1:
+				set slot 20 of the player's current inventory to 1 emerald block named "<light green>Adaptable" with lore "<white>Grants HP +5. If Realism mode is enabled, you are less vulnerable to temperature changes."
 			set slot 53 of player's current inventory to 1 book named "<bold>Previous Page"
 		else if arg 1 is 3:
 			close the player's inventory
@@ -421,15 +491,13 @@ command /perks [<number=1>]:
 		#	set slot "<bold>Steady Breath" with lore "<white>Converts 1/2 of incoming physical damage to a SKL buff during combat. Resets on special activation."
 		#if {Warding Breath.%player%} is 1:
 		#	set slot "<bold>Warding Breath" with lore "<white>Converts 1/2 of incoming magical damage to a SKL buff during combat. Resets on special activation."
-		#if {Adaptable.%player%} is 1:
-		#	set slot "<light green>Adaptable" with lore "<white>Grants HP +5. If Realism mode is enabled, you are less vulnerable to temperature changes."
 
 on inventory click:
-	if the name of the player's current inventory contains "<bold>Your Perk List":
+	if the name of the player's current inventory contains "Perks":
 		if the clicked item is emerald block:
 			set {perkSelected.%player%} to uncoloured name of the clicked item
 			remove "<bold>" from {perkSelected.%player%}
-			#send "%{perkSelected.%player%}%" to the player
+			#send formatted "%{perkSelected.%player%}%" to the player
 			make player execute command "/perks 3"
 		else if the name of the clicked item is "<bold>Next Page":
 			make player execute command "/perks 2"
@@ -464,25 +532,25 @@ on inventory click:
 				else if the clicked slot is 6:
 					make player execute command "/perk 5 %{perkSelected.%player%}%"
 					make player execute command "/perks 3"
-				if {quests.%player%::Days of Training} is 4:
+				if {quests.%player%::Breaking the Ice} is 4:
 					cancel event
 					close the player's inventory
-					send "<light blue>Combat Instructor: Feel better yet? I thought so. Remember to stop and change out your perks whenever you get new ones, they'll give you an edge in combat."
-					wait 4 seconds
-					send "<light blue>Combat Instructor: You should've noticed that you got some stats when you leveled up. These are an evaluation of your abilities in combat. The more stats you have, the stronger you'll be."
-					wait 4 seconds
-					send "<light blue>Combat Instructor: Strength and Defense influence how much damage you deal and take for physical hits. This means anything that's not magical. If you have enough defense, an enemy's attack will ""dink"" off you and be cancelled."
+					send formatted "<light blue>Combat Instructor: <white>Feel better yet? I thought so. Remember to stop and change out your perks whenever you get new ones, they'll give you an edge in combat." to the player
+					wait 5 seconds
+					send formatted "<light blue>Combat Instructor: <white>You should've noticed that you got some stats when you leveled up. These are an evaluation of your abilities in combat. The more of them you have, the stronger you'll be."
 					wait 5.5 seconds
-					send "<light blue>Combat Instructor: If you've got 15 more Speed than your opponent, then you'll ""double"" and deal 2x damage. If you're on the receiving end, getting doubled can tear you to shreds. Stay limber."
+					send formatted "<light blue>Combat Instructor: <white>Strength and Defense influence how much damage you deal and take for physical hits. This means anything that's not magical. If you have enough defense, an enemy's attack will ""dink"" off you and be cancelled. Strength and Defense also make you better at using shields to block damage, so make sure to bulk up before using one."
+					wait 7 seconds
+					send formatted "<light blue>Combat Instructor: <white>If you've got 7 more Speed than your opponent, then you'll ""double"" and deal 2x damage. If you're on the receiving end, getting doubled can tear you to shreds. Stay limber. With enough Speed, you'll find your running speeds improved as well."
+					wait 7 seconds
+					send formatted "<light blue>Combat Instructor: <white>Magic is how adept you are with, well, magic. The more magic you have, the more damage you deal with it and the less damage you'll take from it."
 					wait 5 seconds
-					send "<light blue>Combat Instructor: Magic is how adept you are with, well, magic. The more magic you have, the more damage you deal with it and the less damage you'll take from it."
-					wait 5 seconds
-					send "<light blue>Combat Instructor: Skill affects how often you perform Critical Hits with your weapons, and can help you dodge attacks in specific situations."
-					wait 5 seconds
-					send "<light blue>Combat Instructor: Alright, that should be it for today. Here's your first assignment as a knight: Go kill some monsters for us. Ten should do."
-					finishQuest(player,"Days of Training","")
-					wait 6 seconds
-					startQuest(player,"Proving Grounds","Slay 10 monsters around House Silgrid.")
+					send formatted "<light blue>Combat Instructor: <white>Skill affects how often you perform Critical Hits with your weapons, and can help you dodge attacks in specific situations. It's also useful for persuading others to help you out."
+					wait 5.5 seconds
+					send formatted "<light blue>Combat Instructor: <white>Alright, that should be it for today. Go ahead and grab some rest upstairs. You've earned it."
+					wait 4 seconds
+					send formatted "<light blue>Combat Instructor: Make sure you talk to some of the other Knights before you call it quits for today. I'd imagine they're dying to meet the new recruit."
+					setQuestProgress(player,"Breaking the Ice",5,"Meet the rest of the Knights of Ulster upstairs.")
 		if the clicked item is red glass pane:
 			make player execute command "/perks 1"
 			clear {perkSelected.%player%}
@@ -494,161 +562,249 @@ command /perk [<number=0>] <text>:
 	aliases: /eqperk, /equipperk, /setperk
 	executable by: players
 	trigger:
-		if {%arg 2%.%player%} is 1:
+		if {perks.%player%::%arg 2%} is 1:
 			set {_slotCheck.%player%} to checkSlots(player,arg 2)
 			if {_slotCheck.%player%} is 0:
 				set {skillslot%arg 1%.%player%} to arg 2
-				send "Equipped %arg 2% in slot %arg 1%."
+				send formatted "Equipped %arg 2% in slot %arg 1%."
 			else:
-				send "<red>You cannot equip the same perk in multiple slots."
+				send formatted "<red>You cannot equip the same perk in multiple slots."
 		else if arg 2 is "Clear":
 			set {skillslot%arg 1%.%player%} to "Empty"
-			send "Cleared slot %arg 1%."
+			send formatted "Cleared slot %arg 1%."
 		else if arg 1 is 0:
-			send "<bold>Your equipped perks:"
-			send "Perks Unlocked: %{skillstotal.%player%}%"
-			send "Perk Slot 1: %{skillslot1.%player%}%"
-			send "Perk Slot 2: %{skillslot2.%player%}%"
-			send "Perk Slot 3: %{skillslot3.%player%}%"
-			send "Perk Slot 4: %{skillslot4.%player%}%"
-			send "Perk Slot 5: %{skillslot5.%player%}%"
+			send formatted "<bold>Your equipped perks:"
+			send formatted "Perks Unlocked: %{skillstotal.%player%}%"
+			send formatted "Perk Slot 1: %{skillslot1.%player%}%"
+			send formatted "Perk Slot 2: %{skillslot2.%player%}%"
+			send formatted "Perk Slot 3: %{skillslot3.%player%}%"
+			send formatted "Perk Slot 4: %{skillslot4.%player%}%"
+			send formatted "Perk Slot 5: %{skillslot5.%player%}%"
+		#Devil Trigger Gauge
+		set {_sklcheck} to checkSlots(player,"Devil Trigger")
+		if {_sklcheck} is 1:
+			create bossbar titled "<light red>Devil Trigger" and id "dt.%player's uuid%" for player with progress 0 with colors red
+			display bossbar "dt.%player's uuid%"
 		else:
-			send "<red>You have not yet learned that skill, or you mis-typed the perk's name."
+			hide bossbar "dt.%player's uuid%"
+			destroy bossbar "dt.%player's uuid%"
+		#Dragon Soul Gauges
+		#Gale Soul
+		set {_sklcheck} to checkSlots(player,"Gale Soul")
+		if {_sklcheck} is 1:
+			create bossbar titled "<light green>Gale Soul" and id "dsoul.%player's uuid%" for player with progress 0 with colors green
+			display bossbar "dsoul.%player's uuid%"
+		else:
+			#Flame Soul
+			set {_sklcheck} to checkSlots(player,"Flame Soul")
+			if {_sklcheck} is 1:
+				create bossbar titled "<orange>Flame Soul" and id "dsoul.%player's uuid%" for player with progress 0 with colors red
+				display bossbar "dsoul.%player's uuid%"
+			else:
+				#Aqua Soul
+				set {_sklcheck} to checkSlots(player,"Aqua Soul")
+				if {_sklcheck} is 1:
+					create bossbar titled "<light blue>Aqua Soul" and id "dsoul.%player's uuid%" for player with progress 0 with colors blue
+					display bossbar "dsoul.%player's uuid%"
+				else:
+					hide bossbar "dsoul.%player's uuid%"
+					destroy bossbar "dsoul.%player's uuid%"
+		#Optimism
+		set {_sklcheck} to checkSlots(player,"Optimism")
+		if {_sklcheck} is 1:
+			if {perksEquipped.%player%::Optimism} is not set:
+				set {perksEquipped.%player%::Optimism} to true
+				add 10 to {sklbuff.%player%}
+				subtract 10 from {strbuff.%player%}
+				subtract 10 from {resbuff.%player%}
+		else if {perksEquipped.%player%::Optimism} is set:
+			subtract 10 from {sklbuff.%player%}
+			add 10 to {strbuff.%player%}
+			add 10 to {resbuff.%player%}
+		#Pessimism
+		set {_sklcheck} to checkSlots(player,"Pessimism")
+		if {_sklcheck} is 1:
+			if {perksEquipped.%player%::Pessimism} is not set:
+				set {perksEquipped.%player%::Pessimism} to true
+				subtract 20 from {sklbuff.%player%}
+				add 10 to {strbuff.%player%}
+		else if {perksEquipped.%player%::Pessimism} is set:
+			add 20 to {sklbuff.%player%}
+			subtract 10 from {strbuff.%player%}
 		#STR +5
 		set {_sklcheck.%player%} to checkSlots(player,"STR +5")
 		if {_sklcheck.%player%} is 1:
-			if {STR +5SET.%player%} is not set:
-				set {STR +5SET.%player%} to true
+			if {perksEquipped.%player%::STR +5} is not set:
+				set {perksEquipped.%player%::STR +5} to true
 				add 5 to {strbuff.%player%}
-		else if {STR +5SET.%player%} is set:
+		else if {perksEquipped.%player%::STR +5} is set:
 			subtract 5 from {strbuff.%player%}
-			clear {STR +5SET.%player%}
+			clear {perksEquipped.%player%::STR +5}
 		#STR +20
 		set {_sklcheck.%player%} to checkSlots(player,"STR +20")
 		if {_sklcheck.%player%} is 1:
-			if {STR +20SET.%player%} is not set:
-				set {STR +20SET.%player%} to true
+			if {perksEquipped.%player%::STR +20} is not set:
+				set {perksEquipped.%player%::STR +20} to true
 				add 20 to {strbuff.%player%}
-		else if {STR +20SET.%player%} is set:
+		else if {perksEquipped.%player%::STR +20} is set:
 			subtract 20 from {strbuff.%player%}
-			clear {STR +20SET.%player%}
+			clear {perksEquipped.%player%::STR +20}
 		#DEF +5
 		set {_sklcheck.%player%} to checkSlots(player,"DEF +5")
 		if {_sklcheck.%player%} is 1:
-			if {DEF +5SET.%player%} is not set:
-				set {DEF +5SET.%player%} to true
+			if {perksEquipped.%player%::DEF +5} is not set:
+				set {perksEquipped.%player%::DEF +5} to true
 				add 5 to {defbuff.%player%}
-		else if {DEF +5SET.%player%} is set:
-			clear {DEF +5SET.%player%}
+		else if {perksEquipped.%player%::DEF +5} is set:
+			clear {perksEquipped.%player%::DEF +5}
 			subtract 5 from {defbuff.%player%}
 		#SPD +5
 		set {_sklcheck.%player%} to checkSlots(player,"SPD +5")
 		if {_sklcheck.%player%} is 1:
-			if {SPD +5SET.%player%} is not set:
-				set {SPD +5SET.%player%} to true
+			if {perksEquipped.%player%::SPD +5} is not set:
+				set {perksEquipped.%player%::SPD +5} to true
 				add 5 to {spdbuff.%player%}
-		else if {SPD +5SET.%player%} is set:
+		else if {perksEquipped.%player%::SPD +5} is set:
 			subtract 5 from {spdbuff.%player%}
-			clear {SPD +5SET.%player%}
+			clear {perksEquipped.%player%::SPD +5}
 		#MAG +5
 		set {_sklcheck.%player%} to checkSlots(player,"MAG +5")
 		if {_sklcheck.%player%} is 1:
-			if {MAG +5SET.%player%} is not set:
+			if {perksEquipped.%player%::MAG +5} is not set:
 				add 5 to {resbuff.%player%}
-				set {MAG +5SET.%player%} to 1
-		else if {MAG +5SET.%player%} is set:
+				set {perksEquipped.%player%::MAG +5} to 1
+		else if {perksEquipped.%player%::MAG +5} is set:
 			subtract 5 from {resbuff.%player%}
-			clear {MAG +5SET.%player%}
+			clear {perksEquipped.%player%::MAG +5}
+		#SKL +5
+		set {_sklcheck.%player%} to checkSlots(player,"SKL +5")
+		if {_sklcheck.%player%} is 1:
+			if {perksEquipped.%player%::SKL +5} is not set:
+				add 5 to {sklbuff.%player%}
+				set {perksEquipped.%player%::SKL +5} to 1
+		else if {perksEquipped.%player%::SKL +5} is set:
+			subtract 5 from {sklbuff.%player%}
+			clear {perksEquipped.%player%::SKL +5}
 		#HP +5
 		set {_sklcheck.%player%} to checkSlots(player,"HP +5")
 		if {_sklcheck.%player%} is 1:
-			if {HP +5SET.%player%} is not set:
+			if {perksEquipped.%player%::HP +5} is not set:
 				add 5 to {hpbuff.%player%}
 				set player's maximum health to ({hp.%player%} / 2) + ({hpbuff.%player%} / 2)
-				set {HP +5SET.%player%} to 1
-		else if {HP +5SET.%player%} is set:
+				set {perksEquipped.%player%::HP +5} to 1
+		else if {perksEquipped.%player%::HP +5} is set:
 			subtract 5 from {hpbuff.%player%}
 			set player's maximum health to ({hp.%player%} / 2) + ({hpbuff.%player%} / 2)
-			clear {HP +5SET.%player%}
+			clear {perksEquipped.%player%::HP +5}
+		#Fierce Posture
+		set {_sklcheck.%player%} to checkSlots(player,"Fierce Posture")
+		if {_sklcheck.%player%} is 1:
+			if {perksEquipped.%player%::Fierce Posture} is not set:
+				set {perksEquipped.%player%::Fierce Posture} to true
+				add 10 to {strbuff.%player%}
+				add 10 to {spdbuff.%player%}
+				subtract 10 from {defbuff.%player%}
+				subtract 10 from {resbuff.%player%}
+		else if {perksEquipped.%player%::Fierce Posture} is set:
+			subtract 10 from {strbuff.%player%}
+			subtract 10 from {spdbuff.%player%}
+			add 10 to {defbuff.%player%}
+			add 10 to {resbuff.%player%}
+			clear {perksEquipped.%player%::Fierce Posture}
+		#Steady Posture
+		set {_sklcheck.%player%} to checkSlots(player,"Steady Posture")
+		if {_sklcheck.%player%} is 1:
+			if {perksEquipped.%player%::Steady Posture} is not set:
+				set {perksEquipped.%player%::Steady Posture} to true
+				subtract 10 from {strbuff.%player%}
+				subtract 10 from {spdbuff.%player%}
+				add 10 to {defbuff.%player%}
+				add 10 to {resbuff.%player%}
+		else if {perksEquipped.%player%::Steady Posture} is set:
+			add 10 to {strbuff.%player%}
+			add 10 to {spdbuff.%player%}
+			subtract 10 from {defbuff.%player%}
+			subtract 10 from {resbuff.%player%}
+			clear {perksEquipped.%player%::Steady Posture}
 		#Rightful King
 		set {_sklcheck.%player%} to checkSlots(player,"Rightful King")
 		if {_sklcheck.%player%} is 1:
-			if {RIGHTFULSET.%player%} is not set:
+			if {perksEquipped.%player%::Rightful King} is not set:
 				add 15 to {hpbuff.%player%}
 				add 20 to {sklbuff.%player%}
 				set player's maximum health to ({hp.%player%} / 2) + ({hpbuff.%player%} / 2)
-				set {RIGHTFULSET.%player%} to 1
-		else if {RIGHTFULSET.%player%} is set:
+				set {perksEquipped.%player%::Rightful King} to 1
+		else if {perksEquipped.%player%::Rightful King} is set:
 			subtract 15 from {hpbuff.%player%}
 			subtract 20 from {sklbuff.%player%}
 			set player's maximum health to ({hp.%player%} / 2) + ({hpbuff.%player%} / 2)
-			clear {RIGHTFULSET.%player%}
-		#Fortress Defender
-		set {_sklcheck.%player%} to checkSlots(player,"Fortress Defender")
+			clear {perksEquipped.%player%::Rightful King}
+		#Steady Breath
+		set {_sklcheck.%player%} to checkSlots(player,"Steady Breath")
 		if {_sklcheck.%player%} is 1:
-			if {Fortress DefenderSET.%player%} is not set:
-				add 30 to {defbuff.%player%}
-				subtract 30 from {strbuff.%player%}
-				set {Fortress DefenderSET.%player%} to 1
+			if {perksEquipped.%player%::Steady Breath} is not set:
+				add 5 to {defbuff.%player%}
+				set {perksEquipped.%player%::Steady Breath} to 1
 		else:
-			if {Fortress DefenderSET.%player%} is set:
-				subtract 30 from {defbuff.%player%} 
-				add 30 to {strbuff.%player%}
-				clear {Fortress DefenderSET.%player%}
+			if {perksEquipped.%player%::Steady Breath} is set:
+				subtract 5 from {defbuff.%player%} 
+				clear {perksEquipped.%player%::Steady Breath}
 		#Life and Death
 		set {_sklcheck.%player%} to checkSlots(player,"Life and Death")
 		if {_sklcheck.%player%} is 1:
-			if {Life and DeathSET.%player%} is not set:
-				add 40 to {strbuff.%player%}
-				add 40 to {sklbuff.%player%}
-				subtract 40 from {defbuff.%player%}
-				subtract 40 from {resbuff.%player%}
-				set {Life and DeathSET.%player%} to 1
+			if {perksEquipped.%player%::Life and Death} is not set:
+				add 20 to {strbuff.%player%}
+				add 20 to {sklbuff.%player%}
+				add 20 to {spdbuff.%player%}
+				subtract 20 from {defbuff.%player%}
+				subtract 20 from {resbuff.%player%}
+				set {perksEquipped.%player%::Life and Death} to 1
 		else:
-			if {Life and DeathSET.%player%} is set:
-				subtract 40 from {strbuff.%player%}
-				subtract 40 from {sklbuff.%player%}
-				add 40 to {defbuff.%player%}
-				add 40 to {resbuff.%player%}
-				clear {Life and DeathSET.%player%}
+			if {perksEquipped.%player%::Life and Death} is set:
+				subtract 20 from {strbuff.%player%}
+				subtract 20 from {sklbuff.%player%}
+				subtract 20 from {spdbuff.%player%}
+				add 20 to {defbuff.%player%}
+				add 20 to {resbuff.%player%}
+				clear {perksEquipped.%player%::Life and Death}
 		#Lord's Blood
 		set {_sklcheck.%player%} to checkSlots(player,"Lord's Blood")
 		if {_sklcheck.%player%} is 1:
-			if {lordsbloodset.%player%} is not set:
+			if {perksEquipped.%player%::Lord's Blood} is not set:
 				add 10 to {hpbuff.%player%}
-				set {lordsbloodset.%player%} to true
+				set {perksEquipped.%player%::Lord's Blood} to true
 				set player's maximum health to ({hp.%player%} / 2) + ({hpbuff.%player%} / 2)
 		else:
-			if {lordsbloodset.%player%} is set:
+			if {perksEquipped.%player%::Lord's Blood} is set:
 				subtract 10 from {hpbuff.%player%}
-				clear {lordsbloodset.%player%}
+				clear {perksEquipped.%player%::Lord's Blood}
 				set player's maximum health to ({hp.%player%} / 2) + ({hpbuff.%player%} / 2)
 		#Crusader's Blood
 		set {_sklcheck.%player%} to checkSlots(player,"Crusader's Blood")
 		if {_sklcheck.%player%} is 1:
-			if {Crusader'sSET.%player%} is not set:
+			if {perksEquipped.%player%::Crusader's Blood} is not set:
 				add 5 to {hpbuff.%player%}
 				add 5 to {strbuff.%player%}
 				add 5 to {sklbuff.%player%}
 				add 5 to {defbuff.%player%}
 				add 5 to {spdbuff.%player%}
 				add 5 to {resbuff.%player%}
-				set {Crusader'sSET.%player%} to 1
+				set {perksEquipped.%player%::Crusader's Blood} to 1
 				set player's maximum health to ({hp.%player%} / 2) + ({hpbuff.%player%} / 2)
 		else:
-			if {Crusader'sSET.%player%} is set:
+			if {perksEquipped.%player%::Crusader's Blood} is set:
 				subtract 5 from {hpbuff.%player%}
 				subtract 5 from {strbuff.%player%}
 				subtract 5 from {sklbuff.%player%}
 				subtract 5 from {defbuff.%player%}
 				subtract 5 from {spdbuff.%player%}
 				subtract 5 from {resbuff.%player%}
-				clear {Crusader'sSET.%player%}
+				clear {perksEquipped.%player%::Crusader's Blood}
 				set player's maximum health to ({hp.%player%} / 2) + ({hpbuff.%player%} / 2)
 		#Spectrum +10
 		set {_sklcheck.%player%} to checkSlots(player,"Spectrum +10")
 		if {_sklcheck.%player%} is 1:
-			if {spectrum+10SET.%player%} is not set:
+			if {perksEquipped.%player%::Spectrum +10} is not set:
 				add 10 to {hpbuff.%player%}
 				add 10 to {strbuff.%player%}
 				add 10 to {sklbuff.%player%}
@@ -656,9 +812,9 @@ command /perk [<number=0>] <text>:
 				add 10 to {spdbuff.%player%}
 				add 10 to {resbuff.%player%}
 				set player's maximum health to ({hp.%player%} / 2) + ({hpbuff.%player%} / 2)
-				set {spectrum+10SET.%player%} to 1
+				set {perksEquipped.%player%::Spectrum +10} to 1
 		else:
-			if {spectrum+10SET.%player%} is set:
+			if {perksEquipped.%player%::Spectrum +10} is set:
 				subtract 10 from {hpbuff.%player%}
 				subtract 10 from {strbuff.%player%}
 				subtract 10 from {sklbuff.%player%}
@@ -666,28 +822,50 @@ command /perk [<number=0>] <text>:
 				subtract 10 from {spdbuff.%player%}
 				subtract 10 from {resbuff.%player%}
 				set player's maximum health to ({hp.%player%} / 2) + ({hpbuff.%player%} / 2)
-				clear {spectrum+10SET.%player%}
+				clear {perksEquipped.%player%::Spectrum +10}
+		#Champion of Silgrund
+		set {_sklcheck.%player%} to checkSlots(player,"Champion of Silgrund")
+		if {_sklcheck.%player%} is 1:
+			if {perksEquipped.%player%::Champion of Silgrund} is not set:
+				add 20 to {hpbuff.%player%}
+				add 20 to {strbuff.%player%}
+				add 20 to {sklbuff.%player%}
+				add 20 to {defbuff.%player%}
+				add 20 to {spdbuff.%player%}
+				add 20 to {resbuff.%player%}
+				set player's maximum health to ({hp.%player%} / 2) + ({hpbuff.%player%} / 2)
+				set {perksEquipped.%player%::Champion of Silgrund} to 1
+		else:
+			if {perksEquipped.%player%::Champion of Silgrund} is set:
+				subtract 20 from {hpbuff.%player%}
+				subtract 20 from {strbuff.%player%}
+				subtract 20 from {sklbuff.%player%}
+				subtract 20 from {defbuff.%player%}
+				subtract 20 from {spdbuff.%player%}
+				subtract 20 from {resbuff.%player%}
+				set player's maximum health to ({hp.%player%} / 2) + ({hpbuff.%player%} / 2)
+				clear {perksEquipped.%player%::Champion of Silgrund}
 		#Gamble
 		set {_sklcheck.%player%} to checkSlots(player,"Gamble")
 		if {_sklcheck.%player%} is 1:
-			if {GambleSET.%player%} is not set:
+			if {perksEquipped.%player%::Gamble} is not set:
 				add 60 to {strbuff.%player%}
-				set {GambleSET.%player%} to 1
+				set {perksEquipped.%player%::Gamble} to 1
 		else:
-			if {GambleSET.%player%} is set:
+			if {perksEquipped.%player%::Gamble} is set:
 				subtract 60 from {strbuff.%player%}
-				clear {GambleSET.%player%}
+				clear {perksEquipped.%player%::Gamble}
 		#Combo System
 		set {_sklcheck} to checkSlots(player,"Combo System")
 		if {_sklcheck} is 1:
 			set {combosenabled.%player%} to 1
 			apply jump boost 3 to the player for 1 day
-			#send "<bold>[Combo System]<reset> Enabled combo system. Consecutive hits and stylish actions like dodge rolls increase your combo score. Raise your score to earn a damage multiplier!"
+			#send formatted "<bold>[Combo System]<reset> Enabled combo system. Consecutive hits and stylish actions like dodge rolls increase your combo score. Raise your score to earn a damage multiplier!"
 		else:
 			if {combosenabled.%player%} is 1:
 				clear {combosenabled.%player%}
 				remove jump boost from the player
-				send "<bold>[Combo System]<reset> Disabled combo system."
+				send formatted "<bold>[Combo System]<reset> Disabled combo system."
 #Perk Definitions Start Here
 
 on mine:
@@ -696,43 +874,59 @@ on mine:
 	set {_perk} to checkSlots(player,"Scavenger")
 	if {_perk} is 1:
 		if event-block is any ore:
-			chance of (({res.%player%} + {resbuff.%player%} + 25) / 2)%:
+			chance of (({res.%player%} + {resbuff.%player%} + 10) / 2)%:
 				drop event-block at the player
-			chance of ({res.%player%} + {resbuff.%player%} + 25)%:
+			chance of ({res.%player%} + {resbuff.%player%} - 20)%:
 				wait 1 tick
 				set {_drops::*} to dropped items in radius 0.75 of event-location
 				loop {_drops::*}:
 					drop {_drops::loop-index} at event-location
-	if {Haste.%player%} is not set:
+	#Haste
+	if {perks.%player%::Haste} is not 1:
 		if {blocksmined.%player%} is more than 749:
 			make player execute command "/grantskill 0 Haste"
 
+#Hoard
 every 12 minecraft hours:
 	loop all players:
 		set {_hoard} to checkSlots(loop-player,"Hoard")
 		if {_hoard} is 1:
-			set {_bonus} to ({res.%loop-player%} + {resbuff.%loop-player%}) + (loop-player's money ^ 0.65)
+			set {_bonus} to ({res.%loop-player%} + {resbuff.%loop-player%}) + (loop-player's money ^ 0.25)
 			add {_bonus} to the loop-player's balance
-			send "Hoarded $%{_bonus}%!" to loop-player
+			send formatted "Hoarded $%{_bonus}%!" to loop-player
 
+#Craftsmanship
 on craft:
 	set {_perk} to checkSlots(player,"Craftsmanship")
 	if {_perk} is 1:
-		set {_xp} to ceil(player's level ^ 0.5)
+		set {_xp} to ceil(player's level ^ 0.25)
 		make console execute command "/xp %{_xp}% %player%"
-		send "<light green>Gained a bonus %{_xp}% experience from Craftsmanship!" to the player
+		send formatted "<light green>Gained a bonus %{_xp}% experience from Craftsmanship!" to the player
 		
+#Rallies
 on rightclick on a player:
 	set {_perk} to checkSlots(player,"Rally Strength")
 	if {_perk} is 1:
+		remove strength from the target
 		apply strength 2 to the target for 10 seconds
 	set {_perk} to checkSlots(player,"Rally Speed")
 	if {_perk} is 1:
+		remove swiftness from the target
 		apply swiftness 2 to the target for 10 seconds
 	set {_perk} to checkSlots(player,"Rally Resistance")
 	if {_perk} is 1:
+		remove resistance from the target
 		apply resistance 2 to the target for 10 seconds
+	set {_perk} to checkSlots(player,"Rally Spectrum")
+	if {_perk} is 1:
+		remove resistance from the target
+		remove strength from the target
+		remove swiftness from the target
+		apply resistance 2 to the target for 10 seconds
+		apply strength 2 to the target for 10 seconds
+		apply swiftness 2 to the target for 10 seconds
 		
+#Quick Revive
 on death:
 	set {_skl} to checkSlots(victim,"Quick Revive")
 	if {_skl} is 1:
@@ -741,31 +935,48 @@ on death:
 			set the victim's health to 10
 			play 100 (heart with speed 1) at the victim
 			apply regeneration 5 to the victim for 5 seconds
-			send "<light cyan>Quick Revive was used." to the victim
+			send formatted "<light cyan>Quick Revive was used." to the victim
 			set {qrevivecd.%victim%} to true
 			wait 3 minutes
 			clear {qrevivecd.%victim%}
 		else:
 			clear {qrevivecd.%victim%}
 		
-		
+#Sacred Boost
 every 1 second:
 	loop all players:
 		if loop-player is alive:
 			set {_skl} to checkSlots(loop-player,"Sacred Boost")
 			if {_skl} is 1:
-				add 10 to {strbuff.%loop-player%}
-				add 10 to {spdbuff.%loop-player%}
-				add 10 to {defbuff.%loop-player%}
-				add 10 to {resbuff.%loop-player%}
-				add 10 to {sklbuff.%loop-player%}
-				wait 1 second
-				subtract 10 from {strbuff.%loop-player%}
-				subtract 10 from {spdbuff.%loop-player%}
-				subtract 10 from {defbuff.%loop-player%}
-				subtract 10 from {resbuff.%loop-player%}
-				subtract 10 from {sklbuff.%loop-player%}
-		
+				if loop-player's health is loop-player's maximum health:
+					add 10 to {strbuff.%loop-player%}
+					add 10 to {spdbuff.%loop-player%}
+					add 10 to {defbuff.%loop-player%}
+					add 10 to {resbuff.%loop-player%}
+					add 10 to {sklbuff.%loop-player%}
+					wait 1 second
+					subtract 10 from {strbuff.%loop-player%}
+					subtract 10 from {spdbuff.%loop-player%}
+					subtract 10 from {defbuff.%loop-player%}
+					subtract 10 from {resbuff.%loop-player%}
+					subtract 10 from {sklbuff.%loop-player%}
+			set {_skl} to checkSlots(loop-player,"Commanding Presence")
+			if {_skl} is 1:
+				loop all players in radius 10 of the loop-player:
+					add 10 to {strbuff.%loop-player-2%}
+					add 10 to {defbuff.%loop-player-2%}
+					add 10 to {resbuff.%loop-player-2%}
+					add 10 to {spdbuff.%loop-player-2%}
+					add 10 to {sklbuff.%loop-player-2%}
+					wait 1 second
+					subtract 10 from {strbuff.%loop-player-2%}
+					subtract 10 from {spdbuff.%loop-player-2%}
+					subtract 10 from {defbuff.%loop-player-2%}
+					subtract 10 from {resbuff.%loop-player-2%}
+					subtract 10 from {sklbuff.%loop-player-2%}
+					play 10 (gold block break with speed 1) at loop-player-2
+
+#Renewal/Restock/Haste/High Jumper/Efficiency/Brazens
 every 15 seconds:
 	loop all players:
 		if loop-player is alive:
@@ -842,11 +1053,15 @@ every 15 seconds:
 					subtract 20 from {resbuff.%loop-player%}
 					subtract 20 from {defbuff.%loop-player%}
 					subtract 20 from {strbuff.%loop-player%}
-			if loop-player's health is less than (loop-player's max health * 0.5):
-				set {_sklcheck.%loop-player%} to checkSlots(loop-player,"Awakening")
+			if loop-player's health is less than (loop-player's max health * 0.7):
+				set {_sklcheck.%loop-player%} to checkSlots(loop-player,"Brazen STR/DEF")
 				if {_sklcheck.%loop-player%} is 1:
-					apply strength 2 to loop-player for 15 seconds
-					apply resistance 2 to loop-player for 15 seconds
+					add 20 to {strbuff.%loop-player%}
+					add 20 to {defbuff.%loop-player%}
+					show mob spawner flames on the loop-player
+					wait 15 seconds
+					subtract 20 from {strbuff.%loop-player%}
+					subtract 20 from {defbuff.%loop-player%}
 			#Monsters special cases
 			loop all monsters in radius 50 of the loop-player:
 				if loop-monster's health is less than (loop-monster's max health * 0.7):
@@ -900,25 +1115,25 @@ every 15 seconds:
 						subtract 20 from {t_resbuff.%loop-monster%}
 						subtract 20 from {t_defbuff.%loop-monster%}
 						subtract 20 from {t_strbuff.%loop-monster%}
-
-on shoot:
-	if projectile exists:
-		set {_slots} to checkSlots(shooter,"True Shot")
-		if {_slots} is 1:
-			push the last shot projectile forwards at speed 3
 					
 on damage:
 	#Smooth Landing
-	if damage cause is fall:
-		add damage to {slfalltotal.%victim%}
-		if {slfalltotal.%victim%} is more than 100:
-			if {Smooth Landing.%victim%} is not set:
-				make victim execute command "/grantskill 0 Smooth Landing"
-		set {_sklcheck.%victim%} to checkSlots(victim,"Smooth Landing")
-		if {_sklcheck.%victim%} is 1:
-			cancel event
-	#Draconic Rage
-	set {_sklcheck} to checkSlots(victim,"Draconic Rage")
+	if victim is player:
+		if damage cause is fall:
+			add damage to {slfalltotal.%victim%}
+			if {slfalltotal.%victim%} is more than 100:
+				if {perks.%victim%::Smooth Landing} is not set:
+					make victim execute command "/grantskill 0 Smooth Landing"
+			set {_sklcheck.%victim%} to checkSlots(victim,"Smooth Landing")
+			if {_sklcheck.%victim%} is 1:
+				cancel event
+	#Steady Breath
+	if victim is player:
+		set {_skl} to checkSlots(victim,"Steady Breath")
+		if {_skl} is 1:
+			add final damage to {crushing.%victim%}
+	#Draconic Aura
+	set {_sklcheck} to checkSlots(victim,"Draconic Aura")
 	if {_sklcheck} is 1:
 		if (victim's health - final damage) is less than (victim's maximum health * 0.5):
 			if {dragonform.%victim%} is not set:
@@ -937,8 +1152,8 @@ on damage:
 				play 20 (smoke with speed 0) at victim
 				play 20 (spell with speed 0) at victim
 				play 20 (ender signal with speed 0) at victim
-				send "<light blue>%victim%'s Draconic Rage activated!" to the attacker
-				send "<light blue>Draconic Rage activated!" to the victim
+				send formatted "<light blue>%victim%'s Draconic Aura activated!" to the attacker
+				send formatted "<light blue>Draconic Aura activated!" to the victim
 				set {dragonform.%victim%} to 1
 				set {_rng} to a random integer between 1 and 4
 				if {_rng} is 1:
@@ -956,23 +1171,29 @@ on damage:
 					play sound "block.fire.ambient" at victim for victim
 					wait 1 second
 				set the victim's chestplate to {_armour}
-				send "<light red>Your rage fades..." to the victim
+				send formatted "<light red>Your rage fades..." to the victim
 				wait 40 seconds
 				clear {dragonform.%victim%}
-				send "<light blue>Your draconic strength has returned." to the victim
+				send formatted "<light blue>Your draconic strength has returned." to the victim
 				
 #Quick Draw
 on right click with bow:
 	set {_checkslots} to checkSlots(player,"Quick Draw")
 	if {_checkslots} is 1:
 		if the player has an arrow:
-			make the player shoot an arrow at speed 1.375
-			remove 1 arrow from the player
-			damage the player's tool by 1
-			play sound "block.dispenser.launch" with volume 1 and pitch 1 at the player
+			if {QDCooldown.%player%} is not set:
+				set {QDCooldown.%player%} to true
+				make the player shoot an arrow at speed 3
+				if the player's tool is not enchanted with infinity:
+					remove 1 arrow from the player
+				damage the player's tool by 1
+				play sound "block.dispenser.launch" with volume 1 and pitch 1 at the player
+				wait 0.33 seconds
+				clear {QDCooldown.%player%}
 		else:
 			cancel event
 
+#Air Hike/Smooth Landing
 on flight toggle:
 	if the player's gamemode is not creative:
 		set {_ak} to checkSlots(player,"Air Hike")
@@ -1005,13 +1226,16 @@ on flight toggle:
 			cancel event
 			push the player downwards at speed 0.05
 
+#Air Hike Refresh
 every 0.1 seconds:
 	loop all players:
-		set {_ak} to checkSlots(loop-player,"Air Hike")
-		if {_ak} is 1:
-			if loop-player is on ground:
-				set {AirHikeReady.%loop-player%} to true
+		if citizen id of loop-player is not set:
+			set {_ak} to checkSlots(loop-player,"Air Hike")
+			if {_ak} is 1:
+				if loop-player is on ground:
+					set {AirHikeReady.%loop-player%} to true
 	
+#Air Hike/Smooth Landing
 on jump:
 	player's gamemode is not creative:
 		if block below player is not air or water:
@@ -1029,7 +1253,8 @@ on tame:
 	if {_slot} is 1:
 		apply speed 1 to the entity for 999 days
 		apply resistance 1 to the entity for 999 days
-		make the entity wear a saddle
+		if entity is any horse:
+			make the entity wear a saddle
 		set the entity's max health to the entity's max health * 2
 		wait a tick
 		heal the entity by 20
@@ -1045,11 +1270,12 @@ on tool break:
 	if {_sklcheck.%player%} is 1:
 		if {_cashded.%player%} is less than player's money:
 			drop event-item at the player
-			send "The Hammerne skill prevented your tool from breaking." to the player
-			send "Deducted $%{_cashded.%player%}% to prevent tool destruction."
+			send formatted "The Hammerne skill prevented your tool from breaking." to the player
+			send formatted "Deducted $%{_cashded.%player%}% to prevent tool destruction."
 		else:
-			send "<red>You lacked the required funds to prevent this tool from breaking."
+			send formatted "<red>You lacked the required funds to prevent this tool from breaking."
 
+#Wall Kick
 on block damage:
 	set {_isStylish} to checkSlots(player,"Wall Kick")
 	if {_isStylish} is 1:
@@ -1063,7 +1289,7 @@ on block damage:
 					push the player upwards at speed 0.7
 					remove resistance from the player
 					apply resistance 5 to the player for 2 seconds
-					#send "<light red>Air hike!" to the player
+					#send formatted "<light red>Air hike!" to the player
 					set {WallKickReady.%player%} to 1
 					wait 0.35 seconds
 					clear {WallKickReady.%player%}
