@@ -29,12 +29,13 @@ command /admin_dtconfig <text> <text> [<number=0>]:
 
 on death of a player:
 	if {t_inDefendThroneMission.%victim%} is set:
-		if {t_inDefendThroneMission.%victim%} is "LegendInTheMaking":
-			failQuest(victim,"Legend in the Making","You were slain in battle!")
-		clear {t_inDefendThroneMission.%victim%}
-		loop all monsters in radius 80 of the victim:
-			if {t_isDefendThroneMob.%loop-monster%} is true:
-				kill the loop-monster
+		if event is not cancelled:
+			if {t_inDefendThroneMission.%victim%} is "LegendInTheMaking":
+				failQuest(victim,"Legend in the Making","You were slain in battle!")
+			clear {t_inDefendThroneMission.%victim%}
+			loop all monsters in radius 80 of the victim:
+				if {t_isDefendThroneMob.%loop-monster%} is true:
+					kill the loop-monster
 				
 command /forceexitdt:
 	trigger:
