@@ -1107,49 +1107,45 @@ on damage:
 		if the 2nd line of the lore of the victim's tool contains "Vantage":
 			set {_vantageOK} to true
 		if {_vantageOK} is true:
-			if the victim's health is less than (victim's maximum health * 0.50):
+			if the victim's health is less than (victim's maximum health * 0.75):
 				if the name of the attacker's tool is not "<gold><bold>Swift-Winds Lance":
-					loop all players in radius 4 of the victim:
-						if loop-player is attacker:
-							set {_cc} to 1
-					loop all monsters in radius 4 of the victim:
-						if loop-monster is attacker:
-							set {_cc} to 1
+					if distance between the attacker and the victim is less than or equal to 3:
+						set {_cc} to 1
 					if {_cc} is 1:
 						if victim's tool is not a bow:
 							if victim's tool is not a book:
 								if victim's tool is not blaze rod:
-									make the victim damage the attacker by (damage * 0.33)
+									make the victim damage the attacker by (damage * 0.5)
 									push the attacker upwards at speed 0.25
 									push the attacker backwards at speed 0.5
 								else if the 1st line of the lore of the victim's tool contains "Close Counter":
-									make the victim damage the attacker by (damage * 0.33)
+									make the victim damage the attacker by (damage * 0.5)
 									push the attacker upwards at speed 0.25
 									push the attacker backwards at speed 0.5
 							else if the 1st line of the lore of the victim's tool contains "Close Counter":
-								make the victim damage the attacker by (damage * 0.33)
+								make the victim damage the attacker by (damage * 0.5)
 								push the attacker upwards at speed 0.25
 								push the attacker backwards at speed 0.5
 						else if the 1st line of the lore of the victim's tool contains "Close Counter":
-							make the victim damage the attacker by (damage * 0.33)
+							make the victim damage the attacker by (damage * 0.5)
 							push the attacker upwards at speed 0.25
 							push the attacker backwards at speed 0.5
 					else if victim's tool is bow:
 						if victim's tool is book:
 							if victim's tool is blaze rod:
-								make the victim damage the attacker by (damage * 0.33)
+								make the victim damage the attacker by (damage * 0.5)
 								push the attacker upwards at speed 0.25
 								push the attacker backwards at speed 0.5
 							else if the 1st line of the lore of the victim's tool contains "Distant Counter":
-								make the victim damage the attacker by (damage * 0.33)
+								make the victim damage the attacker by (damage * 0.5)
 								push the attacker upwards at speed 0.25
 								push the attacker backwards at speed 0.5
 						else if the 1st line of the lore of the victim's tool contains "Distant Counter":
-							make the victim damage the attacker by (damage * 0.33)
+							make the victim damage the attacker by (damage * 0.5)
 							push the attacker upwards at speed 0.25
 							push the attacker backwards at speed 0.5
 					else if the 1st line of the lore of the victim's tool contains "Distant Counter":
-						make the victim damage the attacker by (damage * 0.33)
+						make the victim damage the attacker by (damage * 0.5)
 						push the attacker upwards at speed 0.25
 						push the attacker backwards at speed 0.5
 					if attacker is not alive:
@@ -2155,29 +2151,29 @@ on damage:
 				#Close Counter
 				if the 1st line of the lore of victim's tool contains "Close Counter":
 					if the name of the attacker's tool is not "<gold><bold>Swift-Winds Lance":
-						damage the attacker by damage / 2 with fake cause attack
+						make the victim damage the attacker by damage / 2
 						push the attacker backwards at speed 0.75
 						show 10 (redstone block break with speed 1) at the victim
 						damage the victim's tool by 2
 				#Skill Greed - Close Counter
 				if the 1st line of the lore of the victim's offhand tool contains "Close Counter":
 					if the 2nd line of the lore of the victim's offhand tool contains "Skill Greed":
-						damage the attacker by damage / 2 with fake cause attack
+						make the victim damage the attacker by damage / 2
 						push the attacker backwards at speed 0.75
 						play 10 (redstone block break with speed 1) at the victim
 						damage the victim's offhand tool by 2
 				#Fujin Yumi CC
 				if the name of the victim's tool is "Fujin Yumi":
 					if the name of the attacker's tool is not "<gold><bold>Swift-Winds Lance":
-						damage the attacker by damage / 2 with fake cause attack
+						make the victim damage the attacker by damage / 2
 						push the attacker backwards at speed 0.75
 						show 10 (redstone block break with speed 1) at the victim
 						damage the victim's tool by 2
 		#Distants
 		else if projectile exists:
-			if distance between attacker and victim is more than 4:
+			if distance between attacker and victim is more than or equal to 3:
 				set {_NoDC} to true
-			if {_noDC} is not set:
+			if {_noDC} is set:
 				#SHIELD - Dull Ranged
 				if the lore of the victim's offhand tool contains "Dull Ranged":
 					set damage to damage * 0.66
@@ -2192,13 +2188,13 @@ on damage:
 						show 10 (iron block break with speed 1) at the victim
 				#Distant Counter
 				if 1st line of the lore of the victim's tool contains "Distant Counter":
-					damage the attacker by damage / 2 with fake cause projectile
+					make the victim damage the attacker by damage / 2
 					show 10 (redstone block break with speed 1) at the victim
 					damage the victim's tool by 2
 				#Skill Greed - Distant Counter
 				else if the 1st line of the lore of the victim's offhand tool contains "Distant Counter":
 					if the 2nd line of the lore of the victim's offhand tool contains "Skill Greed":
-						damage the attacker by damage / 2 with fake cause projectile
+						make the victim damage the attacker by damage / 2
 						show 10 (redstone block break with speed 1) at the victim
 						damage the victim's offhand tool by 2
 		#Armour Smasher
@@ -2331,7 +2327,7 @@ on damage:
 				clear {bbskip.%attacker%}
 		#Sabotage Defense
 		if the 2nd line of the lore of the attacker's tool contains "Sabotage Defense":
-			set damage to damage * 1.25
+			set damage to damage * 1.15
 		#Life and Death
 		if the 1st line of the lore of attacker's tool contains "Life and Death":
 			set damage to damage * 1.5
@@ -3130,6 +3126,20 @@ on damage:
 		set {_pursuitCheck} to checkSlots(attacker,"Pursuit")
 		if {_pursuitCheck} is 1:
 			subtract 14 from {spdbuff.%victim%}
+		#Nihl
+		set {_skl} to checkSlots(victim,"Nihl")
+		if {_skl} is 1:
+			set {_nihlAttackerSPD} to ({spd.%attacker%} + {spdbuff.%attacker%)
+			set {_nihlVictimSPD} to ({spd.%victim%} + {spdbuff.%victim%})
+			subtract {_nihlAttackerSPD} from {spdbuff.%attacker%}
+			subtract {_nihlVictimSPD} from {spdbuff.%victim%}
+		else:
+			set {_skl} to checkSlots(attacker,"Nihl")
+			if {_skl} is 1:
+				set {_nihlAttackerSPD} to ({spd.%attacker%} + {spdbuff.%attacker%)
+				set {_nihlVictimSPD} to ({spd.%victim%} + {spdbuff.%victim%})
+				subtract {_nihlAttackerSPD} from {spdbuff.%attacker%}
+				subtract {_nihlVictimSPD} from {spdbuff.%victim%}
 		if {_magical} is 1:
 			#Special case for monsters
 			if {t_res.%victim%} is not set:
@@ -3229,6 +3239,9 @@ on damage:
 		#Pursuit perk clear debuff
 		if {_pursuitCheck} is 1:
 			add 14 to {spdbuff.%victim%}
+		if {_nihlCheck} is 1:
+			add {_nihlAttackerSPD} to {spdbuff.%attacker%}
+			add {_nihlVictimSPD} to {spdbuff.%victim%}
 		#Unbreakable
 		set {_sklcheck} to checkSlots(victim,"Unbreakable")
 		if {_sklcheck} is 1:
@@ -3309,16 +3322,6 @@ on damage:
 			else if {perdiff.%attacker%} is 8:
 				set damage to damage * 0.25
 		#Perks
-		#Nihl
-		set {_skl} to checkSlots(victim,"Nihl")
-		if {_skl} is 1:
-			if victim's health is more than (victim's maximum health * 0.5):
-				if victim's health - (final damage * 2) is less than 0.5:
-					cancel event
-					play sound "item.totem.use" with volume 1 and pitch 1 at victim for victim
-					send formatted "<light blue>Nihl was activated!" to the victim
-					push the attacker backwards at speed 1.5
-					apply regeneration 4 to the victim for 4 seconds
 		#Crushing Offense
 		set {_sklcheck} to checkSlots(attacker,"Crushing Offense")
 		if {_sklcheck} is 1:
@@ -4300,7 +4303,7 @@ on right click:
 			#EEEEEEEEEYAAAAAAAAAAAAAAAAAGH
 	#Shield Charge
 	if the lore of the player's offhand tool contains "Shield Charge":
-		if {shieldchargeCooldown.%player%} is not set:
+		if {t_shieldchargeCooldown.%player%} is not set:
 			play 20 (smoke with speed 0) at the player
 			play 20 (iron block break with speed 1) at the player
 			play sound "entity.blaze.shoot" with volume 1 and pitch 0.75 at the player
@@ -4308,14 +4311,14 @@ on right click:
 			loop 5 times:
 				push the player in horizontal direction of the player at speed 1
 				play sound "entity.minecart.riding" with volume 1 and pitch 1 at the player
-				add 5 to {strbuff.%player%}
-				add 5 to {_chargeBuff}
+				add 6 to {strbuff.%player%}
+				add 6 to {_chargeBuff}
 				wait 0.3 seconds
 			subtract {_chargeBuff} from {strbuff.%player%}
 			loop 10 times:
 				wait 1 second
 				subtract 1 from {shieldchargeCooldown.%player%}
-			clear {shieldchargeCooldown.%player%}
+			clear {t_shieldchargeCooldown.%player%}
 	#Capture
 	if the 4th line of the lore of the player's tool contains "Capture":
 		if player is sneaking:
@@ -4752,9 +4755,9 @@ on death:
 			if event is not cancelled:
 				add 1 to {deaths.%victim%}
 				set {lastDeath.%player%} to the victim's location
-				spawn 1 zombie at the victim's location
-				set {_xpLost} to ceil(victim's level ^ 0.45)
-				set {_moneyLost} to ceil(victim's balance * 0.1)
+				#spawn 1 zombie at the victim's location
+				set {_xpLost} to ceil(victim's level * 0.1)
+				set {_moneyLost} to ceil(victim's balance * 0.25)
 				subtract {_moneyLost} from the victim's balance
 				make victim execute command "/xp -%{_xpLost}%l"
 				send formatted "<light red>Lost %{_xpLost}% XP levels and %{_moneyLost}% gold." to the victim
