@@ -245,6 +245,7 @@ on rightclick with blaze rod:
 	if the name of the player's tool is "<yellow><bold>Magic Wand":
 		if {_checkClass} is 1:
 			if {spellcooldown.%player%} is not set:
+				set {t_allowRocketJump.%player%} to true
 				make the player shoot an arrow with speed 3
 				set metadata value "SPELL" of the last shot projectile to 1
 				if 7th line of the lore of the player's tool contains "Ember":
@@ -549,6 +550,8 @@ on rightclick with blaze rod:
 						set {_spelleffect1} to 25
 				set metadata value "SpellEffect1" of the last shot projectile to {_spelleffect1}
 				set metadata value "SpellEffect2" of the last shot projectile to {_spelleffect2}
+				wait 5 ticks
+				clear {t_allowRocketJump.%player%}
 			else:
 				send formatted "<red><bold>You must wait for your wand to recharge!"
 			
@@ -624,6 +627,6 @@ on projectile hit:
 			play 40 (glowstone break with speed 0) at the projectile
 		else if {_meta2} is 16:
 			play 40 (glowstone break with speed 0) at the projectile
-		wait 1 tick
+		wait 5 tick
 		delete projectile
 			

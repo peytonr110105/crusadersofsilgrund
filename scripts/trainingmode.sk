@@ -6,7 +6,7 @@ command /salindrum:
 			open chest with 2 rows named "<red>Salindrum Configuration" for the player
 			set slot 0 of the player's current inventory to 1 nether star named "<gold>Exit Salindrum" with lore "<white>Click to exit the training mode."
 			set slot 1 of the player's current inventory to 1 zombie spawn egg named "<white>Spawn Monsters" with lore "<white>Generate a variety of monsters to practice with."
-			if {quests.%player%::With Pride in Your Heart} is 999:
+			if {quests.%player%::Breaking the Ice} is 999:
 				set slot 2 of the player's current inventory to 1 iron sword named "<white>Test Skills" with lore "<white>Equip any unlocked skills for free."
 			else:
 				set slot 2 of the player's current inventory to 1 obsidian named "<light red>Locked" with lore "<white>Complete the quest ""With Pride in Your Heart"" to access this feature."
@@ -207,9 +207,13 @@ on food bar change:
 	if {sd.nohunger.%player%} is true:
 		increase the player's food level by 10
 		
-on damage of a player:
-	if {sd.invuln.%victim%} is true:
-		cancel event
+on damage:
+	if attacker is player:
+		if attacker's world is "Salindrum":
+			set damage to damage * {sd.outgoingmult.%attacker%}
+	else if victim is player:
+		if victim's world is "Salindrum":
+			set damage to damage * {sd.incomingmult.%victim%}
 		
 on inventory click:
 	#Room Selector
@@ -219,6 +223,8 @@ on inventory click:
 			set {sd.rewarp.%player%} to location of block at player
 			set {sdroom.%player%} to uncolored name of the clicked item
 			set {sdcash.%player%} to player's balance
+			set {sd.outgoingmult.%player%} to 1
+			set {sd.incomingmult.%player%} to 1
 			send "%{sdcash.%player%}%"
 			add 100000 to the player's balance
 			teleport the player to {sd.%{sdroom.%player%}%}
@@ -592,7 +598,7 @@ every 0.1 seconds:
 			increase the loop-player's food level by 10
 			
 function simulateSpecial(PLR: player, PCT: number, CAP: number) :: number:
-	set {_specialOdds} to (({skl.%{_PLR}%} + {sklbuff.%{_PLR}%}) ^ {_PCT})
+	set {_specialOdds} to floor((({skl.%{_PLR}%} + {sklbuff.%{_PLR}%}) * {_PCT}) ^ 0.95)
 	if {_specialOdds} is more than {_CAP}:
 		set {_specialOdds} to {_CAP}
 	return {_specialOdds}
@@ -1209,5 +1215,5 @@ command /runBattleSimulation:
 				add 2.5 to {_damage}
 		set {sd.calcSpecialDamage.%player%} to {_damage}
 		set {sd.calcMaxDamage.%player%} to ({_damage} + {_maxDamage}) * 2
-		set {sd.calcPlayerDoubleRange.%player%} to {spd.%player%} + {spdbuff.%player%} + {_spdbuff} - 7
-		set {sd.calcFoeDoubleRange.%player%} to {spd.%player%} + {spdbuff.%player%} + {_spdbuff} + 7
+		set {sd.calcPlayerDoubleRange.%player%} to {spd.%player%} + {spdbuff.%player%} + {_spdbuff} - 5
+		set {sd.calcFoeDoubleRange.%player%} to {spd.%player%} + {spdbuff.%player%} + {_spdbuff} + 5

@@ -88,7 +88,7 @@ on chat:
 			apply swiftness 5 to {ARNPC.%player%} for 1 days
 		cancel event
 	else if {ARBuildEditMag.%player%} is true:
-		set {mag.%{ARNPC.%player%}%} to the chat message
+		set {res.%{ARNPC.%player%}%} to the chat message
 		send "<light green>Set the NPC's MAG to %chat message%!"
 		clear {ARBuildEditMag.%player%}
 		cancel event

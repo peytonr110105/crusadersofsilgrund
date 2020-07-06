@@ -4,9 +4,13 @@ command /realism <number>:
 	trigger:
 		if arg 1 is 1:
 			set {realism.%player%} to 1
+			set {temperature.%player%} to 100
+			set {thirst.%player%} to 100
 			send "<gold>Realism mode enabled."
 		else:
 			set {realism.%player%} to 0
+			set {temperature.%player%} to 100
+			set {thirst.%player%} to 100
 			send "<gold>Realism mode disabled."
 
 function helmetType(PLR: player) :: number:
@@ -66,20 +70,21 @@ on respawn:
 	set {thirst.%player%} to 100
 
 on right click with stick:
-	if the name of the player's tool is "<bold>Thermometor":
-		set {_h.%player%} to helmetType(player)
-		set {_c.%player%} to chestplateType(player)
-		set {_l.%player%} to leggingType(player)
-		set {_b.%player%} to bootType(player)
-		add {_h.%player%} to {_exposure.%player%}
-		add {_c.%player%} to {_exposure.%player%}
-		add {_l.%player%} to {_exposure.%player%}
-		add {_b.%player%} to {_exposure.%player%}
-		send "<gray>Temperature: %{temperature.%player%}%"
-		send "<gray>Exposure: %{_exposure.%player%}%"
-	else:
-		send "<gray>This biome's temperature: %temperature of the targeted block%" to the player
-		send "<gray>Altitude: %altitude of the player%"
+	if {realism.%player%} is 1:
+		if the name of the player's tool is "<bold>Thermometor":
+			set {_h.%player%} to helmetType(player)
+			set {_c.%player%} to chestplateType(player)
+			set {_l.%player%} to leggingType(player)
+			set {_b.%player%} to bootType(player)
+			add {_h.%player%} to {_exposure.%player%}
+			add {_c.%player%} to {_exposure.%player%}
+			add {_l.%player%} to {_exposure.%player%}
+			add {_b.%player%} to {_exposure.%player%}
+			send "<gray>Temperature: %{temperature.%player%}%"
+			send "<gray>Exposure: %{_exposure.%player%}%"
+		else:
+			send "<gray>This biome's temperature: %temperature of the targeted block%" to the player
+			send "<gray>Altitude: %altitude of the player%"
 	
 on consume:
 	if {realism.%player%} is 1:
@@ -95,7 +100,7 @@ on consume:
 				if {thirst.%player%} is less than 99:
 					add 10 to {thirst.%player%}
 					send "<light blue>+10 Thirst"
-				chance of 50%:
+				chance of 25%:
 					apply poison 2 to the player for 1 second
 					send "<light red>The water had a strange taste..."
 			if {thirst.%player%} is more than 100:
@@ -132,7 +137,7 @@ on sprint toggle:
 	if {realism.%player%} is 1:
 		add 0.15 to {thirstexhaustion.%player%}
 	
-every 25 seconds:
+every 30 seconds:
 	loop all players:
 		if {realism.%loop-player%} is 1:
 			subtract ({thirstexhaustion.%loop-player%} / 2) + 0.5 from {thirst.%loop-player%}
@@ -150,7 +155,7 @@ every 25 seconds:
 			clear {thirstexhaustion.%loop-player%}
 	
 			
-every 7.5 seconds:
+every 7 seconds:
 	loop all players:
 		if {realism.%loop-player%} is 1:
 			set {_loc} to loop-player's location
@@ -165,14 +170,14 @@ every 7.5 seconds:
 			add {_l.%loop-player%} to {_exposure.%loop-player%}
 			add {_b.%loop-player%} to {_exposure.%loop-player%}
 			subtract 0.25 from {_localtemp.%loop-player%}
-			if weather in world "adventure" is rain:
+			if weather in loop-player's world is rain:
 				if temperature of the block at loop-player is less than 0.4:
 					subtract 0.4 from {_localtemp.%loop-player%}
 				else:
 					subtract 0.2 from {_localtemp.%loop-player%}
-			if weather in world "adventure" is thunder:
+			if weather in loop-player's world is thunder:
 				subtract 0.2 from {_localtemp.%loop-player%}
-			if world is "world_nether":
+			if loop-player's world is "world_nether":
 				add 0.2 to {_localtemp.%loop-player%}
 			if sunlight level at the loop-player is less than 9:
 				subtract 0.25 from {_localtemp.%loop-player%}
@@ -249,4 +254,10 @@ every 7.5 seconds:
 				set {temperature.%loop-player%} to 200
 			if the name of loop-player's tool is "<bold>Thermometor":
 				send "DEBUG | Local Temperature: %{_localtemp.%loop-player%}%" to loop-player
+				
+command /printCrushingBuff [<number=0>]:
+	trigger:
+		if arg 1 is not 0:
+			clear {crushing.%player%}
+		send "crushing skl buff: %{crushing.%player%}%" to the player
 			

@@ -184,6 +184,7 @@ on right click on an entity:
 			make target say "%{healedQuote.%target%}%"
 			if {_checkSlots} is 1:
 				apply regeneration 3 to the player for 2 seconds
+				heal the player by ceil((({res.%player%} + {resbuff.%player%} / 10) / 2) + 2)
 			set {_preHealHP} to the target's health
 			heal the target by ceil((({res.%player%} + {resbuff.%player%} / 10) / 2) + 2)
 			make server execute command "/xp %ceil(target's health - {_preHealHP})% %player%"
@@ -199,6 +200,7 @@ on right click on an entity:
 			make target say "%{healedQuote.%target%}%"
 			if {_checkSlots} is 1:
 				apply regeneration 3 to the player for 4 seconds
+				heal the player by ceil((({res.%player%} + {resbuff.%player%} / 10) / 2) + 2)
 			set {_preHealHP} to the target's health
 			heal the target by ceil((({res.%player%} + {resbuff.%player%} / 10) / 2) + 2)
 			make server execute command "/xp %ceil(target's health - {_preHealHP})% %player%"
@@ -214,6 +216,7 @@ on right click on an entity:
 			make target say "%{healedQuote.%target%}%"
 			if {_checkSlots} is 1:
 				apply regeneration 3 to the player for 6 seconds
+				heal the player by ceil((({res.%player%} + {resbuff.%player%} / 10) / 2) + 2)
 			set {_preHealHP} to the target's health
 			heal the target by ceil((({res.%player%} + {resbuff.%player%} / 10) / 2) + 2)
 			make server execute command "/xp %ceil(target's health - {_preHealHP})% %player%"
@@ -229,6 +232,7 @@ on right click on an entity:
 			make target say "%{healedQuote.%target%}%"
 			if {_checkSlots} is 1:
 				apply regeneration 4 to the player for 6 seconds
+				heal the player by ceil((({res.%player%} + {resbuff.%player%} / 10) / 2) + 2)
 			set {_preHealHP} to the target's health
 			heal the target by ceil((({res.%player%} + {resbuff.%player%} / 10) / 2) + 2)
 			make server execute command "/xp %ceil(target's health - {_preHealHP})% %player%"
@@ -244,6 +248,7 @@ on right click on an entity:
 			make target say "%{healedQuote.%target%}%"
 			if {_checkSlots} is 1:
 				apply regeneration 3 to the player for 8 seconds
+				heal the player by ceil((({res.%player%} + {resbuff.%player%} / 10) / 2) + 2)
 			set {_preHealHP} to the target's health
 			heal the target by ceil((({res.%player%} + {resbuff.%player%} / 10) / 2) + 2)
 			make server execute command "/xp %ceil(target's health - {_preHealHP})% %player%"
@@ -260,6 +265,7 @@ on right click on an entity:
 			make target say "%{healedQuote.%target%}%"
 			if {_checkSlots} is 1:
 				apply regeneration 3 to the player for 9 seconds
+				heal the player by ceil((({res.%player%} + {resbuff.%player%} / 10) / 2) + 2)
 			set {_preHealHP} to the target's health
 			heal the target by ceil((({res.%player%} + {resbuff.%player%} / 10) / 2) + 2)
 			make server execute command "/xp %ceil(target's health - {_preHealHP})% %player%"
@@ -275,6 +281,7 @@ on right click on an entity:
 			make target say "%{healedQuote.%target%}%"
 			if {_checkSlots} is 1:
 				apply regeneration 3 to the player for 11 seconds
+				heal the player by ceil((({res.%player%} + {resbuff.%player%} / 10) / 2) + 2)
 			set {_preHealHP} to the target's health
 			heal the target by ceil((({res.%player%} + {resbuff.%player%} / 10) / 2) + 2)
 			make server execute command "/xp %ceil(target's health - {_preHealHP})% %player%"
@@ -290,6 +297,7 @@ on right click on an entity:
 			make target say "%{healedQuote.%target%}%"
 			if {_checkSlots} is 1:
 				apply regeneration 3 to the player for 14 seconds
+				heal the player by ceil((({res.%player%} + {resbuff.%player%} / 10) / 2) + 2)
 			set {_preHealHP} to the target's health
 			heal the target by ceil((({res.%player%} + {resbuff.%player%} / 10) / 2) + 2)
 			make server execute command "/xp %ceil(target's health - {_preHealHP})% %player%"
@@ -306,6 +314,7 @@ on right click on an entity:
 			make target say "%{healedQuote.%target%}%"
 			if {_checkSlots} is 1:
 				apply regeneration 4 to the player for 15 seconds
+				heal the player by ceil((({res.%player%} + {resbuff.%player%} / 10) / 2) + 2)
 			set {_preHealHP} to the target's health
 			heal the target by ceil((({res.%player%} + {resbuff.%player%} / 10) / 2) + 2)
 			make server execute command "/xp %ceil(target's health - {_preHealHP})% %player%"
@@ -313,8 +322,8 @@ on right click on an entity:
 			if {prfWeaponType.%player%} is 5:
 				add 4.5 to {weaponrank.%player%::staves}
 			staffRank(player,target)
-	#Physic
-		else if the name of the player's tool contains "<yellow><bold>Physic":
+	#Restore
+		else if the name of the player's tool contains "<yellow><bold>Restore":
 			apply regeneration 3 to the target for 5 seconds
 			damage player's tool by 35
 			remove weakness from the target
@@ -325,6 +334,7 @@ on right click on an entity:
 			make target say "%{healedQuote.%target%}%"
 			if {_checkSlots} is 1:
 				apply regeneration 3 to the player for 5 seconds
+				heal the player by ceil((({res.%player%} + {resbuff.%player%} / 10) / 2) + 2)
 			set {_preHealHP} to the target's health
 			heal the target by ceil((({res.%player%} + {resbuff.%player%} / 10) / 2) + 2)
 			make server execute command "/xp %ceil(target's health - {_preHealHP})% %player%"
@@ -351,7 +361,7 @@ on right click on an entity:
 			staffRank(player,target)
 	#Hammerne
 		else if the name of the player's tool contains "<yellow><bold>Hammerne":
-			damage player's tool by 200
+			damage player's tool by 600
 			show wolf hearts on the target
 			make target execute command "/fix"
 			set {_preHealHP} to the target's health

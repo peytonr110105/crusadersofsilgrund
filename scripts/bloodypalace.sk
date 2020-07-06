@@ -1,148 +1,1163 @@
-#Re-implementation of MobArena, with support for most CoS features.
-#Variables Used:
-#{BPArenas::*} List of arenas.
-#{currentArena.%player%} Name of the arena being played
-#{arena.x.mobspawns::*} Location of each mob spawner.
-#{arena.x.miscWarps::Entry/Exit/Other} Extra memory for warping players
-#{arena.x.spawnpoints::*} Locations for player spawns. If more than 1 is defined, players will be randomly spawned in each location.
-#{arena.x.playarea} WorldEdit region, defines playable area.
-#{arena.x.rewards.waveF::*}, where F is any integer. Rewards to be given out after death, dependent on progress through the arena.
-#{arena.x.mobsleft} Number of mobs left to be killed.
-#{arena.x.players::*} Players currently playing in the arena
-#{arena.x.isPlayable} BOOLEAN: Can this arena be played?
-#{arena.x.waveF::mobtype}, where F is any integer, and mobtype is any valid monster. Defines how many mobs to spawn, and which types to spawn.
-#{arena.x.chests::*} Location of loot chests. Index determines the chest's ID, and value determines where that chest is located.
-#{arena.x.chestLoot::Randomize?/Chest ID} Determines what to place inside each chest ID. If the Randomize index is set to true, the inventories of each chest will be randomized based on the items registered.
-#{arena.x.currentWave} = X, where X is any integer. Defines the current wave for the arena.
-#{arena.x.difficulty}:
-#1 - Easy, Mob levels reduced by 10. Rewards are also halved.
-#2 - Normal. No changes.
-#3 - Hard, Mob levels increased by 15. Rewards increased by 1.5x.
-#4 - Lunatic, Mob levels increased by 30. Rewards increased by 3x.
+#Bloody Palace style game-mode.
+#Fight endless waves of foes that get progressively stronger.
 
-
-#Admin command for configuring & building arenas.
-command /bpbuild [<text="done">]:
+#Bloody Palace Configuration Command
+#Arg 1 - Palace Name
+#Arg 2 - Operation
+#Arg 3 - Additional Argument
+command /admin_bpconfig <text> <text> [<number=0>]:
 	trigger:
-		#Enable BP Build mode
-		if {BPBuildMode.%player%} is not set:
-			if arg 1 is not "done":
-				send "<gold>Entered Bloody Palace build mode!"
-				set the player's game mode to creative
-				set {BPBuildMode.%player%} to arg 1
-				clear {BPBackup.%player%::*}
-				loop all items in player's inventory:
-					add loop-item to {BPBackup.%player%::*}
-				clear the player's inventory
-				set {BPBuildMode.SpawnType.%player%} to 0
-				give 1 carrot on a stick named "<white><bold>[BP] Region Maker" with lore "<white>Left-click: Mark point 1","<white>Right-click: Mark point 2","<white>Use the /rg create command to define the region.","<white>For simplicity, set the region name to the same name as the arena." to the player
-				give 1 diamond hoe named "<white><bold>[BP] Mark as Loot Chest" with lore "<white>Left-click to mark a chest as a loot chest.","<white>Sneak + left-click to remove the loot chest.","<white>Right-click to update the loot inside the chest." to the player
-				give 1 iron hoe named "<white><bold>[BP] Set Spawns" with lore "<white>Right-click to mark your position as a spawn point.", "<white>Left-click to cycle between spawn types.", "<white>Sneak + right-click to clear a spawn point.","<white>Spawnpoint Type: Arena Spawn" to the player
-				give 1 iron sword named "<white><bold>[BP] Set Monster Spawnpoint" with lore "<white>Right-click to mark the block as a monster spawnpoint.", "<white>Left-click to remove the spawnpoint.","<gold>Monster spawnpoints will be highlighted when holding this tool." to the player
-		else:
-			clear the player's inventory
-			clear {BPBuildMode.%player%}
-			loop {BPBackup.%player%::*}:
-				give loop-value to the player
-			set the player's game mode to survival
-			send "<gold>Exited BP Build Mode."
-			
-#Defines additional information for an arena.
-command /bpdefine <text> <text> <number> <number>:
+		if arg 2 is "setMobSpawn":
+			add the player's location to {bp_mapconfig.%arg 1%.spawns::*}
+			send formatted "<gold>Added %player's location% to the spawn list for the %arg 1% palace."
+		else if arg 2 is "delMobSpawn":
+			loop {bp_mapconfig.%arg 1%.spawns::*}:
+				if player's location is loop-value:
+					clear {bp_mapconfig.%arg 1%.spawns::%loop-index%}
+					send formatted "<gold>Removed %player's location% from %arg 1%'s spawn list."
+		else if arg 2 is "listMobSpawns":
+			loop {bp_mapconfig.%arg 1%.spawns::*}:
+				send "%loop-index% - %loop-value%"
+		#If floor limit is set to -1, the palace will go on infinitely.
+		else if arg 2 is "setFloorLimit":
+			set {bp_mapconfig.%arg 1%::Floor Limit} to arg 3
+			send formatted "<gold>Set the floor limit for the %arg 1% palace to %arg 3%."
+		#Clear mob spawn points
+		else if arg 2 is "clearMobSpawns":
+			clear {bp_mapconfig.%arg 1%.spawns::*}
+			send formatted "<gold>Deleted all spawnpoints for the %arg 1% palace."
+		#Set a player spawn point (These will be randomly selected)
+		else if arg 2 is "setPlayerSpawn":
+			add player's location to {bp_mapconfig.%arg 1%.playerspawns::*}
+			send formatted "<gold>Added %player's location% to the list of player spawnpoints for the %arg 1% palace."
+		#Delete a player spawn point
+		else if arg 2 is "delPlayerSpawn":
+			loop {bp_mapconfig.%arg 1%.playerspawns::*}:
+				if player's location is loop-value:
+					clear {bp_mapconfig.%arg 1%.spawns::%loop-index%}
+					send formatted "<gold>Removed %player's location% from %arg 1%'s player spawn list."
+		#Clear all player spawn points
+		else if arg 2 is "clearPlayerSpawns":
+			clear {bp_mapconfig.%arg 1%.playerspawns::*}
+			send formatted "<gold>Cleared all player spawnpoints for the %arg 1% palace."
+		#Limit the number of mobs that can be on the playing field at one time. Set to -1 to remove the limit.
+		else if arg 2 is "setMobQuota":
+			set {bp_mapconfig.%arg 1%::Mob Quota} to arg 3
+			send formatted "<gold>Mob spawns will be limited to %arg 3% on the playing area at once. (Arena: %arg 1%)"
+		#Set the maximum number of mobs that can appear in a given wave. Set to -1 to remove the limit.
+		else if arg 2 is "setMobMaxQuota":
+			set {bp_mapconfig.%arg 1%::Mob Max Quota} to arg 3
+			send formatted "<gold>Mob spawns will be capped to a total of %arg 3% for each wave. (Arena: %arg 1%)"
+		#Maps should generally not let the player exit the arena. This acts as a failsafe to catch players that manage to escape.
+		else if arg 2 is "setMapRadius":
+			set {bp_mapconfig.%arg 1%::Map Radius} to arg 3
+			send formatted "<gold>Limiting player travel to a %arg 3% block radius from the palace's center."
+		#Set the arena's center. Used for the player clip failsafe.
+		else if arg 2 is "setMapCenter":
+			set {bp_mapconfig.%arg 1%::Map Center} to player's location
+			send formatted "<gold>Set the center of the palace to %player's location%."
+		#Set the map's availability (0 = unplayable, 1 = playable)
+		else if arg 2 is "setAvailability":
+			if arg 3 is 0:
+				remove arg 1 from {bp_openMaps::*}
+				send "<gold>Removed %arg 1% from the list of available Bloody Palace maps."
+			else if arg 3 is 1:
+				add arg 1 to {bp_openMaps::*}
+				send "<gold>Added %arg 1% to the list of available Bloody Palace maps."
+
+#Starts a game of Bloody Palace on the specified map.
+command /runbp <text>:
 	trigger:
-		if {BPBuildMode.%player%} is set:
-			if arg 1 is "help":
-				send "<gold>BPDefine Help:"
-				send "<gold>Wave - MobType, Amount, Wave Number"
-				send "<gold>Rewards - ItemType, Amount, Wave Given"
-				send "<gold>ChestLoot - Randomize, True/False, Any Integer"
-			else if arg 1 is "waves":
-				set {arena.%{BPBuildMode.%player%}%.wave%arg 4%::%arg 2%} to arg 3
-				send "Updated %arg 2% quota."
-			else if arg 1 is "rewards":
-				set {arena.%{BPBuildMode.%player%}%.rewards.wave%arg 4%::%arg 2%} to arg 3
-				send "Arena will now give out %arg 3% %arg 2% on wave %arg 4%."
-			else if arg 1 is "ChestLoot":
-				set {arena.%{BPBuildMode.%player%}%.chestLoot::Randomize} to arg 3
-				send "Updated arena chest randomization."
-		else:
-			send "<red>Must be in BP Build Mode to define arena settings!"
-			
-#Prevent breaking blocks with BP Build Tools
-#on block break:
-#	if the name of the player's tool contains "[BP]":
-#		cancel event
-
-on left click:
-	if the name of the player's tool contains "Set Monster Spawnpoint":
-		loop {arena.%{BPBuildMode.%player%}%.mobspawns::*}:
-			if location of block at player is loop-value:
-				send "Removed %loop-value% from the mob spawnpoint list." to the player
-				clear {arena.%{BPBuildMode.%player%}%.mobspawns::%loop-index%}
-				set {_ptfound} to true
-				exit 1 loop
-		if {_ptfound} is not true:
-			send "<light red>No spawnpoint found."
-	else if the name of the player's tool is "<white><bold>[BP] Set Spawns":
-		if {BPBuildMode.SpawnType.%player%} is 0:
-			set {BpBuildMode.SpawnType.%player%} to 1
-			set the 4th line of the lore of the player's tool to "<white>Spawnpoint Type: Lobby Spawn"
-			send "<gold>Change to: Lobby Spawn"
-		else if {BpBuildMode.SpawnType.%player%} is 1:
-			set {BpBuildMode.SpawnType.%player%} to 2
-			set the 4th line of the lore of the player's tool to "<white>Spawnpoint Type: Exit Spawn"
-			send "<gold>Change to: Exit Spawn"
-		
-every 0.5 seconds in world "Salindrum":
-	loop all players:
-		#broadcast "%{BPBuildMode.%loop-player%}%"
-		#broadcast "test: %{arena.%{BPBuildMode.%loop-player%}%.mobspawns::*}%"
-		#loop {arena.%{BPBuildMode.%loop-player%}%.mobspawns::*}:
-			#broadcast "test: %loop-value-2%"
-		if the name of the loop-player's tool contains "Set Monster Spawnpoint":
-			loop {arena.%{BPBuildMode.%loop-player%}%.mobspawns::*}:
-				#broadcast "%loop-value-2%"
-				play 2 (mob spawner flames with speed 1) at loop-value-2
-				
-on right click:
-	if the name of the player's tool contains "Set Monster Spawnpoint":
-		if {BPBuildMode.%player%} is set:
-			add location of block at player to {arena.%{BPBuildMode.%player%}%.mobspawns::*}
-			send "<gold>Added %location of block at the player% to the list of mob spawn locations."
-	else if the name of the player's tool is "<white><bold>[BP] Set Spawns":
-
-on damage of a player:
-	if final damage is more than victim's health:
-		if {currentArena.%victim%} is set:
-			cancel event
-			teleport the victim to {arena.%{currentArena.%victim%}%.miscWarps::Exit}
-			send "<light red>You were defeated..." to the victim
-			send "<gold>Waves survived: %{arena.%{currentArena.%victim%}%.currentWave} - 1%"
-			send "<gold>Money Earned: $%({arena.%{currentArena.%victim%}%.currentWave} - 1) * 5%"
-			send "<gold>EXP Earned: +%({arena.%{currentArena.%victim%}%.currentWave} - 1) * 2.5%"
-			remove the victim from {arena.%{currentArena.%victim%}%.players::*}
-			subtract 1 from {arena.%{currentArena.%victim%}%.players::total}
-			if {arena.%{currentArena.%victim%}%.players::total} is 0:
-				loop all monsters in radius 100 of the victim:
-					kill the loop-monster
-				clear {arena.%{currentArena.%victim%}%.players::*}
-				clear {arena.%{currentArena.%victim%}%.currentWave}
-				set {arena.%{currentArena.%victim%}%.difficulty} to 2
-				clear {arena.%{currentArena.%victim%}%.mobsleft}
-				broadcast "<white><bold>%{currentArena.%victim%}% has finished!"
+		#Unlike Defend Throne missions, the player already has the arena's attributes via {bp_lobbysettings.x::Map Selected}
+		#Cancel game if map is improperly configured
+		loop {bp_mapconfig.%arg 1%.playerspawns::*}:
+			add 1 to {_RandomSpawnpointCount}
+		if {_RandomSpawnpointCount} is less than 4:
+			send "<light red>Map is improperly configured! Cannot start game."
+		clear {t_bp_SpawnpointsTaken.%arg 1%::*}
+		#Spawn players in random positions
+		loop {bp_lobbyplayers.%{bp_currentlobby.%player%}%::*}:
+			set {t_bpReturnLocation.%loop-value%} to loop-value's location
+			wait 1 tick
+			set {_Spawnpoint} to a random integer from 1 to {_RandomSpawnpointCount}
+			#Prevents players from being spawned inside of each other. Lobbies can never exceed four players, so maps need a baseline of four possible spawnpoints.
+			if {t_bp_SpawnpointsTaken.%arg 1%::%{_Spawnpoint}%} is not set:
+				teleport the player to {bp_mapconfig.%arg 1%.playerspawns::%{_Spawnpoint}%}
+				set {t_bp_SpawnpointsTaken.%arg 1%::%{_Spawnpoint}%} to true
+			#If a spawnpoint isn't found, keep checking random spawnpoints until we get one.
 			else:
-				loop {arena.%{currentArena.%victim%}%.players::*}:
-					send "<light red><bold>%victim% was slain!" to loop-value
-					send "<light red><bold>Only %{arena.%{currentArena.%victim%}%.players::total}% players left." to loop-value
-			clear {currentArena.%victim%}
-			
+				while {t_foundSpawnpointBP.%loop-value%} is not set:
+					set {_Spawnpoint} to a random integer from 1 to {_RandomSpawnpointCount}
+					#Prevents players from being spawned inside of each other. Lobbies can never exceed four players, so maps need a baseline of four possible spawnpoints.
+					if {t_bp_SpawnpointsTaken.%arg 1%::%{_Spawnpoint}%} is not set:
+						teleport the player to {bp_mapconfig.%arg 1%.playerspawns::%{_Spawnpoint}%}
+						set {t_bp_SpawnpointsTaken.%arg 1%::%{_Spawnpoint}%} to true
+						set {t_foundSpawnpointBP.%loop-value%} to true
+						exit 1 loop
+		#Save player inventories
+		loop {bp_lobbyplayers.%{bp_currentlobby.%player%}%::*}:
+			loop all items in loop-value's inventory:
+				add loop-item to {t_bpitembackup.%loop-value-1%::*}
+			set {t_bpitembackup.%loop-value-1%::Helmet} to loop-value-1's helmet
+			set {t_bpitembackup.%loop-value-1%::Chestplate} to loop-value-1's chestplate
+			set {t_bpitembackup.%loop-value-1%::Leggings} to loop-value-1's leggings
+			set {t_bpitembackup.%loop-value-1%::Boots} to loop-value-1's boots
+		#Only run the core game logic like waves if the player is the lobby leader; other players should be treated as extras.
+		if {bp_lobbysettings.%{bp_currentlobby.%player%}%::Leader} is the player:
+			set {_waveNumber} to 0
+			set {t_playingBP.%player%} to true
+			loop {bp_mapconfig.%arg 1%.spawns::*}:
+				add 1 to {t_spawnpointcount.%arg 1%}
+			#Get player levels and player count
+			loop {bp_lobbyplayers.%{bp_currentlobby.%player%}%::*}:
+				#Get avg level of all players in lobby, and increase mob levels based on floor number
+				add {lvl.%loop-value%} to {t_avgPlayerLVL.%arg 1%}
+				add 1 to {_players}
+			while {t_playingBP.%player%} is set:
+				#Failsafe to kill the BP game logic
+				if {t_playingBP.%Player%} is not set:
+					exit 1 loop
+				#Start the next wave if all mobs have been slain
+				add 1 to {_waveNumber}
+				set {t_avgLVL.%arg 1%} to floor(({t_avgPlayerLVL.%arg 1%} / {_players}) + ({_waveNumber} / 2))
+				loop {bp_lobbyplayers.%{bp_currentlobby.%player%}%::*}:
+					#Notify players of the next floor approaching
+					send title "<gold>--==Floor %{_waveNumber}%==--" with subtitle "Mob Level: %{t_avgLVL.%arg 1%}%" to loop-value for 4.75 seconds with fade in 0.25 seconds and fadeout 1 seconds
+					#Increment number of waves survived
+					add 1 to {t_bp_floorssurvived.%loop-value%}
+				#Mob spawning logic
+				#Calculate the number of mobs to spawn on this floor (1.5x modifier for each additional player)
+				set {t_mobsToSpawn.%arg 1%} to ceil((({_waveNumber} * 2) + 4) * (({_players} + 1) / 2))
+				#Cap number of mobs for the wave to the map-defined limit
+				if {t_mobsToSpawn.%arg 1%} is more than {bp_mapconfig.%arg 1%::Mob Max Quota}:
+					set {t_mobsToSpawn.%arg 1%} to {bp_mapconfig.%arg 1%::Mob Max Quota}
+				#Wait for the floor notification to dissapear before spawning mobs
+				wait 6 seconds
+				broadcast "Mobs this wave: %{t_mobsToSpawn.%arg 1%}%"
+				set {t_mobsAlive.%arg 1%} to 0
+				loop {t_mobsToSpawn.%arg 1%} times:
+					if {t_mobsAlive.%arg 1%} is less than or equal to {bp_mapconfig.%arg 1%::Mob Quota}:
+						set {_randomMobSpawnpoint} to a random integer from 1 to {t_spawnpointcount.%arg 1%}
+						set {_randomMobSpawnpoint} to 1
+						set {_randomMobType} to a random integer from 0 to 7
+						#Zombies
+						if {_randomMobType} is 0:
+							spawn 1 zombie at {bp_mapconfig.%arg 1%.spawns::%{_randomMobSpawnpoint}%}
+							set {_mob} to the last spawned entity
+							set {t_lvl.%{_mob}%} to {t_avgLVL.%arg 1%}
+							#This tag keeps track of what arena this mob belongs to, so that the number of mobs alive for the current wave can be adjusted when it dies.
+							set {t_isBPMob.%{_mob}%} to arg 1
+							add 1 to {t_mobsAlive.%arg 1%}
+							humanoidEquipmentHandler({_mob},{t_lvl.%{_mob}%},0)
+							if {t_lvl.%{_mob}%} is more than 20:
+								chance of (({t_lvl.%{_mob}%} - 19) / 4)%:
+									set metadata value "isMimic" of {_mob} to 1
+								else:
+									chance of (({t_lvl.%{_mob}%} - 29) / 4)%:
+										set metadata value "isMalediction" of {_mob} to 1
+									else:
+										chance of (({t_lvl.%{_mob}%} - 39) / 4)%:
+											set metadata value "isRegret" of {_mob} to 1
+										else:
+											chance of (({t_lvl.%{_mob}%} - 69) / 4)%:
+												set metadata value "isZPurgia" of {_mob} to 1
+						#Skeletons
+						else if {_randomMobType} is 1:
+							spawn 1 skeleton at {bp_mapconfig.%arg 1%.spawns::%{_randomMobSpawnpoint}%}
+							set {_mob} to the last spawned entity
+							set {t_lvl.%{_mob}%} to {t_avgLVL.%arg 1%}
+							set {t_isBPMob.%{_mob}%} to arg 1
+							add 1 to {t_mobsAlive.%arg 1%}
+							humanoidEquipmentHandler({_mob},{t_lvl.%{_mob}%},1)
+							if {t_lvl.%{_mob}%} is more than 20:
+								chance of (({t_lvl.%{_mob}%} - 19) / 4)%:
+									set metadata value "isMimic" of {_mob} to 1
+								else:
+									chance of (({t_lvl.%{_mob}%} - 29) / 4)%:
+										set metadata value "isMalediction" of {_mob} to 1
+									else:
+										chance of (({t_lvl.%{_mob}%} - 39) / 4)%:
+											set metadata value "isEnrapture" of {_mob} to 1
+										else:
+											chance of (({t_lvl.%{_mob}%} - 69) / 4)%:
+												set metadata value "isSPurgia" of {_mob} to 1
+						#Creepers
+						else if {_randomMobType} is 2:
+							spawn 1 creeper at {bp_mapconfig.%arg 1%.spawns::%{_randomMobSpawnpoint}%}
+							set {_mob} to the last spawned entity
+							set {t_lvl.%{_mob}%} to {t_avgLVL.%arg 1%}
+							set {t_isBPMob.%{_mob}%} to arg 1
+							add 1 to {t_mobsAlive.%arg 1%}
+							if {t_lvl.%{_mob}%} is more than 20:
+								chance of (({t_lvl.%{_mob}%} - 19) / 4)%:
+									set metadata value "isSkulker" of {_mob} to 1
+								else:
+									chance of (({t_lvl.%{_mob}%} - 29) / 4)%:
+										set metadata value "isStalker" of {_mob} to 1
+									else:
+										chance of (({t_lvl.%{_mob}%} - 39) / 4)%:
+											set metadata value "isMalediction" of {_mob} to 1
+										else:
+											chance of (({t_lvl.%{_mob}%} - 69) / 4)%:
+												set metadata value "isCPurgia" of {_mob} to 1
+						#Zombie Pigman
+						else if {_randomMobType} is 3:
+							spawn 1 zombie pigman at {bp_mapconfig.%arg 1%.spawns::%{_randomMobSpawnpoint}%}
+							set {_mob} to the last spawned entity
+							set {t_lvl.%{_mob}%} to {t_avgLVL.%arg 1%}
+							set {t_isBPMob.%{_mob}%} to arg 1
+							add 1 to {t_mobsAlive.%arg 1%}
+							humanoidEquipmentHandler({_mob},{t_lvl.%{_mob}%},0)
+							if {t_lvl.%{_mob}%} is more than 20:
+								chance of (({t_lvl.%{_mob}%} - 19) / 4)%:
+									set metadata value "isMimic" of {_mob} to 1
+								else:
+									chance of (({t_lvl.%{_mob}%} - 29) / 4)%:
+										set metadata value "isMalediction" of {_mob} to 1
+									else:
+										chance of (({t_lvl.%{_mob}%} - 39) / 4)%:
+											set metadata value "isRegret" of {_mob} to 1
+										else:
+											chance of (({t_lvl.%{_mob}%} - 69) / 4)%:
+												set metadata value "isZPPurgia" of {_mob} to 1
+						#Cave Spider
+						else if {_randomMobType} is 4:
+							spawn 1 cave spider at {bp_mapconfig.%arg 1%.spawns::%{_randomMobSpawnpoint}%}
+							set {_mob} to the last spawned entity
+							set {t_lvl.%{_mob}%} to {t_avgLVL.%arg 1%}
+							set {t_isBPMob.%{_mob}%} to arg 1
+							add 1 to {t_mobsAlive.%arg 1%}
+							if {t_lvl.%{_mob}%} is more than 20:
+								chance of (({t_lvl.%{_mob}%} - 19) / 4)%:
+									set metadata value "isVenomSpider" of {_mob} to 1
+								else:
+									chance of (({t_lvl.%{_mob}%} - 29) / 4)%:
+										set metadata value "isMalediction" of {_mob} to 1
+									else:
+										chance of (({t_lvl.%{_mob}%} - 39) / 4)%:
+											set metadata value "isShadow" of {_mob} to 1
+						#Wither Skeleton
+						else if {_randomMobType} is 5:
+							spawn 1 wither skeleton at {bp_mapconfig.%arg 1%.spawns::%{_randomMobSpawnpoint}%}
+							set {_mob} to the last spawned entity
+							set {t_lvl.%{_mob}%} to {t_avgLVL.%arg 1%}
+							set {t_isBPMob.%{_mob}%} to arg 1
+							add 1 to {t_mobsAlive.%arg 1%}
+							humanoidEquipmentHandler({_mob},{t_lvl.%{_mob}%},0)
+							if {t_lvl.%{_mob}%} is more than 20:
+								chance of (({t_lvl.%{_mob}%} - 19) / 4)%:
+									set metadata value "isMimic" of {_mob} to 1
+								else:
+									chance of (({t_lvl.%{_mob}%} - 29) / 4)%:
+										set metadata value "isMalediction" of {_mob} to 1
+									else:
+										chance of (({t_lvl.%{_mob}%} - 39) / 4)%:
+											set metadata value "isRegret" of {_mob} to 1
+										else:
+											chance of (({t_lvl.%{_mob}%} - 69) / 4)%:
+												set metadata value "isZPurgia" of {_mob} to 1
+						#Spiders
+						else if {_randomMobType} is 6:
+							spawn 1 spider at {bp_mapconfig.%arg 1%.spawns::%{_randomMobSpawnpoint}%}
+							set {_mob} to the last spawned entity
+							set {t_lvl.%{_mob}%} to {t_avgLVL.%arg 1%}
+							set {t_isBPMob.%{_mob}%} to arg 1
+							add 1 to {t_mobsAlive.%arg 1%}
+							if {t_lvl.%{_mob}%} is more than 20:
+								chance of (({t_lvl.%{_mob}%} - 19) / 4)%:
+									set metadata value "isVenomSpider" of {_mob} to 1
+								else:
+									chance of (({t_lvl.%{_mob}%} - 29) / 4)%:
+										set metadata value "isShadow" of {_mob} to 1
+									else:
+										chance of (({t_lvl.%{_mob}%} - 39) / 4)%:
+											set metadata value "isMalediction" of {_mob} to 1
+						#Ranged Wither Skeletons
+						else if {_randomMobType} is 7:
+							spawn 1 wither skeleton at {bp_mapconfig.%arg 1%.spawns::%{_randomMobSpawnpoint}%}
+							set {_mob} to the last spawned entity
+							set {t_lvl.%{_mob}%} to {t_avgLVL.%arg 1%}
+							set {t_isBPMob.%{_mob}%} to arg 1
+							add 1 to {t_mobsAlive.%arg 1%}
+							humanoidEquipmentHandler({_mob},{t_lvl.%{_mob}%},1)
+							if {t_lvl.%{_mob}%} is more than 20:
+								chance of (({t_lvl.%{_mob}%} - 19) / 4)%:
+									set metadata value "isMimic" of {_mob} to 1
+								else:
+									chance of (({t_lvl.%{_mob}%} - 29) / 4)%:
+										set metadata value "isMalediction" of {_mob} to 1
+									else:
+										chance of (({t_lvl.%{_mob}%} - 39) / 4)%:
+											set metadata value "isEnrapture" of {_mob} to 1
+										else:
+											chance of (({t_lvl.%{_mob}%} - 69) / 4)%:
+												set metadata value "isSPurgia" of {_mob} to 1
+						#Set mob stats based on level
+						loop {t_lvl.%{_mob}%} times:
+							#add 1 to {t_str.%{_mob}%}
+							chance of 80%:
+								add 1 to {t_str.%{_mob}%}
+								chance of 35%:
+									add 1 to {t_str.%{_mob}%}
+							#add 1 to {t_def.%{_mob}%}
+							chance of 65%:
+								add 1 to {t_def.%{_mob}%}
+								chance of 25%:
+									add 1 to {t_def.%{_mob}%}
+							#add 1 to {t_spd.%{_mob}%}
+							chance of 65%:
+								add 1 to {t_spd.%{_mob}%}
+								chance of 30%:
+									add 1 to {t_spd.%{_mob}%}
+							#add 1 to {t_skl.%{_mob}%}
+							chance of 70%:
+								add 1 to {t_skl.%{_mob}%}
+								chance of 40%:
+									add 1 to {t_skl.%{_mob}%}
+							#add 1 to {t_res.%{_mob}%}
+							chance of 65%:
+								add 1 to {t_res.%{_mob}%}
+								chance of 25%:
+									add 1 to {t_res.%{_mob}%}
+							add 0.5 to {_mob}'s maximum health
+							chance of 80%:
+								add 0.5 to {_mob}'s maximum health
+								chance of 30%:
+									add 0.5 to {_mob}'s maximum health
+						heal {_mob} by 9999
+					broadcast "Mobs Alive: %{t_mobsAlive.%arg 1%}%"
+				#Update the number of mobs to spawn in case there are more mobs on the floor than the map allows to be spawned at one time
+				subtract {t_mobsAlive.%arg 1%} from {t_mobsToSpawn.%arg 1%}
+				#Pause until all mobs have been slain
+				while {t_mobsAlive.%arg 1%} is more than 0:
+					wait 1 tick
+					if {t_playingBP.%player%} is not set:
+						exit 2 loops
 
-#End-user arena command.
-#arg 1 - defines option (join/leave/help/etc...)
-#arg 2 - additional argument (arena name, vote type, etc...)
-#arg 3 - callvote argument (any valid text for that vote)
-command /bp <text> <text> [<text="none">]:
-	description: A custom implementation of MobArena that interfaces with most standard CoS features.
-	usage: /bp help
+#Monster deaths in Bloody Palace
+on death of a monster:
+	if true:
+		#If the monster killed belongs to a bloody palace session, decrement 1 from the total number of monsters alive for that session.
+		if {t_isBPMob.%victim%} is set:
+			broadcast "BP mob slain! (%{t_isBPMob.%victim%}%)"
+			subtract 1 from {t_mobsAlive.%{t_isBPMob.%victim%}%}
+			broadcast "Mobs Left: %{t_mobsAlive.%{t_isBPMob.%victim%}%}%"
+			add 1 to {t_bp_mobkills.%attacker%}
+			if {t_mobsToSpawn.%{t_isBPMob.%victim%}%} is more than 0:
+				set {_randomMobSpawnpoint} to a random integer from 1 to {t_spawnpointcount.%{t_isBPMob.%victim%}%}
+				set {_randomMobType} to a random integer from 0 to 7
+				#Zombies
+				if {_randomMobType} is 0:
+					spawn 1 zombie at {bp_mapconfig.%{t_isBPMob.%victim%}%.spawns::%{_randomMobSpawnpoint}%}
+					set {_mob} to the last spawned entity
+					set {t_lvl.%{_mob}%} to {t_avgLVL.%{t_isBPMob.%victim%}%}
+					humanoidEquipmentHandler({_mob},{t_lvl.%{_mob}%},0)
+					if {t_lvl.%{_mob}%} is more than 20:
+						chance of (({t_lvl.%{_mob}%} - 19) / 4)%:
+							set metadata value "isMimic" of {_mob} to 1
+						else:
+							chance of (({t_lvl.%{_mob}%} - 29) / 4)%:
+								set metadata value "isMalediction" of {_mob} to 1
+							else:
+								chance of (({t_lvl.%{_mob}%} - 39) / 4)%:
+									set metadata value "isRegret" of {_mob} to 1
+								else:
+									chance of (({t_lvl.%{_mob}%} - 69) / 4)%:
+										set metadata value "isZPurgia" of {_mob} to 1
+				#Skeletons
+				else if {_randomMobType} is 1:
+					spawn 1 skeleton at {bp_mapconfig.%{t_isBPMob.%victim%}%.spawns::%{_randomMobSpawnpoint}%}
+					set {_mob} to the last spawned entity
+					set {t_lvl.%{_mob}%} to {t_avgLVL.%{t_isBPMob.%victim%}%}
+					humanoidEquipmentHandler({_mob},{t_lvl.%{_mob}%},1)
+					if {t_lvl.%{_mob}%} is more than 20:
+						chance of (({t_lvl.%{_mob}%} - 19) / 4)%:
+							set metadata value "isMimic" of {_mob} to 1
+						else:
+							chance of (({t_lvl.%{_mob}%} - 29) / 4)%:
+								set metadata value "isMalediction" of {_mob} to 1
+							else:
+								chance of (({t_lvl.%{_mob}%} - 39) / 4)%:
+									set metadata value "isEnrapture" of {_mob} to 1
+								else:
+									chance of (({t_lvl.%{_mob}%} - 69) / 4)%:
+										set metadata value "isSPurgia" of {_mob} to 1
+				#Creepers
+				else if {_randomMobType} is 2:
+					spawn 1 creeper at {bp_mapconfig.%{t_isBPMob.%victim%}%.spawns::%{_randomMobSpawnpoint}%}
+					set {_mob} to the last spawned entity
+					set {t_lvl.%{_mob}%} to {t_avgLVL.%{t_isBPMob.%victim%}%}
+					if {t_lvl.%{_mob}%} is more than 20:
+						chance of (({t_lvl.%{_mob}%} - 19) / 4)%:
+							set metadata value "isSkulker" of {_mob} to 1
+						else:
+							chance of (({t_lvl.%{_mob}%} - 29) / 4)%:
+								set metadata value "isStalker" of {_mob} to 1
+							else:
+								chance of (({t_lvl.%{_mob}%} - 39) / 4)%:
+									set metadata value "isMalediction" of {_mob} to 1
+								else:
+									chance of (({t_lvl.%{_mob}%} - 69) / 4)%:
+										set metadata value "isCPurgia" of {_mob} to 1
+				#Zombie Pigman
+				else if {_randomMobType} is 3:
+					spawn 1 zombie pigman at {bp_mapconfig.%{t_isBPMob.%victim%}%.spawns::%{_randomMobSpawnpoint}%}
+					set {_mob} to the last spawned entity
+					set {t_lvl.%{_mob}%} to {t_avgLVL.%{t_isBPMob.%victim%}%}
+					humanoidEquipmentHandler({_mob},{t_lvl.%{_mob}%},0)
+					if {t_lvl.%{_mob}%} is more than 20:
+						chance of (({t_lvl.%{_mob}%} - 19) / 4)%:
+							set metadata value "isMimic" of {_mob} to 1
+						else:
+							chance of (({t_lvl.%{_mob}%} - 29) / 4)%:
+								set metadata value "isMalediction" of {_mob} to 1
+							else:
+								chance of (({t_lvl.%{_mob}%} - 39) / 4)%:
+									set metadata value "isRegret" of {_mob} to 1
+								else:
+									chance of (({t_lvl.%{_mob}%} - 69) / 4)%:
+										set metadata value "isZPPurgia" of {_mob} to 1
+				#Endermen
+				else if {_randomMobType} is 4:
+					spawn 1 cave spider at {bp_mapconfig.%{t_isBPMob.%victim%}%.spawns::%{_randomMobSpawnpoint}%}
+					set {_mob} to the last spawned entity
+					set {t_lvl.%{_mob}%} to {t_avgLVL.%{t_isBPMob.%victim%}%}
+					if {t_lvl.%{_mob}%} is more than 20:
+						chance of (({t_lvl.%{_mob}%} - 19) / 4)%:
+							set metadata value "isVenomSpider" of {_mob} to 1
+						else:
+							chance of (({t_lvl.%{_mob}%} - 29) / 4)%:
+								set metadata value "isMalediction" of {_mob} to 1
+							else:
+								chance of (({t_lvl.%{_mob}%} - 39) / 4)%:
+									set metadata value "isShadow" of {_mob} to 1
+				#Wither Skeleton
+				else if {_randomMobType} is 5:
+					spawn 1 wither skeleton at {bp_mapconfig.%{t_isBPMob.%victim%}%.spawns::%{_randomMobSpawnpoint}%}
+					set {_mob} to the last spawned entity
+					set {t_lvl.%{_mob}%} to {t_avgLVL.%{t_isBPMob.%victim%}%}
+					humanoidEquipmentHandler({_mob},{t_lvl.%{_mob}%},0)
+					if {t_lvl.%{_mob}%} is more than 20:
+						chance of (({t_lvl.%{_mob}%} - 19) / 4)%:
+							set metadata value "isMimic" of {_mob} to 1
+						else:
+							chance of (({t_lvl.%{_mob}%} - 29) / 4)%:
+								set metadata value "isMalediction" of {_mob} to 1
+							else:
+								chance of (({t_lvl.%{_mob}%} - 39) / 4)%:
+									set metadata value "isRegret" of {_mob} to 1
+								else:
+									chance of (({t_lvl.%{_mob}%} - 69) / 4)%:
+										set metadata value "isZPurgia" of {_mob} to 1
+				#Spiders
+				else if {_randomMobType} is 6:
+					spawn 1 spider at {bp_mapconfig.%{t_isBPMob.%victim%}%.spawns::%{_randomMobSpawnpoint}%}
+					set {_mob} to the last spawned entity
+					set {t_lvl.%{_mob}%} to {t_avgLVL.%{t_isBPMob.%victim%}%}
+					if {t_lvl.%{_mob}%} is more than 20:
+						chance of (({t_lvl.%{_mob}%} - 19) / 4)%:
+							set metadata value "isVenomSpider" of {_mob} to 1
+						else:
+							chance of (({t_lvl.%{_mob}%} - 29) / 4)%:
+								set metadata value "isShadow" of {_mob} to 1
+							else:
+								chance of (({t_lvl.%{_mob}%} - 39) / 4)%:
+									set metadata value "isMalediction" of {_mob} to 1
+				#Ranged Wither Skeletons
+				else if {_randomMobType} is 7:
+					spawn 1 wither skeleton at {bp_mapconfig.%{t_isBPMob.%victim%}%.spawns::%{_randomMobSpawnpoint}%}
+					set {_mob} to the last spawned entity
+					set {t_lvl.%{_mob}%} to {t_avgLVL.%{t_isBPMob.%victim%}%}
+					humanoidEquipmentHandler({_mob},{t_lvl.%{_mob}%},1)
+					if {t_lvl.%{_mob}%} is more than 20:
+						chance of (({t_lvl.%{_mob}%} - 19) / 4)%:
+							set metadata value "isMimic" of {_mob} to 1
+						else:
+							chance of (({t_lvl.%{_mob}%} - 29) / 4)%:
+								set metadata value "isMalediction" of {_mob} to 1
+							else:
+								chance of (({t_lvl.%{_mob}%} - 39) / 4)%:
+									set metadata value "isEnrapture" of {_mob} to 1
+								else:
+									chance of (({t_lvl.%{_mob}%} - 69) / 4)%:
+										set metadata value "isSPurgia" of {_mob} to 1
+				#Set mob stats based on level
+				loop {t_lvl.%{_mob}%} times:
+					#add 1 to {t_str.%entity%}
+					chance of 80%:
+						add 1 to {t_str.%{_mob}%}
+						chance of 35%:
+							add 1 to {t_str.%{_mob}%}
+					#add 1 to {t_def.%{_mob}%}
+					chance of 65%:
+						add 1 to {t_def.%{_mob}%}
+						chance of 25%:
+							add 1 to {t_def.%{_mob}%}
+					#add 1 to {t_spd.%{_mob}%}
+					chance of 65%:
+						add 1 to {t_spd.%{_mob}%}
+						chance of 30%:
+							add 1 to {t_spd.%{_mob}%}
+					#add 1 to {t_skl.%{_mob}%}
+					chance of 70%:
+						add 1 to {t_skl.%{_mob}%}
+						chance of 40%:
+							add 1 to {t_skl.%{_mob}%}
+					#add 1 to {t_res.%{_mob}%}
+					chance of 65%:
+						add 1 to {t_res.%{_mob}%}
+						chance of 25%:
+							add 1 to {t_res.%{_mob}%}
+					add 0.5 to {_mob}'s maximum health
+					chance of 80%:
+						add 0.5 to {_mob}'s maximum health
+						chance of 30%:
+							add 0.5 to {_mob}'s maximum health
+				heal {_mob} by 9999
+				#This tag keeps track of what arena this mob belongs to, so that the number of mobs alive for the current wave can be adjusted when it dies.
+				set {t_isBPMob.%{_mob}%} to {t_isBPMob.%victim%}
+				add 1 to {t_mobsAlive.%{t_isBPMob.%victim%}%}
+				subtract 1 from {t_mobsToSpawn.%{t_isBPMob.%victim%}%}
+				
+on explode:
+	if true:
+		#If the monster killed belongs to a bloody palace session, decrement 1 from the total number of monsters alive for that session.
+		if {t_isBPMob.%entity%} is set:
+			broadcast "BP mob slain! (%{t_isBPMob.%entity%}%)"
+			subtract 1 from {t_mobsAlive.%{t_isBPMob.%entity%}%}
+			broadcast "Mobs Left: %{t_mobsAlive.%{t_isBPMob.%entity%}%}%"
+			if {t_mobsToSpawn.%{t_isBPMob.%entity%}%} is more than 0:
+				set {_randomMobSpawnpoint} to a random integer from 1 to {t_spawnpointcount.%{t_isBPMob.%entity%}%}
+				set {_randomMobType} to a random integer from 0 to 7
+				#Zombies
+				if {_randomMobType} is 0:
+					spawn 1 zombie at {bp_mapconfig.%{t_isBPMob.%entity%}%.spawns::%{_randomMobSpawnpoint}%}
+					set {_mob} to the last spawned entity
+					set {t_lvl.%{_mob}%} to {t_avgLVL.%{t_isBPMob.%entity%}%}
+					humanoidEquipmentHandler({_mob},{t_lvl.%{_mob}%},0)
+					if {t_lvl.%{_mob}%} is more than 20:
+						chance of (({t_lvl.%{_mob}%} - 19) / 4)%:
+							set metadata value "isMimic" of {_mob} to 1
+						else:
+							chance of (({t_lvl.%{_mob}%} - 29) / 4)%:
+								set metadata value "isMalediction" of {_mob} to 1
+							else:
+								chance of (({t_lvl.%{_mob}%} - 39) / 4)%:
+									set metadata value "isRegret" of {_mob} to 1
+								else:
+									chance of (({t_lvl.%{_mob}%} - 69) / 4)%:
+										set metadata value "isZPurgia" of {_mob} to 1
+				#Skeletons
+				else if {_randomMobType} is 1:
+					spawn 1 skeleton at {bp_mapconfig.%{t_isBPMob.%entity%}%.spawns::%{_randomMobSpawnpoint}%}
+					set {_mob} to the last spawned entity
+					set {t_lvl.%{_mob}%} to {t_avgLVL.%{t_isBPMob.%entity%}%}
+					humanoidEquipmentHandler({_mob},{t_lvl.%{_mob}%},1)
+					if {t_lvl.%{_mob}%} is more than 20:
+						chance of (({t_lvl.%{_mob}%} - 19) / 4)%:
+							set metadata value "isMimic" of {_mob} to 1
+						else:
+							chance of (({t_lvl.%{_mob}%} - 29) / 4)%:
+								set metadata value "isMalediction" of {_mob} to 1
+							else:
+								chance of (({t_lvl.%{_mob}%} - 39) / 4)%:
+									set metadata value "isEnrapture" of {_mob} to 1
+								else:
+									chance of (({t_lvl.%{_mob}%} - 69) / 4)%:
+										set metadata value "isSPurgia" of {_mob} to 1
+				#Creepers
+				else if {_randomMobType} is 2:
+					spawn 1 creeper at {bp_mapconfig.%{t_isBPMob.%entity%}%.spawns::%{_randomMobSpawnpoint}%}
+					set {_mob} to the last spawned entity
+					set {t_lvl.%{_mob}%} to {t_avgLVL.%{t_isBPMob.%entity%}%}
+					if {t_lvl.%{_mob}%} is more than 20:
+						chance of (({t_lvl.%{_mob}%} - 19) / 4)%:
+							set metadata value "isSkulker" of {_mob} to 1
+						else:
+							chance of (({t_lvl.%{_mob}%} - 29) / 4)%:
+								set metadata value "isStalker" of {_mob} to 1
+							else:
+								chance of (({t_lvl.%{_mob}%} - 39) / 4)%:
+									set metadata value "isMalediction" of {_mob} to 1
+								else:
+									chance of (({t_lvl.%{_mob}%} - 69) / 4)%:
+										set metadata value "isCPurgia" of {_mob} to 1
+				#Zombie Pigman
+				else if {_randomMobType} is 3:
+					spawn 1 zombie pigman at {bp_mapconfig.%{t_isBPMob.%entity%}%.spawns::%{_randomMobSpawnpoint}%}
+					set {_mob} to the last spawned entity
+					set {t_lvl.%{_mob}%} to {t_avgLVL.%{t_isBPMob.%entity%}%}
+					humanoidEquipmentHandler({_mob},{t_lvl.%{_mob}%},0)
+					if {t_lvl.%{_mob}%} is more than 20:
+						chance of (({t_lvl.%{_mob}%} - 19) / 4)%:
+							set metadata value "isMimic" of {_mob} to 1
+						else:
+							chance of (({t_lvl.%{_mob}%} - 29) / 4)%:
+								set metadata value "isMalediction" of {_mob} to 1
+							else:
+								chance of (({t_lvl.%{_mob}%} - 39) / 4)%:
+									set metadata value "isRegret" of {_mob} to 1
+								else:
+									chance of (({t_lvl.%{_mob}%} - 69) / 4)%:
+										set metadata value "isZPPurgia" of {_mob} to 1
+				#Endermen
+				else if {_randomMobType} is 4:
+					spawn 1 cave spider at {bp_mapconfig.%{t_isBPMob.%entity%}%.spawns::%{_randomMobSpawnpoint}%}
+					set {_mob} to the last spawned entity
+					set {t_lvl.%{_mob}%} to {t_avgLVL.%{t_isBPMob.%entity%}%}
+					if {t_lvl.%{_mob}%} is more than 20:
+						chance of (({t_lvl.%{_mob}%} - 19) / 4)%:
+							set metadata value "isVenomSpider" of {_mob} to 1
+						else:
+							chance of (({t_lvl.%{_mob}%} - 29) / 4)%:
+								set metadata value "isMalediction" of {_mob} to 1
+							else:
+								chance of (({t_lvl.%{_mob}%} - 39) / 4)%:
+									set metadata value "isShadow" of {_mob} to 1
+				#Wither Skeleton
+				else if {_randomMobType} is 5:
+					spawn 1 wither skeleton at {bp_mapconfig.%{t_isBPMob.%entity%}%.spawns::%{_randomMobSpawnpoint}%}
+					set {_mob} to the last spawned entity
+					set {t_lvl.%{_mob}%} to {t_avgLVL.%{t_isBPMob.%entity%}%}
+					humanoidEquipmentHandler({_mob},{t_lvl.%{_mob}%},0)
+					if {t_lvl.%{_mob}%} is more than 20:
+						chance of (({t_lvl.%{_mob}%} - 19) / 4)%:
+							set metadata value "isMimic" of {_mob} to 1
+						else:
+							chance of (({t_lvl.%{_mob}%} - 29) / 4)%:
+								set metadata value "isMalediction" of {_mob} to 1
+							else:
+								chance of (({t_lvl.%{_mob}%} - 39) / 4)%:
+									set metadata value "isRegret" of {_mob} to 1
+								else:
+									chance of (({t_lvl.%{_mob}%} - 69) / 4)%:
+										set metadata value "isZPurgia" of {_mob} to 1
+				#Spiders
+				else if {_randomMobType} is 6:
+					spawn 1 spider at {bp_mapconfig.%{t_isBPMob.%entity%}%.spawns::%{_randomMobSpawnpoint}%}
+					set {_mob} to the last spawned entity
+					set {t_lvl.%{_mob}%} to {t_avgLVL.%{t_isBPMob.%entity%}%}
+					if {t_lvl.%{_mob}%} is more than 20:
+						chance of (({t_lvl.%{_mob}%} - 19) / 4)%:
+							set metadata value "isVenomSpider" of {_mob} to 1
+						else:
+							chance of (({t_lvl.%{_mob}%} - 29) / 4)%:
+								set metadata value "isShadow" of {_mob} to 1
+							else:
+								chance of (({t_lvl.%{_mob}%} - 39) / 4)%:
+									set metadata value "isMalediction" of {_mob} to 1
+				#Ranged Wither Skeletons
+				else if {_randomMobType} is 7:
+					spawn 1 wither skeleton at {bp_mapconfig.%{t_isBPMob.%entity%}%.spawns::%{_randomMobSpawnpoint}%}
+					set {_mob} to the last spawned entity
+					set {t_lvl.%{_mob}%} to {t_avgLVL.%{t_isBPMob.%entity%}%}
+					humanoidEquipmentHandler({_mob},{t_lvl.%{_mob}%},1)
+					if {t_lvl.%{_mob}%} is more than 20:
+						chance of (({t_lvl.%{_mob}%} - 19) / 4)%:
+							set metadata value "isMimic" of {_mob} to 1
+						else:
+							chance of (({t_lvl.%{_mob}%} - 29) / 4)%:
+								set metadata value "isMalediction" of {_mob} to 1
+							else:
+								chance of (({t_lvl.%{_mob}%} - 39) / 4)%:
+									set metadata value "isEnrapture" of {_mob} to 1
+								else:
+									chance of (({t_lvl.%{_mob}%} - 69) / 4)%:
+										set metadata value "isSPurgia" of {_mob} to 1
+				#Set mob stats based on level
+				loop {t_lvl.%{_mob}%} times:
+					#add 1 to {t_str.%entity%}
+					chance of 80%:
+						add 1 to {t_str.%{_mob}%}
+						chance of 35%:
+							add 1 to {t_str.%{_mob}%}
+					#add 1 to {t_def.%{_mob}%}
+					chance of 65%:
+						add 1 to {t_def.%{_mob}%}
+						chance of 25%:
+							add 1 to {t_def.%{_mob}%}
+					#add 1 to {t_spd.%{_mob}%}
+					chance of 65%:
+						add 1 to {t_spd.%{_mob}%}
+						chance of 30%:
+							add 1 to {t_spd.%{_mob}%}
+					#add 1 to {t_skl.%{_mob}%}
+					chance of 70%:
+						add 1 to {t_skl.%{_mob}%}
+						chance of 40%:
+							add 1 to {t_skl.%{_mob}%}
+					#add 1 to {t_res.%{_mob}%}
+					chance of 65%:
+						add 1 to {t_res.%{_mob}%}
+						chance of 25%:
+							add 1 to {t_res.%{_mob}%}
+					add 0.5 to {_mob}'s maximum health
+					chance of 80%:
+						add 0.5 to {_mob}'s maximum health
+						chance of 30%:
+							add 0.5 to {_mob}'s maximum health
+				heal {_mob} by 9999
+				#This tag keeps track of what arena this mob belongs to, so that the number of mobs alive for the current wave can be adjusted when it dies.
+				set {t_isBPMob.%{_mob}%} to {t_isBPMob.%{t_isBPMob.%entity%}%}
+				add 1 to {t_mobsAlive.%{t_isBPMob.%entity%}%}	
+				subtract 1 from {t_mobsToSpawn.%{t_isBPMob.%entity%}%}
+		
+#Bloody Palace main command.
+#Arg 1 - Menu Layer (Main, Queue, Lobby, Etc..)
+#Arg 2 - Menu Stage (Multiple pages of lobbies, rules menus, etc...)
+command /bp [<number=0>] [<number=0>]:
+	aliases: /bloodypalace, /mobarena, /ma
+	usage: /bp
 	trigger:
-		if arg 1 is "join":
+		#Redirect player to the lobby menu if they're already in a lobby.
+		if {t_bpredirect.%player%} is set:
+			if {bp_currentlobby.%player%} is set:
+				clear {t_bpredirect.%player%}
+				make player execute command "/bp 1 0"
+			else:
+				clear {t_bpredirect.%player%}
+		else:
+			#Main Menu & Lobby Search
+			if arg 1 is 0:
+				if arg 2 is 0:
+					open chest with 1 row named "<red>Bloody Palace - Main Menu" for the player
+					set slot 3 of the player's current inventory to 1 chest named "<light green>Search for Lobbies"
+					set slot 4 of the player's current inventory to 1 book named "<white>What is Bloody Palace?" with lore "<white>Face a non-stop enslaught of foes!", "<white>Survive as long as you can to earn rewards.", "<white>The more floors you clear, the bigger the reward!", "<white>Your inventory and level will be reset once your run is over."
+					set slot 5 of the player's current inventory to 1 workbench named "<light yellow>Create New Lobby"
+					if {bp_autoqueue.%player%} is not set:
+						set slot 8 of the player's current inventory to 1 redstone block named "<light red>Auto Queue - OFF" with lore "<white>Click to enable Auto Queue.", "<white>Auto Queue will attempt to place you into", "<white>the first lobby that becomes available.", "<white>This feature will only work for public lobbies."
+					else:
+						set slot 8 of the player's current inventory to 1 emerald block named "<light green>Auto Queue - ON" with lore "<white>Auto Queue is searching for a game!", "<white>Please wait while a lobby is found."
+				else if arg 2 is 1:
+					open chest with 2 rows named "<red>Bloody Palace - Lobby Search" for the player
+					set {_bpLobbyNum} to 0
+					#List all available lobbies. If the player can't join the lobby for any reason, then it will not be displayed.
+					loop {bp_openlobbies::*}:
+						#Open Lobby - 0
+						if {bp_lobbysettings.%loop-value%::Join Status} is 0:
+							set slot {_bpLobbyNum} of the player's current inventory to 1 lapis block named "<light blue>%{bp_lobbysettings.%loop-value%::Leader}%'s Lobby" with lore "<light red>Player 1 - %{bp_lobbyplayers.%loop-value%::0}'s name%", "<light blue>Player 2 - %{bp_lobbyplayers.%loop-value%::1}'s name%", "<light yellow>Player 3 - %{bp_lobbyplayers.%loop-value%::2}'s name%", "<light green>Player 4 - %{bp_lobbyplayers.%loop-value%::3}'s name%", "<white>DEBUG INFO:", "%loop-value%"
+							add 1 to {_bpLobbyNum}
+						#Friends Only  - 1
+						else if {bp_lobbysettings.%loop-value%::Join Status} is 1:
+							loop {friendsList.%player%::*}:
+								if {bp_lobbysettings.%loop-value-1%::Leader} is loop-value-2:
+									set slot {_bpLobbyNum} of the player's current inventory to 1 lapis block named "<light blue>%{bp_lobbysettings.%loop-value-1%::Leader}%'s Lobby" with lore "<light red>Player 1 - %{bp_lobbyplayers.%loop-value-1%::0}'s name%", "<light blue>Player 2 - %{bp_lobbyplayers.%loop-value-1%::1}'s name%", "<light yellow>Player 3 - %{bp_lobbyplayers.%loop-value-1%::2}'s name%", "<light green>Player 4 - %{bp_lobbyplayers.%loop-value-1%::3}'s name%"
+									add 1 to {_bpLobbyNum}
+									exit 1 loop
+			#In Lobby
+			else if arg 1 is 1:
+				#Redirect player to lobby screen when running /bp again.
+				set {t_bpredirect.%player%} to true
+				#Check if player is the lobby leader. If yes, reveal lobby settings.
+				if {bp_lobbysettings.%{bp_currentlobby.%player%}%::Leader} is the player:
+					open chest with 2 rows named "<red>Bloody Palace - Lobby Configuration" for the player
+					#Join Status Button
+					if {bp_lobbysettings.%{bp_currentlobby.%player%}%::Join Status} is 0:
+						set slot 9 of the player's current inventory to 1 lapis block named "<light blue>Join Status" with lore "<white>Click to change who can join this lobby.", "<white>Current Setting: Anyone Can Join"
+					else if {bp_lobbysettings.%{bp_currentlobby.%player%}%::Join Status} is 1:
+						set slot 9 of the player's current inventory to 1 gold block named "<light blue>Join Status" with lore "<white>Click to change who can join this lobby.", "<white>Current Setting: Friends Only"
+					#Match Level Button
+					if {bp_lobbysettings.%{bp_currentlobby.%player%}%::Match Level} is false:
+						set slot 10 of the player's current inventory to 1 barrier named "<light yellow>Level Matching" with lore "<white>Click to toggle Level Matching.", "<white>With Level Matching enabled, all players", "<white>will have matched stat totals while playing.", "<white>Levels are matched to the lobby leader.", "<light red>Current Setting: OFF"
+					else:
+						set slot 10 of the player's current inventory to 1 xp bottle named "<light yellow>Level Matching" with lore "<white>Click to toggle Level Matching.", "<white>With Level Matching enabled, all players", "<white>will have matched stat totals while playing.", "<white>Levels are matched to the lobby leader.", "<light blue>Current Setting: ON"
+					#Difficulty
+					if {bp_lobbysettings.%{bp_currentlobby.%player%}%::Difficulty} is 0:
+						set slot 11 of the player's current inventory to 1 green wool named "<light green>Difficulty" with lore "<white>Click to change the lobby's difficulty.", "<white>Raising difficulty increases enemy levels.", "<white>A higher difficulty gives greater rewards.", "<light green>Current Difficulty: Easy"
+					else if {bp_lobbysettings.%{bp_currentlobby.%player%}%::Difficulty} is 1:
+						set slot 11 of the player's current inventory to 1 yellow wool named "<light green>Difficulty" with lore "<white>Click to change the lobby's difficulty.", "<white>Raising difficulty increases enemy levels.", "<white>A higher difficulty gives greater rewards.", "<light yellow>Current Difficulty: Normal"
+					else if {bp_lobbysettings.%{bp_currentlobby.%player%}%::Difficulty} is 2:
+						set slot 11 of the player's current inventory to 1 red wool named "<light green>Difficulty" with lore "<white>Click to change the lobby's difficulty.", "<white>Raising difficulty increases enemy levels.", "<white>A higher difficulty gives greater rewards.", "<light red>Current Difficulty: Hard"
+					if {bp_lobbysettings.%{bp_currentlobby.%player%}%::Difficulty} is 3:
+						set slot 11 of the player's current inventory to 1 redstone block named "<light green>Difficulty" with lore "<white>Click to change the lobby's difficulty.", "<white>Raising difficulty increases enemy levels.", "<white>A higher difficulty gives greater rewards.", "<red>Current Difficulty: Nightmare!"
+					if {bp_lobbysettings.%{bp_currentlobby.%player%}%::Difficulty} is 4:
+						set slot 11 of the player's current inventory to 1 obsidian named "<light green>Difficulty" with lore "<white>Click to change the lobby's difficulty.", "<white>Raising difficulty increases enemy levels.", "<white>A higher difficulty gives greater rewards.", "<red><bold>Current Difficulty: %player's tablist name% Must Die"
+					#Map Selection
+					set slot 12 of the player's current inventory to 1 map item named "<light purple>Change Map" with lore "<white>Click to change maps.", "<white>NOTE: Some maps may be unavailable during peak hours.", "<white>Current Map: %{bp_lobbysettings.%{bp_currentlobby.%player%}%::Map Selected}%"
+					#Kick Players Info
+					set slot 13 of the player's current inventory to 1 book named "<white>Click a player to kick them from the lobby."
+					#Start Game Button
+					#Unlock the Start Game button if the map is open.
+					if {bp_lobbysettings.%{bp_currentlobby.%player%}%::Map Selected} is not "No map selected.":
+						set slot 8 of the player's current inventory to 1 emerald block named "<light green>Start Game" with lore "<white>Click to start the lobby,", "<white>and get ready for a bloodbath!"
+					else:
+						set slot 8 of the player's current inventory to 1 barrier named "<light red>Cannot Start Game" with lore "<white>The map you are trying to play is not available.", "<white>You can wait for it to open,", "<white>or select a new map."
+					#Disband Lobby
+					set slot 17 of the player's current inventory to 1 barrier named "<light red>Disband Lobby" with lore "<white>Aborts the session and removes this lobby from matchmaking."
+				else:
+					open chest with 1 row named "<red>Bloody Palace - Waiting for Players" for the player
+					set slot 8 of the player's current inventory to 1 barrier named "<light red>Leave Lobby" with lore "<white>Click to leave the current lobby."
+				#Display all players
+				set slot 0 of the player's current inventory to 1 red concrete named "<light red>Player 1 - %{bp_lobbyplayers.%{bp_currentlobby.%player%}%::0}'s name%"
+				#Display an empty slot if that player slot is not filled
+				if {bp_lobbyplayers.%{bp_currentlobby.%player%}%::1} is set:
+					set slot 1 of the player's current inventory to 1 blue concrete named "<light blue>Player 2 - %{bp_lobbyplayers.%{bp_currentlobby.%player%}%::1}'s name%"
+				else:
+					set slot 1 of the player's current inventory to 1 white concrete named "<white>Empty Slot"
+				if {bp_lobbyplayers.%{bp_currentlobby.%player%}%::2} is set:
+					set slot 2 of the player's current inventory to 1 blue concrete named "<light yellow>Player 3 - %{bp_lobbyplayers.%{bp_currentlobby.%player%}%::2}'s name%"
+				else:
+					set slot 2 of the player's current inventory to 1 white concrete named "<white>Empty Slot"
+				if {bp_lobbyplayers.%{bp_currentlobby.%player%}%::3} is set:
+					set slot 3 of the player's current inventory to 1 blue concrete named "<light green>Player 4 - %{bp_lobbyplayers.%{bp_currentlobby.%player%}%::3}'s name%"
+				else:
+					set slot 3 of the player's current inventory to 1 white concrete named "<white>Empty Slot"
+			#Map Selection
+			else if arg 1 is 2:
+				if arg 2 is 0:
+					open chest with 6 rows named "<red>Bloody Palace - Select Map" for the player
+					set {_bpMapNum} to 0
+					loop {bp_openMaps::*}:
+						set slot {_bpMapNum} of the player's current inventory to 1 emerald named "<light blue>OPEN: %loop-value%" with lore "%loop-value%"
+						add 1 to {_bpMapNum}
+			#Total Results
+			else if arg 1 is 3:
+				if arg 2 is 0:
+					open chest with 1 row named "<red>Bloody Palace - Total Results" for the player
+					set slot 0 of the player's current inventory to 1 gold ingot named "<light yellow>Money Earned" with lore "<white>Mobs Slain: 2.5 x %{t_bp_mobkills.%player%}%", "<white>Floors Survived: 10 x %{t_bp_floorssurvived.%player%}%", "<white>Difficulty Modifier: %{t_bp_difficultymod.%player%}%x Bonus", "<white>Total Money Earned: %{t_bp_cashearned.%player%}%"
+					set slot 1 of the player's current inventory to 1 xp bottle named "<light blue>Experience Earned" with lore "<white>Mobs Slain: 6.5 x %{t_bp_mobkills.%player%}%", "<white>Floors Survived: 25 x %{t_bp_floorssurvived.%player%}%", "<white>Difficulty Modifier: %{t_bp_difficultymod.%player%}%x Bonus", "<white>Total Experience Earned: %{t_bp_xpearned.%player%}%"
+					add {t_bp_cashearned.%player%} to player's money
+					send "<light green>Money Earned from Bloody Palace: %{t_bp_cashearned.%player%}%"
+					make player execute command "/xp %{t_bp_xpearned.%player%}% %player%"
+					#Restore the player's inventory
+					make player execute command "/clear"
+					set the player's helmet to air
+					set the player's chestplate to air
+					set the player's leggings to air
+					set the player's boots to air
+					wait 1 tick
+					set {_itemSlot} to 0
+					loop {t_bpitembackup.%player%::*}:
+						if loop-index is "Helmet":
+							set the player's helmet to loop-value
+						else if loop-index is "Chestplate":
+							set the player's chestplate to loop-value
+						else if loop-index is "Leggings":
+							set the player's leggings to loop-value
+						else if loop-index is "Boots":
+							set the player's boots to loop-value
+						else:
+							give loop-value to the player
+					clear {t_bpitembackup.%player%}
+					set slot 8 of the player's current inventory to 1 chest named "<gold>Collect Rewards!" with lore "<white>Click to get the rest of your rewards!"
+				#Physical Rewards panel (equipment)
+				else if arg 2 is 1:
+					open chest with 6 rows named "<red>Bloody Palace - Rewards" for the player
+					set {_invSlot} to 0
+					loop {t_bp_rewards.%player%::*}:
+						set slot {_invslot} of the player's current inventory to loop-value
+					set slot 53 of the player's current inventory to 1 emerald block named "<light green>Finish Session" with lore "<white>Click to finish your Bloody Palace session.", "<red><bold>Any items left in this window will be lost!"
+					clear {t_bp_rewards.%player%::*}
+
+#BP Menu Behaviors
+on inventory click:
+	#Main Menu
+	if the name of the player's current inventory is "<red>Bloody Palace - Main Menu":
+		cancel event
+		#Toggle Auto-Queue
+		if the name of the clicked item is "<light red>Auto Queue - OFF":
+			set the clicked item to 1 emerald block named "<light green>Auto Queue - ON" with lore "<white>Auto Queue is searching for a game!", "<white>Please wait while a lobby is found."
+			set {bp_autoqueue.%player%} to true
+		else if the name of the clicked item is "<light green>Auto Queue - ON":
+			set the clicked item to 1 redstone block named "<light red>Auto Queue - OFF" with lore "<white>Click to enable Auto Queue.", "<white>Auto Queue will attempt to place you into", "<white>the first lobby that becomes available.", "<white>This feature will only work for public lobbies."
+			clear {bp_autoqueue.%player%}
+		#Create Lobby
+		else if the name of the clicked item is "<light yellow>Create New Lobby":
+			#Change this number to something nicer later
+			set {bp_currentlobby.%player%} to the player's uuid
+			#Adds the player's lobby to the master list for matchmaking
+			add {bp_currentlobby.%player%} to {bp_openlobbies::*}
+			#Initialize various lobby settings
+			set {bp_lobbysettings.%{bp_currentlobby.%player%}%::Join Status} to 0
+			set {bp_lobbysettings.%{bp_currentlobby.%player%}%::Match Level} to false
+			set {bp_lobbysettings.%{bp_currentlobby.%player%}%::Difficulty} to 1
+			set {bp_lobbysettings.%{bp_currentlobby.%player%}%::Map Selected} to "No map selected."
+			clear {bp_lobbyplayers.%{bp_currentlobby.%player%}%::*}
+			set {bp_lobbyplayers.%{bp_currentlobby.%player%}%::0} to the player
+			set {bp_lobbysettings.%{bp_currentlobby.%player%}%::Leader} to the player
+			#Show the lobby GUI
+			make player execute command "/bp 1"
+			set {t_bpredirect.%player%} to true
+		#Find Lobby
+		else if the name of the clicked item is "<light green>Search for Lobbies":
+			make player execute command "/bp 0 1"
+	#Lobby Selection
+	else if the name of the player's current inventory is "<red>Bloody Palace - Lobby Search":
+		cancel event
+		#Join Lobby
+		if the name of the clicked item contains "Lobby":
+			set {bp_currentlobby.%player%} to the 6th line of the lore of the clicked item
+			#Assign player to an empty slot, and notify all players in lobby
+			if {bp_lobbyplayers.%{bp_currentlobby.%player%}%::1} is not set:
+				send "<light blue>%player% joined your Bloody Palace lobby (Player 2)! Use /bp to check the lobby status." to {bp_lobbyplayers.%{bp_currentlobby.%player%}%::*}
+				send "<light blue>Joined as Player 2." to the player
+				set {bp_lobbyplayers.%{bp_currentlobby.%player%}%::1} to the player
+				make player execute command "/bp 1 0"
+			else if {bp_lobbyplayers.%{bp_currentlobby.%player%}%::2} is not set:
+				send "<light green>%player% joined your Bloody Palace lobby (Player 3)! Use /bp to check the lobby status." to {bp_lobbyplayers.%{bp_currentlobby.%player%}%::*}
+				send "<light green>Joined as Player 3." to the player
+				set {bp_lobbyplayers.%{bp_currentlobby.%player%}%::2} to the player
+				make player execute command "/bp 1 0"
+			else if {bp_lobbyplayers.%{bp_currentlobby.%player%}%::3} is not set:
+				send "<light yellow>%player% joined your Bloody Palace lobby (Player 4)! Use /bp to check the lobby status." to {bp_lobbyplayers.%{bp_currentlobby.%player%}%::*}
+				send "<light yellow>Joined as Player 4." to the player
+				set {bp_lobbyplayers.%{bp_currentlobby.%player%}%::3} to the player
+				make player execute command "/bp 1 0"
+			#If the lobby is full, prevent the player from joining.
+			else:
+				clear {bp_currentlobby.%player%}
+				send "<light red>This lobby is full!"
+	#Lobby Guest/Waiting for Players
+	else if the name of the player's current inventory is "<red>Bloody Palace - Waiting for Players":
+		cancel event
+		#Leave Lobby
+		if the name of the clicked item is "<light red>Leave Lobby":
+			remove the player from {bp_lobbyplayers.%{bp_currentlobby.%player%}%::*}
+			loop {bp_lobbyplayers.%{bp_currentlobby.%player%}%::*}:
+				send "<light red>%player% left your Bloody Palace lobby." to loop-value
+				if the name of loop-value's current inventory contains "<red>Bloody Palace":
+					if {bp_lobbyplayers.%{bp_currentlobby.%loop-value%}%::1} is set:
+						set slot 1 of the loop-value's current inventory to 1 blue concrete named "<light blue>Player 2 - %{bp_lobbyplayers.%{bp_currentlobby.%loop-value%}%::1}'s name%"
+					else:
+						set slot 1 of the loop-value's current inventory to 1 white concrete named "<white>Empty Slot"
+					if {bp_lobbyplayers.%{bp_currentlobby.%loop-value%}%::2} is set:
+						set slot 2 of the loop-value's current inventory to 1 blue concrete named "<light yellow>Player 3 - %{bp_lobbyplayers.%{bp_currentlobby.%loop-value%}%::2}'s name%"
+					else:
+						set slot 2 of the loop-value's current inventory to 1 white concrete named "<white>Empty Slot"
+					if {bp_lobbyplayers.%{bp_currentlobby.%loop-value%}%::3} is set:
+						set slot 3 of the loop-value's current inventory to 1 blue concrete named "<light green>Player 4 - %{bp_lobbyplayers.%{bp_currentlobby.%loop-value%}%::3}'s name%"
+					else:
+						set slot 3 of the loop-value's current inventory to 1 white concrete named "<white>Empty Slot"
+			clear {bp_currentlobby.%player%}
+			send "<light red>Left the Bloody Palace lobby." to the player
+			close the player's inventory
+	#Lobby Settings
+	else if the name of the player's current inventory is "<red>Bloody Palace - Lobby Configuration":
+		cancel event
+		#Disband Lobby
+		if the name of the clicked item is "<light red>Disband Lobby":
+			#Remove all players from the lobby, send notification of disbanded lobby.
+			loop {bp_lobbyplayers.%{bp_currentlobby.%player%}%::*}:
+				if loop-value is not the player:
+					clear {bp_currentlobby.%loop-value%}
+					close loop-value's inventory
+					send "<light red>The lobby leader disbanded your Bloody Palace lobby." to loop-value
+			#Add selected map back to the list of available maps if one was selected
+			if {bp_lobbysettings.%{bp_currentlobby.%player%}%::Map Selected} is not "No map selected.":
+				add {bp_lobbysettings.%{bp_currentlobby.%player%}%::Map Selected} to {bp_openMaps::*}
+			#Clear list of players
+			clear {bp_lobbyplayers.%{bp_currentlobby.%player%}%::*}
+			#Clear lobby settings
+			clear {bp_lobbysettings.%{bp_currentlobby.%player%}%::*}
+			remove {bp_currentlobby.%player%} from {bp_openlobbies::*}
+			close the player's inventory
+			send "<light red>Lobby disbanded."
+		#Select Map
+		else if the name of the clicked item is "<light purple>Change Map":
+			clear {t_bpredirect.%player%}
+			make player execute command "/bp 2 0"
+		#Change Join Status
+		else if the name of the clicked item is "<light blue>Join Status":
+			#Public --> Friends Only
+			if {bp_lobbysettings.%{bp_currentlobby.%player%}%::Join Status} is 0:
+				set {bp_lobbysettings.%{bp_currentlobby.%player%}%::Join Status} to 1
+				set slot 9 of the player's current inventory to 1 gold block named "<light blue>Join Status" with lore "<white>Click to change who can join this lobby.", "<white>Current Setting: Friends Only"
+			else:
+				set {bp_lobbysettings.%{bp_currentlobby.%player%}%::Join Status} to 0
+				set slot 9 of the player's current inventory to 1 lapis block named "<light blue>Join Status" with lore "<white>Click to change who can join this lobby.", "<white>Current Setting: Anyone Can Join"
+			refreshBPLobbyDisplay()
+		#Kick Players
+		else if the name of the clicked item contains "Player":
+			#Prevent players from kicking themselves
+			if the name of the clicked item does not contain the player's name:
+				#Find the player's slot and remove them from the lobby
+				if slot 1 of the player's current inventory is the clicked item:
+					clear {bp_currentlobby.%{bp_lobbyplayers.%{bp_currentlobby.%player%}%}%}
+					set slot 1 of the player's current inventory to 1 white concrete named "<white>Empty Slot"
+					if the name of {bp_lobbyplayers.%{bp_currentlobby.%player%}%::1}'s current inventory is "<red>Bloody Palace - Waiting for Players":
+						close {bp_lobbyplayers.%{bp_currentlobby.%player%}%::1}'s inventory
+					send "<light red>You were kicked from the Bloody Palace lobby." to {bp_lobbyplayers.%{bp_currentlobby.%player%}%::1}
+					clear {bp_lobbyplayers.%{bp_currentlobby.%player%}%::1}
+				else if slot 2 of the player's current inventory is the clicked item:
+					clear {bp_currentlobby.%{bp_lobbyplayers.%{bp_currentlobby.%player%}%}%}
+					set slot 2 of the player's current inventory to 1 white concrete named "<white>Empty Slot"
+					if the name of {bp_lobbyplayers.%{bp_currentlobby.%player%}%::2}'s current inventory is "<red>Bloody Palace - Waiting for Players":
+						close {bp_lobbyplayers.%{bp_currentlobby.%player%}%::2}'s inventory
+					send "<light red>You were kicked from the Bloody Palace lobby." to {bp_lobbyplayers.%{bp_currentlobby.%player%}%::2}
+					clear {bp_lobbyplayers.%{bp_currentlobby.%player%}%::2}
+				else if slot 3 of the player's current inventory is the clicked item:
+					clear {bp_currentlobby.%{bp_lobbyplayers.%{bp_currentlobby.%player%}%}%}
+					set slot 3 of the player's current inventory to 1 white concrete named "<white>Empty Slot"
+					if the name of {bp_lobbyplayers.%{bp_currentlobby.%player%}%::3}'s current inventory is "<red>Bloody Palace - Waiting for Players":
+						close {bp_lobbyplayers.%{bp_currentlobby.%player%}%::3}'s inventory
+					send "<light red>You were kicked from the Bloody Palace lobby." to {bp_lobbyplayers.%{bp_currentlobby.%player%}%::3}
+					clear {bp_lobbyplayers.%{bp_currentlobby.%player%}%::3}
+		#Start Game
+		else if the name of the clicked item is "<light green>Start Game":
+			#Close inventories of players and begin a countdown
+			loop {bp_lobbyplayers.%{bp_currentlobby.%player%}%::*}:
+				close the loop-value's inventory
+				send title "<light green><bold>Bloody Palace lobby is locked!" with subtitle "<light green>Get ready for some serious slaying!" to loop-value for 5 seconds with fade in 0.25 seconds and fadeout 1 second
+			wait 6 seconds
+			make player execute command "/runbp %{bp_lobbysettings.%{bp_currentlobby.%player%}%::Map Selected}%"
+	#Map Selection
+	else if the name of the player's current inventory is "<red>Bloody Palace - Select Map":
+		cancel event
+		#Update selected map and return to Lobby Settings panel
+		if the name of the clicked item contains "<light blue>OPEN:":
+			set {bp_lobbysettings.%{bp_currentlobby.%player%}%::Map Selected} to the 1st line of the lore of the clicked item
+			clear {t_bpredirect.%player%}
+			remove {bp_lobbysettings.%{bp_currentlobby.%player%}%::Map Selected} from {bp_openMaps::*}
+			make player execute command "/bp 1 0"
+			refreshBPOpenMaps()
+		
+#Refresh lobby display and run the BP auto-queue behavior
+every 1 second:
+	refreshBPLobbyDisplay()
+	bpAutoQueueBehavior()
+	#refreshBPOpenMaps()
+	
+#Helper function to refresh available maps for Bloody Palace
+function refreshBPOpenMaps():
+	loop all players:
+		if citizen id of the loop-player is not set:
+			if the name of the loop-player's current inventory is "<red>Bloody Palace - Lobby Configuration":
+				clear {t_bpredirect.%loop-player%}
+				make loop-player execute command "/bp 1 0"
+			else if the name of the loop-player's current inventory is "<red>Bloody Palace - Select Map":
+				clear {t_bpredirect.%loop-player%}
+				make loop-player execute command "/bp 2 0"
+		
+#Helper function to refresh current lobbies open for Bloody Palace.
+function refreshBPLobbyDisplay():
+	loop all players:
+		#Prevent NPCs from being checked
+		if citizen id of the loop-player is not set:
+			if the name of the loop-player's current inventory is "<red>Bloody Palace - Lobby Search":
+				clear {t_bpredirect.%loop-player%}
+				make loop-player execute command "/bp 0 1"
+			
+#Place players with Auto-Queue enabled into an open lobby.			
+function bpAutoQueueBehavior():
+	loop all players:
+		#Prevent NPCs from being checked
+		if citizen id of the loop-player is not set:
+			#Check to see if the player has Auto Queue enabled
+			if {bp_autoqueue.%loop-player%} is set:
+				#Check all public lobbies for empty player slots
+				loop {bp_openlobbies::*}:
+					if {bp_lobbysettings.%loop-value-2%::Join Status} is 0:
+						set {_currentlobby.%loop-player-1%} to loop-value-2
+						broadcast "%loop-value-2%"
+						#Assign player to an empty slot, and notify all players in lobby
+						if {bp_lobbyplayers.%loop-value-2%::1} is not set:
+							send "<light blue>%loop-player-1% joined your Bloody Palace lobby (Player 2)! Use /bp to check the lobby status." to {bp_lobbyplayers.%{bp_currentlobby.%loop-player-1%}%::*}
+							set {bp_lobbyplayers.%{bp_currentlobby.%loop-player-1%}%::1} to the loop-player-1
+							clear {bp_autoqueue.%loop-player-1%}
+							set {bp_currentlobby.%loop-player-1%} to loop-value-2
+							exit 1 loop
+						else if {bp_lobbyplayers.%loop-value-2%::2} is not set:
+							send "<light green>%loop-player-1% joined your Bloody Palace lobby (Player 3)! Use /bp to check the lobby status." to {bp_lobbyplayers.%{bp_currentlobby.%loop-player-1%}%::*}
+							set {bp_lobbyplayers.%{_currentlobby.%loop-player-1%}%::2} to the loop-player-1
+							clear {bp_autoqueue.%loop-player-1%}
+							set {bp_currentlobby.%loop-player-1%} to loop-value-2
+							exit 1 loop
+						else if {bp_lobbyplayers.%loop-value-2%::3} is not set:
+							send "<light yellow>%loop-player-1% joined your Bloody Palace lobby (Player 4)! Use /bp to check the lobby status." to {bp_lobbyplayers.%{bp_currentlobby.%loop-player-1%}%::*}
+							set {bp_lobbyplayers.%{_currentlobby.%loop-player-1%}%::3} to the loop-player-1
+							clear {bp_autoqueue.%loop-player-1%}
+							set {bp_currentlobby.%loop-player-1%} to loop-value-2
+							exit 1 loop
+						else:
+							clear {bp_currentlobby.%loop-player-1%}
+				#Increment the number of loops if player was not assigned to a lobby
+				if {bp_currentlobby.%loop-player-1%} is not set:
+					add 1 to {bp_autoqueue.%loop-player-1%}
+				#Create a new lobby for the player if auto-queue times out.
+				if {bp_autoqueue.%loop-player-1%} is more than 60:
+					#Initialize lobby and remove player from auto-queue
+					clear {bp_autoqueue.%loop-player-1%}
+					set {bp_currentlobby.%loop-player-1%} to loop-player-1's uuid
+					#Adds the player's lobby to the master list for matchmaking
+					add {bp_currentlobby.%loop-player-1%} to {bp_openlobbies::*}
+					#Initialize various lobby settings
+					set {bp_lobbysettings.%{bp_currentlobby.%loop-player-1%}%::Join Status} to 0
+					set {bp_lobbysettings.%{bp_currentlobby.%loop-player-1%}%::Match Level} to false
+					set {bp_lobbysettings.%{bp_currentlobby.%loop-player-1%}%::Difficulty} to 1
+					set {bp_lobbysettings.%{bp_currentlobby.%loop-player-1%}%::Map Selected} to "No map selected."
+					set {bp_lobbyplayers.%{bp_currentlobby.%loop-player-1%}%::0} to the loop-player-1
+					set {bp_lobbysettings.%{bp_currentlobby.%loop-player-1%}%::Leader} to the loop-player-1
+					send "<light yellow>Auto-Queue failed to find an open Bloody Palace lobby. A new lobby has been created for you. Use /bp to configure your lobby." to loop-player-1
+				#Wait a tick to prevent players from being assigned to the same slot (also reduces server stress)
+				#wait 1 tick
+					
+#Player death handler
+on death of a player:
+	#Allows the effects of skills like Miracle to activate without terminating the session
+	if event is not cancelled:
+		if {t_playingBP.%victim%} is set:
+			cancel event
+			#Check if the player who died was the leader of a lobby
+			if {bp_lobbysettings.%{bp_currentlobby.%victim%}%::Leader} is the victim:
+				#Notify players that the host has died, and terminate the session for all other players.
+				loop {bp_lobbyplayers.%{bp_currentlobby.%victim%}%::*}:
+					if loop-value is not the victim:
+						send "<light red>The lobby host has died! Your session is now over." to loop-value
+						clear {t_playingBP.%loop-value%}
+						clear {t_bpredirect.%loop-value%}
+						teleport the loop-value to {t_bpReturnLocation.%loop-value%}
+						set {t_bp_cashearned.%loop-value%} to ((2.5 * {t_bp_mobkills.%loop-value%}) + (10 * {t_bp_floorssurvived.%loop-value%})) * (1 + {t_bp_difficultymod.%loop-value%})
+						set {t_bp_xpearned.%loop-value%} to ((6.5 * {t_bp_mobkills.%loop-value%}) + (25 * {t_bp_floorssurvived.%loop-value%})) * (1 + {t_bp_difficultymod.%loop-value%})
+						make loop-value execute command "/bp 3 0"
+				send "<light red>You were defeated!" to the victim
+				#Remove all monsters from the arena
+				loop all monsters in world "Salindrum":
+					if {t_isBPMob.%loop-monster%} is {bp_lobbysettings.%{bp_currentlobby.%victim%}%::Map Selected}:
+						kill the loop-monster
+				#Add the current map back into the pool of available maps.
+				add {bp_lobbysettings.%{bp_currentlobby.%victim%}%::Map Selected} to {bp_openMaps::*}
+				#Return the player to their last saved location before starting Bloody Palace
+				teleport the victim to {t_bpReturnLocation.%victim%}
+				#Clean up palace variables
+				clear {t_avgLVL.%{bp_lobbysettings.%{bp_currentlobby.%victim%}%::Map Selected}%}
+				clear {t_bp_SpawnpointsTaken.%{bp_lobbysettings.%{bp_currentlobby.%victim%}%::Map Selected}%::*}
+				clear {t_mobsToSpawn.%{bp_lobbysettings.%{bp_currentlobby.%victim%}%::Map Selected}%}
+				clear {t_mobsAlive.%{bp_lobbysettings.%{bp_currentlobby.%victim%}%::Map Selected}%}
+				clear {bp_lobbyplayers.%{bp_currentlobby.%victim%}%::*}
+				#Display the end of game rewards panel
+				clear {t_foundSpawnpointBP.%victim%}
+				clear {t_bpredirect.%victim%}
+				set {t_bp_cashearned.%victim%} to ((2.5 * {t_bp_mobkills.%victim%}) + (10 * {t_bp_floorssurvived.%victim%})) * (1 + {t_bp_difficultymod.%victim%})
+				set {t_bp_xpearned.%victim%} to ((6.5 * {t_bp_mobkills.%victim%}) + (25 * {t_bp_floorssurvived.%victim%})) * (1 + {t_bp_difficultymod.%victim%})
+				make victim execute command "/bp 3 0"
+			else:
+				remove the victim from {bp_lobbyplayers.%{bp_currentlobby.%victim%}%::*}
+				send "<light red>%victim% was defeated!" to the victim
+				clear {t_playingBP.%victim%}
+				clear {t_bpredirect.%victim%}
+				clear {t_foundSpawnpointBP.%victim%}
+				teleport the victim to {t_bpReturnLocation.%victim%}
+				set {t_bp_cashearned.%victim%} to ((2.5 * {t_bp_mobkills.%victim%}) + (10 * {t_bp_floorssurvived.%victim%})) * (1 + {t_bp_difficultymod.%victim%})
+				set {t_bp_xpearned.%victim%} to ((6.5 * {t_bp_mobkills.%victim%}) + (25 * {t_bp_floorssurvived.%victim%})) * (1 + {t_bp_difficultymod.%victim%})
+				make victim execute command "/bp 3 0"
+			clear {t_playingBP.%victim%}
+				
+command /forceexitbp:
+	trigger:
+		clear {t_playingBP.%player%}
+		add {bp_lobbysettings.%{bp_currentlobby.%player%}%::Map Selected} to {bp_openMaps::*}
+		send "<light red>Force exited Bloody Palace."
+		
+command /flushBPLobbies:
+	trigger:
+		clear {bp_openlobbies::*}
+		send "<light red>Flushed BP Lobbies."
+		
+command /testBPVars:
+	trigger:
+		broadcast "isPlayingBP? %{t_playingBP.%player%}%"
+		
+command /forcenextBPWave:
+	trigger:
+		set {t_mobsToSpawn.%{bp_lobbysettings.%{bp_currentlobby.%player%}%::Map Selected}%} to 0
+		set {t_mobsAlive.%{bp_lobbysettings.%{bp_currentlobby.%player%}%::Map Selected}%} to 0

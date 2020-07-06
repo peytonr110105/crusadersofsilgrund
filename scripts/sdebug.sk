@@ -118,6 +118,11 @@ on damage:
 			broadcast "Projectile!"
 		broadcast "<bold><green>[S-DEBUG]<reset> %victim%'s Damage cause: %damage cause%"
 		
+command /setItemDurability <number>:
+	trigger:
+		set damage value of the player's tool to arg 1
+		send "Reduced durability of the held item by %arg 1% uses." to the player
+
 #on right click on player:
 #	if target is citizen:
 #		set {_citizen} to the event-citizen

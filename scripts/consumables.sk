@@ -1,0 +1,180 @@
+on load:
+	register new shaped recipe for splash potion of healing named "<orange>Holy Water" with lore "<white>Contains a special reagent that drives away darkness.", "<white>Right-click to heavily damage nearby monsters." using glass, cobblestone, glass, glass, diamond, glass, glass, glass, glass
+	register new shaped recipe for nether star named "<orange>Untouchable" with lore "<white>A divine blessing that renders you invulnerable.", "<white>Right-click to become invincible for several seconds." using gold block, air, gold block, air, diamond, air, gold block, air, gold block
+	register new shaped recipe for splash potion of healing named "<orange>Sparkling Water" with lore "<white>Contains a mystical brew that cures a party's wounds.", "<white>Right-click to heal yourself and nearby party members." using glass, cobblestone, glass, glass, gold block, glass, glass, glass, glass
+	register new shaped recipe for anvil named "<orange>Restoration Kit" with lore "<white>Repairs any item to full durability.", "<white>Right-click to repair all items in your inventory." using iron block, lapis block, iron block, iron block, redstone block, iron block, iron block, lapis block, iron block
+	register new shaped recipe for splash potion of slowness named "<orange>Bottled Blizzard" with lore "<white>Bottled-up frost magic, itching to be released.", "<white>Right-click to immobilize nearby foes." using snow block, glass, snow block, glass, iron block, glass, glass, glass, glass
+	register new shaped recipe for golden carrot named "<orange>War Horn" with lore "<white>An enchanted horn that raises morale.", "<white>Right-click to grant <white><bold>[Adrenaline]<reset><white> to nearby party members.", "<white><bold>[Adrenaline]:<reset><white> Grants Swiftness/Strength 5 and grants +10%% Special Skill activation chance." using gold ingot, iron ingot, air, iron ingot, redstone block, iron ingot, redstone block, iron ingot, iron ingot
+	register new shaped recipe for ender pearl named "<orange>Rollcall Orb" with lore "<white>Right-click to teleport nearby allies to you." using iron ingot, iron ingot, iron ingot, iron ingot, ender pearl, iron ingot, iron ingot, iron ingot, iron ingot
+	register new shaped recipe for ender pearl named "<orange>Escape Orb" with lore "<white>Right-click to warp back to your spawn location." using gold ingot, gold ingot, gold ingot, gold ingot, ender pearl, gold ingot, gold ingot, gold ingot, gold ingot
+	register new shaped recipe for golden sword named "<orange>Special Blade" with lore "<white>Right-click to guarantee the activation of your Special skill." using air, glowstone, air, glowstone, iron sword, glowstone, air, glowstone, air
+	register new shaped recipe for potion of healing named "<orange>Elixir of Life" with lore "<white>Drink to restore all health." using glass, lapis lazuli item, glass, glass, golden apple, glass, glass, glass, glass
+	register new shaped recipe for sugar named "<orange>Energy Drop" with lore "<white>Use to increase your STR cap by 5 points." using quartz block, obsidian, diamond block, obsidian, red wool, obsidian, diamond block, obsidian, quartz block
+	register new shaped recipe for sugar named "<orange>Dragonshield" with lore "<white>Use to increase your DEF cap by 5 points." using quartz block, obsidian, diamond block, obsidian, yellow wool, obsidian, diamond block, obsidian, quartz block
+	register new shaped recipe for sugar named "<orange>Speedwing" with lore "<white>Use to increase your SPD cap by 5 points." using quartz block, obsidian, diamond block, obsidian, light green wool, obsidian, diamond block, obsidian, quartz block
+	register new shaped recipe for sugar named "<orange>Spirit Dust" with lore "<white>Use to increase your MAG cap by 5 points." using quartz block, obsidian, diamond block, obsidian, blue wool, obsidian, diamond block, obsidian, quartz block
+	register new shaped recipe for sugar named "<orange>Focus Drop" with lore "<white>Use to increase your SKL cap by 5 points." using quartz block, obsidian, diamond block, obsidian, purple wool, obsidian, diamond block, obsidian, quartz block
+	register new shaped recipe for sugar named "<orange>Holy Robe" with lore "<white>Use to increase your HP cap by 5 points." using quartz block, obsidian, diamond block, obsidian, pink wool, obsidian, diamond block, obsidian, quartz block
+	register new shaped recipe for sugar named "<orange>Wind Boots" with lore "<white>Use to grant Swiftness/Haste 4 to nearby allies." using redstone dust, redstone dust, redstone dust, redstone dust, iron boots, redstone dust, redstone dust, redstone dust, redstone dust
+
+on right click:
+	if the name of the player's tool is "<orange>Holy Water":
+		cancel event
+		if {itemCooldowns.%player%::Holy Water} is not set:
+			set {itemCooldowns.%player%::Holy Water} to 20
+			remove 1 of event-item from the player
+			play sound "block.glass.break" with volume 1 and pitch 1 at the player
+			loop all monsters in radius 30 of the player:
+				damage loop-monster by (loop-monster's maximum health * 0.5)
+				play 20 (water splash with speed 1) at the loop-monster
+				play 20 (firework spark with speed 1) at the loop-monster
+	else if the name of the player's tool is "<orange>Restoration Kit":
+		cancel event
+		remove 1 of event-item from the player
+		make player execute command "/fix all"
+	else if the name of the player's tool is "<orange>Untouchable":
+		if {itemCooldowns.%player%::Untouchable} is not set:
+			remove 1 of event-item from the player
+			play sound "block.glass.break" with volume 1 and pitch 1 at the player
+			set {itemCooldowns.%player%::Untouchable} to 62
+			apply resistance 10 to the player for 12 seconds
+			apply regeneration 20 to the player for 12 seconds
+			buffSFX(player)
+			play mob spawner flames at the player
+	else if the name of the player's tool is "<orange>Sparkling Water":
+		cancel event
+		if {itemCooldowns.%player%::Sparkling Water} is not set:
+			remove 1 of event-item from the player
+			play sound "block.glass.break" with volume 1 and pitch 1 at the player
+			set {itemCooldowns.%player%::Sparkling Water} to 20
+			loop all players in radius 30 of the player:
+				if {party.%player%} is {party.%loop-player%}:
+					heal loop-player by (loop-player's maximum health * 0.5)
+					play 20 (light green wool break with speed 1) at loop-player
+					play 20 (water splash with speed 1) at loop-player
+	else if the name of the player's tool is "<orange>Bottled Blizzard":
+		cancel event
+		if {itemCooldowns.%player%::Bottled Blizzard} is not set:
+			remove 1 of event-item from the player
+			play sound "block.glass.break" with volume 1 and pitch 1 at the player
+			set {itemCooldowns.%player%::Bottled Blizzard} to 40
+			loop all monsters in radius 30 of the player:
+				apply slowness 127 to the loop-monster for 10 seconds
+				apply weakness 3 to the loop-monster for 10 seconds
+				apply jump boost 128 to the loop-monster for 10 seconds
+				apply levitation 129 to the loop-monster for 10 seconds
+				play 20 (snow block break with speed 1) at the loop-monster
+				play 20 (ice block break with speed 1) at the loop-monster
+	else if the name of the player's tool is "<orange>War Horn":
+		cancel event
+		if {itemCooldowns.%player%::War Horn} is not set:
+			remove 1 of event-item from the player
+			play sound "entity.villager.yes" with volume 1.3 and pitch 0.7 at the player
+			wait 1 seconds
+			play sound "entity.lightning.thunder" with volume 2 and pitch 0.7 at the player
+			play sound "entity.generic.explode" with volume 1 and pitch 1 at the player
+			set {itemCooldowns.%player%::War Horn} to 40
+			loop all players in radius 30 of the player:
+				if {party.%player%} is {party.%loop-player%}:
+					add loop-player to {_playersBuffed::*}
+					apply strength 5 to loop-player for 10 seconds
+					apply swiftness 5 to loop-player for 10 seconds
+					set {hasAdrenalineBuff.%loop-player%} to true
+					send "<light green>%player% granted you Adrenaline for 10 seconds!" to loop-player
+			wait 10 seconds
+			loop {_playersBuffed::*}:
+				clear {hasAdrenalineBuff.%loop-value%}
+				send "<light red>Adrenaline wore off!" to loop-value
+	else if the name of the player's tool is "<orange>Rollcall Orb":
+		remove 1 of event-item from the player
+		loop all players in radius 50 of the player:
+			if {party.%player%} is {party.%loop-player%}:
+				if loop-player is not the player:
+					teleport loop-player to the player
+	else if the name of the player's tool is "<orange>Escape Orb":
+		cancel event
+		remove 1 of event-item from the player
+		send "%{spawnpoint.%player%}%" to the player
+		teleport the player to {spawnpoint.%player%}
+		heal the player by player's maximum health
+		increase the player's food level by 20
+		wait 5 tick
+		play 20 (purple wool break with speed 1) at the player
+	else if the name of the player's tool is "<orange>Special Blade":
+		cancel event
+		if {itemCooldowns.%player%::Special Blade} is not set:
+			set {itemCooldowns.%player%::Special Blade} to 20
+			remove 1 of event-item from the player
+			set {forceSpecialProc.%player%} to true
+			play mob spawner flames at the player
+			buffSFX(player)
+	else if the name of the player's tool is "<orange>Wind Boots":
+		cancel event
+		if {itemCooldowns.%player%::Wind Boots} is not set:
+			remove 1 of event-item from the player
+			set {itemCooldowns.%player%::Wind Boots} to 25
+			loop all players in radius 30 of the player:
+				apply swiftness 4 to loop-player for 15 seconds
+				apply haste 4 to loop-player for 15 seconds
+	else if the name of the player's tool is "<orange>Energy Drop":
+		cancel event
+		remove 1 of event-item from the player
+		set {_oldSTR} to {strcap.%player%}
+		add 5 to {strcap.%player%}
+		play sound "entity.experience_orb.pickup" with volume 2 and pitch 0.8 at player for player
+		send formatted "Strength Cap: %{_oldSTR}% --> %{strcap.%player%}%" to the player
+	else if the name of the player's tool is "<orange>Dragonshield":
+		cancel event
+		remove 1 of event-item from the player
+		set {_old} to {defcap.%player%}
+		add 5 to {defcap.%player%}
+		play sound "entity.experience_orb.pickup" with volume 2 and pitch 0.8 at player for player
+		send formatted "Defense Cap: %{_old}% --> %{defcap.%player%}%" to the player
+	else if the name of the player's tool is "<orange>Speedwing":
+		cancel event
+		remove 1 of event-item from the player
+		set {_old} to {spdcap.%player%}
+		add 5 to {spdcap.%player%}
+		play sound "entity.experience_orb.pickup" with volume 2 and pitch 0.8 at player for player
+		send formatted "Speed Cap: %{_old}% --> %{spdcap.%player%}%" to the player
+	else if the name of the player's tool is "<orange>Spirit Dust":
+		cancel event
+		remove 1 of event-item from the player
+		set {_old} to {rescap.%player%}
+		add 5 to {rescap.%player%}
+		play sound "entity.experience_orb.pickup" with volume 2 and pitch 0.8 at player for player
+		send formatted "Magic Cap: %{_old}% --> %{rescap.%player%}%" to the player
+	else if the name of the player's tool is "<orange>Focus Drop":
+		cancel event
+		remove 1 of event-item from the player
+		set {_old} to {sklcap.%player%}
+		add 5 to {sklcap.%player%}
+		play sound "entity.experience_orb.pickup" with volume 2 and pitch 0.8 at player for player
+		send formatted "Skill Cap: %{_old}% --> %{sklcap.%player%}%" to the player
+	else if the name of the player's tool is "<orange>Holy Robe":
+		cancel event
+		remove 1 of event-item from the player
+		set {_old} to {hpcap.%player%}
+		add 5 to {hpcap.%player%}
+		play sound "entity.experience_orb.pickup" with volume 2 and pitch 0.8 at player for player
+		send formatted "Health Cap: %{_old}% --> %{hpcap.%player%}%" to the player
+		set the player's maximum health to (({hp.%player%} + {hpcap.%player%}) / 2)
+		
+on consume:
+	if the name of the player's tool is "<orange>Elixir of Life":
+		cancel event
+		if {itemCooldowns.%player%::Elixir of Life} is not set:
+			set {itemCooldowns.%player%::Elixir of Life} to 10
+			remove 1 of event-item from the player
+			heal the player by player's maximum health
+			play 10 wolf hearts at the player
+		
+every second:
+	loop all players:
+		if {itemCooldowns.%loop-player%::*} is set:
+			loop {itemCooldowns.%loop-player%::*}:
+				subtract 1 from {itemCooldowns.%loop-player%::%loop-index%}
+				if {itemCooldowns.%loop-player%::%loop-index%} is less than or equal to 0:
+					play sound "entity.experience_orb.pickup" with volume 2 and pitch 0.8 at loop-player for loop-player
+					send formatted "<light green>Your %loop-index% can be used again." to loop-player
+					clear {itemCooldowns.%loop-player%::%loop-index%}

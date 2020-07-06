@@ -15,7 +15,6 @@ command /ctoggle <number>:
 			set the player's maximum health to 10
 			send formatted "<gold>Classes disabled!"
 
-
 #MARKER - First-Time Setup
 
 #Perform first-time setup
@@ -65,6 +64,42 @@ on join:
 	#if {hasCrest.%player%} is not set:
 	#	give nether star named "<gold><bold>Journey's Crest" with lore "Used to promote Journeymen to a higher class." to player
 	#	set {hasCrest.%player%} to 1
+	create bossbar titled "<light green>Class Level Progress" and id "classxpbar.%player's uuid%" for player with progress 0 with colors green
+	display bossbar "classxpbar.%player's uuid%"
+	set bossbar "classxpbar.%player's UUID%" progress to ({classXP.%player%} / (((({lvl.%player%} + (({promoted.%player%} -1) * 10)) ^ 2) * 4) + 16)) * 100
+	#Display perk gauges
+	set {_sklcheck} to checkSlots(player,"Devil Trigger")
+	if {_sklcheck} is 1:
+		create bossbar titled "<light red>Devil Trigger" and id "dt.%player's uuid%" for player with progress 0 with colors red
+		display bossbar "dt.%player's uuid%"
+		set bossbar "dt.%player's uuid%" progress to {dtMeter.%player%} / {dtMeterCap.%player%} * 100
+	else:
+		hide bossbar "dt.%player's uuid%"
+		destroy bossbar "dt.%player's uuid%"
+	#Dragon Soul Gauges
+	#Gale Soul
+	set {_sklcheck} to checkSlots(player,"Gale Soul")
+	if {_sklcheck} is 1:
+		create bossbar titled "<light green>Gale Soul" and id "dsoul.%player's uuid%" for player with progress 0 with colors green
+		display bossbar "dsoul.%player's uuid%"
+		set bossbar "dsoul.%player's uuid%" progress to {dSoulMeter.%player%} / {dSoulMeterCap.%player%} * 100
+	else:
+		#Flame Soul
+		set {_sklcheck} to checkSlots(player,"Flame Soul")
+		if {_sklcheck} is 1:
+			create bossbar titled "<orange>Flame Soul" and id "dsoul.%player's uuid%" for player with progress 0 with colors red
+			display bossbar "dsoul.%player's uuid%"
+			set bossbar "dsoul.%player's uuid%" progress to {dSoulMeter.%player%} / {dSoulMeterCap.%player%} * 100
+		else:
+			#Aqua Soul
+			set {_sklcheck} to checkSlots(player,"Aqua Soul")
+			if {_sklcheck} is 1:
+				create bossbar titled "<light blue>Aqua Soul" and id "dsoul.%player's uuid%" for player with progress 0 with colors blue
+				display bossbar "dsoul.%player's uuid%"
+				set bossbar "dsoul.%player's uuid%" progress to {dSoulMeter.%player%} / {dSoulMeterCap.%player%} * 100
+			else:
+				hide bossbar "dsoul.%player's uuid%"
+				destroy bossbar "dsoul.%player's uuid%"
 	strike lightning effect at the player
 	wait 1 tick
 	play 40 (wool break with speed 1) at the player
@@ -114,12 +149,12 @@ command /charsetup [<number=0>] [<number=0>]:
 				if {class.%player%} is "Freelancer":
 					set {class.%player%} to "Mercenary"
 				#Initialize class stat predictions
-				set {hpcap.%player%} to floor(({pts_HP.%player%} / 10) * 2.5)
-				set {strcap.%player%} to floor(({pts_STR.%player%} / 10) * 2.5)
-				set {defcap.%player%} to floor(({pts_DEF.%player%} / 10) * 2.5)
-				set {sklcap.%player%} to floor(({pts_SKL.%player%} / 10) * 2.5)
-				set {spdcap.%player%} to floor(({pts_SPD.%player%} / 10) * 2.5)
-				set {rescap.%player%} to floor(({pts_MAG.%player%} / 10) * 2.5)
+				set {hpcap.%player%} to floor(({pts_HP.%player%} / 10) * 1.66)
+				set {strcap.%player%} to floor(({pts_STR.%player%} / 10) * 1.66)
+				set {defcap.%player%} to floor(({pts_DEF.%player%} / 10) * 1.66)
+				set {sklcap.%player%} to floor(({pts_SKL.%player%} / 10) * 1.66)
+				set {spdcap.%player%} to floor(({pts_SPD.%player%} / 10) * 1.66)
+				set {rescap.%player%} to floor(({pts_MAG.%player%} / 10) * 1.66)
 				set {hp.%player%} to ({pts_HP.%player%} / 10)
 				set {str.%player%} to ({pts_STR.%player%} / 10)
 				set {def.%player%} to ({pts_DEF.%player%} / 10)
@@ -373,6 +408,25 @@ command /charsetup [<number=0>] [<number=0>]:
 					add 4 to {res.%player%}
 					add 10 to {hp.%player%}
 					add 4 to {skl.%player%}
+				else if {class.%player%} is "Trickster":
+					set {hpgrowth.%player%} to floor({pts_HP.%player%} / 1.5) + 20
+					set {strgrowth.%player%} to floor({pts_STR.%player%} / 1) + 25
+					set {defgrowth.%player%} to floor({pts_DEF.%player%} / 1) + 15
+					set {sklgrowth.%player%} to floor({pts_SKL.%player%} / 1) + 50
+					set {spdgrowth.%player%} to floor({pts_SPD.%player%} / 1) + 35
+					set {maggrowth.%player%} to floor({pts_MAG.%player%} / 1) + 5
+					add 12 to {hpcap.%player%}
+					add 11 to {strcap.%player%}
+					add 10 to {defcap.%player%}
+					add 20 to {sklcap.%player%}
+					add 15 to {spdcap.%player%}
+					add 5 to {rescap.%player%}
+					add 6 to {str.%player%}
+					add 7 to {spd.%player%}
+					add 9 to {skl.%player%}
+					add 2 to {def.%player%}
+					add 1 to {res.%player%}
+					add 5 to {hp.%player%}
 				open chest with 2 rows named "<gold><bold>Character Configuration" for the player
 				set slot 0 of the player's current inventory to green wool named "<green><bold>HP" with lore "<white>Vitality.", "<white>20 points of HP grants 1 additional heart of health.", "<white>HP has a minimum investment of 100 points.", "<white>Points Invested: %{pts_HP.%player%}%"
 				set slot 1 of the player's current inventory to green wool named "<green><bold>STR" with lore "<white>Strength of attacks.", "<white>Every 5 points of STR increases damage dealt by 1 heart.", "<white>Points Invested: %{pts_STR.%player%}%"
@@ -382,7 +436,7 @@ command /charsetup [<number=0>] [<number=0>]:
 				set slot 5 of the player's current inventory to green wool named "<green><bold>MAG" with lore "<white>Adeptness with magic.", "<white>Magical attacks calculate damage using this stat rather than STR/DEF.", "<white>Certain items and abilities are improved by this stat.", "<white>Points Invested: %{pts_MAG.%player%}%"
 				set slot 6 of the player's current inventory to 1 hopper named "<green><bold>Reset Points" with lore "<white>Clears all allocated points."
 				set slot 7 of the player's current inventory to 1 diamond named "<white><bold>Points to spend:" with lore "<gold><bold>%{csetup_pts.%player%}%"
-				set slot 8 of the player's current inventory to 1 book named "<white>Click a stat to adjust your proficiency in it." with lore "<white>10 points increases the stat's growth rate,", "<white>grants +2 to the stat's maximum value,", "<white>and +1 to the stat's base amount.", "<white>Decimal values will be rounded down after allocations are complete.", "<white>Each stat must have at least 10 points.", "<white>Your class will further adjust your proficiency."
+				set slot 8 of the player's current inventory to 1 book named "<white>Click a stat to adjust your proficiency in it." with lore "<white>10 points increases the stat's growth rate,", "<white>grants +1.66 to the stat's maximum value,", "<white>and +1 to the stat's base amount.", "<white>Decimal values will be rounded down after allocations are complete.", "<white>Each stat must have at least 10 points.", "<white>Your class will further adjust your proficiency."
 				set slot 9 of the player's current inventory to 1 chest named "<light yellow><bold>Presets" with lore "<white>Automatically allocate points based on your desired class."
 				if {sex.%player%} is 1:
 					set slot 10 of the player's current inventory to 1 totem of undying named "<bold>Gender: Male" with lore "<white>Select which pronouns NPC's will refer to you by.", "<white>NOTE: Your gender will not impact your ability to support other players."
@@ -583,7 +637,7 @@ command /charsetup [<number=0>] [<number=0>]:
 				if {unlockedClasses.%player%::Gunslinger} is 1:
 					set slot 11 of the player's current inventory to 1 nether star named "<gold>Gunslinger" with lore "<white>Highly skilled infantry focusing on utilizing various firearms.", "<light blue>Boons: SPD, SKL", "<light red>Banes: MAG, DEF"
 				else:
-					set slot 11 of the player's current inventory to 1 obsidian named "<light red>???" with lore "<white>Unlock this class by reaching S-Support with either Mustang or Sally."
+					set slot 11 of the player's current inventory to 1 obsidian named "<light red>???" with lore "<white>Unlock this class by completing ""Sunset""."
 				if {unlockedClasses.%player%::Strategist} is 1:
 					set slot 12 of the player's current inventory to 1 nether star named "<gold>Strategist" with lore "<white>Extremely versatile infantry class with access to magic.", "<light blue>Boons: MAG, DEF", "<light red>Banes: SPD"
 				else:
@@ -591,11 +645,12 @@ command /charsetup [<number=0>] [<number=0>]:
 				if {unlockedClasses.%player%::Devil Hunter} is 1:
 					set slot 13 of the player's current inventory to 1 nether star named "<gold>Devil Hunter" with lore "<white>Stylish masters of combat with unique combo attacks.", "<light blue>Boons: SPD, SKL", "<light red>Banes: DEF, MAG"
 				else:
-					set slot 13 of the player's current inventory to 1 obsidian named "<light red>???" with lore "<white>Unlock this class by reaching S-Support with either Alastor or Ifrit."
+					set slot 13 of the player's current inventory to 1 obsidian named "<light red>???" with lore "<white>Unlock this class by reaching S-Support with Alastor."
 				if {unlockedClasses.%player%::Summoner} is 1:
 					set slot 14 of the player's current inventory to 1 nether star named "<gold>Summoner" with lore "<white>Fragile infantry class utilizing various summons for combat.", "<light blue>Boons: SKL, MAG", "<light red>Banes: HP, DEF"
 				else:
 					set slot 14 of the player's current inventory to 1 obsidian named "<light red>???" with lore "<white>Unlock this class by breaking 20 monster spawners."
+				set slot 15 of the player's current inventory to 1 nether star named "<gold>Trickster" with lore "<white>Cunning and slippery. Prefer to talk their way out of trouble.", "<light blue>Boons: SKL, SPD", "<light red>Banes: HP, MAG"
 				set {blockMenuExit.%player%} to "/charsetup 2 3"
 			else if arg 2 is 4:
 				open chest with 2 rows named "<gold><bold>Select Presets" for the player
@@ -648,6 +703,7 @@ on inventory click:
 			make player execute command "/charsetup 2 3"
 			set {class.%player%} to "Mercenary"
 		else if the name of the clicked item is "<light green>Confirm Character":
+			set {classXP.%player%} to 0
 			clear {blockMenuExit.%player%}
 			close the player's inventory
 			set {lvl.%player%} to 1
@@ -657,12 +713,12 @@ on inventory click:
 			set {pts_SKL.%player%} to ({pts_SKL.%player%} / 2)
 			set {pts_SPD.%player%} to ({pts_SPD.%player%} / 2)
 			set {pts_MAG.%player%} to ({pts_MAG.%player%} / 2)
-			set {hpcap.%player%} to floor(({pts_HP.%player%} / 5) * 2.5)
-			set {strcap.%player%} to floor(({pts_STR.%player%} / 5) * 2.5)
-			set {defcap.%player%} to floor(({pts_DEF.%player%} / 5) * 2.5)
-			set {sklcap.%player%} to floor(({pts_SKL.%player%} / 5) * 2.5)
-			set {spdcap.%player%} to floor(({pts_SPD.%player%} / 5) * 2.5)
-			set {rescap.%player%} to floor(({pts_MAG.%player%} / 5) * 2.5)
+			set {hpcap.%player%} to floor(({pts_HP.%player%} / 5) * 1.66)
+			set {strcap.%player%} to floor(({pts_STR.%player%} / 5) * 1.66)
+			set {defcap.%player%} to floor(({pts_DEF.%player%} / 5) * 1.66)
+			set {sklcap.%player%} to floor(({pts_SKL.%player%} / 5) * 1.66)
+			set {spdcap.%player%} to floor(({pts_SPD.%player%} / 5) * 1.66)
+			set {rescap.%player%} to floor(({pts_MAG.%player%} / 5) * 1.66)
 			set {hp.%player%} to ({pts_HP.%player%} / 5)
 			set {str.%player%} to ({pts_STR.%player%} / 5)
 			set {def.%player%} to ({pts_DEF.%player%} / 5)
@@ -1876,7 +1932,6 @@ on chat:
 		send formatted "<run command:/cosmetics><light blue>Click here to return to the main set-up menu."
 		
 #MARKER - Character Info
-		
 command /cstats [<offlineplayer=%player%>] [<number=1>]:
 	description: Check your or someone else's classes statistics.
 	usage: /cstats (player) (page)
@@ -1888,6 +1943,7 @@ command /cstats [<offlineplayer=%player%>] [<number=1>]:
 			send formatted "<red>Could not find classes data for that player. Please check your spelling and try again. The player may also have disabled classes for their character."
 		else:
 			send formatted "<gold><bold>%arg 1%: Level %{lvl.%arg 1%}% %{class.%arg 1%}%"
+			send formatted "<gold><bold>XP until next level: %ceil((((({lvl.%arg 1%} + (({promoted.%arg 1%} - 1) * 10)) ^ 2) / 2) + 20) - {classXP.%arg 1%})%"
 			if arg 2 is 1:
 				#Calculate BST
 				set {_bstcap.%arg 1%} to ({strcap.%arg 1%} + {defcap.%arg 1%} + {sklcap.%arg 1%} + {spdcap.%arg 1%} + {rescap.%arg 1%} + {hpcap.%arg 1%})
@@ -2008,59 +2064,9 @@ command /cstats [<offlineplayer=%player%>] [<number=1>]:
 				
 				
 #MARKER - Promotion Items
-
-
 on right-click with nether star:
 	if {lvl.%player%} is more than 9:
-		if the name of the event-item is "<gold><bold>Journey's Crest":
-			send formatted "<gold>You may now promote into the following classes. Please click on one to learn about that class. Click the button that appears beneath the class's information to promote."
-			play sound "entity.player.levelup" with volume 2 and pitch 2 at player for player
-			spawn firework at the player
-			wait 1 second
-			set {promotionready.%player%} to 1
-			if {promoted.%player%} is 0:
-				remove 1 of event-item from the player
-				play sound "entity.experience_orb.pickup" with volume 2 and pitch 1 at player for player
-				send formatted "<run command:/class help Knight><light blue>Knight"
-				wait 0.4 seconds
-				play sound "entity.experience_orb.pickup" with volume 2 and pitch 1 at player for player
-				send formatted "<run command:/class help Cavalier><light blue>Cavalier"
-				wait 0.4 seconds
-				play sound "entity.experience_orb.pickup" with volume 2 and pitch 1 at player for player
-				send formatted "<run command:/class help Bladesman><light blue>Bladesman"
-				wait 0.4 seconds
-				play sound "entity.experience_orb.pickup" with volume 2 and pitch 1 at player for player
-				send formatted "<run command:/class help Fighter><light blue>Fighter"
-				wait 0.4 seconds
-				play sound "entity.experience_orb.pickup" with volume 2 and pitch 1 at player for player
-				send formatted "<run command:/class help Mercenary><light blue>Mercenary"
-				wait 0.4 seconds
-				play sound "entity.experience_orb.pickup" with volume 2 and pitch 1 at player for player
-				send formatted "<run command:/class help Cleric><light blue>Cleric"
-				wait 0.4 seconds
-				play sound "entity.experience_orb.pickup" with volume 2 and pitch 1 at player for player
-				send formatted "<run command:/class help Mage><light blue>Mage"
-				wait 0.4 seconds
-				play sound "entity.experience_orb.pickup" with volume 2 and pitch 1 at player for player
-				send formatted "<run command:/class help Archer><light blue>Archer"
-				wait 0.4 seconds
-				play sound "entity.experience_orb.pickup" with volume 2 and pitch 1 at player for player
-				send formatted "<run command:/class help Gunslinger><light blue>Gunslinger"
-				wait 0.4 seconds
-				play sound "entity.experience_orb.pickup" with volume 2 and pitch 1 at player for player
-				send formatted "<run command:/class help Devil Hunter><light blue>Devil Hunter"
-				wait 0.4 seconds
-				play sound "entity.experience_orb.pickup" with volume 2 and pitch 1 at player for player
-				send formatted "<run command:/class help Strategist><light blue>Strategist"
-				wait 0.4 seconds
-				play sound "entity.experience_orb.pickup" with volume 2 and pitch 1 at player for player
-				send formatted "<run command:/class help Survivor><light blue>Survivor"
-				wait 0.4 seconds
-				play sound "entity.experience_orb.pickup" with volume 2 and pitch 1 at player for player
-				send formatted "<run command:/class help Dragonborn><light blue>Dragonborn"
-			else:
-				send formatted "<red>You must be a Journeyman to use a Journey's Crest."
-		else if the name of the event-item is "<gold><bold>Warrior's Proof":
+		if the name of the event-item is "<gold><bold>Warrior's Proof":
 			if {promoted.%player%} is 1:
 				remove 1 of event-item from the player
 				set {promotionready.%player%} to 1
@@ -2094,140 +2100,7 @@ command /class <text> [<text="Journeyman">]:
 	usage: /class help
 	executable by: players
 	trigger:
-		send formatted "<gold><bold>~~~~~~Classes~~~~~~"
-		if arg 1 is "help":
-			#send formatted "<gold>Current Class: %{class.%player%}%"
-			if arg 2 is "Journeyman":
-				send formatted "Journeymen are your average traveller, skilled in all manners of combat and survival. Highly versatile and able to adapt to any situation. However, this also keeps them from excelling in any one area in particular."
-				send formatted "Class-Specific Skill: <red>None"
-				send formatted "Maximum Health: <yellow>Average"
-				send formatted "Movement Speed: <yellow>Average"
-				send formatted "Damage Resistance: <yellow>Average"
-				send formatted "Attack Power: <yellow>Average"
-				send formatted "Skill: <yellow>Average"
-				set {promotiontype.%player%} to "Journeyman"
-			else if arg 2 is "Knight":
-				send formatted "Knights are strong and tough. Able to absorb the mightiest of blows, Knights are perfect for defence. Their poor speed and weak retaliation keeps them off the front lines. Unable to ride mounts."
-				send formatted "Class-Specific Skill: <light blue>Unbreakable: You cannot be debuffed."
-				send formatted "Maximum Health: <green>Exceptional"
-				send formatted "Movement Speed: <red>Poor"
-				send formatted "Damage Resistance: <green>Exceptional"
-				send formatted "Attack Power: <light red>Below-Average"
-				send formatted "Skill: <light red>Below-Average"
-				set {promotiontype.%player%} to "Knight"
-			else if arg 2 is "Cavalier":
-				send formatted "Cavaliers are mounted horsemen with solid fundamentals of swordplay. They charge fiercely into battle upon a trusted steed. Not quite as deadly if their mount is slain."
-				send formatted "Class-Specific Skill: <light blue>Taming Mastery: All animals you tame recieve permanent stat increases."
-				send formatted "Maximum Health: <yellow>Average"
-				send formatted "Movement Speed: <yellow>Average"
-				send formatted "Damage Resistance: <yellow>Average"
-				send formatted "Attack Power: <yellow>Average"
-				send formatted "Skill: <light green>Above-Average"
-				set {promotiontype.%player%} to "Cavalier"
-			else if arg 2 is "Bladesman":
-				send formatted "Bladesmen have devoted their lives to the sword, delivering staggeringly fast attacks with incredible skill. However, they are incredibly fragile to physical attacks."
-				send formatted "Class-Specific Skill: <light blue>Light Feet: Dodge rolling costs nothing."
-				send formatted "Maximum Health: <light red>Below-Average"
-				send formatted "Movement Speed: <green>Exceptional"
-				send formatted "Damage Resistance: <light red>Below-Average"
-				send formatted "Attack Power: <light red>Below-Average"
-				send formatted "Skill: <green>Exceptional"
-				set {promotiontype.%player%} to "Bladesman"
-			else if arg 2 is "Fighter":
-				send formatted "Axemen are incredibly handy with an axe. They deliver devastating blows that can smash even the strongest of armour. However, they can be somewhat sluggish and clumsy."
-				send formatted "Class-Specific Skill: <light blue>Gamble: Grants STR +60, but attacks can miss."
-				send formatted "Maximum Health: <light green>Above-Average"
-				send formatted "Movement Speed: <light red>Below-Average"
-				send formatted "Damage Resistance: <yellow>Average"
-				send formatted "Attack Power: <light green>Above-Average"
-				send formatted "Skill: <red>Poor"
-				set {promotiontype.%player%} to "Fighter"
-			else if arg 2 is "Mercenary":
-				send formatted "Mercenaries are the ascended form of Journeymen. Still sharp as ever in all types of combat, the Mercenary also gains slightly more skill and physical bulk."
-				send formatted "Class-Specific Skill: <light blue>Brazen STR/DEF: A surge of energy increases all stats in a pinch."
-				send formatted "Maximum Health: <green>Above-Average"
-				send formatted "Movement Speed: <yellow>Average"
-				send formatted "Damage Resistance: <yellow>Average"
-				send formatted "Attack Power: <yellow>Average"
-				send formatted "Skill: <light green>Above-Average"
-				set {promotiontype.%player%} to "Mercenary"
-			else if arg 2 is "Archer":
-				send formatted "Archers specialize in ranged combat. Their above average defences lend themselves well to bow duels, but are weak in close-quarters combat."
-				send formatted "Class-Specific Skill: <light blue>Quick Draw: Arrows fire instantly, but travel less distance."
-				send formatted "Maximum Health: <yellow>Average"
-				send formatted "Movement Speed: <yellow>Average"
-				send formatted "Damage Resistance: <light green>Above-Average"
-				send formatted "Attack Power: <light red>Below-Average"
-				send formatted "Skill: <light red>Below-Average"
-				set {promotiontype.%player%} to "Archer"
-			else if arg 2 is "Strategist":
-				send formatted "Strategists are highly versatile fighters familiar with all manners of combat. They can wield any weapon necessary to secure victory for their comrades."
-				send formatted "Class-Specific Skill: <light blue>Rally Strength: Right-Click an ally to grant them Strength 1 for 60 seconds."
-				send formatted "Maximum Health: <yellow>Average"
-				send formatted "Movement Speed: <yellow>Average"
-				send formatted "Damage Resistance: <yellow>Average"
-				send formatted "Attack Power: <yellow>Average"
-				send formatted "Skill: <yellow>Average"
-				set {promotiontype.%player%} to "Strategist"
-			else if arg 2 is "Gunslinger":
-				send formatted "Gunslingers are fast-footed tricksters posessing superb skills with all manners of firearms. Their speed and skill make them hard to pin down, even in close quarters."
-				send formatted "Class-Specific Skill: <light blue>Fast Fingers: Halves the reload time of all firearms."
-				send formatted "Maximum Health: <yellow>Average"
-				send formatted "Movement Speed: <light green>Above-Average"
-				send formatted "Damage Resistance: <light-red>Below-Average"
-				send formatted "Attack Power: <yellow>Average"
-				send formatted "Skill: <light green>Above-Average"
-				set {promotiontype.%player%} to "Gunslinger"
-			else if arg 2 is "Devil Hunter":
-				send formatted "Devil Hunters are high-flying and stylish masters of both ranged and melee combat. While their defences are rather lacking, they make up for it with lightning-fast and stylish combo attacks."
-				send formatted "Class-Specific Skill: <light blue>Air Hike: Perform wall jumps by left-clicking a wall while in contact with it."
-				send formatted "Maximum Health: <red>Poor"
-				send formatted "Movement Speed: <green>Exceptional"
-				send formatted "Damage Resistance: <red>Poor"
-				send formatted "Attack Power: <light red>Below-Average"
-				send formatted "Skill: <green>Exceptional"
-				set {promotiontype.%player%} to "Devil Hunter"
-			else if arg 2 is "Dragonborn":
-				send formatted "A near-extinct race with the blood of dragons. They possess power beyond that of normal humans, but can only use it for a limited time."
-				send formatted "Class-Specific Skill: <light blue>Hoard: Gain bonus money equal to your MAG at the start of every new day."
-				send formatted "Maximum Health: <yellow>Average"
-				send formatted "Movement Speed: <yellow>Average"
-				send formatted "Damage Resistance: <yellow>Average"
-				send formatted "Attack Power: <green>Exceptional"
-				send formatted "Skill: <yellow>Average"
-				set {promotiontype.%player%} to "Dragonborn"
-			else if arg 2 is "Survivor":
-				send formatted "Survivors are focused only on their own well-being. Foregoing any more combat talent than necessary, they focus on craftsmanship and retriving resources quickly and efficiently."
-				send formatted "Class-Specific Skill: <light blue>Scavenger: Ores have a chance to drop extra ore pieces when broken."
-				send formatted "Maximum Health: <yellow>Average"
-				send formatted "Movement Speed: <yellow>Average"
-				send formatted "Damage Resistance: <yellow>Average"
-				send formatted "Attack Power: <yellow>Average"
-				send formatted "Skill: <yellow>Average"
-				set {promotiontype.%player%} to "Survivor"
-			else if arg 2 is "Cleric":
-				send formatted "Clerics are helpful healers that wield a variety of staves. While they may not be able to use typical weapons, the staves clerics carry can heal your wounded. Take one with you, and you'll be very glad you did."
-				send formatted "Class-Specific Skill: <light blue>Live to Serve: When healing a player, you heal the same amount of health as your patient."
-				send formatted "Maximum Health: <green>Above-Average"
-				send formatted "Movement Speed: <light red>Below-Average"
-				send formatted "Damage Resistance: <light-red>Below-Average"
-				send formatted "Attack Power: <red>Poor"
-				send formatted "Skill: <light red>Below-Average"
-				send formatted "Magic: <green>Exceptional"
-				set {promotiontype.%player%} to "Cleric"
-			else if arg 2 is "Mage":
-				send formatted "Mages are spellcasters that can wield a large variety of powerful magics. They can combine multiple elements to create unique effects on the world."
-				send formatted "Class-Specific Skill: <light blue>Magic Ward: Halves cooldown of any magical abilities."
-				send formatted "Maximum Health: <green>Above-Average"
-				send formatted "Movement Speed: <yellow>Average"
-				send formatted "Damage Resistance: <light-red>Below-Average"
-				send formatted "Phyiscal Power: <red>Poor"
-				send formatted "Skill: <yellow>Average"
-				send formatted "Magic: <green>Exceptional"
-				set {promotiontype.%player%} to "Mage"
-			if {promotionready.%player%} is 1:
-				send formatted "<run command:/class promote %{promotiontype.%player%}%><gold>Promote to this class? (Click here to confirm promotion)"
-		else if arg 1 is "reset":
+		if arg 1 is "reset":
 			send formatted "<gold><bold>You have two options for resetting data:"
 			set {promotionready.%player%} to 1
 			send formatted "<run command:/class promote Reset>- Reset class stats to their defaults, but keep personal records."
@@ -2530,10 +2403,10 @@ command /class <text> [<text="Journeyman">]:
 					send formatted "<gold><bold>Promoted to Gunslinger!"
 				else if arg 2 is "Devil Hunter":
 					set {hpgrowth.%player%} to floor({pts_HP.%player%} / 1.5) + 20
-					set {strgrowth.%player%} to floor({pts_STR.%player%} / 1) + 30
+					set {strgrowth.%player%} to floor({pts_STR.%player%} / 1) + 35
 					set {defgrowth.%player%} to floor({pts_DEF.%player%} / 1) + 15
-					set {sklgrowth.%player%} to floor({pts_SKL.%player%} / 1) + 50
-					set {spdgrowth.%player%} to floor({pts_SPD.%player%} / 1) + 30
+					set {sklgrowth.%player%} to floor({pts_SKL.%player%} / 1) + 40
+					set {spdgrowth.%player%} to floor({pts_SPD.%player%} / 1) + 35
 					set {maggrowth.%player%} to floor({pts_MAG.%player%} / 1) + 5
 					add 10 to {hpcap.%player%}
 					add 16 to {strcap.%player%}
@@ -2595,6 +2468,28 @@ command /class <text> [<text="Journeyman">]:
 					set {class.%player%} to "Survivor"
 					make player execute command "/grantskill 0 Scavenger"
 					send formatted "<gold><bold>Promoted to Survivor!"
+				else if arg 2 is "Trickster":
+					set {hpgrowth.%player%} to floor({pts_HP.%player%} / 1.5) + 20
+					set {strgrowth.%player%} to floor({pts_STR.%player%} / 1) + 25
+					set {defgrowth.%player%} to floor({pts_DEF.%player%} / 1) + 15
+					set {sklgrowth.%player%} to floor({pts_SKL.%player%} / 1) + 50
+					set {spdgrowth.%player%} to floor({pts_SPD.%player%} / 1) + 35
+					set {maggrowth.%player%} to floor({pts_MAG.%player%} / 1) + 5
+					add 12 to {hpcap.%player%}
+					add 11 to {strcap.%player%}
+					add 10 to {defcap.%player%}
+					add 20 to {sklcap.%player%}
+					add 15 to {spdcap.%player%}
+					add 5 to {rescap.%player%}
+					add 6 to {str.%player%}
+					add 7 to {spd.%player%}
+					add 9 to {skl.%player%}
+					add 2 to {def.%player%}
+					add 1 to {res.%player%}
+					add 5 to {hp.%player%}
+					set {class.%player%} to "Trickster"
+					make player execute command "/grantskill 0 Midas Touch"
+					send formatted "<gold><bold>Promoted to Trickster!"
 				else if arg 2 is "Survivor1":
 					add {hpcap.%player%} to {hpcap.%player%}
 					add {strcap.%player%} to {strcap.%player%}
@@ -2805,13 +2700,45 @@ command /class <text> [<text="Journeyman">]:
 					set {class.%player%} to "Manakete"
 					make player execute command "/grantskill 0 Flight"
 					send formatted "<gold><bold>Promoted to Manakete!"
+				else if arg 2 is "Trickster1":
+					add {hpcap.%player%} to {hpcap.%player%}
+					add {strcap.%player%} to {strcap.%player%}
+					add {defcap.%player%} to {defcap.%player%}
+					add {sklcap.%player%} to {sklcap.%player%}
+					add {spdcap.%player%} to {spdcap.%player%}
+					add {rescap.%player%} to {rescap.%player%}
+					add 6 to {str.%player%}
+					add 7 to {spd.%player%}
+					add 9 to {skl.%player%}
+					add 2 to {def.%player%}
+					add 1 to {res.%player%}
+					add 5 to {hp.%player%}
+					set {class.%player%} to "Rogue"
+					make player execute command "/grantskill 0 Saboteur"
+					send formatted "<gold><bold>Promoted to Rogue!"
+				else if arg 2 is "Rogue":
+					add floor({hpcap.%player%} / 2) to {hpcap.%player%}
+					add floor({strcap.%player%} / 2) to {strcap.%player%}
+					add floor({defcap.%player%} / 2) to {defcap.%player%}
+					add floor({sklcap.%player%} / 2) to {sklcap.%player%}
+					add floor({spdcap.%player%} / 2) to {spdcap.%player%}
+					add floor({rescap.%player%} / 2) to {rescap.%player%}
+					add 6 to {str.%player%}
+					add 7 to {spd.%player%}
+					add 9 to {skl.%player%}
+					add 2 to {def.%player%}
+					add 1 to {res.%player%}
+					add 5 to {hp.%player%}
+					set {class.%player%} to "Freeblade"
+					make player execute command "/grantskill 0 Locktouch"
+					send formatted "<gold><bold>Promoted to Freeblade!"
 				else if arg 2 is "Builder":
-					add ({hpcap.%player%} / 2) to {hpcap.%player%}
-					add ({strcap.%player%} / 2) to {strcap.%player%}
-					add ({defcap.%player%} / 2) to {defcap.%player%}
-					add ({sklcap.%player%} / 2) to {sklcap.%player%}
-					add ({spdcap.%player%} / 2) to {spdcap.%player%}
-					add ({rescap.%player%} / 2) to {rescap.%player%}
+					add floor({hpcap.%player%} / 2) to {hpcap.%player%}
+					add floor({strcap.%player%} / 2) to {strcap.%player%}
+					add floor({defcap.%player%} / 2) to {defcap.%player%}
+					add floor({sklcap.%player%} / 2) to {sklcap.%player%}
+					add floor({spdcap.%player%} / 2) to {spdcap.%player%}
+					add floor({rescap.%player%} / 2) to {rescap.%player%}
 					add 4 to {str.%player%}
 					add 4 to {def.%player%}
 					add 4 to {spd.%player%}
@@ -2822,12 +2749,12 @@ command /class <text> [<text="Journeyman">]:
 					make player execute command "/grantskill 0 Craftsmanship"
 					send formatted "<gold><bold>Promoted to Craftsman!"
 				else if arg 2 is "Ranger":
-					add ({hpcap.%player%} / 2) to {hpcap.%player%}
-					add ({strcap.%player%} / 2) to {strcap.%player%}
-					add ({defcap.%player%} / 2) to {defcap.%player%}
-					add ({sklcap.%player%} / 2) to {sklcap.%player%}
-					add ({spdcap.%player%} / 2) to {spdcap.%player%}
-					add ({rescap.%player%} / 2) to {rescap.%player%}
+					add floor({hpcap.%player%} / 2) to {hpcap.%player%}
+					add floor({strcap.%player%} / 2) to {strcap.%player%}
+					add floor({defcap.%player%} / 2) to {defcap.%player%}
+					add floor({sklcap.%player%} / 2) to {sklcap.%player%}
+					add floor({spdcap.%player%} / 2) to {spdcap.%player%}
+					add floor({rescap.%player%} / 2) to {rescap.%player%}
 					add 6 to {str.%player%}
 					add 5 to {def.%player%}
 					add 4 to {spd.%player%}
@@ -2838,12 +2765,12 @@ command /class <text> [<text="Journeyman">]:
 					make player execute command "/grantskill 0 Heavy Draw"
 					send formatted "<gold><bold>Promoted to Sniper!"
 				else if arg 2 is "Tactician":
-					add ({hpcap.%player%} / 2) to {hpcap.%player%}
-					add ({strcap.%player%} / 2) to {strcap.%player%}
-					add ({defcap.%player%} / 2) to {defcap.%player%}
-					add ({sklcap.%player%} / 2) to {sklcap.%player%}
-					add ({spdcap.%player%} / 2) to {spdcap.%player%}
-					add ({rescap.%player%} / 2) to {rescap.%player%}
+					add floor({hpcap.%player%} / 2) to {hpcap.%player%}
+					add floor({strcap.%player%} / 2) to {strcap.%player%}
+					add floor({defcap.%player%} / 2) to {defcap.%player%}
+					add floor({sklcap.%player%} / 2) to {sklcap.%player%}
+					add floor({spdcap.%player%} / 2) to {spdcap.%player%}
+					add floor({rescap.%player%} / 2) to {rescap.%player%}
 					add 5 to {str.%player%}
 					add 6 to {def.%player%}
 					add 3 to {spd.%player%}
@@ -2854,12 +2781,12 @@ command /class <text> [<text="Journeyman">]:
 					make player execute command "/grantskill 0 Spectrum +10"
 					send formatted "<gold><bold>Promoted to Grandmaster!"
 				else if arg 2 is "Rifleman":
-					add ({hpcap.%player%} / 2) to {hpcap.%player%}
-					add ({strcap.%player%} / 2) to {strcap.%player%}
-					add ({defcap.%player%} / 2) to {defcap.%player%}
-					add ({sklcap.%player%} / 2) to {sklcap.%player%}
-					add ({spdcap.%player%} / 2) to {spdcap.%player%}
-					add ({rescap.%player%} / 2) to {rescap.%player%}
+					add floor({hpcap.%player%} / 2) to {hpcap.%player%}
+					add floor({strcap.%player%} / 2) to {strcap.%player%}
+					add floor({defcap.%player%} / 2) to {defcap.%player%}
+					add floor({sklcap.%player%} / 2) to {sklcap.%player%}
+					add floor({spdcap.%player%} / 2) to {spdcap.%player%}
+					add floor({rescap.%player%} / 2) to {rescap.%player%}
 					add 4 to {str.%player%}
 					add 4 to {def.%player%}
 					add 7 to {spd.%player%}
@@ -2870,12 +2797,12 @@ command /class <text> [<text="Journeyman">]:
 					make player execute command "/grantskill 0 Resourceful"
 					send formatted "<gold><bold>Promoted to Doom Slayer!"
 				else if arg 2 is "Angel Slayer":
-					add ({hpcap.%player%} / 2) to {hpcap.%player%}
-					add ({strcap.%player%} / 2) to {strcap.%player%}
-					add ({defcap.%player%} / 2) to {defcap.%player%}
-					add ({sklcap.%player%} / 2) to {sklcap.%player%}
-					add ({spdcap.%player%} / 2) to {spdcap.%player%}
-					add ({rescap.%player%} / 2) to {rescap.%player%}
+					add floor({hpcap.%player%} / 2) to {hpcap.%player%}
+					add floor({strcap.%player%} / 2) to {strcap.%player%}
+					add floor({defcap.%player%} / 2) to {defcap.%player%}
+					add floor({sklcap.%player%} / 2) to {sklcap.%player%}
+					add floor({spdcap.%player%} / 2) to {spdcap.%player%}
+					add floor({rescap.%player%} / 2) to {rescap.%player%}
 					add 6 to {str.%player%}
 					add 7 to {spd.%player%}
 					add 9 to {skl.%player%}
@@ -2886,12 +2813,12 @@ command /class <text> [<text="Journeyman">]:
 					make player execute command "/grantskill 0 Trigger Heart"
 					send formatted "<gold><bold>Promoted to Platinum Star!"
 				else if arg 2 is "General":
-					add ({hpcap.%player%} / 2) to {hpcap.%player%}
-					add ({strcap.%player%} / 2) to {strcap.%player%}
-					add ({defcap.%player%} / 2) to {defcap.%player%}
-					add ({sklcap.%player%} / 2) to {sklcap.%player%}
-					add ({spdcap.%player%} / 2) to {spdcap.%player%}
-					add ({rescap.%player%} / 2) to {rescap.%player%}
+					add floor({hpcap.%player%} / 2) to {hpcap.%player%}
+					add floor({strcap.%player%} / 2) to {strcap.%player%}
+					add floor({defcap.%player%} / 2) to {defcap.%player%}
+					add floor({sklcap.%player%} / 2) to {sklcap.%player%}
+					add floor({spdcap.%player%} / 2) to {spdcap.%player%}
+					add floor({rescap.%player%} / 2) to {rescap.%player%}
 					add 4 to {str.%player%}
 					add 8 to {def.%player%}
 					add 12 to {hp.%player%}
@@ -2902,12 +2829,12 @@ command /class <text> [<text="Journeyman">]:
 					set {class.%player%} to "Chieftain"
 					send formatted "<gold><bold>Promoted to Chieftain!"
 				else if arg 2 is "Paladin":
-					add ({hpcap.%player%} / 2) to {hpcap.%player%}
-					add ({strcap.%player%} / 2) to {strcap.%player%}
-					add ({defcap.%player%} / 2) to {defcap.%player%}
-					add ({sklcap.%player%} / 2) to {sklcap.%player%}
-					add ({spdcap.%player%} / 2) to {spdcap.%player%}
-					add ({rescap.%player%} / 2) to {rescap.%player%}
+					add floor({hpcap.%player%} / 2) to {hpcap.%player%}
+					add floor({strcap.%player%} / 2) to {strcap.%player%}
+					add floor({defcap.%player%} / 2) to {defcap.%player%}
+					add floor({sklcap.%player%} / 2) to {sklcap.%player%}
+					add floor({spdcap.%player%} / 2) to {spdcap.%player%}
+					add floor({rescap.%player%} / 2) to {rescap.%player%}
 					add 6 to {str.%player%}
 					add 5 to {def.%player%}
 					add 5 to {spd.%player%}
@@ -2919,12 +2846,12 @@ command /class <text> [<text="Journeyman">]:
 					make player execute command "/grantskill 0 Crusader's Charge"
 					send formatted "<gold><bold>Promoted to Crusader!"
 				else if arg 2 is "Myrmidon":
-					add ({hpcap.%player%} / 2) to {hpcap.%player%}
-					add ({strcap.%player%} / 2) to {strcap.%player%}
-					add ({defcap.%player%} / 2) to {defcap.%player%}
-					add ({sklcap.%player%} / 2) to {sklcap.%player%}
-					add ({spdcap.%player%} / 2) to {spdcap.%player%}
-					add ({rescap.%player%} / 2) to {rescap.%player%}
+					add floor({hpcap.%player%} / 2) to {hpcap.%player%}
+					add floor({strcap.%player%} / 2) to {strcap.%player%}
+					add floor({defcap.%player%} / 2) to {defcap.%player%}
+					add floor({sklcap.%player%} / 2) to {sklcap.%player%}
+					add floor({spdcap.%player%} / 2) to {spdcap.%player%}
+					add floor({rescap.%player%} / 2) to {rescap.%player%}
 					add 5 to {str.%player%}
 					add 2 to {def.%player%}
 					add 9 to {spd.%player%}
@@ -2935,12 +2862,12 @@ command /class <text> [<text="Journeyman">]:
 					set {class.%player%} to "Swordmaster"
 					send formatted "<gold><bold>Promoted to Swordmaster!"
 				else if arg 2 is "Berserker":
-					add ({hpcap.%player%} / 2) to {hpcap.%player%}
-					add ({strcap.%player%} / 2) to {strcap.%player%}
-					add ({defcap.%player%} / 2) to {defcap.%player%}
-					add ({sklcap.%player%} / 2) to {sklcap.%player%}
-					add ({spdcap.%player%} / 2) to {spdcap.%player%}
-					add ({rescap.%player%} / 2) to {rescap.%player%}
+					add floor({hpcap.%player%} / 2) to {hpcap.%player%}
+					add floor({strcap.%player%} / 2) to {strcap.%player%}
+					add floor({defcap.%player%} / 2) to {defcap.%player%}
+					add floor({sklcap.%player%} / 2) to {sklcap.%player%}
+					add floor({spdcap.%player%} / 2) to {spdcap.%player%}
+					add floor({rescap.%player%} / 2) to {rescap.%player%}
 					add 9 to {str.%player%}
 					add 6 to {def.%player%}
 					add 3 to {spd.%player%}
@@ -2952,12 +2879,12 @@ command /class <text> [<text="Journeyman">]:
 					make player execute command "/grantskill 0 STR +20"
 					send formatted "<gold><bold>Promoted to Warrior!"
 				else if arg 2 is "Hero":
-					add ({hpcap.%player%} / 2) to {hpcap.%player%}
-					add ({strcap.%player%} / 2) to {strcap.%player%}
-					add ({defcap.%player%} / 2) to {defcap.%player%}
-					add ({sklcap.%player%} / 2) to {sklcap.%player%}
-					add ({spdcap.%player%} / 2) to {spdcap.%player%}
-					add ({rescap.%player%} / 2) to {rescap.%player%}
+					add floor({hpcap.%player%} / 2) to {hpcap.%player%}
+					add floor({strcap.%player%} / 2) to {strcap.%player%}
+					add floor({defcap.%player%} / 2) to {defcap.%player%}
+					add floor({sklcap.%player%} / 2) to {sklcap.%player%}
+					add floor({spdcap.%player%} / 2) to {spdcap.%player%}
+					add floor({rescap.%player%} / 2) to {rescap.%player%}
 					add 5 to {str.%player%}
 					add 5 to {def.%player%}
 					add 5 to {spd.%player%}
@@ -2968,12 +2895,12 @@ command /class <text> [<text="Journeyman">]:
 					make player execute command "/grantskill 0 Lord's Blood"
 					send formatted "<gold><bold>Promoted to Prince!"
 				else if arg 2 is "Sorcerer":
-					add ({hpcap.%player%} / 2) to {hpcap.%player%}
-					add ({strcap.%player%} / 2) to {strcap.%player%}
-					add ({defcap.%player%} / 2) to {defcap.%player%}
-					add ({sklcap.%player%} / 2) to {sklcap.%player%}
-					add ({spdcap.%player%} / 2) to {spdcap.%player%}
-					add ({rescap.%player%} / 2) to {rescap.%player%}
+					add floor({hpcap.%player%} / 2) to {hpcap.%player%}
+					add floor({strcap.%player%} / 2) to {strcap.%player%}
+					add floor({defcap.%player%} / 2) to {defcap.%player%}
+					add floor({sklcap.%player%} / 2) to {sklcap.%player%}
+					add floor({spdcap.%player%} / 2) to {spdcap.%player%}
+					add floor({rescap.%player%} / 2) to {rescap.%player%}
 					add 3 to {str.%player%}
 					add 3 to {def.%player%}
 					add 5 to {spd.%player%}
@@ -2985,12 +2912,12 @@ command /class <text> [<text="Journeyman">]:
 					drop 1 blaze rod named "<yellow><bold>Magic Wand" at the player
 					send formatted "<gold><bold>Promoted to an Archwizard!"
 				else if arg 2 is "Manakete":
-					add ({hpcap.%player%} / 2) to {hpcap.%player%}
-					add ({strcap.%player%} / 2) to {strcap.%player%}
-					add ({defcap.%player%} / 2) to {defcap.%player%}
-					add ({sklcap.%player%} / 2) to {sklcap.%player%}
-					add ({spdcap.%player%} / 2) to {spdcap.%player%}
-					add ({rescap.%player%} / 2) to {rescap.%player%}
+					add floor({hpcap.%player%} / 2) to {hpcap.%player%}
+					add floor({strcap.%player%} / 2) to {strcap.%player%}
+					add floor({defcap.%player%} / 2) to {defcap.%player%}
+					add floor({sklcap.%player%} / 2) to {sklcap.%player%}
+					add floor({spdcap.%player%} / 2) to {spdcap.%player%}
+					add floor({rescap.%player%} / 2) to {rescap.%player%}
 					add 1 to {str.%player%}
 					add 5 to {def.%player%}
 					add 4 to {spd.%player%}
@@ -3001,12 +2928,12 @@ command /class <text> [<text="Journeyman">]:
 					make player execute command "/grantskill 0 Draconic Aura"
 					send formatted "<gold><bold>Promoted to Divine Dragon!"
 				else if arg 2 is "Prince":
-					add ({hpcap.%player%} / 2) to {hpcap.%player%}
-					add ({strcap.%player%} / 2) to {strcap.%player%}
-					add ({defcap.%player%} / 2) to {defcap.%player%}
-					add ({sklcap.%player%} / 2) to {sklcap.%player%}
-					add ({spdcap.%player%} / 2) to {spdcap.%player%}
-					add ({rescap.%player%} / 2) to {rescap.%player%}
+					add floor({hpcap.%player%} / 2) to {hpcap.%player%}
+					add floor({strcap.%player%} / 2) to {strcap.%player%}
+					add floor({defcap.%player%} / 2) to {defcap.%player%}
+					add floor({sklcap.%player%} / 2) to {sklcap.%player%}
+					add floor({spdcap.%player%} / 2) to {spdcap.%player%}
+					add floor({rescap.%player%} / 2) to {rescap.%player%}
 					add 5 to {str.%player%}
 					add 5 to {def.%player%}
 					add 5 to {spd.%player%}
@@ -3017,12 +2944,12 @@ command /class <text> [<text="Journeyman">]:
 					make player execute command "/grantskill 0 Rightful King"
 					send formatted "<gold><bold>Promoted to Lord!"
 				else if arg 2 is "Bishop":
-					add ({hpcap.%player%} / 2) to {hpcap.%player%}
-					add ({strcap.%player%} / 2) to {strcap.%player%}
-					add ({defcap.%player%} / 2) to {defcap.%player%}
-					add ({sklcap.%player%} / 2) to {sklcap.%player%}
-					add ({spdcap.%player%} / 2) to {spdcap.%player%}
-					add ({rescap.%player%} / 2) to {rescap.%player%}
+					add floor({hpcap.%player%} / 2) to {hpcap.%player%}
+					add floor({strcap.%player%} / 2) to {strcap.%player%}
+					add floor({defcap.%player%} / 2) to {defcap.%player%}
+					add floor({sklcap.%player%} / 2) to {sklcap.%player%}
+					add floor({spdcap.%player%} / 2) to {spdcap.%player%}
+					add floor({rescap.%player%} / 2) to {rescap.%player%}
 					add 3 to {str.%player%}
 					add 5 to {def.%player%}
 					add 4 to {spd.%player%}
@@ -3100,340 +3027,350 @@ command /class <text> [<text="Journeyman">]:
 				#Complete "Birth of a Hero" after promoting
 				if {quests.%player%::Birth of a Hero} is not 999:
 					finishQuest(player,"Birth of a Hero","You may now enter House Ulster.")
-					send formatted "<light blue>Azelle: Alright. That should be everything. If you ever find anything off with your registration, just come talk to me and we'll get things sorted out."
+					send formatted "<light blue>Azelle: <white>Alright. That should be everything. If you ever find anything off with your registration, just come talk to me and we'll get things sorted out."
 					wait 3 seconds
-					send formatted "<light blue>Azelle: Go ahead and head up to House Ulster, and talk to Alastor. I've heard that he's looking for new recruits, so don't let this opportunity pass."
+					send formatted "<light blue>Azelle: <white>Go ahead and head up to House Ulster, and talk to Alastor. I've heard that he's looking for new recruits, so don't let this opportunity pass."
 				if ({generation.%player%} / 2) is an integer:
 					if {quests.%player%::New Arrival} is not 999:
 						make player execute command "/qstart"
 			else:
 				send formatted "You may only promote through use of the Journey's Crest or Warrior's Proof."
 				
+command /resetClassXP:
+	trigger:
+		set {classXP.%player%} to 0
+				
 #MARKER - Level-Up Handler
-on level change:
-	if player is alive:
-		if player's level is more than {lvl.%player%}:
-			if {lvl.%player%} is less than {lvlcap.%player%}:
-				while {isLevelling.%player%} is set:
-					wait 5 ticks
-				set {isLevelling.%player%} to true
-				play sound "entity.player.levelup" with volume 2 and pitch 1 at player for player
-				#send formatted "<gold>Level Up!"
-				set {_oldstr.%player%} to {str.%player%}
-				set {_olddef.%player%} to {def.%player%}
-				set {_oldhp.%player%} to {hp.%player%}
-				set {_oldskl.%player%} to {skl.%player%}
-				set {_oldspd.%player%} to {spd.%player%}
-				set {_oldres.%player%} to {res.%player%}
-				if player's level is more than {lvlcap.%player%}:
-					set player's level to {lvlcap.%player%}
-				loop (player's level - {lvl.%player%}) times:
-					add 1 to {lvl.%player%}
-					#HP Growths
-					if {hpgrowth.%player%} is more than 100:
-						set {_growthtemp} to {hpgrowth.%player%}
-						while {_growthtemp} is more than 100:
-							add 1 to {hp.%player%}
-							subtract 100 from {_growthtemp}
-						chance of {_growthtemp}%:
-							add 1 to {hp.%player%}
+command /adm_lvlup <player>:
+	executable by: console
+	trigger:
+		if arg 1 is alive:
+			if {lvl.%arg 1%} is {lvl.%arg 1%}:
+				if {lvl.%arg 1%} is less than {lvlcap.%arg 1%}:
+					while {isLevelling.%arg 1%} is set:
+						wait 5 ticks
+					set {isLevelling.%arg 1%} to true
+					play sound "entity.player.levelup" with volume 2 and pitch 1 at arg 1 for arg 1
+					#send formatted "<gold>Level Up!"
+					set {_oldstr.%arg 1%} to {str.%arg 1%}
+					set {_olddef.%arg 1%} to {def.%arg 1%}
+					set {_oldhp.%arg 1%} to {hp.%arg 1%}
+					set {_oldskl.%arg 1%} to {skl.%arg 1%}
+					set {_oldspd.%arg 1%} to {spd.%arg 1%}
+					set {_oldres.%arg 1%} to {res.%arg 1%}
+					set {_timesToLVL} to 0
+					while {_timesToLVL} is not 95:
+						if {classXP.%arg 1%} - (((({lvl.%arg 1%} + (({promoted.%arg 1%} - 1) * 10)) ^ 2) / 2) + 20) is more than or equal to 0:
+							subtract (((({lvl.%arg 1%} + (({promoted.%arg 1%} - 1) * 10)) ^ 2) / 2) + 20) from {classXP.%arg 1%}
+							add 1 to {_timesToLVL}
+						else:
+							exit 1 loop
+					loop {_timesToLVL} times:
+						add 1 to {lvl.%arg 1%}
+						#HP Growths
+						if {hpgrowth.%arg 1%} is more than 100:
+							set {_growthtemp} to {hpgrowth.%arg 1%}
+							while {_growthtemp} is more than 100:
+								add 1 to {hp.%arg 1%}
+								subtract 100 from {_growthtemp}
+							chance of {_growthtemp}%:
+								add 1 to {hp.%arg 1%}
+						else:
+							chance of {hpgrowth.%arg 1%}%:
+								add 1 to {hp.%arg 1%}
+						#STR Growths
+						if {strgrowth.%arg 1%} is more than 100:
+							set {_growthtemp} to {strgrowth.%arg 1%}
+							while {_growthtemp} is more than 100:
+								add 1 to {str.%arg 1%}
+								subtract 100 from {_growthtemp}
+							chance of {_growthtemp}%:
+								add 1 to {str.%arg 1%}
+						else:
+							chance of {strgrowth.%arg 1%}%:
+								add 1 to {str.%arg 1%}
+						#DEF Growths
+						if {defgrowth.%arg 1%} is more than 100:
+							set {_growthtemp} to {defgrowth.%arg 1%}
+							while {_growthtemp} is more than 100:
+								add 1 to {def.%arg 1%}
+								subtract 100 from {_growthtemp}
+							chance of {_growthtemp}%:
+								add 1 to {def.%arg 1%}
+						else:
+							chance of {defgrowth.%arg 1%}%:
+								add 1 to {def.%arg 1%}
+						#SKL Growths
+						if {sklgrowth.%arg 1%} is more than 100:
+							set {_growthtemp} to {defgrowth.%arg 1%}
+							while {_growthtemp} is more than 100:
+								add 1 to {skl.%arg 1%}
+								subtract 100 from {_growthtemp}
+							chance of {_growthtemp}%:
+								add 1 to {skl.%arg 1%}
+						else:
+							chance of {sklgrowth.%arg 1%}%:
+								add 1 to {skl.%arg 1%}
+						#SPD Growths
+						if {spdgrowth.%arg 1%} is more than 100:
+							set {_growthtemp} to {spdgrowth.%arg 1%}
+							while {_growthtemp} is more than 100:
+								add 1 to {spd.%arg 1%}
+								subtract 100 from {_growthtemp}
+							chance of {_growthtemp}%:
+								add 1 to {spd.%arg 1%}
+						else:
+							chance of {spdgrowth.%arg 1%}%:
+								add 1 to {spd.%arg 1%}
+						#MAG Growths
+						if {maggrowth.%arg 1%} is more than 100:
+							set {_growthtemp} to {maggrowth.%arg 1%}
+							while {_growthtemp} is more than 100:
+								add 1 to {res.%arg 1%}
+								subtract 100 from {_growthtemp}
+							chance of {_growthtemp}%:
+								add 1 to {res.%arg 1%}
+						else:
+							chance of {maggrowth.%arg 1%}%:
+								add 1 to {res.%arg 1%}
+						#Limit growths to stat caps
+						if {str.%arg 1%} is more than {strcap.%arg 1%}:
+							set {str.%arg 1%} to {strcap.%arg 1%}
+						if {def.%arg 1%} is more than {defcap.%arg 1%}:
+							set {def.%arg 1%} to {defcap.%arg 1%}
+						if {hp.%arg 1%} is more than {hpcap.%arg 1%}:
+							set {hp.%arg 1%} to {hpcap.%arg 1%}
+						if {skl.%arg 1%} is more than {sklcap.%arg 1%}:
+							set {skl.%arg 1%} to {sklcap.%arg 1%}
+						if {spd.%arg 1%} is more than {spdcap.%arg 1%}:
+							set {spd.%arg 1%} to {spdcap.%arg 1%}
+						if {res.%arg 1%} is more than {rescap.%arg 1%}:
+							set {res.%arg 1%} to {rescap.%arg 1%}
+					send title "<gold><bold>---===Level Up!===---" with subtitle "<bold>Level: %{lvl.%arg 1%}%" to arg 1 for 2 seconds with fade in 0.25 second and fade out 0.5 seconds
+					wait 2 seconds
+					play sound "entity.experience_orb.pickup" with volume 2 and pitch 0.8 at arg 1 for arg 1
+					send formatted "<gold>Strength: <white>%{_oldstr.%arg 1%}% --> %{str.%arg 1%}%" to arg 1
+					wait 0.4 seconds
+					play sound "entity.experience_orb.pickup" with volume 2 and pitch 0.8 at arg 1 for arg 1
+					send formatted "<gold>Defense: <white>%{_olddef.%arg 1%}% --> %{def.%arg 1%}%" to arg 1
+					wait 0.4 seconds
+					play sound "entity.experience_orb.pickup" with volume 2 and pitch 0.8 at arg 1 for arg 1
+					send formatted "<gold>Skill: <white>%{_oldskl.%arg 1%}% --> %{skl.%arg 1%}%" to arg 1
+					wait 0.4 seconds
+					play sound "entity.experience_orb.pickup" with volume 2 and pitch 0.8 at arg 1 for arg 1
+					send formatted "<gold>Speed: <white>%{_oldspd.%arg 1%}% --> %{spd.%arg 1%}%" to arg 1
+					wait 0.4 seconds
+					play sound "entity.experience_orb.pickup" with volume 2 and pitch 0.8 at arg 1 for arg 1
+					send formatted "<gold>Magic: <white>%{_oldres.%arg 1%}% --> %{res.%arg 1%}%" to arg 1
+					wait 0.4 seconds
+					play sound "entity.experience_orb.pickup" with volume 2 and pitch 0.8 at arg 1 for arg 1
+					send formatted "<gold>Health: <white>%{_oldhp.%arg 1%}% --> %{hp.%arg 1%}%" to arg 1
+					wait 0.4 seconds
+					set the arg 1's maximum health to ({hp.%arg 1%} / 2) + ({hpbuff.%arg 1%} / 2)
+					wait 0.6 seconds
+					set {_oldbst} to {bst.%arg 1%}
+					set {bst.%arg 1%} to ({str.%arg 1%} + {def.%arg 1%} + {skl.%arg 1%} + {spd.%arg 1%} + {res.%arg 1%} + {hp.%arg 1%})
+					set {bstcap.%arg 1%} to ({strcap.%arg 1%} + {defcap.%arg 1%} + {sklcap.%arg 1%} + {spdcap.%arg 1%} + {rescap.%arg 1%} + {hpcap.%arg 1%})
+					if {bstcap.%arg 1%} - {bst.%arg 1%} is less than 10:
+						make arg 1 say "%{maxLevelQuote.%arg 1%}%"
+					else if {bst.%arg 1%} - {_oldbst} is less than 2:
+						make arg 1 say "%{badLevelQuote.%arg 1%}%"
+					else if {bst.%arg 1%} - {_oldbst} is less than 5:
+						make arg 1 say "%{avgLevelQuote.%arg 1%}%"
 					else:
-						chance of {hpgrowth.%player%}%:
-							add 1 to {hp.%player%}
-					#STR Growths
-					if {strgrowth.%player%} is more than 100:
-						set {_growthtemp} to {strgrowth.%player%}
-						while {_growthtemp} is more than 100:
-							add 1 to {str.%player%}
-							subtract 100 from {_growthtemp}
-						chance of {_growthtemp}%:
-							add 1 to {str.%player%}
-					else:
-						chance of {strgrowth.%player%}%:
-							add 1 to {str.%player%}
-					#DEF Growths
-					if {defgrowth.%player%} is more than 100:
-						set {_growthtemp} to {defgrowth.%player%}
-						while {_growthtemp} is more than 100:
-							add 1 to {def.%player%}
-							subtract 100 from {_growthtemp}
-						chance of {_growthtemp}%:
-							add 1 to {def.%player%}
-					else:
-						chance of {defgrowth.%player%}%:
-							add 1 to {def.%player%}
-					#SKL Growths
-					if {sklgrowth.%player%} is more than 100:
-						set {_growthtemp} to {defgrowth.%player%}
-						while {_growthtemp} is more than 100:
-							add 1 to {skl.%player%}
-							subtract 100 from {_growthtemp}
-						chance of {_growthtemp}%:
-							add 1 to {skl.%player%}
-					else:
-						chance of {sklgrowth.%player%}%:
-							add 1 to {skl.%player%}
-					#SPD Growths
-					if {spdgrowth.%player%} is more than 100:
-						set {_growthtemp} to {spdgrowth.%player%}
-						while {_growthtemp} is more than 100:
-							add 1 to {spd.%player%}
-							subtract 100 from {_growthtemp}
-						chance of {_growthtemp}%:
-							add 1 to {spd.%player%}
-					else:
-						chance of {spdgrowth.%player%}%:
-							add 1 to {spd.%player%}
-					#MAG Growths
-					if {maggrowth.%player%} is more than 100:
-						set {_growthtemp} to {maggrowth.%player%}
-						while {_growthtemp} is more than 100:
-							add 1 to {res.%player%}
-							subtract 100 from {_growthtemp}
-						chance of {_growthtemp}%:
-							add 1 to {res.%player%}
-					else:
-						chance of {maggrowth.%player%}%:
-							add 1 to {res.%player%}
-					#Limit growths to stat caps
-					if {str.%player%} is more than {strcap.%player%}:
-						set {str.%player%} to {strcap.%player%}
-					if {def.%player%} is more than {defcap.%player%}:
-						set {def.%player%} to {defcap.%player%}
-					if {hp.%player%} is more than {hpcap.%player%}:
-						set {hp.%player%} to {hpcap.%player%}
-					if {skl.%player%} is more than {sklcap.%player%}:
-						set {skl.%player%} to {sklcap.%player%}
-					if {spd.%player%} is more than {spdcap.%player%}:
-						set {spd.%player%} to {spdcap.%player%}
-					if {res.%player%} is more than {rescap.%player%}:
-						set {res.%player%} to {rescap.%player%}
-				send title "<gold><bold>---===Level Up!===---" with subtitle "<bold>Level: %{lvl.%player%}%" to player for 2 seconds with fade in 0.25 second and fade out 0.5 seconds
-				wait 2 seconds
-				play sound "entity.experience_orb.pickup" with volume 2 and pitch 0.8 at player for player
-				send formatted "<gold>Strength: <white>%{_oldstr.%player%}% --> %{str.%player%}%"
-				wait 0.4 seconds
-				play sound "entity.experience_orb.pickup" with volume 2 and pitch 0.8 at player for player
-				send formatted "<gold>Defense: <white>%{_olddef.%player%}% --> %{def.%player%}%"
-				wait 0.4 seconds
-				play sound "entity.experience_orb.pickup" with volume 2 and pitch 0.8 at player for player
-				send formatted "<gold>Skill: <white>%{_oldskl.%player%}% --> %{skl.%player%}%"
-				wait 0.4 seconds
-				play sound "entity.experience_orb.pickup" with volume 2 and pitch 0.8 at player for player
-				send formatted "<gold>Speed: <white>%{_oldspd.%player%}% --> %{spd.%player%}%"
-				wait 0.4 seconds
-				play sound "entity.experience_orb.pickup" with volume 2 and pitch 0.8 at player for player
-				send formatted "<gold>Magic: <white>%{_oldres.%player%}% --> %{res.%player%}%"
-				wait 0.4 seconds
-				play sound "entity.experience_orb.pickup" with volume 2 and pitch 0.8 at player for player
-				send formatted "<gold>Health: <white>%{_oldhp.%player%}% --> %{hp.%player%}%"
-				wait 0.4 seconds
-				set the player's maximum health to ({hp.%player%} / 2) + ({hpbuff.%player%} / 2)
-				wait 0.6 seconds
-				set {_oldbst} to {bst.%player%}
-				set {bst.%player%} to ({str.%player%} + {def.%player%} + {skl.%player%} + {spd.%player%} + {res.%player%} + {hp.%player%})
-				set {bstcap.%player%} to ({strcap.%player%} + {defcap.%player%} + {sklcap.%player%} + {spdcap.%player%} + {rescap.%player%} + {hpcap.%player%})
-				if {bstcap.%player%} - {bst.%player%} is less than 10:
-					make player say "%{maxLevelQuote.%player%}%"
-				else if {bst.%player%} - {_oldbst} is less than 2:
-					make player say "%{badLevelQuote.%player%}%"
-				else if {bst.%player%} - {_oldbst} is less than 5:
-					make player say "%{avgLevelQuote.%player%}%"
-				else:
-					make player say "%{goodLevelQuote.%player%}%"
-				#Follower Level-Ups
-				loop {NPCsFor.%player%::*}:
-					if loop-index contains "F_":
-						set {_npcName} to loop-index
-						set {_testNPCName::*} to {_npcName} split at "_"
-						remove "f_" from {_npcName}
-						broadcast "%{_TestnpcName::*}%"
-						broadcast "%{_TestnpcName::0}%"
-						loop {_TestnpcName::*}:
-							broadcast "%loop-index-2%,%loop-value-2%"
-						followerLevelUp(player,{lvl.%player%},{_TestnpcName::2})
-						wait 2 seconds
-				#Renewal at LVL 10+
-				if {lvl.%player%} is more than 9:
-					if {perks.%player%::Renewal} is not set:
-						make player execute command "/grantskill 0 Renewal"
-				#Restock at LVL 15+
-				if {lvl.%player%} is more than 14:
-					if {perks.%player%::Restock} is not set:
-						make player execute command "/grantskill 0 Restock"
-				#HP +5 at LVL 1
-				if {lvl.%player%} is more than 0:
-					if {perks.%player%::HP +5} is not set:
-						make player execute command "/grantskill 0 HP +5"
-				#STR +5 at LVL 3
-				if {lvl.%player%} is more than 2:
-					if {perks.%player%::STR +5} is not set:
-						make player execute command "/grantskill 0 STR +5"
-				#DEF +5 at LVL 5
-				if {lvl.%player%} is more than 4:
-					if {perks.%player%::DEF +5} is not set:
-						make player execute command "/grantskill 0 DEF +5"
-				#SKL +5 at LVL 7
-				if {lvl.%player%} is more than 6:
-					if {perks.%player%::SKL +5} is not set:
-						make player execute command "/grantskill 0 SKL +5"
-				#SPD +5 at LVL 9
-				if {lvl.%player%} is more than 8:
-					if {perks.%player%::SPD +5} is not set:
-						make player execute command "/grantskill 0 SPD +5"
-				#RES +5 at LVL 11
-				if {lvl.%player%} is more than 10:
-					if {perks.%player%::MAG +5} is not set:
-						make player execute command "/grantskill 0 MAG +5"
-				#High Jumper at LVL 13
-				if {lvl.%player%} is more than 12:
-					if {perks.%player%::High Jumper} is not set:
-						make player execute command "/grantskill 0 High Jumper"
-				#Wall Kick at LVL 14
-				if {lvl.%player%} is more than 13:
-					if {perks.%player%::Wall Kick} is not set:
-						make player execute command "/grantskill 0 Wall Kick"
-				#Brazen MAG at LVL 15
-				if {lvl.%player%} is more than 14:
-					if {perks.%player%::Brazen MAG} is not set:
-						make player execute command "/grantskill 0 Brazen MAG"
-				#Rally Strength at LVL 18
-				if {lvl.%player%} is more than 17:
-					if {perks.%player%::Rally Strength} is not set:
-						make player execute command "/grantskill 0 Rally Strength"
-				#Brazen SKL at LVL 20
-				if {lvl.%player%} is more than 19:
-					if {perks.%player%::Brazen SKL} is not set:
-						make player execute command "/grantskill 0 Brazen SKL"
-				#Rally Speed at LVL 23
-				if {lvl.%player%} is more than 22:
-					if {perks.%player%::Rally Speed} is not set:
-						make player execute command "/grantskill 0 Rally Speed"
-				#Brazen DEF at LVL 25
-				if {lvl.%player%} is more than 24:
-					if {perks.%player%::Brazen DEF} is not set:
-						make player execute command "/grantskill 0 Brazen DEF"
-				#Rally Resistance at LVL 28
-				if {lvl.%player%} is more than 27:
-					if {perks.%player%::Rally Resistance} is not set:
-						make player execute command "/grantskill 0 Rally Resistance"
-				#Brazen SPD at LVL 30
-				if {lvl.%player%} is more than 29:
-					if {perks.%player%::Brazen SPD} is not set:
-						make player execute command "/grantskill 0 Brazen SPD"
-				#Brazen STR at LVL 35
-				if {lvl.%player%} is more than 34:
-					if {perks.%player%::Brazen STR} is not set:
-						make player execute command "/grantskill 0 Brazen STR"
-				#Fierce Posture at LVL 38
-				if {lvl.%player%} is more than 37:
-					if {perks.%player%::Fierce Posture} is not set:
-						make player execute command "/grantskill 0 Fierce Posture"
-				#Steady Posture at LVL 42
-				if {lvl.%player%} is more than 41:
-					if {perks.%player%::Steady Posture} is not set:
-						make player execute command "/grantskill 0 Steady Posture"
-				#Vantage at LVL 45
-				if {lvl.%player%} is more than 44:
-					if {perks.%player%::Vantage} is not set:
-						make player execute command "/grantskill 0 Vantage"
-				#Ranged Specialist at LVL 48:
-				if {lvl.%player%} is more than 47:
-					if {perks.%player%::Ranged Specialist} is not set:
-						make player execute command "/grantskill 0 Ranged Specialist"
-				#Lance Specialist at LVL 55:
-				if {lvl.%player%} is more than 54:
-					if {perks.%player%::Lance Specialist} is not set:
-						make player execute command "/grantskill 0 Lance Specialist"
-				#Axe Specialist at LVL 60:
-				if {lvl.%player%} is more than 59:
-					if {perks.%player%::Axe Specialist} is not set:
-						make player execute command "/grantskill 0 Axe Specialist"
-				#Sword Specialist at LVL 65:
-				if {lvl.%player%} is more than 64:
-					if {perks.%player%::Sword Specialist} is not set:
-						make player execute command "/grantskill 0 Sword Specialist"
-				#Mystic Boost at LVL 70
-				if {lvl.%player%} is more than 69:
-					if {perks.%player%::Mystic Boost} is not set:
-						make player execute command "/grantskill 0 Mystic Boost"
-				#Nihl at LVL 75
-				if {lvl.%player%} is more than 74:
-					if {perks.%player%::Nihl} is not set:
-						make player execute command "/grantskill 0 Nihl"
-				#Sacred Boost at LVL 80
-				if {lvl.%player%} is more than 79:
-					if {perks.%player%::Sacred Boost} is not set:
-						make player execute command "/grantskill 0 Sacred Boost"
-				#Spells
-				#Fire spell at LVL 12
-				set {_isMagical} to checkClass(player)
-				if {_isMagical} is 1:
-					if {lvl.%player%} is more than 11:
-						if {spells.%player%::Fire} is not set:
-							make player execute command "/grantspell 0 Fire"
-					if {lvl.%player%} is more than 14:
-						if {spells.%player%::Hail} is not set:
-							make player execute command "/grantspell 0 Hail"
-					if {lvl.%player%} is more than 17:
-						if {spells.%player%::Thunder} is not set:
-							make player execute command "/grantspell 0 Thunder"
-					if {lvl.%player%} is more than 20:
-						if {spells.%player%::Wind} is not set:
-							make player execute command "/grantspell 0 Wind"
-					if {lvl.%player%} is more than 23:
-						if {spells.%player%::Elfire} is not set:
-							make player execute command "/grantspell 0 Elfire"
-					if {lvl.%player%} is more than 26:
-						if {spells.%player%::Blizzard} is not set:
-							make player execute command "/grantspell 0 Blizzard"
-					if {lvl.%player%} is more than 29:
-						if {spells.%player%::Thoron} is not set:
-							make player execute command "/grantspell 0 Thoron"
-					if {lvl.%player%} is more than 32:
-						if {spells.%player%::Tornado} is not set:
-							make player execute command "/grantspell 0 Tornado"
-					if {lvl.%player%} is more than 35:
-						if {spells.%player%::Bolganone} is not set:
-							make player execute command "/grantspell 0 Bolganone"
-					if {lvl.%player%} is more than 38:
-						if {spells.%player%::Aurora} is not set:
-							make player execute command "/grantspell 0 Aurora"
-					if {lvl.%player%} is more than 41:
-						if {spells.%player%::Nosferatu} is not set:
-							make player execute command "/grantspell 0 Nosferatu"
-					if {lvl.%player%} is more than 44:
-						if {spells.%player%::Light} is not set:
-							make player execute command "/grantspell 0 Light"
-					if {lvl.%player%} is more than 47:
-						if {spells.%player%::Thief} is not set:
-							make player execute command "/grantspell 0 Thief"
-					if {lvl.%player%} is more than 21:
-						if {spells.%player%::Silence} is not set:
-							make player execute command "/grantspell 0 Silence"
-					if {lvl.%player%} is more than 51:
-						if {spells.%player%::Naga} is not set:
-							make player execute command "/grantspell 0 Naga"
-					if {lvl.%player%} is more than 55:
-						if {spells.%player%::Loptous} is not set:
-							make player execute command "/grantspell 0 Loptous"
-					if {lvl.%player%} is more than 33:
-						if {spells.%player%::Slipgate} is not set:
-							make player execute command "/grantspell 0 Slipgate"
-					if {lvl.%player%} is more than 37:
-						if {spells.%player%::Rescue} is not set:
-							make player execute command "/grantspell 0 Rescue"
-					if {lvl.%player%} is more than 60:
-						if {spells.%player%::Spellblade} is not set:
-							make player execute command "/grantspell 0 Spellblade"
-					if {lvl.%player%} is more than 51:
-						if {spells.%player%::Stone} is not set:
-							make player execute command "/grantspell 0 Stone"
-					if {lvl.%player%} is more than 54:
-						if {spells.%player%::Forseti} is not set:
-							make player execute command "/grantspell 0 Forseti"
-				clear {isLevelling.%player%}
-					
+						make arg 1 say "%{goodLevelQuote.%arg 1%}%"
+					#Follower Level-Ups
+					loop {NPCsFor.%arg 1%::*}:
+						if loop-index contains "F_":
+							set {_npcName} to loop-index
+							set {_testNPCName::*} to {_npcName} split at "_"
+							remove "f_" from {_npcName}
+							broadcast "%{_TestnpcName::*}%"
+							broadcast "%{_TestnpcName::0}%"
+							loop {_TestnpcName::*}:
+								broadcast "%loop-index-2%,%loop-value-2%"
+							followerLevelUp(arg 1,{lvl.%arg 1%},{_TestnpcName::2})
+							wait 2 seconds
+					#Renewal at LVL 10+
+					if {lvl.%arg 1%} is more than 9:
+						if {perks.%arg 1%::Renewal} is not set:
+							make arg 1 execute command "/grantskill 0 Renewal"
+					#Restock at LVL 15+
+					if {lvl.%arg 1%} is more than 14:
+						if {perks.%arg 1%::Restock} is not set:
+							make arg 1 execute command "/grantskill 0 Restock"
+					#HP +5 at LVL 1
+					if {lvl.%arg 1%} is more than 0:
+						if {perks.%arg 1%::HP +5} is not set:
+							make arg 1 execute command "/grantskill 0 HP +5"
+					#STR +5 at LVL 3
+					if {lvl.%arg 1%} is more than 2:
+						if {perks.%arg 1%::STR +5} is not set:
+							make arg 1 execute command "/grantskill 0 STR +5"
+					#DEF +5 at LVL 5
+					if {lvl.%arg 1%} is more than 4:
+						if {perks.%arg 1%::DEF +5} is not set:
+							make arg 1 execute command "/grantskill 0 DEF +5"
+					#SKL +5 at LVL 7
+					if {lvl.%arg 1%} is more than 6:
+						if {perks.%arg 1%::SKL +5} is not set:
+							make arg 1 execute command "/grantskill 0 SKL +5"
+					#SPD +5 at LVL 9
+					if {lvl.%arg 1%} is more than 8:
+						if {perks.%arg 1%::SPD +5} is not set:
+							make arg 1 execute command "/grantskill 0 SPD +5"
+					#RES +5 at LVL 11
+					if {lvl.%arg 1%} is more than 10:
+						if {perks.%arg 1%::MAG +5} is not set:
+							make arg 1 execute command "/grantskill 0 MAG +5"
+					#High Jumper at LVL 13
+					if {lvl.%arg 1%} is more than 12:
+						if {perks.%arg 1%::High Jumper} is not set:
+							make arg 1 execute command "/grantskill 0 High Jumper"
+					#Acrobatics at LVL 14
+					if {lvl.%arg 1%} is more than 13:
+						if {perks.%arg 1%::Acrobatics} is not set:
+							make arg 1 execute command "/grantskill 0 Acrobatics"
+					#Brazen MAG at LVL 15
+					if {lvl.%arg 1%} is more than 14:
+						if {perks.%arg 1%::Brazen MAG} is not set:
+							make arg 1 execute command "/grantskill 0 Brazen MAG"
+					#Rally Strength at LVL 18
+					if {lvl.%arg 1%} is more than 17:
+						if {perks.%arg 1%::Rally Strength} is not set:
+							make arg 1 execute command "/grantskill 0 Rally Strength"
+					#Brazen SKL at LVL 20
+					if {lvl.%arg 1%} is more than 19:
+						if {perks.%arg 1%::Brazen SKL} is not set:
+							make arg 1 execute command "/grantskill 0 Brazen SKL"
+					#Rally Speed at LVL 23
+					if {lvl.%arg 1%} is more than 22:
+						if {perks.%arg 1%::Rally Speed} is not set:
+							make arg 1 execute command "/grantskill 0 Rally Speed"
+					#Brazen DEF at LVL 25
+					if {lvl.%arg 1%} is more than 24:
+						if {perks.%arg 1%::Brazen DEF} is not set:
+							make arg 1 execute command "/grantskill 0 Brazen DEF"
+					#Rally Resistance at LVL 28
+					if {lvl.%arg 1%} is more than 27:
+						if {perks.%arg 1%::Rally Resistance} is not set:
+							make arg 1 execute command "/grantskill 0 Rally Resistance"
+					#Brazen SPD at LVL 30
+					if {lvl.%arg 1%} is more than 29:
+						if {perks.%arg 1%::Brazen SPD} is not set:
+							make arg 1 execute command "/grantskill 0 Brazen SPD"
+					#Brazen STR at LVL 35
+					if {lvl.%arg 1%} is more than 34:
+						if {perks.%arg 1%::Brazen STR} is not set:
+							make arg 1 execute command "/grantskill 0 Brazen STR"
+					#Fierce Posture at LVL 38
+					if {lvl.%arg 1%} is more than 37:
+						if {perks.%arg 1%::Fierce Posture} is not set:
+							make arg 1 execute command "/grantskill 0 Fierce Posture"
+					#Steady Posture at LVL 42
+					if {lvl.%arg 1%} is more than 41:
+						if {perks.%arg 1%::Steady Posture} is not set:
+							make arg 1 execute command "/grantskill 0 Steady Posture"
+					#Vantage at LVL 45
+					if {lvl.%arg 1%} is more than 44:
+						if {perks.%arg 1%::Vantage} is not set:
+							make arg 1 execute command "/grantskill 0 Vantage"
+					#Ranged Specialist at LVL 48:
+					if {lvl.%arg 1%} is more than 47:
+						if {perks.%arg 1%::Ranged Specialist} is not set:
+							make arg 1 execute command "/grantskill 0 Ranged Specialist"
+					#Lance Specialist at LVL 55:
+					if {lvl.%arg 1%} is more than 54:
+						if {perks.%arg 1%::Lance Specialist} is not set:
+							make arg 1 execute command "/grantskill 0 Lance Specialist"
+					#Axe Specialist at LVL 60:
+					if {lvl.%arg 1%} is more than 59:
+						if {perks.%arg 1%::Axe Specialist} is not set:
+							make arg 1 execute command "/grantskill 0 Axe Specialist"
+					#Sword Specialist at LVL 65:
+					if {lvl.%arg 1%} is more than 64:
+						if {perks.%arg 1%::Sword Specialist} is not set:
+							make arg 1 execute command "/grantskill 0 Sword Specialist"
+					#Mystic Boost at LVL 70
+					if {lvl.%arg 1%} is more than 69:
+						if {perks.%arg 1%::Mystic Boost} is not set:
+							make arg 1 execute command "/grantskill 0 Mystic Boost"
+					#Nihl at LVL 75
+					if {lvl.%arg 1%} is more than 74:
+						if {perks.%arg 1%::Nihl} is not set:
+							make arg 1 execute command "/grantskill 0 Nihl"
+					#Sacred Boost at LVL 80
+					if {lvl.%arg 1%} is more than 79:
+						if {perks.%arg 1%::Sacred Boost} is not set:
+							make arg 1 execute command "/grantskill 0 Sacred Boost"
+					#Spells
+					#Fire spell at LVL 12
+					set {_isMagical} to checkClass(arg 1)
+					if {_isMagical} is 1:
+						if {lvl.%arg 1%} is more than 11:
+							if {spells.%arg 1%::Fire} is not set:
+								make arg 1 execute command "/grantspell 0 Fire"
+						if {lvl.%arg 1%} is more than 14:
+							if {spells.%arg 1%::Hail} is not set:
+								make arg 1 execute command "/grantspell 0 Hail"
+						if {lvl.%arg 1%} is more than 17:
+							if {spells.%arg 1%::Thunder} is not set:
+								make arg 1 execute command "/grantspell 0 Thunder"
+						if {lvl.%arg 1%} is more than 20:
+							if {spells.%arg 1%::Wind} is not set:
+								make arg 1 execute command "/grantspell 0 Wind"
+						if {lvl.%arg 1%} is more than 23:
+							if {spells.%arg 1%::Elfire} is not set:
+								make arg 1 execute command "/grantspell 0 Elfire"
+						if {lvl.%arg 1%} is more than 26:
+							if {spells.%arg 1%::Blizzard} is not set:
+								make arg 1 execute command "/grantspell 0 Blizzard"
+						if {lvl.%arg 1%} is more than 29:
+							if {spells.%arg 1%::Thoron} is not set:
+								make arg 1 execute command "/grantspell 0 Thoron"
+						if {lvl.%arg 1%} is more than 32:
+							if {spells.%arg 1%::Tornado} is not set:
+								make arg 1 execute command "/grantspell 0 Tornado"
+						if {lvl.%arg 1%} is more than 35:
+							if {spells.%arg 1%::Bolganone} is not set:
+								make arg 1 execute command "/grantspell 0 Bolganone"
+						if {lvl.%arg 1%} is more than 38:
+							if {spells.%arg 1%::Aurora} is not set:
+								make arg 1 execute command "/grantspell 0 Aurora"
+						if {lvl.%arg 1%} is more than 41:
+							if {spells.%arg 1%::Nosferatu} is not set:
+								make arg 1 execute command "/grantspell 0 Nosferatu"
+						if {lvl.%arg 1%} is more than 44:
+							if {spells.%arg 1%::Light} is not set:
+								make arg 1 execute command "/grantspell 0 Light"
+						if {lvl.%arg 1%} is more than 47:
+							if {spells.%arg 1%::Thief} is not set:
+								make arg 1 execute command "/grantspell 0 Thief"
+						if {lvl.%arg 1%} is more than 21:
+							if {spells.%arg 1%::Silence} is not set:
+								make arg 1 execute command "/grantspell 0 Silence"
+						if {lvl.%arg 1%} is more than 51:
+							if {spells.%arg 1%::Naga} is not set:
+								make arg 1 execute command "/grantspell 0 Naga"
+						if {lvl.%arg 1%} is more than 55:
+							if {spells.%arg 1%::Loptous} is not set:
+								make arg 1 execute command "/grantspell 0 Loptous"
+						if {lvl.%arg 1%} is more than 33:
+							if {spells.%arg 1%::Slipgate} is not set:
+								make arg 1 execute command "/grantspell 0 Slipgate"
+						if {lvl.%arg 1%} is more than 37:
+							if {spells.%arg 1%::Rescue} is not set:
+								make arg 1 execute command "/grantspell 0 Rescue"
+						if {lvl.%arg 1%} is more than 60:
+							if {spells.%arg 1%::Spellblade} is not set:
+								make arg 1 execute command "/grantspell 0 Spellblade"
+						if {lvl.%arg 1%} is more than 51:
+							if {spells.%arg 1%::Stone} is not set:
+								make arg 1 execute command "/grantspell 0 Stone"
+						if {lvl.%arg 1%} is more than 54:
+							if {spells.%arg 1%::Forseti} is not set:
+								make arg 1 execute command "/grantspell 0 Forseti"
+					clear {isLevelling.%arg 1%}
 							
 #MARKER - Respawn & Misc. Handler
 on heal:

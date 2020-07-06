@@ -26,7 +26,7 @@ command /skills [<text="TopMenu">] [<text="NULL">] [<number=0>]:
 				set slot 8 of the player's current inventory to 1 obsidian named "<red>???" with lore "<white>Complete ""Breaking the Ice"" to unlock."
 			if {quests.%player%::Fuel for the Fire} is 999:
 				set slot 5 of the player's current inventory to 1 anvil named "<green><bold>Weapon Refinery" with lore "<green>Improve your weapons further."
-				set slot 9 of the player's current inventory to 1 wooden sword named "<gray><bold>Upgrade/Merge Tools" with lore "<gray>Increase a weapon's enchantments with tool frames", "<gray>up to enchantment level 10."
+				set slot 9 of the player's current inventory to 1 wooden sword named "<gray><bold>Upgrade/Merge Tools" with lore "<gray>Increase an item's enchantments up to", "<gray>enchantment level 10 by using Tool Frames."
 			else:
 				set slot 9 of the player's current inventory to 1 obsidian named "<red>???" with lore "<white>Complete ""Fuel for the Fire"" to unlock."
 				set slot 5 of the player's current inventory to 1 obsidian named "<red>???" with lore "<white>Complete ""Fuel for the Fire"" to unlock."
@@ -40,9 +40,9 @@ command /skills [<text="TopMenu">] [<text="NULL">] [<number=0>]:
 			set slot 2 of the player's current inventory to 1 iron chestplate named "<light red><bold>Armour Smasher" with lore "<white>Bonus damage against armour.", "<white>The stronger the armour, the more damage."
 			set slot 3 of the player's current inventory to 1 lava bucket named "<light red><bold>Fury" with lore "<white>Attacks deal 3 more hearts of damage.", "<white>Landing an attack causes 1.5 hearts of non-lethal recoil damage."
 			set slot 4 of the player's current inventory to 1 lava bucket named "<light red><bold>Life and Death" with lore "<white>Attacks deal 50%% more damage.", "<white>Take 50%% more damage."
-			set slot 5 of the player's current inventory to 1 tnt named "<light red><bold>Death Blow" with lore "<white>Grants STR +30 for 10 seconds on-hit.", "<white>Recharge: 20 seconds"
-			set slot 6 of the player's current inventory to 1 tnt named "<light red><bold>Darting Blow" with lore "<white>Grants SPD +30 for 10 seconds on-hit.", "<white>Recharge: 20 seconds"
-			set slot 7 of the player's current inventory to 1 tnt named "<light red><bold>Armoured Blow" with lore "<white>Grants DEF +30 for 10 seconds on-hit.", "<white>Recharge: 20 seconds"
+			set slot 5 of the player's current inventory to 1 tnt named "<light red><bold>Death Blow" with lore "<white>Grants STR +30 for 2 seconds on-hit.", "<white>Recharge: 10 seconds"
+			set slot 6 of the player's current inventory to 1 tnt named "<light red><bold>Darting Blow" with lore "<white>Grants SPD +30 for 2 seconds on-hit.", "<white>Recharge: 10 seconds"
+			set slot 7 of the player's current inventory to 1 tnt named "<light red><bold>Armoured Blow" with lore "<white>Grants DEF +30 for 2 seconds on-hit.", "<white>Recharge: 10 seconds"
 			set slot 8 of the player's current inventory to 1 iron hoe named "<light red><bold>Defiant Attack" with lore "<white>Grants Strength 4 when HP < 50%%."
 			set slot 9 of the player's current inventory to 1 iron hoe named "<light red><bold>Defiant Speed" with lore "<white>Grants Swiftness 4 when HP < 50%%."
 			set slot 10 of the player's current inventory to 1 iron hoe named "<light red><bold>Defiant Resistance" with lore "<white>Grants Resistance 4 when HP < 50%%."
@@ -60,25 +60,25 @@ command /skills [<text="TopMenu">] [<text="NULL">] [<number=0>]:
 			set slot 22 of the player's current inventory to 1 shield named "<light red><bold>Swift Stance" with lore "<white>Grants SPD +30 for 2 seconds when attacked."
 			set slot 23 of the player's current inventory to 1 shield named "<light red><bold>Warding Stance" with lore "<white>Grants MAG +30 for 2 seconds when attacked."
 			set slot 24 of the player's current inventory to 1 shield named "<light red><bold>Fierce Stance" with lore "<white>Grants STR +30 for 2 seconds when attacked."
-			set slot 25 of the player's current inventory to 1 tnt named "<light red><bold>Swift Sparrow" with lore "<white>Grants STR/SPD +20 for 7 seconds on-hit.", "<white>Recharge: 21 seconds"
-			set slot 26 of the player's current inventory to 1 tnt named "<light red><bold>Steady Blow" with lore "<white>Grants STR/DEF +20 for 7 seconds on-hit.", "<white>Recharge: 21 seconds"
-			set slot 27 of the player's current inventory to 1 potion of strength named "<light red><bold>Power Within" with lore "<white>Grants STR/SPD/DEF/MAG +20 while equipped.", "<white>Drains health every 2 seconds."
+			set slot 25 of the player's current inventory to 1 tnt named "<light red><bold>Swift Blow" with lore "<white>Grants STR/SPD +20 for 2 seconds on-hit.", "<white>Recharge: 15 seconds"
+			set slot 26 of the player's current inventory to 1 tnt named "<light red><bold>Steady Blow" with lore "<white>Grants STR/DEF +20 for 2 seconds on-hit.", "<white>Recharge: 15 seconds"
+			set slot 27 of the player's current inventory to 1 potion of strength named "<light red><bold>Power Within" with lore "<white>Grants STR/SPD/DEF/MAG +20 while equipped.", "<white>Drains health while equipped."
 			set slot 28 of the player's current inventory to 1 magma block named "<light red><bold>STR Focus" with lore "<white>On kill:", "<white>Grants +10 STR.", "<white>Effect stacks, and is lost after taking damage."
 			set slot 29 of the player's current inventory to 1 magma block named "<light red><bold>SPD Focus" with lore "<white>On kill:", "<white>Grants +10 SPD.", "<white>Effect stacks, and is lost after taking damage."
 			set slot 30 of the player's current inventory to 1 magma block named "<light red><bold>SKL Focus" with lore "<white>On kill:", "<white>Grants +10 SKL.", "<white>Effect stacks, and is lost after taking damage."
 			set slot 31 of the player's current inventory to 1 magma block named "<light red><bold>DEF Focus" with lore "<white>On kill:", "<white>Grants +10 DEF.", "<white>Effect stacks, and is lost after taking damage."
 			set slot 32 of the player's current inventory to 1 magma block named "<light red><bold>MAG Focus" with lore "<white>On kill:", "<white>Grants +10 MAG.", "<white>Effect stacks, and is lost after taking damage."
-			set slot 33 of the player's current inventory to 1 tnt named "<light red><bold>Warding Blow" with lore "<white>Grants MAG +30 for 10 seconds on-hit.", "Recharge: 20 seconds"
-			set slot 34 of the player's current inventory to 1 tnt named "<light red><bold>Mirror Force" with lore "<white>Grants STR/MAG +20 for 7 seconds on-hit.", "Recharge: 21 seconds"
-			set slot 35 of the player's current inventory to 1 iron sword named "<light red><bold>Flashing Blade" with lore "<white>If attacker's SPD > foe's SPD:", "<white>Grants bonus damage equal to 50% of difference between attacker and foe's SPD.", "<white>Grants a bonus to SKL equal to bonus damage dealt.", "<white>Bonus damage capped to +14 (7 hearts)."
-			set slot 36 of the player's current inventory to 1 iron sword named "<light red><bold>Heavy Blade" with lore "<white>If attacker's STR > foe's STR:", "<white>Grants bonus damage equal to 50% of difference between attacker and foe's STR.", "<white>Grants a bonus to SKL equal to bonus damage dealt.", "<white>Bonus damage capped to +14 (7 hearts)."
+			set slot 33 of the player's current inventory to 1 tnt named "<light red><bold>Warding Blow" with lore "<white>Grants MAG +30 for 2 seconds on-hit.", "Recharge: 10 seconds"
+			set slot 34 of the player's current inventory to 1 tnt named "<light red><bold>Mirror Blow" with lore "<white>Grants STR/MAG +20 for 2 seconds on-hit.", "Recharge: 15 seconds"
+			set slot 35 of the player's current inventory to 1 iron sword named "<light red><bold>Flashing Blade" with lore "<white>If attacker's SPD > foe's SPD:", "<white>Grants bonus damage equal to 50%% of difference between attacker and foe's SPD.", "<white>Grants a bonus to SKL equal to bonus damage dealt.", "<white>Bonus damage capped to +14 (7 hearts)."
+			set slot 36 of the player's current inventory to 1 iron sword named "<light red><bold>Heavy Blade" with lore "<white>If attacker's STR > foe's STR:", "<white>Grants bonus damage equal to 50%% of difference between attacker and foe's STR.", "<white>Grants a bonus to SKL equal to bonus damage dealt.", "<white>Bonus damage capped to +14 (7 hearts)."
 			set slot 44 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
 		else if arg 1 is "B-Skills":
 			open chest with 3 rows named "<light blue><bold>Smithy | B-Slot Skills" for the player
 			#set slot 6 of the player's current inventory to 1 iron sword named "<light blue><bold>Escape Route" with lore "N/A"
 			#set slot 7 of the player's current inventory to 1 iron sword named "<light blue><bold>Wings of Mercy" with lore "N/A"
 			set slot 0 of the player's current inventory to 1 potion of weakness named "<light blue><bold>Sabotage Attack" with lore "<white>Inflicts Weakness 2 on the victim."
-			set slot 1 of the player's current inventory to 1 potion of weakness named "<light blue><bold>Sabotage Defense" with lore "<white>Increases damage dealt by 25%%."
+			set slot 1 of the player's current inventory to 1 potion of weakness named "<light blue><bold>Sabotage Defense" with lore "<white>Increases damage dealt by 15%%."
 			set slot 2 of the player's current inventory to 1 potion of weakness named "<light blue><bold>Sabotage Speed" with lore "<white>Inflicts Slowness 2 on the victim."
 			set slot 3 of the player's current inventory to 1 potion of poison named "<light blue><bold>Poison Strike" with lore "<white>Inflicts Wither 3 on the victim."
 			set slot 4 of the player's current inventory to 1 fishing rod named "<light blue><bold>Desperation" with lore "<white>When HP <= 50%%:", "<white>Automatically make a follow up-attack."
@@ -95,7 +95,7 @@ command /skills [<text="TopMenu">] [<text="NULL">] [<number=0>]:
 			set slot 15 of the player's current inventory to 1 purple wool named "<light blue><bold>Solar Brace" with lore "<white>If Special activation deals damage:", "<white>Restores health equal to 50%% of damage dealt.", "<white>Stacks with the effects of skills like Sol."
 			set slot 16 of the player's current inventory to 1 shield named "<light blue><bold>Guard" with lore "When attacked:", "<white>Inflicts SKL -30 on the attacker.", "<white>Duration: 5 seconds", "<white>Effect does not stack."
 			set slot 17 of the player's current inventory to 1 purple wool named "<light blue><bold>Special Spiral" with lore "<white>If Special activation deals damage:", "<white>Increases Special activation chance by 1/2 of damage dealt.", "<white>Resets after 10 seconds."
-			set slot 18 of the player's current inventory to 1 potion of healing named "<light blue><bold>Mystic Boost" with lore "<white>Restores 1.5 hearts of health after combat."
+			set slot 18 of the player's current inventory to 1 potion of healing named "<light blue><bold>Mystic Boost" with lore "<white>Restores health equal to 7.5%% of your maximum health when attacking."
 			set slot 19 of the player's current inventory to 1 iron sword named "<light blue><bold>Windsweep" with lore "<white>If attacker's SPD is >= foe's SPD +15:", "<white>Inflicts Weakness 6 on the victim for 3 seconds."
 			set slot 20 of the player's current inventory to 1 minecart named "<light blue><bold>Flame Boost" with lore "<white>If attacker's health is >= foe's health + 3 hearts:", "<white>Grants STR/SPD/SKL +15 during combat."
 			set slot 21 of the player's current inventory to 1 minecart named "<light blue><bold>Earth Boost" with lore "<white>If defender's health is >= foe's health + 3 hearts:", "<white>Grants DEF/SPD/MAG +15 during combat."
@@ -105,7 +105,7 @@ command /skills [<text="TopMenu">] [<text="NULL">] [<number=0>]:
 			set slot 25 of the player's current inventory to 1 potion of weakness named "<light blue><bold>Seal DEF/MAG" with lore "<white>Reduces foe's DEF/MAG by 20 on-hit.", "<white>This debuff cannot stack.", "<white>Duration: 3 seconds"
 			set slot 26 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
 		else if arg 1 is "C-Skills":
-			open chest with 4 rows named "<yellow><bold>Smithy | C-Slot Skills" for the player
+			open chest with 5 rows named "<yellow><bold>Smithy | C-Slot Skills" for the player
 			set slot 0 of the player's current inventory to 1 water bottle named "<light yellow><bold>Hone STR" with lore "<white>Grants +20 STR to the nearest ally within 10 blocks."
 			set slot 1 of the player's current inventory to 1 water bottle named "<light yellow><bold>Hone SPD" with lore "<white>Grants +20 SPD to the nearest ally within 10 blocks."
 			set slot 2 of the player's current inventory to 1 water bottle named "<light yellow><bold>Hone SKL" with lore "<white>Grants +20 SKL to the nearest ally within 10 blocks."
@@ -116,11 +116,11 @@ command /skills [<text="TopMenu">] [<text="NULL">] [<number=0>]:
 			set slot 7 of the player's current inventory to 1 lingering potion of swiftness named "<light yellow><bold>Drive SKL" with lore "<white>Grants +10 SKL to all allies within 10 blocks."
 			set slot 8 of the player's current inventory to 1 lingering potion of regeneration named "<light yellow><bold>Drive DEF" with lore "<white>Grants +10 DEF to all allies within 10 blocks."
 			set slot 9 of the player's current inventory to 1 lingering potion of strength named "<light yellow><bold>Drive MAG" with lore "<white>Grants +10 MAG to all allies within 10 blocks."
-			set slot 10 of the player's current inventory to 1 splash potion of strength named "<light yellow><bold>STR Smoke" with lore "<white>On Hit:", "<white>Inflicts -20 STR on all foes within 10 blocks of the victim.", "<white>Duration: 1.5 seconds", "<white>Victim is excluded from the debuff."
-			set slot 11 of the player's current inventory to 1 splash potion of swiftness named "<light yellow><bold>SPD Smoke" with lore "<white>On Hit:", "<white>Inflicts -20 SPD on all foes within 10 blocks of the victim.", "<white>Duration: 1.5 seconds", "<white>Victim is excluded from the debuff."
-			set slot 12 of the player's current inventory to 1 splash potion of swiftness named "<light yellow><bold>SKL Smoke" with lore "<white>On Hit:", "<white>Inflicts -35 SKL on all foes within 10 blocks of the victim.", "<white>Duration: 1.5 seconds", "<white>Victim is excluded from the debuff."
-			set slot 13 of the player's current inventory to 1 splash potion of regeneration named "<light yellow><bold>DEF Smoke" with lore "<white>On Hit:", "<white>Inflicts -20 DEF on all foes within 10 blocks of the victim.", "<white>Duration: 1.5 seconds", "<white>Victim is excluded from the debuff."
-			set slot 14 of the player's current inventory to 1 splash potion of strength named "<light yellow><bold>MAG Smoke" with lore "<white>On Hit:", "<white>Inflicts -20 MAG on all foes within 10 blocks of the victim.", "<white>Duration: 1.5 seconds", "<white>Victim is excluded from the debuff."
+			set slot 10 of the player's current inventory to 1 splash potion of strength named "<light yellow><bold>STR Smoke" with lore "<white>On Hit:", "<white>Inflicts -20 STR on all foes within 10 blocks of the victim.", "<white>Duration: 2 seconds", "<white>Victim is excluded from the debuff."
+			set slot 11 of the player's current inventory to 1 splash potion of swiftness named "<light yellow><bold>SPD Smoke" with lore "<white>On Hit:", "<white>Inflicts -20 SPD on all foes within 10 blocks of the victim.", "<white>Duration: 2 seconds", "<white>Victim is excluded from the debuff."
+			set slot 12 of the player's current inventory to 1 splash potion of swiftness named "<light yellow><bold>SKL Smoke" with lore "<white>On Hit:", "<white>Inflicts -20 SKL on all foes within 10 blocks of the victim.", "<white>Duration: 2 seconds", "<white>Victim is excluded from the debuff."
+			set slot 13 of the player's current inventory to 1 splash potion of regeneration named "<light yellow><bold>DEF Smoke" with lore "<white>On Hit:", "<white>Inflicts -20 DEF on all foes within 10 blocks of the victim.", "<white>Duration: 2 seconds", "<white>Victim is excluded from the debuff."
+			set slot 14 of the player's current inventory to 1 splash potion of strength named "<light yellow><bold>MAG Smoke" with lore "<white>On Hit:", "<white>Inflicts -20 MAG on all foes within 10 blocks of the victim.", "<white>Duration: 2 seconds", "<white>Victim is excluded from the debuff."
 			set slot 15 of the player's current inventory to 1 splash potion of healing named "<light yellow><bold>Breath of Life" with lore "<white>On Hit:", "<white>Allies within 10 blocks heal health equal to 25%% of damage dealt.", "<white>Excludes the attacker."
 			set slot 16 of the player's current inventory to 1 splash potion of poison named "<light yellow><bold>Savage Blow" with lore "<white>On Hit:", "<white>Foes within 10 blocks suffer damage equal to 25%% of damage dealt.", "<white>Excludes the victim."
 			set slot 17 of the player's current inventory to 1 lingering potion of poison named "<light yellow><bold>Pressure STR" with lore "<white>If player's MAG > Foe's MAG + 10:", "<white>Inflicts debuff equal to difference between both player and foe's MAG."
@@ -138,7 +138,14 @@ command /skills [<text="TopMenu">] [<text="NULL">] [<number=0>]:
 			set slot 29 of the player's current inventory to 1 egg named "<light yellow><bold>Fear" with lore "<white>On Hit:", "<white>Inflicts Weakness 2 on foes within 7 blocks of the victim.", "<white>Victim is excluded."
 			set slot 30 of the player's current inventory to 1 soul sand named "<light yellow><bold>Restrict" with lore "<white>On Hit:", "<white>Inflicts Slowness 2 on foes within 7 blocks of the victim.", "<white>Victim is excluded."
 			set slot 31 of the player's current inventory to 1 tnt named "<light yellow><bold>Blowback" with lore "<white>On Hit:", "<white>Foes within 7 blocks of the victim are blown away.", "<white>Victim is excluded."
-			set slot 32 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
+			set slot 32 of the player's current inventory to 1 white wool named "<light yellow><bold>Sally Coalition" with lore "<white>Grants STR/SPD +20 to yourself and allies within 10 blocks.", "<white>Allies must be of the same class type to recieve the buff."
+			set slot 33 of the player's current inventory to 1 white wool named "<light yellow><bold>Garrison Coalition" with lore "<white>Grants DEF/MAG +20 to yourself and allies within 10 blocks.", "<white>Allies must be of the same class type to recieve the buff."
+			set slot 34 of the player's current inventory to 1 water bottle named "<light yellow><bold>Joint-Hone STR" with lore "<white>Grants +10 STR to yourself and the closest ally within 10 blocks."
+			set slot 35 of the player's current inventory to 1 water bottle named "<light yellow><bold>Joint-Hone SPD" with lore "<white>Grants +10 SPD to yourself and the closest ally within 10 blocks."
+			set slot 36 of the player's current inventory to 1 water bottle named "<light yellow><bold>Joint-Hone SKL" with lore "<white>Grants +10 SKL to yourself and the closest ally within 10 blocks."
+			set slot 37 of the player's current inventory to 1 water bottle named "<light yellow><bold>Joint-Hone DEF" with lore "<white>Grants +10 DEF to yourself and the closest ally within 10 blocks."
+			set slot 38 of the player's current inventory to 1 water bottle named "<light yellow><bold>Joint-Hone MAG" with lore "<white>Grants +10 MAG to yourself and the closest ally within 10 blocks."
+			set slot 44 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
 		else if arg 1 is "Specials":
 			open chest with 3 rows named "<light purple><bold>Smithy | Special Skills" for the player
 			set slot 0 of the player's current inventory to 1 iron armor named "<light purple><bold>Moonbow" with lore "<white>Negates enemy armour bonuses.", "<white>Reduces enemy DEF by 30%%.", "<white>Activation chance: (SKL ^ 0.85)", "<white>Max: 80%%"
@@ -154,7 +161,7 @@ command /skills [<text="TopMenu">] [<text="NULL">] [<number=0>]:
 			set slot 10 of the player's current inventory to 1 ice block named "<light purple><bold>Glacies" with lore "<white>Adds 50%% of attacker's MAG to damage dealt.", "<white>Activation chance: (SKL ^ 0.7)", "<white>Max: 50%%."
 			set slot 11 of the player's current inventory to 1 feather named "<light purple><bold>Rising Wind" with lore "<white>Adds 50%% of attacker's SPD to damage dealt.", "<white>Activation chance: (SKL ^ 0.7)", "<white>Max: 50%%."
 			set slot 12 of the player's current inventory to 1 dragon egg named "<light purple><bold>Dragon Fang" with lore "<white>Adds 50%% of attacker's STR to damage dealt.", "<white>Activation chance: (SKL ^ 0.7)", "<white>Max: 50%%."
-			set slot 13 of the player's current inventory to 1 minecart named "<light purple><bold>Galeforce" with lore "<white>Grants Swiftness/Strength 4.", "<white>Foes within 10 blocks are inflicted with Slowness/Weakness 4.", "<white>Activation chance: (SKL ^ 0.5)", "<white>Max: 50%%.", "<white>Effect duration: 10 seconds.", "<white>Recharge duration: 30 seconds."
+			set slot 13 of the player's current inventory to 1 minecart named "<light purple><bold>Galeforce" with lore "<white>Grants Swiftness/Strength 6 for 5 seconds.", "<white>Foes within 15 blocks are prevented from moving or attacking for 5 seconds.", "<white>Activation chance: (SKL * 0.5)", "<white>Max: 50%%.", "<white>Recharge duration: 20 seconds."
 			set slot 14 of the player's current inventory to 1 shield named "<light purple><bold>Aegis" with lore "<white>Reduces ranged damage suffered by 50%%.", "<white>Activation chance: (SKL ^ 0.8)", "<white>Max: 85%%."
 			set slot 15 of the player's current inventory to 1 splash potion of harming named "<light purple><bold>Growing Light" with lore "<white>Damages all enemies within 14 blocks.", "<white>Radius damage = 50%% of damage dealt.", "<white>Activation chance: (SKL ^ 0.7)", "<white>Max: 50%%"
 			set slot 16 of the player's current inventory to 1 shield named "<light purple><bold>Miracle" with lore "<white>If foe's attack would kill:", "<white>Nullifies foe's attack, and inflicts weakness 4 on the attacker for 3 seconds.", "<white>Activation chance: (SKL ^ 0.5)", "<white>Max: 50%%"
@@ -182,6 +189,7 @@ command /skills [<text="TopMenu">] [<text="NULL">] [<number=0>]:
 			set slot 17 of the player's current inventory to 1 firework named "<light green><bold>Taunt" with lore "<white>Stand still and taunt your foe.", "<white>Grants STR/SPD + 15 for 10 seconds if completed.", "<light blue>Grants bonus Style Points to Devil Hunters."
 			set slot 18 of the player's current inventory to 1 firework of fortune 3 named "<light green><bold>MAX-Taunt" with lore "<white>Taunt for an extended period of time.", "<white>Grants STR/SPD +30 for 20 seconds if completed.", "<light blue>Grants a large amount of Style Points to Devil Hunters."
 			set slot 19 of the player's current inventory to 1 feather named "<light green><bold>Suspend" with lore "<white>Pushes foes upwards when an attack connects."
+			set slot 20 of the player's current inventory to 1 feather named "<light green><bold>Acrobatics" with lore "<white>Grants a slew of new movement options while equipped:", "<gold>[Wall Kick]<reset><white>: Left-click a wall while sneaking to propel yourself in the opposite direction.", "<gold>[Wall Cling]<reset><white>: Right-click on a wall while sneaking to cling to it. Stop sneaking to let go.", "<gold>[Ledge Grab]<reset><white>: Left-click a ledge to jump on top of it."
 			set slot 26 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
 		else if arg 1 is "Armour":
 			open chest with 3 rows named "<cyan><bold>Smithy | Armour Skills" for the player
@@ -191,7 +199,7 @@ command /skills [<text="TopMenu">] [<text="NULL">] [<number=0>]:
 			set slot 3 of the player's current inventory to 1 diamond boots named "<cyan><bold>Hover" with lore "<white>Hold sneak to hover in mid-air.", "Consumes hunger while hovering."
 			set slot 4 of the player's current inventory to 1 diamond boots named "<cyan><bold>Quickened Pulse" with lore "Slows down time after dodging an attack.", "<light blue>Grants a large bonus of Stylish Points to Devil Hunters."
 			set slot 5 of the player's current inventory to 1 diamond boots named "<purple><bold>Witch Time" with lore "<white>Slows down time after dodging an attack.", "<light blue>Grants a large bonus of Stylish Points to Devil Hunters."
-			set slot 6 of the player's current inventory to 1 diamond chestplate named "<cyan><bold>Glory Kills" with lore "<white>Unarmed kills grant:", "<white>Strength/Resistance 1, Speed 2, Haste 4"
+			set slot 6 of the player's current inventory to 1 diamond chestplate named "<cyan><bold>Glory Kills" with lore "<white>Unarmed kills grant:", "<white>Swiftness/Resistance 3, Strength/Haste 4 for 6 seconds.", "<white>Restores health equal to 25%% of your maximum health.", "<white>Restores 3 points of hunger."
 			set slot 7 of the player's current inventory to 1 diamond leggings named "<cyan><bold>Regeneration" with lore "<white>Grants Regeneration 2 while equipped."
 			set slot 8 of the player's current inventory to 1 diamond leggings named "<cyan><bold>Swiftness" with lore "<white>Grants Swiftness 2 while equipped."
 			set slot 9 of the player's current inventory to 1 diamond leggings named "<cyan><bold>Strength" with lore "<white>Grants Strength 2 while equipped."
@@ -213,13 +221,13 @@ command /skills [<text="TopMenu">] [<text="NULL">] [<number=0>]:
 		else if arg 1 is "Refine":
 			open chest with 1 row named "<green><bold>Smithy | Weapon Refinery" for the player
 			set slot 0 of the player's current inventory to 1 iron sword named "<green><bold>Slaying" with lore "<white>Adds +10%% chance to Special skill activations."
-			set slot 1 of the player's current inventory to 1 iron sword named "<green><bold>Reinforced" with lore "<white>Increases damage dealt by 1.5 hearts."
-			set slot 2 of the player's current inventory to 1 iron sword named "<green><bold>Warding" with lore "<white>Reduces damage suffered by 1.5 hearts."
-			set slot 3 of the player's current inventory to 1 iron sword named "<green><bold>Piercing" with lore "<white>Attacks pierce all resistances.", "Includes invincibility."
-			set slot 4 of the player's current inventory to 1 iron sword named "<green><bold>Koenig" with lore "<white>If C-Slot activation deals damage:", "Increases damage dealt by 2.5 hearts."
-			set slot 5 of the player's current inventory to 1 iron sword named "<green><bold>Crushing" with lore "<white>If damage dealt > 7:", "Increases C-Slot activation chance by 33%% of damage dealt.", "Stacks, and is lost on C-Slot activation."
+			set slot 1 of the player's current inventory to 1 iron sword named "<green><bold>Reinforced" with lore "<white>Raises base weapon might by 3 (+1.5 hearts damage).", "<white>Increases final damage dealt during combat by 10%%."
+			set slot 2 of the player's current inventory to 1 iron sword named "<green><bold>Warding" with lore "<white>Reduces base damage suffered during combat by 1.5 hearts.", "<white>Reduces final damage suffered during combat by 10%%."
+			set slot 3 of the player's current inventory to 1 iron sword named "<green><bold>Piercing" with lore "<white>Attacks pierce all resistances."
+			set slot 4 of the player's current inventory to 1 iron sword named "<green><bold>Koenig" with lore "<white>When a Special skill is activated:", "<white>Increases the effect of the skill by 2.5 hearts.", "<white>EG: Offensive specials gain increased damage,", "<white>while defensive specials reduce damage further."
+			set slot 5 of the player's current inventory to 1 iron sword named "<green><bold>Crushing" with lore "<white>If damage dealt > 7:", "Increases Special activation chance by 33%% of damage dealt.", "Stacks, and is lost on Special activation."
 			if isStylish(player) is 1:
-				set slot 6 of the player's current inventory to 1 iron sword named "<green><bold>Stylish" with lore "<white>If combo system is enabled:", "Increases combo rating for this weapon."
+				set slot 6 of the player's current inventory to 1 iron sword named "<green><bold>Stylish" with lore "<white>If the [Combo System] perk is equipped:", "Increases the amount of Style Points this weapon gains."
 			if {hasAwakened.%player%} is set:
 				set slot 7 of the player's current inventory to 1 diamond sword named "<green><bold>Unique" with lore "<white>Apply a unique refine to a Sacred Treasure."
 			set slot 8 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
@@ -745,13 +753,13 @@ command /skill <text> [<number=0>]:
 					set line 4 of slot 4 of the player's current inventory's lore to "<light green><bold>Assist - Swap"
 					remove 100 from the player's balance
 			else if arg 1 contains "Capture":
-				if {_cash} is less than 50:
+				if {_cash} is less than 100:
 					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 4 of slot 4 of the player's current inventory's lore to "<light green><bold>Assist - Capture"
 					remove 100 from the player's balance
 			else if arg 1 contains "Stinger":
-				if {_cash} is less than 50:
+				if {_cash} is less than 100:
 					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 4 of slot 4 of the player's current inventory's lore to "<light green><bold>Assist - Stinger"
@@ -1131,11 +1139,11 @@ command /skill <text> [<number=0>]:
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Warding Blow"
 					remove 50 from the player's balance
-			else if arg 1 contains "Mirror Force":
+			else if arg 1 contains "Mirror Blow":
 				if {_cash} is less than 50:
 					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
-					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Mirror Force"
+					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Mirror Blow"
 					remove 50 from the player's balance
 			else if arg 1 contains "Defiant Attack":
 				if {_cash} is less than 50:
@@ -1228,7 +1236,7 @@ command /skill <text> [<number=0>]:
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Offense Bond"
 					remove 50 from the player's balance
-			else if arg 1 contains "Defense":
+			else if arg 1 contains "Defense Bond":
 				if {_cash} is less than 50:
 					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
@@ -1239,6 +1247,24 @@ command /skill <text> [<number=0>]:
 					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Magic Bond"
+					remove 50 from the player's balance
+			else if arg 1 contains "Offense Solo":
+				if {_cash} is less than 50:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+				else:
+					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Offense Solo"
+					remove 50 from the player's balance
+			else if arg 1 contains "Defense Solo":
+				if {_cash} is less than 50:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+				else:
+					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Defense Solo"
+					remove 50 from the player's balance
+			else if arg 1 contains "Magic Solo":
+				if {_cash} is less than 50:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+				else:
+					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Magic Solo"
 					remove 50 from the player's balance
 			else if arg 1 contains "STR/SKL Bond":
 				if {_cash} is less than 50:
@@ -1336,6 +1362,12 @@ command /skill <text> [<number=0>]:
 				else:
 					set line 4 of slot 4 of the player's current inventory's lore to "<light green><bold>Assist - Taunt"
 					remove 100 from the player's balance
+			else if arg 1 is "Acrobatics":
+				if {_cash} is less than 150:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $150, but you only have %player's money%."
+				else:
+					set line 4 of slot 4 of the player's current inventory's lore to "<light green><bold>Assist - Acrobatics"
+					remove 150 from the player's balance
 			else if arg 1 is "MAX-Taunt":
 				if {_cash} is less than 200:
 					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $200, but you only have %player's money%."
@@ -1420,11 +1452,11 @@ command /skill <text> [<number=0>]:
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Fierce Stance"
 					remove 50 from the player's balance
-			else if arg 1 contains "Swift Sparrow":
+			else if arg 1 contains "Swift Blow":
 				if {_cash} is less than 50:
 					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
-					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Swift Sparrow"
+					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Swift Blow"
 					remove 50 from the player's balance
 			else if arg 1 contains "Steady Blow":
 				if {_cash} is less than 50:
@@ -1503,6 +1535,48 @@ command /skill <text> [<number=0>]:
 					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Hone MAG"
+					remove 50 from the player's balance
+			else if arg 1 contains "Joint-Hone STR":
+				if {_cash} is less than 100:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
+				else:
+					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Joint-Hone STR"
+					remove 100 from the player's balance
+			else if arg 1 contains "Joint-Hone SPD":
+				if {_cash} is less than 100:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
+				else:
+					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Joint-Hone SPD"
+					remove 100 from the player's balance
+			else if arg 1 contains "Joint-Hone SKL":
+				if {_cash} is less than 100:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
+				else:
+					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Joint-Hone SKL"
+					remove 100 from the player's balance
+			else if arg 1 contains "Joint-Hone DEF":
+				if {_cash} is less than 100:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
+				else:
+					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Joint-Hone DEF"
+					remove 100 from the player's balance
+			else if arg 1 contains "Joint-Hone MAG":
+				if {_cash} is less than 100:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
+				else:
+					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Joint-Hone MAG"
+					remove 100 from the player's balance
+			else if arg 1 contains "Sally Coalition":
+				if {_cash} is less than 50:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+				else:
+					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Sally Coalition"
+					remove 50 from the player's balance
+			else if arg 1 contains "Garrison Coalition":
+				if {_cash} is less than 50:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+				else:
+					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Garrison Coalition"
 					remove 50 from the player's balance
 			else if arg 1 contains "Drive STR":
 				if {_cash} is less than 50:

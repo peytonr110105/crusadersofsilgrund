@@ -184,20 +184,20 @@ command /train <text>:
 	trigger:
 		if player's balance is more than or equal to 100:
 			if arg 1 is "swords":
-				add 100 to {weaponrank.%player%::Swords}
+				add 250 to {weaponrank.%player%::Swords}
 			else if arg 1 is "axes":
-				add 100 to {weaponrank.%player%::Axes}
+				add 250 to {weaponrank.%player%::Axes}
 			else if arg 1 is "lances":
-				add 100 to {weaponrank.%player%::Lances}
+				add 250 to {weaponrank.%player%::Lances}
 			else if arg 1 is "bows":
-				add 100 to {weaponrank.%player%::Bows}
+				add 250 to {weaponrank.%player%::Bows}
 			else if arg 1 is "magic":
-				add 100 to {weaponrank.%player%::Magic}
-			subtract 200 from the player's balance
+				add 250 to {weaponrank.%player%::Magic}
+			subtract 100 from the player's balance
 			send formatted "<light green>Training successful! New balance: %player's money%"
 		else if arg 1 is "staves":
 			if player's balance is more than or equal to 75:
-				add 10 to {weaponrank.%player%::Staves}
+				add 25 to {weaponrank.%player%::Staves}
 			else:
 				send formatted "<light red>You need at least $75 to train."
 		else:
@@ -690,11 +690,11 @@ command /conv-aap <number>:
 				send formatted "<run command:/conv-aap 3><gold>1 - Is there some way I can help you?"
 				send formatted "<run command:/conv-aap 2><gold>2 - Good luck. It sounds like you need it."
 			else if arg 1 is 2:
-				send formatted "<light blue>Jerome: Thank you. Now please, try not to bother me again. I have to focus..."
+				send formatted "<light blue>Jerome: Thank you. Now please, try not to bother me again. I have to focus."
 			else if arg 1 is 3:
 				send formatted "<light blue>Jerome: Well, there is one way. If you can bring me some spare materials, it should give me enough leeway to get these tools made to perfection."
 				wait 3.5 seconds
-				send formatted "<light blue>Jerome: 14 iron ingots and 11 sticks should be enough. I would fetch them myself, but if Galdur sees me running off he'll suspect something's up."
+				send formatted "<light blue>Jerome: 14 iron ingots and 11 sticks should be enough. I would fetch them myself, but if Galdur sees me running off he'll get suspicious."
 				startQuest(player,"An Apprentice's Plight","Bring 14 iron ingots and 11 sticks to Jerome.")
 				wait 3.5 seconds
 				send formatted "<light blue>Jerome: Good luck, I'm counting on you."
@@ -1088,7 +1088,7 @@ on right click on an entity:
 		#Blacksmiths
 		if the name of the target contains "Blacksmith":
 			if {quests.%player%::Fuel for the Fire} is not set:
-				send formatted "<light cyan>%target's name%: Need a weapon smithed up? Just as long as you don't need anything refined, I can get it done." to the player
+				send formatted "<light cyan>%target's name%: <white>Need a weapon smithed up? Just as long as you don't need anything refined, I can get it done." to the player
 				wait 3.5 seconds
 				send formatted "<run command:/conv-fftf 1><gold>1 - What's wrong with the refinery? Has something happened?" to the player
 				send formatted "<run command:/bs-shop><gold>2 - I just need some tools." to the player
@@ -1107,22 +1107,23 @@ on right click on an entity:
 			else:
 				set {_rng} to a random integer from 1 to 3
 				if {_rng} is 1:
-					send formatted "<light cyan>%target's name%: Need something forged?" to the player
+					send formatted "<light cyan>%target's name%: <white>Need something forged?" to the player
 				else if {_rng} is 2:
-					send formatted "<light cyan>%target's name%: I've got the best steel in the whole land." to the player
+					send formatted "<light cyan>%target's name%: <white>I've got the best steel in the whole land." to the player
 				else if {_rng} is 3:
-					send formatted "<light cyan>%target's name%: Blades, picks... Whatever you need, I can forge it." to the player
+					send formatted "<light cyan>%target's name%: <white>Blades, picks... Whatever you need, I can forge it." to the player
 				wait 1 seconds
 				send formatted "<run command:/bs-shop><gold>1 - What do you have for sale?" to the player
 				send formatted "<run command:/skills><gold>2 - I need some modifications. (Repair/Upgrade Equipment)" to the player
-				if {quests.%player%::Fuel for the Fire} is 3:
-					if player has 64 coal:
-						set {_coal} to 1
-					if player has 16 magma block:
-						set {_magma} to 1
-					if {_coal} is 1:
-						if {_magma} is 1:
-							send formatted "<run command:/conv-fftf 5><gold>2 - Here's your shipment. (Give 64 Coal & 16 Magma Blocks)" to the player
+				if {quests.%player%::Fuel for the Fire} is not 999:
+					if {quests.%player%::Fuel for the Fire} is set:
+						if player has 64 coal:
+							set {_coal} to 1
+						if player has 16 magma block:
+							set {_magma} to 1
+						if {_coal} is 1:
+							if {_magma} is 1:
+								send formatted "<run command:/conv-fftf 5><gold>2 - Here's your shipment. (Give 64 Coal & 16 Magma Blocks)" to the player
 		#
 		#Jerome
 		if the name of the target is "Jerome":
@@ -1778,17 +1779,6 @@ command /quests <number>:
 				set slot 20 of the player's current inventory to 1 lapis block named "<light blue>Invisible Ties" with lore "<white>Lord Kiln seems to be making an effort to know me personally.", "<white>Who am I to deny his friendship?"
 			else:
 				set slot 20 of the player's current inventory to 1 redstone block named "<light red>Invisible Ties" with lore "<white>Ask Lord Kiln about his day."
-			#Fuel for the Fire
-			if {quests.%player%::Fuel for the Fire} is 999:
-				set slot 21 of the player's current inventory to 1 emerald block named "<green>Fuel for the Fire" with lore "<white>I've returned the fuel needed for the refinery.", "<white>Now I can have my weapons refined and upgraded."
-			else if {quests.%player%::Fuel for the Fire} is 3:
-				set slot 21 of the player's current inventory to 1 lapis block named "<light blue>Fuel for the Fire" with lore "<white>I need to bring back 64 pieces of coal, and 16 blocks of magma to the blacksmith.", "<white>With the fuel, the blacksmith can reopen the weapon refinery."
-			else if {quests.%player%::Fuel for the Fire} is 2:
-				set slot 21 of the player's current inventory to 1 lapis block named "<light blue>Fuel for the Fire" with lore "<white>I found the shipment from Colony 6.", "<white>Unfortunately, all of the fuel is missing.", "<white>I can try and find fuel on my own, or tell the blacksmith about the shipment."
-			else if {quests.%player%::Fuel for the Fire} is 1:
-				set slot 21 of the player's current inventory to 1 lapis block named "<light blue>Fuel for the Fire" with lore "<white>A local blacksmith needs fuel to power the weapon refinery.", "<white>He's missing a shipment from Colony 6, which most likely got lost in the Dark Woods."
-			else:
-				set slot 21 of the player's current inventory to 1 redstone block named "<light red>Fuel for the Fire" with lore "<white>Ask a blacksmith about his forge."
 			#Monster Hunt radiant quest
 			if {quests.%player%::Monster Hunt} is 999:
 				set slot 22 of the player's current inventory to 1 emerald block named "<green>Monster Hunt" with lore "<white>I've slain some of the monsters terrorizing the land to aid the people."

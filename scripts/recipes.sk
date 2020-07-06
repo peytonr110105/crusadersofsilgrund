@@ -28,5 +28,10 @@ on load:
 	register new shapeless recipe for 4 magma using water bucket, lava bucket, air, air, air, air, air, air, air
 	
 	#Magic Wand
-	register new shapeless recipe for 1 blaze rod named "<light yellow><bold>Magic Wand" with lore "","","","","","","<light red><bold>Spell 1: Ember" using stick, iron ingot, air, air, air, air, air, air, air
-
+	register new shapeless recipe for 1 blaze rod named "<light yellow><bold>Magic Wand" with lore "","","","","","","<light red><bold>Spell 1: Ember" using stick, gold ingot, air, air, air, air, air, air, air
+	
+	#Special Weapons
+	register new shapeless recipe for 1 iron sword named "<yellow><bold>Rapier" with lore "","","","","","","<white>Grants <light red><bold>[Armour Smasher]<reset>." using iron sword, iron ingot, iron ingot, air, air, air, air, air, air
+	register new shapeless recipe for 1 iron axe named "<yellow><bold>Hammer" with lore "","","","","","","<white>Grants <light red><bold>[Armour Smasher]<reset>." using iron axe, iron ingot, iron ingot, air, air, air, air, air, air
+	register new shapeless recipe for 1 iron shovel named "<yellow><bold>Shieldreaver" with lore "","","","","","","<white>Grants <light red><bold>[Armour Smasher]<reset>." using iron shovel, iron ingot, iron ingot, air, air, air, air, air, air
+	register new shaped recipe for 1 iron pickaxe named "<yellow><bold>Climbing Hook" with lore "","","","<light green><bold>Assist - Acrobatics","","","<white>Grants Swiftness 2, Jump Boost 2 while active.", "<light red>Inflicts Fatigue 5 while active." using air, diamond, air, iron ingot named "<light blue>Tempered Iron", gold pickaxe, iron ingot named "<light blue>Tempered Iron", air, air, air

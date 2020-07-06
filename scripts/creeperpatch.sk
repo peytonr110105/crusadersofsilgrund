@@ -5,8 +5,11 @@ on explosion:
 		create safe explosion of force 1.2 at the entity
 		
 on right click on bed:
-	make player execute command "/spawnpoint"
+	set {spawnpoint.%player%} to player's location
 	send "<gold>Spawnpoint updated." to the player
+	
+on respawn:
+	teleport the player to {spawnpoint.%player%::coords}
 	
 command /unscrewupdragontransformation:
 	trigger:

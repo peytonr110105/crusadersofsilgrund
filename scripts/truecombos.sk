@@ -152,12 +152,6 @@ on damage:
 		if {combograde.%attacker%} is 0:
 			add damage to {comboscore.%attacker%}
 			add 1 to {comboscalar.%attacker%}
-			if attacker is player:
-				if attacker's world is "Salindrum":
-					set damage to damage * {sd.outgoingmult.%attacker%}
-			else if victim is player:
-				if victim's world is "Salindrum":
-					set damage to damage * {sd.incomingmult.%attacker%}
 		else:
 			if {t_airComboBonus.%victim%} is not set:
 				set {t_airComboBonus.%victim%} to 1
@@ -176,12 +170,6 @@ on damage:
 				add damage / 2 to {comboscore.%attacker%}
 			#subtract ({comboscale.%attacker%} / 2) from {comboscore.%attacker%}
 			set damage to (damage * {combomult.%attacker%})
-			if attacker is player:
-				if attacker's world is "Salindrum":
-					set damage to damage * {sd.outgoingmult.%attacker%}
-			else if victim is player:
-				if victim's world is "Salindrum":
-					set damage to damage * {sd.incomingmult.%attacker%}
 			#if {comboscore.%attacker%} is more than {combobank.%attacker%}:
 			#	set {combobank.%attacker%} to {comboscore.%attacker%}
 			if {comboscore.%attacker%} is more than ((({combograde.%attacker%} + 1) * 3.5) + (({combograde.%attacker%} + 1) ^ 2) * {comboscale.%attacker%}):
@@ -240,11 +228,3 @@ on damage:
 					send "<red>Trigger Meter full! Sneak + Right click with an empty hand to activate." to the attacker
 				set bossbar "dt.%attacker's uuid%" progress to {_dtMeterDisplay}
 				send "<red>Trigger Meter: %{dtMeter.%attacker%}% | Max Meter: %{dtMeterCap.%attacker%}%" to the attacker
-				
-	else:
-		if attacker is player:
-			if attacker's world is "Salindrum":
-				set damage to damage * {sd.outgoingmult.%attacker%}
-		else if victim is player:
-			if victim's world is "Salindrum":
-				set damage to damage * {sd.incomingmult.%attacker%}

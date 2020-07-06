@@ -1,0 +1,193 @@
+#Boss logic functions
+
+#Arguments:
+#1 - The Player
+#2 - Boss Name
+#3 - Difficulty (think Vergil 1 vs 3)
+function initBossLogic(PLR: player,BOSS: text,STG: number):
+	#Gilead
+	if {_BOSS} is "Gilead":
+		#Gilead 1
+		if {_STG} is 1:
+			while {NPCsFor.%{_PLR}%::C_Gilead} is alive:
+				#Swap to ranged weapon when player attempts to run away
+				if distance between {_PLR} and {NPCsFor.%{_PLR}%::C_Gilead} is more than or equal to 7:
+					if {NPCsFor.%{_PLR}%::C_Gilead}'s tool is not a bow:
+						apply swiftness 1 to {NPCsFor.%{_PLR}%::C_Gilead} for 2 seconds
+						send "<light blue>DEBUG: Gilead trying to swap to ranged" to {_PLR}
+						wait 1 second
+						if distance between {_PLR} and {NPCsFor.%{_PLR}%::C_Gilead} is more than or equal to 7:
+							send "<light blue>DEBUG: Gilead swapped to ranged moveset" to {_PLR}
+							set {NPCsFor.%{_PLR}%::C_Gilead}'s tool to 1 bow of power 2, punch 1 named "<light blue>Steel Bow+" with lore "<light red><bold>Slot A - Empty", "<light blue><bold>Slot B - Seal Speed", "<light yellow><bold>Slot C - Empty", "<light green><bold>Assist - None", "<light purple><bold>Special - Moonbow"
+				#Ranged Moveset
+				if {NPCsFor.%{_PLR}%::C_Gilead}'s tool is a bow:
+					if distance between {_PLR} and {NPCsFor.%{_PLR}%::C_Gilead} is less than or equal to 4:
+						#Attempt to dodge roll to maintain distance
+						if {_GileadDodgeRollTimeout} is not set:
+							set {_GileadDodgeRollTimeout} to true
+							apply resistance 5 to {NPCsFor.%{_PLR}%::C_Gilead} for 1 second
+							push {NPCsFor.%{_PLR}%::C_Gilead} backwards at speed 1.25
+							push {NPCsFor.%{_PLR}%::C_Gilead} upwards at speed 0.6
+							set {DRInvincible.%{NPCsFor.%{_PLR}%::C_Gilead}%} to true
+							loop 10 times:
+								play 2 (smoke with speed 0) at {NPCsFor.%{_PLR}%::C_Gilead}
+								play 2 (snowball break with speed 1) at {NPCsFor.%{_PLR}%::C_Gilead}
+								wait 1 tick
+							wait 1.5 seconds
+							if distance between {_PLR} and {NPCsFor.%{_PLR}%::C_Gilead} is less than or equal to 4:
+								set {NPCsFor.%{_PLR}%::C_Gilead}'s tool to 1 iron sword of sharpness 5 named "<light purple>Elridian Steel Sword+"
+								send "<light blue>DEBUG: Gilead swapped to melee | melee swap out of dodge" to {_PLR}
+								#set {NPCsFor.%{_PLR}%::C_Gilead}'s tool to 1 iron sword of sharpness 3, unbreaking 3 named "<light purple>Elridian Steel Sword+" with lore "<light red><bold>Slot A - Fury","<light blue><bold>Slot B - Desperation","","","","","<white>An otherwordly sword of fine quality.","<white>The craftsmanship is far superior to","<white>traditional Silgrid forging methods.","<white>""Property of the Elridian Republic"" is inscribed in the crossguard."
+							wait 1.5 seconds
+							clear {_GileadDodgeRollTimeout}
+						#If Gilead can't maintain distance, swap to sword.
+						else:
+							set {NPCsFor.%{_PLR}%::C_Gilead}'s tool to 1 iron sword of sharpness 5 named "debug"
+							send "<light blue>DEBUG: Gilead swapped to melee" to {_PLR}
+							#set {NPCsFor.%{_PLR}%::C_Gilead}'s tool to 1 iron sword of sharpness 3, unbreaking 3 named "<light purple>Elridian Steel Sword+" with lore "<light red><bold>Slot A - Life and Death","<light blue><bold>Slot B - Desperation","","","","","<white>An otherwordly sword of fine quality.","<white>The craftsmanship is far superior to","<white>traditional Silgrid forging methods.","<white>""Property of the Elridian Republic"" is inscribed in the crossguard."
+				#Desperation Moves
+				if {NPCsFor.%{_PLR}%::C_Gilead}'s health is less than or equal to ({NPCsFor.%{_PLR}%::C_Gilead}'s maximum health * 0.7):
+					if distance between {_PLR} and {NPCsFor.%{_PLR}%::C_Gilead} is less than or equal to 3:
+						#If in very close quarters and low on health, try and roll away from the player
+						chance of 50%:
+							if {_GileadDodgeRollTimeout} is not set:
+								apply resistance 5 to {NPCsFor.%{_PLR}%::C_Gilead} for 1 second
+								push {NPCsFor.%{_PLR}%::C_Gilead} backwards at speed 1.25
+								push {NPCsFor.%{_PLR}%::C_Gilead} upwards at speed 0.6
+								set {DRInvincible.%{NPCsFor.%{_PLR}%::C_Gilead}%} to true
+								loop 10 times:
+									play 2 (smoke with speed 0) at {NPCsFor.%{_PLR}%::C_Gilead}
+									play 2 (snowball break with speed 1) at {NPCsFor.%{_PLR}%::C_Gilead}
+									wait 1 tick
+								wait 3 seconds
+								clear {_GileadDodgeRollTimeout}
+				#Critical Health Moves
+				else if {NPCsFor.%{_PLR}%::C_Gilead}'s health is less than or equal to ({NPCsFor.%{_PLR}%::C_Gilead}'s maximum health * 0.3):
+					#Try to flee and use a healing item
+					if {_GileadUseHealingItem} is not set:
+						set {_GileadUseHealingItem} to true
+						make console execute command "/npc sel %citizen id of {NPCsFor.%{_PLR}%::C_Gilead}%"
+						make console execute command "/sentinel removetarget PLAYER:%{_PLR}%"
+						make console execute command "/sentinel addavoid PLAYER:%{_PLR}%"
+						apply swiftness 2 to {NPCsFor.%{_PLR}%::C_Gilead} for 10 seconds
+						set {NPCsFor.%{_PLR}%::C_Gilead}'s tool to 1 yellow dye named "<light yellow><bold>Golden Herb"
+						#If the Golden Herb wasn't knocked out of Gilead's hands after 10 seconds, have him use it.
+						wait 10 seconds
+						if {NPCsFor.%{_PLR}%::C_Gilead}'s tool is 1 yellow dye:
+							set {NPCsFor.%{_PLR}%::C_Gilead}'s tool to 1 iron sword of sharpness 3, unbreaking 3 named "<light purple>Elridian Steel Sword+" with lore "<light red><bold>Slot A - Fury","<light blue><bold>Slot B - Desperation","","","","","<white>An otherwordly sword of fine quality.","<white>The craftsmanship is far superior to","<white>traditional Silgrid forging methods.","<white>""Property of the Elridian Republic"" is inscribed in the crossguard."
+							heal {NPCsFor.%{_PLR}%::C_Gilead} by 12 hearts
+							play 30 (gold block break with speed 1) at {NPCsFor.%{_PLR}%::C_Gilead}
+							play sound "block.enchantment_table.use" with volume 3 and pitch 2 at {NPCsFor.%{_PLR}%::C_Gilead} for {_PLR}
+							play sound "entity.player.swim" with volume 1 and pitch 1.5 at {NPCsFor.%{_PLR}%::C_Gilead} for {_PLR}
+							make console execute command "/npc sel %citizen id of {NPCsFor.%{_PLR}%::C_Gilead}%"
+							make console execute command "/sentinel addtarget PLAYER:%{_PLR}%"
+							make console execute command "/sentinel removeavoid PLAYER:%{_PLR}%"
+							clear {_GileadUseHealingItem}
+						else:
+							wait 20 seconds
+							clear {_GileadUseHealingItem}
+				wait 5 ticks
+				#End boss logic if player or boss is dead
+				if {_PLR} is not alive:
+					exit 1 loop
+				else if {NPCsFor.%{_PLR}%::C_Gilead} is not alive:
+					exit 1 loop
+			send "<light blue>Gilead boss logic terminated" to {_PLR}
+
+#Damage based boss behaviors
+on damage:
+	#Gilead
+	if victim's name contains "Gilead":
+		#Have Gilead drop his Golden Herb if hit while trying to use it
+		if the name of the victim's tool is "<light yellow><bold>Golden Herb":
+			drop 1 yellow dye named "<light yellow><bold>Golden Herb" with lore "<white>Powerful medicinal herb with extreme healing power.","<white>Right-click to restore 12 hearts.","<white>Can also be picked up off the ground to restore 6 hearts if wounded." at the victim
+			set the victim's tool to 1 iron sword of sharpness 3, unbreaking 3 named "<light purple>Elridian Steel Sword+" with lore "<light red><bold>Slot A - Fury","<light blue><bold>Slot B - Desperation","","","","","<white>An otherwordly sword of fine quality.","<white>The craftsmanship is far superior to","<white>traditional Silgrid forging methods.","<white>""Property of the Elridian Republic"" is inscribed in the crossguard."
+			wait 5 ticks
+			push the victim backwards at speed 1.7
+			push the victim upwards at speed 0.8
+			set {DRInvincible.%victim%} to true
+			set {_RNG} to a random integer from 1 to 3
+			if {_RNG} is 1:
+				send "<light blue>Gilead: <white>Argh..! Damn you!" to the attacker
+			else if {_RNG} is 2:
+				send "<light blue>Gilead: <white>Ngh.. You'll pay for that!" to the attacker
+			else if {_RNG} is 3:
+				send "<light blue>Gilead: <white>You fool, you'll still die in the end!" to the attacker
+			loop 20 times:
+				play 2 (smoke with speed 0) at the victim
+				play 2 (snowball break with speed 1) at the victim
+				wait 1 tick
+			clear {DRInvincible.%victim%}
+			make console execute command "/npc sel %citizen id of the victim%"
+			make console execute command "/sentinel addtarget PLAYER:%attacker%"
+			make console execute command "/sentinel removeavoid PLAYER:%attacker%"
+			
+			
+#Spawn a boss
+command /DEBUG_SpawnBoss <text> <number>:
+	trigger:
+		if arg 1 is "Gilead":
+			if arg 2 is 1:
+				set {inCutscene.%player%} to true
+				clear {interruptNPCWizardry.%player%}
+				clear {NPCsFor.%player%::C_Gilead}
+				make player execute command "/npc sel %{GlobalNPCs::Gilead}%"
+				make player execute command "/npc copy"
+				make player execute command "/npc tphere"
+				while {NPCsFor.%player%::C_Gilead} is not set:
+					wait 1 tick
+				make console execute command "/npc sel %citizen id of {NPCsFor.%player%::C_Gilead}%"
+				#set {NPCsFor.%player%::C_Gilead} to the last created citizen
+				teleport {NPCsFor.%player%::C_Gilead} to the player
+				apply resistance 5 to the player for 4 seconds
+				make console execute command "/sentinel avoidrange 7"
+				make console execute command "/sentinel reach 3.5"
+				make console execute command "/sentinel range 30"
+				make console execute command "/sentinel needammo false"
+				make console execute command "/sentinel attackrate 0.5"
+				make console execute command "/sentinel attackrate 1.2 RANGED"
+				make console execute command "/sentinel speed 1.5"
+				while {NPCsFor.%player%::C_Gilead} is not set:
+					wait 1 tick
+				set {_bossID} to citizen id of {NPCsFor.%player%::C_Gilead}
+				send "npc id: %{_bossID}%"
+				#Setup Gilead's Stats
+				set {npc_lvl.%{_bossID}%} to 15
+				set {npc_str.%{_bossID}%} to 23
+				set {npc_spd.%{_bossID}%} to 15
+				set {npc_skl.%{_bossID}%} to 9
+				set {npc_def.%{_bossID}%} to 16
+				set {npc_res.%{_bossID}%} to 11
+				set {npc_hp.%{_bossID}%} to 60
+				set {skillslot1.%{NPCsFor.%player%::C_Gilead}%} to "Brazen STR/DEF"
+				if player's level is more than 15:
+					set {_levelScaling} to player's level - 15
+					loop {_levelScaling} times:
+						chance of 50%:
+							add 1 to {npc_str.%{_bossID}%}
+						chance of 35%:
+							add 1 to {npc_spd.%{_bossID}%}
+						chance of 80%:
+							add 1 to {npc_skl.%{_bossID}%}
+						chance of 40%:
+							add 1 to {npc_def.%{_bossID}%}
+						chance of 40%:
+							add 1 to {npc_res.%{_bossID}%}
+						add 2 to {npc_hp.%{_bossID}%}
+						chance of 50%:
+							add 1 to {npc_hp.%{_bossID}%}
+				send "npc str: %{npc_str.%{_bossID}%}%"
+				make console execute command "/sentinel health %{npc_hp.%{_bossID}%}%"
+				make console execute command "/sentinel removeignore PLAYER:%player%"
+				make console execute command "/sentinel addtarget PLAYER:%player%"
+				initBossLogic(player,"Gilead",1)
+				
+command /displayallplayers:
+	trigger:
+		loop all players:
+			send "player revealed: %loop-player%"
+			reveal loop-player to the player
+		loop all entities in radius 50 of the player:
+			if citizen id of the loop-entity is set:
+				send "npc revealed: %loop-entity%"
+				reveal loop-entity to the player
