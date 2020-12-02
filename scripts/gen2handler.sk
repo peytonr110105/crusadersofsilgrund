@@ -1,0 +1,204 @@
+#Unlocks the specified class when called
+function unlockClass(PLR: player,CLASS: text):
+	send title "<gold><bold>---===CLASS UNLOCKED!===---" with subtitle "<bold>The %{_CLASS}% class is now available!" to {_PLR} for 3.25 seconds with fade in 0.25 seconds and fade out 0.5 seconds
+	play sound "entity.player.levelup" with volume 1.5 and pitch 0.5 at {_PLR} for {_PLR}
+	set {unlockedClasses.%{_PLR}%::%{_CLASS}%} to 1
+
+#Builds a Child Unit from the character's saved data.
+function generateNewChildUnit(PLR: player):
+	send "<light green>Enter a name for your new character into the chat. This will be hidden from other players." to {_PLR}
+	set {CHChatBlock.%{_PLR}%} to true
+	while {childUnitNameSet.%{_PLR}%} is not set:
+		wait 2 ticks
+	clear {CHChatBlock.%{_PLR}%}
+	send formatted "<light green>Should %{childUnitNameSet.%{_PLR}%}%<reset><light green> be this character's name?" to {_PLR}
+	wait 4 seconds
+	send formatted "<run command:/CUNameSet 1><green>Yes. (Click here to confirm name)" to {_PLR}
+	send formatted "<run command:/CUNameSet 0><light red>Let me think it over again... (Click here to change name)" to {_PLR}
+	
+#Completes character creation after recieving a name from chat.
+command /CUNameSet <number>:
+	trigger:
+		if arg 1 is 0:
+			set {CHChatBlock.%player%} to true
+			send "<light green>Enter a name for your new character."
+		else if arg 1 is 1:
+			send "<light green>Character confirmed."
+			clear the player's inventory
+			set the player's helmet to 1 leather helmet
+			set the player's chestplate to 1 leather chestplate
+			set the player's leggings to 1 leather leggings
+			set the player's boots to 1 leather boots
+			loop {itemInheritance.%player%::*}:
+				give {itemInheritance.%player%::%loop-index%} to the player
+			loop {perks.%{childUnitParent.%player%}%::*}:
+				if {perks.%{childUnitParent.%player%}%::%loop-index%} is 1:
+					set {perks.%player%::%loop-index%} to 1
+			loop {unlockedClasses.%{childUnitParent.%player%}%::*}:
+				if {unlockedClasses.%{childUnitParent.%player%}%::%loop-index%} is 1:
+					set {unlockedClasses.%player%::%loop-index%} to 1
+			clear {itemInheritance.%player%::*}
+			set the player's tablist name to coloured {childUnitNameSet.%player%}
+			clear {childUnitNameSet.%player%}
+			clear {db_charvault.%player%::*}
+			add 1 to {generation.%player%}
+			startQuest(player,"New Arrival","Talk with Validar at the port to gain access into House Silgrid.")
+			teleport the player to location at 376, 61, 314 in world "adventure"
+			send "<gold><bold>Character created!"
+			set the player's health to 1
+			set the player's maximum health to 6
+			heal the player by 999
+			set the player's level to 1
+			clear {lvl.%player%}
+			
+#Chat Detection for character naming
+on chat:
+	if {CHChatBlock.%player%} is true:
+		cancel event
+		set {childUnitNameSet.%player%} to the chat message
+
+#Prompt player to choose their partner to create a child unit.
+function getChildUnitParents(PLR: player):
+	send formatted "<light yellow>Please select a partner to create your new character with." to {_PLR}
+	loop {NPCSupportRank.%{_PLR}%::*}:
+		if loop-value is "<gold><bold>S":
+			send formatted "<run command:/setChildUnitParents-NPC %loop-index% 0><gold>- %loop-index%" to {_PLR}
+	if {PTPSupportRank.%{_PLR}%} is set:
+		send formatted "<run command:/setChildUnitParents-P2P %{supportpartner.%{_PLR}%}% 0><gold>- %{supportpartner.%{_PLR}%}'s tablist name% (%{supportpartner.%{_PLR}%}%)" to {_PLR}
+	send formatted "<run command:/setChildUnitParents-NPC GENERIC 0><gold>- None (No bonuses will be granted.)" to {_PLR}
+
+#Special handler for NPC pairing.
+command /setChildUnitParents-NPC <text> <number>:
+	trigger:
+		if arg 2 is 0:
+			if arg 1 is not "GENERIC":
+				send formatted "<light yellow>You have selected %arg 1% as your partner. Are you certain of your decision? Your choice cannot be changed later."
+			else:
+				send formatted "<light red>You have chosen not to take a partner. Your character will not inherit any classes or perks outside of your own. Are you certain of your decision? Your choice cannot be changed later."
+			wait 4 seconds
+			send formatted "<run command:/setChildUnitParents-NPC NULL 2><light red>Let me start over!"
+			send formatted "<run command:/setChildUnitParents-NPC %arg 1% 1><light green>I'm certain of my choice."
+		else if arg 2 is 1:
+			if arg 1 is "GENERIC":
+				set {childunitParent.%player%} to "NONE"
+				send formatted "<light green>You have chosen not to take a partner."
+			else:
+				set {childunitParent.%player%} to arg 1
+				send formatted "<light green>You have chosen %{childUnitParent.%player%}'s tablist name% as your partner."
+			wait 3 seconds
+			getChildUnitInheritance(player)
+		else if arg 2 is 2:
+			getChildUnitParents(player)
+			
+#Special handler for Player2Player pairing.
+command /setChildUnitParents-P2P <offlineplayer> <number>:
+	trigger:
+		if arg 2 is 0:
+			send formatted "<light yellow>You have chosen %arg 1's tablist name%<reset><light yellow> as your partner. Your new character will inherit their perks and unlocked classes alongside your own. Are you certain of your decision? Your choice cannot be changed later."
+			wait 4 seconds
+			send formatted "<run command:/setChildUnitParents-P2P %arg 1% 2><light red>Let me start over!"
+			send formatted "<run command:/setChildUnitParents-P2P %arg 1% 1><light green>I'm certain of my choice."
+		else if arg 2 is 1:
+			set {childUnitParent.%player%} to arg 1
+			send formatted "<light green>You have chosen %{childUnitParent.%player%}'s tablist name% as your partner."
+			wait 3 seconds
+			getChildUnitInheritance(player)
+		else if arg 2 is 2:
+			getChildUnitParents(player)
+
+#Begins item inheritance for child units.
+function getChildUnitInheritance(PLR: player):
+	send formatted "<light yellow>Your new character will now inherit all unlocked classes and perks from you and your partner (if applicable)." to {_PLR}
+	wait 4.5 seconds
+	send formatted "<light yellow>Please select up to 8 items to pass down to your new character. Some items cannot be inherited, and will be blocked from being placed into the window." to {_PLR}
+	wait 6 seconds
+	send formatted "<run command:/setChildUnitInheritance><light green>Take a moment to gather any last items in storage, then <bold>click here<reset><light green> to begin inheritance." to {_PLR}
+	
+command /setChildUnitInheritance:
+	trigger:
+		open chest with 1 row named "<gold>Inheritance" for the player
+		set slot 8 of the player's current inventory to 1 chest named "<light green>Confirm Inheritance" with lore "<white>Place items into the 8 slots of this inventory", "<white>to have your new character inherit them.", "<light red>Promotion and quest-related items cannot be inherited."
+		set {blockMenuExit.%player%} to "/setChildUnitInheritance"
+	
+on inventory click:
+	if the name of the player's current inventory is "<gold>Inheritance":
+		if the name of the clicked item contains "<gold><bold>":
+			cancel event
+			send formatted "<light red>This item is inelligable for inheritance."
+		else if the name of the clicked item is "<gold>Journal":
+			cancel event
+			send formatted "<light red>This item is inelligable for inheritance."
+		else if the name of the clicked item is "<light green>Confirm Inheritance":
+			set {_type} to bestWeapon(player)
+			#Sword Heirloom
+			if {_type} is 1:
+				set slot 8 of the player's current inventory to 1 wooden sword of unbreaking 100 named "<light blue><bold>Hunter's Blade" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - Plenitude", "<yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<bold>Refine: Unrefined", "<white>A weathered, rustic sword.", "<white>Seemingly built for hunting, the blade always seems to bring home enough to eat."
+			#Lance Heirloom
+			else if {_type} is 2:
+				set slot 8 of the player's current inventory to 1 wooden shovel of unbreaking 100 named "<light blue><bold>Soldier's Lance" with lore "<light red><bold>Slot A - Defiant Strength", "<light blue><bold>Slot B - None", "<yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - Swap", "<bold>Refine: Unrefined", "<white>An old lance once made for soldiers.", "<white>Throwing it like a javelin now would probably break it."
+			#Axe Heirloom
+			else if {_type} is 3:
+				set slot 8 of the player's current inventory to 1 wooden axe of unbreaking 100 named "<light blue><bold>Rusted Axe" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - Poison Strike", "<yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<bold>Refine: Unrefined", "<white>An old, rusted axe.", "<white>The dulled head won't do much damage, but it works in a pinch."
+			#Bow Heirloom
+			else if {_type} is 4:
+				set slot 8 of the player's current inventory to 1 bow of unbreaking 100 named "<light blue><bold>Forest Bow" with lore "<light red><bold>Slot A - Sorcery Aura", "<light blue><bold>Slot B - None", "<yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<bold>Refine: Unrefined", "<white>A charming old bow made of wood.", "<white>An odd, magical power has been imbued inside."
+			#Magic Heirloom
+			else if {_type} is 5:
+				set slot 8 of the player's current inventory to 1 book named "<light blue><bold>Commander's Spark" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - Brave Blade", "<light blue><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - None", "<white>A weathered tome that now only casts the Spark spell.", "<white>This weapon has infinite durability."
+			#Staff Heirloom
+			else if {_type} is 6:
+				set slot 8 of the player's current inventory to 1 diamond hoe named "<yellow><bold>Aum" with lore "<white>A unique staff able to heal even the gravest of wounds.", "<white>Only descendants of certain Heroes can wield this..."
+			loop all items in the player's current inventory:
+				add loop-item to {itemInheritance.%player%::*}
+			clear {blockMenuExit.%player%}
+			send formatted "<light green>Items sent to your new character."
+			close player's inventory
+			wait 3 seconds
+			generateNewChildUnit(player)
+			
+	
+command /newgameplus [<number=0>]:
+	aliases: /ng+,/newgame+
+	trigger:
+		if arg 1 is 0:
+			send "<yellow><bold>Stop playing this character and proceed to New Game+?"
+			wait 3 seconds
+			send formatted "<run command:/ng+ 1><light green>Create new character for New Game+ (click here)."
+		else if arg 1 is 1:
+			send "<yellow><bold>Please save your current character before entering New Game+."
+			send formatted "<run command:/ng+ 2><gold><bold>Once you are finished, CLICK HERE to enter New Game+."
+			make player execute command "/char help"
+		else if arg 1 is 2:
+			getChildUnitParents(player)
+			
+#Block Gen 2 units from exploring Gen 1's world, and vice-versa.
+on world change:
+	if {genBypass.%player%} is not true:
+		if {generation.%player%} is 1:
+			wait 1 tick
+			if player's world is "adventure":
+				teleport the player to world "GenOne"
+				send "<light red>This character was made pre-timeskip. They cannot explore this world."
+			else if player's world is "adventure_nether":
+				teleport the player to world "GenOne"
+				send "<light red>This character was made pre-timeskip. They cannot explore this world."
+		else:
+			wait 1 tick
+			if player's world is "GenOne":
+				teleport the player to world "adventure"
+				send "<light red>This character was made post-timeskip. They cannot explore this world."
+		
+command /genbypass:
+	trigger:
+		if {genBypass.%player%} is not set:
+			set {genBypass.%player%} to true
+			send "<light green>You can now bypass the world-lock."
+		else:
+			clear {genBypass.%player%}
+			send "<light red>Disabled world-lock bypass."
+		
+#Class Unlock Definitions
+on mine:
+	if {unlockedClasses.%player%::Survivor} is not 1:
+		if {blocksmined.%player%} is more than or equal to 2000:
+			unlockClass(player,"Survivor")

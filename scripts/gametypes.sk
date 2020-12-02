@@ -1,0 +1,129 @@
+#Logic for additional gametypes, such as Defend Throne.
+
+#Performs specific operations related to Defend Throne maps depending on the given arguments.
+command /admin_dtconfig <text> <text> [<number=0>]:
+	trigger:
+		if arg 2 is "setMobSpawn":
+			add the player's location to {dtspawns.%arg 1%::*}
+			send formatted "<gold>Added %player's location% to the spawn list for the %arg 1% defense mission."
+		else if arg 2 is "delMobSpawn":
+			loop {dtspawns.%arg 1%::*}:
+				if player's location is loop-value:
+					clear {dtspawns.%arg 1%::%loop-index%}
+					send formatted "<gold>Removed %player's location% from %arg 1%'s spawn list."
+		else if arg 2 is "setThrone":
+			set {dtthrone.%arg 1%::ThroneLoc} to the player's location
+			send formatted "<gold>Set throne location for %arg 1% to %player's location%."
+		else if arg 2 is "setMissionTimer":
+			set {dtTimer.%arg 1%} to arg 3
+			send formatted "<gold>Set mission timer for %arg 1% to %arg 3% seconds."
+		else if arg 2 is "playerCanRevive":
+			set {dtCanRevive.%arg 1%} to arg 3
+			send formatted "<gold>Updated game rule playerCanRevive for %arg 1%."
+		else if arg 2 is "clearMobSpawns":
+			clear {dtspawnts.%arg 1%::*}
+			send formatted "<gold>Spawns for %arg 1% map deleted."
+		else if arg 2 is "setMapRadius":
+			set {dtMapRadius.%arg 1%} to arg 3
+			send formatted "<gold>Updated map radius for %arg 1% to %arg 3% blocks."
+
+on death of a player:
+	if {t_inDefendThroneMission.%victim%} is set:
+		if event is not cancelled:
+			if {t_inDefendThroneMission.%victim%} is "LegendInTheMaking":
+				failQuest(victim,"Legend in the Making","You were slain in battle!")
+			clear {t_inDefendThroneMission.%victim%}
+			loop all monsters in radius 80 of the victim:
+				if {t_isDefendThroneMob.%loop-monster%} is true:
+					kill the loop-monster
+				
+command /forceexitdt:
+	trigger:
+		clear {t_inDefendThroneMission.%player%}
+		loop all monsters in radius 80 of the player:
+			if {t_isDefendThroneMob.%loop-monster%} is true:
+				kill the loop-monster
+
+every 1 second:
+	loop all players:
+		if {t_inDefendThroneMission.%loop-player%} is set:
+			if distance between loop-player and {dtThrone.%{t_inDefendThroneMission.%loop-player%}%} is more than or equal to {dtMapRadius.%{t_inDefendThroneMission.%loop-player%}%}:
+				send "<light red>You must stay in the play area until time is up!" to loop-player
+				teleport loop-player to {dtThrone.%{t_inDefendThroneMission.%loop-player%}%}
+
+#Starts a Defend Throne map with the given name.
+command /admin_defendthrone <text>:
+	trigger:
+		if arg 1 is "LegendInTheMaking":
+			send title "<gold><bold>Defend Grann for 3 minutes!" with subtitle "<white>Siegfried and the guards will assist you." to the player for 4 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+			play sound "entity.fireworkrocket.launch" with volume 0.75 and pitch 1 at the player for the player
+			play sound "entity.fireworkrocket.twinkle" with volume 0.75 and pitch 1 at the player for the player
+			set {t_inDefendThroneMission.%player%} to arg 1
+			set {quests.%player%::Legend in the Making} to 3
+			set {_timer} to {dtTimer.%arg 1%}
+			while {t_inDefendThroneMission.%player%} is set:
+				if {t_inDefendThroneMission.%player%} is not set:
+					exit 1 loop
+				loop {dtspawns.%arg 1%::*}:
+					chance of 5%:
+						spawn 1 zombie at loop-value
+						set {_mob} to the last spawned entity
+						set {t_isDefendThroneMob.%{_mob}%} to true
+						loop all players:
+							if loop-player is not the player:
+								hide {_mob} from loop-player
+					else:
+						chance of 5%:
+							spawn 1 skeleton at loop-value
+							set {_mob} to the last spawned entity
+							set {t_isDefendThroneMob.%{_mob}%} to true
+							loop all players:
+								if loop-player is not the player:
+									hide {_mob} from loop-player
+						else:
+							chance of 5%:
+								spawn 1 spider at loop-value
+								set {_mob} to the last spawned entity
+								set {t_isDefendThroneMob.%{_mob}%} to true
+								loop all players:
+									if loop-player is not the player:
+										hide {_mob} from loop-player
+							else:
+								chance of 5%:
+									spawn 1 creeper at loop-value
+									set {_mob} to the last spawned entity
+									set {t_isDefendThroneMob.%{_mob}%} to true
+									loop all players:
+										if loop-player is not the player:
+											hide {_mob} from loop-player
+				wait 10 seconds
+				subtract 10 from {_timer}
+				if {_timer} is less than or equal to 0:
+					setQuestProgress(player,"Legend in the Making",4,"Report the successful defense to Alastor!")
+					loop all monsters in radius 50 of the player:
+						if {t_isDefendThroneMob.%loop-monster%} is true:
+							kill the loop-monster
+							play 20 (purple wool break with speed 1) at loop-monster
+					clear {t_inDefendThroneMission.%player%}
+					exit 1 loop
+				else:
+					set {_seconds} to mod({_timer}, 60)
+					set {_mins} to floor({_timer} / 60)
+					if {_seconds} is set:
+						send formatted "<gold>Time Remaining: %{_mins}%:%{_seconds}%"
+					else:
+						send formatted "<gold>Time Remaining: %{_mins}%:00"
+			#Victory condition
+			wait 1 tick
+			if {quests.%player%::Legend in the Making} is 4:
+				send "<light blue>Grann Captain: <white>Looks like those monsters are done for... How in the hell did we manage to pull that off?"
+				wait 3 seconds
+				send "<light blue>Siegfried: <white>I'm not entirely sure myself. It must have been a combination of skill and sheer luck."
+				wait 3 seconds
+				send "<light blue>Grann Captain: <white>Well, whatever it is, it looks like Grann will be alright after all."
+				wait 3 seconds
+				send "<light blue>Grann Captain: <white>Thanks for the help today, you two. I don't think we would've made it out of this without your help."
+				wait 4 seconds
+				send "<light blue>Grann Captain: <white>There's a hidden cache of supplies underneath the checkpoint into the city. Go ahead and grab whatever you need from the stockpile. You've earned it."
+				wait 5 seconds
+				send formatted "<light blue>Siegfried: <white>Oh, %player's tablist name%<reset><white>? If you need a blade at your side, feel free to call upon me. I'd be honored to work alongside you after seeing your performance today."

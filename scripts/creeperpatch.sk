@@ -1,0 +1,46 @@
+#Patches broken Essentials behavior.
+on explosion:
+	if entity is creeper:
+		cancel event
+		create safe explosion of force 1.2 at the entity
+		
+on right click on bed:
+	set {spawnpoint.%player%} to player's location
+	send "<gold>Spawnpoint updated." to the player
+	
+on respawn:
+	teleport the player to {spawnpoint.%player%::coords}
+	
+command /unscrewupdragontransformation:
+	trigger:
+		clear {dSoulActive.%player%}
+		set {dSoulMeter.%player%} to 0
+		clear {t_meterFull.%player%}
+		send "fixed the thing i hope"
+		hide bossbar "ds.%player's uuid%"
+		destroy bossbar "ds.%player's uuid%"
+		#Dragon Soul Gauges
+		#Gale Soul
+		set {_sklcheck} to checkSlots(player,"Gale Soul")
+		if {_sklcheck} is 1:
+			create bossbar titled "<light green>Gale Soul" and id "dsoul.%player's uuid%" for player with progress 0 with colors green
+			display bossbar "dsoul.%player's uuid%"
+		else:
+			#Flame Soul
+			set {_sklcheck} to checkSlots(player,"Flame Soul")
+			if {_sklcheck} is 1:
+				create bossbar titled "<orange>Flame Soul" and id "dsoul.%player's uuid%" for player with progress 0 with colors red
+				display bossbar "dsoul.%player's uuid%"
+			else:
+				#Aqua Soul
+				set {_sklcheck} to checkSlots(player,"Aqua Soul")
+				if {_sklcheck} is 1:
+					create bossbar titled "<light blue>Aqua Soul" and id "dsoul.%player's uuid%" for player with progress 0 with colors blue
+					display bossbar "dsoul.%player's uuid%"
+				else:
+					hide bossbar "dsoul.%player's uuid%"
+					destroy bossbar "dsoul.%player's uuid%"
+					
+command /fixreload:
+	trigger:
+		clear {reloading.%player%}

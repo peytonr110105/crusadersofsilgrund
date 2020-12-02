@@ -1,5 +1,14 @@
-every 1 minecraft day:
+every minecraft day:
 	set {toddRNG} to true
+	loop all players:
+		set {radiantQuestsRNG.%loop-player%} to true
+	broadcast "<light yellow>The Quest Boards have been updated!"
+	
+command /forceTimedRNG:
+	trigger:
+		send "<light yellow>Timed RNG has been instanced."
+		set {toddRNG} to true
+		set {radiantQuestsRNG.%player%} to true
 	
 on damage:
 	if victim is npc:
@@ -20,7 +29,8 @@ command /bs-shop [<number=1>]:
 			set slot 6 of the player's current inventory to 1 wooden pickaxe with lore "<white>Cost:", "8"
 			set slot 7 of the player's current inventory to 1 wooden shovel with lore "<white>Cost:", "4"
 			set slot 8 of the player's current inventory to 1 wooden hoe with lore "<white>Cost:", "6"
-			if {quests.%player%::Home Sweet Home} is set:
+			set slot 9 of the player's current inventory to 1 anvil named "<yellow><bold>Upgrade Equipment" with lore "<white>Enhance your equipment with various skills."
+			if {quests.%player%::Birth of a Hero} is 999:
 				set slot 12 of the player's current inventory to 1 light green glass pane named "<light green>Go to Page 2"
 		else if arg 1 is 2:
 			open chest with 2 rows named "<gold>Blacksmith" for the player
@@ -34,7 +44,7 @@ command /bs-shop [<number=1>]:
 			set slot 7 of the player's current inventory to 1 stone shovel with lore "<white>Cost:", "5"
 			set slot 8 of the player's current inventory to 1 stone hoe with lore "<white>Cost:", "8"
 			set slot 11 of the player's current inventory to 1 red glass pane named "<light red>Go to Page 1"
-			if {quests.%player%::Seeking the Light} is 999:
+			if {quests.%player%::Breaking the Ice} is 999:
 				set slot 12 of the player's current inventory to 1 light green glass pane named "<light green>Go to Page 3"
 		else if arg 1 is 3:
 			open chest with 2 rows named "<gold>Blacksmith" for the player
@@ -52,7 +62,7 @@ command /bs-shop [<number=1>]:
 			set slot 11 of the player's current inventory to 8 iron ingot with lore "<white>Cost:", "240"
 			set slot 12 of the player's current inventory to 8 gold ingot with lore "<white>Cost:", "320"
 			set slot 16 of the player's current inventory to 1 red glass pane named "<light red>Go to Page 2"
-			if {quests.%player%::Greats Guide You} is 999:
+			if {quests.%player%::Legend in the Making} is 999:
 				set slot 17 of the player's current inventory to 1 light green glass pane named "<light green>Go to Page 4"
 		else if arg 1 is 4:
 			open chest with 3 rows named "<gold>Blacksmith" for the player
@@ -76,8 +86,9 @@ command /bs-shop [<number=1>]:
 			set slot 17 of the player's current inventory to 1 gold shovel with lore "<white>Cost:", "90"
 			set slot 18 of the player's current inventory to 1 gold hoe with lore "<white>Cost:", "60"
 			set slot 19 of the player's current inventory to 1 bow of power 3 named "<light blue>Golden Bow" with lore "<white>Cost:", "60"
+			set slot 20 of the player's current inventory to 1 anvil of power 1 named "<gold>Portable Smithy" with lore "<white>Cost:", "180", "<white>Right-click while held to access a smithy at any time."
 			set slot 25 of the player's current inventory to 1 red glass pane named "<light red>Go to Page 3"
-			if {quests.%player%::Liberation} is set:
+			if {quests.%player%::Requiem for the Brave} is set:
 				set slot 26 of the player's current inventory to 1 light green glass pane named "<light green>Go to Page 5"
 		else if arg 1 is 5:
 			open chest with 2 rows named "<gold>Blacksmith" for the player
@@ -94,7 +105,7 @@ command /bs-shop [<number=1>]:
 			set slot 10 of the player's current inventory to 8 iron ingot named "<light blue>Tempered Iron" with lore "<white>Cost:", "2160"
 			set slot 11 of the player's current inventory to 8 gold ingot named "<light blue>Tempered Gold" with lore "<white>Cost:", "2880"
 			set slot 16 of the player's current inventory to 1 red glass pane named "<light red>Go to Page 4"
-			if {quests.%player%::A Hero's Destiny} is set:
+			if {quests.%player%::A Hero Rises} is set:
 				set slot 17 of the player's current inventory to 1 light green glass pane named "<light green>Go to Page 6"
 		else if arg 1 is 6:
 			open chest with 2 rows named "<gold>Blacksmith" for the player
@@ -113,7 +124,12 @@ command /bs-shop [<number=1>]:
 
 command /butchershop:
 	trigger:
-		open chest with 2 rows named "<gold>Butcher" for the player
+		open chest with 1 row named "<gold>Butcher" for the player
+		set slot 0 of the player's current inventory to 4 cooked beef with lore "<white>Cost:", "24"
+		set slot 1 of the player's current inventory to 4 cooked porkchop with lore "<white>Cost:", "24"
+		set slot 2 of the player's current inventory to 4 leather with lore "<white>Cost:", "10"
+		set slot 3 of the player's current inventory to 3 wool with lore "<white>Cost:", "9"
+		set slot 4 of the player's current inventory to 1 iron axe of looting 2 named "<light blue>Butcher's Axe" with lore "<white>Cost:", "140"
 			
 command /tradershop [<number=1>]:
 	trigger:
@@ -152,14 +168,15 @@ command /tradershop [<number=1>]:
 		set slot 31 of the player's current inventory to 1 music disc cat with lore "<white>Cost:", "45"
 		set slot 32 of the player's current inventory to 1 music disc wait with lore "<white>Cost:", "45"
 		set slot 33 of the player's current inventory to 1 saddle with lore "<white>Cost:", "20"
-		set slot 34 of the player's current inventory to 1 book named "<gold>Quest Log" with lore "<white>Cost:", "5", "<white>A suitable replacement for a lost quest log."
+		set slot 34 of the player's current inventory to 1 book named "<gold>Journal" with lore "<white>Cost:", "5", "<white>A rugged journal good for keeping notes."
 		set slot 35 of the player's current inventory to 1 sponge with lore "<white>Cost:", "20"
+		set slot 36 of the player's current inventory to 4 gunpowder with lore "<white>Cost:", "18"
 		if {quests.%player%::Greats Guide You} is set:
-			set slot 36 of the player's current inventory to 2 bookshelf with lore "<white>Cost:", "35"
-			set slot 37 of the player's current inventory to 8 lapis item with lore "<white>Cost:", "40"
-			set slot 38 of the player's current inventory to 1 elytra with lore "<white>Cost:", "150"
-			set slot 39 of the player's current inventory to 1 purple shulker box with lore "<white>Cost:", "80"
-			set slot 40 of the player's current inventory to 1 enchanting table with lore "<white>Cost:", "300"
+			set slot 37 of the player's current inventory to 2 bookshelf with lore "<white>Cost:", "35"
+			set slot 38 of the player's current inventory to 8 lapis item with lore "<white>Cost:", "40"
+			set slot 39 of the player's current inventory to 1 elytra with lore "<white>Cost:", "150"
+			set slot 40 of the player's current inventory to 1 purple shulker box with lore "<white>Cost:", "80"
+			set slot 41 of the player's current inventory to 1 enchanting table with lore "<white>Cost:", "300"
 		
 command /toddshop:
 	trigger:
@@ -207,50 +224,53 @@ command /toddshop:
 command /hwbuy <text> [<text="NULL">]:
 	trigger:
 		if arg 1 is "HW":
-			open chest with 6 rows named "<gold><bold>Holy Weapons" for the player
-			set slot 0 of the player's current inventory to 1 diamond sword named "<gold><bold>Falchion" with lore "<white>Effective against end-type monsters.", "<white>Can deal random critical damage.", "<white>Right-click to restore health.", "<bold>Unique Refine:", "<white>Grants Strength/Swiftness/Resistance 1 to nearby party members.", "<light red>Requires the Lord's Blood perk OR A or higher rank in Swords."
-			set slot 1 of the player's current inventory to 1 diamond sword named "<gold><bold>Binding Blade" with lore "<white>Effective against end-type monsters.", "<white>+4 weapon might.", "<white>Right-click to restore health.", "<white><bold>Unique Refine:", "<white>Grants Resistance 2 while equipped.", "<white>Grants Riposte.", "<bold>Riposte counters ignite foes.", "<light red>Requires the Lord's Blood perk OR A rank or higher in Swords."
-			set slot 2 of the player's current inventory to 1 diamond sword named "<gold><bold>Tyrfing" with lore "<white>+4 weapon might.", "<white>Reduces ranged damage suffered by 75%%.", "<white>Grants Miracle while equipped.", "<white><bold>Unique Refine:", "<white>Grants STR/DEF +40 while within 10 blocks of a party member.", "<light red><bold>Requires Crusader's Blood perk OR A rank or higher in Swords."
-			set slot 3 of the player's current inventory to 1 diamond sword named "<gold><bold>Ragnell" with lore "<white>+6 weapon might.", "<white>Grants Radiant Aether, a more likely to activate version of Aether.", "<white><bold>Unique Refine:", "<white>+4 weapon might.", "<white>Right-click to fire damaging shockwaves.", "<light red><bold>Requires A rank or higher in Swords to wield."
-			set slot 4 of the player's current inventory to 1 diamond sword named "<gold><bold>Light Brand" with lore "<white>Grants SKL +20 while equipped.", "<white>Right-click to strike lightning at nearby monsters.", "<white>Grants bonus damage = MAG / 8. Max: +7", "<bold>Unique Refine:", "<white>+4 weapon might.", "<white>Calculates damage using lower of foe's DEF or MAG.", "<light red><bold>Requires B rank or higher in Swords to wield."
-			set slot 5 of the player's current inventory to 1 diamond axe named "<gold><bold>Armads" with lore "<white>+6 weapon might.", "<white>Grants Resistance 2 while equipped.", "<white><bold>Unique Refine:", "<white>Automatically retaliate against ranged foes.", "<white>Automatically make a follow-up attack when attacked.", "<light red><bold>Requires A rank or higher in Axes to wield."
-			set slot 6 of the player's current inventory to 1 bow named "<gold><bold>Parthia" with lore "<white>Reduces ranged damage suffered by 75%%.", "<white>+2 weapon might.", "<white>Grants Experience Sapper.", "<white><bold>Unique Refine:", "<white>+6 weapon might against ranged opponents.", "<white>Inflicts Weakness 2 to foes on-hit.", "<light red><bold>Requires B rank or higher in Bows to wield."
-			set slot 7 of the player's current inventory to 1 iron horse armour named "<gold><bold>Super Shotgun" with lore "The double-barreled classic. Plenty of risk & plenty of reward.", "Right-click to fire.", "Left-click to reload. Costs 6 gold nuggets.", "<bold>Skills cannot be equipped on this weapon.", "<bold>This weapon cannot be refined."
-			set slot 8 of the player's current inventory to 1 diamond shovel named "<gold><bold>Siegmund" with lore "<white>+5 weapon might.", "<white>Grants Rally Strength.", "<white>Effective against monsters.", "<white><bold>Unique Refine:", "<white>If there are more enemies than allies within 10 blocks of you:", "<white>Automatically make a follow-up attack, and grants Strength 2.", "<light red>Requires the Lord's Blood perk OR A rank or higher in Lances."
-			set slot 9 of the player's current inventory to 1 diamond sword named "<gold><bold>Sieglinde" with lore "<white>+5 weapon might.", "<white>Grants Rally Strength.", "<white>Effective against monsters.", "<white><bold>Unique Refine:", "<white>Rallies also apply to yourself.", "<white>Rally skills apply in a 7-block radius.", "<light red>Requires the Lord's Blood perk OR A rank or higher in Swords."
-			set slot 10 of the player's current inventory to 1 diamond sword named "<gold><bold>Durandal" with lore "<white>+2 weapon might.", "<white>Effective against end-type monsters.", "<white>Imbued with the Crushing refine effect.", "<white><bold>Unique Refine:", "<white>Grants Strength/Swiftness 2 on-hit.", "<light red><bold>Requires A Rank or higher in Swords to wield."
-			set slot 11 of the player's current inventory to 1 diamond shovel named "<gold><bold>Gae Bolg" with lore "<white>Grants STR/DEF/SKL +10 while equipped.", "<white>Grants the Guard and Vantage perks while equipped.", "<white><bold>Unique refine:", "<white><bold>Inflicts DEF/MAG - 10 on foes within 10 blocks.", "<light red>Requires the Crusader's Blood perk OR S rank in Lances to wield."
-			set slot 12 of the player's current inventory to 1 diamond sword named "<gold><bold>Mercurius" with lore "<white>+3 weapon might.", "<white>Grants Experience Sapper.", "<light red><bold>Requires B rank or higher in Swords to wield."
-			set slot 13 of the player's current inventory to 1 diamond axe named "<gold><bold>Basilikos" with lore "<white>+5 weapon might.", "<white><bold>Unique Refine:", "<white>Grants Life & Death (A-Slot).", "<light red><bold>Requires B rank or higher in Axes to wield."
-			set slot 14 of the player's current inventory to 1 diamond axe named "<gold><bold>Hauteclere" with lore "<white>+2 weapon might.", "<white>Grants SKL +15 while equipped.", "<white><bold>Unique Refine:", "<white>Accelerates Special trigger (+20%% activation chance).", "<white>If Special activates, increases damage dealt by 2.5 hearts.", "<light red><bold>Requires B rank or higher in Axes to wield."
-			set slot 15 of the player's current inventory to 1 diamond sword named "<gold><bold>Mystletainn" with lore "<white>+4 weapon might.", "<white>Grants SKL +40 while equipped.", "<white>If HP < 75%%, grants SKL +30, and deals +4 damage when Special activates.", "<white>Stacks with Wrath.", "<white><bold>Unique refine:", "<white>Grants STR/DEF/SPD/SKL/MAG +20.", "<white>Player suffers 1.5 hearts of recoil damage each hit.", "<light red>Requires the Crusader's Blood perk OR B rank or higher in Swords to wield."
-			set slot 16 of the player's current inventory to 1 diamond shovel named "<gold><bold>Fensalir" with lore "<white>+4 weapon might.", "<white>While within 10 blocks of a party member, grants +6 weapon might.", "<white><bold>Unique Refine:", "<white>While within 10 blocks of a party member, grants STR/SKL +40.", "<light red>Requires the Lord's Blood perk OR A rank or higher in Lances."
-			set slot 17 of the player's current inventory to 1 diamond sword named "<gold><bold>Folkvangr" with lore "<white>+4 weapon might.", "<white>While within 10 blocks of a party member, grants +6 weapon might.", "<bold>Unique Refine:", "<white>If HP < 70%%, grants STR/DEF +40.", "<light red>Requires the Lord's Blood perk OR A rank or higher in Swords."
-			set slot 18 of the player's current inventory to 1 diamond shovel named "<gold><bold>Gradivus" with lore "<white>+4 weapon might.", "<white>Grants Experience Sapper.", "<light red><bold>Requires B rank or higher in Lances to wield."
-			set slot 19 of the player's current inventory to 1 diamond horse armour named "<gold><bold>Love is Blue" with lore "<white>Right-click to fire bullets at the cost of EXP.", "Melee hits restore 5 EXP.", "<bold>Skills cannot be equipped to this weapon.", "<bold>This weapon cannot be refined."
-			set slot 20 of the player's current inventory to 1 gold horse armour named "<gold><bold>Scarborough Fair" with lore "<white>Right-click to fire bullets at the cost of EXP.", "Melee hits restore 5 EXP.", "<bold>Skills cannot be equipped to this weapon.", "<bold>This weapon cannot be refined."
-			set slot 21 of the player's current inventory to 1 diamond sword named "<gold><bold>Balder Side Sword" with lore "<white>+2 weapon might.", "<white>Right-click to parry attacks.", "<white>Parry has a 0.5 second cooldown.", "<light red><bold>Requires B rank or higher in Swords to wield."
-			set slot 22 of the player's current inventory to 1 bow named "<gold><bold>Fujin Yumi" with lore "<white>Grants MAG +20 while equipped.", "<white>This weapon will automatically counter-attack melee hits.", "<white><bold>Unique Refine:", "<white>Holding sneak and firing an arrow teleports you where it lands.", "<light red><bold>Requires B rank or higher in Bows to wield."
-			set slot 23 of the player's current inventory to 1 diamond sword named "<gold><bold>Blessed Sword" with lore "<white>Reduces damage suffered by 1.5 hearts.", "<white>Effective against monsters.", "<white>Imbued with the Plenitude skill.", "<white><bold>Unique Refine:", "<white>Grants Regeneration 2 while equipped.", "<white>Nullifies negative potion effects."
-			set slot 24 of the player's current inventory to 1 diamond axe named "<gold><bold>Devil Axe" with lore "<white>+3 weapon might.", "<white>Imbued with the Fury skill.", "<white>Inflicts Wither 4 on foes on-hit.", "<white><bold>Unique Refine:", "<white>Grants weapon might +6.", "<white>Inflicts 3 hearts of recoil damage when attacking."
-			set slot 25 of the player's current inventory to 1 diamond shovel named "<gold><bold>Crusader's Lance" with lore "<white>+8 weapon might.", "<white>Can be thrown for no durability cost.", "<white>Reduces damage suffered by 30%%.", "<white><bold>Unique Refine:", "<white>Reduces damage suffered by 20%%.", "<white>Player automatically makes a follow-up attack above 50%% HP."
-			set slot 26 of the player's current inventory to 1 bow named "<gold><bold>Lunar Bow" with lore "<white>+3 weapon might.", "<white>Imbued with the Luna skill.", "<white>Calculates damage using the lower of foe's DEF or MAG.", "<white><bold>Unique Refine:", "<white>Ignores damage reductions from enemy's armour. (Excludes enchantments)", "<white>If Special activates, increases damage by 20%% of the player's SPD."
-			set slot 27 of the player's current inventory to 1 diamond shovel named "<gold><bold>Rex Hasta" with lore "<white>When a special activates, boosts damage by 5 hearts.", "<white><bold>Unique Refine:", "<white>+4 weapon might.", "<white>Accelerates special activation (activation chance +20%%).", "<light red><bold>Requires A rank or higher in Lances to wield."
-			set slot 28 of the player's current inventory to 1 diamond sword named "<gold><bold>Meisterschwert" with lore "<white>Attacks twice during combat.", "<white><bold>Unique Refine:", "<white>Grants [Accost].", "<white>[Accost]: If attacker's HP & SPD > foe's HP & SPD, damage dealt for that round of combat is doubled.", "<light red><bold>Requires B rank or higher in Swords to wield."
-			set slot 29 of the player's current inventory to 1 book named "<gold><bold>Dire Thunder" with lore "<white>Attacks twice when initiating combat.", "<white><bold>Unique Refine:","<white>Grants [Accost].", "<white>[Accost]: If attacker's HP & SPD > foe's HP & SPD, damage dealt for that round of combat is doubled.", "<light red><bold>Requires B rank or higher in Magic to wield."
-			set slot 30 of the player's current inventory to 1 diamond shovel named "<gold><bold>Rhomphaia" with lore "<white>Deals bonus damage equal to 25%% of the player's SPD.", "<light red><bold>Requires B rank or higher in Lances to wield."
-			set slot 31 of the player's current inventory to 1 diamond sword named "<gold><bold>Alondite" with lore "<white>Imbued with the Eclipse skill:", "<white>Nullifies bonuses provided by armor, and reduces foe's DEF/MAG by 80%%.", "<white>Activation chance: (SKL ^ 0.65) | Max: 50%%.", "<light red><bold>Requires A rank or higher in Swords to wield."
-			set slot 32 of the player's current inventory to 1 bow named "<gold><bold>Guard Bow" with lore "<white>Reduces damage suffered by 1.5 hearts.", "<light red><bold>Requires C rank or higher in Bows to wield."
-			set slot 33 of the player's current inventory to 1 bow named "<gold><bold>Brave Bow" with lore "<white>Inflicts SPD -15.", "<white>-3 weapon might.", "<white>Weapon attacks twice during combat.", "<light red><bold>Requires C rank or higher in Bows to wield."
-			set slot 34 of the player's current inventory to 1 diamond axe named "<gold><bold>Tomahawk" with lore "<white>Grants <gold>[Distant Counter]<white>.", "<gold>[Distant Counter]<white>: Automatically retaliate against ranged opponents. Range-dependent skills will activate regardless of foe's range."
-			set slot 35 of the player's current inventory to 1 diamond shovel named "<gold><bold>Javelin" with lore "<white>Grants <gold>[Distant Counter]<white>.", "<gold>[Distant Counter]<white>: Automatically retaliate against ranged opponents. Range-dependent skills will activate regardless of foe's range."
-			set slot 36 of the player's current inventory to 1 diamond sword named "<gold><bold>Tornado Blade" with lore "<white>Grants <gold>[Distant Counter]<white>.", "<gold>[Distant Counter]<white>: Automatically retaliate against ranged opponents. Range-dependent skills will activate regardless of foe's range."
-			set slot 37 of the player's current inventory to 1 diamond shovel named "<gold><bold>Swift-Winds Lance" with lore "<white>Grants <gold>[Sweeper]<white>.", "<bold><white>Unique Refine: Grants STR/SPD +20 for 5 seconds when initiating combat. Recharge duration: 10 seconds.", "<gold>[Sweeper]<white>: Disables player & foe's skills that guarantee counter-attacks during combat."
-			set slot 38 of the player's current inventory to 1 diamond sword named "<gold><bold>Kindled-Fire Sword" with lore "<white>Grants <gold>[Brave]<white>.", "<bold><white>Unique Refine:", "<white>Grants STR/DEF +20 for 5 seconds when initiating combat. Recharge duration: 10 seconds.", "<gold>[Brave]<white>: Inflicts SPD -15. Player attacks twice during combat."
-			set slot 39 of the player's current inventory to 1 diamond axe named "<gold><bold>Axtinguisher" with lore "<white>+50%% damage against burning targets.", "<white>-50%% damage against non-burning targets."
-			set slot 40 of the player's current inventory to 1 diamond sword named "<gold><bold>Yamato" with lore "<white>+3 weapon might.", "<white>Grants <light blue><bold>[Judgement Cut]<reset><white>.", "<light blue><bold>[Judgement Cut]:<reset><white> Sneak and right-click to activate.", "<white>Gain power by holding sneak, then unleash it by standing up.", "<white>Targets all foes within 20 blocks. Damage based on charge time."
+			open chest with 6 rows named "<gold><bold>Sacred Treasures" for the player
+			set slot 0 of the player's current inventory to 1 diamond sword named "<gold><bold>Falchion" with lore "<white>Increases weapon might based on distance from foe during combat.", "<white>Maximum bonus: +12.", "<white>Grants 1.5x damage against End monsters.", "<white>Right-click to restore health.", "<light green>Unique Refine:", "<light green>Grants STR/SPD/SKL/DEF/MAG +10 to nearby party members.", "<light red>Requires the Lord's Blood perk OR A rank in Swords to wield."
+			set slot 1 of the player's current inventory to 1 diamond sword named "<gold><bold>Binding Blade" with lore "<white>+4 weapon might.", "<white>Grants DEF/MAG +10 while equipped.", "<white>Grants 1.5x damage against End monsters.", "<white>Sneak & Right-click to restore health.", "<light green>Unique Refine:", "<light green>Reduces damage suffered by 33%% during combat.", "<light green>Grants <light blue>[Riposte]<light green>.", "<light blue>[Riposte]: <white>Automatically counter-attack foes during combat.", "<white>Riposte's effect only activates if foe is in range.", "<light red>Requires the Lord's Blood perk OR A rank in Swords wield."
+			set slot 2 of the player's current inventory to 1 diamond sword named "<gold><bold>Tyrfing" with lore "<white>+4 weapon might.", "<white>Reduces ranged damage suffered by 50%%.", "<white>Grants <light purple>[Miracle]<white>.", "<light green>Unique Refine:", "<light green>Grants MAG +20, SPD/SKL +10.", "<light purple>[Miracle]: <white>Nullifies foe's attack if it would kill the player during combat.", "<white>Activation chance: (SKL ^ 0.5)", "<white>Max: 50%%", "<light red><bold>Requires Crusader's Blood perk OR A rank in Swords to wield."
+			set slot 3 of the player's current inventory to 1 diamond sword named "<gold><bold>Ragnell" with lore "<white>+8 weapon might.", "<white>Grants <light purple>[Radiant Aether].", "<light green>Unique Refine:", "<light green>+4 weapon might (+12 total).", "<light green>Grants <light red>[Distant Counter]<light green>.", "<light red>[Distant Counter]: <white>Counter-attack ranged foes automatically when hit.", "<light purple>[Radiant Aether]: <white>Activate Luna and Sol in one strike.", "<white>Exclusive to Ragnell.", "<light red><bold>Requires A rank in Swords to wield."
+			set slot 4 of the player's current inventory to 1 diamond sword named "<gold><bold>Light Brand" with lore "<white>+2 weapon might.", "<white>Grants SKL +10 while equipped.", "<white>Damage from this weapon is calculated using the", "<white>lower of the foe's DEF or MAG, and, if targeting MAG,", "<white>treats the player's MAG as their STR during damage calculation.", "<light green>Unique Refine:", "<light green>Accelerates Special activation (+10%% activation chance).", "<light green>Grants <light red>[Armour Smasher]<light green>.", "<light red><bold>Requires B rank in Swords to wield."
+			set slot 5 of the player's current inventory to 1 diamond axe named "<gold><bold>Armads" with lore "<white>+6 weapon might.", "<white>Grants <light red>[Distant Counter]<white>.", "<light green>Unique Refine:", "<light green>Reduces damage from ranged attacks by 66%%.", "<light green>Grants <light blue>[Riposte]<light green>.", "<light red>[Distant Counter]: <white>Counter-attack ranged foes automatically when hit.", "<light blue>[Riposte]: <white>Automatically counter-attack foes during combat.", "<white>Riposte's effect only activates if foe is in range.", "<light red>Requires A rank in Axes to wield."
+			set slot 6 of the player's current inventory to 1 bow named "<gold><bold>Parthia" with lore "<white>+3 weapon might.", "<white>Reduces ranged damage suffered by 20%%.", "<white>Grants <light blue>[Experience Sapper]<white>.", "<light green>Unique Refine:", "<light green>+10 weapon might against ranged opponents.", "<light green>Inflicts Slowness/Weakness 2 on foe after combat.", "<light red>Requires A rank in Bows to wield."
+			set slot 7 of the player's current inventory to 1 iron horse armour named "<gold><bold>Super Shotgun" with lore "<white>The double-barreled classic. Plenty of risk & plenty of reward.", "<white>Right-click to fire.", "<white>Left-click to reload. Costs 6 gold nuggets."
+			set slot 8 of the player's current inventory to 1 diamond shovel named "<gold><bold>Siegmund" with lore "<white>+5 weapon might.", "<white>Grants <light green>[Rally Strength]<white>.", "<light green>Unique Refine:", "<light green>If number of foes >= number of allies within 10 blocks:", "<light green>Weapon attacks twice during combat.", "<light green>[Rally Strength]: <white>Grants Strength 2 to allies when right-clicked.", "<light red>Requires the Lord's Blood perk OR A rank in Lances to wield."
+			set slot 9 of the player's current inventory to 1 diamond sword named "<gold><bold>Sieglinde" with lore "<white>+5 weapon might.", "<white>Grants <light green>[Rally Strength]<white>.", "<light green>Unique Refine:", "<light green>Rallies also apply to yourself.", "<light green>Rally skills and perks apply in a 7-block radius.", "<light green>[Rally Strength]: <white>Grants Strength 2 to allies when right-clicked.", "<light red>Requires the Lord's Blood perk OR A rank in Swords to wield."
+			set slot 10 of the player's current inventory to 1 diamond sword named "<gold><bold>Durandal" with lore "<white>+4 weapon might.", "<white>Grants <gold>[Crushing]<white>.", "<light green>Unique Refine:", "<light green>Accelerates Special activation (+10%% activation chance).", "<light green>Grants STR/SKL +20 for 2 seconds on-hit.", "<light green>Cooldown: 20 seconds", "<gold>[Crushing]: <white>Accelerates Special activation based on damage dealt.", "<white>Minimum of 7 damage dealt required to activate effect.", "<light red>Requires A Rank in Swords to wield."
+			set slot 11 of the player's current inventory to 1 diamond shovel named "<gold><bold>Gae Bolg" with lore "<white>Grants STR/DEF/SKL +10 while equipped.", "<white>Grants <light blue>[Guard]<white>.", "<light blue>[Guard]: <white>Inflicts SKL -50 on foe during combat.", "<light red>Requires the Crusader's Blood perk OR A rank in Lances to wield."
+			set slot 12 of the player's current inventory to 1 diamond sword named "<gold><bold>Mercurius" with lore "<white>+3 weapon might.", "<white>Grants <light blue>[Experience Sapper]<white>.", "<light blue>[Experience Sapper]: <white>Increases EXP awarded for defeating foes.", "<light red>Requires B rank in Swords to wield."
+			set slot 13 of the player's current inventory to 1 diamond axe named "<gold><bold>Basilikos" with lore "<white>+6 weapon might.", "<light green>Unique Refine:", "<light green>Increases damage dealt and suffered during combat by 50%%.", "<light red>Requires B rank in Axes to wield."
+			set slot 14 of the player's current inventory to 1 diamond axe named "<gold><bold>Hauteclere" with lore "<white>+3 weapon might.", "<white>Grants SKL +15 while equipped.", "<light green>Unique Refine:", "<light green>Accelerates Special trigger (+20%% activation chance).", "<light green>If Special activates, increases damage dealt by 2.5 hearts.", "<light red>Requires B rank in Axes to wield."
+			set slot 15 of the player's current inventory to 1 diamond sword named "<gold><bold>Mystletainn" with lore "<white>+4 weapon might.", "<white>Grants SKL +10 while equipped.", "<white>If HP < 75%%, grants SKL +30, and deals +4 damage when Special activates.", "<light green>Unique refine:", "<light green>Grants STR/DEF/SPD/SKL/MAG +15.", "<light green>Inflicts 1.5 hearts of recoil damage when attacking.", "<light red>Requires the Crusader's Blood perk OR B rank in Swords to wield."
+			set slot 16 of the player's current inventory to 1 diamond shovel named "<gold><bold>Fensalir" with lore "<white>+4 weapon might.", "<white>While within 10 blocks of a party member, grants +8 weapon might.", "<light green>Unique Refine:", "<light green>While within 10 blocks of a party member, grants STR/SKL +40.", "<light red>Requires the Lord's Blood perk OR A rank in Lances wield."
+			set slot 17 of the player's current inventory to 1 diamond sword named "<gold><bold>Folkvangr" with lore "<white>+4 weapon might.", "<white>While within 10 blocks of a party member, grants +8 weapon might.", "<light green>Unique Refine:", "<light green>If HP < 70%%, grants STR/DEF +25.", "<light red>Requires the Lord's Blood perk OR A rank in Swords to wield."
+			set slot 18 of the player's current inventory to 1 diamond shovel named "<gold><bold>Gradivus" with lore "<white>+4 weapon might.", "<white>Grants <light blue>[Experience Sapper]<white>.", "<light blue>[Experience Sapper]: <white>Increases EXP awarded for defeating foes.", "<light red>Requires B rank or higher in Lances to wield."
+			#set slot 19 of the player's current inventory to 1 diamond horse armour named "<gold><bold>Love is Blue" with lore "<white>Right-click to fire bullets at the cost of EXP.", "Melee hits restore 5 EXP.", "<bold>Skills cannot be equipped to this weapon.", "<bold>This weapon cannot be refined."
+			#set slot 20 of the player's current inventory to 1 gold horse armour named "<gold><bold>Scarborough Fair" with lore "<white>Right-click to fire bullets at the cost of EXP.", "Melee hits restore 5 EXP.", "<bold>Skills cannot be equipped to this weapon.", "<bold>This weapon cannot be refined."
+			set slot 19 of the player's current inventory to 1 diamond sword named "<gold><bold>Balder Side Sword" with lore "<white>+4 weapon might.", "<white>Right-click to parry attacks.", "<white>Parry has a 0.5 second cooldown.", "<light green>Unique Refine:", "<light green>Grants STR/DEF +20 when attacked.", "<light red>Requires B rank in Swords to wield."
+			set slot 20 of the player's current inventory to 1 bow named "<gold><bold>Fujin Yumi" with lore "<white>Grants MAG +20 while equipped.", "<white>Grants <light red>[Close Counter]<white>.", "<light green>Unique Refine:", "<light green>Holding sneak and firing an arrow teleports you to where it lands.", "<light red>[Close Counter]: <white>Automatically counter-attacks melee foes during combat.", "<light red>Requires B rank in Bows to wield."
+			set slot 21 of the player's current inventory to 1 diamond sword named "<gold><bold>Blessed Sword" with lore "<white>Reduces damage suffered by 1.5 hearts during combat.", "<white>Deals 2x damage to monsters.", "<white>Grants <light blue>[Plenitude]<white>.", "<light green>Unique Refine:", "<light green>Grants Regeneration 2 while equipped.", "<light green>Nullifies negative potion effects.", "<light blue>[Plenitude]: <white>Restores hunger and randomly drops steak when a foe is defeated."
+			set slot 22 of the player's current inventory to 1 diamond axe named "<gold><bold>Devil Axe" with lore "<white>+3 weapon might.", "<white>Grants <light red>[Fury]<white>.", "<white>Inflicts Wither 4 on foe after combat.", "<light green>Unique Refine:", "<light green>Grants weapon might +6.", "<light green>Inflicts 3 hearts of recoil damage when attacking.", "<light red>[Fury]: <white>Weapon might +3. Inflicts 1.5 hearts of recoil damage when attacking."
+			set slot 23 of the player's current inventory to 1 diamond shovel named "<gold><bold>Crusader's Lance" with lore "<white>+8 weapon might.", "<white>Can be thrown for no durability cost.", "<white>Reduces damage suffered by 30%% during combat.", "<light green>Unique Refine:", "<light green>Reduces damage suffered by 20%% during combat.", "<light green>Grants 1.5x damage while above 80%% HP."
+			set slot 24 of the player's current inventory to 1 bow named "<gold><bold>Lunar Bow" with lore "<white>+3 weapon might.", "<white>Grants <light purple>[Luna]<white>.", "<light green>Unique Refine:", "<light green>If Special activates, increases damage by 20%% of the player's SPD.", "<light green>Calculates damage using the lower of foe's DEF or MAG."
+			set slot 25 of the player's current inventory to 1 diamond shovel named "<gold><bold>Rex Hasta" with lore "<white>Increases damage dealt by Special activations by 5 hearts.", "<light green>Unique Refine:", "<light green>+4 weapon might.", "<light green>Accelerates special activation (activation chance +20%%).", "<light red>Requires A rank in Lances to wield."
+			set slot 26 of the player's current inventory to 1 diamond sword named "<gold><bold>Meisterschwert" with lore "<white>Attacks twice during combat.", "<light green>Unique Refine:", "<light green>Grants <light blue>[Accost]<light green>.", "<light blue>[Accost]: <white>If attacker's HP & SPD > foe's HP & SPD:", "<white>Damage dealt for that round of combat is doubled.", "<light red>Requires B rank in Swords to wield."
+			set slot 27 of the player's current inventory to 1 book named "<gold><bold>Dire Thunder" with lore "<white>Attacks twice when initiating combat.", "<light green>Unique Refine:", "<light green>Grants <light blue>[Accost]<light green>.", "<light blue>[Accost]: <white>If attacker's HP & SPD > foe's HP & SPD:", "<white>Damage dealt for that round of combat is doubled.", "<light red>Requires B rank in Magic to wield."
+			set slot 28 of the player's current inventory to 1 diamond shovel named "<gold><bold>Rhomphaia" with lore "<white>Deals bonus damage equal to 25%% of the player's SPD.", "<light red>Requires B rank or higher in Lances to wield."
+			set slot 29 of the player's current inventory to 1 diamond sword named "<gold><bold>Alondite" with lore "<white>Grants <light purple>[Eclipse]<white>.", "<light purple>[Eclipse]: <white>Pierces armour and reduces foe's DEF/MAG by 80%%.", "<white>Activation chance: (SKL ^ 0.65) | Max: 50%%.", "<light red>Requires S rank in Swords to wield."
+			set slot 30 of the player's current inventory to 1 bow named "<gold><bold>Guard Bow" with lore "<white>Reduces damage suffered by 1.5 hearts.", "<light red>Requires C rank or higher in Bows to wield."
+			set slot 31 of the player's current inventory to 1 bow named "<gold><bold>Brave Bow" with lore "<white>Inflicts SPD -5.", "<white>-3 weapon might.", "<white>Weapon attacks twice during combat.", "<light red>Requires C rank or higher in Bows to wield."
+			set slot 32 of the player's current inventory to 1 diamond axe named "<gold><bold>Tomahawk" with lore "<white>Grants <gold>[Distant Counter]<white>.", "<gold>[Distant Counter]<white>: Automatically retaliate against ranged opponents."
+			set slot 33 of the player's current inventory to 1 diamond shovel named "<gold><bold>Javelin" with lore "<white>Grants <gold>[Distant Counter]<white>.", "<gold>[Distant Counter]<white>: Automatically retaliate against ranged opponents."
+			set slot 34 of the player's current inventory to 1 diamond sword named "<gold><bold>Tornado Blade" with lore "<white>Grants <gold>[Distant Counter]<white>.", "<gold>[Distant Counter]<white>: Automatically retaliate against ranged opponents."
+			set slot 35 of the player's current inventory to 1 diamond shovel named "<gold><bold>Swift-Winds Lance" with lore "<white>Grants <gold>[Sweeper]<white>.", "<light green>Unique Refine:", "<light green>If any ally within 15 blocks shares the wielder's class:", "<light green>Grants STR/SPD +30.", "<gold>[Sweeper]<white>: Disables player & foe's skills that guarantee counter-attacks during combat."
+			set slot 36 of the player's current inventory to 1 diamond sword named "<gold><bold>Kindled-Fire Sword" with lore "<white>Grants <gold>[Brave]<white>.", "<light green>Unique Refine:", "<light green>If any ally within 15 blocks shares the wielder's class:", "<light green>Grants STR/DEF +30.", "<gold>[Brave]<white>: Inflicts SPD -5. Weapon attacks twice during combat."
+			#set slot 37 of the player's current inventory to 1 diamond axe named "<gold><bold>Axtinguisher" with lore "<white>+50%% damage against burning targets.", "<white>-50%% damage against non-burning targets."
+			set slot 37 of the player's current inventory to 1 diamond sword named "<gold><bold>Yamato" with lore "<white>+3 weapon might.", "<white>Grants <light blue><bold>[Judgement Cut]<reset><white>.", "<light blue><bold>[Judgement Cut]:<reset><white> Sneak and right-click to activate.", "<white>Gain power by holding sneak, then unleash it by standing up.", "<white>Targets all foes within 20 blocks. Damage based on charge time.", "<light red>Requires S rank in Swords to wield."
+			set slot 38 of the player's current inventory to 1 bow named "<gold><bold>Bow of Aresha" with lore "<white>If player's DEF >= Foe's DEF +5:", "<white>Grants STR/DEF +X,", "<white>Where X = (Player's DEF - [foe's DEF + 5]) * 5.", "<white>(Maximum bonus of +25 to each stat.)", "<light red>Requires A rank in Bows to wield."
+			set slot 39 of the player's current inventory to 1 diamond sword named "<gold><bold>Rebellion" with lore "<white>Hold Sneak and Right-click to change this weapon's active Style.", "<white>Right-click to use the active Style's ability.", "<light red>Trickster: Dash forwards invincibily.", "<orange>Swordmaster: Launch enemies into the air.", "<light green>Gunslinger: Fire damaging shockwaves from the sword.", "<light blue>Royalguard: Block an attack and add the blocked damage to your next attack."
+			set slot 40 of the player's current inventory to 1 diamond axe named "<gold><bold>Daybreak Axe" with lore "<white>Grants MAG +10 while equipped.", "<white>Restores 3 hearts of health after damage calculation.", "<light green>Unique Refine:", "<light green>Restores health equal to 25%% of damage dealt during combat.", "<light green>If a Special skill activates and deals damage:", "<light green>Restores health equal to 30%% of damage dealt."
 		else if arg 1 is "hw2":
-			open chest with 1 row named "<gold><bold>Holy Weapons | Inspection" for the player
+			open chest with 1 row named "<gold><bold>Sacred Treasures | Inspection" for the player
 			set {_weapon} to uncoloured name of slot 4 of the player's current inventory
 			remove "<gold><bold>" from {_weapon}
 			if {_weapon} is "Basilikos":
@@ -270,22 +290,185 @@ command /hwbuy <text> [<text="NULL">]:
 			set slot 3 of the player's current inventory to 1 emerald named "<gold><bold>Summon Weapon" with lore "<white>Price: %{_price}%"
 			set slot 4 of the player's current inventory to 1 cobblestone named "<gold><bold>%arg 2%"
 			set slot 5 of the player's current inventory to 1 nether star named "<gold><bold>Warp to Heroic Challenge"
-
+			
+command /tavernshop:
+	trigger:
+		open chest with 2 rows named "<gold>Innkeeper" for the player
+		set slot 0 of the player's current inventory to 4 cooked beef with lore "<white>Cost:", "24"
+		set slot 1 of the player's current inventory to 4 cooked porkchop with lore "<white>Cost:", "24"
+		set slot 2 of the player's current inventory to 2 apple with lore "<white>Cost:", "10"
+		set slot 3 of the player's current inventory to 1 potion of healing with lore "<white>Cost:", "25"
+		set slot 4 of the player's current inventory to 1 green dye named "<light green><bold>Sacred Herb" with lore "<white>Cost:", "40", "<white>Restores 6 HP when used from your inventory."
+		set slot 5 of the player's current inventory to 1 green dye named "<green><bold>Baked Herb" with lore "<white>Cost:", "50", "<white>Restores 3 HP and 3 Hunger when eaten."
+		set slot 6 of the player's current inventory to 1 bed named "<light blue><bold>Rest" with lore "<white>Cost:", "25", "<white><italics>Rest at this inn to restore all health and hunger."
+		if {quests.%player%::Legend in the Making} is 999:
+			set slot 7 of the player's current inventory to 1 yellow dye named "<light yellow><bold>Golden Herb" with lore "<white>Cost:", "80", "<white>Restores 12 HP when used from your inventory."
+			set slot 8 of the player's current inventory to 1 yellow dye named "<yellow><bold>Baked Golden Herb" with lore "<white>Cost:", "100", "<white>Restores 6 HP and 6 Hunger when used from your inventory."
+			
+command /serositabarkeep:
+	trigger:
+		open chest with 2 rows named "<gold>Serosita Barkeep" for the player
+		set slot 0 of the player's current inventory to 4 cooked beef with lore "<white>Cost:", "24"
+		set slot 1 of the player's current inventory to 4 cooked porkchop with lore "<white>Cost:", "24"
+		set slot 2 of the player's current inventory to 2 apple with lore "<white>Cost:", "10"
+		set slot 3 of the player's current inventory to 1 potion of healing with lore "<white>Cost:", "25"
+		set slot 4 of the player's current inventory to 1 green dye named "<light green><bold>Sacred Herb" with lore "<white>Cost:", "40", "<white>Restores 6 HP when used from your inventory."
+		set slot 5 of the player's current inventory to 1 green dye named "<green><bold>Baked Herb" with lore "<white>Cost:", "50", "<white>Restores 3 HP and 3 Hunger when eaten."
+		set slot 6 of the player's current inventory to 1 potion of level 2 healing named "<light yellow>Serosita Glistening Wine" with lore "<white>Cost:", "40", "<white>A popular wine sold by the Serosita Brewery.", "<white>It boasts healing capabilities."
+		set slot 7 of the player's current inventory to 1 potion of extended strength named "<light yellow>Serosita Flametounge Brandy" with lore "<white>Cost:", "30", "<white>Widely popular brandy produced by the Serosita Brewery.", "<white>Invigorating and refreshing."
+		if {quests.%player%::Legend in the Making} is 999:
+			set slot 6 of the player's current inventory to 1 yellow dye named "<light yellow><bold>Golden Herb" with lore "<white>Cost:", "80", "<white>Restores 12 HP when used from your inventory."
+			set slot 7 of the player's current inventory to 1 yellow dye named "<yellow><bold>Baked Golden Herb" with lore "<white>Cost:", "100", "<white>Restores 6 HP and 6 Hunger when used from your inventory."
+			
+command /tailorshop:
+	trigger:
+		open chest with 3 rows named "<gold>Tailor" for the player
+		set slot 0 of the player's current inventory to 1 ink sac with lore "<white>Cost:", "5"
+		set slot 1 of the player's current inventory to 1 gray dye with lore "<white>Cost:", "5"
+		set slot 2 of the player's current inventory to 1 light gray dye with lore "<white>Cost:", "5"
+		set slot 3 of the player's current inventory to 1 bone meal with lore "<white>Cost:", "5"
+		set slot 4 of the player's current inventory to 1 red dye with lore "<white>Cost:", "5"
+		set slot 5 of the player's current inventory to 1 pink dye with lore "<white>Cost:", "5"
+		set slot 6 of the player's current inventory to 1 purple dye with lore "<white>Cost:", "5"
+		set slot 7 of the player's current inventory to 1 green dye with lore "<white>Cost:", "5"
+		set slot 8 of the player's current inventory to 1 lime dye with lore "<white>Cost:", "5"
+		set slot 9 of the player's current inventory to 1 cocoa beans with lore "<white>Cost:", "10"
+		set slot 10 of the player's current inventory to 1 yellow dye with lore "<white>Cost:", "5"
+		set slot 11 of the player's current inventory to 1 lapis lazuli with lore "<white>Cost:", "5"
+		set slot 12 of the player's current inventory to 1 light blue dye with lore "<white>Cost:", "5"
+		set slot 13 of the player's current inventory to 1 cyan dye with lore "<white>Cost:", "5"
+		set slot 14 of the player's current inventory to 1 magenta dye with lore "<white>Cost:", "5"
+		set slot 15 of the player's current inventory to 1 orange dye with lore "<white>Cost:", "5"
+		set slot 18 of the player's current inventory to 1 leather helmet with lore "<white>Cost:", "12"
+		set slot 19 of the player's current inventory to 1 leather chestplate with lore "<white>Cost:", "20"
+		set slot 20 of the player's current inventory to 1 leather leggings with lore "<white>Cost:", "17"
+		set slot 21 of the player's current inventory to 1 leather boots with lore "<white>Cost:", "10"
+		
+command /enchantershop [<number=1>]:
+	trigger:
+		if arg 1 is 1:
+			open chest with 3 rows named "<gold>Enchanter - Tier 1" for the player
+			set slot 0 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:34,lvl:1}]}" named "<gold>Unbreaking I" with lore "125"
+			set slot 1 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:0,lvl:1}]}" named "<gold>Protection I" with lore "100"
+			set slot 2 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:1,lvl:1}]}" named "<gold>Fire Protection I" with lore "100"
+			set slot 3 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:3,lvl:1}]}" named "<gold>Blast Protection I" with lore "100"
+			set slot 4 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:4,lvl:1}]}" named "<gold>Projectile Protection I" with lore "100"
+			set slot 5 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:2,lvl:1}]}" named "<gold>Feather Falling I" with lore "50"
+			set slot 6 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:5,lvl:1}]}" named "<gold>Respiration I" with lore "50"
+			set slot 7 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:6,lvl:1}]}" named "<gold>Aqua Affinity" with lore "75"
+			set slot 8 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:8,lvl:1}]}" named "<gold>Depth Strider I" with lore "50"
+			set slot 9 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:7,lvl:1}]}" named "<gold>Thorns I" with lore "125"
+			set slot 10 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:16,lvl:1}]}" named "<gold>Sharpness I" with lore "100"
+			set slot 11 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:17,lvl:1}]}" named "<gold>Smite I" with lore "100"
+			set slot 12 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:18,lvl:1}]}" named "<gold>Bane of Arthropods I" with lore "75"
+			set slot 13 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:19,lvl:1}]}" named "<gold>Knockback I" with lore "100"
+			set slot 14 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:20,lvl:1}]}" named "<gold>Fire Aspect I" with lore "100"
+			set slot 15 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:21,lvl:1}]}" named "<gold>Looting I" with lore "125"
+			set slot 16 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:48,lvl:1}]}" named "<gold>Power I" with lore "100"
+			set slot 17 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:49,lvl:1}]}" named "<gold>Punch I" with lore "100"
+			set slot 18 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:50,lvl:1}]}" named "<gold>Flame" with lore "100"
+			set slot 19 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:51,lvl:1}]}" named "<gold>Infinity" with lore "375"
+			set slot 20 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:32,lvl:1}]}" named "<gold>Efficiency I" with lore "100"
+			set slot 21 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:33,lvl:1}]}" named "<gold>Silk Touch" with lore "200"
+			set slot 22 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:35,lvl:1}]}" named "<gold>Fortune I" with lore "125"
+			set slot 23 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:61,lvl:1}]}" named "<gold>Luck of the Sea I" with lore "100"
+			set slot 24 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:62,lvl:1}]}" named "<gold>Lure I" with lore "50"
+			set slot 26 of the player's current inventory to 1 green glass pane named "<bold>Tier 2 Enchantments"
+		else if arg 1 is 2:
+			open chest with 3 rows named "<gold>Enchanter - Tier 2" for the player
+			set slot 0 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:34,lvl:2}]}" named "<gold>Unbreaking II" with lore "250"
+			set slot 1 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:0,lvl:2}]}" named "<gold>Protection II" with lore "200"
+			set slot 2 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:1,lvl:2}]}" named "<gold>Fire Protection II" with lore "200"
+			set slot 3 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:3,lvl:2}]}" named "<gold>Blast Protection II" with lore "200"
+			set slot 4 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:4,lvl:2}]}" named "<gold>Projectile Protection II" with lore "200"
+			set slot 5 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:2,lvl:2}]}" named "<gold>Feather Falling II" with lore "100"
+			set slot 6 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:5,lvl:2}]}" named "<gold>Respiration II" with lore "100"
+			set slot 7 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:8,lvl:2}]}" named "<gold>Depth Strider II" with lore "100"
+			set slot 8 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:7,lvl:2}]}" named "<gold>Thorns II" with lore "250"
+			set slot 9 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:16,lvl:2}]}" named "<gold>Sharpness II" with lore "200"
+			set slot 10 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:17,lvl:2}]}" named "<gold>Smite II" with lore "200"
+			set slot 11 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:18,lvl:2}]}" named "<gold>Bane of Arthropods II" with lore "150"
+			set slot 12 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:19,lvl:2}]}" named "<gold>Knockback II" with lore "200"
+			set slot 13 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:20,lvl:2}]}" named "<gold>Fire Aspect II" with lore "200"
+			set slot 14 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:21,lvl:2}]}" named "<gold>Looting II" with lore "250"
+			set slot 15 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:48,lvl:2}]}" named "<gold>Power II" with lore "200"
+			set slot 16 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:49,lvl:2}]}" named "<gold>Punch II" with lore "200"
+			set slot 17 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:32,lvl:2}]}" named "<gold>Efficiency II" with lore "200"
+			set slot 18 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:35,lvl:2}]}" named "<gold>Fortune II" with lore "250"
+			set slot 19 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:61,lvl:2}]}" named "<gold>Luck of the Sea II" with lore "200"
+			set slot 20 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:62,lvl:2}]}" named "<gold>Lure II" with lore "100"
+			set slot 25 of the player's current inventory to 1 red glass pane named "<bold>Tier 1 Enchantments"
+			if {quests.%player%::Legend in the Making} is 999:
+				set slot 26 of the player's current inventory to 1 green glass pane named "<bold>Tier 3 Enchantments"
+		else if arg 1 is 3:
+			open chest with 3 rows named "<gold>Enchanter - Tier 3" for the player
+			set slot 0 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:34,lvl:3}]}" named "<gold>Unbreaking III" with lore "375"
+			set slot 1 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:0,lvl:3}]}" named "<gold>Protection III" with lore "300"
+			set slot 2 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:1,lvl:3}]}" named "<gold>Fire Protection III" with lore "300"
+			set slot 3 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:3,lvl:3}]}" named "<gold>Blast Protection III" with lore "300"
+			set slot 4 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:4,lvl:3}]}" named "<gold>Projectile Protection III" with lore "300"
+			set slot 5 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:2,lvl:3}]}" named "<gold>Feather Falling III" with lore "150"
+			set slot 6 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:5,lvl:3}]}" named "<gold>Respiration III" with lore "150"
+			set slot 7 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:8,lvl:3}]}" named "<gold>Depth Strider III" with lore "150"
+			set slot 8 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:7,lvl:3}]}" named "<gold>Thorns III" with lore "375"
+			set slot 9 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:16,lvl:3}]}" named "<gold>Sharpness III" with lore "300"
+			set slot 10 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:17,lvl:3}]}" named "<gold>Smite III" with lore "300"
+			set slot 11 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:18,lvl:3}]}" named "<gold>Bane of Arthropods III" with lore "225"
+			set slot 12 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:21,lvl:3}]}" named "<gold>Looting III" with lore "375"
+			set slot 13 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:48,lvl:3}]}" named "<gold>Power III" with lore "300"
+			set slot 14 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:32,lvl:3}]}" named "<gold>Efficiency III" with lore "300"
+			set slot 15 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:35,lvl:3}]}" named "<gold>Fortune III" with lore "375"
+			set slot 16 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:61,lvl:3}]}" named "<gold>Luck of the Sea III" with lore "300"
+			set slot 17 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:62,lvl:3}]}" named "<gold>Lure III" with lore "150"
+			set slot 25 of the player's current inventory to 1 red glass pane named "<bold>Tier 2 Enchantments"
+			if {quests.%player%::Sunset Soldiers} is 999:
+				set slot 26 of the player's current inventory to 1 green glass pane named "<bold>Tier 4 Enchantments"
+		else if arg 1 is 4:
+			open chest with 2 rows named "<gold>Enchanter - Tier 4" for the player
+			set slot 0 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:0,lvl:4}]}" named "<gold>Protection IV" with lore "400"
+			set slot 1 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:1,lvl:4}]}" named "<gold>Fire Protection IV" with lore "400"
+			set slot 2 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:3,lvl:4}]}" named "<gold>Blast Protection IV" with lore "400"
+			set slot 3 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:4,lvl:4}]}" named "<gold>Projectile Protection IV" with lore "400"
+			set slot 4 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:2,lvl:4}]}" named "<gold>Feather Falling IV" with lore "200"
+			set slot 5 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:16,lvl:4}]}" named "<gold>Sharpness IV" with lore "400"
+			set slot 6 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:17,lvl:4}]}" named "<gold>Smite IV" with lore "400"
+			set slot 7 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:18,lvl:4}]}" named "<gold>Bane of Arthropods IV" with lore "300"
+			set slot 8 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:48,lvl:4}]}" named "<gold>Power IV" with lore "400"
+			set slot 9 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:32,lvl:4}]}" named "<gold>Efficiency IV" with lore "400"
+			set slot 10 of the player's current inventory to 1 red glass pane named "<bold>Tier 3 Enchantments"
+			if {quests.%player%::Liberation} is 999:
+				set slot 11 of the player's current inventory to 1 green glass pane named "<bold>Tier 5 Enchantments"
+		else if arg 1 is 5:
+			open chest with 2 rows named "<gold>Enchanter - Tier 5" for the player
+			set slot 1 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:16,lvl:5}]}" named "<gold>Sharpness V" with lore "500"
+			set slot 2 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:17,lvl:5}]}" named "<gold>Smite V" with lore "500"
+			set slot 3 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:18,lvl:5}]}" named "<gold>Bane of Arthropods V" with lore "375"
+			set slot 4 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:48,lvl:5}]}" named "<gold>Power V" with lore "500"
+			set slot 5 of the player's current inventory to 1 enchanted book with nbt "{StoredEnchantments:[{id:32,lvl:5}]}" named "<gold>Efficiency V" with lore "500"
+			set slot 6 of the player's current inventory to 1 red glass pane named "<bold>Tier 4 Enchantments"
+		
+		
+		
 on inventory click:
+	#Jerome Repair
 	if the name of the player's current inventory is "<gold>Repair Tools":
 		if the name of the clicked item is "<green><bold>Repair Tool":
 			set {_cashreq} to (the damage value of slot 4 of the player's current inventory / 2)
-			if {_cashreq} is less than the player's money:
+			if {_cashreq} is less than or equal to the player's money:
 				repair slot 4 of the player's current inventory
 				set the player's money to (player's money - {_cashreq})
-				send "<light green>Transaction complete. New balance: $%player's money%."
+				set {_sklchk} to checkSlots(player,"Charisma")
+				if {_sklchk} is 1:
+					add ({_cashreq} * 0.1) to the player's balance
+				send formatted "<light green>Transaction complete. New balance: $%player's money%."
 				cancel event
 			else:
-				send "<light red>Not enough money!"
+				send formatted "<light red>Not enough money!"
 			cancel event
 		else if the name of the clicked item is "<bold>Exit":
 			cancel event
 			teleport the player to the player
+	#Blacksmiths
 	if the name of the player's current inventory is "<gold>Blacksmith":
 		cancel event
 		if the name of the clicked item contains "Go to Page 1":
@@ -300,44 +483,202 @@ on inventory click:
 			make player execute command "/bs-shop 5"
 		else if the name of the clicked item contains "Go to Page 6":
 			make player execute command "/bs-shop 6"
+		else if the name of the clicked item contains "Upgrade Equipment":
+			make player execute command "/skills"
 		else:
 			set {_cost} to the 2nd line of the lore of the clicked item parsed as integer
-			if {_cost} is less than player's money:
+			if {_cost} is less than or equal to player's money:
 				if {_cost} is set:
 					set {_item} to the clicked item
 					clear the lore of {_item}
 					give {_item} to the player
 					subtract {_cost} from player's money
-					send "<light green>Purchased that item for %{_cost}%. New balance: %player's money%"
+					set {_sklchk} to checkSlots(player,"Charisma")
+					if {_sklchk} is 1:
+						add ({_cost} * 0.1) to the player's balance
+					send formatted "<light green>Purchased that item for %{_cost}% gold. New balance: %player's money%"
+	#Enchanters
+	else if the name of the player's current inventory contains "<gold>Enchanter":
+		cancel event
+		set {_cost} to the 1st line of the lore of the clicked item parsed as integer
+		if the name of the clicked item is "<bold>Tier 1 Enchantments":
+			make player execute command "/enchantershop 1"
+		else if the name of the clicked item is "<bold>Tier 2 Enchantments":
+			make player execute command "/enchantershop 2"
+		else if the name of the clicked item is "<bold>Tier 3 Enchantments":
+			make player execute command "/enchantershop 3"
+		else if the name of the clicked item is "<bold>Tier 4 Enchantments":
+			make player execute command "/enchantershop 4"
+		else if the name of the clicked item is "<bold>Tier 5 Enchantments":
+			make player execute command "/enchantershop 5"
+		if {_cost} is less than or equal to player's money:
+			if {_cost} is set:
+				set {_item} to the clicked item
+				clear the lore of {_item}
+				give {_item} to the player
+				subtract {_cost} from player's money
+				set {_sklchk} to checkSlots(player,"Charisma")
+				if {_sklchk} is 1:
+					add ({_cost} * 0.1) to the player's balance
+				send formatted "<light green>Purchased that item for %{_cost}% gold. New balance: %player's money%"
+	#Traders
 	else if the name of the player's current inventory is "<gold>Trader":
 		cancel event
 		set {_cost} to the 2nd line of the lore of the clicked item parsed as integer
-		if {_cost} is less than player's money:
+		if {_cost} is less than or equal to player's money:
 			if {_cost} is set:
 				set {_item} to the clicked item
 				clear the lore of {_item}
 				give {_item} to the player
 				subtract {_cost} from player's money
-				send "<light green>Purchased that item for %{_cost}%. New balance: %player's money%"
+				set {_sklchk} to checkSlots(player,"Charisma")
+				if {_sklchk} is 1:
+					add ({_cost} * 0.1) to the player's balance
+				send formatted "<light green>Purchased that item for %{_cost}% gold. New balance: %player's money%"
+	#Serosita Barkeep
+	else if the name of the player's current inventory is "<gold>Serosita Barkeep":
+		cancel event
+		set {_cost} to the 2nd line of the lore of the clicked item parsed as integer
+		if {_cost} is less than or equal to player's money:
+			if {_cost} is set:
+				set {_item} to the clicked item
+				clear line 1 of the lore of {_item}
+				clear line 2 of the lore of {_item}
+				give {_item} to the player
+				subtract {_cost} from player's money
+				set {_sklchk} to checkSlots(player,"Charisma")
+				if {_sklchk} is 1:
+					add ({_cost} * 0.1) to the player's balance
+				send formatted "<light green>Purchased that item for %{_cost}% gold. New balance: %player's money%"
+	#Tailor
+	else if the name of the player's current inventory is "<gold>Tailor":
+		cancel event
+		set {_cost} to the 2nd line of the lore of the clicked item parsed as integer
+		if {_cost} is less than or equal to player's money:
+			if {_cost} is set:
+				set {_item} to the clicked item
+				clear line 1 of the lore of {_item}
+				clear line 2 of the lore of {_item}
+				give {_item} to the player
+				subtract {_cost} from player's money
+				set {_sklchk} to checkSlots(player,"Charisma")
+				if {_sklchk} is 1:
+					add ({_cost} * 0.1) to the player's balance
+				send formatted "<light green>Purchased that item for %{_cost}% gold. New balance: %player's money%"
+	#Innkeepers
+	else if the name of the player's current inventory is "<gold>Innkeeper":
+		cancel event
+		set {_cost} to the 2nd line of the lore of the clicked item parsed as integer
+		if {_cost} is less than or equal to player's money:
+			if {_cost} is set:
+				if the name of the clicked item is not "<light blue><bold>Rest":
+					set {_item} to the clicked item
+					clear line 1 of the lore of {_item}
+					clear line 2 of the lore of {_item}
+					give {_item} to the player
+					subtract {_cost} from player's money
+					set {_sklchk} to checkSlots(player,"Charisma")
+					if {_sklchk} is 1:
+						add ({_cost} * 0.1) to the player's balance
+					send formatted "<light green>Purchased that item for %{_cost}% gold. New balance: %player's money%"
+				else:
+					subtract {_cost} from player's money
+					set {_sklchk} to checkSlots(player,"Charisma")
+					if {_sklchk} is 1:
+						add ({_cost} * 0.1) to the player's balance
+					heal the player by 999 hearts
+					increase the player's food level by 10
+					send formatted "<light green>Rested at the inn for %{_cost}% gold. New balance: %player's money%"
+	#Todd's Shop
 	else if the name of the player's current inventory is "<gold>Todd's General Goods":
 		cancel event
 		set {_cost} to the 2nd line of the lore of the clicked item parsed as integer
-		if {_cost} is less than player's money:
+		if {_cost} is less than or equal to player's money:
 			if {_cost} is set:
 				set {_item} to the clicked item
-				clear the lore of {_item}
-				if the name of {_item} is "<white>Leather Chestplate of Strength":
-					set the 1st line of the lore of {_item} to "Skill - STR Up"
+				clear line 1 of the lore of {_item}
+				clear line 2 of the lore of {_item}
 				give {_item} to the player
 				subtract {_cost} from player's money
-				send "<light green>Purchased that item for %{_cost}%. New balance: %player's money%"
-	else if the name of the player's current inventory is "<gold><bold>Holy Weapons":
-		if the name of the clicked item contains "<gold><bold>":
-			set {_weapon} to uncoloured name of the clicked item
-			remove "<gold><bold>" from {_weapon}
-			make player execute command "/hwbuy hw2 %{_weapon}%"
-			cancel event
-	else if the name of the player's current inventory is "<gold><bold>Holy Weapons | Inspection":
+				set {_sklchk} to checkSlots(player,"Charisma")
+				if {_sklchk} is 1:
+					add ({_cost} * 0.1) to the player's balance
+				send formatted "<light green>Purchased that item for %{_cost}% gold. New balance: %player's money%"
+	#Player Finder
+	else if the name of the player's current inventory is "<blue>Online Players":
+		cancel event
+		if the clicked item is iron block:
+			if the clicked item's name is set:
+				set {_playerName} to the name of the clicked item
+				set {_playerName} to decolorize({_playerName})
+				set {_playerName} to {_playerName} parsed as player
+				make player execute command "/friends add %{_playerName}%"
+	#Radiant Quests
+	else if the name of the player's current inventory is "<gold>Available Quests":
+		if the 4th line of the lore of the clicked item contains "Click to accept this quest":
+			send "<light yellow>Quest accepted!" to the player
+			play sound "ui.button.click" with volume 1 and pitch 1
+			set {radiantQuest.%player%.%index of the event-slot + 1%::Completion} to 1
+			make player execute command "/questmaster quests oldview"
+		else if the 5th line of the lore of the clicked item contains "<light red>Click to drop this quest.":
+			send "<light red>Quest dropped!" to the player
+			play sound "ui.button.click" with volume 1 and pitch 1
+			clear {radiantQuest.%player%.%index of the event-slot + 1%::Completion}
+			make player execute command "/questmaster quests oldview"
+		else if the 5th line of the lore of the clicked item contains "<light green>Click to turn in this quest":
+			send "<light green>Quest complete!" to the player
+			play sound "ui.button.click" with volume 1 and pitch 1
+			if {radiantQuest.%player%.%index of the event-slot +1%::Type} is 0:
+				remove "%{radiantQuest.%player%.%index of the event-slot +1%::Amount}% %{radiantQuest.%player%.%index of the event-slot +1%::Target}%" parsed as item type from the player
+				send formatted "<light yellow>%{radiantQuest.%player%.%index of the event-slot +1%::Amount}% %{radiantQuest.%player%.%index of the event-slot +1%::Target}% lost."
+			set {radiantQuest.%player%.%index of the event-slot + 1%::Completion} to 999
+			add {radiantQuest.%player%.%index of the event-slot +1%::GoldReward} to the player's balance
+			send "<gold>+%{radiantQuest.%player%.%index of the event-slot +1%::GoldReward}% Gold earned!"
+			send "<gold>+%{radiantQuest.%player%.%index of the event-slot +1%::EXPReward}% EXP earned!"
+			make server execute command "/xp give %player% %{radiantQuest.%player%.%index of the event-slot +1%::EXPReward}%"
+			make player execute command "/questmaster quests oldview"
+		cancel event
+	#XP Bottler
+	else if the name of the player's current inventory is "<gold>Experience Bottler":
+		if the name of the clicked item is "<light green>Bottle 1 XP Level":
+			if player's level is more than 0:
+				make player execute command "/xp -1l"
+				give 1 water bottle of power 1 named "<light blue>Bottled Experience" with lore "<white>A bottle of raw magical energy.", "<white>Consume it with right-click.", "<white>Grants 1 XP level when consumed." to the player
+				play sound "ui.button.click" with volume 1 and pitch 1
+		else if the name of the clicked item is "<orange>Bottle 5 XP Levels":
+			if player's level is more than 4:
+				make player execute command "/xp -5l"
+				give 1 water bottle of power 5 named "<light blue>Large Bottle of Experience" with lore "<white>A hefty bottle of magical energy.", "<white>Consume it with right-click.", "<white>Grants 5 XP levels when consumed." to the player
+				play sound "ui.button.click" with volume 1 and pitch 1
+		else if the name of the clicked item is "<yellow>Bottle 10 XP Levels":
+			if player's level is more than 9:
+				make player execute command "/xp -10l"
+				give 1 water bottle of power 10 named "<light blue>Massive Bottle of Experience" with lore "<white>An incredibly weighty bottle of magical energy.", "<white>Consume it with right-click.", "<white>Grants 10 XP levels when consumed." to the player
+				play sound "ui.button.click" with volume 1 and pitch 1
+		else if the name of the clicked item is "<light green>Convert 15 XP Levels to 1 Class Level":
+			if player's level is more than 15:
+				make player execute command "/xp -15l"
+				give 1 water bottle of power 1 named "<light blue>Packaged Class XP" with lore "<white>An enchanted bottle filled with knowledge.", "<white>Consume it with right-click.", "<white>Raises your Class Level by 1 when consumed." to the player
+				play sound "ui.button.click" with volume 1 and pitch 1
+		else if the name of the clicked item is "<orange>Convert 30 XP Levels to 2 Class Levels":
+			if player's level is more than 29:
+				make player execute command "/xp -30l"
+				give 1 water bottle of power 2 named "<light blue>Large Package of Class XP" with lore "<white>A weighty bottle filled with knowledge.", "<white>Consume it with right-click.", "<white>Raises your Class Level by 2 when consumed." to the player
+				play sound "ui.button.click" with volume 1 and pitch 1
+		else if the name of the clicked item is "<yellow>Convert 60 XP Levels to 4 Class Levels":
+			if player's level is more than 59:
+				make player execute command "/xp -60l"
+				give 1 water bottle of power 2 named "<light blue>Massive Package of Class XP" with lore "<white>A massive bottle filled to the brim with knowledge.", "<white>Consume it with right-click.", "<white>Raises your Class Level by 4 when consumed." to the player
+				play sound "ui.button.click" with volume 1 and pitch 1
+		cancel event
+	#Sacred Treasures
+	else if the name of the player's current inventory is "<gold><bold>Sacred Treasures":
+		#if the name of the clicked item contains "<gold><bold>":
+		#	set {_weapon} to uncoloured name of the clicked item
+		#	remove "<gold><bold>" from {_weapon}
+		#	make player execute command "/hwbuy hw2 %{_weapon}%"
+		#	cancel event
+	else if the name of the player's current inventory is "<gold><bold>Sacred Treasures | Inspection":
 		if the name of the clicked item is "<gold><bold>Summon Weapon":
 			set {_weapon} to uncoloured name of slot 4 of the player's current inventory
 			remove "<gold><bold>" from {_weapon}
@@ -354,7 +695,7 @@ on inventory click:
 			else:
 				set {_price} to 1000
 			if the player's money is less than {_price}:
-				send "<red><bold>You lack the required funds to purchase this Holy Weapon. You need %{_price}%, but only have %player's money%."
+				send formatted "<red><bold>You lack the required funds to purchase this Sacred Treasure. You need %{_price}%, but only have %player's money%."
 			else:
 				#Things other than swords
 				if {_weapon} is "Basilikos":
@@ -411,7 +752,10 @@ on inventory click:
 				else:
 					set slot 4 of the player's current inventory to 1 stone sword named "<light blue><bold>Broken Sword" with lore "<white>A broken sword unfit for combat.", "<white>This is all that remains of %{_weapon}%."
 				subtract {_price} from the player's money
-				send "<green><bold>Weapon purchased! Current Funds: %player's money%."
+				set {_sklchk} to checkSlots(player,"Charisma")
+				if {_sklchk} is 1:
+					add ({_price} * 0.1) to the player's balance
+				send formatted "<green><bold>Weapon purchased! Current Funds: %player's money%."
 			cancel event
 		else if the name of the clicked item contains "Go Back":
 			cancel event
@@ -427,7 +771,8 @@ on inventory click:
 			cancel event
 		else if the clicked item is cobblestone:
 			cancel event
-			
+	
+#Gen 2 - Jerome	
 command /jeromefix:
 	trigger:
 		open chest with 1 row named "<gold>Repair Tools" for the player
@@ -435,3 +780,443 @@ command /jeromefix:
 		set slot 3 of the player's current inventory to 1 book named "<bold>Place item here -->"
 		set slot 5 of the player's current inventory to 1 book named "<bold><-- Place item here"
 		set slot 8 of the player's current inventory to 1 green glass pane named "<green><bold>Repair Tool"
+		
+#NPC-less inns
+on right click on a sign:
+	if the 1st line of the event-block is "[Inn]":
+		set {_cost} to line 2 of the event-block parsed as integer
+		if {_cost} is less than player's money:
+			heal the player by 999 hearts
+			increase the player's food level by 10
+			subtract {_cost} from the player's money 
+			set {_sklchk} to checkSlots(player,"Charisma")
+			if {_sklchk} is 1:
+				add ({_cost} * 0.1) to the player's balance
+			send formatted "<light green>Rested at the inn for %{_cost}% gold. New balance: %player's money%"
+
+#Player Finder
+command /listplayers:
+	trigger:
+		open chest with 6 rows named "<blue>Online Players" for the player
+		set {_opIcons} to 0
+		loop all players:
+			loop {friendsList.%player%::*}:
+				if loop-player is loop-value-2:
+					if {party.%player%} is {party.%loop-value-2%}:
+						set slot {_opIcons} of the player's current inventory to 1 gold block named "<white>%loop-value-2%" with lore "<white>Playing as: %loop-value-2's tablist name%", "<white>Location: %loop-value-2's location%", "<light green>This player is in your group.", "<white>This player is on your friends list."
+					else:
+						set slot {_opIcons} of the player's current inventory to 1 gold block named "<white>%loop-value-2%" with lore "<white>Playing as: %loop-value-2's tablist name%", "<white>Location: %loop-value-2's location%", "<white>This player is on your friends list."
+					set {_skipIconRender} to true
+					exit 1 loop
+			if {_skipIconRender} is not set:
+				if loop-player is not the player:
+					if {party.%player%} is {party.%loop-player%}:
+						set slot {_opIcons} of the player's current inventory to 1 iron block named "<white>%loop-value%" with lore "<white>Playing as: %loop-value's tablist name%", "<light green>This player is in your group.", "<white>Click to send a friend request to this player."
+					else:
+						set slot {_opIcons} of the player's current inventory to 1 iron block named "<white>%loop-value%" with lore "<white>Playing as: %loop-value's tablist name%", "<white>Click to send a friend request to this player."
+				else:
+					set slot {_opIcons} of the player's current inventory to 1 diamond block named "<white>%loop-value%" with lore "<white>Playing as: %loop-value's tablist name%", "<white>This is you!"
+			else:
+				clear {_skipIconRender}
+			add 1 to {_opIcons}
+			
+#Radiant Quest Hunting Handler
+on death:
+	if citizen id of the attacker is not set:
+		loop {radiantQuestsOnOffer.%attacker%} times:
+			if "%victim%" is "%{radiantQuest.%attacker%.%loop-value%::Target}%":
+				if {radiantQuest.%attacker%.%loop-value%::Completion} is not 999:
+					if {radiantQuest.%attacker%.%loop-value%::Completion} is set:
+						add 1 to {radiantQuest.%attacker%.%loop-value%::Completion}
+						if {radiantQuest.%attacker%.%loop-value%::Completion} is equal to ({radiantQuest.%attacker%.%loop-value%::Amount} + 1):
+							set {radiantQuest.%attacker%.%loop-value%::Completion} to 999
+							send "<light yellow>Hunting quest completed!" to the attacker
+							send "<gold>+%{radiantQuest.%attacker%.%loop-value%::GoldReward}% Gold earned!" to the attacker
+							send "<gold>+%{radiantQuest.%attacker%.%loop-value%::EXPReward}% EXP earned!" to the attacker
+							add {radiantQuest.%attacker%.%loop-value%::GoldReward} to the attacker's balance
+							make server execute command "/xp give %attacker% %{radiantQuest.%attacker%.%loop-value%::EXPReward}%"
+							play sound "entity.player.levelup" with volume 1 and pitch 0.75 at attacker for attacker
+							play sound "entity.fireworkrocket.twinkle" with volume 1 and pitch 1.5 at attacker for attacker
+							play 30 (firework spark with speed 1) at attacker
+							play 30 (snow shovel with speed 1) at attacker
+						else:
+							send title "" with subtitle "Hunting quest progress: %{radiantQuest.%attacker%.%loop-value%::Completion} - 1% / %{radiantQuest.%attacker%.%loop-value%::Amount}%" to the attacker for 2.5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+							play sound "entity.player.levelup" with volume 0.25 and pitch 1.5 at attacker for attacker
+							play 5 (firework spark with speed 1) at attacker
+							play 5 (snow shovel with speed 1) at attacker
+			else if {radiantQuest.%attacker%.%loop-value%::Target} is "of any monster":
+				if {radiantQuest.%attacker%.%loop-value%::Completion} is not 999:
+					if {radiantQuest.%attacker%.%loop-value%::Completion} is set:
+						add 1 to {radiantQuest.%attacker%.%loop-value%::Completion}
+						if {radiantQuest.%attacker%.%loop-value%::Completion} is equal to ({radiantQuest.%attacker%.%loop-value%::Amount} + 1):
+							set {radiantQuest.%attacker%.%loop-value%::Completion} to 999
+							send "<light yellow>Hunting quest completed!" to the attacker
+							send "<gold>+%{radiantQuest.%attacker%.%loop-value%::GoldReward}% Gold earned!" to the attacker
+							send "<gold>+%{radiantQuest.%attacker%.%loop-value%::EXPReward}% EXP earned!" to the attacker
+							add {radiantQuest.%attacker%.%loop-value%::GoldReward} to the attacker's balance
+							make server execute command "/xp give %attacker% %{radiantQuest.%attacker%.%loop-value%::EXPReward}%"
+							play sound "entity.player.levelup" with volume 1 and pitch 0.75 at attacker for attacker
+							play sound "entity.fireworkrocket.twinkle" with volume 1 and pitch 1.5 at attacker for attacker
+							play 30 (firework spark with speed 1) at attacker
+							play 30 (snow shovel with speed 1) at attacker
+						else:
+							send title "" with subtitle "Hunting quest progress: %{radiantQuest.%attacker%.%loop-value%::Completion} - 1% / %{radiantQuest.%attacker%.%loop-value%::Amount}%" to the attacker for 2.5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+							play sound "entity.player.levelup" with volume 0.25 and pitch 1.5 at attacker for attacker
+							play 5 (firework spark with speed 1) at attacker
+							play 5 (snow shovel with speed 1) at attacker		
+				
+			
+#{radiantQuestsOnOffer} - Number of all currently generated Radiant Quests available. Set a loop with this variable as the number of repetitions to be able to loop through all generated Radiant Quests.
+#{radiantQuest.x::*} - Information relating to the Radian Quest with ID (x).
+#Legal list index values:
+#Completion: The Radiant Quest's current progress, following the same formula as normal quests. Used when assigned to a player.
+#Type: What type of Radiant Quest it is, defined above the generator.
+#Amount: How much of a particular task needs to be done. (EX: A "Retrive Lapis" Radiant Quest would set this to the amount of Lapis that needs to be retrieved.)
+#Recipient: Who to return this Radiant Quest to (if applicable). Used for delivery missions.
+#Target: The item/foe targeted by this Radiant Quest. Set to an item for Retrieve Item Quests, and an entity type for Hunting quests. Set to "ALL" for Hunting quests to track all kills. Can be combined with "Recipient" to target a particular NPC or player.
+#GoldReward: The amount of gold to be given to the player once the Radiant Quest is complete.
+#ItemReward: An item to be given to the player once the Radiant Quest is complete.
+#EXPReward: Amount of EXP to be given to the player once the Radiant Quest is complete.
+command /questmaster <text> <text>:
+	trigger:
+		if arg 1 is "drop":
+			send formatted "<light blue>Questmaster: Are you sure you want to drop that %arg 2% job?"
+			wait 2 seconds
+			send formatted "<run command:/questmaster dropConfirm %arg 2%><light red>1 - Drop the %arg 2% job (click here)."
+		else if arg 1 is "dropConfirm":
+			send formatted "<light blue>Questmaster: Alright, then. I'll drop that job for you."
+			wait 2 seconds
+			send formatted "<light blue>Questmaster: Anything else you need?"
+			clear {radiantQuests.%player%::%arg 2%}
+			wait 2 seconds
+			send formatted "<gold>1 - What jobs are on offer?"
+			if {radiantQuests.%player%::*} is set:
+				set {_jobID} to 2 
+				loop {radiantQuests.%player%::*}:
+					send formatted "<run command:/questmaster drop %loop-index%><light red>%{_jobID}% - I want to drop my %loop-index% job."
+		else if arg 1 is "quests":
+			if arg 2 is "oldview":
+				clear {radiantQuestsRNG.%player%}
+				make player execute command "/questmaster quests view"
+			if {radiantQuestsRNG.%player%} is true:
+				clear {radiantQuestsRNG.%player%}
+				set {radiantQuestsOnOffer.%player%} to a random integer from 3 to 18
+				loop {radiantQuestsOnOffer.%player%} times:
+					#Radiant Quest types:
+					#0 - Retrieve Item
+					#1 - Slay Monster(s)
+					#2 - Sell Equipment
+					#3 - Defeat Target
+					#4 - Deliver Item
+					#Only generate types that are actually coded.
+					clear {radiantQuest.%player%.%loop-value%::Completion}
+					set {radiantQuest.%player%.%loop-value%::Type} to a random integer from 0 to 1
+					if {radiantQuest.%player%.%loop-value%::Type} is 0:
+						#What sort of item should this quest target?
+						set {_ItemType} to a random integer from 0 to 13
+						#Seed item amount to retrieve, influenced by the player's level.
+						set {_itemAmount} to a random integer from 3 to {lvl.%player%} * 1.5
+						set {radiantQuest.%player%.%loop-value%::Amount} to {_itemAmount}
+						#Sugar Cane
+						if {_itemType} is 0:
+							set {radiantQuest.%player%.%loop-value%::Target} to "sugar cane"
+							#Replace the 1 here with the base value of that item. Sugar cane is 3G in the Trader's store, so for balancing we'll set this to 1.
+							set {radiantQuest.%player%.%loop-value%::GoldReward} to a random integer from (1 * {_itemAmount}) * 2 to (1 * {_itemAmount} + {lvl.%player%}) * 2
+							set {radiantQuest.%player%.%loop-value%::GoldReward} to a random integer from (0.15 * {_itemAmount}) * 2 to (0.35 * {_itemAmount} + {lvl.%player%}) * 2
+						#Coal
+						else if {_itemType} is 1:
+							set {radiantQuest.%player%.%loop-value%::Target} to "coal"
+							set {radiantQuest.%player%.%loop-value%::GoldReward} to a random integer from (2.5 * {_itemAmount}) * 2 to (2.5 * {_itemAmount} + {lvl.%player%}) * 2
+							set {radiantQuest.%player%.%loop-value%::EXPReward} to a random integer from (2 * {_itemAmount}) * 2 to (2 * {_itemAmount} + {lvl.%player%}) * 2
+						#Iron Ingots
+						else if {_itemType} is 2:
+							set {radiantQuest.%player%.%loop-value%::Target} to "iron ingots"
+							set {radiantQuest.%player%.%loop-value%::GoldReward} to a random integer from (5 * {_itemAmount}) * 2 to (5 * {_itemAmount} + {lvl.%player%}) * 2
+							set {radiantQuest.%player%.%loop-value%::EXPReward} to a random integer from (4 * {_itemAmount}) * 2 to (4 * {_itemAmount} + {lvl.%player%}) * 2
+						#Gold Ingots
+						else if {_itemType} is 3:
+							set {radiantQuest.%player%.%loop-value%::Target} to "gold ingots"
+							set {radiantQuest.%player%.%loop-value%::GoldReward} to a random integer from (9 * {_itemAmount}) * 2 to (9 * {_itemAmount} + {lvl.%player%}) * 2
+							set {radiantQuest.%player%.%loop-value%::EXPReward} to a random integer from (6 * {_itemAmount}) * 2 to (6 * {_itemAmount} + {lvl.%player%}) * 2
+						#Lapis Lazuli 
+						else if {_itemType} is 4:
+							set {radiantQuest.%player%.%loop-value%::Target} to "lapis"
+							set {radiantQuest.%player%.%loop-value%::GoldReward} to a random integer from (2 * {_itemAmount}) * 2 to (2 * {_itemAmount} + {lvl.%player%}) * 2
+							set {radiantQuest.%player%.%loop-value%::EXPReward} to a random integer from (1.2 * {_itemAmount}) * 2 to (1.2 * {_itemAmount} + {lvl.%player%}) * 2
+						#Redstone Dust
+						else if {_itemType} is 5:
+							set {radiantQuest.%player%.%loop-value%::Target} to "redstone dust"
+							set {radiantQuest.%player%.%loop-value%::GoldReward} to a random integer from (2 * {_itemAmount}) * 2 to (2 * {_itemAmount} + {lvl.%player%}) * 2
+							set {radiantQuest.%player%.%loop-value%::EXPReward} to a random integer from (1.2 * {_itemAmount}) * 2 to (1.2 * {_itemAmount} + {lvl.%player%}) * 2
+						#Emerald
+						else if {_itemType} is 6:
+							set {radiantQuest.%player%.%loop-value%::Target} to "emeralds"
+							set {radiantQuest.%player%.%loop-value%::GoldReward} to a random integer from (30 * {_itemAmount}) * 2 to (30 * {_itemAmount} + {lvl.%player%}) * 2
+							set {radiantQuest.%player%.%loop-value%::EXPReward} to a random integer from (20 * {_itemAmount}) * 2 to (20 * {_itemAmount} + {lvl.%player%}) * 2
+						#Diamond
+						else if {_itemType} is 7:
+							set {radiantQuest.%player%.%loop-value%::Target} to "diamonds"
+							set {radiantQuest.%player%.%loop-value%::GoldReward} to a random integer from (40 * {_itemAmount}) * 2 to (40 * {_itemAmount} + {lvl.%player%}) * 2
+							set {radiantQuest.%player%.%loop-value%::EXPReward} to a random integer from (30 * {_itemAmount}) * 2 to (30 * {_itemAmount} + {lvl.%player%}) * 2
+						#Flint
+						else if {_itemType} is 8:
+							set {radiantQuest.%player%.%loop-value%::Target} to "flint"
+							set {radiantQuest.%player%.%loop-value%::GoldReward} to a random integer from (2.5 * {_itemAmount}) * 2 to (2.5 * {_itemAmount} + {lvl.%player%}) * 2
+							set {radiantQuest.%player%.%loop-value%::EXPReward} to a random integer from (1 * {_itemAmount}) * 2 to (1.25 * {_itemAmount} + {lvl.%player%}) * 2
+						#Gunpowder
+						else if {_itemType} is 9:
+							set {radiantQuest.%player%.%loop-value%::Target} to "gunpowder"
+							set {radiantQuest.%player%.%loop-value%::GoldReward} to a random integer from (3 * {_itemAmount}) * 2 to (3 * {_itemAmount} + {lvl.%player%}) * 2
+							set {radiantQuest.%player%.%loop-value%::EXPReward} to a random integer from (1 * {_itemAmount}) * 2 to (1.25 * {_itemAmount} + {lvl.%player%}) * 2
+						#Bricks (item)
+						else if {_itemType} is 10:
+							set {radiantQuest.%player%.%loop-value%::Target} to "brick"
+							set {radiantQuest.%player%.%loop-value%::GoldReward} to a random integer from (1.25 * {_itemAmount}) * 2 to (1.25 * {_itemAmount} + {lvl.%player%}) * 2
+							set {radiantQuest.%player%.%loop-value%::EXPReward} to a random integer from (0.25 * {_itemAmount}) * 2 to (0.35 * {_itemAmount} + {lvl.%player%}) * 2
+						#Wood Logs
+						else if {_itemType} is 11:
+							set {radiantQuest.%player%.%loop-value%::Target} to "any log"
+							set {radiantQuest.%player%.%loop-value%::GoldReward} to a random integer from (1.5 * {_itemAmount}) * 2 to (1.5 * {_itemAmount} + {lvl.%player%}) * 2
+							set {radiantQuest.%player%.%loop-value%::EXPReward} to a random integer from (0.25 * {_itemAmount}) * 2 to (0.35 * {_itemAmount} + {lvl.%player%}) * 2
+						#Dirt
+						else if {_itemType} is 12:
+							set {radiantQuest.%player%.%loop-value%::Target} to "dirt"
+							set {radiantQuest.%player%.%loop-value%::GoldReward} to a random integer from (0.25 * {_itemAmount}) * 2 to (0.25 * {_itemAmount} + {lvl.%player%}) * 2
+							set {radiantQuest.%player%.%loop-value%::EXPReward} to a random integer from (0.01 * {_itemAmount}) * 2 to (0.05 * {_itemAmount} + {lvl.%player%}) * 2
+						#Cobblestone
+						else if {_itemType} is 13:
+							set {radiantQuest.%player%.%loop-value%::Target} to "cobblestone"
+							set {radiantQuest.%player%.%loop-value%::GoldReward} to a random integer from (0.5 * {_itemAmount}) * 2 to (0.5 * {_itemAmount} + {lvl.%player%}) * 2
+							set {radiantQuest.%player%.%loop-value%::EXPReward} to a random integer from (0.1 * {_itemAmount}) * 2 to (0.2 * {_itemAmount} + {lvl.%player%}) * 2
+						#Glass
+						else if {_itemType} is 13:
+							set {radiantQuest.%player%.%loop-value%::Target} to "glass block"
+							set {radiantQuest.%player%.%loop-value%::GoldReward} to a random integer from (2.5 * {_itemAmount}) * 2 to (2.5 * {_itemAmount} + {lvl.%player%}) * 2
+							set {radiantQuest.%player%.%loop-value%::EXPReward} to a random integer from (0.75 * {_itemAmount}) * 2 to (1 * {_itemAmount} + {lvl.%player%}) * 2
+						#Wool
+						else if {_itemType} is 13:
+							set {radiantQuest.%player%.%loop-value%::Target} to "any wool"
+							set {radiantQuest.%player%.%loop-value%::GoldReward} to a random integer from (2 * {_itemAmount}) * 2 to (2 * {_itemAmount} + {lvl.%player%}) * 2
+							set {radiantQuest.%player%.%loop-value%::GoldReward} to a random integer from (0.5 * {_itemAmount}) * 2 to (0.75 * {_itemAmount} + {lvl.%player%}) * 2
+					#Slay Monsters
+					else if {radiantQuest.%player%.%loop-value%::Type} is 1:
+						set {_monsterType} to a random integer from 0 to 12
+						set {_mobAmount} to random integer from ceil({lvl.%player%} / 4) to floor({lvl.%player%} * 0.75)
+						set {radiantQuest.%player%.%loop-value%::Amount} to {_mobAmount}
+						#Zombies
+						if {_monsterType} is 1:
+							set {radiantQuest.%player%.%loop-value%::Target} to "zombie" parsed as entity type
+							set {radiantQuest.%player%.%loop-value%::GoldReward} to a random integer from (5 * {_mobAmount}) * 2 to (8 * {_mobAmount}) * 2
+							set {radiantQuest.%player%.%loop-value%::EXPReward} to a random integer from (6.5 * {_mobAmount}) * 2 to (9 * {_mobAmount}) * 2
+						#Skeletons
+						if {_monsterType} is 2:
+							set {radiantQuest.%player%.%loop-value%::Target} to "skeleton" parsed as entity type
+							set {radiantQuest.%player%.%loop-value%::GoldReward} to a random integer from (5 * {_mobAmount}) * 2 to (8 * {_mobAmount}) * 2
+							set {radiantQuest.%player%.%loop-value%::EXPReward} to a random integer from (6.5 * {_mobAmount}) * 2 to (9 * {_mobAmount}) * 2
+						#Spiders
+						if {_monsterType} is 3:
+							set {radiantQuest.%player%.%loop-value%::Target} to "spider" parsed as entity type
+							set {radiantQuest.%player%.%loop-value%::GoldReward} to a random integer from (5 * {_mobAmount}) * 2 to (8 * {_mobAmount}) * 2
+							set {radiantQuest.%player%.%loop-value%::EXPReward} to a random integer from (6.5 * {_mobAmount}) * 2 to (9 * {_mobAmount}) * 2
+						#Creepers
+						if {_monsterType} is 4:
+							set {radiantQuest.%player%.%loop-value%::Target} to "creeper" parsed as entity type
+							set {radiantQuest.%player%.%loop-value%::GoldReward} to a random integer from (5 * {_mobAmount}) * 2 to (8 * {_mobAmount}) * 2
+							set {radiantQuest.%player%.%loop-value%::EXPReward} to a random integer from (6.5 * {_mobAmount}) * 2 to (9 * {_mobAmount}) * 2
+						#Witch
+						if {_monsterType} is 5:
+							set {radiantQuest.%player%.%loop-value%::Target} to "witch" parsed as entity type
+							set {radiantQuest.%player%.%loop-value%::GoldReward} to a random integer from (7 * {_mobAmount}) * 2 to (12 * {_mobAmount}) * 2
+							set {radiantQuest.%player%.%loop-value%::EXPReward} to a random integer from (8.5 * {_mobAmount}) * 2 to (14 * {_mobAmount}) * 2
+						#Slime
+						if {_monsterType} is 6:
+							set {radiantQuest.%player%.%loop-value%::Target} to "slime" parsed as entity type
+							set {radiantQuest.%player%.%loop-value%::GoldReward} to a random integer from (7 * {_mobAmount}) * 2 to (12 * {_mobAmount}) * 2
+							set {radiantQuest.%player%.%loop-value%::EXPReward} to a random integer from (8.5 * {_mobAmount}) * 2 to (14 * {_mobAmount}) * 2
+						#Cow
+						if {_monsterType} is 7:
+							set {radiantQuest.%player%.%loop-value%::Target} to "cow" parsed as entity type
+							set {radiantQuest.%player%.%loop-value%::GoldReward} to a random integer from (1.5 * {_mobAmount}) * 2 to (2.5 * {_mobAmount}) * 2
+							set {radiantQuest.%player%.%loop-value%::EXPReward} to a random integer from (1.15 * {_mobAmount}) * 2 to (2 * {_mobAmount}) * 2
+						#Chicken
+						if {_monsterType} is 8:
+							set {radiantQuest.%player%.%loop-value%::Target} to "chicken" parsed as entity type
+							set {radiantQuest.%player%.%loop-value%::GoldReward} to a random integer from (1.5 * {_mobAmount}) * 2 to (2.5 * {_mobAmount}) * 2
+							set {radiantQuest.%player%.%loop-value%::EXPReward} to a random integer from (1.15 * {_mobAmount}) * 2 to (2 * {_mobAmount}) * 2
+						#Pig
+						if {_monsterType} is 9:
+							set {radiantQuest.%player%.%loop-value%::Target} to "pig" parsed as entity type
+							set {radiantQuest.%player%.%loop-value%::GoldReward} to a random integer from (1.5 * {_mobAmount}) * 2 to (2.5 * {_mobAmount}) * 2
+							set {radiantQuest.%player%.%loop-value%::EXPReward} to a random integer from (1.15 * {_mobAmount}) * 2 to (2 * {_mobAmount}) * 2
+						#Sheep
+						if {_monsterType} is 10:
+							set {radiantQuest.%player%.%loop-value%::Target} to "sheep" parsed as entity type
+							set {radiantQuest.%player%.%loop-value%::GoldReward} to a random integer from (1.5 * {_mobAmount}) * 2 to (2.5 * {_mobAmount}) * 2
+							set {radiantQuest.%player%.%loop-value%::EXPReward} to a random integer from (1.15 * {_mobAmount}) * 2 to (2 * {_mobAmount}) * 2
+						#Cave Spider
+						if {_monsterType} is 11:
+							set {radiantQuest.%player%.%loop-value%::Target} to "cave spider" parsed as entity type
+							set {radiantQuest.%player%.%loop-value%::GoldReward} to a random integer from (7 * {_mobAmount}) * 2 to (12 * {_mobAmount}) * 2
+							set {radiantQuest.%player%.%loop-value%::EXPReward} to a random integer from (8.5 * {_mobAmount}) * 2 to (14 * {_mobAmount}) * 2
+						#Any Monster
+						if {_monsterType} is 12:
+							set {radiantQuest.%player%.%loop-value%::Target} to "of any monster"
+							set {radiantQuest.%player%.%loop-value%::GoldReward} to a random integer from (3.5 * {_mobAmount}) * 2 to (7 * {_mobAmount}) * 2
+							set {radiantQuest.%player%.%loop-value%::EXPReward} to a random integer from (4.5 * {_mobAmount}) * 2 to (8 * {_mobAmount}) * 2
+			open chest with 2 rows named "<gold>Available Quests" for the player
+			loop {radiantQuestsOnOffer.%player%} times:
+				if {radiantQuest.%player%.%loop-value%::Type} is 0:
+					if {radiantQuest.%player%.%loop-value%::Completion} is not set:
+						set slot (loop-value - 1) of the player's current inventory to 1 chest named "<light yellow>Retrieve %{radiantQuest.%player%.%loop-value%::Amount}% %{radiantQuest.%player%.%loop-value%::Target}%." with lore "<white>Reward:", "<white>%{radiantQuest.%player%.%loop-value%::GoldReward}% gold", "<white>%{radiantQuest.%player%.%loop-value%::EXPReward}% EXP", "<light yellow>Click to accept this quest."
+					else if {radiantQuest.%player%.%loop-value%::Completion} is not 999:
+						if player has "%{radiantQuest.%player%.%loop-value%::Amount}% %{radiantQuest.%player%.%loop-value%::Target}%" parsed as item type:
+							set slot (loop-value - 1) of the player's current inventory to 1 gold block named "<gold>Retrieve %{radiantQuest.%player%.%loop-value%::Amount}% %{radiantQuest.%player%.%loop-value%::Target}%." with lore "<white>Reward:", "<white>%{radiantQuest.%player%.%loop-value%::GoldReward}% gold", "<white>%{radiantQuest.%player%.%loop-value%::EXPReward}% EXP", "<light blue>This quest is in progress.", "<light green>Click to turn in this quest! (Requested items will be lost.)"
+						else:
+							set slot (loop-value - 1) of the player's current inventory to 1 lapis block named "<light blue>Retrieve %{radiantQuest.%player%.%loop-value%::Amount}% %{radiantQuest.%player%.%loop-value%::Target}%." with lore "<white>Reward:", "<white>%{radiantQuest.%player%.%loop-value%::GoldReward}% gold", "<white>%{radiantQuest.%player%.%loop-value%::EXPReward}% EXP", "<light blue>This quest is in progress.", "<light red>Click to drop this quest."
+					else:
+						set slot (loop-value - 1) of the player's current inventory to 1 emerald block named "<light blue>Retrieve %{radiantQuest.%player%.%loop-value%::Amount}% %{radiantQuest.%player%.%loop-value%::Target}%." with lore "<white>Reward:", "<white>%{radiantQuest.%player%.%loop-value%::GoldReward}% gold", "<light green>This quest is complete!"
+				else if {radiantQuest.%player%.%loop-value%::Type} is 1:
+					if {radiantQuest.%player%.%loop-value%::Completion} is not set:
+						set slot (loop-value - 1) of the player's current inventory to 1 rotten flesh named "<light yellow>Hunt %{radiantQuest.%player%.%loop-value%::Amount}% %{radiantQuest.%player%.%loop-value%::Target}%." with lore "<white>Rewards:", "<white>%{radiantQuest.%player%.%loop-value%::GoldReward}% gold", "<white>%{radiantQuest.%player%.%loop-value%::EXPReward}% EXP", "<light yellow>Click to accept this quest."
+					else if {radiantQuest.%player%.%loop-value%::Completion} is not 999:
+						set slot (loop-value - 1) of the player's current inventory to 1 lapis block named "<light blue>Hunt %{radiantQuest.%player%.%loop-value%::Amount}% %{radiantQuest.%player%.%loop-value%::Target}%." with lore "<white>Rewards:", "<white>%{radiantQuest.%player%.%loop-value%::GoldReward}% gold", "<white>%{radiantQuest.%player%.%loop-value%::EXPReward}% EXP", "<light blue>Progress: %{radiantQuest.%player%.%loop-value%::Completion} - 1% targets slain.", "<light red>Click to drop this quest."
+					else:
+						set slot (loop-value - 1) of the player's current inventory to 1 emerald block named "<light green>Hunt %{radiantQuest.%player%.%loop-value%::Amount}% %{radiantQuest.%player%.%loop-value%::Target}%." with lore "<white>Rewards:", "<white>%{radiantQuest.%player%.%loop-value%::GoldReward}% gold", "<white>%{radiantQuest.%player%.%loop-value%::EXPReward}% EXP", "<light green>This quest is complete!"
+
+#Experience Bottler
+command /xpbottler:
+	trigger:
+		open chest with 1 row named "<gold>Experience Bottler" for the player
+		set slot 0 of the player's current inventory to 1 light green wool named "<light green>Bottle 1 XP Level"
+		set slot 1 of the player's current inventory to 1 orange wool named "<orange>Bottle 5 XP Levels"
+		set slot 2 of the player's current inventory to 1 yellow wool named "<yellow>Bottle 10 XP Levels"
+		set slot 3 of the player's current inventory to 1 book named "<gold>How To Use" with lore "<white>Click a button to manage your XP level.", "<white>The buttons convert the experience used for enchanting to consumable bottles.", "<white>Converted bottles will be placed into your inventory."
+		set slot 4 of the player's current inventory to 1 light green wool named "<light green>Convert 15 XP Levels to 1 Class Level"
+		set slot 5 of the player's current inventory to 1 orange wool named "<orange>Convert 30 XP Levels to 2 Class Levels"
+		set slot 6 of the player's current inventory to 1 yellow wool named "<yellow>Convert 60 XP Levels to 4 Class Levels"
+
+command /oreconverter:
+	trigger:
+
+#Portable Stations
+on right click with anvil:
+	if the name of the player's tool is "<gold>Portable Smithy":
+		make player execute command "/skills"
+		
+on right click with furnace:
+	if the name of the player's tool is "<gold>Ore Converter":
+		make player execute command "/oreconverter"
+	else if the name of the player's tool is "<gold>Sacred Forge":
+		make player execute command "/hwbuy hw"
+		
+on right click with bed:
+	if the name of the player's tool is "<gold>Portable Inn":
+		make player execute command "/tavernshop"
+		
+on right click with chest:
+	if the name of the player's tool is "<gold>Portable Trader":
+		make player execute command "/tradershop"
+	else if the name of the player's tool is "<gold>Portable Tailor":
+		make player execute command "/tailorshop"
+	else if the name of the player's tool is "<gold>Portable Banker":
+		make player execute command "/cvault open"
+		
+on right click with enchanting table:
+	if the name of the player's tool is "<gold>Portable Enchanter":
+		make player execute command "/enchantershop"
+	else if the name of the player's tool is "<gold>Ancient Enchanter":
+		make player execute command "/portableawaken"
+
+on right click with brewing stand:
+	if the name of the player's tool is "<gold>Portable Spell Inscriber":
+		make player execute command "/spells 1"
+	else if the name of the player's tool is "<gold>Portable Brewery":
+		make player execute command "/serositabarkeep"
+	else if the name of the player's tool is "<gold>Experience Bottler":
+		make player execute command "/xpbottler"
+		
+on consume:
+	if the name of the player's tool is "<light blue>Bottled Experience":
+		make player execute command "/xp 1l"
+		send "<light blue>Consumed the Bottled Experience and gained 1 XP level."
+	else if the name of the player's tool is "<light blue>Large Bottle of Experience":
+		make player execute command "/xp 5l"
+		send "<light blue>Consumed the Large Bottle of Experience and gained 5 XP levels."
+	else if the name of the player's tool is "<light blue>Massive Bottle of Experience":
+		make player execute command "/xp 10l"
+		send "<light blue>Consumed the Large Bottle of Experience and gained 10 XP levels."
+	else if the name of the player's tool is "<light blue>Packaged Class XP":
+		if {lvl.%player%} is less than {lvlcap.%player%}:
+			addClassXP(player,(((((({lvl.%player%} + ({promoted.%player%} * 10)) ^ 2) / 2) + 20)) * 1))
+			send "<light blue>Consumed the Packaged Class XP and gained 1 Class Level."
+		else:
+			send "<light blue>Using this wouldn't benefit you right now."
+	else if the name of the player's tool is "<light blue>Large Package of Class XP":
+		if {lvl.%player%} is less than {lvlcap.%player%}:
+			addClassXP(player,(((((({lvl.%player%} + ({promoted.%player%} * 10)) ^ 2) / 2) + 20)) * 2))
+			send "<light blue>Consumed the Large Package of Experience and gained 2 Class Levels."
+		else:
+			send "<light blue>Using this wouldn't benefit you right now."
+	else if the name of the player's tool is "<light blue>Massive Package of Class XP":
+		if {lvl.%player%} is less than {lvlcap.%player%}:
+			addClassXP(player,(((((({lvl.%player%} + ({promoted.%player%} * 10)) ^ 2) / 2) + 20)) * 4))
+			send "<light blue>Consumed the Massive Package of Experience and gained 4 Class Levels."
+		else:
+			send "<light blue>Using this wouldn't benefit you right now."
+		
+on place:
+	if the name of the player's tool is "<gold>Portable Smithy":
+		cancel event
+	else if the name of the player's tool is "<gold>Portable Spell Inscriber":
+		cancel event
+	else if the name of the player's tool is "<gold>Portable Brewery":
+		cancel event
+	else if the name of the player's tool is "<gold>Portable Enchanter":
+		cancel event
+	else if the name of the player's tool is "<gold>Portable Trader":
+		cancel event
+	else if the name of the player's tool is "<gold>Portable Tailor":
+		cancel event
+	else if the name of the player's tool is "<gold>Portable Inn":
+		cancel event
+	else if the name of the player's tool is "<gold>Experience Bottler":
+		cancel event
+	else if the name of the player's tool is "<gold>Ore Converter":
+		cancel event
+	else if the name of the player's tool is "<gold>Ancient Enchanter":
+		cancel event
+	else if the name of the player's tool is "<gold>Sacred Forge":
+		cancel event
+	else if the name of the player's tool is "<gold>Portable Banker":
+		cancel event
+
+#Misc NPCs				
+on right click on a player:
+	#Player Finder
+	if target's name is "Player Finder":
+		make player execute command "/listplayers"
+	#Questmaster
+	else if target's name is "Questmaster":
+		if {radiantQuestsRNG.%player%} is set:
+			loop {radiantQuestsOnOffer.%player%} times:
+				if {radiantQuest.%player%.%loop-value%::Completion} is set:
+					if {radiantQuest.%player%.%loop-value%::Completion} is not 999:
+						send formatted "<light blue>Questmaster: <white>I just got a new batch of jobs in, but it looks like you're still working on some older ones. If you want, I can hold those jobs for you." to the player
+						wait 3 seconds
+						send formatted "<run command:/questmaster quests oldview><gold>1 - Hold those jobs for me." to the player
+						send formatted "<run command:/questmaster quests view><gold>2 - What new jobs are on offer? (This will fail any active jobs!)" to the player
+						set {_skipText} to true
+						exit 1 loop
+			if {_skipText} is not set:
+				send formatted "<light blue>Questmaster: <white>Just got a new batch of jobs in today." to the player
+				wait 2 seconds
+				send formatted "<run command:/questmaster quests view><gold>1 - What jobs are on offer?" to the player
+		else:
+			send formatted "<light blue>Questmaster: <white>Plenty of jobs still on the board." to the player
+			wait 2 seconds
+			send formatted "<run command:/questmaster quests view><gold>1 - What jobs are on offer?" to the player
+	#Tailor
+	else if target's name is "Tailor":
+		send formatted "<light blue>Tailor: <white>If you need some clothes dyed, then you've come to the right place." to the player
+		wait 2 seconds
+		send formatted "<run command:/tailorshop><gold>1 - What do you have for sale?" to the player

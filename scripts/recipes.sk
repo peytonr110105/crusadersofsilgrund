@@ -1,0 +1,37 @@
+on load:
+	#Portable Services
+	register new shaped recipe for 1 anvil of power 1 named "<gold>Portable Smithy" with lore "<white>Right-click while holding to access the smithy." using air, iron block, air, iron block, anvil, iron block, air, iron block, air
+	register new shaped recipe for 1 brewing stand of power 1 named "<gold>Portable Spell Inscriber" with lore "<white>Right-click while holding to equip new spells." using air, iron block, air, iron block, hopper, iron block, air, iron block, air
+	register new shaped recipe for 1 chest of power 1 named "<gold>Portable Trader" with lore "<white>Right-click while holding to access the trader's market." using air, iron block, air, iron block, chest, iron block, air, iron block, air
+	register new shaped recipe for 1 brewing stand of power 1 named "<gold>Portable Brewery" with lore "<white>Right-click while holding to access the Serosita Brewery." using air, iron block, air, iron block, water bottle, iron block, air, iron block, air
+	register new shaped recipe for 1 bed of power 1 named "<gold>Portable Inn" with lore "<White>Right-click while holding to access the inn." using air, iron block, air, iron block, any bed, iron block, air, iron block, air
+	register new shaped recipe for 1 chest of power 1 named "<gold>Portable Tailor" with lore "<white>Right-click while holding to access the tailor." using air, iron block, air, iron block, any dye, iron block, air, iron block, air
+	register new shaped recipe for 1 enchanting table of power 3 named "<gold>Portable Enchanter" with lore "<white>Right-click while holding to access the enchanter's stock." using air, gold block, air, gold block, book, gold block, air, gold block, air
+	register new shaped recipe for 1 furnace of power 10 named "<gold>Sacred Forge" with lore "<white>Right-click to access the Sacred Forge." using obsidian, diamond block, obsidian, diamond block, lava bucket, diamond block, obsidian, diamond block, obsidian
+	register new shaped recipe for 1 furnace of power 5 named "<gold>Ore Converter" with lore "<white>Right-click while holding to access the Ore Converter." using air, gold block, air, gold block, diamond, gold block, air, gold block, air
+	register new shaped recipe for 1 brewing stand of power 1 named "<gold>Experience Bottler" with lore "<white>Right-click while holding to access the Experience Bottler." using air, lapis block, air, lapis block, gold ingot, lapis block, air, lapis block, air
+	register new shaped recipe for 1 enchanting table of power 10 named "<gold>Ancient Enchanter" with lore "<white>Right-click while holding to awaken a Sacred Treasure." using gold ingot, obsidian, gold ingot, obsidian, enchanting table, obsidian, gold ingot, obsidian, gold ingot
+	register new shaped recipe for 1 chest named "<gold>Portable Banker" with lore "<White>Right-click to access your bank vault." using air, gold block, air, gold block, chest, gold block, air, gold block, air
+	
+	#Craftable Rings
+	register new shaped recipe for 1 music disc far named "<light green><bold>Life Ring" with lore "<white>While in your inventory:", "<light green>Recover 10%% of your max HP every 15 seconds." using diamond block, obsidian, diamond block, obsidian, light green wool, obsidian, diamond block, obsidian, diamond block
+	register new shaped recipe for 1 music disc wait named "<light blue><bold>Elite Ring" with lore "<White>While in your inventory:", "<light blue>Gain bonus experience for slaying monsters." using diamond block, obsidian, diamond block, obsidian, light blue wool, obsidian, diamond block, obsidian, diamond block
+	register new shaped recipe for 1 music disc 13 named "<light gold><bold>Thief Ring" with lore "<White>While in your inventory:", "<light green>Slain monsters have a chance to drop extra money." using diamond block, obsidian, diamond block, obsidian, yellow wool, obsidian, diamond block, obsidian, diamond block
+	register new shaped recipe for 1 music disc mall named "<light purple><bold>Return Ring" with lore "<White>While held in hand:", "<light purple>Teleport to a custom location.", "<light purple>Hold Sneak and Right-click to set the warp destination.", "<light purple>Right-click without sneaking to warp." using diamond block, obsidian, diamond block, obsidian, purple wool, obsidian, diamond block, obsidian, diamond block
+	register new shaped recipe for 1 music disc wait named "<light blue><bold>Speed Ring" with lore "<White>While in your inventory:", "<light cyan>Grants Swiftness 2." using diamond block, obsidian, diamond block, obsidian, blue wool, obsidian, diamond block, obsidian, diamond block
+	register new shaped recipe for 1 music disc chirp named "<light red><bold>Power Ring" with lore "<White>While in your inventory:", "<light red>Grants Strength 2." using diamond block, obsidian, diamond block, obsidian, red wool, obsidian, diamond block, obsidian, diamond block
+	register new shaped recipe for 1 music disc chirp named "<white><bold>Shield Ring" with lore "<White>While in your inventory:", "<white>Grants Resistance 2." using diamond block, obsidian, diamond block, obsidian, white wool, obsidian, diamond block, obsidian, diamond block
+	register new shaped recipe for 1 music disc 13 named "<orange><bold>Prayer Ring" with lore "<White>While in your inventory:", "<orange>Attacks while below 50%% HP will always be critical hits." using diamond block, obsidian, diamond block, obsidian, yellow concrete, obsidian, diamond block, obsidian, diamond block
+	register new shaped recipe for 1 music disc cat named "<green><bold>Pursuit Ring" with lore "<White>While in your inventory:", "<green>Automatically perform a follow-up attack in combat.", "<green>Auto follow-ups deal 50%% less damage." using diamond block, obsidian, diamond block, obsidian, green concrete, obsidian, diamond block, obsidian, diamond block
+
+	#Misc Blocks
+	register new shapeless recipe for 4 magma using water bucket, lava bucket, air, air, air, air, air, air, air
+	
+	#Magic Wand
+	register new shapeless recipe for 1 blaze rod named "<light yellow><bold>Magic Wand" with lore "","","","","","","<light red><bold>Spell 1: Ember" using stick, gold ingot, air, air, air, air, air, air, air
+	
+	#Special Weapons
+	register new shapeless recipe for 1 iron sword named "<yellow><bold>Rapier" with lore "","","","","","","<white>Grants <light red><bold>[Armour Smasher]<reset>." using iron sword, iron ingot, iron ingot, air, air, air, air, air, air
+	register new shapeless recipe for 1 iron axe named "<yellow><bold>Hammer" with lore "","","","","","","<white>Grants <light red><bold>[Armour Smasher]<reset>." using iron axe, iron ingot, iron ingot, air, air, air, air, air, air
+	register new shapeless recipe for 1 iron shovel named "<yellow><bold>Shieldreaver" with lore "","","","","","","<white>Grants <light red><bold>[Armour Smasher]<reset>." using iron shovel, iron ingot, iron ingot, air, air, air, air, air, air
+	register new shaped recipe for 1 iron pickaxe named "<yellow><bold>Climbing Hook" with lore "","","","<light green><bold>Assist - Acrobatics","","","<white>Grants Swiftness 2, Jump Boost 2 while active.", "<light red>Inflicts Fatigue 5 while active." using air, diamond, air, iron ingot named "<light blue>Tempered Iron", gold pickaxe, iron ingot named "<light blue>Tempered Iron", air, air, air

@@ -1,0 +1,10 @@
+command /vibecheck <player>:
+	trigger:
+		chance of 50%:
+			kill arg 1
+			broadcast "<light red>%arg 1% failed the Vibe Check!"
+		else:
+			broadcast "<light blue>%arg 1% passed the Vibe Check!"
+			chance of 50%:
+				kill the player
+				broadcast "<light red>%player% failed the counter-check!"

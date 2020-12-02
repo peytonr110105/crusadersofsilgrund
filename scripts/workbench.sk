@@ -1,5 +1,18 @@
 #Workbench - A World Editing Tool
 
+command /workbench <text>:
+	trigger:
+		if arg 1 is "help":
+			send "<gold>-=Workbench Help=-"
+			send "<light green>delblock<reset> - Delete a particular block within a given radius."
+			send "<light green>replaceblock<reset> - Replaces one block for another within a given radius."
+			send "<light green>demoss<reset> - Changes out mossy blocks for their non-moss counterparts."
+			send "<light green>ruinify<reset> - Changes blocks to create ruin-like structures."
+			send "<light red>cancel<reset> - Aborts any currently running operations."
+		else if arg 1 is "cancel":
+			send "<light red>Aborting all running operations."
+			set {wbCancelOperation.%player%} to true
+
 command /delblock <item> <number>:
 	trigger:
 		set {_rad} to arg 2
@@ -13,6 +26,10 @@ command /delblock <item> <number>:
 				send "<light green>Working..."
 			else:
 				send "<light blue>Working..."
+			if {wbCancelOperation.%player%} is true:
+				clear {wbCancelOperation.%player%}
+				send "<light red>Operation cancelled."
+				exit 1 loop
 		send "<gold>%{_blocks}% %arg 1%s were removed."
 		
 command /replaceblock <item> <item> <number>:
@@ -24,10 +41,14 @@ command /replaceblock <item> <item> <number>:
 			if loop-block is arg 1:
 				set loop-block to arg 2
 				add 1 to {_blocks}
+				wait 1 tick
 				send "<light green>Working..."
 			else:
 				send "<light blue>Working..."
-			wait 1 tick
+			if {wbCancelOperation.%player%} is true:
+				clear {wbCancelOperation.%player%}
+				send "<light red>Operation cancelled."
+				exit 1 loop
 		send "<gold>%{_blocks}% blocks replaced."
 	
 command /demoss <number>:
@@ -46,6 +67,10 @@ command /demoss <number>:
 				send "<light green>Working..."
 			else:
 				send "<light blue>Working..."
+			if {wbCancelOperation.%player%} is true:
+				clear {wbCancelOperation.%player%}
+				send "<light red>Operation cancelled."
+				exit 1 loop
 			wait 1 tick
 		send "<gold>%{_blocks}% blocks demossed."
 		
@@ -55,6 +80,8 @@ command /ruinify <number>:
 		set {_loc} to player's location
 		send "<light green>Generating ruins..."
 		loop all blocks in radius {_rad} of {_loc}:
+			if loop-block is not air:
+				wait 1 tick
 			if loop-block is any stone brick:
 				chance of 30%:
 					set loop-block to mossy stone brick
@@ -71,7 +98,10 @@ command /ruinify <number>:
 					send "<light green>Working.."
 			else:
 				send "<light blue>Working..."
-			wait 1 tick
+			if {wbCancelOperation.%player%} is true:
+				clear {wbCancelOperation.%player%}
+				send "<light red>Operation cancelled."
+				exit 1 loop
 		send "<gold>%{_blocks}% blocks modified."
 	
 command /replacedioritewithandesite <number>:

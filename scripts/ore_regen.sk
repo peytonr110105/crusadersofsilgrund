@@ -1,0 +1,103 @@
+#Automatically regenerates ores after enough time has passed.
+#
+#Variables Used:
+#{OreRegen::*} - Array of ores to be regenerated. Index = Ore location, Value = Ore type The ore's location also contains the ore's world.
+#{OreRegenTimer::*} - Ore regeneration timers by ore location. Index = ore location, value = time left until regen.
+on mine of any ore:
+	if player's game mode is survival:
+		if {OreRegenToggle.%player%} is not set:
+			set {OreRegenLocation::%location of event-block%} to location of event-block
+			if event-block is coal ore:
+				set {OreRegenTimer::%location of event-block%} to 300
+				set {OreRegen::%location of event-block%} to "coal ore"
+			else if event-block is quartz ore:
+				set {OreRegenTimer::%location of event-block%} to 360
+				set {OreRegen::%location of event-block%} to "quartz ore"
+			else if event-block is iron ore:
+				set {OreRegenTimer::%location of event-block%} to 600
+				set {OreRegen::%location of event-block%} to "iron ore"
+			else if event-block is gold ore:
+				set {OreRegenTimer::%location of event-block%} to 690
+				set {OreRegen::%location of event-block%} to "gold ore"
+			else if event-block is redstone ore:
+				set {OreRegenTimer::%location of event-block%} to 690
+				set {OreRegen::%location of event-block%} to "redstone ore"
+			else if event-block is lapis ore:
+				set {OreRegenTimer::%location of event-block%} to 690
+				set {OreRegen::%location of event-block%} to "lapis ore"
+			else if event-block is diamond ore:
+				set {OreRegenTimer::%location of event-block%} to 1800
+				set {OreRegen::%location of event-block%} to "diamond ore"
+			else if event-block is emerald ore:
+				set {OreRegenTimer::%location of event-block%} to 1200
+				set {OreRegen::%location of event-block%} to "emerald ore"
+			wait 1 tick
+			set the block at location of event-block to cobblestone
+		
+command /or [<text="help">]:
+	usage: /or (help/toggle/info)
+	trigger:
+		if arg 1 is "help":
+			send formatted "<light blue>Ore Regeneration Commands:"
+			send formatted "<gold>Help:<reset> Displays this window."
+			send formatted "<gold>Toggle:<reset> Toggles Ore Regeneration on and off. Useful for removing accidentally placed ores."
+			send formatted "<gold>Suppress:<reset> Enables/disables the warning given when attempting to mine regenerating ore."
+			send formatted "<gold>Info:<reset> Shows details on the ore regeneration mechanic."
+		else if arg 1 is "suppress":
+			if {BreakRegenOres.%player%} is not "BYPASS":
+				set {BreakRegenOres.%player%} to "BYPASS"
+				send formatted "<light blue>Now suppressing ore regeneration warnings."
+			else:
+				clear {BreakRegenOres.%player%}
+				send formatted "<light blue>No longer suppressing ore regeneration warnings."
+		else if arg 1 is "toggle":
+			if {OreRegenToggle.%player%} is not set:
+				set {OreRegenToggle.%player%} to true
+				send formatted "<light red>Disabled ore regeneration. Any ores mined will no longer regenerate."
+			else:
+				clear {OreRegenToggle.%player%}
+				send formatted "<light blue>Enabled ore regeneration. Any ores you mine will regenerate over time."
+		else if arg 1 is "info":
+			send formatted "<light blue>-=Ore Regeneration=-"
+			send formatted "When ores are mined, the block they occupied is turned into a cobblestone block. After enough time has passed, that cobblestone block will ""regenerate"" the ore that it replaced."
+			send formatted "For example, if a piece of coal ore is mined, that ore will become cobblestone and begin regenerating. After a few minutes, that cobblestone will turn back into coal ore."
+			send formatted "<light yellow>The amount of time it takes for an ore to regenerate is based on the rarity of the ore. Coal will regenerate the fastest, and diamonds will regenerate the slowest."
+			send formatted "<bold>Ore Regeneration occurs for all ores, even ones that you place. If you misplace a piece of ore, you can use the ""/or toggle"" command to prevent any mined ores from regenerating."
+			send formatted "<bold>Attempting to mine ore that is currently regenerating (in its cobblestone form) will give a warning. You can disable the warning with the ""/or suppress"" command."
+		
+on mine of cobblestone:
+	if {BreakRegenOres.%player%} is not "BYPASS":
+		if location of the event-block is not {BreakRegenOres.%player%}:
+			loop {OreRegenLocation::*}:
+				if location of the event-block is {OreRegenLocation::%loop-index%}:
+					send formatted "<light red>This is a block of %{OreRegen::%loop-index%}% that is regenerating. Even if this block is broken, the ore will regenerate here and destroy any other blocks placed. To ignore this warning, mine the cobblestone again. Otherwise, leave it be."  to the player
+					cancel event
+					set {BreakRegenOres.%player%} to location of the event-block
+					while {BreakRegenOres.%player%} is not "BYPASS":
+						wait 1 seconds
+						add 1 to {_wait15}
+						if {_wait15} is 15:
+							exit 1 loop
+					if {_wait15} is 15:
+						clear {BreakRegenOres.%player%}
+		else:
+			cancel event
+			set the event-block to air
+			send formatted "<light blue>HINT: You can disable the ore regeneration warning by using /or suppress." to the player
+
+on right click on cobblestone:
+	loop {OreRegen::*}:
+		if location of the event-block is {OreRegenLocation::%loop-index%}:
+			send formatted "<white><italics>This %{OreRegen::%loop-index%}% will regenerate in %{OreRegenTimer::%{OreRegenLocation::%loop-index%}%}% seconds." to the player
+			
+every 1 second:
+	loop {OreRegenTimer::*}:
+		subtract 1 from {OreRegenTimer::%loop-index%}
+		if {OreRegenTimer::%loop-index%} is 0:
+			set the block at {OreRegenLocation::%loop-index%} to {OreRegen::%loop-index%} parsed as item type
+			play 60 (stone break with speed 1) at {OreRegenLocation::%loop-index%}
+			play 60 (smoke with speed 0) at {OreRegenLocation::%loop-index%}
+			play sound "block.stone.break" with volume 1 and pitch 1 at {OreRegenLocation::%loop-index%}
+			clear {OreRegenTimer::%loop-index%}
+			clear {OreRegen::%loop-index%}
+			clear {OreRegenLocation::%loop-index%}

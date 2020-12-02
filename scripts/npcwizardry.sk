@@ -1,0 +1,23 @@
+command /setNPCVariable <text> <number>:
+	trigger:
+		if arg 1 is "MAG":
+			send "<light red>Please use RES instead!"
+		else:
+			set {npc_%arg 1%.%{t_npcSelected.%player%}%} to arg 2
+			send "Set %arg 1% to %arg 2%."
+		
+command /selectNPC:
+	trigger:
+		if {t_allowNPCSelection.%player%} is not set:
+			set {t_allowNPCSelection.%player%} to true
+			send "<light green>Right-click the NPC to edit."
+		else:
+			clear {t_allowNPCSelection.%player%}
+			send "<light red>Cancelled NPC Selection."
+			
+on right click on an entity:
+	if citizen id of the target is set:
+		set {_CID} to citizen id of the target
+		send "<light green>Selected %target's name% (CID: %{_CID}%)" to the player
+		set {t_npcSelected.%player%} to {_CID}
+		clear {t_allowNPCSelection.%player%}

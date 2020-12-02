@@ -5,7 +5,7 @@ every 1.5 minutes:
 		if {tips.%loop-player%} is 1:
 			set {_tip} to a random integer between 1 and 67
 			if {_tip} is 1:
-				send "<gold>[TIP]<reset> null" to loop-player
+				send "<gold>[TIP]<reset> You can interact with other players directly by right-clicking them with an empty hand. You can whisper, trade, and even forge a Support with other players!" to loop-player
 			else if {_tip} is 2:
 				send "<gold>[TIP]<reset> Weapon skills give a wide range of benefits, from self-healing to powerful debuffs. Lord Kiln at House Silgrid may be able to help you obtain them after you do favors for him." to loop-player
 			else if {_tip} is 3:
@@ -112,7 +112,7 @@ every 1.5 minutes:
 			else if {_tip} is 49:
 				send "<gold>[TIP]<reset> Crafting cars can be expensive, but are well worth the effort to do so. Consider crafting some once you have a large supply of iron." to loop-player
 			else if {_tip} is 50:
-				send "<gold>[TIP]<reset> New crafting recipes can be found in the #recipies channel of the discord server. Check back often for new updates." to loop-player
+				send "<gold>[TIP]<reset> Many new crafting recipes are available for you to discover. If you prefer to simply look them up, try your local castle library." to loop-player
 			else if {_tip} is 51:
 				send "<gold>[TIP]<reset> You can create tempered versions of iron, gold, and diamond by smelting a block of the resource in a furnace. You can use this to craft tool frames and upgrade your pre-existing tools." to loop-player
 			else if {_tip} is 52:
@@ -166,7 +166,7 @@ command /tip:
 	trigger:
 		set {_tip} to a random integer between 1 and 67
 		if {_tip} is 1:
-			send "<gold>[TIP]<reset> null" to player
+			send "<gold>[TIP]<reset> You can interact with other players directly by right-clicking them with an empty hand. You can whisper, trade, and even forge a Support with other players!" to player
 		else if {_tip} is 2:
 			send "<gold>[TIP]<reset> Weapon skills give a wide range of benefits, from self-healing to powerful debuffs. Lord Kiln at House Silgrid may be able to help you obtain them after you do favors for him." to player
 		else if {_tip} is 3:
@@ -273,7 +273,7 @@ command /tip:
 		else if {_tip} is 49:
 			send "<gold>[TIP]<reset> Crafting cars can be expensive, but are well worth the effort to do so. Consider crafting some once you have a large supply of iron." to player
 		else if {_tip} is 50:
-			send "<gold>[TIP]<reset> New crafting recipes can be found in the #recipies channel of the discord server. Check back often for new updates." to player
+			send "<gold>[TIP]<reset> Many new crafting recipes are available for you to discover. If you prefer to simply look them up, try your local castle library." to player
 		else if {_tip} is 51:
 			send "<gold>[TIP]<reset> You can create tempered versions of iron, gold, and diamond by smelting a block of the resource in a furnace. You can use this to craft tool frames and upgrade your pre-existing tools." to player
 		else if {_tip} is 52:

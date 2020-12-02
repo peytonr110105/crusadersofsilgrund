@@ -1,0 +1,24 @@
+#Adds ledge grabbing
+
+on block damage:
+	if the 4th line of the lore of the player's tool is "<light green><bold>Assist - Acrobatics":
+		set {_ledgeGrab} to 1
+	else:
+		set {_ledgeGrab} to checkSlots(player,"Acrobatics")
+	if {_ledgeGrab} is 1:
+		set {_loc} to event-block's location
+		#send "%{_loc}%" to the player
+		#send "%y location of event-block%" to the player
+		if y location of the player is less than or equal to y location of event-block + 0.5:
+			#send "ledge grab?" to the player
+			if distance between player and event-block is less than or equal to 3.75:
+				#send "distance check passed" to the player
+				if block at location at x location of the player, y location of the player + 2, z location of the player is air:
+					#send "first ledge check passed"
+					if block at location at x location of the player, y location of the player + 3, z location of the player is air:
+						#send "second ledge check passed"
+						if block at location at x location of the player, y location of the player + 4, z location of the player is air:
+							#send "third ledge check passed"
+							if block at location at x location of event-block, y location of event-block + 1, z location of event-block is air:
+								if block at location at x location of event-block, y location of event-block + 2, z location of event-block is air:
+									teleport the player to location at x location of event-block, y location of event-block + 1, z location of event-block

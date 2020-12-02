@@ -121,10 +121,10 @@ on right click:
 			send "<light red>Using this wouldn't benefit you right now."
 		
 #Fancy particle FX on mob death		
-on death:
+on death of a monster:
 	play 40 (redstone block break with speed 1) at the victim
 	#Small chance of Green/Gold Herbs being dropped on mob death.
-	chance of 75%:
+	chance of 33%:
 		play 30 (light green wool break with speed 1) at the victim
 		drop 1 green dye named "<light green><bold>Sacred Herb" with lore "<white>A medicinal herb used to heal wounds.","<white>Right-click to restore 6 hearts.","<white>Can also be picked up off the ground to restore 3 hearts if wounded." at the victim
 	chance of 10%:

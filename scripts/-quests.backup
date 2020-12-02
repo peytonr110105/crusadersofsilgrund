@@ -150,11 +150,11 @@ on death of a monster:
 on death of a player:
 	#NPC Deaths
 	if citizen id of the victim is set:
-		if {quests.%attacker%::Creeping Shadows} is 5:
+		if {quests.%attacker%::COS_QUEST_PART1_04} is 5:
 			if the name of the victim is "Gilead":
 				send formatted "<light blue>Gilead: <white>How...?! You are... stronger than I was lead to believe..." to the attacker
 				send formatted "<light blue>Gilead: <white>Savor this victory... I will return! I swear it!" to the attacker
-				setQuestProgress(attacker,"Creeping Shadows",6,"Inform Jagen of Gilead's defeat.")
+				setQuestProgress(attacker,"COS_QUEST_PART1_04",6,"Inform Jagen of Gilead's defeat.")
 				drop 1 iron sword of sharpness 3, unbreaking 3 named "<light purple>Elridian Steel Sword+" with lore "<light red><bold>Slot A - Life and Death","<light blue><bold>Slot B - Desperation","","","","","<white>An otherwordly sword of fine quality.","<white>The craftsmanship is far superior to","<white>traditional Silgrid forging methods.","<white>""Property of the Elridian Republic"" is inscribed in the crossguard." at the attacker
 				send formatted "<light green>Elridian Steel Sword+ Obtained!" to the attacker
 				#Clean up Gilead's data
@@ -175,14 +175,14 @@ on death of a player:
 				make console execute command "/npc remove"
 				clear {NPCsFor.%attacker%::C_Gilead}
 	if victim is a player:
-		if {quests.%victim%::Creeping Shadows} is 5:
+		if {quests.%victim%::COS_QUEST_PART1_04} is 5:
 			if event is not cancelled:
 				cancel event
 				apply resistance 5 to the victim for 20 seconds
 				teleport the victim to location at 774, 71, -1528 in world "GenOne"
 				send formatted "<light blue>Gilead: <white>You were foolish if you expected to win. Enjoy your... early retirement." to the victim
 				make victim execute command "/grantskill 0 Underdog"
-				setQuestProgress(victim,"Creeping Shadows",7,"You were defeated by Gilead...")
+				setQuestProgress(victim,"COS_QUEST_PART1_04",7,"You were defeated by Gilead...")
 				#Clean up Gilead's data
 				make console execute command "/npc sel %citizen id of the attacker%"
 				clear {lvl.%attacker%}
@@ -207,7 +207,7 @@ on death of a player:
 				set the victim's health to 1
 				set the victim's food bar to 3
 				wait 10 seconds
-				make victim execute command "/quests-CreepingShadows 9 0"
+				make victim execute command "/quests-COS_QUEST_PART1_04 9 0"
 		
 #Force-mark as Ally
 command /markasally:
@@ -799,13 +799,13 @@ every 4 ticks:
 								set {quests.%loop-player-1%::Meet the Team} to 1
 								make loop-player-1 execute command "/quests-MeetTheTeam 0"
 								exit 1 loop
-		#Creeping Shadows Gilead Encounter
-		if {quests.%loop-player%::Creeping Shadows} is 3:
+		#COS_QUEST_PART1_04 Gilead Encounter
+		if {quests.%loop-player%::COS_QUEST_PART1_04} is 3:
 			loop all players in radius 7 of the loop-player:
 				if the name of loop-player-2 contains "Gilead":
 					set {NPCsFor.%loop-player-1%::Gilead} to loop-player-2
-					set {quests.%loop-player-1%::Creeping Shadows} to 4
-					make loop-player-1 execute command "/quests-CreepingShadows 8 0"
+					set {quests.%loop-player-1%::COS_QUEST_PART1_04} to 4
+					make loop-player-1 execute command "/quests-COS_QUEST_PART1_04 8 0"
 					exit 1 loop
 
 command /quests-MeetTheTeam <number>:
@@ -1434,8 +1434,8 @@ on right click on an entity:
 					send formatted "<run command:/boah 1><gold>1 - Is this the entrance to House Ulster?" to the player
 			#Alastor
 			else if the name of the target contains "Alastor":
-				#Search and Destroy
-				if {quests.%player%::Search and Destroy} is 2:
+				#Creeping Shadows
+				if {quests.%player%::Creeping Shadows} is 2:
 					send formatted "<light blue>Alastor: <white>%player's tablist name%, <reset><white>you're here." to the player
 					wait 3.5 seconds
 					send formatted "<light blue>Alastor: <white>Cinder says he's found the source of this monster infestation. His men have found old ruins being occupied by a massive army that's approaching from the desert." to the player
@@ -1445,27 +1445,27 @@ on right click on an entity:
 					send formatted "<light blue>Alastor: <white>Scouting reports told us that the main bulk of their army are captured mages being forced to perform necromancy. If we can shut down these bases where they're performing the rituals, we can start pushing them back to wherever they came." to the player
 					wait 8 seconds
 					send formatted "<light blue>Alastor: <white>Get out into the desert and find one of those ruins. It's going to be dangerous, so take someone with you. I've already filled in the rest of the knights on what's going on." to the player
-					setQuestProgress(player,"Search and Destroy",3,"Locate the desert temple located near Colony 7.")
+					setQuestProgress(player,"Creeping Shadows",3,"Locate the desert temple located near Colony 7.")
 					wait 7 seconds
 					send formatted "<light blue>Alastor: <white>Start your search near Colony 7, it's down the road from Grann. Follow the road right from the town entrance, and you should find yourself in the desert where all of this is happening." to the player
-				#Creeping Shadows
-				if {quests.%player%::Creeping Shadows} is 1:
+				#COS_QUEST_PART1_04
+				if {quests.%player%::COS_QUEST_PART1_04} is 1:
 					send formatted "<light blue>Alastor: <white>Just in time, %player's tablist name%<reset><white>. I've got another job for you." to the player
 					wait 3.5 seconds
 					send formatted "<light blue>Alastor: <white>Jagen's put in a request for additional support over at Ram Village, and you sound like a perfect fit." to the player
 					wait 3.5 seconds
 					send formatted "<light blue>Alastor: <white>Run down to the village and see what you can help him with." to the player
-					setQuestProgress(player,"Creeping Shadows",2,"<white>Speak with Jagen at Ram Village.")
+					setQuestProgress(player,"COS_QUEST_PART1_04",2,"<white>Speak with Jagen at Ram Village.")
 					wait 3.5 seconds
-					send formatted "<run command:/quests-CreepingShadows 5 0><gold>1 - What do they need reinforcements for?" to the player
-				else if {quests.%player%::Creeping Shadows} is 8:
+					send formatted "<run command:/quests-COS_QUEST_PART1_04 5 0><gold>1 - What do they need reinforcements for?" to the player
+				else if {quests.%player%::COS_QUEST_PART1_04} is 8:
 					send formatted "<light blue>Alastor: <white>You look like you got your ass handed to you. What happened out there?" to the player
 					wait 3 seconds
-					send formatted "<run command:/quests-CreepingShadows 11 0><gold>1 - I was ambushed and left for dead." to the player
-				else if {quests.%player%::Creeping Shadows} is 9:
+					send formatted "<run command:/quests-COS_QUEST_PART1_04 11 0><gold>1 - I was ambushed and left for dead." to the player
+				else if {quests.%player%::COS_QUEST_PART1_04} is 9:
 					send formatted "<light blue>Alastor: <white>You look rough. How did Ram Village go?" to the player
 					wait 4 seconds
-					send formatted "<run command:/quests-CreepingShadows 15 0><gold>1 - I was ambushed at the village." to the player
+					send formatted "<run command:/quests-COS_QUEST_PART1_04 15 0><gold>1 - I was ambushed at the village." to the player
 				#Legend in the Making
 				if {quests.%player%::Legend in the Making} is 998:
 					set {quests.%player%::Legend in the Making} to 1
@@ -1516,13 +1516,13 @@ on right click on an entity:
 					send formatted "<light blue>Alastor: Ah, a new face. Welcome to House Ulster. What're you here for?" to the player
 					wait 2.5 seconds
 					send formatted "<run command:/Quests-WalkInTheWoods 1><gold>1 - My name is %player's tablist name%<reset><run command:/Quests-WalkInTheWoods 1><gold>. I'd like to join your Knights." to the player
-			#Gordon (Search and Destroy)
+			#Gordon (Creeping Shadows)
 			else if the name of the target is "Gordon":
-				if {quests.%player%::Search and Destroy} is 3:
+				if {quests.%player%::Creeping Shadows} is 3:
 					send "<light blue>Gordon: <white>..." to the player
 					wait 3 seconds
-					send formatted "<run command:/quests-SearchAndDestroy 1><gold>1 - ...Hello?" to the player
-				else if {quests.%player%::Search and Destroy} is 999:
+					send formatted "<run command:/quests-CreepingShadows 1><gold>1 - ...Hello?" to the player
+				else if {quests.%player%::Creeping Shadows} is 999:
 					send "<light blue>Gordon: <white>You've done it! The facility is shut down for good." to the player
 					wait 3 seconds
 					send formatted "<light blue>Gordon: <white>Krav is in your debt. I will be staying behind with the rest of the captured citizens and see if we can extract any helpful information from the facility." to the player
@@ -1532,14 +1532,14 @@ on right click on an entity:
 					send formatted "<light blue>Jagen: <white>Welcome to the village. Do you have any requests of me?" to the player
 					wait 4 seconds
 					send formatted "<run command:/Quests-WalkInTheWoods 10><gold>1 - I have a delivery from Alastor." to the player
-				else if {quests.%player%::Creeping Shadows} is 2:
+				else if {quests.%player%::COS_QUEST_PART1_04} is 2:
 					send formatted "<light blue>Jagen: <white>You again... I take it Alastor has decied to take a chance on you?" to the player
 					wait 3.5 seconds
-					send formatted "<run command:/quests-CreepingShadows 7 0><gold>1 - Yes, sir. I'm here to assist you." to the player
-				else if {quests.%player%::Creeping Shadows} is 6:
+					send formatted "<run command:/quests-COS_QUEST_PART1_04 7 0><gold>1 - Yes, sir. I'm here to assist you." to the player
+				else if {quests.%player%::COS_QUEST_PART1_04} is 6:
 					send formatted "<light blue>Jagen: <white>I heard fighting. What's going on?" to the player
 					wait 5 seconds
-					send formatted "<run command:/quests-CreepingShadows 10 0><gold>1 - The man in the square attacked me!" to the player
+					send formatted "<run command:/quests-COS_QUEST_PART1_04 10 0><gold>1 - The man in the square attacked me!" to the player
 			#Seros Fisherman
 			else if the name of the target is "Seros Fisherman":
 				if {sex.%player%} is 1:
@@ -1634,10 +1634,10 @@ on right click on an entity:
 				else:
 					send formatted "<light blue>%target's name%: Need some training?" to the player
 					wait 2 seconds
-					send formatted "<run command:/train swords><gold>1 - I need training in swords. (+250 pts for $100)" to the player
-					send formatted "<run command:/train axes><gold>2 - I need training in axes. (+250 pts for $100)" to the player
-					send formatted "<run command:/train lances><gold>3 - I need training in lances. (+250 pts for $100)" to the player
-					send formatted "<run command:/train bows><gold>4 - I need training in bows. (+250 pts for $100)" to the player
+					send formatted "<run command:/train swords><gold>1 - I need training in swords. (+100 pts for $100)" to the player
+					send formatted "<run command:/train axes><gold>2 - I need training in axes. (+100 pts for $100)" to the player
+					send formatted "<run command:/train lances><gold>3 - I need training in lances. (+100 pts for $100)" to the player
+					send formatted "<run command:/train bows><gold>4 - I need training in bows. (+100 pts for $100)" to the player
 			#Test NPC
 			else if the name of the target contains "Test NPC":
 				if {quests.%player%::NpcVis Test} is not set:
@@ -1648,14 +1648,7 @@ on right click on an entity:
 					send formatted "<run command:/npctests 3><gold>3 - Follower Test" to the player
 					send formatted "<run command:/npctests 5><gold>4 - Broadcast ID" to the player
 					set {NPCsFor.%player%::Test NPC} to the target
-			#Craftsman Joe
-			else if the name of the target contains "Craftsman Joe":
-				send "<light blue>Craftsman Joe: <white>Howdy!" to the player
-				wait 2 seconds
-				send formatted "<run command:/convos-craftsmanjoe 1 0><gold>1 - What are you doing here?" to the player
-				send formatted "<run command:/convos-craftsmanjoe 2 0><gold>2 - What is this place?" to the player
-				send formatted "<run command:/convos-craftsmanjoe 3 0><gold>3 - Is your name really Craftsman Joe?" to the player
-
+					
 #Complimentary armour for joining the Knights of Ulster.
 on right-click on armor stand:
 	if the name of the target is "<light blue>Knights of Ulster Armour":
@@ -1692,87 +1685,31 @@ command /exitcutscene:
 		send "<light blue>Forcefully left cutscene."
 		clear {inCutscene.%player%}
 		
-command /convos-craftsmanjoe <number> <number>:
-	trigger:
-		if arg 1 is 0:
-			send formatted "<light blue>Craftsman Joe: <white>Alrighty then! Go ahead and ask away!"
-			wait 2 seconds
-			send formatted "<run command:/convos-craftsmanjoe 1 0><gold>1 - What are you doing here?" to the player
-			send formatted "<run command:/convos-craftsmanjoe 2 0><gold>2 - What is this place?" to the player
-			send formatted "<run command:/convos-craftsmanjoe 3 0><gold>3 - Is your name really Craftsman Joe?" to the player
-		else if arg 1 is 1:
-			if arg 2 is 0:
-				send formatted "<light blue>Craftsman Joe: <white>Well, I'm building houses. That's about it!"
-				wait 2 seconds
-				send formatted "<run command:/convos-craftsmanjoe 1 1><gold>1 - What kind of houses?"
-				send formatted "<run command:/convos-craftsmanjoe 0 0><gold>2 - I'd like to ask you some other questions."
-			else if arg 2 is 1:
-				send formatted "<light blue>Craftsman Joe: <white>I don't really know! We were about to start building some plain wooden houses when some foreigners came by and showed us a different building method." to the player
-				wait 5 seconds
-				send formatted "<light blue>Craftsman Joe: <white>I don't understand it all just yet, but it's supposed to be more durable than what we were doing before." to the player
-				wait 3 seconds
-				send formatted "<run command:/convos-craftsmanjoe 1 2><gold>1 - Are those foreigners still here?"
-				send formatted "<run command:/convos-craftsmanjoe 0 0><gold>2 - I'd like to ask you some other questions."
-			else if arg 2 is 2:
-				send formatted "<light blue>Craftsman Joe: <white>They left a while ago, but I think I 'member them running off towards Grann." to the player
-				wait 4 seconds
-				send formatted "<run command:/convos-craftsmanjoe 0 0><gold>1 - I'd like to ask you some other questions."
-		else if arg 1 is 2:
-			if arg 2 is 0:
-				send formatted "<light blue>Craftsman Joe: <white>I don't know what the name will be just yet, but I'm thinkin' this place will turn out to be a big trading hub. Kinda like Grann!"
-				wait 5 seconds
-				send formatted "<light blue>Craftsman Joe: <white>We've got some traders already set up down in the plaza, but we still need to make some stalls and other stuff."
-				wait 3 seconds
-				send formatted "<run command:/convos-craftsmanjoe 0 0><gold>1 - I'd like to ask you some other questions."
-		else if arg 1 is 3:
-			if arg 2 is 0:
-				send formatted "<light blue>Craftsman Joe: <white>It depends on who you're askin'. The name my mother gave me was Johnathan Craft, but my buddies thought ""Craftsman Joe"" had a nice ring to it."
-				wait 5 seconds
-				send formatted "<light blue>Craftsman Joe: <white>It's not too bad. It gives people a pretty darn good impression of who I am, so it saves me some trouble of havin' to explain what I do."
-				wait 5 seconds
-				send formatted "<light blue>Craftsman Joe: <white>...Wait here just a minute, how'd you already know about my nickname?"
-				wait 4 seconds
-				send formatted "<run command:/convos-craftsmanjoe 3 1><gold>1 - I heard it from someone else."
-				send formatted "<run command:/convos-craftsmanjoe 3 2><gold>2 - Do you not see people's names floating above their heads, or is that just me?"
-			else if arg 2 is 1:
-				send formatted "<light blue>Craftsman Joe: <white>Oh. That makes lots more sense. Sorry for puttin' you on the spot like that."
-				wait 3.5 seconds
-				send formatted "<light blue>Craftsman Joe: <white>Is there anythin' else you wanted to talk about?"
-				wait 2 seconds
-				send formatted "<run command:/convos-craftsmanjoe 1 0><gold>1 - What are you doing here?" to the player
-				send formatted "<run command:/convos-craftsmanjoe 2 0><gold>2 - What is this place?" to the player
-				send formatted "<run command:/convos-craftsmanjoe 3 0><gold>3 - Is your name really Craftsman Joe?" to the player
-			else if arg 2 is 2:
-				send formatted "<light blue>Craftsman Joe: <white>Can't say I do. No offense partner, but I think the local cleric is down by the farm if you're needin' some help." to the player
-				wait 5 seconds
-				send formatted "<run command:/convos-craftsmanjoe 0 0><gold>1 - I'd like to ask you some other questions."
-			
-		
 command /CreepingShadowsPumpBehavior <number>:
 	trigger:
 		#1 - lava, 2 - exhaust
 		if arg 1 is 1:
-			if {quests.%player%::Search and Destroy} is 5:
+			if {quests.%player%::Creeping Shadows} is 5:
 				send "<light yellow><italics>The lava pump has been shut down. I need to find the exhaust pump now."
-				setQuestProgress(player,"Search and Destroy",6,"Locate the exhaust pump.")
+				setQuestProgress(player,"Creeping Shadows",6,"Locate the exhaust pump.")
 				wait 5 seconds
 				set the block at location 827, 30, -526 in world "GenOne" to lever
-			else if {quests.%player%::Search and Destroy} is set:
+			else if {quests.%player%::Creeping Shadows} is set:
 				send "<light red><italics>Aren't I missing a pump somewhere? I should go back and check for any missing pumps before I turn this one off..."
 		else if arg 1 is 2:
-			if {quests.%player%::Search and Destroy} is 6:
+			if {quests.%player%::Creeping Shadows} is 6:
 				send "<light yellow><italics>The exhaust pump has been shut down. All that's left is to start the emergency shutdown."
-				setQuestProgress(player,"Search and Destroy",7,"Locate the main control room and initiate the emergency shutdown.")
+				setQuestProgress(player,"Creeping Shadows",7,"Locate the main control room and initiate the emergency shutdown.")
 				wait 5 seconds
 				set the block at location 854, 11, -515 in world "GenOne" to lever
-			else if {quests.%player%::Search and Destroy} is set:
+			else if {quests.%player%::Creeping Shadows} is set:
 				send "<light red><italics>Aren't I missing a pump somewhere? I should go back and check for any missing pumps before I turn this one off..."
 			
-#Search and Destroy terminals			
+#Creeping Shadows terminals			
 command /CreepingShadowsTerminalAccess <number>:
 	trigger:
 		if arg 1 is 0:
-			if {quests.%player%::Search and Destroy} is not 7:
+			if {quests.%player%::Creeping Shadows} is not 7:
 				send "<light red><italics>There's not much reason to mess around with this strange machine. I should look for a way to destroy this base instead."
 			else:
 				send "<light yellow><italics>The odd machine jumps to life with a pleasant chime. The box stacked in the middle suddenly flares with light, displaying countless lines of green text. Curious, you begin to read..."
@@ -1915,7 +1852,7 @@ command /CreepingShadowsTerminalAccess <number>:
 			wait 3 seconds
 			send formatted "<light yellow><italics>The machine sighs its last breath, and the glowing box grows dim. By choosing to shut down the facility rather than override the pumps and destroy it, the nearby town could potentially take control and repurpose it to benefit the people of Gallia. However, it could also simply be re-activated for nefarious deeds in the future..."
 			wait 6 seconds
-			finishQuest(player,"Search and Destroy","Report the mission's success to Alastor.")
+			finishQuest(player,"Creeping Shadows","Report the mission's success to Alastor.")
 			make player execute command "/grantskill 0 Optimism"
 		else if arg 1 is 44444:
 			send formatted "<green><italics>--==PUMP FLOW OVERRIDE==--"
@@ -1938,30 +1875,30 @@ command /CreepingShadowsTerminalAccess <number>:
 			if {_failed} is not set:
 				send formatted "<light yellow><italics>You managed to escape the facility. By destroying the facility rather than merely disabling it, you've ensured that it can no longer be used as a tool for war by the enemy. This also means that the valuable resources inside can no longer be harvested by someone with a better nature..."
 				wait 6 seconds
-				finishQuest(player,"Search and Destroy","Report the mission's success to Alastor.")
+				finishQuest(player,"Creeping Shadows","Report the mission's success to Alastor.")
 				make player execute command "/grantskill 0 Pessimism"
 		
-#Search and Destroy dialouge trees
-command /quests-SearchAndDestroy <number>:
+#Creeping Shadows dialouge trees
+command /quests-CreepingShadows <number>:
 	trigger:
 		if arg 1 is 1:
 			send "<light blue>Gordon: <white>...I am not interested in whatever it is you have to say."
 			wait 3 seconds
-			send "<run command:/quests-SearchAndDestroy 2><gold>1 - I'll just leave you here to die, then."
-			send "<run command:/quests-SearchAndDestroy 2><gold>2 - I'm from the Knights of Ulster. We're here to rescue you and shut down this fortress."
+			send "<run command:/quests-CreepingShadows 2><gold>1 - I'll just leave you here to die, then."
+			send "<run command:/quests-CreepingShadows 2><gold>2 - I'm from the Knights of Ulster. We're here to rescue you and shut down this fortress."
 		else if arg 1 is 2:
 			send "<light blue>Gordon: <white>You're saying that as though I planned on escaping from here alive in the first place."
 			wait 4 seconds
 			send "<light blue>Gordon: <white>The security in this fortress is too extreme for someone like me. I am incredibly lucky to have been spared and sent here for work rather than been slain on the spot."
 			wait 5 seconds
-			send "<run command:/quests-SearchAndDestroy 3><gold>1 - What happened to you?"
-			send "<run command:/quests-SearchAndDestroy 4><gold>2 - Is there any way to shut this place down?"
+			send "<run command:/quests-CreepingShadows 3><gold>1 - What happened to you?"
+			send "<run command:/quests-CreepingShadows 4><gold>2 - Is there any way to shut this place down?"
 		else if arg 1 is 3:
 			send "<light blue>Gordon: <white>I once served under one of the minor lords of Yied, and did so for many years. However, we were eventually overrun by those abominations you've no doubt encountered already. I was captured and sent here to manage the facilities for their war effort."
 			wait 7 seconds
 			send "<light blue>Gordon: <white>They have stripped me of any armour and weapons I had, so escaping from this place is impossible for me. You, however, seem much more well-suited for that task."
 			wait 4 seconds
-			send "<run command:/quests-SearchAndDestroy 4><gold>1 - Is there any way to shut this place down?"
+			send "<run command:/quests-CreepingShadows 4><gold>1 - Is there any way to shut this place down?"
 		else if arg 1 is 4:
 			send "<light blue>Gordon: <white>There is, though it will be a very difficult process. If you are truly intent on destroying the factory, then you will need to shut off the water, lava, and exhaust pumps. Inside this room is the water pump, and you may be able to find the rest of the switches deeper into the facility."
 			wait 7.5 seconds
@@ -1972,7 +1909,7 @@ command /quests-SearchAndDestroy <number>:
 			send "<light blue>Gordon: <white>If you can manage to close off all of the pumps, then an emergency shutdown procedure can be enacted from the main control room at the bottom of the facility. Begin the procedure, and the factory will be rendered useless."
 			wait 6.5 seconds
 			send "<light blue>Gordon: <white>I will take the liberty of disabling the water pump for you. Now, hurry and disable the rest of the facility's pumps!"
-			setQuestProgress(player,"Search and Destroy",5,"Disable the lava and exhaust pumps inside the factory.")
+			setQuestProgress(player,"Creeping Shadows",5,"Disable the lava and exhaust pumps inside the factory.")
 
 #Legend in the Making Dialouge Tree
 command /quests-LegendInTheMaking <number>:
@@ -2015,7 +1952,7 @@ command /quests-LegendInTheMaking <number>:
 			hide {NPCsFor.%player%::Alastor} from the player
 			send "<italics>Alastor is abruptly whisked away in a golden light. Lord Cinder must have used some sort of warp magic..."
 			wait 3 seconds
-			startQuest(player,"Search and Destroy","Enjoy your relaxation period while Alastor is away.")
+			startQuest(player,"Creeping Shadows","Enjoy your relaxation period while Alastor is away.")
 		
 command /purgeNPCSForPlayer [<text="NULL">]:
 	trigger:
@@ -2029,25 +1966,25 @@ command /purgeNPCSForPlayer [<text="NULL">]:
 #The first argument denotes which "section" of the conversation should play.
 #The second argument lets you create alternative dialouge without needing to memorize command arguments.
 #Use 0 as the default.		
-command /quests-CreepingShadows <number> [<number=0>]:
+command /quests-COS_QUEST_PART1_04 <number> [<number=0>]:
 	trigger:
 		#Merriam - Meeting
 		if arg 1 is 0:
 			if arg 2 is 0:
 				send formatted "<light blue>Merriam: <white>It's me, Merriam. I'm trying out this telepathy tome I... borrowed, from Cinder's stock." to the player
 				wait 2.5 seconds
-				send formatted "<run command:/quests-CreepingShadows 1 0><gold>1 - Define ""borrowed""." to the player
-				send formatted "<run command:/quests-CreepingShadows 2 0><gold>2 - Alright, what did you need me for?" to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 1 0><gold>1 - Define ""borrowed""." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 2 0><gold>2 - Alright, what did you need me for?" to the player
 			else if arg 2 is 1:
 				send formatted "<light blue>Merriam: <white>Hey... hey! It's just me, Merriam! You don't have to start panicking like that!" to the player
 				wait 2.5 seconds
-				send formatted "<run command:/quests-CreepingShadows 1 1><gold>1 - Begone, evil spirit! You won't take me alive!" to the player
-				send formatted "<run command:/quests-CreepingShadows 0 2><gold>2 - Oh. Phew. I thought you were a ghost or something." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 1 1><gold>1 - Begone, evil spirit! You won't take me alive!" to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 0 2><gold>2 - Oh. Phew. I thought you were a ghost or something." to the player
 			else if arg 2 is 2:
 				send formatted "<light blue>Merriam: <white>Yeah, it's just me. I'm trying out this telepathy tome I... uh, borrowed from Cinder." to the player
 				wait 2.5 seconds
-				send formatted "<run command:/quests-CreepingShadows 1 0><gold>1 - So you're a thief as well a mage?" to the player
-				send formatted "<run command:/quests-CreepingShadows 2 0><gold>2 - Alright, then. What did you need me for?" to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 1 0><gold>1 - So you're a thief as well a mage?" to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 2 0><gold>2 - Alright, then. What did you need me for?" to the player
 		#Merriam - Meeting Elaboration
 		else if arg 1 is 1:
 			if arg 2 is 0:
@@ -2055,31 +1992,31 @@ command /quests-CreepingShadows <number> [<number=0>]:
 				wait 3 seconds
 				send formatted "<light blue>Merriam: <white>I don't think he'd mind it much anyways, just as long as he knew I was putting it to good use." to the player
 				wait 4 seconds
-				send formatted "<run command:/quests-CreepingShadows 2 0><gold>1 - Alright, then. What did you need me for?" to the player
-				#send formatted "<run command:/quests-CreepingShadows 2 1><gold>2 - You're a thief. You know what happens to thieves." to the player
-				#send formatted "<run command:/quests-CreepingShadows 2 2><gold>3 - You can't get busted for stealing if nobody knows it's gone." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 2 0><gold>1 - Alright, then. What did you need me for?" to the player
+				#send formatted "<run command:/quests-COS_QUEST_PART1_04 2 1><gold>2 - You're a thief. You know what happens to thieves." to the player
+				#send formatted "<run command:/quests-COS_QUEST_PART1_04 2 2><gold>3 - You can't get busted for stealing if nobody knows it's gone." to the player
 			else if arg 2 is 1:
 				send formatted "<light blue>Merriam: <white>Would you cut that out?! I'm not a ghost! I'm just Merriam!" to the player
 				wait 3 seconds
-				send formatted "<run command:/quests-CreepingShadows 2 1><gold>1 - Aah! It's a Merriam ghost!" to the player
-				send formatted "<run command:/quests-CreepingShadows 1 2><gold>2 - Sorry. I just wanted to see how long I could keep it up." to the player
-				send formatted "<run command:/quests-CreepingShadows 0 2><gold>3 - Oh. Phew. I thought you were a real ghost for a second." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 2 1><gold>1 - Aah! It's a Merriam ghost!" to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 1 2><gold>2 - Sorry. I just wanted to see how long I could keep it up." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 0 2><gold>3 - Oh. Phew. I thought you were a real ghost for a second." to the player
 			else if arg 2 is 2:
 				send formatted "<light blue>Merriam: <white>Ugh. I should've known. You're just like Lex... You DO know that, right?" to the player
 				wait 3 seconds
-				send formatted "<run command:/quests-CreepingShadows 1 3><gold>1 - Alright, let's not start with the name-calling..." to the player
-				send formatted "<run command:/quests-CreepingShadows><gold>2 - I'm not sure whether to take that as an insult or a compliment." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 1 3><gold>1 - Alright, let's not start with the name-calling..." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04><gold>2 - I'm not sure whether to take that as an insult or a compliment." to the player
 			else if arg 2 is 3:
 				send formatted "<light blue>Merriam: <white>Alright, I'll take that one back. Lex's pranks are way worse than yours... I hope." to the player
 				wait 3 seconds
 				send formatted "<light blue>Merriam: <white>Wait. You're not planning anything else, are you? Please say no." to the player
 				wait 4.5 seconds
-				send formatted "<run command:/quests-CreepingShadows 2 0><gold>1 - Nope. What did you need me for?" to the player
-				send formatted "<run command:/quests-CreepingShadows 1 4><gold>2 - Hey... what's that behind you?!" to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 2 0><gold>1 - Nope. What did you need me for?" to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 1 4><gold>2 - Hey... what's that behind you?!" to the player
 			else if arg 2 is 4:
 				send formatted "<italics>You can vaugely hear Merriam's frustrated grumbling before the spell's effect ends. You're able to hear one last sentence before Merriam's voice cuts out completely." to the player
 				wait 4 seconds
-				make player execute command "/quests-CreepingShadows 2 1"
+				make player execute command "/quests-COS_QUEST_PART1_04 2 1"
 		#Merriam - Explanation
 		else if arg 1 is 2:
 			if arg 2 is 0:
@@ -2087,14 +2024,14 @@ command /quests-CreepingShadows <number> [<number=0>]:
 				wait 3 seconds
 				send formatted "<light blue>Merriam: <white>He's not too worried about it from what I could gather, so he's sending you." to the player
 				wait 3 seconds
-				send formatted "<run command:/quests-CreepingShadows 3 0><gold>1 - Good to know he holds me in high regard." to the player
-				send formatted "<run command:/quests-CreepingShadows 3 1><gold>2 - I'm going to have a word with Alastor when I get to the castle. A lot of words." to the player
-				send formatted "<run command:/quests-CreepingShadows 4 0><gold>3 - I'll be on my way. Anything else?" to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 3 0><gold>1 - Good to know he holds me in high regard." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 3 1><gold>2 - I'm going to have a word with Alastor when I get to the castle. A lot of words." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 4 0><gold>3 - I'll be on my way. Anything else?" to the player
 			#Merriam - Convo End Negative
 			else if arg 2 is 1:
 				send formatted "<light blue>Merriam: <white>You know what? I give up. Alastor has another mission for you back at House Ulster. Have fun." to the player
 				updateNPCSupportPoints(player,"Merriam",-100)
-				startQuest(player,"Creeping Shadows","Alastor has a new mission for you at House Ulster.")
+				startQuest(player,"COS_QUEST_PART1_04","Alastor has a new mission for you at House Ulster.")
 		#Merriam - Lex and Alastor
 		else if arg 1 is 3:
 			if arg 2 is 0:
@@ -2102,15 +2039,15 @@ command /quests-CreepingShadows <number> [<number=0>]:
 				wait 3 seconds
 				send formatted "<light blue>Merriam: <white>Don't let yourself get too worked up about it. You're at least making a decent wage off of these jobs." to the player
 				wait 3 seconds
-				send formatted "<run command:/quests-CreepingShadows 4 0><gold>1 - Fair enough. Anything else about that job?" to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 4 0><gold>1 - Fair enough. Anything else about that job?" to the player
 			else if arg 2 is 1:
 				send formatted "<light blue>Merriam: <white>I don't think that's too great of an idea. He might need your help, but he wouldn't think twice about firing you for stepping out of line." to the player
 				wait 3 seconds
 				send formatted "<light blue>Merriam: If you do try and argue with him, please leave the rest of us out of it. When Lex tried it, Alastor nearly suspended all of us for a week." to the player
 				wait 3.5 seconds
-				send formatted "<run command:/quests-CreepingShadows 3 3><gold>1 - What did Lex try to argue about?" to the player
-				#send formatted "<run command:/quests-CreepingShadows 3 4><gold>2 - I fear no man. Alastor needs to be taken down a peg for insulting me like this." to the player
-				send formatted "<run command:/quests-CreepingShadows 4 0><gold>3 - I'll drop it, then. Anything else with that mission you mentioned?" to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 3 3><gold>1 - What did Lex try to argue about?" to the player
+				#send formatted "<run command:/quests-COS_QUEST_PART1_04 3 4><gold>2 - I fear no man. Alastor needs to be taken down a peg for insulting me like this." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 4 0><gold>3 - I'll drop it, then. Anything else with that mission you mentioned?" to the player
 			else if arg 2 is 3:
 				send formatted "<light blue>Merriam: <white>He got really offended when Alastor called him a meathead. You can probably guess what happens next." to the player
 				wait 3 seconds
@@ -2118,7 +2055,7 @@ command /quests-CreepingShadows <number> [<number=0>]:
 		#Merriam - Convo End Positive
 		else if arg 1 is 4:
 			send formatted "<light blue>Merriam: <white>I think that's all of it. Good luck with it, %player's tablist name%<reset><white>!" to the player
-			startQuest(player,"Creeping Shadows","Alastor has a new mission for you at House Ulster.")
+			startQuest(player,"COS_QUEST_PART1_04","Alastor has a new mission for you at House Ulster.")
 		#Alastor
 		else if arg 1 is 5:
 			if arg 2 is 0:
@@ -2126,8 +2063,8 @@ command /quests-CreepingShadows <number> [<number=0>]:
 				wait 7 seconds
 				send formatted "<light blue>Alastor: <white>That man's seen and done a hell of a lot more than any single person should. If he's asking for help, then we'd better be taking it seriously." to the player
 				wait 5 seconds
-				send formatted "<run command:/quests-CreepingShadows 5 1><gold>1 - Who is Jagen, exactly?" to the player
-				send formatted "<run command:/quests-CreepingShadows 5 2><gold>2 - If that's the case, then why send me?" to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 5 1><gold>1 - Who is Jagen, exactly?" to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 5 2><gold>2 - If that's the case, then why send me?" to the player
 			else if arg 2 is 1:
 				send formatted "<light blue>Alastor: <white>Jagen was a soldier in Cinder's army while he was still the lone ruler of Silgrund." to the player
 				wait 5 seconds
@@ -2135,27 +2072,27 @@ command /quests-CreepingShadows <number> [<number=0>]:
 				wait 5 seconds
 				send formatted "<light blue>Alastor: <white>Now this was years ago, mind you. He's gotten old, and he's sure as hell out of his prime. He can still put up a fight, but nobody's going to be calling him to war." to the player
 				wait 6 seconds
-				send formatted "<run command:/quests-CreepingShadows 5 2><gold>1 - Why send me on this mission?" to the player
-				send formatted "<run command:/quests-CreepingShadows 5 4><gold>2 - I'll be on my way." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 5 2><gold>1 - Why send me on this mission?" to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 5 4><gold>2 - I'll be on my way." to the player
 			else if arg 2 is 2:
 				send formatted "<light blue>Alastor: <white>Well, I'm still skeptical about his source for this monster siege. I don't want to send my best knights off just to squash a spider, so I figure someone like you would be better suited to the task." to the player
 				wait 6 seconds
-				send formatted "<run command:/quests-CreepingShadows 5 1><gold>1 - Who is Jagen, exactly?" to the player
-				send formatted "<run command:/quests-CreepingShadows 5 3><gold>2 - Thanks for letting me know my worth to you." to the player
-				send formatted "<run command:/quests-CreepingShadows 5 4><gold>3 - I'll be on my way." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 5 1><gold>1 - Who is Jagen, exactly?" to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 5 3><gold>2 - Thanks for letting me know my worth to you." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 5 4><gold>3 - I'll be on my way." to the player
 			else if arg 2 is 3:
 				send formatted "<light blue>Alastor: <white>You asked, I delivered." to the player
 				wait 3 seconds
 				send formatted "<light blue>Alastor: <white>Now, if you're done complaining, start heading over to Ram Village and see what Jagen has in store for you." to the player
 				wait 3 seconds
 				if {str.%player%} + {strbuff.%player%} is more than 14:
-					send formatted "<run command:/quests-CreepingShadows 6 0><light green>1 - I don't think you're taking me seriously. [STR >= 15]" to the player
+					send formatted "<run command:/quests-COS_QUEST_PART1_04 6 0><light green>1 - I don't think you're taking me seriously. [STR >= 15]" to the player
 				else:
-					send formatted "<run command:/quests-CreepingShadows 6 0><light red>1 - I don't think you're taking me seriously. [STR >= 15]" to the player
-				send formatted "<run command:/quests-CreepingShadows 5 4><gold>2 - I'll be on my way." to the player
+					send formatted "<run command:/quests-COS_QUEST_PART1_04 6 0><light red>1 - I don't think you're taking me seriously. [STR >= 15]" to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 5 4><gold>2 - I'll be on my way." to the player
 			else if arg 2 is 4:
 				send formatted "<light blue>Alastor: <white>Good. Don't dissapoint out there." to the player
-				setQuestProgress(player,"Creeping Shadows",2,"Speak with Jagen at Ram Village.")
+				setQuestProgress(player,"COS_QUEST_PART1_04",2,"Speak with Jagen at Ram Village.")
 		#Alastor - The Gamble
 		else if arg 1 is 6:
 			if arg 2 is 0:
@@ -2167,11 +2104,11 @@ command /quests-CreepingShadows <number> [<number=0>]:
 					send formatted "<light blue>Alastor: <white>The last thing I need in this army is some meathead prancing around with more muscle than talent." to the player
 					wait 5 seconds
 					if {skl.%player%} + {sklbuff.%player%} is more than 19:
-						send formatted "<run command:/quests-CreepingShadows 6 1><light green>1 - You're not going to have that problem with me. I know my way around a fight [SKL >= 20]." to the player
+						send formatted "<run command:/quests-COS_QUEST_PART1_04 6 1><light green>1 - You're not going to have that problem with me. I know my way around a fight [SKL >= 20]." to the player
 					else:
-						send formatted "<run command:/quests-CreepingShadows 6 1><light red>1 - You're not going to have that problem with me. I know my way around a fight [SKL >= 20]." to the player
-					send formatted "<run command:/quests-CreepingShadows 6 ><gold>2 - You seem pretty happy to keep Lex around though." to the player
-					send formatted "<run command:/quests-CreepingShadows 5 4><gold>3 - Understood. I'll be on my way." to the player
+						send formatted "<run command:/quests-COS_QUEST_PART1_04 6 1><light red>1 - You're not going to have that problem with me. I know my way around a fight [SKL >= 20]." to the player
+					send formatted "<run command:/quests-COS_QUEST_PART1_04 6 ><gold>2 - You seem pretty happy to keep Lex around though." to the player
+					send formatted "<run command:/quests-COS_QUEST_PART1_04 5 4><gold>3 - Understood. I'll be on my way." to the player
 				else:
 					send formatted "<light blue>Alastor: <white>You're right, I don't. You're weak, and an easy job like this is good for getting fresh blood like you up to speed." to the player
 					wait 5 seconds
@@ -2179,47 +2116,47 @@ command /quests-CreepingShadows <number> [<number=0>]:
 					wait 5 seconds
 					send formatted "<light blue>Alastor: <white>Tell you what: if Jagen tells me you put in some good work out there, I'll see about getting you some extra training. Sound fair?" to the player
 					wait 5 seconds
-					send formatted "<run command:/quests-CreepingShadows 6 4><gold>1 - You've got a deal." to the player
-					send formatted "<run command:/quests-CreepingShadows 6 5><gold>2 - Change that to gold, and you have a deal." to the player
+					send formatted "<run command:/quests-COS_QUEST_PART1_04 6 4><gold>1 - You've got a deal." to the player
+					send formatted "<run command:/quests-COS_QUEST_PART1_04 6 5><gold>2 - Change that to gold, and you have a deal." to the player
 			else if arg 2 is 1:
 				if {skl.%player%} + {sklbuff.%player%} is more than 19:
 					send formatted "<light blue>Alastor: <white>That might be true, but it doesn't mean you've got my full trust just yet. You've got a lot of work to do before you get to that point." to the player
 					wait 5 seconds
 					send formatted "<light blue>Alastor: <white>Here's my proposal: If you can impress Jagen out there, then I'll see about having the blacksmith cook up something special for you. Something only a skilled knight could wield." to the player
 					wait 5 seconds
-					send formatted "<run command:/quests-CreepingShadows 6 2><gold>1 - You've got a deal." to the player
-					send formatted "<run command:/quests-CreepingShadows 6 3><gold>2 - Change that to gold, and you have a deal." to the player
+					send formatted "<run command:/quests-COS_QUEST_PART1_04 6 2><gold>1 - You've got a deal." to the player
+					send formatted "<run command:/quests-COS_QUEST_PART1_04 6 3><gold>2 - Change that to gold, and you have a deal." to the player
 				else:
 					send formatted "<light blue>Alastor: <white>Maybe in a few years, whelp. But for now, you're going to have to train like the rest of us did." to the player
 					wait 4 seconds
 					send formatted "<light blue>Alastor: <white>Get moving to Ram Village. You don't want to keep Jagen waiting." to the player
-					setQuestProgress(player,"Creeping Shadows",2,"Speak with Jagen at Ram Village.")
+					setQuestProgress(player,"COS_QUEST_PART1_04",2,"Speak with Jagen at Ram Village.")
 			else if arg 2 is 2:
 				updateNPCSupportPoints(player,"Alastor",100)
 				send formatted "<light blue>Alastor: <white>Good luck. You're going to need it to impress a beast like Jagen. Now, get going." to the player
-				set {quests.%player%::Creeping Shadows_BONUS} to 1
-				setQuestProgress(player,"Creeping Shadows",2,"Speak with Jagen at Ram Village.")
+				set {quests.%player%::COS_QUEST_PART1_04_BONUS} to 1
+				setQuestProgress(player,"COS_QUEST_PART1_04",2,"Speak with Jagen at Ram Village.")
 			else if arg 2 is 3:
 				updateNPCSupportPoints(player,"Alastor",100)
 				send formatted "<light blue>Alastor: <white>Straight to the point, eh? I can respect that. Let's pin it at 500 gold. Now, get going." to the player
-				set {quests.%player%::Creeping Shadows_BONUS} to 2
-				setQuestProgress(player,"Creeping Shadows",2,"Speak with Jagen at Ram Village.")
+				set {quests.%player%::COS_QUEST_PART1_04_BONUS} to 2
+				setQuestProgress(player,"COS_QUEST_PART1_04",2,"Speak with Jagen at Ram Village.")
 			else if arg 2 is 4:
 				updateNPCSupportPoints(player,"Alastor",100)
 				send formatted "<light blue>Alastor: <white>Good luck. You're going to need it to impress a beast like Jagen. Now, get going." to the player
-				set {quests.%player%::Creeping Shadows_BONUS} to 3
-				setQuestProgress(player,"Creeping Shadows",2,"Speak with Jagen at Ram Village.")
+				set {quests.%player%::COS_QUEST_PART1_04_BONUS} to 3
+				setQuestProgress(player,"COS_QUEST_PART1_04",2,"Speak with Jagen at Ram Village.")
 			else if arg 2 is 5:
 				updateNPCSupportPoints(player,"Alastor",100)
 				send formatted "<light blue>Alastor: <white>Straight to the point, eh? I can respect that. Let's pin it at 300 gold. Now, get going." to the player
-				set {quests.%player%::Creeping Shadows_BONUS} to 4
-				setQuestProgress(player,"Creeping Shadows",2,"Speak with Jagen at Ram Village.")
+				set {quests.%player%::COS_QUEST_PART1_04_BONUS} to 4
+				setQuestProgress(player,"COS_QUEST_PART1_04",2,"Speak with Jagen at Ram Village.")
 			else if arg 2 is 6:
 				send formatted "<light blue>Alastor: <white>..." to the player
 				wait 4 seconds
 				send formatted "<light blue>Alastor: <white>Go to Ram Village. Now. I'm not hearing another word out of your mouth." to the player
 				updateNPCSupportPoints(player,"Alastor",-500)
-				setQuestProgress(player,"Creeping Shadows",2,"Speak with Jagen at Ram Village.")
+				setQuestProgress(player,"COS_QUEST_PART1_04",2,"Speak with Jagen at Ram Village.")
 		#Jagen
 		else if arg 1 is 7:
 			if arg 2 is 0:
@@ -2231,22 +2168,22 @@ command /quests-CreepingShadows <number> [<number=0>]:
 				wait 5.5 seconds
 				send formatted "<light blue>Jagen: <white>I need you to stand guard near the center of the village and make sure no monsters can attack the villagers. Understood?" to the player
 				wait 5 seconds
-				send formatted "<run command:/quests-CreepingShadows 7 1><gold>1 - Understood." to the player
-				send formatted "<run command:/quests-CreepingShadows 7 2><gold>2 - Guard duty? Ugh." to the player
-				send formatted "<run command:/quests-CreepingShadows 7 3><gold>3 - As you will, sir!" to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 7 1><gold>1 - Understood." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 7 2><gold>2 - Guard duty? Ugh." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 7 3><gold>3 - As you will, sir!" to the player
 			else if arg 2 is 1:
 				send formatted "<light blue>Jagen: <white>Excellent. The village center is just on your right as you exit. Alert myself and the guards if you see anything suspicious." to the player
-				setQuestProgress(player,"Creeping Shadows",3,"Stand guard at the center of Ram Village.")
+				setQuestProgress(player,"COS_QUEST_PART1_04",3,"Stand guard at the center of Ram Village.")
 			else if arg 2 is 2:
 				send formatted "<light blue>Jagen: <white>As I expected. Young and impatient, as usual. You'll learn to appreciate the serenity of such a task when you're older." to the player
 				wait 5 seconds
 				send formatted "<light blue>Jagen: <white>Now, your post is at the center of the village. It's to the right of my home. Go ahead and stand guard, and notify myself and the guards if you notice anything out of the ordinary." to the player
-				setQuestProgress(player,"Creeping Shadows",3,"Stand guard at the center of Ram Village.")
+				setQuestProgress(player,"COS_QUEST_PART1_04",3,"Stand guard at the center of Ram Village.")
 			else if arg 2 is 3:
 				send formatted "<light blue>Jagen: <white>Good to see the young ones have some fire in them. Keep that up." to the player
 				wait 4 seconds
 				send formatted "<light blue>Jagen: <white>Your post is at the center of the village, to the right of my home. Notify myself and the guards if you see anything suspicious." to the player
-				setQuestProgress(player,"Creeping Shadows",3,"Stand guard at the center of Ram Village.")
+				setQuestProgress(player,"COS_QUEST_PART1_04",3,"Stand guard at the center of Ram Village.")
 		#Gilead
 		else if arg 1 is 8:
 			if arg 2 is 0:
@@ -2276,30 +2213,29 @@ command /quests-CreepingShadows <number> [<number=0>]:
 				while {NPCsFor.%player%::C_Gilead} is navigating:
 					wait 1 tick
 				#Setup Gilead's Stats
-				set {_debug} to setEntityVariableByName({NpcsFor.%player%::C_Gilead},"LVL",15)
-				set {_debug} to setEntityVariableByName({NPCSFor.%player%::C_GILEAD},"STR",28)
-				set {_debug} to setEntityVariableByName({NPCSFor.%player%::C_GILEAD},"SPD",20)
-				set {_debug} to setEntityVariableByName({NPCSFor.%player%::C_GILEAD},"SKL",32)
-				set {_debug} to setEntityVariableByName({NPCSFor.%player%::C_GILEAD},"DEF",20)
-				set {_debug} to setEntityVariableByName({NPCSFor.%player%::C_GILEAD},"RES",15)
-				set {_debug} to setEntityVariableByName({NPCSFor.%player%::C_GILEAD},"HP",60)
+				set {lvl.%{NPCsFor.%player%::C_Gilead}%} to 15
+				set {str.%{NPCsFor.%player%::C_Gilead}%} to 23
+				set {spd.%{NPCsFor.%player%::C_Gilead}%} to 15
+				set {skl.%{NPCsFor.%player%::C_Gilead}%} to 9
+				set {def.%{NPCsFor.%player%::C_Gilead}%} to 16
+				set {res.%{NPCsFor.%player%::C_Gilead}%} to 11
 				set {hp.%{NPCsFor.%player%::C_Gilead}%} to 60
 				set {skillslot1.%{NPCsFor.%player%::C_Gilead}%} to "Brazen STR/DEF"
-				if ({lvl.%player%} + ({promoted.%player%} * 10)) is more than 15:
-					set {_levelScaling} to (({lvl.%player%} + ({promoted.%player%} * 10)) - 15)
+				if player's level is more than 15:
+					set {_levelScaling} to player's level - 15
 					loop {_levelScaling} times:
-						chance of 75%:
-							set {_debug} to changeEntityStatBuff({NPCSFor.%player%::C_GILEAD},"STR",1)
 						chance of 50%:
-							set {_debug} to changeEntityStatBuff({NPCSFor.%player%::C_GILEAD},"SPD",1)
+							add 1 to {str.%{NPCsFor.%player%::C_Gilead}%}
+						chance of 35%:
+							add 1 to {spd.%{NPCsFor.%player%::C_Gilead}%}
 						chance of 80%:
-							set {_debug} to changeEntityStatBuff({NPCSFor.%player%::C_GILEAD},"SKL",1)
-						chance of 60%:
-							set {_debug} to changeEntityStatBuff({NPCSFor.%player%::C_GILEAD},"DEF",1)
-						chance of 60%:
-							set {_debug} to changeEntityStatBuff({NPCSFor.%player%::C_GILEAD},"RES",1)
+							add 1 to {skl.%{NPCsFor.%player%::C_Gilead}%}
+						chance of 40%:
+							add 1 to {def.%{NPCsFor.%player%::C_Gilead}%}
+						chance of 40%:
+							add 1 to {res.%{NPCsFor.%player%::C_Gilead}%}
 						add 2 to {hp.%{NPCsFor.%player%::C_Gilead}%}
-						chance of 75%:
+						chance of 50%:
 							add 1 to {hp.%{NPCsFor.%player%::C_Gilead}%}
 				make console execute command "/sentinel health %{hp.%{NPCsFor.%player%::C_Gilead}%}%"
 				make console execute command "/sentinel addignore PLAYER:%player%"
@@ -2307,32 +2243,32 @@ command /quests-CreepingShadows <number> [<number=0>]:
 				make console execute command "/sentinel addtarget PLAYER:%player%"
 				initBossLogic(player,"Gilead",1)
 				send "<light blue>Gilead: <white>You. You're the one this Alastor character has dispatched. Am I correct?" to the player
-				send formatted "<run command:/quests-CreepingShadows 8 1><gold>1 - I'm not looking for trouble." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 8 1><gold>1 - I'm not looking for trouble." to the player
 			else if arg 2 is 1:
 				send formatted "<light blue>Gilead: <white>That is unfortunate. It seems to me you've stumbled right into it." to the player
 				wait 4 seconds
 				send formatted "<light blue>Gilead: <white>I have been sent here to judge your realm's people, and so far I am rather... unimpressed." to the player
 				wait 4 seconds
-				send formatted "<run command:/quests-CreepingShadows 8 2><gold>1 - What's that supposed to mean?" to the player
-				send formatted "<run command:/quests-CreepingShadows 8 5><gold>2 - Stay out of my way, or else I'll make you stay out of it." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 8 2><gold>1 - What's that supposed to mean?" to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 8 5><gold>2 - Stay out of my way, or else I'll make you stay out of it." to the player
 			else if arg 2 is 2:
 				send formatted "<light blue>Gilead: <white>These people of Alastor's... They are barbaric. Lacking even the most basic of amenities of an advanced culture." to the player
 				wait 5 seconds
 				send formatted "<light blue>Gilead: <white>Though I have been told that their combat abilities are of a much better quality... Will you be the one to demonstrate that, I wonder?" to the player
 				wait 6 seconds
-				send formatted "<run command:/quests-CreepingShadows 8 3><gold>1 - If you've got a death wish, then I'm sure I can oblige." to the player
-				send formatted "<run command:/quests-CreepingShadows 8 4><gold>2 - Are you mad? There's monsters closing in!" to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 8 3><gold>1 - If you've got a death wish, then I'm sure I can oblige." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 8 4><gold>2 - Are you mad? There's monsters closing in!" to the player
 			else if arg 2 is 3:
 				send formatted "<light blue>Gilead: <white>Well then! You seem to have quite the fire about you! Let us see if that serves to bolster your combat talents!" to the player
-				make player execute command "/quests-CreepingShadows 8 6"
+				make player execute command "/quests-COS_QUEST_PART1_04 8 6"
 			else if arg 2 is 4:
 				send formatted "<light blue>Gilead: <white>You seem to be mistaken. The only monster I see is this beast standing before me." to the player
 				wait 4 seconds
 				send formatted "<light blue>Gilead: <white>And as is the natural heiarchy, such animals must be eliminated!" to the player
-				make player execute command "/quests-CreepingShadows 8 6"
+				make player execute command "/quests-COS_QUEST_PART1_04 8 6"
 			else if arg 2 is 5:
 				send formatted "<light blue>Gilead: <white>Then it seems we are at odds. Let us resolve this with a test of might!" to the player
-				make player execute command "/quests-CreepingShadows 8 6"
+				make player execute command "/quests-COS_QUEST_PART1_04 8 6"
 			else if arg 2 is 6:
 				wait 2 seconds
 				send formatted "<light blue>Gilead: <white>Engarde! Best me if you can, and prove the worth of these miserable wretches!" to the player
@@ -2342,7 +2278,7 @@ command /quests-CreepingShadows <number> [<number=0>]:
 				make console execute command "/sentinel addtarget PLAYER:%player%"
 				#Run Gilead 1's fight behavior
 				initBossLogic(player,"Gilead",1)
-				setQuestProgress(player,"Creeping Shadows",5,"Defeat Gilead!")
+				setQuestProgress(player,"COS_QUEST_PART1_04",5,"Defeat Gilead!")
 		#Gilead Duel Fail
 		else if arg 1 is 9:
 			if arg 2 is 0:
@@ -2369,20 +2305,20 @@ command /quests-CreepingShadows <number> [<number=0>]:
 				wait 6 seconds
 				send formatted "<light blue>Irankata: <white>Oh! %player's tablist name%, you're okay after all! Thank goodness." to the player
 				wait 4 seconds
-				send formatted "<run command:/quests-CreepingShadows 9 1><gold>1 - Ugh... where am I?" to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 9 1><gold>1 - Ugh... where am I?" to the player
 			else if arg 2 is 1:
 				send formatted "<light blue>Irankata: <white>Well, right now we're in a cabin near Ram Village. Don't know exactly <italics>whose<reset><white> house this is, but I'm pretty sure they won't mind a whole lot." to the player
 				wait 7 seconds
-				send formatted "<run command:/quests-CreepingShadows 9 2><gold>1 - That sounds more than a little illegal." to the player
-				send formatted "<run command:/quests-CreepingShadows 9 5><gold>2 - I agree. We're knights, we should get at least a little special treatment." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 9 2><gold>1 - That sounds more than a little illegal." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 9 5><gold>2 - I agree. We're knights, we should get at least a little special treatment." to the player
 			else if arg 2 is 2:
 				updateNPCSupportPoints(player,"Kalus",50)
 				send formatted "<light blue>Kalus: <white>Agreed. My sister, in all of her infinite wisdom, elected to bring you here rather than returning to House Ulster." to the player
 				wait 6 seconds
 				send formatted "<light blue>Irankata: <white>Well, <italics>I<reset><white> was trying to keep him from getting yelled at by Alastor for coming back in a box." to the player
 				wait 6 seconds
-				send formatted "<run command:/quests-CreepingShadows 9 3><gold>1 - I don't see how that would change anything. It probably put my life in even more danger." to the player
-				send formatted "<run command:/quests-CreepingShadows 9 6><gold>2 - Thanks. Last thing I want to do right now is talk to him." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 9 3><gold>1 - I don't see how that would change anything. It probably put my life in even more danger." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 9 6><gold>2 - Thanks. Last thing I want to do right now is talk to him." to the player
 			else if arg 2 is 3:
 				updateNPCSupportPoints(player,"Irankata",-50)
 				updateNPCSupportPoints(player,"Kalus",50)
@@ -2394,7 +2330,7 @@ command /quests-CreepingShadows <number> [<number=0>]:
 				wait 4 seconds
 				send formatted "<light blue>Irankata: <white>...Meanie." to the player
 				wait 3 seconds
-				make player execute command "/quests-CreepingShadows 9 4"
+				make player execute command "/quests-COS_QUEST_PART1_04 9 4"
 			else if arg 2 is 4:
 				send formatted "<light blue>Kalus: <white>When you are ready, %player's tablist name%<reset><white>, we will depart to House Ulster." to the player
 				wait 4 seconds
@@ -2403,7 +2339,7 @@ command /quests-CreepingShadows <number> [<number=0>]:
 				make console execute command "/sentinel guard %player%"
 				make console execute command "/npc sel %citizen id of {NPCsFor.%player%::C_Kalus}%"
 				make console execute command "/sentinel guard %player%"
-				setQuestProgress(player,"Creeping Shadows",8,"Return to House Ulster and speak with Alastor.")
+				setQuestProgress(player,"COS_QUEST_PART1_04",8,"Return to House Ulster and speak with Alastor.")
 			else if arg 2 is 5:
 				updateNPCSupportPoints(player,"Irankata",100)
 				send formatted "<light blue>Irankata: <white>Absolutely! I mean, if the person who owned this house were here, they'd probably let us use it <italics>because<reset><white> we're knights." to the player
@@ -2413,7 +2349,7 @@ command /quests-CreepingShadows <number> [<number=0>]:
 				wait 6 seconds
 				send formatted "<light blue>Kalus: <white>Regardless, we should depart as soon as possible, and try to avoid a particularly unfavorable situation should the owner of this house find us here." to the player
 				wait 5 seconds
-				make player execute command "/quests-CreepingShadows 9 4"
+				make player execute command "/quests-COS_QUEST_PART1_04 9 4"
 			else if arg 2 is 6:
 				updateNPCSupportPoints(player,"Irankata",100)
 				send formatted "<light blue>Irankata: <white>No problem! That's what friends are for." to the player
@@ -2425,21 +2361,21 @@ command /quests-CreepingShadows <number> [<number=0>]:
 				wait 5 seconds
 				send formatted "<light blue>Irankata: <white>Anyways, we should probably get going before whoever owns this place gets back. I really don't want to have that conversation right now." to the player
 				wait 4 seconds
-				make player execute command "/quests-CreepingShadows 9 4"
+				make player execute command "/quests-COS_QUEST_PART1_04 9 4"
 		#Jagen - Finding the truth
 		else if arg 1 is 10:
 			if arg 2 is 0:
 				send formatted "<light blue>Jagen: <white>Are you talking about Gilead? I should've known that man would cause trouble. I'd been suspicious of him ever since he arrived at the village." to the player
 				wait 5 seconds
-				send formatted "<run command:/quests-CreepingShadows 10 1><gold>1 - At any rate, I've taken care of that problem for you." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 10 1><gold>1 - At any rate, I've taken care of that problem for you." to the player
 			else if arg 2 is 1:
 				updateNPCSupportPoints(player,"Jagen",200)
 				send formatted "<light blue>Jagen: <white>You have. And I can thank you for that. It's good to see that new blood such as yourself have not just the courage to fight, but the strength to come out victorious." to the player
 				wait 7 seconds
 				send formatted "<light blue>Jagen: <white>Now, what was Gilead's reason for attacking you? Do you have an idea of what his motives were?" to the player
 				wait 5 seconds
-				send formatted "<run command:/quests-CreepingShadows 10 2><gold>1 - He mentioned something about ""judging our people"", whatever that means." to the player
-				send formatted "<run command:/quests-CreepingShadows 10 4><gold>2 - Not a clue, but he might've been involved in those monster reports." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 10 2><gold>1 - He mentioned something about ""judging our people"", whatever that means." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 10 4><gold>2 - Not a clue, but he might've been involved in those monster reports." to the player
 			else if arg 2 is 2:
 				send formatted "<light blue>Jagen: <white>Interesting... He did have a particularly foreign appearance about him. He certainly wasn't from Silgrund, that much is certain." to the player
 				wait 5 seconds
@@ -2451,28 +2387,28 @@ command /quests-CreepingShadows <number> [<number=0>]:
 				wait 5 seconds
 				send formatted "<light blue>Jagen: <white>You should take this back to House Ulster, and have it examined. I have the feeling Gilead's appearance is somehow linked to the increase in monster activity we've been experiencing. Call it an old man's intuition." to the player
 				wait 7 seconds
-				send formatted "<run command:/quests-CreepingShadows 10 3><gold>1 - Will the village be alright without me?" to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 10 3><gold>1 - Will the village be alright without me?" to the player
 			else if arg 2 is 3:
 				send formatted "<light blue>Jagen: <white>I think we'll be alright. These old bones still have a few more battles left in them." to the player
 				wait 3 seconds
 				send formatted "<light blue>Jagen: <white>Before you leave, do you think Gilead had any connection to the recent reports of monsters in the area?" to the player
 				wait 5 seconds
-				send formatted "<run command:/quests-CreepingShadows 10 4><gold>1 - I wouldn't doubt it." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 10 4><gold>1 - I wouldn't doubt it." to the player
 			else if arg 2 is 4:
 				send formatted "<light blue>Jagen: <white>I have the same suspicions... What exactly did he say that gave you the idea?" to the player
 				wait 4 seconds
-				send formatted "<run command:/quests-CreepingShadows 10 5><gold>1 - I'm not sure. He just gave off that sort of impression." to the player
-				send formatted "<run command:/quests-CreepingShadows 10 6><gold>2 - He didn't seem worried at all about the monsters nearby. He was more concerned about us being ""barbaric""." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 10 5><gold>1 - I'm not sure. He just gave off that sort of impression." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 10 6><gold>2 - He didn't seem worried at all about the monsters nearby. He was more concerned about us being ""barbaric""." to the player
 			else if arg 2 is 5:
 				send formatted "<light blue>Jagen: <white>Well, I can't say you have very good evidence... but the mere fact that the two of us came to similar conclusions is worrisome." to the player
 				wait 5 seconds
-				make player execute command "/quests-CreepingShadows 10 7"
+				make player execute command "/quests-COS_QUEST_PART1_04 10 7"
 			else if arg 2 is 6:
 				send formatted "<light blue>Jagen: <white>With what we've been told, you would have to be insane to ignore the reports that have been coming in. I think the pieces are starting to fall together..." to the player
 				wait 6 seconds
 				send formatted "<light blue>Jagen: <white>If we knew why he waited until now to make his move, then we could possibly figure out what his true intentions were." to the player
 				wait 5 seconds
-				send formatted "<run command:/quests-CreepingShadows 10 7><gold>1 - He seemed to be pretty focused on the fact that I was one of Alastor's knights." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 10 7><gold>1 - He seemed to be pretty focused on the fact that I was one of Alastor's knights." to the player
 			else if arg 2 is 7:
 				send formatted "<light blue>Jagen: <white>It had to have been a trap then. It's all too convienent to be anything else." to the player
 				wait 6 seconds
@@ -2485,7 +2421,7 @@ command /quests-CreepingShadows <number> [<number=0>]:
 				send formatted "<light blue>Jagen: <white>This blade is government property. He must have been a spy for the ""Elridian Republic"" mentioned on the blade's crossguards." to the player
 				wait 6 seconds
 				send formatted "<light blue>Jagen: <white>Without a doubt, there's trouble brewing. You need to take this information back to Alastor immediately. I'll figure out what to do about defending the village in the meantime." to the player
-				setQuestProgress(player,"Creeping Shadows",9,"Report the day's events to Alastor.")
+				setQuestProgress(player,"COS_QUEST_PART1_04",9,"Report the day's events to Alastor.")
 		#Alastor - Post Quest
 		else if arg 1 is 11:
 			if arg 2 is 0:
@@ -2496,12 +2432,12 @@ command /quests-CreepingShadows <number> [<number=0>]:
 				if {npcSupportPoints.%player%::Kalus} is more than or equal to 100:
 					send formatted "<light blue>Kalus: <white>%player's tablist name%<reset><white>, may I put in a word for you?" to the player
 					wait 4 seconds
-					send formatted "<run command:/quests-CreepingShadows 12 0><gold>SPECIAL - Go ahead, Kalus." to the player
+					send formatted "<run command:/quests-COS_QUEST_PART1_04 12 0><gold>SPECIAL - Go ahead, Kalus." to the player
 				if {npcSupportPoints.%player%::Irankata} is more than or equal to 100:
 					send formatted "<light blue>Irankata: <white>Oh! I have a <italics>great<reset><white> excuse. You'll let me tell him what happened, right %player's tablist name%<reset><white>?" to the player
 					wait 4 seconds
-					send formatted "<run command:/quests-CreepingShadows 13 0><gold>SPECIAL - Go ahead, Irankata." to the player
-				send formatted "<run command:/quests-CreepingShadows 14 0><gold>1 - I think it was a trap." to the player
+					send formatted "<run command:/quests-COS_QUEST_PART1_04 13 0><gold>SPECIAL - Go ahead, Irankata." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 14 0><gold>1 - I think it was a trap." to the player
 			else if arg 2 is 1:
 				if {skl.%player%} + {sklbuff.%player%} is more than or equal to 20:
 					send formatted "<light blue>Alastor: <white>"
@@ -2527,13 +2463,13 @@ command /quests-CreepingShadows <number> [<number=0>]:
 				send formatted "<light blue>Alastor: <white>The three of you are dismissed. Go ahead and get some rest upstairs. I'll take care of this sellsword myself." to the player
 				wait 5 seconds
 				make {NPCsFor.%player%::C_Irankata} move to location at 791, 122, -1803 in world "GenOne"
-				send formatted "<run command:/quests-CreepingShadows 12 1><gold>1 - Thanks for that, Kalus." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 12 1><gold>1 - Thanks for that, Kalus." to the player
 			else if arg 2 is 1:
 				updateNPCSupportPoints(player,"Kalus",50)
 				send formatted "<light blue>Kalus: <white>Of course. You had proven yourself an honest person at the cabin, and as such I see it fit to reward that honesty." to the player
 				wait 5 seconds
 				send formatted "<light blue>Kalus: <white>Seek me out the next time you have a moment to spare. I believe we will get along rather well." to the player
-				finishQuest(player,"Creeping Shadows","")
+				finishQuest(player,"COS_QUEST_PART1_04","")
 				wait 2 seconds
 				make {NPCsFor.%player%::C_Kalus} move to location at 775, 116, -1797 in world "GenOne"
 				while {NPCsFor.%player%::C_Kalus} is navigating:
@@ -2590,9 +2526,9 @@ command /quests-CreepingShadows <number> [<number=0>]:
 				clear {NPCsFor.%player%::C_Kalus}
 				send formatted "<light blue>Irankata: <white>Okay, I gotta be honest with you: I have <italics>never<reset><white> been more terrified in my life than just now." to the player
 				wait 5 seconds
-				send formatted "<run command:/quests-CreepingShadows 13 1><gold>1 - Really? You seemed pretty confident to me." to the player
-				send formatted "<run command:/quests-CreepingShadows 13 2><gold>2 - Don't worry, I noticed." to the player
-				send formatted "<run command:/quests-CreepingShadows 13 3><gold>3 - Never speak for me again." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 13 1><gold>1 - Really? You seemed pretty confident to me." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 13 2><gold>2 - Don't worry, I noticed." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 13 3><gold>3 - Never speak for me again." to the player
 			else if arg 2 is 1:
 				updateNPCSupportPoints(player,"Irankata",200)
 				send formatted "<light blue>Irankata: <white>Oh, Really? Thank goodness. I felt like I was about to pass out back there." to the player
@@ -2603,7 +2539,7 @@ command /quests-CreepingShadows <number> [<number=0>]:
 				make console execute command "/npc sel %citizen id of {NPCsFor.%player%::C_Irankata}%"
 				make console execute command "/npc remove"
 				clear {NPCsFor.%player%::C_Irankata}
-				finishQuest(player,"Creeping Shadows","")
+				finishQuest(player,"COS_QUEST_PART1_04","")
 			else if arg 2 is 2:
 				updateNPCSupportPoints(player,"Irankata",50)
 				send formatted "<light blue>Irankata: <white>Oof, sorry... I really did try my best to stand up for you there, but my nerves got to me." to the player
@@ -2614,7 +2550,7 @@ command /quests-CreepingShadows <number> [<number=0>]:
 				make console execute command "/npc sel %citizen id of {NPCsFor.%player%::C_Irankata}%"
 				make console execute command "/npc remove"
 				clear {NPCsFor.%player%::C_Irankata}
-				finishQuest(player,"Creeping Shadows","")
+				finishQuest(player,"COS_QUEST_PART1_04","")
 			else if arg 2 is 3:
 				updateNPCSupportPoints(player,"Irankata",-200)
 				send formatted "<light blue>Irankata: <white>...I really deserved that one." to the player
@@ -2625,24 +2561,24 @@ command /quests-CreepingShadows <number> [<number=0>]:
 				make console execute command "/npc sel %citizen id of {NPCsFor.%player%::C_Irankata}%"
 				make console execute command "/npc remove"
 				clear {NPCsFor.%player%::C_Irankata}
-				finishQuest(player,"Creeping Shadows","")
+				finishQuest(player,"COS_QUEST_PART1_04","")
 		#The Player's Explanation
 		else if arg 1 is 14:
 			if arg 2 is 0:
 				send formatted "<light blue>Alastor: <white>A trap? Go on." to the player
 				wait 3 seconds
-				send formatted "<run command:/quests-CreepingShadows 14 1><gold>1 - The mercenary that ambushed me knew I was a Knight of Ulster as soon as I arrived." to the player
-				send formatted "<run command:/quests-CreepingShadows 14 2><gold>2 - The mercenary was a spy." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 14 1><gold>1 - The mercenary that ambushed me knew I was a Knight of Ulster as soon as I arrived." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 14 2><gold>2 - The mercenary was a spy." to the player
 			else if arg 2 is 1:
 				send formatted "<light blue>Alastor: <white>That doesn't mean much at all. He probably recognized you from the last time you were at Ram Village." to the player
 				wait 4 seconds
-				send formatted "<run command:/quests-CreepingShadows 14 3><gold>1 - He knew you by name. Called you quite the ""character"" too." to the player
-				send formatted "<run command:/quests-CreepingShadows 14 3><gold>2 - He was acting very strangely about it. He mentioned something about ""judging"" the people of Yied." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 14 3><gold>1 - He knew you by name. Called you quite the ""character"" too." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 14 3><gold>2 - He was acting very strangely about it. He mentioned something about ""judging"" the people of Yied." to the player
 			else if arg 2 is 2:
 				send formatted "<light blue>Alastor: <white>A spy? Now I'm a little bit interested. Who was this spy working for? Do you have any proof?" to the player
 				wait 4 seconds
-				send formatted "<run command:/quests-CreepingShadows 14 3><gold>1 - He mentioned being sent to ""judge our people"". He seemed to have it out for the Knights." to the player
-				send formatted "<run command:/quests-CreepingShadows 14 3><gold>2 - Whoever it is, they see you as a threat. They were waiting for a Knight of Ulster specifically to arrive." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 14 3><gold>1 - He mentioned being sent to ""judge our people"". He seemed to have it out for the Knights." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 14 3><gold>2 - Whoever it is, they see you as a threat. They were waiting for a Knight of Ulster specifically to arrive." to the player
 			else if arg 2 is 3:
 				send formatted "<light blue>Alastor: <white>Then it sounds like someone's picking a fight they can't win. Do you know where he ran off to?" to the player
 				wait 4 seconds
@@ -2654,7 +2590,7 @@ command /quests-CreepingShadows <number> [<number=0>]:
 				wait 4 seconds
 				send formatted "<light blue>Alastor: <white>I'll be sending a scouting party to take care of the merc. You all are dismissed." to the player
 				wait 5 seconds
-				finishQuest(player,"Creeping Shadows","")
+				finishQuest(player,"COS_QUEST_PART1_04","")
 				make {NPCsFor.%player%::C_Irankata} move to location at 791, 122, -1803 in world "GenOne"
 				make {NPCsFor.%player%::C_Kalus} move to location at 775, 116, -1797 in world "GenOne"
 				while {NPCsFor.%player%::C_Irankata} is navigating:
@@ -2671,19 +2607,19 @@ command /quests-CreepingShadows <number> [<number=0>]:
 		else if arg 1 is 15:
 			if arg 2 is 776:
 				send formatted "<light red>DEBUG: No dialouge found." to the player
-				finishQuest(player,"Creeping Shadows","")
+				finishQuest(player,"COS_QUEST_PART1_04","")
 			if arg 2 is 0:
 				send formatted "<light blue>Alastor: <white>An ambush? By who?" to the player
 				wait 3 seconds
-				send formatted "<run command:/quests-CreepingShadows 15 1><gold>1 - A sellsword named Gilead." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 15 1><gold>1 - A sellsword named Gilead." to the player
 				if {skl.%player%} + {sklbuff.%player%} is more than or equal to 20:
-					send formatted "<run command:/quests-CreepingShadows 16 0><light green>2 - I could be persuaded to tell. [SKL >= 20]" to the player
+					send formatted "<run command:/quests-COS_QUEST_PART1_04 16 0><light green>2 - I could be persuaded to tell. [SKL >= 20]" to the player
 				else:
-					send formatted "<run command:/quests-CreepingShadows 16 0><light red>2 - I could be persuaded to tell. [SKL >= 20]" to the player
+					send formatted "<run command:/quests-COS_QUEST_PART1_04 16 0><light red>2 - I could be persuaded to tell. [SKL >= 20]" to the player
 			else if arg 2 is 1:
 				send formatted "<light blue>Alastor: <white>Interesting. What else happened? Did those monsters Jagen mentioned ever show up?" to the player
 				wait 3 seconds
-				send formatted "<run command:/quests-CreepingShadows 15 2><gold>1 - Jagen and I believe the sellsword was a foreign spy." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 15 2><gold>1 - Jagen and I believe the sellsword was a foreign spy." to the player
 			else if arg 2 is 2:
 				send formatted "<light blue>Alastor: <white>Well, I'm not sure what sort of information they'd be getting out of stalking an old man." to the player
 				wait 4 seconds
@@ -2694,8 +2630,8 @@ command /quests-CreepingShadows <number> [<number=0>]:
 						set {_hasItem} to true
 						exit 1 loop
 				if {_hasItem} is true:
-					send formatted "<run command:/quests-CreepingShadows 15 3><light yellow>SPECIAL - He left behind this sword. [Give Elridian Steel Sword+ to Alastor]" to the player
-				send formatted "<run command:/quests-CreepingShadows 15 4><gold>1 - The spy mentioned being tasked with judging the people of Yied, and his sword mentioned an ""Elridian Republic""." to the player
+					send formatted "<run command:/quests-COS_QUEST_PART1_04 15 3><light yellow>SPECIAL - He left behind this sword. [Give Elridian Steel Sword+ to Alastor]" to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 15 4><gold>1 - The spy mentioned being tasked with judging the people of Yied, and his sword mentioned an ""Elridian Republic""." to the player
 			else if arg 2 is 3:
 				loop all items in the player's inventory:
 					if the name of the loop-item is "<light purple>Elridian Steel Sword+":
@@ -2708,48 +2644,48 @@ command /quests-CreepingShadows <number> [<number=0>]:
 				wait 4 seconds
 				send formatted "<light blue>Alastor: <white>I'll hold onto this for now, see if Kalus can dig up any information on where this came from." to the player
 				wait 4 seconds
-				if {hasCreeping Shadowsreward.%player%} is not set:
+				if {hasCOS_QUEST_PART1_04reward.%player%} is not set:
 					send formatted "<light blue>Alastor: <white>Here, I'll let you have this in exchange. Some gold on the side should help top it off at a blacksmith if you think it needs something extra." to the player
 					wait 4 seconds
 					give 1 iron sword of sharpness 3 named "<light blue>Silver Sword" with lore "<light red><bold>Slot A - Empty", "<light blue><bold>Slot B - Empty", "<light yellow><bold>Slot C - Empty", "<light green><bold>Assist - Smite", "<light purple><bold>Special - Glimmer", "<red><bold>Refined: Reinforced", "<white>An ornate sword with high attack power.", "<white>Typically given as a gift from a Lord." to the player
 					add 200 to the player's balance
 					send "<light yellow>+200 Gold gained!"
-				make player execute command "/quests-CreepingShadows 15 5"
+				make player execute command "/quests-COS_QUEST_PART1_04 15 5"
 			else if arg 2 is 4:
 				send formatted "<light blue>Alastor: <white>So that's how it is... Whoever this ""Elridian Republic"" is, they've picked the wrong lord to mess with." to the player
 				wait 4 seconds
 				send formatted "<light blue>Alastor: <white>I'll meet with Kalus to try and get information on whoever these people are, then work from there. In the meantime, you should try and help out the people wherever you can." to the player
 				wait 4 seconds
-				if {hasCreeping Shadowsreward.%player%} is not set:
+				if {hasCOS_QUEST_PART1_04reward.%player%} is not set:
 					send formatted "<light blue>Alastor: <white>Here's some gold for your trouble. You've done me a great service bringing back this information." to the player
 					wait 3 seconds
 					add 350 to the player's balance
 					send "<light yellow>+350 Gold gained!"
-				make player execute command "/quests-CreepingShadows 15 5"
+				make player execute command "/quests-COS_QUEST_PART1_04 15 5"
 			else if arg 2 is 5:
-				finishQuest(player,"Creeping Shadows","")
+				finishQuest(player,"COS_QUEST_PART1_04","")
 				wait 3 seconds
-				if {quests.%player%::Creeping Shadows_BONUS} is set:
+				if {quests.%player%::COS_QUEST_PART1_04_BONUS} is set:
 					send formatted "<light blue>Alastor: <white>Now that we've got the formal stuff out of the way, how did our little wager go?" to the player
 					wait 3 seconds
-					send formatted "<run command:/quests-CreepingShadows 15 6><gold>1 - Jagen was very impressed with my work." to the player
+					send formatted "<run command:/quests-COS_QUEST_PART1_04 15 6><gold>1 - Jagen was very impressed with my work." to the player
 			else if arg 2 is 6:
 				updateNPCSupportPoints(player,"Alastor",200)
 				send formatted "<light blue>Alastor: <white>Well, color me impressed. You're shaping up to be one of the better members of the team." to the player
 				wait 5 seconds
-				if {quests.%player%::Creeping Shadows_BONUS} is 1:
+				if {quests.%player%::COS_QUEST_PART1_04_BONUS} is 1:
 					send formatted "<light blue>Alastor: <white>Here, I had the smithy forge these up. Take your pick, and try not to break them. These are one-of-a-kind." to the player
 					wait 7 seconds
-					make player execute command "/QuestRewardFreePick 0 Creeping Shadows"
-				else if {quests.%player%::Creeping Shadows_BONUS} is 2:
+					make player execute command "/QuestRewardFreePick 0 COS_QUEST_PART1_04"
+				else if {quests.%player%::COS_QUEST_PART1_04_BONUS} is 2:
 					send formatted "<light blue>Alastor: <white>Like I promised, here's your 500 gold. Don't let it go to waste." to the player
 					add 500 to the player's balance
 					send "<light yellow>+500 Gold gained!" to the player
-				else if {quests.%player%::Creeping Shadows_BONUS} is 3:
+				else if {quests.%player%::COS_QUEST_PART1_04_BONUS} is 3:
 					send formatted "<light blue>Alastor: <white>I've hired out one of Cinder's veteran soldiers to give you some training. Just tell him what you want to work on and he'll take it from there." to the player
 					wait 7 seconds
-					make player execute command "/QuestRewardFreePick 1 Creeping Shadows"
-				else if {quests.%player%::Creeping Shadows_BONUS} is 4:
+					make player execute command "/QuestRewardFreePick 1 COS_QUEST_PART1_04"
+				else if {quests.%player%::COS_QUEST_PART1_04_BONUS} is 4:
 					send formatted "<light blue>Alastor: <white>Like I promised, here's your 300 gold. Don't let it go to waste." to the player
 					add 300 to the player's balance
 					send "<light yellow>+300 Gold gained!" to the player
@@ -2760,8 +2696,8 @@ command /quests-CreepingShadows <number> [<number=0>]:
 				if {skl.%player%} + {sklbuff.%player%} is more than or equal to 20:
 					send formatted "<light blue>Alastor: <white>What're you playing at? You've got a lot of nerve to try a stunt like that with me." to the player
 					wait 4 seconds
-					send formatted "<run command:/quests-CreepingShadows 16 1><gold>1 - I want to be sure I get my reward." to the player
-					send formatted "<run command:/quests-CreepingShadows 16 999><gold>2 - Maybe I got off on the wrong foot." to the player
+					send formatted "<run command:/quests-COS_QUEST_PART1_04 16 1><gold>1 - I want to be sure I get my reward." to the player
+					send formatted "<run command:/quests-COS_QUEST_PART1_04 16 999><gold>2 - Maybe I got off on the wrong foot." to the player
 				else:
 					updateNPCSupportPoints(player,"Alastor",-100)
 					if {npcSupportPoints.%player%::Alastor} is less than -100:
@@ -2773,21 +2709,21 @@ command /quests-CreepingShadows <number> [<number=0>]:
 					wait 3 seconds
 					send formatted "<light blue>Alastor: <white>Now, I want to hear what happened at Ram Village. Spit it out." to the player
 					wait 3 seconds
-					send formatted "<run command:/quests-CreepingShadows 15 1><gold>1 - I was ambushed by a sellsword named Gilead." to the player
+					send formatted "<run command:/quests-COS_QUEST_PART1_04 15 1><gold>1 - I was ambushed by a sellsword named Gilead." to the player
 			else if arg 2 is 1:
 				send formatted "<light blue>Alastor: <white>Did you think I wouldn't pay you? So far, I've been very generous to you. Hell, you didn't have to do anything more than deliver a few packages just to get inducted." to the player
 				wait 5 seconds
-				send formatted "<run command:/quests-CreepingShadows 16 2><gold>1 - That's why I'm concerned. You seem desperate for help." to the player
-				send formatted "<run command:/quests-CreepingShadows 16 998><gold>2 - I'm a mercenary. Money first, ask questions later." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 16 2><gold>1 - That's why I'm concerned. You seem desperate for help." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 16 998><gold>2 - I'm a mercenary. Money first, ask questions later." to the player
 			else if arg 2 is 2:
 				send formatted "<light blue>Alastor: <white>You're getting generosity confused with desperation. Now, I'd suggest you get to telling me what happened out at Ram Village before I drop the nice-guy act." to the player
 				wait 4 seconds
-				send formatted "<run command:/quests-CreepingShadows 16 998><gold>1 - I want my money first." to the player
-				send formatted "<run command:/quests-CreepingShadows 15 1><gold>2 - I was ambushed by a sellsword named Gilead." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 16 998><gold>1 - I want my money first." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 15 1><gold>2 - I was ambushed by a sellsword named Gilead." to the player
 				if {skl.%player%} + {sklbuff.%player%} is more than 30:
-					send formatted "<run command:/quests-CreepingShadows 16 3><light green>3 - You're struggling to maintain your rule. Your ""generosity"" is just a cover for lacking an army. [SKL > 30]" to the player
+					send formatted "<run command:/quests-COS_QUEST_PART1_04 16 3><light green>3 - You're struggling to maintain your rule. Your ""generosity"" is just a cover for lacking an army. [SKL > 30]" to the player
 				else:
-					send formatted "<run command:/quests-CreepingShadows 16 3><light red>3 - You're struggling to maintain your rule. Your ""generosity"" is just a cover for lacking an army. [SKL > 30]" to the player
+					send formatted "<run command:/quests-COS_QUEST_PART1_04 16 3><light red>3 - You're struggling to maintain your rule. Your ""generosity"" is just a cover for lacking an army. [SKL > 30]" to the player
 			else if arg 2 is 3:
 				send formatted "<light blue>Alastor: <white>..." to the player
 				wait 5 seconds
@@ -2803,15 +2739,15 @@ command /quests-CreepingShadows <number> [<number=0>]:
 				wait 4 seconds
 				send formatted "<light blue>Alastor: <white>Is that enough for you to lend me your aid?" to the player
 				wait 5 seconds
-				send formatted "<run command:/quests-CreepingShadows 16 4><gold>1 - You have my blade." to the player
-				send formatted "<run command:/quests-CreepingShadows 16 998><gold>2 - I'm not interested in your sob story. I just want my money." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 16 4><gold>1 - You have my blade." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 16 998><gold>2 - I'm not interested in your sob story. I just want my money." to the player
 			else if arg 2 is 4:
 				updateNPCSupportPoints(player,"Alastor",500)
 				send formatted "<light blue>Alastor: <white>Good. I could use more soldiers like you. Meatheads like Lex are easy to find, but someone that isn't afraid to speak up when they feel something's wrong is rare. Let alone to their employer's face." to the player
 				wait 4 seconds
 				send formatted "<light blue>Alastor: <white>You've got my promise that you'll be compensated well from here on out. Now, what happened out at Ram Village?" to the player
 				wait 4 seconds
-				send formatted "<run command:/quests-CreepingShadows 15 1><gold>1 - I was ambushed by a sellsword named Gilead." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 15 1><gold>1 - I was ambushed by a sellsword named Gilead." to the player
 			#Alastor pays early
 			else if arg 2 is 998:
 				updateNPCSupportPoints(player,"Alastor",-50)
@@ -2819,166 +2755,23 @@ command /quests-CreepingShadows <number> [<number=0>]:
 				wait 4 seconds
 				add 600 to the player's balance
 				send "<light yellow>600 Gold obtained!" to the player
-				set {hasCreeping Shadowsreward.%player%} to true
+				set {hasCOS_QUEST_PART1_04reward.%player%} to true
 				wait 2 seconds
 				send formatted "<light blue>Alastor: <white>Now, what happened out at Ram Village? I need this information." to the player
 				wait 3 seconds
-				send formatted "<run command:/quests-CreepingShadows 15 1><gold>1 - I was ambushed by a sellsword named Gilead." to the player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 15 1><gold>1 - I was ambushed by a sellsword named Gilead." to the player
 			else if arg 2 is 999:
 				send formatted "<light blue>Alastor: <white>Smart man. Now, what happened out at Ram?" to the player
 				wait 2 seconds
-				send formatted "<run command:/quests-CreepingShadows 15 1><gold>1 - I was ambushed by a sellsword named Gilead." to the player
-	
-#Fallen Gilead dialouge + boss fight	
-command /quests-EngageTheEnemyFinale [<number=0>] [<number=0>]:
-	trigger:
-		if arg 1 is 0:
-			apply slowness 10 to the player for 10 minutes
-			apply jump boost 128 to the player for 10 minutes
-			send formatted "<light purple>Gilead: <white>IN..TRUDER. LEAVE.. THIS PLACE..." to the player
-			wait 3 seconds
-			send "<light blue>Gilead: <white>Leave, %player's tablist name%... Run while you still can!" to the player
-			wait 3 seconds
-			send formatted "<run command:/quests-EngageTheEnemyFinale 1 0><gold>1 - Wait, what's going on here?!" to the player
-			send formatted "<run command:/quests-EngageTheEnemyFinale 2 0><gold>2 - Sorry, but I need that portal." to the player
-		else if arg 1 is 1:
-			if arg 2 is 0:
-				send formatted "<light purple>Gilead: <white>LEAVE... INTRU-" to the player
-				wait 2 seconds
-				send formatted "<light blue>Gilead: <white>You can't win again-" to the player
-				wait 2 seconds
-				send formatted "<light purple>Gilead: <white>DO NOT... RESIST. YOU WILL... DIE." to the player
-				wait 3 seconds
-				send formatted "<run command:/quests-EngageTheEnemyFinale 1 2><gold>1 - Wait, finish that last sentence." to the player
-				send formatted "<run command:/quests-EngageTheEnemyFinale><gold>2 - Enough of this. Time for you to die."
-			else if arg 2 is 1:
-				send formatted "<light blue>Gilead: <white>They've taken your people's magic... they're using it-" to the player
-				wait 3 seconds
-				send formatted "<light purple>Gilead: <white>YOU WILL LEAVE THIS PLACE, WILLINGLY OR NOT." to the player
-				wait 3 seconds
-				if {res.%player%} + {resbuff.%player%} is more than 89:
-					send formatted "<run command:/quests-EngageTheEnemyFinale 2 0><light green>1 - Let me try my magic. [MAG >= 90]"
-				else:
-					send formatted "<light red>1 - Let me try my magic. [MAG >= 90]"
-				if {skl.%player%} + {sklbuff.%player%} is more than 110:
-					send formatted "<run command:/quests-EngageTheEnemyFinale 3 0><light green>2 - I don't particularly like Gilead, but I sure as hell hate necromancy more. Let him go! [SKL >= 110]"
-				else:
-					send formatted "<light red>2 - I don't particularly like Gilead, but I sure as hell hate necromancy more. Let him go! [SKL >= 110]"
-				send formatted "<run command:/quests-EngageTheEnemyFinale><gold>3 - It's no use. Let's settle this once and for all."
-		else if arg 1 is 2:
-			if arg 2 is 0:
-				send formatted "<italics>You attempt to counter the magic controlling Gilead, but it's too much to be rid of completely."
-				wait 4 seconds
-				send formatted "<italics>It should be enough to wrestle information out of Gilead before the dark magic consumes him fully."
-				wait 4 seconds
-				send formatted "<light blue>Gilead: <white>Thank you for trying... I didn't expect you to help me, all things considered."
-				wait 4 seconds
-				send formatted "<light blue>Gilead: <white>Elrid has been snatching research from magical studies all over Silgrund. They're using it to create soldiers strong enough to take over the continent, but it's working too well."
-				wait 10 seconds
-				send formatted "<light blue>Gilead: <white>It's resurrecting the dead and turning them into shambling corpses without free will... but the hosts are still aware of everything going on."
-				wait 7 seconds
-				send formatted "<light blue>Gilead: <white>Please, kill me. I can't take this any longer. I'll do everything I can to help you, but I won't be able to stop myself from trying to kill you."
-				wait 10 seconds
-				send formatted "<light blue>Gilead: <white>Good luck, %player's tablist name%, you're going to... need it..."
-				wait 5 seconds
-				make player execute command "/quests-EngageTheEnemyFinale 3 5"
-			else if arg 2 is 1:
-				send formatted "<italics>A surprisingly honest and powerful one-liner manages to shock Gilead back to his senses... for now."
-				wait 4 seconds
-				send formatted "<italics>It should be enough to wrestle information out of Gilead before the dark magic consumes him fully."
-				wait 4 seconds
-				send formatted "<light blue>Gilead: <white>Thank you for trying... I didn't expect you to help me, all things considered."
-				wait 4 seconds
-				send formatted "<light blue>Gilead: <white>Elrid has been snatching research from magical studies all over Silgrund. They're using it to create soldiers strong enough to take over the continent, but it's working too well."
-				wait 10 seconds
-				send formatted "<light blue>Gilead: <white>It's resurrecting the dead and turning them into shambling corpses without free will... but the hosts are still aware of everything going on."
-				wait 7 seconds
-				send formatted "<light blue>Gilead: <white>Please, kill me. I can't take this any longer. I'll do everything I can to help you, but I won't be able to stop myself from trying to kill you."
-				wait 10 seconds
-				send formatted "<light blue>Gilead: <white>Good luck, %player's tablist name%, you're going to... need it..."
-				wait 5 seconds
-				make player execute command "/quests-EngageTheEnemyFinale 3 5"
-		else if arg 1 is 3:
-			if arg 2 is 0:
-				send formatted "<light purple>Gilead: <white>YOU HAVE TEN SECONDS TO COMPLY. LEAVE THIS PLACE OR IT WILL BE YOUR END."
-				wait 3 seconds
-				send formatted "<run command:/quests-EngageTheEnemyFinale 3 1><gold>1 - That's fine by me. I was looking for a place to nap anyways."
-				send formatted "<run command:/quests-EngageTheEnemyFinale 3 2><gold>2 - An honorable warrior deserves an honorable end. Prepare yourself!"
-				send formatted "<run command:/quests-EngageTheEnemyFinale 3 3><gold>3 - You're going to be brought to justice, just as soon as I can capture you."
-			else if arg 2 is 1:
-				send formatted "<light purple>Gilead: <white>THEN I WILL BE THE ONE TO TUCK YOU INTO BED. PREPARE TO DIE."
-				wait 4 seconds
-			else if arg 2 is 2:
-				send formatted "<light purple>Gilead: <white>THEN LET US DUEL. PREPARE YOURSELF."
-				wait 4 seconds
-			else if arg 2 is 3:
-				send formatted "<light purple>Gilead: <white>THAT WILL NOT BE SUFFICIENT. NOT EVEN DEATH CAN STOP ME FROM DEFENDING MY COUNTRY."
-				wait 4 seconds
-				make player execute command "/quests-EngageTheEnemyFinale 3 4"
-			else if arg 2 is 4:
-				#Begin Cutscene + NPC Wizardry
-				set {inCutscene.%player%} to true
-				clear {interruptNPCWizardry.%player%}
-				clear {recruitNPCAsFollower.%player%}
-				make console execute command "/npc sel %citizen id of {globalNPCS::Fallen Gilead}%"
-				make console execute command "/npc copy"
-				make console execute command "/sentinel avoidrange 7"
-				make console execute command "/sentinel reach 3.5"
-				make console execute command "/sentinel range 30"
-				make console execute command "/sentinel needammo false"
-				make console execute command "/sentinel attackrate 0.3"
-				make console execute command "/sentinel attackrate 1 RANGED"
-				make console execute command "/sentinel speed 1.75"
-				hide {NPCsFor.%player%::Gilead} from the player
-				while {NPCsFor.%player%::C_Gilead} is not set:
-					wait 1 tick
-				loop all players:
-					if loop-player is not the player:
-						hide {NPCsFor.%player%::C_Gilead} from loop-player
-				set {_playerloc} to the player's location
-				subtract 2 from x of {_playerloc}
-				subtract 2 from z of {_playerloc}
-				set {_CID} to citizen id of {NPCsFor.%player%::C_Gilead}
-				#Setup Gilead's Stats
-				set {_debug} to setEntityVariableByName({NpcsFor.%player%::C_Gilead},"LVL",90)
-				set {_debug} to setEntityVariableByName({NPCSFor.%player%::C_GILEAD},"STR",110)
-				set {_debug} to setEntityVariableByName({NPCSFor.%player%::C_GILEAD},"SPD",90)
-				set {_debug} to setEntityVariableByName({NPCSFor.%player%::C_GILEAD},"SKL",150)
-				set {_debug} to setEntityVariableByName({NPCSFor.%player%::C_GILEAD},"DEF",90)
-				set {_debug} to setEntityVariableByName({NPCSFor.%player%::C_GILEAD},"RES",70)
-				set {_debug} to setEntityVariableByName({NPCSFor.%player%::C_GILEAD},"HP",500)
-				set {hp.%{NPCsFor.%player%::C_Gilead}%} to 500
-				set {npc_skillslot1.%{_CID}%} to "Unbreakable"
-				set {npc_skillslot2.%{_CID}%} to "Steady Breath"
-				set {npc_skillslot3.%{_CID}%} to "Double Lion"
-				if ({lvl.%player%} + ({promoted.%player%} * 10)) is more than 15:
-					set {_levelScaling} to (({lvl.%player%} + ({promoted.%player%} * 10)) - 15)
-					loop {_levelScaling} times:
-						chance of 75%:
-							set {_debug} to changeEntityStatBuff({NPCSFor.%player%::C_GILEAD},"STR",1)
-						chance of 50%:
-							set {_debug} to changeEntityStatBuff({NPCSFor.%player%::C_GILEAD},"SPD",1)
-						chance of 80%:
-							set {_debug} to changeEntityStatBuff({NPCSFor.%player%::C_GILEAD},"SKL",1)
-						chance of 60%:
-							set {_debug} to changeEntityStatBuff({NPCSFor.%player%::C_GILEAD},"DEF",1)
-						chance of 60%:
-							set {_debug} to changeEntityStatBuff({NPCSFor.%player%::C_GILEAD},"RES",1)
-						add 2 to {hp.%{NPCsFor.%player%::C_Gilead}%}
-						chance of 75%:
-							add 1 to {hp.%{NPCsFor.%player%::C_Gilead}%}
-				make console execute command "/sentinel health %{hp.%{NPCsFor.%player%::C_Gilead}%}%"
-				make console execute command "/sentinel addignore PLAYER:%player%"
-				make console execute command "/sentinel addignore OWNER"
-				make console execute command "/sentinel addtarget PLAYER:%player%"
-				initBossLogic(player,"Gilead",1)			
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 15 1><gold>1 - I was ambushed by a sellsword named Gilead." to the player
+			
 
 command /checkQuestProgress <number> <text>:
 	trigger:
-		if arg 2 is "Search and Destroy":
-			if {quests.%player%::Search and Destroy} is less than arg 1:
+		if arg 2 is "Creeping Shadows":
+			if {quests.%player%::Creeping Shadows} is less than arg 1:
 				set {_blockMove} to true
-			else if {quests.%player%::Search and Destroy} is not set:
+			else if {quests.%player%::Creeping Shadows} is not set:
 				set {_blockMove} to true
 			if {_blockMove} is true:
 				send "<light red>A fell magic prevents you from delving further into the dungeon..." to the player
@@ -2994,30 +2787,6 @@ command /quests-Expedition <number>:
 			send "<light blue>Merriam: <white>Awesome. Good luck with it, %player's tablist name%<white>!"
 			setQuestProgress(player,"Expedition",997,"Speak with Alastor whenever possible.")
 			
-command /WarnOnQuestAreaEntry <text>:
-	trigger:
-		if arg 1 is "GileadsBase":
-			if {quests.%player%::Piercing Through Darkness} is not 999:
-				set {_warnOnEntry} to true
-			else if {lvl.%player%} is less than 90:
-				set {_warnOnEntry} to true
-			if {_warnOnEntry} is true:
-				send "<italics>A rush of fear engulfs you as the eerily pristine doors glide open with naught but a whisper." to the player
-				wait 4 seconds
-				send "<italics>What lies beyond these doors may be beyond your abilities... Though one can never be sure without trying." to the player
-			else:
-				send "<light blue>Merriam: <white>Take a look at that... Obsidian all the way through." to the player
-				wait 4 seconds
-				send "<light blue>Merriam: <white>This has to be Gilead's base. Stay safe, %player's tablist name%, and find that portal!" to the player
-			
-on inventory close:
-	if {quests.%player%::COS_QUEST_PART1_06} is 1:
-		wait 1 tick
-		loop all items in the player's inventory:
-			if the name of the loop-item contains "<light red>Red Squadron":
-				setQuestProgress(player,"COS_QUEST_PART1_06",2,"Bring the Red Squadron letter to Alastor.")
-				exit 1 loop
-
 #Manually start time-based quests
 on bed leave:
 	#Expedition
@@ -3034,16 +2803,16 @@ on bed leave:
 			send formatted "<light blue>Merriam: <white>%player's tablist name%<white>, Got a second?"
 			wait 2.5 seconds
 			send formatted "<run command:/quests-LegendInTheMaking 1><gold>1 - Yes, what's going on?"
-	#Search and Destroy
-	if {quests.%player%::Search and Destroy} is set:
-		if {quests.%player%::Search and Destroy} is less than 2:
-			add 1 to {quests.%player%::Search and Destroy}
+	#Creeping Shadows
+	if {quests.%player%::Creeping Shadows} is set:
+		if {quests.%player%::Creeping Shadows} is less than 2:
+			add 1 to {quests.%player%::Creeping Shadows}
 		else:
 			play 40 (gold block break with speed 1) at {NPCsFor.%player%::Alastor}
 			strike lightning effect at {NPCsFor.%player%::Alastor}
 			reveal {NPCsFor.%player%::Alastor} to player
 			send formatted "<light blue>Merriam: <white>%player's tablist name%<white>? It's me again. Alastor needs you back at the castle, we're having a meeting. He wanted me to stress that it's urgent, so... hurry." to player
-			setQuestProgress(player,"Search and Destroy",2,"Speak with Alastor.")
+			setQuestProgress(player,"Creeping Shadows",2,"Speak with Alastor.")
 			
 #Periodicals
 every minecraft day:
@@ -3053,17 +2822,17 @@ every minecraft day:
 			subtract 1 from {UlsterComplimentaryArmourCooldown.%loop-player%}
 			if {UlsterComplimentaryArmourCooldown.%loop-player%} is less than or equal to 0:
 				clear {UlsterComplimentaryArmourCooldown.%loop-player%}
-		#Creeping Shadows startup
-		if {quests.%loop-player%::Creeping Shadows} is not set:
+		#COS_QUEST_PART1_04 startup
+		if {quests.%loop-player%::COS_QUEST_PART1_04} is not set:
 			if {quests.%loop-player%::Breaking the Ice} is 999:
 				send formatted "<light blue>???: <white>...Hey, %loop-player's tablist name%<reset><white>? Can you hear me?" to loop-player
 				wait 2.5 seconds
-				send formatted "<run command:/quests-CreepingShadows 0><gold>1 - Who's there?!" to loop-player
-				send formatted "<run command:/quests-CreepingShadows 0 1><gold>2 - Get out of my head, evil spirit!" to loop-player
-				send formatted "<run command:/quests-CreepingShadows 0 2><gold>3 - Is that you, Merriam?" to loop-player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 0><gold>1 - Who's there?!" to loop-player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 0 1><gold>2 - Get out of my head, evil spirit!" to loop-player
+				send formatted "<run command:/quests-COS_QUEST_PART1_04 0 2><gold>3 - Is that you, Merriam?" to loop-player
 		#Expedition startup
 		if {quests.%loop-player%::Expedition} is not set:
-			if {quests.%loop-player%::Creeping Shadows} is 999:
+			if {quests.%loop-player%::COS_QUEST_PART1_04} is 999:
 				set {quests.%loop-player%::Expedition} to 997
 				send formatted "<light blue>Merriam: <white>...%loop-player's tablist name%<white? Can you hear me?" to loop-player
 				wait 2.5 seconds
@@ -3075,22 +2844,22 @@ every minecraft day:
 				send formatted "<light blue>Merriam: <white>%loop-player's tablist name%<white>, Got a second?" to loop-player
 				wait 2.5 seconds
 				send formatted "<run command:/quests-LegendInTheMaking 1><gold>1 - Yes, what's going on?" to loop-player
-		#Search and Destroy
-		if {quests.%loop-player%::Search and Destroy} is set:
-			if {quests.%loop-player%::Search and Destroy} is less than 2:
-				add 1 to {quests.%loop-player%::Search and Destroy}
-			else if {quests.%loop-player%::Search and Destroy} is 2:
+		#Creeping Shadows
+		if {quests.%loop-player%::Creeping Shadows} is set:
+			if {quests.%loop-player%::Creeping Shadows} is less than 2:
+				add 1 to {quests.%loop-player%::Creeping Shadows}
+			else if {quests.%loop-player%::Creeping Shadows} is 2:
 				play 40 (gold block break with speed 1) at {NPCsFor.%loop-player%::Alastor}
 				strike lightning effect at {NPCsFor.%loop-player%::Alastor}
 				reveal {NPCsFor.%loop-player%::Alastor} to loop-player
 				send formatted "<light blue>Merriam: <white>%loop-player's tablist name%<white>? It's me again. Alastor needs you back at the castle, we're having a meeting. He wanted me to stress that it's urgent, so... hurry." to loop-player
-				setQuestProgress(loop-player,"Search and Destroy",2,"Speak with Alastor.")
+				setQuestProgress(loop-player,"Creeping Shadows",2,"Speak with Alastor.")
 	
 #Number = Reward List ID
 #Text = Associated Quest	
 command /QuestRewardFreePick <number> <text>:
 	trigger:
-		if arg 2 is "Creeping Shadows":
+		if arg 2 is "COS_QUEST_PART1_04":
 			if arg 1 is 0:
 				open chest with 1 row named "<gold>Select a reward!" for the player
 				set slot 0 of the player's current inventory to 1 iron sword of sharpness 4, unbreaking 3 named "<light blue><bold>Alastor's Silver Sword+" with lore "<light red><bold>Slot A - Flashing Blade", "<light blue><bold>Slot B - Desperation", "<light yellow><bold>Slot C - DEF Smoke", "<light green><bold>Assist - Taunt", "<light purple><bold>Special - Aether", "<light green><bold>Refined: Slaying", "<white>A special blade forged at Alastor's request.", "<white>It's best wielded by highly skilled swordmasters."
@@ -3228,27 +2997,27 @@ command /journal <number>:
 				set slot 3 of the player's current inventory to 1 lapis block named "<light blue>Breaking the Ice" with lore "<white>Alastor has opened up the castle as part of my induction into the Knights of Ulster.", "<white>I can recieve combat training downstairs as I please.", "<white>Once I'm finished, I should head upstairs to meet the rest of the Knights."
 			else:
 				set slot 3 of the player's current inventory to 1 redstone block named "<light red>Breaking the Ice" with lore "<white>Complete ""Proving Grounds"" to unlock this quest."
-			#Creeping Shadows
-			if {quests.%player%::Creeping Shadows} is 999:
-				set slot 4 of the player's current inventory to 1 emerald block named "<light green>Creeping Shadows" with lore "<white>Jagen, leader of Ram Village, requested aid to help fortify his village against monsters.", "<white>I was dispatched to the village, but encountered a man named Gilead.", "<white>He challenged me to a duel, and escaped after it was over.", "<white>We managed to retrieve his sword, which belongs to the Elridian Republic.", "<white>None of us have ever heard of this place, but they seem to be planning something sinister..."
-			else if {quests.%player%::Creeping Shadows} is 9:
-				set slot 4 of the player's current inventory to 1 lapis block named "<light blue>Creeping Shadows" with lore "<white>I've spoken with Jagen about Gilead.", "<white>He's come to the conclusion that he had set a trap intended for the Knights of Ulster.", "<white>I need to tell Alastor about what happened, and fast."
-			else if {quests.%player%::Creeping Shadows} is 8:
-				set slot 4 of the player's current inventory to 1 lapis block named "<light blue>Creeping Shadows" with lore "<white>I've been rescued by Kalus and Irankata after losing a duel with Gilead.", "<white>We need to get back to House Ulster and inform Alastor of what happened."
-			else if {quests.%player%::Creeping Shadows} is 7:
-				set slot 4 of the player's current inventory to 1 lapis block named "<light blue>Creeping Shadows" with lore "<white>The warrior Gilead challenged me to a duel at Ram Village.", "<white>I was defeated in battle and left for dead.", "<white>I woke up next to Kalus and Irankata in a camp not far from the village.", "<white>We should get back to Alastor as soon as possible."
-			else if {quests.%player%::Creeping Shadows} is 6:
-				set slot 4 of the player's current inventory to 1 lapis block named "<light blue>Creeping Shadows" with lore "<white>The warrior Gilead challenged me to a duel at Ram Village.", "<white>I've managed to defeat him in battle, and claimed his sword as my own.", "<white>Whatever this ""Elridian Republic"" is, their blacksmiths are better than anything I've ever seen.", "<white>I should tell Jagen about what happened."
-			else if {quests.%player%::Creeping Shadows} is 5:
-				set slot 4 of the player's current inventory to 1 lapis block named "<light blue>Creeping Shadows" with lore "<white>The warrior Gilead has challenged me to a duel!", "<white>He's tough, no doubt about it.", "<white>His arrows might be easier to dodge,", "<white>but they'll shred my armour.", "<white>I need to think up a strategy, and fast!"
-			else if {quests.%player%::Creeping Shadows} is 3:
-				set slot 4 of the player's current inventory to 1 lapis block named "<light blue>Creeping Shadows" with lore "<white>I've arrived at Ram Village.", "<white>Jagen has asked me to stand guard at the center of the village and keep an eye out for monsters.", "<white>There's a shadowy man already standing guard there...", "<white>Maybe I can strike up a conversation."
-			else if {quests.%player%::Creeping Shadows} is 2:
-				set slot 4 of the player's current inventory to 1 lapis block named "<light blue>Creeping Shadows" with lore "<white>Reports have come in from nearby villages of increased monster activity.", "<white>Alastor doesn't seem too worried about it, but has sent me to Ram Village at the request of veteran knight Jagen.", "<white>I need to talk with Jagen at Ram Village to figure out what he needs."
-			else if {quests.%player%::Creeping Shadows} is 1:
-				set slot 4 of the player's current inventory to 1 lapis block named "<light blue>Creeping Shadows" with lore "<white>Merriam contacted me telepathically via magic.", "<white>I need to return to House Ulster to accept my next mission from Alastor."
+			#COS_QUEST_PART1_04
+			if {quests.%player%::COS_QUEST_PART1_04} is 999:
+				set slot 4 of the player's current inventory to 1 emerald block named "<light green>COS_QUEST_PART1_04" with lore "<white>Jagen, leader of Ram Village, requested aid to help fortify his village against monsters.", "<white>I was dispatched to the village, but encountered a man named Gilead.", "<white>He challenged me to a duel, and escaped after it was over.", "<white>We managed to retrieve his sword, which belongs to the Elridian Republic.", "<white>None of us have ever heard of this place, but they seem to be planning something sinister..."
+			else if {quests.%player%::COS_QUEST_PART1_04} is 9:
+				set slot 4 of the player's current inventory to 1 lapis block named "<light blue>COS_QUEST_PART1_04" with lore "<white>I've spoken with Jagen about Gilead.", "<white>He's come to the conclusion that he had set a trap intended for the Knights of Ulster.", "<white>I need to tell Alastor about what happened, and fast."
+			else if {quests.%player%::COS_QUEST_PART1_04} is 8:
+				set slot 4 of the player's current inventory to 1 lapis block named "<light blue>COS_QUEST_PART1_04" with lore "<white>I've been rescued by Kalus and Irankata after losing a duel with Gilead.", "<white>We need to get back to House Ulster and inform Alastor of what happened."
+			else if {quests.%player%::COS_QUEST_PART1_04} is 7:
+				set slot 4 of the player's current inventory to 1 lapis block named "<light blue>COS_QUEST_PART1_04" with lore "<white>The warrior Gilead challenged me to a duel at Ram Village.", "<white>I was defeated in battle and left for dead.", "<white>I woke up next to Kalus and Irankata in a camp not far from the village.", "<white>We should get back to Alastor as soon as possible."
+			else if {quests.%player%::COS_QUEST_PART1_04} is 6:
+				set slot 4 of the player's current inventory to 1 lapis block named "<light blue>COS_QUEST_PART1_04" with lore "<white>The warrior Gilead challenged me to a duel at Ram Village.", "<white>I've managed to defeat him in battle, and claimed his sword as my own.", "<white>Whatever this ""Elridian Republic"" is, their blacksmiths are better than anything I've ever seen.", "<white>I should tell Jagen about what happened."
+			else if {quests.%player%::COS_QUEST_PART1_04} is 5:
+				set slot 4 of the player's current inventory to 1 lapis block named "<light blue>COS_QUEST_PART1_04" with lore "<white>The warrior Gilead has challenged me to a duel!", "<white>He's tough, no doubt about it.", "<white>His arrows might be easier to dodge,", "<white>but they'll shred my armour.", "<white>I need to think up a strategy, and fast!"
+			else if {quests.%player%::COS_QUEST_PART1_04} is 3:
+				set slot 4 of the player's current inventory to 1 lapis block named "<light blue>COS_QUEST_PART1_04" with lore "<white>I've arrived at Ram Village.", "<white>Jagen has asked me to stand guard at the center of the village and keep an eye out for monsters.", "<white>There's a shadowy man already standing guard there...", "<white>Maybe I can strike up a conversation."
+			else if {quests.%player%::COS_QUEST_PART1_04} is 2:
+				set slot 4 of the player's current inventory to 1 lapis block named "<light blue>COS_QUEST_PART1_04" with lore "<white>Reports have come in from nearby villages of increased monster activity.", "<white>Alastor doesn't seem too worried about it, but has sent me to Ram Village at the request of veteran knight Jagen.", "<white>I need to talk with Jagen at Ram Village to figure out what he needs."
+			else if {quests.%player%::COS_QUEST_PART1_04} is 1:
+				set slot 4 of the player's current inventory to 1 lapis block named "<light blue>COS_QUEST_PART1_04" with lore "<white>Merriam contacted me telepathically via magic.", "<white>I need to return to House Ulster to accept my next mission from Alastor."
 			else:
-				set slot 4 of the player's current inventory to 1 redstone block named "<light red>Creeping Shadows" with lore "<white>Speak with Alastor after ""Breaking the Ice""."
+				set slot 4 of the player's current inventory to 1 redstone block named "<light red>COS_QUEST_PART1_04" with lore "<white>Speak with Alastor after ""Breaking the Ice""."
 			#Expedition
 			if {quests.%player%::Expedition} is 999:
 				set slot 5 of the player's current inventory to 1 emerald block named "<light green>Expedition" with lore "<white>I delivered Alastor's letter to Cinder, lord of Gallia.", "<white>As I was about to leave, a guard notified us that the nearby village of Chalphy was under attack.", "<white>The three of us dispatched the threat, but Cinder seems rather shaken by it all.", "<white>I should notify Alastor of what transpired."
@@ -3278,37 +3047,35 @@ command /journal <number>:
 			#COS_QUEST_PART1_06
 			if {quests.%player%::COS_QUEST_PART1_06} is 999:
 				set slot 7 of the player's current inventory to 1 emerald block named "<light green>!Unlocalized String!" with lore "<white>I learned that mysterious forces have begun moving into the lands of Yied.", "<white>Their motives are unknown, if they have any at all.", "<white>Alastor hasn't taken the news very well, and is ready to take action."
-			else if {quests.%player%::COS_QUEST_PART1_06} is 4:
-				set slot 7 of the player's current inventory to 1 lapis block named "<light blue>COS_QUEST_PART1_06" with lore "<white>Sterne was a front for a massive mining operation underneath the desert.", "<white>I've located some letters mentioning a ""Ruby Squadron"", which may be connected to Gilead.", "<white>The ""Ruby Squadron"" seem to be attempting a takeover of Yied.", "<white>I need to bring this letter to Alastor, and convince him to take action."
 			else if {quests.%player%::COS_QUEST_PART1_06} is 3:
-				set slot 7 of the player's current inventory to 1 lapis block named "<light blue>!Unlocalized String!" with lore "<white>I took my investigation across the desert to the village of Sterne.", "<white>Despite not being marked on any offical maps, the village seemed very developed.", "<white>I should ask around for more information."
+				set slot 7 of the player's current inventory to 1 lapis block named "<light blue>!Unlocalized String!" with lore "<white>I took my investigation across the desert to the village of Sterne.", "<white>The village had indeed been invaded; a group named ""The Next Generation"" resides there now.", "<white>I should report back to Alastor with this information."
 			else if {quests.%player%::COS_QUEST_PART1_06} is 2:
-				set slot 7 of the player's current inventory to 1 lapis block named "<light blue>!Unlocalized String!" with lore "<white>The locals of Krav claim a group of shadowy warriors settled a small village nearby.", "<white>I should investigate this village and see if these", "<white>warriors know anything about Gilead."
+				set slot 7 of the player's current inventory to 1 lapis block named "<light blue>!Unlocalized String!" with lore "<white>The locals of Krav claim a group of shadowy warriors invaded the village of Sterne across the desert.", "<white>I can take this information back to Alastor, or investigate Sterne for more information."
 			else if {quests.%player%::COS_QUEST_PART1_06} is 1:
 				set slot 7 of the player's current inventory to 1 lapis block named "<light blue>!Unlocalized String!" with lore "<white>Alastor has become worried about the rising number of undead roaming Gallia.", "<white>I've been tasked with scouting around the deserts of Yied", "<white>to gather information on where these monsters are coming from.", "<white>I should start my search at Krav, the desert town close to Grann.", "<white>Talking to the locals should be my first priority."
 			else:
 				set slot 7 of the player's current inventory to 1 redstone block named "<light red>!Unlocalized String!" with lore "<white>Speak with Alastor after completing ""Legend in the Making""."
-			#Search and Destroy
-			if {quests.%player%::Search and Destroy} is 999:
-				set slot 8 of the player's current inventory to 1 emerald block named "<light green>Search and Destroy" with lore "<white>After returning from his visit with Cinder,", "<white>Alastor informed us of the invasion planned by our otherworldy neighor: Elrid.", "<white>The Knights of Ulster were then assigned on missions to eliminate Elridian", "<white>strongholds littered throughout the deserts of Yied.", "<white>With their offensive powers weakened,", "<white>Alastor hopes we can now lead a pre-emptive strike on Elrid."
-			else if {quests.%player%::Search and Destroy} is 8:
-				set slot 8 of the player's current inventory to 1 lapis block named "<light blue>Search and Destroy" with lore "<white>I've initated the emergency shutdown!", "<white>I need to escape the facility and report to Alastor."
-			else if {quests.%player%::Search and Destroy} is 7:
-				set slot 8 of the player's current inventory to 1 lapis block named "<light blue>Search and Destroy" with lore "<white>All of the facility's pumps have been shut down.", "<white>Now to initiate the emergency shutdown."
-			else if {quests.%player%::Search and Destroy} is 6:
-				set slot 8 of the player's current inventory to 1 lapis block named "<light blue>Search and Destroy" with lore "<white>I've shut off the water and lava pumps.", "<white>I just have the exhaust pump left to go."
-			else if {quests.%player%::Search and Destroy} is 5:
-				set slot 8 of the player's current inventory to 1 lapis block named "<light blue>Search and Destroy" with lore "<white>I've shut off the factory's water pumps.", "<white>Now for the lava and exhaust pumps..."
-			else if {quests.%player%::Search and Destroy} is 4:
-				set slot 8 of the player's current inventory to 1 lapis block named "<light blue>Search and Destroy" with lore "<white>We've destroyed one of the Elridian outposts in the Yied Desert.", "<white>We should report the victory to Alastor as soon as possible."
-			else if {quests.%player%::Search and Destroy} is 3:
-				set slot 8 of the player's current inventory to 1 lapis block named "<light blue>Search and Destroy" with lore "<white>Alastor returned from his trip, and has informed us of a terrible truth:", "<white>Lord Cinder has discovered the origin of the monster threat.", "<white>The monsters are being created by otherworldly necromancers to prepare for a full-scale invasion.", "<white>Alastor has sent the Knights of Ulster on a series of missions,", "<white>where we must destroy Elridian strongholds littered throughout Yied.", "<white>He suggested the group operate in pairs, so I should talk with", "<white>one of the knights and ask them to assist me."
-			else if {quests.%player%::Search and Destroy} is 2:
-				set slot 8 of the player's current inventory to 1 lapis block named "<light blue>Search and Destroy" with lore "<white>Alastor has returned to House Ulster, and is calling a meeting with the knights.", "<white>I should get there as soon as I can."
-			else if {quests.%player%::Search and Destroy} is 1:
-				set slot 8 of the player's current inventory to 1 lapis block named "<light blue>Search and Destroy" with lore "<white>Alastor has departed on a trip to House Silgrid.", "<white>In the meantime, I should do whatever I can to assist the people of Yied.", "<white>I should also consider getting to know my fellow knights a little better."
+			#Creeping Shadows
+			if {quests.%player%::Creeping Shadows} is 999:
+				set slot 8 of the player's current inventory to 1 emerald block named "<light green>Creeping Shadows" with lore "<white>After returning from his visit with Cinder,", "<white>Alastor informed us of the invasion planned by our otherworldy neighor: Elrid.", "<white>The Knights of Ulster were then assigned on missions to eliminate Elridian", "<white>strongholds littered throughout the deserts of Yied.", "<white>With their offensive powers weakened,", "<white>Alastor hopes we can now lead a pre-emptive strike on Elrid."
+			else if {quests.%player%::Creeping Shadows} is 8:
+				set slot 8 of the player's current inventory to 1 lapis block named "<light blue>Creeping Shadows" with lore "<white>I've initated the emergency shutdown!", "<white>I need to escape the facility and report to Alastor."
+			else if {quests.%player%::Creeping Shadows} is 7:
+				set slot 8 of the player's current inventory to 1 lapis block named "<light blue>Creeping Shadows" with lore "<white>All of the facility's pumps have been shut down.", "<white>Now to initiate the emergency shutdown."
+			else if {quests.%player%::Creeping Shadows} is 6:
+				set slot 8 of the player's current inventory to 1 lapis block named "<light blue>Creeping Shadows" with lore "<white>I've shut off the water and lava pumps.", "<white>I just have the exhaust pump left to go."
+			else if {quests.%player%::Creeping Shadows} is 5:
+				set slot 8 of the player's current inventory to 1 lapis block named "<light blue>Creeping Shadows" with lore "<white>I've shut off the factory's water pumps.", "<white>Now for the lava and exhaust pumps..."
+			else if {quests.%player%::Creeping Shadows} is 4:
+				set slot 8 of the player's current inventory to 1 lapis block named "<light blue>Creeping Shadows" with lore "<white>We've destroyed one of the Elridian outposts in the Yied Desert.", "<white>We should report the victory to Alastor as soon as possible."
+			else if {quests.%player%::Creeping Shadows} is 3:
+				set slot 8 of the player's current inventory to 1 lapis block named "<light blue>Creeping Shadows" with lore "<white>Alastor returned from his trip, and has informed us of a terrible truth:", "<white>Lord Cinder has discovered the origin of the monster threat.", "<white>The monsters are being created by otherworldly necromancers to prepare for a full-scale invasion.", "<white>Alastor has sent the Knights of Ulster on a series of missions,", "<white>where we must destroy Elridian strongholds littered throughout Yied.", "<white>He suggested the group operate in pairs, so I should talk with", "<white>one of the knights and ask them to assist me."
+			else if {quests.%player%::Creeping Shadows} is 2:
+				set slot 8 of the player's current inventory to 1 lapis block named "<light blue>Creeping Shadows" with lore "<white>Alastor has returned to House Ulster, and is calling a meeting with the knights.", "<white>I should get there as soon as I can."
+			else if {quests.%player%::Creeping Shadows} is 1:
+				set slot 8 of the player's current inventory to 1 lapis block named "<light blue>Creeping Shadows" with lore "<white>Alastor has departed on a trip to House Silgrid.", "<white>In the meantime, I should do whatever I can to assist the people of Yied.", "<white>I should also consider getting to know my fellow knights a little better."
 			else:
-				set slot 8 of the player's current inventory to 1 redstone block named "<light red>Search and Destroy" with lore "<white>Complete ""Legend in the Making"" to unlock this quest."
+				set slot 8 of the player's current inventory to 1 redstone block named "<light red>Creeping Shadows" with lore "<white>Complete ""Legend in the Making"" to unlock this quest."
 			#A Brush With Death
 			if {quests.%player%::A Brush With Death} is 999:
 				set slot 9 of the player's current inventory to 1 emerald block named "<light green>A Brush With Death" with lore "<white>Our attempt at a covert strike on the invading army failed in spectacular fashion.", "<white>The only entrance to our foe's world is through a border world inhabited by a fearsome dragon.", "<white>It's impossible for us to cross through with that dragon on the loose..."
@@ -3319,12 +3086,12 @@ command /journal <number>:
 			else if {quests.%player%::A Brush With Death} is 1:
 				set slot 9 of the player's current inventory to 1 lapis block named "<light blue>A Brush With Death" with lore "<white>Alastor has decided we must strike our enemy directly.", "<white>He's located a portal through which we can hopefully attack the incoming army's leader.", "<white>This sounds more like a suicide pact than a knightly quest."
 			else:
-				set slot 9 of the player's current inventory to 1 redstone block named "<light red>A Brush With Death" with lore "<white>Complete ""Search and Destroy"" to unlock this quest."
+				set slot 9 of the player's current inventory to 1 redstone block named "<light red>A Brush With Death" with lore "<white>Complete ""Creeping Shadows"" to unlock this quest."
 			#Another Path
 			if {quests.%player%::Another Path} is 999:
-				set slot 10 of the player's current inventory to 1 emerald block named "<light green>Another Path" with lore ""
+				set slot 10 of the player's current inventory to 1 emerald block named "<light green>Another Path" with lore "<white>The Mage Knights of Silgrid are dead.", "<white>Their efforts to create a gateway directly into the lands of Elrid failed miserably.", "<white>The hellish fires of Harbindul are all that is left of their noble sacrifice.", "<white>Alastor has ordered us to remain at House Silgrid to ensure Lord Cinder's safety while he recovers from the losses."
 			else if {quests.%player%::Another Path} is 1:
-				set slot 10 of the player's current inventory to 1 lapis block named "<light blue>Another Path" with lore "<white>The Knights of Ulster have been tasked with", "carving a path through the fires of Harbindul to enter Elrid.", "<white>"
+				set slot 10 of the player's current inventory to 1 lapis block named "<light blue>Another Path" with lore "<white>I and a portion of the knights have been stationed at House Silgrid to oversee the creation of an alternate path into Elrid."
 			else:
 				set slot 10 of the player's current inventory to 1 redstone block named "<light red>Another Path" with lore "<white>Complete ""A Brush With Death"" to unlock this quest."
 			#Lord's Advance
@@ -3348,17 +3115,6 @@ command /journal <number>:
 				set slot 13 of the player's current inventory to 1 lapis block named "<light blue>Fight Against Fate" with lore "<white>Cinder has used a newfound talent to forge a set of extraordinary weapons.", "<white>With these new weapons in hand, we can begin to free Silgrund from Helmund's advancing army.", "<light blue>Monsters Slain: %{quests.%player%::Fight Against Fate} - 1% / 50"
 			else:
 				set slot 13 of the player's current inventory to 1 redstone block named "<light red>Fight Against Fate" with lore "<white>Complete ""Piercing Through Darkness"" to unlock this quest."
-			#Engage The Enemy
-			if {quests.%player%::Engage the Enemy} is 999:
-				set slot 14 of the player's current inventory to 1 emerald block named "<light green>Engage The Enemy" with lore "<white>We've defeated the resurrected Gilead inside his hidden base.", "<white>A portal to the border world used by Elrid is buried here.", "<white>Now's our chance to drive these invaders out once and for all!"
-			else if {quests.%player%::Engage the Enemy} is 3:
-				set slot 14 of the player's current inventory to 1 lapis block named "<light blue>Engage The Enemy" with lore "<white>We've located Gilead's secret base, but...", "<white>I need to release Gilead's soul from this fell necromancy before we can use the portal.", "<white>He won't go down without a fight, though..."
-			else if {quests.%player%::Engage the Enemy} is 2:
-				set slot 14 of the player's current inventory to 1 lapis block named "<light blue>Engage The Enemy" with lore "<white>We've found Gilead's secret base!", "<white>Time to find the portal Elrid has been using to cross into Silgrund."
-			else if {quests.%player%::Engage the Enemy} is 1:
-				set slot 14 of the player's current inventory to 1 lapis block named "<light blue>Engage The Enemy" with lore "<white>Now that much of Silgrund has been reclaimed,", "<white>we need to locate a portal that will take us to Elrid.", "<white>Gilead was stationed not too far away from my camp...", "<white>I should start my search there."
-			else:
-				set slot 14 of the player's current inventory to 1 redstone block named "<light red>Engage The Enemy" with lore "<white>Complete ""Fight Against Fate"" to unlock this quest."
 			#Sunset
 			if {quests.%player%::Sunset} is 999:
 				set slot 14 of the player's current inventory to 1 emerald block named "<light green>Sunset" with lore "<white>Blood ravages the whites of the entry.", "<white>No more can be discerned from the pooling mass of red and black."
@@ -3367,7 +3123,7 @@ command /journal <number>:
 			else if {quests.%player%::Sunset} is set:
 				set slot 14 of the player's current inventory to 1 lapis block named "<light blue>Sunset" with lore "<white>We've made it to the border world, and now we need to create a seal on Elrid's entrance to this realm.", "<white>Monsters continue to flood the area... can we hold out against such a terrible foe?", "<light blue>Sacred Seal Progress: %{quests.%player%::Sunset} - 1%%% complete.", "<light blue>Escape with your life by re-entering the portal.", "<light blue>Escaping will condemn the knights to failure, but preserve your own life..."
 			else:
-				set slot 14 of the player's current inventory to 1 redstone block named "<light red>Sunset" with lore "<white>Locate an End Portal after completing ""Piercing Through Darkness"" to unlock this quest."
+				set slot 14 of the player's current inventory to 1 redstone block named "<light red>Sunset" with lore "<white>Complete ""Fight Against Fate"" to unlock this quest."
 			#Misc Quests
 			set slot 53 of the player's current inventory to 1 compass named "<gold>Misc. Quests" with lore "<white>Click to view the generic quests you have active."
 			#Ally Supports

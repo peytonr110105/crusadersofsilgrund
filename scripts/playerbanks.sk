@@ -1,0 +1,24 @@
+#Per-character vaults for storing items.
+
+command /cvault [<text="open">]:
+	trigger:
+		if arg 1 is "open":
+			open chest with 6 rows named "<gold>%player's tablist name%<reset><gold>'s vault" for the player
+			set {_slot} to -1
+			loop {db_charvault.%player%::*}:
+				add 1 to {_slot}
+				set slot {_slot} of the player's current inventory to loop-value
+		else if arg 1 is "clear":
+			send "<light red>Are you sure that you want to clear your vault? You will lose all items inside of it!"
+			wait 4 seconds
+			send formatted "<run command:/cvault clear2><red><bold>Clear Vault"
+		else if arg 1 is "clear2":
+			clear {db_charvault.%player%::*}
+			send "<italics>Your vault has been emptied."
+			
+			
+on inventory close:
+	if the name of the player's current inventory contains "vault":
+		clear {db_charvault.%player%::*}
+		loop all items in the player's current inventory:
+			add loop-item to {db_charvault.%player%::*}

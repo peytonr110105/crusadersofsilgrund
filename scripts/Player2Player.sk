@@ -75,6 +75,7 @@ function supportBonusHandler(PLR: player, RANK: text):
 	#C-Support: +10 SKL/HP
 	else if {_RANK} is "D":
 		add 10 to {sklbuff.%{_PLR}%}
+		add 10 to {hpbuff.%{_PLR}%}
 		set {PTPSupportBonusActive.%{_PLR}%} to true
 		wait 1 minecraft hour
 		if {PTPSupportBonusActive.%{_PLR}%} is true:
@@ -87,22 +88,22 @@ command /support [<number=0>] <player>:
 	trigger:
 		if {supportpartner.%player%} is set:
 			if arg 1 is 0:
-				send "<light red>You're already supporting another player!"
-				send "<light red>You can choose to change your support partner, but your support bonuses and rank will reset."
+				send formatted "<light red>You're already supporting another player!"
+				send formatted "<light red>You can choose to change your support partner, but your support bonuses and rank will reset."
 				wait 2.5 seconds
-				send "<run command:/support 1 %arg 2%><red>Click here to change your support partner to %arg 2%."
+				send formatted "<run command:/support 1 %arg 2%><red>Click here to change your support partner to %arg 2%."
 			else if arg 1 is 1:
-				send "<light yellow>%player% wants to form a support with you!" to arg 2
+				send formatted "<light yellow>%player% wants to form a support with you!" to arg 2
 				if {supportpartner.%arg 2%} is set:
-					send "<light red>You can accept %player%'s support request, but it will reset your support rank with %{supportpartner.%arg 2%}%." to arg 2
-				send "<run command:/support 2 %player%><gold>Click here to confirm their request and form a support." to arg 2
+					send formatted "<light red>You can accept %player%'s support request, but it will reset your support rank with %{supportpartner.%arg 2%}%." to arg 2
+				send formatted "<run command:/support 1 %player%><gold>Click here to confirm their request and form a support." to arg 2
 			else if arg 1 is 2:
 				send title "<light yellow>Support formed with %arg 2%!" to the player for 1.5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
 				send title "<light yellow>Support formed with %player%!" to arg 2 for 1.5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
 				if {supportpartner.%player%} is set:
-					send "<light red>%player% disbanded their support with you." to {supportpartner.%player%}
+					send formatted "<light red>%player% disbanded their support with you." to {supportpartner.%player%}
 				if {supportpartner.%arg 2%} is set:
-					send "<light red>%arg 2% disbanded their support with you." to {supportpartner.%arg 2%}
+					send formatted "<light red>%arg 2% disbanded their support with you." to {supportpartner.%arg 2%}
 				clear {PTPSupportRank.%{supportpartner.%player%}%}
 				clear {PTPSupportPoints.%{supportpartner.%player%}%}
 				clear {supportpartner.%{supportpartner.%player%}%}
@@ -117,9 +118,9 @@ command /support [<number=0>] <player>:
 				set {supportpartner.%arg 2%} to the player
 		else:
 			if arg 1 is 0:
-				send "<light yellow>Support request sent to %arg 2%."
-				send "<bold><light yellow>%player% wants to form a support with you!" to arg 2
-				send "<run command:/support 1 %player%><gold>Click here to confirm their request and form a support." to arg 2
+				send formatted "<light yellow>Support request sent to %arg 2%."
+				send formatted "<bold><light yellow>%player% wants to form a support with you!" to arg 2
+				send formatted "<run command:/support 1 %player%><gold>Click here to confirm their request and form a support." to arg 2
 			else if arg 1 is 1:
 				send title "<light yellow>Support formed with %arg 2%!" to the player for 1.5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
 				send title "<light yellow>Support formed with %player%!" to arg 2 for 1.5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
@@ -134,12 +135,12 @@ command /support [<number=0>] <player>:
 command /cos_whisper <player> <text>:
 	trigger:
 		if arg 2 is "SETVAR":
-			send "<bold>Type the message you wish to send to %arg 1%."
+			send formatted "<bold>Type the message you wish to send to %arg 1%."
 			set {PTPWhisperToggle.%player%} to true
 			set {PTPWhisperTarget.%player%} to arg 1
 		else:
-			send "<bold><italics>%player% whispers:<reset> %arg 2%" to the player
-			send "<bold><italics>%player% whispers:<reset> %arg 2%" to arg 1
+			send formatted "<bold><italics>%player% whispers:<reset> %arg 2%" to the player
+			send formatted "<bold><italics>%player% whispers:<reset> %arg 2%" to arg 1
 			if {supportpartner.%player%} is arg 2:
 				add 3 to {PTPSupportPoints.%player%}
 				add 3 to {PTPSupportPoints.%arg 2%}
@@ -156,8 +157,8 @@ on chat:
 on death of a monster:
 	if {supportpartner.%attacker%} is set:
 		if {supportpartner.%attacker%} is online:
-			add 0.75 to {PTPSupportPoints.%attacker%}
-			add 0.75 to {PTPSupportPoints.%{supportpartner.%attacker%}%}
+			add 0.5 to {PTPSupportPoints.%attacker%}
+			add 0.5 to {PTPSupportPoints.%{supportpartner.%attacker%}%}
 
 #Increase support level for every in-game hour both players are online.			
 every minecraft hour:
@@ -192,30 +193,165 @@ every minecraft hour:
 						set {PTPSupportRank.%{supportpartner.%loop-player%}%} to "C"
 						send title "<gold>Support Rank increased!" with subtitle "<white>Support with %{supportpartner.%loop-player%}% increased to C." to loop-player for 3.5 seconds with fade in 0.25 seconds and fade out 0.5 seconds
 						send title "<gold>Support Rank increased!" with subtitle "<white>Support with %loop-player% increased to C." to {supportpartner.%loop-player%} for 3.5 seconds with fade in 0.25 seconds and fade out 0.5 seconds
-				supportBonusHandler(loop-player,{PTPSupportRank.%loop-player%})
+				#supportBonusHandler(loop-player,{PTPSupportRank.%loop-player%})
 	
+command /friends [<text="list">] [<player=%player%>] [<number=0>]:
+	trigger:
+		if {friendslist.%player%::TotalFriends} is not set:
+			set {friendslist.%player%::TotalFriends} to 0
+		if {friendslist.%arg 2%::TotalFriends} is not set:
+			set {friendslist.%arg 2%::TotalFriends} to 0
+		if arg 1 is "list":
+			open chest with 6 rows named "<blue>Friends List" for the player
+			set {_FLIcons} to 0
+			#Display players in GUI
+			loop {friendsList.%player%::*}:
+				#Block game from attempting to use the total number of friends as a valid player.
+				if loop-index is not "TotalFriends":
+					#Check if the player in the friend's list is online.
+					if loop-value is online:
+						set slot {_FLIcons} of the player's current inventory to 1 emerald block named "<white>%loop-value%" with lore "<light yellow>Playing as: %loop-value's tablist name%", "<light yellow>Location: %{friendsList.%player%::%loop-index%}'s location%", "<light yellow>Click this icon for more options."
+					else:
+						set slot {_FLIcons} of the player's current inventory to 1 obsidian named "<white>%loop-value%" with lore "<light red>This player is offline."
+					add 1 to {_FLIcons}
+		#Add friends to your friends list
+		else if arg 1 is "add":
+			if {friendsList.%player%::TotalFriends} is less than 55:
+				if {friendsList.%arg 2%::TotalFriends} is less than 55:
+					if arg 2 is not the player:
+						if arg 3 is 0:
+							send formatted "<run command:/friends add %player% 1><light yellow>%player% wants to add you to their friends list. Click here to accept!" to arg 2
+						else:
+							send formatted "<gold>Request accepted! %arg 2% is now on your friends list." to the player
+							send formatted "<gold>Request accepted! %player% is now on your friends list." to arg 2
+							add the player to {friendsList.%arg 2%::*}
+							add arg 2 to {friendsList.%player%::*}
+							add 1 to {friendsList.%arg 2%::TotalFriends}
+							add 1 to {friendsList.%player%::TotalFriends}
+					else:
+						send "<light red>Alas! Try as you might, one cannot be friends with themselves. That is to say, one can never achieve true inner peace with oneself. The human mind is an ever-changing beast that can never truly be conqured. How can one accept that which is ever changing? Rather than attempting to answer these philosophical questions, maybe you could try adding another player as a friend instead of yourself."
+				else:
+					send "<light red>%arg 2%'s friends list is full!"
+			else:
+				send "<light red>Your friends list is full! You need to remove one of your friends before adding any more."
+		#Remove friends from friends list
+		else if arg 1 is "remove":
+			loop {friendsList.%arg 2%::*}:
+				if loop-value is the player:
+					clear {friendsList.%arg 2%::%loop-index%}
+					send formatted "<light red>%player% removed you from their friends list. Your friends list has been updated to match." to arg 2
+					exit 1 loop
+			loop {friendsList.%player%::*}:
+				if loop-value is arg 2:
+					clear {friendsList.%player%::%loop-index%}
+					send formatted "<light red>Removed %arg 2% from your friends list." to the player
+					exit 1 loop
+		#Detailed view when clicking on a friend
+		else if arg 1 is "details":
+			if {flDetails.%player%} is set:
+				open chest with 1 row named "<blue>%{flDetails.%player%}%" for the player
+				set slot 0 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
+				set slot 1 of the player's current inventory to 1 chest named "<light yellow>Send Trade Offer"
+				set slot 2 of the player's current inventory to 1 ender pearl named "<light blue>Request to Warp to Friend"
+				set slot 3 of the player's current inventory to 1 ender pearl named "<light blue>Request Friend to Warp Here"
+				set slot 4 of the player's current inventory to 1 paper named "<light green>Send Whisper"
+				if {party.%player%} is not {party.%{flDetails.%player%}%}:
+					if {party.%player%} is not set:
+						set slot 5 of the player's current inventory to 1 totem of undying named "<light purple>Create & Invite Friend to Group"
+					else:
+						set slot 5 of the player's current inventory to 1 totem of undying named "<light purple>Invite to Group"
+				else:
+					set slot 5 of the player's current inventory to 1 totem of undying named "<light purple>Kick Friend from Group"
+				
+				set slot 8 of the player's current inventory to 1 redstone block named "<light red><bold>Remove from Friends List"
+			else:
+				send "<light red>Something went wrong! If you see this, tell a developer that they broke whatever you just tried to access. ERROR CODE: 155-FL"
+	
+#Friends List	
+on inventory click:
+	if the name of the player's current inventory is "<blue>Friends List":
+		if the 1st line of the lore of the clicked item contains "<light yellow>Playing as: ":
+			play sound "ui.button.click" with volume 1 and pitch 1 at the player for the player
+			set {flDetails.%player%} to the name of the clicked item
+			set {flDetails.%player%} to decolorize({fldetails.%player%})
+			set {flDetails.%player%} to {flDetails.%player%} parsed as player
+			make player execute command "/friends details %{flDetails.%player%}%"
+		cancel event
+	else if the name of the player's current inventory contains "%{flDetails.%player%}%":
+		set {flDetailsClearOnExit.%player%} to true
+		cancel event
+		if the name of the clicked item is "<bold>Go Back":
+			play sound "ui.button.click" with volume 1 and pitch 1 at the player for the player
+			make player execute command "/friends"
+		else if the name of the clicked item is "<light yellow>Send Trade Offer":
+			play sound "ui.button.click" with volume 1 and pitch 1 at the player for the player
+			make player execute command "/trade %{flDetails.%player%}%"
+		else if the name of the clicked item is "<light blue>Request to Warp to Friend":
+			play sound "ui.button.click" with volume 1 and pitch 1 at the player for the player
+			make player execute command "/tpa %{flDetails.%player%}%"
+		else if the name of the clicked item is "<light blue>Request Friend to Warp Here":
+			play sound "ui.button.click" with volume 1 and pitch 1 at the player for the player
+			make player execute command "/tpahere %{fldetails.%player%}%"
+		else if the name of the clicked item is "<light green>Send Whisper":
+			play sound "ui.button.click" with volume 1 and pitch 1 at the player for the player
+			make player execute command "/cos_whisper %{flDetails.%player%}% SETVAR"
+			close the player's inventory
+		else if the name of the clicked item is "<light purple>Create & Invite Friend to Group":
+			play sound "ui.button.click" with volume 1 and pitch 1 at the player for the player
+			make player execute command "/group create %player's name%'s Group"
+			wait 1 tick
+			make player execute command "/group invite %{flDetails.%player%}%"
+		else if the name of the clicked item is "<light purple>Invite to Group":
+			play sound "ui.button.click" with volume 1 and pitch 1 at the player for the player
+			make player execute command "/group invite %{flDetails.%player%}%"
+		else if the name of the clicked item is "<light purple>Kick Friend from Group":
+			play sound "ui.button.click" with volume 1 and pitch 1 at the player for the player
+			make player execute command "/group kick %{flDetails.%player%}%"
+		else if the name of the clicked item is "<light red><bold>Remove from Friends List":
+			play sound "ui.button.click" with volume 1 and pitch 1 at the player for the player
+			make player execute command "/friends remove %{flDetails.%player%}%"
+			close the player's inventory
+
+on inventory close:
+	if {flDetailsClearOnExit.%player%} is true:
+		clear {flDetails.%player%}
+		clear {flDetailsClearOnExit.%player%}
+
 #Player2Player interactions handler.
 on right-click on a player:
 	#exclude npcs from p2p
-	if target is not npc:
+	if citizen id of the target is not set:
 		#Player must be unarmed to trigger P2P interactions.
 		if the player's tool is air:
 			#Prevents other players from interrupting NPC dialouge.
-			if {inConvo.%player%} is set:
-				send "<light red>%target% is already in a conversation." to the player
+			if {inConvo.%target%} is set:
+				send formatted "<light red>%target% is already in a conversation." to the player
 			else:
 				#Offer a trade (Not Implemented)
-				#send "<run command:/trade %target%><light blue>Trade with %target's name%" to the player
+				#send formatted "<run command:/trade %target%><light blue>Trade with %target's name%" to the player
 				#Display support rank if the target is being supported by the player.
 				if {supportpartner.%player%} is the target:
-					send "<light yellow>Support Rank: %{PTPSupportRank.%player%}%" to the player
+					send formatted "<light yellow>Support Rank: %{PTPSupportRank.%player%}%" to the player
 				#Gray out support option if the player and/or target are supporting other players.
 				else if {supportpartner.%player%} is set:
-					send "<run command:/support 0 %target%><gray>> Offer to Support %target's name%" to the player
+					send formatted "<run command:/support 0 %target%><gray>> Offer to Support %target's name%" to the player
 				else if {supportpartner.%target%} is set:
-					send "<gray>> Offer to Support %target's name%" to the player
-				#Allow player to send support request if both players do not have a support partner.
+					send formatted "<run command:/support 0 %target%><gray>> Offer to Support %target's name%" to the player
+				#Allow player to send formatted support request if both players do not have a support partner.
 				else:
-					send "<run command:/support 0 %target%><light yellow>> Offer to Support %target's name%." to the player
+					send formatted "<run command:/support 0 %target%><light yellow>> Offer to Support %target's name%." to the player
 				#Whispers
-				send "<run command:/cos_whisper %target% SETVAR><light yellow>> Whisper to %target%." to the player
+				send formatted "<run command:/cos_whisper %target% SETVAR><light yellow>> Whisper to %target%." to the player
+				#Friends List
+				loop {friendsList.%player%::*}:
+					if loop-value is the target:
+						set {_friendFound} to true
+						send formatted "<run command:/friends remove %target%><light red>Remove %target% from your friends list." to the player
+						exit 1 loop
+				if {_friendFound} is not true:
+					#Inform players if they have hit the friends list cap.
+					if {friendsList.%player%::TotalFriends} is less than 55:
+						send formatted "<run command:/friends add %target%><light yellow>Send friend request to %target%." to the player
+					else:
+						send formatted "<run command:/friends add %target%><gray>Send friend request to %target%." to the player
+				

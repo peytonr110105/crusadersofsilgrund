@@ -3,21 +3,26 @@ command /salindrum:
 	aliases: /void, /training, /testroom, /sd
 	trigger:
 		if {sd.rewarp.%player%} is set:
-			open chest with 1 row named "<red>Salindrum Configuration" for the player
-			set slot 0 of the player's current inventory to 1 nether star named "<gold>Exit Salindrum"
-			set slot 1 of the player's current inventory to 1 zombie spawn egg named "<white>Spawn Monsters"
-			set slot 2 of the player's current inventory to 1 iron sword named "<white>Test Skills"
-			if {quests.%player%::Awakening} is 999:
-				set slot 3 of the player's current inventory to 1 diamond sword named "<white>Test Holy Weapons"
-			set slot 8 of the player's current inventory to 1 tnt named "<white>Reset Session"
-			if {sd.invuln.%player%} is true:
-				set slot 7 of the player's current inventory to 1 totem of undying named "<white>Player Invincibility: ON" with lore "<white>You won't take damage from enemies.", "<white>Click to toggle."
+			open chest with 2 rows named "<red>Salindrum Configuration" for the player
+			set slot 0 of the player's current inventory to 1 nether star named "<gold>Exit Salindrum" with lore "<white>Click to exit the training mode."
+			set slot 1 of the player's current inventory to 1 zombie spawn egg named "<white>Spawn Monsters" with lore "<white>Generate a variety of monsters to practice with."
+			if {quests.%player%::Breaking the Ice} is 999:
+				set slot 2 of the player's current inventory to 1 iron sword named "<white>Test Skills" with lore "<white>Equip any unlocked skills for free."
 			else:
-				set slot 7 of the player's current inventory to 1 redstone block named "<white>Player Invincibility: OFF" with lore "<white>You will take damage from enemies.", "<white>Click to toggle."
+				set slot 2 of the player's current inventory to 1 obsidian named "<light red>Locked" with lore "<white>Complete the quest ""With Pride in Your Heart"" to access this feature."
+			if {quests.%player%::Awakening} is 999:
+				set slot 3 of the player's current inventory to 1 diamond sword named "<white>Test Sacred Treasures" with lore "<white>Try out one of the Sacred Treasures."
+			else:
+				set slot 3 of the player's current inventory to 1 obsidian named "<light red>Locked" with lore "<white>Complete the quest ""Awakening"" to access this feature."
+			set slot 8 of the player's current inventory to 1 tnt named "<white>Reset Session" with lore "<white>Resets the session back to when you entered."
+			set slot 7 of the player's current inventory to 1 totem of undying named "<white>Damage Modifiers" with lore "<white>Fine-tune how much damage you take from and deal to foes."
+			set slot 4 of the player's current inventory to 1 anvil named "<white>Fix Equipment" with lore "<white>Click to repair any damaged items in your inventory."
+			set slot 5 of the player's current inventory to 1 chest named "<white>Supply Crate" with lore "<white>Borrow weapons and ammo here."
 			if {sd.nohunger.%player%} is true:
 				set slot 6 of the player's current inventory to 1 steak named "<white>Infinite Hunger: ON" with lore "<white>Your hunger bar won't decrease.", "<white>Click to toggle."
 			else:
 				set slot 6 of the player's current inventory to 1 rotten flesh named "<white>Infinite Hunger: OFF" with lore "<white>Your hunger bar will decrease normally.", "<white>Click to toggle."
+			set slot 9 of the player's current inventory to 1 workbench named "<white>Combat Calculator" with lore "<white>Run a variety of calculations on your weapons."
 		else:
 			open chest with 2 rows named "<red>Select a room." for the player
 			set {_roomnum} to 0
@@ -28,6 +33,65 @@ command /salindrum:
 				else:
 					set slot ({_roomnum} - 1) of the player's current inventory to 1 lapis block named "Room %{_roomnum}%" with lore "<white>Empty Room"
 				
+command /sdsupplies:
+	trigger:
+		open chest with 4 rows named "<red>Supply Crate" for the player
+		set slot 0 of the player's current inventory to 1 wooden sword of unbreaking 100
+		set slot 1 of the player's current inventory to 1 stone sword of unbreaking 100
+		set slot 2 of the player's current inventory to 1 iron sword of unbreaking 100
+		set slot 3 of the player's current inventory to 1 gold sword of unbreaking 100
+		set slot 4 of the player's current inventory to 1 diamond sword of unbreaking 100
+		set slot 5 of the player's current inventory to 1 wooden axe of unbreaking 100
+		set slot 6 of the player's current inventory to 1 stone axe of unbreaking 100
+		set slot 7 of the player's current inventory to 1 iron axe of unbreaking 100
+		set slot 8 of the player's current inventory to 1 gold axe of unbreaking 100
+		set slot 9 of the player's current inventory to 1 diamond axe of unbreaking 100
+		set slot 10 of the player's current inventory to 1 wooden shovel of unbreaking 100 named "<bold>Wooden Lance"
+		set slot 11 of the player's current inventory to 1 stone shovel of unbreaking 100 named "<bold>Stone Lance"
+		set slot 12 of the player's current inventory to 1 iron shovel of unbreaking 100 named "<bold>Iron Lance"
+		set slot 13 of the player's current inventory to 1 gold shovel of unbreaking 100 named "<bold>Golden Lance"
+		set slot 14 of the player's current inventory to 1 diamond shovel of unbreaking 100 named "<bold>Diamond Lance"
+		set slot 15 of the player's current inventory to 1 bow of unbreaking 100
+		set slot 16 of the player's current inventory to 1 iron horse armor named "<light gray>Flintlock Pistol" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 1):", "1"
+		set slot 17 of the player's current inventory to 1 iron horse armor named "<light gray>Iron Musket" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 1):", "1"
+		set slot 18 of the player's current inventory to 1 iron horse armor named "<light gray>Iron Pistol" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 8):", "8"
+		set slot 19 of the player's current inventory to 1 iron horse armor named "<light gray>Redstone Repeater" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 30):", "30"
+		set slot 20 of the player's current inventory to 1 iron horse armor named "<light gray>E-45s" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 18):", "18"
+		set slot 21 of the player's current inventory to 1 golden horse armor named "<light gray>Redgrave Sawn-Off" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 5):", "5"
+		set slot 22 of the player's current inventory to 64 arrow
+		set slot 23 of the player's current inventory to 64 arrow
+		set slot 24 of the player's current inventory to 64 iron nugget
+		set slot 25 of the player's current inventory to 64 iron nugget
+		set slot 26 of the player's current inventory to 64 gold nugget
+		set slot 27 of the player's current inventory to 64 gold nugget
+		set slot 28 of the player's current inventory to 64 gunpowder
+		set slot 29 of the player's current inventory to 64 gunpowder
+		set slot 34 of the player's current inventory to 1 chest named "<bold>Restock Supply Crate"
+		set slot 35 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
+
+command /sdmults:
+	trigger:
+		open chest with 2 rows named "<red>Damage Modifiers" for the player
+		set slot 4 of the player's current inventory to 1 iron sword named "<light green>Damage Dealt" with lore "<white>Current Modifier: %{sd.outgoingmult.%player%}%x"
+		set slot 3 of the player's current inventory to 1 red glass pane named "<light red>Decrease Damage Dealt by 0.1x"
+		set slot 5 of the player's current inventory to 1 light green glass pane named "<light green>Increase Damage Dealt by 0.1x"
+		set slot 13 of the player's current inventory to 1 iron chestplate named "<light red>Damage Taken" with lore "<white>Current Modifier: %{sd.incomingmult.%player%}%x"
+		set slot 12 of the player's current inventory to 1 red glass pane named "<light red>Decrease Damage Taken by 0.1x"
+		set slot 14 of the player's current inventory to 1 light green glass pane named "<light green>Increase Damage Taken by 0.1x"
+		set slot 17 of the player's current inventory to 1 hopper named "<light yellow>Reset Damage Taken Multiplier"
+		set slot 8 of the player's current inventory to 1 hopper named "<light yellow>Reset Damage Dealt Multiplier"
+		set slot 0 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
+		set slot 9 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
+
+command /sdcalcs:
+	trigger:
+		open chest with 2 rows named "<red>Calculator" for the player
+		set slot 0 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
+		set slot 9 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
+		set slot 4 of the player's current inventory to 1 purple wool named "<gold>Special Odds" with lore "<white>Special Skill: %{sd.calcSpecial.%player%}%", "<white>Base Activation Chance: %{sd.calcOdds.%player%}%", "<white>Highest Possible Chance: %{sd.calcMaxOdds.%player%}%", "<white>SKL Needed To Cap: %{sd.calcMaxSKL.%player%}%", "<white>Critical Chance: %{sd.calcCritChance.%player%}%", "<white>Max Unbuffed Crit Chance: %{sd.calcMaxCritChance.%player%}%"
+		set slot 5 of the player's current inventory to 1 splash potion of harming named "<gold>Damage Output" with lore "<white>Base Damage: %{sd.calcBaseDamage.%player%}%", "<white>With Skills & No Special: %{sd.calcSkillsDamage.%player%}%", "<white>With Skills & Special: %{sd.calcSpecialDamage.%player%}%", "<white>Maximum Damage Possible (With Double): %{sd.calcMaxDamage.%player%}%", "<white>Can Double Foes Below: %{sd.calcPlayerDoubleRange.%player%}% SPD", "<white>Foes Double From: %{sd.calcFoeDoubleRange.%player%}%+ SPD"
+		set slot 13 of the player's current inventory to 1 book named "<gold>How to Use" with lore "<white>Click a weapon to add it to the calculator.", "<white>Click the ""Calculate"" button to view detailed info on your weapon.", "<white>Damage assumes foe has no equipment, and is a player.", "<white>Bows are assumed to deal a base damage of 3.5."
+		set slot 8 of the player's current inventory to 1 workbench named "<gold>Calculate" with lore "<white>Click to run calculations on the selected weapon."
 command /sdsetup <number> <number> <number> <number>:
 	trigger:
 		set {sd.room %arg 1%} to location at (arg 2, arg 3, arg 4) in world "Salindrum"
@@ -81,48 +145,49 @@ command /sdmonsters:
 
 command /sdhw:
 	trigger:
-		open chest with 6 rows named "<red><bold>Salindrum - Holy Weapons" for the player
-		set slot 0 of the player's current inventory to 1 diamond sword named "<gold><bold>Falchion" with lore "<white>Effective against end-type monsters.", "<white>Can deal random critical damage.", "<white>Right-click to restore health.", "<bold>Unique Refine:", "<white>Grants Strength/Swiftness/Resistance 1 to nearby party members.", "<light red>Requires the Lord's Blood perk OR A or higher rank in Swords."
-		set slot 1 of the player's current inventory to 1 diamond sword named "<gold><bold>Binding Blade" with lore "<white>Effective against end-type monsters.", "<white>+4 weapon might.", "<white>Right-click to restore health.", "<white><bold>Unique Refine:", "<white>Grants Resistance 2 while equipped.", "<white>Grants Riposte.", "<bold>Riposte counters ignite foes.", "<light red>Requires the Lord's Blood perk OR A rank or higher in Swords."
-		set slot 2 of the player's current inventory to 1 diamond sword named "<gold><bold>Tyrfing" with lore "<white>+4 weapon might.", "<white>Reduces ranged damage suffered by 75%%.", "<white>Grants Miracle while equipped.", "<white><bold>Unique Refine:", "<white>Grants STR/DEF +40 while within 10 blocks of a party member.", "<light red><bold>Requires Crusader's Blood perk OR A rank or higher in Swords."
-		set slot 3 of the player's current inventory to 1 diamond sword named "<gold><bold>Ragnell" with lore "<white>+6 weapon might.", "<white>Grants Radiant Aether, a more likely to activate version of Aether.", "<white><bold>Unique Refine:", "<white>+4 weapon might.", "<white>Right-click to fire damaging shockwaves.", "<light red><bold>Requires A rank or higher in Swords to wield."
-		set slot 4 of the player's current inventory to 1 diamond sword named "<gold><bold>Light Brand" with lore "<white>Grants SKL +20 while equipped.", "<white>Right-click to strike lightning at nearby monsters.", "<white>Grants bonus damage = MAG / 8. Max: +7", "<bold>Unique Refine:", "<white>+4 weapon might.", "<white>Calculates damage using lower of foe's DEF or MAG.", "<light red><bold>Requires B rank or higher in Swords to wield."
-		set slot 5 of the player's current inventory to 1 diamond axe named "<gold><bold>Armads" with lore "<white>+6 weapon might.", "<white>Grants Resistance 2 while equipped.", "<white><bold>Unique Refine:", "<white>Automatically retaliate against ranged foes.", "<white>Automatically make a follow-up attack when attacked.", "<light red><bold>Requires A rank or higher in Axes to wield."
-		set slot 6 of the player's current inventory to 1 bow named "<gold><bold>Parthia" with lore "<white>Reduces ranged damage suffered by 75%%.", "<white>+2 weapon might.", "<white>Grants Experience Sapper.", "<white><bold>Unique Refine:", "<white>+6 weapon might against ranged opponents.", "<white>Inflicts Weakness 2 to foes on-hit.", "<light red><bold>Requires B rank or higher in Bows to wield."
-		set slot 7 of the player's current inventory to 1 iron horse armour named "<gold><bold>Super Shotgun" with lore "The double-barreled classic. Plenty of risk & plenty of reward.", "Right-click to fire.", "Left-click to reload. Costs 6 gold nuggets.", "<bold>Skills cannot be equipped on this weapon.", "<bold>This weapon cannot be refined."
-		set slot 8 of the player's current inventory to 1 diamond shovel named "<gold><bold>Siegmund" with lore "<white>+5 weapon might.", "<white>Grants Rally Strength.", "<white>Effective against monsters.", "<white><bold>Unique Refine:", "<white>If there are more enemies than allies within 10 blocks of you:", "<white>Automatically make a follow-up attack, and grants Strength 2.", "<light red>Requires the Lord's Blood perk OR A rank or higher in Lances."
-		set slot 9 of the player's current inventory to 1 diamond sword named "<gold><bold>Sieglinde" with lore "<white>+5 weapon might.", "<white>Grants Rally Strength.", "<white>Effective against monsters.", "<white><bold>Unique Refine:", "<white>Rallies also apply to yourself.", "<white>Rally skills apply in a 7-block radius.", "<light red>Requires the Lord's Blood perk OR A rank or higher in Swords."
-		set slot 10 of the player's current inventory to 1 diamond sword named "<gold><bold>Durandal" with lore "<white>+2 weapon might.", "<white>Effective against end-type monsters.", "<white>Imbued with the Crushing refine effect.", "<white><bold>Unique Refine:", "<white>Grants Strength/Swiftness 2 on-hit.", "<light red><bold>Requires A Rank or higher in Swords to wield."
-		set slot 11 of the player's current inventory to 1 diamond shovel named "<gold><bold>Gae Bolg" with lore "<white>Grants STR/DEF/SKL +30 while equipped.", "<white>Grants the Guard and Vantage perks while equipped.", "<white><bold>Unique refine:", "<white><bold>Inflicts DEF/MAG - 30 on foes within 10 blocks.", "<light red>Requires the Crusader's Blood perk OR S rank in Lances to wield."
-		set slot 12 of the player's current inventory to 1 diamond sword named "<gold><bold>Mercurius" with lore "<white>+3 weapon might.", "<white>Grants Experience Sapper.", "<light red><bold>Requires B rank or higher in Swords to wield."
-		set slot 13 of the player's current inventory to 1 diamond axe named "<gold><bold>Basilikos" with lore "<white>+5 weapon might.", "<white><bold>Unique Refine:", "<white>Grants Life & Death (A-Slot).", "<light red><bold>Requires B rank or higher in Axes to wield."
-		set slot 14 of the player's current inventory to 1 diamond axe named "<gold><bold>Hauteclere" with lore "<white>+2 weapon might.", "<white>Grants SKL +15 while equipped.", "<white><bold>Unique Refine:", "<white>Accelerates Special trigger (+20%% activation chance).", "<white>If Special activates, increases damage dealt by 2.5 hearts.", "<light red><bold>Requires B rank or higher in Axes to wield."
-		set slot 15 of the player's current inventory to 1 diamond sword named "<gold><bold>Mystletainn" with lore "<white>+4 weapon might.", "<white>Grants SKL +40 while equipped.", "<white>If HP < 75%%, grants SKL +30, and deals +4 damage when Special activates.", "<white>Stacks with Wrath.", "<white><bold>Unique refine:", "<white>Grants STR/DEF/SPD/SKL/MAG +20.", "<white>Player suffers 1.5 hearts of recoil damage each hit.", "<light red>Requires the Crusader's Blood perk OR B rank or higher in Swords to wield."
-		set slot 16 of the player's current inventory to 1 diamond shovel named "<gold><bold>Fensalir" with lore "<white>+4 weapon might.", "<white>While within 10 blocks of a party member, grants +6 weapon might.", "<white><bold>Unique Refine:", "<white>While within 10 blocks of a party member, grants STR/SKL +40.", "<light red>Requires the Lord's Blood perk OR A rank or higher in Lances."
-		set slot 17 of the player's current inventory to 1 diamond sword named "<gold><bold>Folkvangr" with lore "<white>+4 weapon might.", "<white>While within 10 blocks of a party member, grants +6 weapon might.", "<bold>Unique Refine:", "<white>If HP < 70%%, grants STR/DEF +40.", "<light red>Requires the Lord's Blood perk OR A rank or higher in Swords."
-		set slot 18 of the player's current inventory to 1 diamond shovel named "<gold><bold>Gradivus" with lore "<white>+4 weapon might.", "<white>Grants Experience Sapper.", "<light red><bold>Requires B rank or higher in Lances to wield."
-		set slot 19 of the player's current inventory to 1 diamond horse armour named "<gold><bold>Love is Blue" with lore "<white>Right-click to fire bullets at the cost of EXP.", "Melee hits restore 5 EXP.", "<bold>Skills cannot be equipped to this weapon.", "<bold>This weapon cannot be refined."
-		set slot 20 of the player's current inventory to 1 gold horse armour named "<gold><bold>Scarborough Fair" with lore "<white>Right-click to fire bullets at the cost of EXP.", "Melee hits restore 5 EXP.", "<bold>Skills cannot be equipped to this weapon.", "<bold>This weapon cannot be refined."
-		set slot 21 of the player's current inventory to 1 diamond sword named "<gold><bold>Balder Side Sword" with lore "<white>+2 weapon might.", "<white>Right-click to parry attacks.", "<white>Parry has a 0.5 second cooldown.", "<light red><bold>Requires B rank or higher in Swords to wield."
-		set slot 22 of the player's current inventory to 1 bow named "<gold><bold>Fujin Yumi" with lore "<white>Grants MAG +20 while equipped.", "<white>This weapon will automatically counter-attack melee hits.", "<white><bold>Unique Refine:", "<white>Holding sneak and firing an arrow teleports you where it lands.", "<light red><bold>Requires B rank or higher in Bows to wield."
-		set slot 23 of the player's current inventory to 1 diamond sword named "<gold><bold>Blessed Sword" with lore "<white>Reduces damage suffered by 1.5 hearts.", "<white>Effective against monsters.", "<white>Imbued with the Plenitude skill.", "<white><bold>Unique Refine:", "<white>Grants Regeneration 2 while equipped.", "<white>Nullifies negative potion effects."
-		set slot 24 of the player's current inventory to 1 diamond axe named "<gold><bold>Devil Axe" with lore "<white>+3 weapon might.", "<white>Imbued with the Fury skill.", "<white>Inflicts Wither 4 on foes on-hit.", "<white><bold>Unique Refine:", "<white>Grants weapon might +6.", "<white>Inflicts 3 hearts of recoil damage when attacking."
-		set slot 25 of the player's current inventory to 1 diamond shovel named "<gold><bold>Crusader's Lance" with lore "<white>+8 weapon might.", "<white>Can be thrown for no durability cost.", "<white>Reduces damage suffered by 30%%.", "<white><bold>Unique Refine:", "<white>Reduces damage suffered by 20%%.", "<white>Player automatically makes a follow-up attack above 50%% HP."
-		set slot 26 of the player's current inventory to 1 bow named "<gold><bold>Lunar Bow" with lore "<white>+3 weapon might.", "<white>Imbued with the Luna skill.", "<white>Calculates damage using the lower of foe's DEF or MAG.", "<white><bold>Unique Refine:", "<white>Ignores damage reductions from enemy's armour. (Excludes enchantments)", "<white>If Special activates, increases damage by 20%% of the player's SPD."
-		set slot 27 of the player's current inventory to 1 diamond shovel named "<gold><bold>Rex Hasta" with lore "<white>When a special activates, boosts damage by 5 hearts.", "<white><bold>Unique Refine:", "<white>+4 weapon might.", "<white>Accelerates special activation (activation chance +20%%).", "<light red><bold>Requires A rank or higher in Lances to wield."
-		set slot 28 of the player's current inventory to 1 diamond sword named "<gold><bold>Meisterschwert" with lore "<white>Attacks twice during combat.", "<white><bold>Unique Refine:", "<white>Grants <gold>[Accost]<white>.", "<gold>[Accost]<white>: If attacker's HP & SPD > foe's HP & SPD, damage dealt for that round of combat is doubled.", "<light red><bold>Requires B rank or higher in Swords to wield."
-		set slot 29 of the player's current inventory to 1 book named "<gold><bold>Dire Thunder" with lore "<white>Attacks twice when initiating combat.", "<white><bold>Unique Refine:","<white>Grants <gold>[Accost]<white>.", "<gold>[Accost]<white>: If attacker's HP & SPD > foe's HP & SPD, damage dealt for that round of combat is doubled.", "<light red><bold>Requires B rank or higher in Magic to wield."
-		set slot 30 of the player's current inventory to 1 diamond shovel named "<gold><bold>Rhomphaia" with lore "<white>Deals bonus damage equal to 25%% of the player's SPD.", "<light red><bold>Requires B rank or higher in Lances to wield."
-		set slot 31 of the player's current inventory to 1 diamond sword named "<gold><bold>Alondite" with lore "<white>Imbued with the Eclipse skill:", "<white>Nullifies bonuses provided by armor, and reduces foe's DEF/MAG by 80%%.", "<white>Activation chance: (SKL ^ 0.65) | Max: 50%%.", "<light red><bold>Requires A rank or higher in Swords to wield."
-		set slot 32 of the player's current inventory to 1 bow named "<gold><bold>Guard Bow" with lore "<white>Reduces damage suffered by 1.5 hearts.", "<light red><bold>Requires C rank or higher in Bows to wield."
-		set slot 33 of the player's current inventory to 1 bow named "<gold><bold>Brave Bow" with lore "<white>Inflicts SPD -15.", "<white>-3 weapon might.", "<white>Weapon attacks twice during combat.", "<light red><bold>Requires C rank or higher in Bows to wield."
-		set slot 34 of the player's current inventory to 1 diamond axe named "<gold><bold>Tomahawk" with lore "<white>Grants <gold>[Distant Counter]<white>.", "<gold>[Distant Counter]<white>: Automatically retaliate against ranged opponents. Range-dependent skills will activate regardless of foe's range."
-		set slot 35 of the player's current inventory to 1 diamond shovel named "<gold><bold>Javelin" with lore "<white>Grants <gold>[Distant Counter]<white>.", "<gold>[Distant Counter]<white>: Automatically retaliate against ranged opponents. Range-dependent skills will activate regardless of foe's range."
-		set slot 36 of the player's current inventory to 1 diamond sword named "<gold><bold>Tornado Blade" with lore "<white>Grants <gold>[Distant Counter]<white>.", "<gold>[Distant Counter]<white>: Automatically retaliate against ranged opponents. Range-dependent skills will activate regardless of foe's range."
-		set slot 37 of the player's current inventory to 1 diamond shovel named "<gold><bold>Swift-Winds Lance" with lore "<white>Grants <gold>[Sweeper]<white>.", "<bold><white>Unique Refine: Grants STR/SPD +20 for 5 seconds when initiating combat. Recharge duration: 10 seconds.", "<gold>[Sweeper]<white>: Disables foe's skills that guarantee counter-attacks during combat."
-		set slot 38 of the player's current inventory to 1 diamond sword named "<gold><bold>Kindled-Fire Sword" with lore "<white>Grants <gold>[Brave]<white>.", "<bold><white>Unique Refine:", "<white>Grants STR/DEF +20 for 5 seconds when initiating combat. Recharge duration: 10 seconds.", "<gold>[Brave]<white>: Inflicts SPD -15. Player attacks twice during combat."
-		set slot 39 of the player's current inventory to 1 diamond axe named "<gold><bold>Axtinguisher" with lore "<white>+50%% damage against burning targets.", "<white>-50%% damage against non-burning targets."
-		set slot 40 of the player's current inventory to 1 diamond sword named "<gold><bold>Yamato" with lore "<white>+3 weapon might.", "<white>Grants <light blue><bold>[Judgement Cut]<reset><white>.", "<light blue><bold>[Judgement Cut]:<reset><white> Sneak and right-click to activate.", "<white>Gain power by holding sneak, then unleash it by standing up.", "<white>Targets all foes within 20 blocks. Damage based on charge time."
+		open chest with 6 rows named "<red><bold>Salindrum - Sacred Treasures" for the player
+		set slot 0 of the player's current inventory to 1 diamond sword named "<gold><bold>Falchion" with lore "<white>Increases weapon might based on distance from foe during combat.", "<white>Maximum bonus: +12.", "<white>Grants 1.5x damage against End monsters.", "<white>Right-click to restore health.", "<light green>Unique Refine:", "<light green>Grants STR/SPD/SKL/DEF/MAG +10 to nearby party members.", "<light red>Requires the Lord's Blood perk OR A rank in Swords to wield."
+		set slot 1 of the player's current inventory to 1 diamond sword named "<gold><bold>Binding Blade" with lore "<white>+4 weapon might.", "<white>Grants DEF/MAG +10 while equipped.", "<white>Grants 1.5x damage against End monsters.", "<white>Sneak & Right-click to restore health.", "<light green>Unique Refine:", "<light green>Reduces damage suffered by 33%% during combat.", "<light green>Grants <light blue>[Riposte]<light green>.", "<light blue>[Riposte]: <white>Automatically counter-attack foes during combat.", "<white>Riposte's effect only activates if foe is in range.", "<light red>Requires the Lord's Blood perk OR A rank in Swords wield."
+		set slot 2 of the player's current inventory to 1 diamond sword named "<gold><bold>Tyrfing" with lore "<white>+4 weapon might.", "<white>Reduces ranged damage suffered by 50%%.", "<white>Grants <light purple>[Miracle]<white>.", "<light green>Unique Refine:", "<light green>Grants MAG +20, SPD/SKL +10.", "<light purple>[Miracle]: <white>Nullifies foe's attack if it would kill the player during combat.", "<white>Activation chance: (SKL ^ 0.5)", "<white>Max: 50%%", "<light red><bold>Requires Crusader's Blood perk OR A rank in Swords to wield."
+		set slot 3 of the player's current inventory to 1 diamond sword named "<gold><bold>Ragnell" with lore "<white>+8 weapon might.", "<white>Grants <light purple>[Radiant Aether].", "<light green>Unique Refine:", "<light green>+4 weapon might (+12 total).", "<light green>Grants <light red>[Distant Counter]<light green>.", "<light red>[Distant Counter]: <white>Counter-attack ranged foes automatically when hit.", "<light purple>[Radiant Aether]: <white>Activate Luna and Sol in one strike.", "<white>Exclusive to Ragnell.", "<light red><bold>Requires A rank in Swords to wield."
+		set slot 4 of the player's current inventory to 1 diamond sword named "<gold><bold>Light Brand" with lore "<white>+2 weapon might.", "<white>Grants SKL/MAG +10 while equipped.", "<white>Grants <light purple>[Growing Light]<reset>.", "<light green>Unique Refine:", "<light green>Damage from this weapon is calculated using the","<light green>lower of the foe's DEF or MAG, and, if targeting MAG,", "<light green>treats the player's MAG as their STR during damage calculation.", "<light purple>[Growing Light]: <reset><white>Damages all foes within 14 blocks of the victim.", "<white>Activation chance: (SKL ^ 0.7)", "<white>Max: 50%%.","<light red><bold>Requires B rank in Swords to wield."
+		set slot 5 of the player's current inventory to 1 diamond axe named "<gold><bold>Armads" with lore "<white>+6 weapon might.", "<white>Grants <light red>[Distant Counter]<white>.", "<light green>Unique Refine:", "<light green>Reduces damage from ranged attacks by 66%%.", "<light green>Grants <light blue>[Riposte]<light green>.", "<light red>[Distant Counter]: <white>Counter-attack ranged foes automatically when hit.", "<light blue>[Riposte]: <white>Automatically counter-attack foes during combat.", "<white>Riposte's effect only activates if foe is in range.", "<light red>Requires A rank in Axes to wield."
+		set slot 6 of the player's current inventory to 1 bow named "<gold><bold>Parthia" with lore "<white>+3 weapon might.", "<white>Reduces ranged damage suffered by 20%%.", "<white>Grants <light blue>[Experience Sapper]<white>.", "<light green>Unique Refine:", "<light green>+10 weapon might against ranged opponents.", "<light green>Inflicts Slowness/Weakness 2 on foe after combat.", "<light red>Requires A rank in Bows to wield."
+		set slot 7 of the player's current inventory to 1 iron horse armour named "<gold><bold>Super Shotgun" with lore "<white>The double-barreled classic. Plenty of risk & plenty of reward.", "<white>Right-click to fire.", "<white>Left-click to reload. Costs 6 gold nuggets."
+		set slot 8 of the player's current inventory to 1 diamond shovel named "<gold><bold>Siegmund" with lore "<white>+5 weapon might.", "<white>Grants <light green>[Rally Strength]<white>.", "<light green>Unique Refine:", "<light green>If number of foes >= number of allies within 10 blocks:", "<light green>Automatically make a follow-up attack during combat.", "<light green>[Rally Strength]: <white>Grants Strength 2 to allies when right-clicked.", "<light red>Requires the Lord's Blood perk OR A rank in Lances to wield."
+		set slot 9 of the player's current inventory to 1 diamond sword named "<gold><bold>Sieglinde" with lore "<white>+5 weapon might.", "<white>Grants <light green>[Rally Strength]<white>.", "<light green>Unique Refine:", "<light green>Rallies also apply to yourself.", "<light green>Rally skills and perks apply in a 7-block radius.", "<light green>[Rally Strength]: <white>Grants Strength 2 to allies when right-clicked.", "<light red>Requires the Lord's Blood perk OR A rank in Swords to wield."
+		set slot 10 of the player's current inventory to 1 diamond sword named "<gold><bold>Durandal" with lore "<white>+4 weapon might.", "<white>Grants <gold>[Crushing]<white>.", "<light green>Unique Refine:", "<light green>Accelerates Special activation (+10%% activation chance).", "<light green>Grants STR/SKL +20 when initiating combat.", "<gold>[Crushing]: <white>Accelerates Special activation based on damage dealt.", "<white>Minimum of 7 damage dealt required to activate effect.", "<light red>Requires A Rank in Swords to wield."
+		set slot 11 of the player's current inventory to 1 diamond shovel named "<gold><bold>Gae Bolg" with lore "<white>Grants STR/DEF/SKL +10 while equipped.", "<white>Grants <light blue>[Guard]<white>.", "<light blue>[Guard]: <white>Inflicts SKL -50 on foe during combat.", "<light red>Requires the Crusader's Blood perk OR A rank in Lances to wield."
+		set slot 12 of the player's current inventory to 1 diamond sword named "<gold><bold>Mercurius" with lore "<white>+3 weapon might.", "<white>Grants <light blue>[Experience Sapper]<white>.", "<light blue>[Experience Sapper]: <white>Increases EXP awarded for defeating foes.", "<light red>Requires B rank in Swords to wield."
+		set slot 13 of the player's current inventory to 1 diamond axe named "<gold><bold>Basilikos" with lore "<white>+6 weapon might.", "<light green>Unique Refine:", "<light green>Increases damage dealt and suffered during combat by 50%%.", "<light red>Requires B rank in Axes to wield."
+		set slot 14 of the player's current inventory to 1 diamond axe named "<gold><bold>Hauteclere" with lore "<white>+3 weapon might.", "<white>Grants SKL +15 while equipped.", "<light green>Unique Refine:", "<light green>Accelerates Special trigger (+20%% activation chance).", "<light green>If Special activates, increases damage dealt by 2.5 hearts.", "<light red>Requires B rank in Axes to wield."
+		set slot 15 of the player's current inventory to 1 diamond sword named "<gold><bold>Mystletainn" with lore "<white>+4 weapon might.", "<white>Grants SKL +10 while equipped.", "<white>If HP < 75%%, grants SKL +30, and deals +4 damage when Special activates.", "<light green>Unique refine:", "<light green>Grants STR/DEF/SPD/SKL/MAG +15.", "<light green>Inflicts 1.5 hearts of recoil damage when attacking.", "<light red>Requires the Crusader's Blood perk OR B rank in Swords to wield."
+		set slot 16 of the player's current inventory to 1 diamond shovel named "<gold><bold>Fensalir" with lore "<white>+4 weapon might.", "<white>While within 10 blocks of a party member, grants +6 weapon might.", "<light green>Unique Refine:", "<light green>While within 10 blocks of a party member, grants STR/SKL +40.", "<light red>Requires the Lord's Blood perk OR A rank in Lances wield."
+		set slot 17 of the player's current inventory to 1 diamond sword named "<gold><bold>Folkvangr" with lore "<white>+4 weapon might.", "<white>While within 10 blocks of a party member, grants +6 weapon might.", "<light green>Unique Refine:", "<light green>If HP < 70%%, grants STR/DEF +40.", "<light red>Requires the Lord's Blood perk OR A rank in Swords to wield."
+		set slot 18 of the player's current inventory to 1 diamond shovel named "<gold><bold>Gradivus" with lore "<white>+4 weapon might.", "<white>Grants <light blue>[Experience Sapper]<white>.", "<light blue>[Experience Sapper]: <white>Increases EXP awarded for defeating foes.", "<light red>Requires B rank or higher in Lances to wield."
+		#set slot 19 of the player's current inventory to 1 diamond horse armour named "<gold><bold>Love is Blue" with lore "<white>Right-click to fire bullets at the cost of EXP.", "Melee hits restore 5 EXP.", "<bold>Skills cannot be equipped to this weapon.", "<bold>This weapon cannot be refined."
+		#set slot 20 of the player's current inventory to 1 gold horse armour named "<gold><bold>Scarborough Fair" with lore "<white>Right-click to fire bullets at the cost of EXP.", "Melee hits restore 5 EXP.", "<bold>Skills cannot be equipped to this weapon.", "<bold>This weapon cannot be refined."
+		set slot 19 of the player's current inventory to 1 diamond sword named "<gold><bold>Balder Side Sword" with lore "<white>+4 weapon might.", "<white>Right-click to parry attacks.", "<white>Parry has a 0.5 second cooldown.", "<light green>Unique Refine:", "<light green>Grants STR/DEF +20 when attacked.", "<light red>Requires B rank in Swords to wield."
+		set slot 20 of the player's current inventory to 1 bow named "<gold><bold>Fujin Yumi" with lore "<white>Grants MAG +20 while equipped.", "<white>Grants <light red>[Close Counter]<white>.", "<light green>Unique Refine:", "<light green>Holding sneak and firing an arrow teleports you to where it lands.", "<light red>[Close Counter]: <white>Automatically counter-attacks melee foes during combat.", "<light red>Requires B rank in Bows to wield."
+		set slot 21 of the player's current inventory to 1 diamond sword named "<gold><bold>Blessed Sword" with lore "<white>Reduces damage suffered by 1.5 hearts during combat.", "<white>Deals 2x damage to monsters.", "<white>Grants <light blue>[Plenitude]<white>.", "<light green>Unique Refine:", "<light green>Grants Regeneration 2 while equipped.", "<light green>Nullifies negative potion effects.", "<light blue>[Plenitude]: <white>Restores hunger and randomly drops steak when a foe is defeated."
+		set slot 22 of the player's current inventory to 1 diamond axe named "<gold><bold>Devil Axe" with lore "<white>+3 weapon might.", "<white>Grants <light red>[Fury]<white>.", "<white>Inflicts Wither 4 on foe after combat.", "<light green>Unique Refine:", "<light green>Grants weapon might +6.", "<light green>Inflicts 3 hearts of recoil damage when attacking.", "<light red>[Fury]: <white>Weapon might +3. Inflicts 1.5 hearts of recoil damage when attacking."
+		set slot 23 of the player's current inventory to 1 diamond shovel named "<gold><bold>Crusader's Lance" with lore "<white>+8 weapon might.", "<white>Can be thrown for no durability cost.", "<white>Reduces damage suffered by 30%% during combat.", "<light green>Unique Refine:", "<light green>Reduces damage suffered by 20%% during combat.", "<light green>Grants 1.5x damage while above 80%% HP."
+		set slot 24 of the player's current inventory to 1 bow named "<gold><bold>Lunar Bow" with lore "<white>+3 weapon might.", "<white>Grants <light purple>[Luna]<white>.", "<white>Calculates damage using the lower of foe's DEF or MAG.", "<light green>Unique Refine:", "<light green>If Special activates, increases damage by 20%% of the player's SPD."
+		set slot 25 of the player's current inventory to 1 diamond shovel named "<gold><bold>Rex Hasta" with lore "<white>Increases damage dealt by Special activations by 5 hearts.", "<light green>Unique Refine:", "<light green>+4 weapon might.", "<light green>Accelerates special activation (activation chance +20%%).", "<light red>Requires A rank in Lances to wield."
+		set slot 26 of the player's current inventory to 1 diamond sword named "<gold><bold>Meisterschwert" with lore "<white>Attacks twice during combat.", "<light green>Unique Refine:", "<light green>Grants <light blue>[Accost]<light green>.", "<light blue>[Accost]: <white>If attacker's HP & SPD > foe's HP & SPD:", "<white>Damage dealt for that round of combat is doubled.", "<light red>Requires B rank in Swords to wield."
+		set slot 27 of the player's current inventory to 1 book named "<gold><bold>Dire Thunder" with lore "<white>Attacks twice when initiating combat.", "<light green>Unique Refine:", "<light green>Grants <light blue>[Accost]<light green>.", "<light blue>[Accost]: <white>If attacker's HP & SPD > foe's HP & SPD:", "<white>Damage dealt for that round of combat is doubled.", "<light red>Requires B rank in Magic to wield."
+		set slot 28 of the player's current inventory to 1 diamond shovel named "<gold><bold>Rhomphaia" with lore "<white>Deals bonus damage equal to 25%% of the player's SPD.", "<light red>Requires B rank or higher in Lances to wield."
+		set slot 29 of the player's current inventory to 1 diamond sword named "<gold><bold>Alondite" with lore "<white>Grants <light purple>[Eclipse]<white>.", "<light purple>[Eclipse]: <white>Pierces armour and reduces foe's DEF/MAG by 80%%.", "<white>Activation chance: (SKL ^ 0.65) | Max: 50%%.", "<light red>Requires S rank in Swords to wield."
+		set slot 30 of the player's current inventory to 1 bow named "<gold><bold>Guard Bow" with lore "<white>Reduces damage suffered by 1.5 hearts.", "<light red>Requires C rank or higher in Bows to wield."
+		set slot 31 of the player's current inventory to 1 bow named "<gold><bold>Brave Bow" with lore "<white>Inflicts SPD -7.", "<white>-3 weapon might.", "<white>Weapon attacks twice during combat.", "<light red>Requires C rank or higher in Bows to wield."
+		set slot 32 of the player's current inventory to 1 diamond axe named "<gold><bold>Tomahawk" with lore "<white>Grants <gold>[Distant Counter]<white>.", "<gold>[Distant Counter]<white>: Automatically retaliate against ranged opponents."
+		set slot 33 of the player's current inventory to 1 diamond shovel named "<gold><bold>Javelin" with lore "<white>Grants <gold>[Distant Counter]<white>.", "<gold>[Distant Counter]<white>: Automatically retaliate against ranged opponents."
+		set slot 34 of the player's current inventory to 1 diamond sword named "<gold><bold>Tornado Blade" with lore "<white>Grants <gold>[Distant Counter]<white>.", "<gold>[Distant Counter]<white>: Automatically retaliate against ranged opponents."
+		set slot 35 of the player's current inventory to 1 diamond shovel named "<gold><bold>Swift-Winds Lance" with lore "<white>Grants <gold>[Sweeper]<white>.", "<light green>Unique Refine:", "<light green>If any ally within 10 blocks shares the wielder's class:", "<light green>Grants STR/SPD +30.", "<gold>[Sweeper]<white>: Disables player & foe's skills that guarantee counter-attacks during combat."
+		set slot 36 of the player's current inventory to 1 diamond sword named "<gold><bold>Kindled-Fire Sword" with lore "<white>Grants <gold>[Brave]<white>.", "<light green>Unique Refine:", "<light green>If any ally within 10 blocks shares the wielder's class:", "<light green>Grants STR/SPD +30.", "<gold>[Brave]<white>: Inflicts SPD -7. Weapon attacks twice during combat."
+		#set slot 37 of the player's current inventory to 1 diamond axe named "<gold><bold>Axtinguisher" with lore "<white>+50%% damage against burning targets.", "<white>-50%% damage against non-burning targets."
+		set slot 37 of the player's current inventory to 1 diamond sword named "<gold><bold>Yamato" with lore "<white>+3 weapon might.", "<white>Grants <light blue><bold>[Judgement Cut]<reset><white>.", "<light blue><bold>[Judgement Cut]:<reset><white> Sneak and right-click to activate.", "<white>Gain power by holding sneak, then unleash it by standing up.", "<white>Targets all foes within 20 blocks. Damage based on charge time.", "<light red>Requires S rank in Swords to wield."
+		set slot 38 of the player's current inventory to 1 bow named "<gold><bold>Bow of Aresha" with lore "<white>If player's DEF >= Foe's DEF +5:", "<white>Grants STR/DEF +X,", "<white>Where X = (Player's DEF - [foe's DEF + 5]) * 5.", "<white>(Maximum bonus of +20 to each stat.)", "<light red>Requires A rank in Bows to wield."
 
 on spawn of a slime:
 	if entity's world is "Salindrum":
@@ -142,17 +207,24 @@ on food bar change:
 	if {sd.nohunger.%player%} is true:
 		increase the player's food level by 10
 		
-on damage of a player:
-	if {sd.invuln.%victim%} is true:
-		cancel event
+on damage:
+	if attacker is player:
+		if attacker's world is "Salindrum":
+			set damage to damage * {sd.outgoingmult.%attacker%}
+	else if victim is player:
+		if victim's world is "Salindrum":
+			set damage to damage * {sd.incomingmult.%victim%}
 		
 on inventory click:
+	#Room Selector
 	if the name of the player's current inventory is "<red>Select a room.":
 		cancel event
 		if the clicked item is lapis block:
 			set {sd.rewarp.%player%} to location of block at player
 			set {sdroom.%player%} to uncolored name of the clicked item
 			set {sdcash.%player%} to player's balance
+			set {sd.outgoingmult.%player%} to 1
+			set {sd.incomingmult.%player%} to 1
 			send "%{sdcash.%player%}%"
 			add 100000 to the player's balance
 			teleport the player to {sd.%{sdroom.%player%}%}
@@ -161,6 +233,7 @@ on inventory click:
 			make player execute command "/salindrum"
 			loop all items in the player's inventory:
 				add loop-item to {sditems.%player%::*}
+	#General Config Menu
 	else if the name of the player's current inventory is "<red>Salindrum Configuration":
 		cancel event
 		if the name of the clicked item is "<gold>Exit Salindrum":
@@ -198,18 +271,20 @@ on inventory click:
 			else:
 				clear {sd.nohunger.%player%}
 			make player execute command "/sd"
-		else if the name of the clicked item contains "Player Invincibility":
-			if {sd.invuln.%player%} is not set:
-				set {sd.invuln.%player%} to true
-			else:
-				clear {sd.invuln.%player%}
-			make player execute command "/sd"
+		else if the name of the clicked item contains "Damage Modifiers":
+			make player execute command "/sdmults"
+		else if the name of the clicked item contains "Fix Equipment":
+			make player execute command "/fix all"
+		else if the name of the clicked item contains "Supply Crate":
+			make player execute command "/sdsupplies"
 		else if the name of the clicked item is "<white>Spawn Monsters":
 			make player execute command "/sdmonsters"
 		else if the name of the clicked item is "<white>Test Skills":
 			make player execute command "/skills"
-		else if the name of the clicked item is "<white>Test Holy Weapons":
+		else if the name of the clicked item is "<white>Test Sacred Treasures":
 			make player execute command "/sdhw"
+		else if the name of the clicked item is "<white>Combat Calculator":
+			make player execute command "/sdcalcs"
 		else if the name of the clicked item is "<white>Reset Session":
 			loop all monsters in radius 50 of the player:
 				kill the loop-monster
@@ -230,10 +305,80 @@ on inventory click:
 				else:
 					drop loop-value at the player
 			teleport the player to {sd.%{sdroom.%player%}%}
-	else if the name of the player's current inventory is "<red><bold>Salindrum - Holy Weapons":
+	#Sacred Treasures
+	else if the name of the player's current inventory is "<red><bold>Salindrum - Sacred Treasures":
 		cancel event
 		if the name of the clicked item contains "<gold><bold>":
 			give clicked item to the player
+	#Damage Modifiers
+	else if the name of the player's current inventory is "<red>Damage Modifiers":
+		cancel event
+		if the name of the clicked item is "<light green>Increase Damage Dealt by 0.1x":
+			add 0.1 to {sd.outgoingmult.%player%}
+			play sound "ui.button.click" with volume 1 and pitch 1 at the player for the player
+			set slot 4 of the player's current inventory to 1 iron sword named "<light green>Damage Dealt" with lore "<white>Current Modifier: %{sd.outgoingmult.%player%}%x"
+		else if the name of the clicked item is "<light green>Increase Damage Taken by 0.1x":
+			add 0.1 to {sd.incomingmult.%player%}
+			play sound "ui.button.click" with volume 1 and pitch 1 at the player for the player
+			set slot 13 of the player's current inventory to 1 iron chestplate named "<light red>Damage Taken" with lore "<white>Current Modifier: %{sd.incomingmult.%player%}%x"
+		else if the name of the clicked item is "<light red>Decrease Damage Dealt by 0.1x":
+			subtract 0.1 from {sd.outgoingmult.%player%}
+			play sound "ui.button.click" with volume 1 and pitch 1 at the player for the player
+			set slot 4 of the player's current inventory to 1 iron sword named "<light green>Damage Dealt" with lore "<white>Current Modifier: %{sd.outgoingmult.%player%}%x"
+		else if the name of the clicked item is "<light red>Decrease Damage Taken by 0.1x":
+			subtract 0.1 from {sd.incomingmult.%player%}
+			play sound "ui.button.click" with volume 1 and pitch 1 at the player for the player
+			set slot 13 of the player's current inventory to 1 iron chestplate named "<light red>Damage Taken" with lore "<white>Current Modifier: %{sd.incomingmult.%player%}%x"
+		else if the name of the clicked item is "<light yellow>Reset Damage Taken Multiplier":
+			set {sd.incomingmult.%player%} to 1
+			play sound "ui.button.click" with volume 1 and pitch 1 at the player for the player
+			set slot 13 of the player's current inventory to 1 iron chestplate named "<light red>Damage Taken" with lore "<white>Current Modifier: %{sd.incomingmult.%player%}%x"
+		else if the name of the clicked item is "<light yellow>Reset Damage Dealt Multiplier":
+			set {sd.outgoingmult.%player%} to 1
+			play sound "ui.button.click" with volume 1 and pitch 1 at the player for the player
+			set slot 4 of the player's current inventory to 1 iron sword named "<light green>Damage Dealt" with lore "<white>Current Modifier: %{sd.outgoingmult.%player%}%x"
+		else if the name of the clicked item is "<bold>Go Back":
+			make player execute command "/sd"
+	#Supply Crate
+	else if the name of the player's current inventory is "<red>Supply Crate":
+		if the name of the clicked item contains "Go Back":
+			cancel event
+			make player execute command "/sd"
+		else if the name of the clicked item contains "Restock Supply Crate":
+			cancel event
+			make player execute command "/sdsupplies"
+	#Calculator
+	else if the name of the player's current inventory is "<red>Calculator":
+		if the name of the clicked item contains "Go Back":
+			cancel event
+			make player execute command "/sd"
+		else if the name of the clicked item is "<gold>Special Odds":
+			cancel event
+		else if the name of the clicked item is "<gold>Damage Output":
+			cancel event
+		else if the name of the clicked item is "<gold>How to Use":
+			cancel event
+		else if the name of the clicked item is "<gold>Weapon Special Odds":
+			cancel event
+		else if the name of the clicked item is "<gold>Calculate":
+			cancel event
+			make player execute command "/runBattleSimulation"
+			set slot 4 of the player's current inventory to 1 purple wool named "<gold>Special Odds" with lore "<white>Special Skill: %{sd.calcSpecial.%player%}%", "<white>Base Activation Chance: %{sd.calcOdds.%player%}%", "<white>Highest Possible Chance: %{sd.calcMaxOdds.%player%}%", "<white>SKL Needed To Cap: %{sd.calcMaxSKL.%player%}%", "<white>Critical Chance: %{sd.calcCritChance.%player%}%", "<white>Max Unbuffed Crit Chance: %{sd.calcMaxCritChance.%player%}%"
+			set slot 5 of the player's current inventory to 1 splash potion of harming named "<gold>Damage Output" with lore "<white>Base Damage: %{sd.calcBaseDamage.%player%}%", "<white>With Skills & No Special: %{sd.calcSkillsDamage.%player%}%", "<white>With Skills & Special: %{sd.calcSpecialDamage.%player%}%", "<white>Maximum Damage Possible (With Double): %{sd.calcMaxDamage.%player%}%", "<white>Can Double Foes Below: %{sd.calcPlayerDoubleRange.%player%}% SPD", "<white>Foes Double From: %{sd.calcFoeDoubleRange.%player%}%+ SPD"
+			if {sd.calcWeaponSpecial.%player%} is set:
+				set slot 14 of the player's current inventory to 1 iron block named "<gold>Weapon Special Odds" with lore "<white>Special Skill: %{sd.calcWeaponSpecial.%player%}%", "<white>Base Activation Chance: %{sd.calcWeaponOdds.%player%}%", "<white>Highest Possible Chance: %{sd.calcWeaponMaxOdds.%player%}%", "<white>SKL Needed To Cap: %{sd.calcMAXWeaponSKL.%player%}%"
+			else:
+				set slot 14 of the player's current inventory to air
+		else if slot 17 of the player's current inventory is not the clicked item:
+			if the clicked item is not air:
+				cancel event
+				set slot 17 of the player's current inventory to the clicked item
+				remove the clicked item from the player
+		else if clicked item is not air:
+			cancel event
+			give clicked item to the player
+			remove the clicked item from the player's current inventory
+	#Spawn Monsters
 	else if the name of the player's current inventory is "<red>Spawn Monsters":
 		cancel event
 		if the name of the clicked item is "<white>Salindrum Menu":
@@ -325,10 +470,14 @@ on inventory click:
 			spawn 1 zombie at {sd.%{sdroom.%player%}%}
 			set the name of the last spawned entity to "<white>Regret"
 			set metadata value "isRegret" of the last spawned entity to 1
-			set the last spawned entity's helmet to leather helmet of protection 3 colored gray
-			set the last spawned entity's chestplate to leather chestplate of protection 3 colored gray
-			set the last spawned entity's leggings to leather leggings of protection 3 colored gray
-			set the last spawned entity's boots to leather boots of protection 3 colored gray
+			set the last spawned entity's helmet to leather helmet of protection 3
+			dye the last spawned entity's helmet gray
+			set the last spawned entity's chestplate to leather chestplate of protection 3
+			dye the last spawned entity's chestplate gray
+			set the last spawned entity's leggings to leather leggings of protection 3
+			dye the last spawned entity's leggings gray
+			set the last spawned entity's boots to leather boots of protection 3
+			dye the last spawned entity's boots gray
 			set {_generic} to true
 		else if the name of the clicked item is "<white>Fury":
 			spawn 1 witch at {sd.%{sdroom.%player%}%}
@@ -442,3 +591,629 @@ on inventory click:
 						add 0.5 to {_mob}'s maximum health
 				set {t_lvl.%{_mob}%} to {_moblvl}
 				heal {_mob} by 9999
+				
+every 0.1 seconds:
+	loop all players:
+		if {sd.nohunger.%loop-player%} is true:
+			increase the loop-player's food level by 10
+			
+function simulateSpecial(PLR: player, PCT: number, CAP: number) :: number:
+	set {_specialOdds} to floor((({skl.%{_PLR}%} + {sklbuff.%{_PLR}%}) * {_PCT}) ^ 0.95)
+	if {_specialOdds} is more than {_CAP}:
+		set {_specialOdds} to {_CAP}
+	return {_specialOdds}
+	
+function simulateSpecialOvercharge(PLR: player, CSH: number, EXP: number, CAP: number) :: number:
+	set {_specialOddsOvercharge} to ({sklcap.%{_PLR}%} ^ {_EXP})
+	if {_specialOddsOvercharge} is more than {_CAP}:
+		set {_specialOddsOvercharge} to {_CAP}
+	if the 6th line of the lore of slot 17 of {_PLR}'s current inventory contains "Slaying":
+		add 10 to {_specialOddsOvercharge}
+	if the name of slot 17 of {_PLR}'s current inventory is "<gold><bold>Rex Hasta":
+		if the 6th line of the lore of slot 17 of {_PLR}'s current inventory contains "Unique":
+			add 20 to {_specialOddsOvercharge}
+	else if the name of slot 17 of {_PLR}'s current inventory is "<gold><bold>Hauteclere":
+		if the 6th line of the lore of slot 17 of {_PLR}'s current inventory contains "Unique":
+			add 20 to {_specialOddsOvercharge}
+	if the 2nd line of the lore of slot 17 of {_PLR}'s current inventory contains "Wrath":
+		add ({_PLR}'s maximum health / 2) to {_specialOddsOvercharge}
+	add {_CSH} to {_specialOddsOvercharge}
+	return {_specialOddsOvercharge}
+			
+#Battle Simulator
+command /runBattleSimulation:
+	trigger:
+		#Initialize Variables
+		set {_damage} to 0
+		clear {sd.calcWeaponSpecial.%player%}
+		clear {sd.calcWeaponOdds.%player%}
+		clear {sd.calcWeaponMaxOdds.%Player%}
+		clear {sd.calcSpecialDmage.%player%}
+		clear {sd.calcOdds.%player%}
+		clear {sd.calcMaxOdds.%player%}
+		clear {sd.calcSpecial.%player%}
+		#Base Weapon Damage
+		#Swords
+		if slot 17 of the player's current inventory is a wooden sword:
+			set {_damage} to 2
+		else if slot 17 of the player's current inventory is a stone sword:
+			set {_damage} to 2.5
+		else if slot 17 of the player's current inventory is an iron sword:
+			set {_damage} to 3
+		else if slot 17 of the player's current inventory is a diamond sword:
+			set {_damage} to 4.5
+		else if slot 17 of the player's current inventory is a golden sword:
+			set {_damage} to 2.5
+		#Axes
+		else if slot 17 of the player's current inventory is a wooden axe:
+			set {_damage} to 3.5
+		else if slot 17 of the player's current inventory is a stone axe:
+			set {_damage} to 4.5
+		else if slot 17 of the player's current inventory is an iron axe:
+			set {_damage} to 4.5
+		else if slot 17 of the player's current inventory is a diamond axe:
+			set {_damage} to 4.5
+		else if slot 17 of the player's current inventory is a golden axe:
+			set {_damage} to 3.5
+		#Lances
+		else if slot 17 of the player's current inventory is a wooden shovel:
+			set {_damage} to 1.5
+		else if slot 17 of the player's current inventory is a stone shovel:
+			set {_damage} to 2
+		else if slot 17 of the player's current inventory is an iron shovel:
+			set {_damage} to 2.5
+		else if slot 17 of the player's current inventory is a diamond shovel:
+			set {_damage} to 3.5
+		else if slot 17 of the player's current inventory is a golden shovel:
+			set {_damage} to 2
+		if level of sharpness of slot 17 of the player's current inventory is more than or equal to 1:
+			add (0.25 + (0.25 * level of sharpness of slot 17 of the player's current inventory)) to {_damage}
+		#Bows
+		else if slot 17 of the player's current inventory is a bow:
+			set {_damage} to 3.5
+			#Increase damage due to Power Enchantment
+			if level of power of slot 17 of the player's current inventory is more than or equal to 1:
+				set {_damage} to {_damage} * (1.25 * (level of power of slot 17 of the player's current inventory + 1))
+		#Magic (About to get messy)
+		else if slot 17 of the player's current inventory is a blaze rod:
+			if 7th line of the lore of the player's tool contains "Ember":
+				add 3 to {_damage}
+			else if 7th line of the lore of the player's tool contains "Spark":
+				add 6 to {_damage}
+			else if 7th line of the lore of the player's tool contains "Frost":
+				add 2 to {_damage}
+			else if 7th line of the lore of the player's tool contains "Gust":
+				add 3 to {_damage}
+			else if 7th line of the lore of the player's tool contains "Fire":
+				add 5 to {_damage}
+			else if 7th line of the lore of the player's tool contains "Thunder":
+				add 8 to {_damage}
+			else if 7th line of the lore of the player's tool contains "Hail":
+				add 3 to {_damage}
+			else if 7th line of the lore of the player's tool contains "Wind":
+				add 4.5 to {_damage}
+			else if 7th line of the lore of the player's tool contains "Elfire":
+				add 9 to {_damage}
+			else if 7th line of the lore of the player's tool contains "Thoron":
+				add 12 to {_damage}
+			else if 7th line of the lore of the player's tool contains "Blizzard":
+				add 4.5 to {_damage}
+			else if 7th line of the lore of the player's tool contains "Tornado":
+				add 5.5 to {_damage}
+			else if 7th line of the lore of the player's tool contains "Bolganone":
+				add 13 to {_damage}
+			else if 7th line of the lore of the player's tool contains "Aurora":
+				add 14.5 to {_damage}
+			else if 7th line of the lore of the player's tool contains "Nosferatu":
+				add 3.5 to {_damage}
+			else if 7th line of the lore of the player's tool contains "Light":
+				add 4.5 to {_damage}
+			else if 7th line of the lore of the player's tool contains "Spellblade":
+				add floor((({strbuff.%player%} / 2) + ({defbuff.%player%} / 2) + ({sklbuff.%player%} / 2) + ({spdbuff.%player%} / 2) + ({resbuff.%player%} / 2)) ^ 0.75) to {_damage}
+			else if 7th line of the lore of the player's tool contains "Forseti":
+				add 7.5 to {_damage}
+			else if 7th line of the lore of the player's tool contains "Naga":
+				add 10 to {_damage}
+			else if 7th line of the lore of the player's tool contains "Loptous":
+				add 10 to {_damage}
+			else if 7th line of the lore of the player's tool contains "Stone":
+				add 1.5 to {_damage}
+			else if 7th line of the lore of the player's tool contains "Rescue":
+				set {_NullDamage} to true
+			else if 7th line of the lore of the player's tool contains "Slipgate":
+				set {_NullDamage} to true
+			else if 7th line of the lore of the player's tool contains "Silence":
+				add 1.5 to {_damage}
+			else if 7th line of the lore of the player's tool contains "Thief":
+				add 1.5 to {_damage}
+			#Check 8th line
+			if 8th line of the lore of the player's tool contains "Ember":
+				add 3 to {_damage}
+			else if 8th line of the lore of the player's tool contains "Spark":
+				add 6 to {_damage}
+			else if 8th line of the lore of the player's tool contains "Frost":
+				add 2 to {_damage}
+			else if 8th line of the lore of the player's tool contains "Gust":
+				add 3 to {_damage}
+			else if 8th line of the lore of the player's tool contains "Fire":
+				add 5 to {_damage}
+			else if 8th line of the lore of the player's tool contains "Thunder":
+				add 8 to {_damage}
+			else if 8th line of the lore of the player's tool contains "Hail":
+				add 3 to {_damage}
+			else if 8th line of the lore of the player's tool contains "Wind":
+				add 4.5 to {_damage}
+			else if 8th line of the lore of the player's tool contains "Elfire":
+				add 9 to {_damage}
+			else if 8th line of the lore of the player's tool contains "Thoron":
+				add 12 to {_damage}
+			else if 8th line of the lore of the player's tool contains "Blizzard":
+				add 4.5 to {_damage}
+			else if 8th line of the lore of the player's tool contains "Tornado":
+				add 5.5 to {_damage}
+			else if 8th line of the lore of the player's tool contains "Bolganone":
+				add 13 to {_damage}
+			else if 8th line of the lore of the player's tool contains "Aurora":
+				add 14.5 to {_damage}
+			else if 8th line of the lore of the player's tool contains "Nosferatu":
+				add 3.5 to {_damage}
+			else if 8th line of the lore of the player's tool contains "Light":
+				add 4.5 to {_damage}
+			else if 8th line of the lore of the player's tool contains "Spellblade":
+				add floor((({strbuff.%player%} / 2) + ({defbuff.%player%} / 2) + ({sklbuff.%player%} / 2) + ({spdbuff.%player%} / 2) + ({resbuff.%player%} / 2)) ^ 0.75) to {_damage}
+			else if 8th line of the lore of the player's tool contains "Forseti":
+				add 7.5 to {_damage}
+			else if 8th line of the lore of the player's tool contains "Naga":
+				add 10 to {_damage}
+			else if 8th line of the lore of the player's tool contains "Loptous":
+				add 10 to {_damage}
+			else if 8th line of the lore of the player's tool contains "Stone":
+				add 1.5 to {_damage}
+			else if 8th line of the lore of the player's tool contains "Rescue":
+				set {_NullDamage} to true
+			else if 8th line of the lore of the player's tool contains "Slipgate":
+				set {_NullDamage} to true
+			else if 8th line of the lore of the player's tool contains "Silence":
+				add 1.5 to {_damage}
+			else if 8th line of the lore of the player's tool contains "Thief":
+				add 1.5 to {_damage}
+		#Weapon Ranks & Critical Chance
+		#Swords
+		if slot 17 of the player's current inventory is any sword:
+			if {weapongrade.%player%::swords} is "<gold><bold>S":
+				add 5 to {_damage}
+			else if {weapongrade.%player%::swords} is "A":
+				add 4 to {_damage}
+				add 1 to {_maxDamage}
+			else if {weapongrade.%player%::swords} is "B":
+				add 3 to {_damage}
+				add 2 to {_maxDamage}
+			else if {weapongrade.%player%::swords} is "C":
+				add 2 to {_damage}
+				add 3 to {_maxDamage}
+			else if {weapongrade.%player%::swords} is "D":
+				add 1 to {_damage}
+				add 4 to {_maxDamage}
+			set {sd.calcCritChance.%player%} to floor(({skl.%player%} + {sklbuff.%player%} + ({weaponrank.%player%::swords} ^ 0.35)) ^ 0.9)
+			set {sd.calcMaxCritChance.%player%} to floor(({sklcap.%player%} + ({weaponrank.%player%::swords} ^ 0.35)) ^ 0.9)
+			add {_damage} to {_maxdamage}
+		#Axes
+		else if slot 17 of the player's current inventory is any axe:
+			if {weapongrade.%player%::axes} is "<gold><bold>S":
+				add 5 to {_damage}
+			else if {weapongrade.%player%::axes} is "A":
+				add 4 to {_damage}
+				add 1 to {_maxDamage}
+			else if {weapongrade.%player%::axes} is "B":
+				add 3 to {_damage}
+				add 2 to {_maxDamage}
+			else if {weapongrade.%player%::axes} is "C":
+				add 2 to {_damage}
+				add 3 to {_maxDamage}
+			else if {weapongrade.%player%::axes} is "D":
+				add 1 to {_damage}
+				add 4 to {_maxDamage}
+			set {sd.calcCritChance.%player%} to floor(({skl.%player%} + {sklbuff.%player%} + ({weaponrank.%player%::axes} ^ 0.35)) ^ 0.9)
+			set {sd.calcMaxCritChance.%player%} to floor(({sklcap.%player%} + ({weaponrank.%player%::axes} ^ 0.35)) ^ 0.9)
+			add {_damage} to {_maxdamage}
+		#Lances
+		if slot 17 of the player's current inventory is any shovel:
+			if {weapongrade.%player%::lances} is "<gold><bold>S":
+				add 5 to {_damage}
+			else if {weapongrade.%player%::lances} is "A":
+				add 4 to {_damage}
+				add 1 to {_maxDamage}
+			else if {weapongrade.%player%::lances} is "B":
+				add 3 to {_damage}
+				add 2 to {_maxDamage}
+			else if {weapongrade.%player%::lances} is "C":
+				add 2 to {_damage}
+				add 3 to {_maxDamage}
+			else if {weapongrade.%player%::lances} is "D":
+				add 1 to {_damage}
+				add 4 to {_maxDamage}
+			set {sd.calcCritChance.%player%} to floor(({skl.%player%} + {sklbuff.%player%} + ({weaponrank.%player%::lances} ^ 0.35)) ^ 0.9)
+			set {sd.calcMaxCritChance.%player%} to floor(({sklcap.%player%} + ({weaponrank.%player%::lances} ^ 0.35)) ^ 0.9)
+			add {_damage} to {_maxdamage}
+		#Bows
+		if slot 17 of the player's current inventory is a bow:
+			if {weapongrade.%player%::bows} is "<gold><bold>S":
+				add 5 to {_damage}
+			else if {weapongrade.%player%::bows} is "A":
+				add 4 to {_damage}
+				add 1 to {_maxDamage}
+			else if {weapongrade.%player%::bows} is "B":
+				add 3 to {_damage}
+				add 2 to {_maxDamage}
+			else if {weapongrade.%player%::bows} is "C":
+				add 2 to {_damage}
+				add 3 to {_maxDamage}
+			else if {weapongrade.%player%::bows} is "D":
+				add 1 to {_damage}
+				add 4 to {_maxDamage}
+			set {sd.calcCritChance.%player%} to floor(({skl.%player%} + {sklbuff.%player%} + ({weaponrank.%player%::bows} ^ 0.35)) ^ 0.9)
+			set {sd.calcMaxCritChance.%player%} to floor(({sklcap.%player%} + ({weaponrank.%player%::bows} ^ 0.35)) ^ 0.9)
+			add {_damage} to {_maxdamage}
+		#Magic + Tomes
+		if slot 17 of the player's current inventory is a book:
+			set {_magic} to true
+		else if slot 17 of the player's current inventory is a blaze rod:
+			set {_magic} to true
+		if {_magic} is true:
+			if {weapongrade.%player%::magic} is "<gold><bold>S":
+				add 5 to {_damage}
+			else if {weapongrade.%player%::magic} is "A":
+				add 4 to {_damage}
+				add 1 to {_maxDamage}
+			else if {weapongrade.%player%::magic} is "B":
+				add 3 to {_damage}
+				add 2 to {_maxDamage}
+			else if {weapongrade.%player%::magic} is "C":
+				add 2 to {_damage}
+				add 3 to {_maxDamage}
+			else if {weapongrade.%player%::magic} is "D":
+				add 1 to {_damage}
+				add 4 to {_maxDamage}
+			set {sd.calcCritChance.%player%} to floor(({skl.%player%} + {sklbuff.%player%} + ({weaponrank.%player%::magic} ^ 0.35)) ^ 0.9)
+			set {sd.calcMaxCritChance.%player%} to floor(({sklcap.%player%} + ({weaponrank.%player%::magic} ^ 0.35)) ^ 0.9)
+			add {_damage} to {_maxdamage}
+		#Sacred Treasures
+		if the name of slot 17 of the player's current inventory is "<gold><bold>Mystletainn":
+			add 2 to {_damage}
+		else if the name of slot 17 of the player's current inventory is "<gold><bold>Folkvangr":
+			add 2 to {_damage}
+			add 3 to {_maxDamage}
+		else if the name of slot 17 of the player's current inventory is "<gold><bold>Tyrfing":
+			add 2 to {_damage}
+		else if the name of slot 17 of the player's current inventory is "<gold><bold>Fensalir":
+			add 2 to {_damage}
+		else if the name of slot 17 of the player's current inventory is "<gold><bold>Durandal":
+			add 1 to {_damage}
+			if the 6th line of the lore of slot 17 of the player's current inventory contains "Unique":
+				add 20 to {_strbuff}
+				add 20 to {_sklbuff}
+				if {_damage} is more than 4.5:
+					add {_damage} * 0.5 to {_crushing}
+		else if the name of slot 17 of the player's current inventory is "<gold><bold>Kindled-Fire Sword":
+			add 1 to {_braveEffectReps}
+		else if the name of slot 17 of the player's current inventory is "<gold><bold>Mercurius":
+			add 2 to {_damage}
+		else if the name of slot 17 of the player's current inventory is "<gold><bold>Hauteclere":
+			add 2 to {_damage}
+		else if the name of slot 17 of the player's current inventory is "<gold><bold>Gradivus":
+			add 2 to {_damage}
+		else if the name of slot 17 of the player's current inventory is "<gold><bold>Basilikos":
+			add 2.5 to {_damage}
+		else if the name of slot 17 of the player's current inventory is "<gold><bold>Devil Axe":
+			add 4.5 to {_damage}
+			if the 6th line of the lore of slot 17 of the player's current inventory contains "Unique":
+				add 6 to {_skillsdamage}
+		else if the name of slot 17 of the player's current inventory is "<gold><bold>Crusader's Lance":
+			add 4 to {_damage}
+			set {_CLHealthMult} to true
+		else if the name of slot 17 of the player's current inventory is "<gold><bold>Lunar Bow":
+			add 1.5 to {_damage}
+		else if the name of slot 17 of the player's current inventory is "<gold><bold>Balder Side Sword":
+			add 1.5 to {_damage}
+		else if the name of slot 17 of the player's current inventory is "<gold><bold>Ragnell":
+			add 4 to {_damage}
+			if the 6th line of the lore of slot 17 of the player's current inventory contains "Unique":
+				add 2 to {_skillsdamage}
+		else if the name of slot 17 of the player's current inventory is "<gold><bold>Yamato":
+			add 1.5 to {_damage}
+		else if the name of slot 17 of the player's current inventory is "<gold><bold>Meisterschwert":
+			set {_ReinhardtBrave} to true
+		else if the name of slot 17 of the player's current inventory is "<gold><bold>Dire Thunder":
+			set {_ReinhardtBrave} to true
+		else if the name of slot 17 of the player's current inventory is "<gold><bold>Mystletainn":
+			add 2 to {_damage}
+			add 10 to {_sklbuff}
+			if the 6th line of the lore of slot 17 of the player's current inventory contains "Unique":
+				add 15 to {_strbuff}
+				add 15 to {_sklbuff}
+				add 15 to {_defbuff}
+				add 15 to {_resbuff}
+				add 15 to {_spdbuff}
+		else if the name of slot 17 of the player's current inventory is "<gold><bold>Rex Hasta":
+			if line 6 of the lore of slot 17 of the player's current inventory contains "Unique":
+				add 2 to {_maxdamage}
+		else if the name of slot 17 of the player's current inventory is "<gold><bold>Falchion":
+			add 3 to {_damage}
+			add 6 to {_maxdamage}
+		else if the name of slot 17 of the player's current inventory is "<gold><bold>Binding Blade":
+			add 2 to {_damage}
+		else if the name of slot 17 of the player's current inventory is "<gold><bold>Parthia":
+			add 1.5 to {_damage}
+			if the 6th line of the lore of the player's tool contains "Unique":
+				add 5 to {_skillsDamage}
+		else if the name of slot 17 of the player's current inventory is "<gold><bold>Armads":
+			add 3 to {_damage}
+		else if the name of slot 17 of the player's current inventory is "<gold><bold>Siegmund":
+			add 2.5 to {_damage}
+			if the 6th line of the lore of slot 17 of the player's current inventory contains "Unique":
+				set {_SiegmundBrave} to true
+		else if the name of slot 17 of the player's current inventory is "<gold><bold>Sieglinde":
+			add 2.5 to {_damage}
+		else if the name of slot 17 of the player's current inventory is "<gold><bold>Light Brand":
+			add 1 to {_damage}
+		#Return Base Damage
+		if {_magic} is true:
+			add ({res.%player%} + {resbuff.%player%} + {_resbuff}) / 5 to {_damage}
+		else:
+			add ({str.%player%} + {strbuff.%player%} + {_strbuff}) / 5 to {_damage}
+		set {sd.calcBaseDamage.%player%} to {_damage}
+		add {_skillsDamage} to {_damage}
+		#Skills Bonuses
+		#Boost Skills
+		#Flame Boost
+		if the 2nd line of the lore of slot 17 of the player's current inventory contains "Flame Boost":
+			add 15 to {strbuff.%player%}
+			add 15 to {spdbuff.%player%}
+			add 15 to {sklbuff.%player%}
+			wait 1.5 seconds
+			subtract 15 from {strbuff.%player%}
+			subtract 15 from {spdbuff.%player%}
+			subtract 15 from {sklbuff.%player%}
+		#Aqua Boost
+		if the 2nd line of the lore of slot 17 of the player's current inventory contains "Aqua Boost":
+			add 15 to {resbuff.%player%}
+			add 15 to {spdbuff.%player%}
+			add 15 to {sklbuff.%player%}
+			wait 1.5 seconds
+			subtract 15 from {resbuff.%player%}
+			subtract 15 from {spdbuff.%player%}
+			subtract 15 from {sklbuff.%player%}
+		if the 6th line of the lore of slot 17 of the player's current inventory contains "Reinforced":
+			add 1.5 to {_skillsdamage}
+		else if the 6th line of the lore of slot 17 of the player's current inventory contains "Crushing":
+			if {_damage} is more than 4.5:
+				add ({_damage} * 0.33) to {_crushing}
+				if {_crushing} is more than 33:
+					set {_crushing} to 33
+		if the name of slot 17 of the player's current inventory is "<gold><bold>Basilikos":
+			set {_damage} to {_damage} * 1.5
+		if the 1st line of the lore of slot 17 of the player's current inventory contains "Flashing Blade":
+			add 5 to {_damage}
+			add 9 to {_maxDamage}
+		else if the 1st line of the lore of slot 17 of the player's current inventory contains "Heavy Blade":
+			add 5 to {_Damage}
+			add 9 to {_maxDamage}
+		else if the 1st line of the lore of slot 17 of the player's current inventory contains "Life and Death":
+			set {_damage} to {_damage} * 1.5
+		else if the 1st line of the lore of slot 17 of the player's current inventory contains "Fury":
+			add 3 to {_damage}
+		if the 2nd line of the lore of slot 17 of the player's current inventory contains "Desperation":
+			add {_damage} to {_maxDamage}
+		else if the 2nd line of the lore of slot 17 of the player's current inventory contains "Brave Blade":
+			subtract 7 from {_spdbuff}
+			add ({_damage} - 1.5) to {_maxDamage}
+		else if the 2nd line of the lore of slot 17 of the player's current inventory contains "Sabotage Defense":
+			set {_damage} to {_damage} * 1.25
+		#Perks Bonuses
+		set {_sklcheck} to checkSlots(player,"Sword Specialist")
+		if {_sklcheck} is 1:
+			if slot 17 of the player's current inventory is any sword:
+				set {_damage} to {_damage} * 1.25
+		set {_sklcheck} to checkSlots(player,"Heavy Draw")
+		if {_sklcheck} is 1:
+			if slot 17 of the player's current inventory is a bow:
+				add 1.5 to {_damage}
+		set {_sklcheck} to checkSlots(player,"Double Lion")
+		if {_sklcheck} is 1:
+			if slot 17 of the player's current inventory is a bow:
+				set {_DoubleLion} to true
+				add {_damage} to {_damage}
+		#Ethreal Grip
+		if the 4th line of the lore of slot 17 of the player's current inventory contains "Ethreal Grip":
+			set {_damage} to {_damage} * 0.5
+		#Rings
+		loop all items in the player's inventory:
+			if the name of the loop-item contains "Pursuit Ring":
+				add ({_damage} * 0.5) to {_maxDamage}
+			else if the name of the loop-item contains "Prayer Ring":
+				add {_damage} to {_maxDamage}
+		set {sd.calcSkillsDamage.%player%} to {_damage}
+		#Special Skills
+		#Radiant Aether (Weapon Specific)
+		if the name of slot 17 of the player's current inventory is "<gold><bold>Ragnell":
+			set {sd.calcWeaponSpecial.%player%} to "Radiant Aether"
+			set {sd.calcWeaponOdds.%player%} to simulateSpecial(player, 0.6, 65)
+			set {sd.calcWeaponMaxOdds.%player%} to simulateSpecialOvercharge(player,{_crushing},0.6,65)
+			set {_specialProc} to true
+			if the 2nd line of the lore of slot 17 of the player's current inventory contains "Wrath":
+				add 2.5 to {_damage}
+			if the 6th line of the lore of slot 17 of the player's current inventory contains "Koenig":
+				add 2.5 to {_damage}
+		#Eclipse (Weapon Specific)
+		else if the name of slot 17 of the player's current inventory is "<gold><bold>Alondite":
+			set {sd.calcWeaponSpecial.%player%} to "Eclipse"
+			set {sd.calcWeaponOdds.%player%} to simulateSpecial(player, 0.65, 50)
+			set {sd.calcWeaponMaxOdds.%player%} to simulateSpecialOvercharge(player,{_crushing},0.65,50)
+			set {_specialProc} to true
+			if the 2nd line of the lore of slot 17 of the player's current inventory contains "Wrath":
+				add 2.5 to {_damage}
+			if the 6th line of the lore of slot 17 of the player's current inventory contains "Koenig":
+				add 2.5 to {_damage}
+		#Luna (Lunar Bow)
+		else if the name of slot 17 of the player's current inventory is "<gold><bold>Lunar Bow":
+			set {sd.calcWeaponSpecial.%player%} to "Luna (Lunar Bow)"
+			set {sd.calcWeaponOdds.%player%} to simulateSpecial(player, 0.75, 70)
+			set {sd.calcWeaponMaxOdds.%player%} to simulateSpecialOvercharge(player,{_crushing},0.75,70)
+			set {_specialProc} to true
+			if the 2nd line of the lore of slot 17 of the player's current inventory contains "Wrath":
+				add 2.5 to {_damage}
+			if the 6th line of the lore of slot 17 of the player's current inventory contains "Koenig":
+				add 2.5 to {_damage}
+		#Astra
+		if the 5th line of the lore of slot 17 of the player's current inventory contains "Astra":
+			set {sd.calcSpecial.%player%} to "Astra"
+			set {sd.calcOdds.%player%} to simulateSpecial(player, 0.65, 50)
+			set {sd.calcMaxOdds.%player%} to simulateSpecialOvercharge(player,{_crushing},0.65,50)
+			set {_specialProc} to true
+			set {_damage} to {_damage} * 3
+			if the 2nd line of the lore of slot 17 of the player's current inventory contains "Wrath":
+				add 2.5 to {_damage}
+			if the 6th line of the lore of slot 17 of the player's current inventory contains "Koenig":
+				add 2.5 to {_damage}
+		#Glimmer
+		else if the 5th line of the lore of slot 17 of the player's current inventory contains "Glimmer":
+			set {sd.calcSpecial.%player%} to "Glimmer"
+			set {sd.calcOdds.%player%} to simulateSpecial(player, 0.9, 70)
+			set {sd.calcMaxOdds.%player%} to simulateSpecialOvercharge(player,{_crushing},0.9,70)
+			set {_damage} to {_damage} * 1.5
+			set {_specialProc} to true
+			if the 2nd line of the lore of slot 17 of the player's current inventory contains "Wrath":
+				add 2.5 to {_damage}
+			if the 6th line of the lore of slot 17 of the player's current inventory contains "Koenig":
+				add 2.5 to {_damage}
+		#Blazing Light
+		else if the 5th line of the lore of slot 17 of the player's current inventory contains "Blazing Light":
+			set {sd.calcSpecial.%player%} to "Blazing Light"
+			set {sd.calcOdds.%player%} to simulateSpecial(player, 0.7, 50)
+			set {sd.calcMaxOdds.%player%} to simulateSpecialOvercharge(player,{_crushing},0.7,50)
+			set {_damage} to {_damage} * 1.25
+			set {_specialProc} to true
+			if the 2nd line of the lore of slot 17 of the player's current inventory contains "Wrath":
+				add 2.5 to {_damage}
+			if the 6th line of the lore of slot 17 of the player's current inventory contains "Koenig":
+				add 2.5 to {_damage}
+		#Growing Light
+		else if the 5th line of the lore of slot 17 of the player's current inventory contains "Growing Light":
+			set {sd.calcSpecial.%player%} to "Growing Light"
+			set {sd.calcOdds.%player%} to simulateSpecial(player, 0.7, 50)
+			set {sd.calcMaxOdds.%player%} to simulateSpecialOvercharge(player,{_crushing},0.7,50)
+			set {_specialProc} to true
+			if the 2nd line of the lore of slot 17 of the player's current inventory contains "Wrath":
+				add 2.5 to {_damage}
+			if the 6th line of the lore of slot 17 of the player's current inventory contains "Koenig":
+				add 2.5 to {_damage}
+		#Luna
+		else if the 5th line of the lore of slot 17 of the player's current inventory contains "Luna":
+			set {sd.calcSpecial.%player%} to "Luna"
+			set {sd.calcOdds.%player%} to simulateSpecial(player, 0.75, 70)
+			set {sd.calcMaxOdds.%player%} to simulateSpecialOvercharge(player,{_crushing},0.75,70)
+			set {_specialProc} to true
+			if the 2nd line of the lore of slot 17 of the player's current inventory contains "Wrath":
+				add 2.5 to {_damage}
+			if the 6th line of the lore of slot 17 of the player's current inventory contains "Koenig":
+				add 2.5 to {_damage}
+		#Moonbow
+		else if the 5th line of the lore of slot 17 of the player's current inventory contains "Moonbow":
+			set {sd.calcSpecial.%player%} to "Moonbow"
+			set {sd.calcOdds.%player%} to simulateSpecial(player, 0.85, 80)
+			set {sd.calcMaxOdds.%player%} to simulateSpecialOvercharge(player,{_crushing},0.85,80)
+			set {_specialProc} to true
+			if the 2nd line of the lore of slot 17 of the player's current inventory contains "Wrath":
+				add 2.5 to {_damage}
+			if the 6th line of the lore of slot 17 of the player's current inventory contains "Koenig":
+				add 2.5 to {_damage}
+		#Sol
+		else if the 5th line of the lore of slot 17 of the player's current inventory contains "Sol":
+			set {sd.calcSpecial.%player%} to "Sol"
+			set {sd.calcOdds.%player%} to simulateSpecial(player, 0.7, 70)
+			set {sd.calcMaxOdds.%player%} to simulateSpecialOvercharge(player,{_crushing},0.7,70)
+			set {_specialProc} to true
+			if the 2nd line of the lore of slot 17 of the player's current inventory contains "Wrath":
+				add 2.5 to {_damage}
+			if the 6th line of the lore of slot 17 of the player's current inventory contains "Koenig":
+				add 2.5 to {_damage}
+		#Aether
+		else if the 5th line of the lore of slot 17 of the player's current inventory contains "Aether":
+			set {sd.calcSpecial.%player%} to "Aether"
+			set {sd.calcOdds.%player%} to simulateSpecial(player, 0.55, 65)
+			set {sd.calcMaxOdds.%player%} to simulateSpecialOvercharge(player,{_crushing},0.55,65)
+			set {_specialProc} to true
+			if the 2nd line of the lore of slot 17 of the player's current inventory contains "Wrath":
+				add 2.5 to {_damage}
+			if the 6th line of the lore of slot 17 of the player's current inventory contains "Koenig":
+				add 2.5 to {_damage}
+		#Subdue
+		else if the 5th line of the lore of slot 17 of the player's current inventory contains "Subdue":
+			set {sd.calcSpecial.%player%} to "Subdue"
+			set {sd.calcOdds.%player%} to simulateSpecial(player, 0.65, 50)
+			set {sd.calcMaxOdds.%player%} to simulateSpecialOvercharge(player,{_crushing},0.65,50)
+			add 10 to {_damage}
+			set {_specialProc} to true
+			if the 2nd line of the lore of slot 17 of the player's current inventory contains "Wrath":
+				add 2.5 to {_damage}
+			if the 6th line of the lore of slot 17 of the player's current inventory contains "Koenig":
+				add 2.5 to {_damage}
+		#Retribution
+		else if the 5th line of the lore of slot 17 of the player's current inventory contains "Retribution":
+			set {sd.calcSpecial.%player%} to "Retribution"
+			set {sd.calcOdds.%player%} to simulateSpecial(player, 0.675, 70)
+			set {sd.calcMaxOdds.%player%} to simulateSpecialOvercharge(player,{_crushing},0.675,70)
+			add (player's maximum health / 2) to {_maxDamage}
+			set {_specialProc} to true
+			if the 2nd line of the lore of slot 17 of the player's current inventory contains "Wrath":
+				add 2.5 to {_damage}
+			if the 6th line of the lore of slot 17 of the player's current inventory contains "Koenig":
+				add 2.5 to {_damage}
+		#Ignis
+		else if the 5th line of the lore of slot 17 of the player's current inventory contains "Ignis":
+			set {sd.calcSpecial.%player%} to "Ignis"
+			set {sd.calcOdds.%player%} to simulateSpecial(player, 0.7, 50)
+			set {sd.calcMaxOdds.%player%} to simulateSpecialOvercharge(player,{_crushing},0.7,50)
+			add (({def.%player%} + {defbuff.%player%} + {_defbuff}) / 2) ^ 0.8 to {_damage}
+			set {_specialProc} to true
+			if the 2nd line of the lore of slot 17 of the player's current inventory contains "Wrath":
+				add 2.5 to {_damage}
+			if the 6th line of the lore of slot 17 of the player's current inventory contains "Koenig":
+				add 2.5 to {_damage}
+		#Dragon Fang
+		else if the 5th line of the lore of slot 17 of the player's current inventory contains "Dragon Fang":
+			set {sd.calcSpecial.%player%} to "Dragon Fang"
+			set {sd.calcOdds.%player%} to simulateSpecial(player, 0.7, 50)
+			set {sd.calcMaxOdds.%player%} to simulateSpecialOvercharge(player,{_crushing},0.7,50)
+			add (({str.%player%} + {strbuff.%player%} + {_strbuff}) / 2) ^ 0.8 to {_damage}
+			set {_specialProc} to true
+			if the 2nd line of the lore of slot 17 of the player's current inventory contains "Wrath":
+				add 2.5 to {_damage}
+			if the 6th line of the lore of slot 17 of the player's current inventory contains "Koenig":
+				add 2.5 to {_damage}
+		#Glacies
+		else if the 5th line of the lore of slot 17 of the player's current inventory contains "Glacies":
+			set {sd.calcSpecial.%player%} to "Glacies"
+			set {sd.calcOdds.%player%} to simulateSpecial(player, 0.7, 50)
+			set {sd.calcMaxOdds.%player%} to simulateSpecialOvercharge(player,{_crushing},0.7,50)
+			add (({res.%player%} + {resbuff.%player%} + {_resbuff}) / 2) ^ 0.8 to {_damage}
+			set {_specialProc} to true
+			if the 2nd line of the lore of slot 17 of the player's current inventory contains "Wrath":
+				add 2.5 to {_damage}
+			if the 6th line of the lore of slot 17 of the player's current inventory contains "Koenig":
+				add 2.5 to {_damage}
+		#Rising Wind
+		else if the 5th line of the lore of slot 17 of the player's current inventory contains "Rising Wind":
+			set {sd.calcSpecial.%player%} to "Rising Wind"
+			set {sd.calcOdds.%player%} to simulateSpecial(player, 0.7, 50)
+			set {sd.calcMaxOdds.%player%} to simulateSpecialOvercharge(player,{_crushing},0.7,50)
+			add (({spd.%player%} + {spdbuff.%player%} + {_spdbuff}) / 2) ^ 0.8 to {_damage}
+			set {_specialProc} to true
+			if the 2nd line of the lore of slot 17 of the player's current inventory contains "Wrath":
+				add 2.5 to {_damage}
+			if the 6th line of the lore of slot 17 of the player's current inventory contains "Koenig":
+				add 2.5 to {_damage}
+		set {sd.calcSpecialDamage.%player%} to {_damage}
+		set {sd.calcMaxDamage.%player%} to ({_damage} + {_maxDamage}) * 2
+		set {sd.calcPlayerDoubleRange.%player%} to {spd.%player%} + {spdbuff.%player%} + {_spdbuff} - 5
+		set {sd.calcFoeDoubleRange.%player%} to {spd.%player%} + {spdbuff.%player%} + {_spdbuff} + 5

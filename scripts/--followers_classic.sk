@@ -1,0 +1,141 @@
+command /follower [<text="help">] [<text="NULL">]:
+	trigger:
+		if arg 1 is "help":
+			send "<gold>Follower help:"
+			send "<gold>/follower train: Raises a follower to your level, increasing their stats."
+			send "<gold>/follower stats: Check a follower's stats."
+			send "<gold>/follower wait: Follower will wait at their location."
+			send "<gold>/follower follow: Follower will resume following you."
+			send "<gold>/follower dismiss: Dismisses the selected follower. You will lose any items the follower was equipped with, and the follower will return to where they were first recruited."
+		else if arg 1 is "Train":
+			send "<light green>Right-click the follower you would like to train."
+			set {follower.train.%player%} to true
+			set {follower.edit.%player%} to true
+		else if arg 1 is "Stats":
+			send "<light green>Right-click the follower whose stats you would like to see."
+			set {follower.seestats.%player%} to true
+			set {follower.edit.%player%} to true
+		else if arg 1 is "wait":
+			send "<light green>Right-click the follower you want to wait."
+			set {follower.wait.%player%} to true
+			set {follower.edit.%player%} to true
+		else if arg 1 is "follow":
+			send "<light green>Right-click the follower you want to follow you."
+			set {follower.follow.%player%} to true
+			set {follower.edit.%player%} to true
+		else if arg 1 is "dismiss":
+			send "<light green>Right-click the follower you want to dismiss."
+			set {follower.dismiss.%player%} to true
+			set {follower.edit.%player%} to true
+		else if arg 1 is "recruit":
+			set {follower.edit.%player%} to true
+			set {follower.flagasfollower.%player%} to true
+			send "<light green>Right-click %arg 2% to add them as a follower."	
+			
+on right click on a player:
+	if target is npc:
+		if {following.%target%} is "%player%":
+			if {follower.train.%player%} is true:
+				if target's name is "Kiln":
+					set {class.%target%} to "Junior Lord"
+				if {class.%target%} is set:
+					set {str.%target%} to 0
+					set {def.%target%} to 0
+					set {skl.%target%} to 0
+					set {spd.%target%} to 0
+					set {mag.%target%} to 0
+					set the target's maximum health to 20
+					loop ceil({lvl.%player%} * 1.5) times:
+						if {class.%target%} is "Journeyman":
+							chance of 50%:
+								add 1 to {str.%target%}
+							chance of 50%:
+								add 1 to {def.%target%}
+							chance of 50%:
+								add 1 to {skl.%target%}
+							chance of 50%:
+								add 1 to {spd.%target%}
+							chance of 50%:
+								add 1 to {mag.%target%}
+							add 0.5 to the target's maximum health
+						else if {class.%target%} is "Junior Lord":
+							chance of 40%:
+								add 1 to {str.%target%}
+							chance of 30%:
+								add 1 to {def.%target%}
+							chance of 35%:
+								add 1 to {skl.%target%}
+							chance of 35%:
+								add 1 to {spd.%target%}
+							chance of 25%:
+								add 1 to {mag.%target%}
+							chance of 65%:
+								add 0.5 to the target's maximum health
+					send "<light green>Training complete!" to the player
+					send "<light green>%target%'s stat spread:" to the player
+					send "STR: %{str.%target%}%" to the player
+					send "DEF: %{def.%target%}%" to the player
+					send "SKL: %{skl.%target%}%" to the player
+					send "SPD: %{spd.%target%}%" to the player
+					send "MAG: %{mag.%target%}%" to the player
+					send "HP: %target's maximum health%" to the player
+					make player execute command "/npc sel"
+					make player execute command "/sentinel health %target's maximum health%"
+					clear {follower.train.%player%}
+				else:
+					send "<light red>This follower doesn't have a class!" to the player
+			else if {follower.seestats.%player%} is true:
+				send "<light green>%target%'s stat spread:" to the player
+				send "STR: %{str.%target%}%" to the player
+				send "DEF: %{def.%target%}%" to the player
+				send "SKL: %{skl.%target%}%" to the player
+				send "SPD: %{spd.%target%}%" to the player
+				send "MAG: %{mag.%target%}%" to the player
+				send "HP: %target's maximum health * 2%" to the player
+				clear {follower.seestats.%player%}
+			else if {follower.wait.%player%} is true:
+				make player execute command "/npc sel"
+				make player execute command "/sentinel guard"
+				clear {follower.wait.%player%}
+			else if {follower.follow.%player%} is true:
+				make player execute command "/npc sel"
+				make player execute command "/sentinel guard %player%"
+				clear {follower.follow.%player%}
+			else if {follower.dismiss.%player%} is true:
+				if target's name is "Kiln":
+					send "<light blue>Lord Kiln: I understand. I will return to the castle, and await your call for my help." to the player
+					set {kilnRecruitable.%player%} to true
+				clear {following.%target%}
+				clear {follower.dismiss.%player%}
+				play 100 (smoke with speed 0) at the target
+				play 1 (explosion with speed 1) at the target
+				play 100 (wool break with speed 1) at the target
+				clear {str.%target%}
+				clear {def.%target%}
+				clear {skl.%target%}
+				clear {spd.%target%}
+				clear {mag.%target%}
+				clear {party.%target%}
+				make player execute command "/npc sel"
+				send "<light green>%target% was dismissed." to the player
+				make player execute command "/npc remove"
+		else if {follower.flagasfollower.%player%} is true:
+			set {following.%target%} to "%player%"
+			set {party.%target%} to {party.%player%}
+			send "<light green>%target% is now a follower!" to the player
+			clear {follower.flagasfollower.%player%}
+			if the name of the target is "Kiln":
+				clear {kilnRecruitable.%player%}
+				set {class.%target%} to "Junior Lord"
+			else:
+				set {class.%target%} to "Journeyman"
+		else if {follower.edit.%player%} is true:
+			send "<light red>This NPC is not your follower!" to the player
+			clear {follower.train.%player%}
+			clear {follower.wait.%player%}
+			clear {follower.seestats.%player%}
+			clear {follower.follow.%player%}
+			clear {follower.dismiss.%player%}
+			clear {follower.flagasfollower.%player%}
+			clear {follower.edit.%player%}
+			

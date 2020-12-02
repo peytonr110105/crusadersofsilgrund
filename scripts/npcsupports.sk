@@ -1,0 +1,18 @@
+#NPC Support logic & functions
+#Players have their support data stored inside {npcSupportPoints.%player%::X}
+#X = The NPC's name. EX: Irankata, Merriam, etc...
+#Support points can be adjusted using the function updateNPCSupportPoints(player,NPC name)
+
+#Prints the player's support points to the console.
+command /printNPCSupports:
+	trigger:
+		loop {npcSupportPoints.%player%::*}:
+			send "<gold>%loop-index% - %loop-value%" to the player
+
+#Adjust the support points a player has with a specific NPC.
+function updateNPCSupportPoints(PLR: player, NPC: text, PTS: number):
+	add {_PTS} to {npcSupportPoints.%{_PLR}%::%{_NPC}%}
+	if {_PTS} is more than 0:
+		send formatted "<light yellow>Support with %{_NPC}% increased (+%{_PTS}% pts)." to {_PLR}
+	else:
+		send formatted "<light red>Support with %{_NPC}% decreased (-%{_PTS}% pts)." to {_PLR}

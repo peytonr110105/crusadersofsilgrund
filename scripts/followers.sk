@@ -1,142 +1,449 @@
-command /follower [<text="help">] [<text="NULL">]:
-	trigger:
-		if arg 1 is "help":
-			send "<gold>Follower help:"
-			send "<gold>/follower train: Raises a follower to your level, increasing their stats."
-			send "<gold>/follower stats: Check a follower's stats."
-			send "<gold>/follower wait: Follower will wait at their location."
-			send "<gold>/follower follow: Follower will resume following you."
-			send "<gold>/follower dismiss: Dismisses the selected follower. You will lose any items the follower was equipped with, and the follower will return to where they were first recruited."
-		else if arg 1 is "Train":
-			send "<light green>Right-click the follower you would like to train."
-			set {follower.train.%player%} to true
-			set {follower.edit.%player%} to true
-		else if arg 1 is "Stats":
-			send "<light green>Right-click the follower whose stats you would like to see."
-			set {follower.seestats.%player%} to true
-			set {follower.edit.%player%} to true
-		else if arg 1 is "wait":
-			send "<light green>Right-click the follower you want to wait."
-			set {follower.wait.%player%} to true
-			set {follower.edit.%player%} to true
-		else if arg 1 is "follow":
-			send "<light green>Right-click the follower you want to follow you."
-			set {follower.follow.%player%} to true
-			set {follower.edit.%player%} to true
-		else if arg 1 is "dismiss":
-			send "<light green>Right-click the follower you want to dismiss."
-			set {follower.dismiss.%player%} to true
-			set {follower.edit.%player%} to true
-		else if arg 1 is "recruit":
-			set {follower.edit.%player%} to true
-			set {follower.flagasfollower.%player%} to true
-			send "<light green>Right-click %arg 2% to add them as a follower."
-			
-			
-on right click on a player:
-	if target is npc:
-		if {following.%target%} is "%player%":
-			if {follower.train.%player%} is true:
-				if target's name is "Kiln":
-					set {class.%target%} to "Junior Lord"
-				if {class.%target%} is set:
-					set {str.%target%} to 0
-					set {def.%target%} to 0
-					set {skl.%target%} to 0
-					set {spd.%target%} to 0
-					set {mag.%target%} to 0
-					set the target's maximum health to 20
-					loop ceil({lvl.%player%} * 1.5) times:
-						if {class.%target%} is "Journeyman":
-							chance of 50%:
-								add 1 to {str.%target%}
-							chance of 50%:
-								add 1 to {def.%target%}
-							chance of 50%:
-								add 1 to {skl.%target%}
-							chance of 50%:
-								add 1 to {spd.%target%}
-							chance of 50%:
-								add 1 to {mag.%target%}
-							add 0.5 to the target's maximum health
-						else if {class.%target%} is "Junior Lord":
-							chance of 40%:
-								add 1 to {str.%target%}
-							chance of 30%:
-								add 1 to {def.%target%}
-							chance of 35%:
-								add 1 to {skl.%target%}
-							chance of 35%:
-								add 1 to {spd.%target%}
-							chance of 25%:
-								add 1 to {mag.%target%}
-							chance of 65%:
-								add 0.5 to the target's maximum health
-					send "<light green>Training complete!" to the player
-					send "<light green>%target%'s stat spread:" to the player
-					send "STR: %{str.%target%}%" to the player
-					send "DEF: %{def.%target%}%" to the player
-					send "SKL: %{skl.%target%}%" to the player
-					send "SPD: %{spd.%target%}%" to the player
-					send "MAG: %{mag.%target%}%" to the player
-					send "HP: %target's maximum health%" to the player
-					make player execute command "/npc sel"
-					make player execute command "/sentinel health %target's maximum health%"
-					clear {follower.train.%player%}
+#Re-Implementation of Followers
+#Allows players to recruit NPCs that travel alongside the player and aid them on their adventures.
+
+#Promotion Handler for followers
+function followerPromotion(PLR: player,NPC: text):
+	add 30 to {lvlcap.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+	add 1 to {promoted.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+	add 1 to {NPCLongtermPromotions.%{_PLR}%::%{_NPC}%}
+	strike lightning effect at {NPCsFor.%{_PLR}%::F_%{_NPC}%}
+	wait 1 second
+	strike lightning effect at {NPCsFor.%{_PLR}%::F_%{_NPC}%}
+	wait 0.45 second
+	strike lightning effect at {NPCsFor.%{_PLR}%::F_%{_NPC}%}
+	wait 1 second
+	set {_pitch} to 0.6
+	set {_oldstr} to {str.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+	set {_olddef} to {def.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+	set {_oldhp} to {hp.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+	set {_oldskl} to {skl.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+	set {_oldspd} to {spd.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+	set {_oldres} to {res.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+	loop 9 times:
+		play mob spawner flames at {NPCsFor.%{_PLR}%::F_%{_NPC}%}
+		play magical critical hit at {NPCsFor.%{_PLR}%::F_%{_NPC}%}
+		play smoke at {NPCsFor.%{_PLR}%::F_%{_NPC}%}
+		play sound "entity.experience_orb.pickup" with volume 2 and pitch {_pitch} at {NPCsFor.%{_PLR}%::F_%{_NPC}%}
+		wait 0.3 seconds
+		spawn firework at {NPCsFor.%{_PLR}%::F_%{_NPC}%}
+		add .2 to {_pitch}
+	play sound "entity.experience_orb.pickup" with volume 2 and pitch 2 at {NPCsFor.%{_PLR}%::F_%{_NPC}%}
+	if {_NPC} is "Irankata":
+		if {class.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%} is "Mercenary":
+			set {class.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%} to "Hero"
+			set {_normalPromotion} to true
+		else if {class.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%} is "Hero":
+			set {class.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%} to "Junior Lord"
+			set {_normalPromotion} to true
+		if {_normalPromotion} is true:
+			add 5 to {hp.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+			add 5 to {str.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+			add 5 to {def.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+			add 5 to {skl.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+			add 5 to {spd.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+			add 5 to {res.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+			set {hpcap.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%} to (55 + (({promoted.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%} - 1) * 55))
+			set {strcap.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%} to (24 + (({promoted.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%} - 1) * 24))
+			set {defcap.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%} to (27 + (({promoted.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%} - 1) * 27))
+			set {sklcap.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%} to (17 + (({promoted.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%} - 1) * 17))
+			set {spdcap.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%} to (14 + (({promoted.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%} - 1) * 14))
+			set {rescap.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%} to (32 + (({promoted.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%} - 1) * 32))
+		else:
+			add 2 to {hp.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+			add 2 to {str.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+			add 2 to {def.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+			add 2 to {skl.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+			add 2 to {spd.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+			add 2 to {res.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+			add 15 to {hpcap.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+			add 15 to {strcap.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+			add 15 to {defcap.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+			add 15 to {sklcap.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+			add 15 to {spdcap.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+			add 15 to {rescap.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+		send formatted "<light blue>Irankata: <white>Stand aside, everyone! I'm on the way up!" to {_PLR}
+	if {_normalPromotion} is true:
+		send formatted "<light yellow><italics>%{_NPC}% promoted to %{class.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}%!" to {_PLR}
+	else:
+		send formatted "<light yellow><italics>%{_NPC}% overclassed!" to {_PLR}
+	send formatted "<light blue>HP: <white>%{_oldHP}% --> %{hp.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}%" to {_PLR}
+	send formatted "<light blue>STR: <white>%{_oldSTR}% --> %{STR.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}%" to {_PLR}
+	send formatted "<light blue>DEF: <white>%{_oldDEF}% --> %{def.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}%" to {_PLR}
+	send formatted "<light blue>SKL: <white>%{_oldSKL}% --> %{skl.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}%" to {_PLR}
+	send formatted "<light blue>SPD: <white>%{_oldSPD}% --> %{SPD.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}%" to {_PLR}
+	send formatted "<light blue>MAG: <white>%{_oldRES}% --> %{RES.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}%" to {_PLR}
+
+#Level-Up Handler for followers
+function followerLevelUp(PLR: player,LVL: number,NPC: text):
+	if {_LVL} is more than {lvl.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}:
+		if {_LVL} is less than or equal to {lvlcap.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}:
+			set {_timesToSimLevelUps} to {_LVL} - {lvl.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+			loop {_timesToSimLevelUps} times:
+				if {_NPC} is "Irankata":
+					set {_oldHP} to {hp.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+					set {_oldSTR} to {str.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+					set {_oldDEF} to {def.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+					set {_oldSKL} to {skl.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+					set {_oldSPD} to {spd.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+					set {_oldRES} to {res.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+					chance of 81%:
+						if {hp.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%} is less than {hpcap.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}:
+							add 1 to {hp.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+							add 1 to {_statsIncreased}
+					chance of 50%:
+						if {str.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%} is less than {strcap.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}:
+							add 1 to {str.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+							add 1 to {_statsIncreased}
+					chance of 55%:
+						if {def.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%} is less than {defcap.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}:
+							add 1 to {def.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+							add 1 to {_statsIncreased}
+					chance of 35%:
+						if {skl.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%} is less than {sklcap.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}:
+							add 1 to {skl.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+							add 1 to {_statsIncreased}
+					chance of 30%:
+						if {spd.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%} is less than {spdcap.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}:
+							add 1 to {spd.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+							add 1 to {_statsIncreased}
+					chance of 65%:
+						if {res.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%} is less than {rescap.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}:
+							add 1 to {res.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}
+							add 1 to {_statsIncreased}
+					make console execute command "/npc sel %citizen id of {NPCsFor.%{_PLR}%::F_%{_NPC}%}%"
+					make console execute command "/sentinel health %({hp.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%})%"
+					set {NPCsFor.%{_PLR}%::F_%{_NPC}%}'s maximum health to ({hp.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%} / 2)
+			send formatted "<light blue>%{_NPC}%'s level increased to %{_LVL}%:" to {_PLR}
+			send formatted "<light blue>HP: <white>%{_oldHP}% --> %{hp.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}%" to {_PLR}
+			send formatted "<light blue>STR: <white>%{_oldSTR}% --> %{STR.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}%" to {_PLR}
+			send formatted "<light blue>DEF: <white>%{_oldDEF}% --> %{def.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}%" to {_PLR}
+			send formatted "<light blue>SKL: <white>%{_oldSKL}% --> %{skl.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}%" to {_PLR}
+			send formatted "<light blue>SPD: <white>%{_oldSPD}% --> %{SPD.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}%" to {_PLR}
+			send formatted "<light blue>MAG: <white>%{_oldRES}% --> %{RES.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%}%" to {_PLR}
+			set {lvl.%{NPCsFor.%{_PLR}%::F_%{_NPC}%}%} to {_LVL}
+			wait 2 seconds
+			if {_NPC} is "Irankata":
+				if {_statsIncreased} is more than or equal to 5:
+					send "<light blue>Irankata: <white>I am on FIRE right now!" to {_PLR}
+				else if {_statsIncreased} is more than or equal to 3:
+					send "<light blue>Irankata: <white>I think I got a little stronger just now!" to {_PLR}
 				else:
-					send "<light red>This follower doesn't have a class!" to the player
-			else if {follower.seestats.%player%} is true:
-				send "<light green>%target%'s stat spread:" to the player
-				send "STR: %{str.%target%}%" to the player
-				send "DEF: %{def.%target%}%" to the player
-				send "SKL: %{skl.%target%}%" to the player
-				send "SPD: %{spd.%target%}%" to the player
-				send "MAG: %{mag.%target%}%" to the player
-				send "HP: %target's maximum health * 2%" to the player
-				clear {follower.seestats.%player%}
-			else if {follower.wait.%player%} is true:
-				make player execute command "/npc sel"
-				make player execute command "/sentinel guard"
-				clear {follower.wait.%player%}
-			else if {follower.follow.%player%} is true:
-				make player execute command "/npc sel"
-				make player execute command "/sentinel guard %player%"
-				clear {follower.follow.%player%}
-			else if {follower.dismiss.%player%} is true:
-				if target's name is "Kiln":
-					send "<light blue>Lord Kiln: I understand. I will return to the castle, and await your call for my help." to the player
-					set {kilnRecruitable.%player%} to true
-				clear {following.%target%}
-				clear {follower.dismiss.%player%}
-				play 100 (smoke with speed 0) at the target
-				play 1 (explosion with speed 1) at the target
-				play 100 (wool break with speed 1) at the target
-				clear {str.%target%}
-				clear {def.%target%}
-				clear {skl.%target%}
-				clear {spd.%target%}
-				clear {mag.%target%}
-				clear {party.%target%}
-				make player execute command "/npc sel"
-				send "<light green>%target% was dismissed." to the player
-				make player execute command "/npc remove"
-		else if {follower.flagasfollower.%player%} is true:
-			set {following.%target%} to "%player%"
-			set {party.%target%} to {party.%player%}
-			send "<light green>%target% is now a follower!" to the player
-			clear {follower.flagasfollower.%player%}
-			if the name of the target is "Kiln":
-				clear {kilnRecruitable.%player%}
-				set {class.%target%} to "Junior Lord"
-			else:
-				set {class.%target%} to "Journeyman"
-		else if {follower.edit.%player%} is true:
-			send "<light red>This NPC is not your follower!" to the player
-			clear {follower.train.%player%}
-			clear {follower.wait.%player%}
-			clear {follower.seestats.%player%}
-			clear {follower.follow.%player%}
-			clear {follower.dismiss.%player%}
-			clear {follower.flagasfollower.%player%}
-			clear {follower.edit.%player%}
+					send "<light blue>Irankata: <white>I thought I felt something. Must be my imagination." to {_PLR}
+
+#Main command
+#ARG-1: Command to perform
+#ARG-2: Follower to perform this command on
+command /follower <text> <text>:
+	trigger:
+		if {isFollowerUnit.%{NPCsFor.%player%::F_%arg 2%}%} is set:
+			#Dismiss Follower
+			if arg 1 is "dismiss":
+				#Character-Specific leave dialouge
+				if arg 2 is "Irankata":
+					send "<light blue>Irankata: <white>Alrighty then. I'll be back at Ulster if you need me!"
+				play 40 (gold block break with speed 1) at {NPCsFor.%player%::F_%arg 2%}
+				play 40 (ender signal with speed 1) at {NPCsFor.%player%::F_%arg 2%}
+				make console execute command "/npc sel %citizen id of {NPCsFor.%player%::F_%arg 2%}%"
+				make console execute command "/sentinel guard"
+				make console execute command "/npc despawn"
+				hide {NPCsFor.%player%::F_%arg 2%} from the player
+				reveal {globalNPCS::%arg 2%} to the player
+				clear {isFollowerUnit.%{NPCsFor.%player%::F_%arg 2%}%}
+				broadcast "%{isFollowerUnit.%{NPCsFor.%player%::F_%arg 2%}%}%"
+				#clear {NPCsFor.%player%::F_%arg 2%}
+				send formatted "<light yellow><italics>%arg 2% was dismissed, and returned home."
+			#Trade Items
+			else if arg 1 is "tradeItems":
+				open chest with 3 rows named "<light blue>%arg 2%'s Inventory" for the player
+				if {npcInventory.%{NPCsFor.%player%::F_%arg 2%}%::*} is not set:
+					set slot 0 of the player's current inventory to {NPCsFor.%player%::F_%arg 2%}'s helmet
+					set slot 1 of the player's current inventory to {NPCsFor.%player%::F_%arg 2%}'s chestplate
+					set slot 2 of the player's current inventory to {NPCsFor.%player%::F_%arg 2%}'s leggings
+					set slot 3 of the player's current inventory to {NPCsFor.%player%::F_%arg 2%}'s boots
+					set slot 4 of the player's current inventory to {NPCsFor.%player%::F_%arg 2%}'s tool
+					#set slot 5 of the player's current inventory to 1 barrier named "<light red>Locked Slot"
+					set slot 5 of the player's current inventory to 1 book named "<gold>Usage" with lore "<white>This screen lets you trade items with %arg 2%.", "<white>The first row is what items %arg 2% has equipped.", "<white>Replace an item in any of these slots to have %arg 2% use them.", "<white>The second row is spare inventory space.", "<white>%arg 2% can hold onto any items you place in the second row.", "<light red>Items in %arg 2%'s inventory WILL BE LOST if they are dismissed!"
+				set {managingNPCInventory.%player%} to arg 2
+				set {_invSlots} to 0
+				loop {npcInventory.%{NPCsFor.%player%::F_%arg 2%}%::*}:
+					set slot {_invSlots} of the player's current inventory to loop-value
+					add 1 to {_invSlots}
+				set slot 26 of the player's current inventory to 1 green wool named "<light green>Finish Trading" with lore "<white>Click to finish trading with %arg 2%."
+			#Promotions
+			else if arg 1 is "promote":
+				loop all items in the player's inventory:
+					if the name of the loop-item is "<gold><bold>Warrior's Proof":
+						remove 1 nether star named "<gold><bold>Warrior's Proof" from the player's inventory
+						followerPromotion(player,arg 2)
+						exit 1 loop
+			#Check Stats
+			else if arg 1 is "viewStats":
+				send formatted "<light blue>%arg 2%'s Stats (Level: %{lvl.%{NPCsFor.%player%::F_%arg 2%}%}%):"
+				send "Current Health: %{NPCsFor.%player%::F_%arg 2%}'s health%"
+				send "HP: %{hp.%{NPCsFor.%player%::F_%arg 2%}%}% | Cap: %{hpcap.%{NPCsFor.%player%::F_%arg 2%}%}%"
+				send "STR: %{STR.%{NPCsFor.%player%::F_%arg 2%}%}% | Cap: %{STRcap.%{NPCsFor.%player%::F_%arg 2%}%}%"
+				send "DEF: %{DEF.%{NPCsFor.%player%::F_%arg 2%}%}% | Cap: %{DEFcap.%{NPCsFor.%player%::F_%arg 2%}%}%"
+				send "SKL: %{SKL.%{NPCsFor.%player%::F_%arg 2%}%}% | Cap: %{SKLcap.%{NPCsFor.%player%::F_%arg 2%}%}%"
+				send "SPD: %{SPD.%{NPCsFor.%player%::F_%arg 2%}%}% | Cap: %{SPDcap.%{NPCsFor.%player%::F_%arg 2%}%}%"
+				send "MAG: %{RES.%{NPCsFor.%player%::F_%arg 2%}%}% | Cap: %{REScap.%{NPCsFor.%player%::F_%arg 2%}%}%"
+		else if arg 1 is "recruit":
+			#Restrict follower recruitment based on quest completion
+			if arg 2 is "Irankata":
+				if {quests.%player%::Breaking the Ice} is 999:
+					set {_isRecruited} to true
+					send "<light blue>Irankata: <white>Sure, let's get going!"
+				else:
+					send "<light blue>Irankata: <white>Sorry, I... have work to do, yeah. Maybe some other time!"
+			if {_isRecruited} is true:
+				broadcast "test"
+				if {NPCLongtermLVLS.%player%::%arg 2%} is not set:
+					set {inCutscene.%player%} to true
+					set {interruptNPCWizardry.%player%} to true
+					set {recruitNPCAsFollower.%player%} to true
+					clear {summoningMonster.%player%}
+					if arg 2 is "Irankata":
+						make console execute command "/npc sel %citizen id of {globalNPCS::Irankata}%"
+					make console execute command "/npc copy"
+					#Ensure followers can participate in combat
+					make console execute command "/trait add sentinel"
+					make console execute command "/sentinel addtarget MONSTERS"
+					make console execute command "/sentinel addignore PLAYERS"
+					while {NPCsFor.%player%::F_%arg 2%} is not set:
+						wait 1 tick
+						add 1 to {_ticksWaited}
+						if {_ticksWaited} is more than 120:
+							send "<light red>NPC Wizardry failed!"
+							exit 1 loop
+					make console execute command "/sentinel guard %player%"
+					#Hides follower from other players
+					loop all players:
+						if loop-player is not the player:
+							hide {NPCsFor.%player%::F_%arg 2%} from the loop-player
+					#Hides original NPC from the player
+					hide {globalNPCS::%arg 2%} from the player
+					wait 1 tick
+					while {isFollowerUnit.%{NPCsFor.%player%::F_%arg 2%}%} is not set:
+						set {isFollowerUnit.%{NPCsFor.%player%::F_%arg 2%}%} to true
+						wait 1 tick
+						send "waiting..."
+					#Add the follower to the player's party
+					#Create a party for the player if they don't have one.
+					if {party.%player%} is not set:
+						send "<light yellow><italics>You don't seem to belong to a party. Creating a party for you..."
+						make player execute command "/group create %player's name%'s Group"
+					set {party.%{NPCsFor.%player%::F_%arg 2%}%} to {party.%player%}
+					clear {interruptNPCWizardry.%player%}
+					clear {recruitNPCAsFollower.%player%}
+					#Initialize some variables relating to level-ups/promotions
+					if {NPCLongtermPromotions.%player%::%arg 2%} is not set:
+						set {NPCLongtermPromotions.%player%::%arg 2%} to 1
+					if arg 2 is "Irankata":
+						if {NPCLongtermLVLS.%player%::%arg 2%} is not set:
+							set {NPCLongtermLVLS.%player%::%arg 2%} to 1
+							set {NPCsFor.%player%::F_%arg 2%}'s helmet to 1 chainmail helmet of protection 2,unbreaking 10
+							set {NPCsFor.%player%::F_%arg 2%}'s chestplate to 1 chainmail chestplate of protection 2,unbreaking 10
+							set {NPCsFor.%player%::F_%arg 2%}'s leggings to 1 chainmail leggings of protection 2,unbreaking 10
+							set {NPCsFor.%player%::F_%arg 2%}'s boots to 1 chainmail boots of protection 2,unbreaking 10
+							set {NPCsFor.%player%::F_%arg 2%}'s tool to 1 iron sword of sharpness 2,unbreaking 10,fire aspect 2 named "<gold>Irankata's Blade" with lore "<light red><bold>Slot A - Death Blow", "<light blue><bold>Slot B - Empty", "<light yellow><bold>Slot C - DEF Smoke"
+							clear {npcInventory.%{NPCsFor.%player%::F_%arg 2%}%::*}
+							set {npcInventory.%{NPCsFor.%player%::F_%arg 2%}%::11} to "2 cactus green dye named ""<light green><bold>Sacred Herb""" parsed as item
+							#Initialize Stats
+							set {lvl.%{NPCsFor.%player%::F_%arg 2%}%} to {NPCLongtermLVLS.%player%::%arg 2%}
+							set {hp.%{NPCsFor.%player%::F_%arg 2%}%} to (22 * {NPCLongtermPromotions.%player%::%arg 2%})
+							set {str.%{NPCsFor.%player%::F_%arg 2%}%} to (10 * {NPCLongtermPromotions.%player%::%arg 2%})
+							set {def.%{NPCsFor.%player%::F_%arg 2%}%} to (11 * {NPCLongtermPromotions.%player%::%arg 2%})
+							set {skl.%{NPCsFor.%player%::F_%arg 2%}%} to (7 * {NPCLongtermPromotions.%player%::%arg 2%})
+							set {spd.%{NPCsFor.%player%::F_%arg 2%}%} to (6 * {NPCLongtermPromotions.%player%::%arg 2%})
+							set {res.%{NPCsFor.%player%::F_%arg 2%}%} to (13 * {NPCLongtermPromotions.%player%::%arg 2%})
+							set {hpcap.%{NPCsFor.%player%::F_%arg 2%}%} to (55 + (({NPCLongtermPromotions.%player%::%arg 2%} - 1) * 55))
+							set {strcap.%{NPCsFor.%player%::F_%arg 2%}%} to (24 + (({NPCLongtermPromotions.%player%::%arg 2%} - 1) * 24))
+							set {defcap.%{NPCsFor.%player%::F_%arg 2%}%} to (27 + (({NPCLongtermPromotions.%player%::%arg 2%} - 1) * 27))
+							set {sklcap.%{NPCsFor.%player%::F_%arg 2%}%} to (17 + (({NPCLongtermPromotions.%player%::%arg 2%} - 1) * 17))
+							set {spdcap.%{NPCsFor.%player%::F_%arg 2%}%} to (14 + (({NPCLongtermPromotions.%player%::%arg 2%} - 1) * 14))
+							set {rescap.%{NPCsFor.%player%::F_%arg 2%}%} to (32 + (({NPCLongtermPromotions.%player%::%arg 2%} - 1) * 32))
+							set {lvlcap.%{NPCsFor.%player%::F_%arg 2%}%} to (30 * {NPCLongtermPromotions.%player%::%arg 2%})
+							set {NPCsFor.%player%::F_%arg 2%}'s maximum health to ({hp.%{NPCsFor.%player%::F_%arg 2%}%} / 2)
+				else:
+					make console execute command "/npc sel %citizen id of {NPCsFor.%player%::F_%arg 2%}%"
+					make console execute command "/npc spawn"
+					make console execute command "/sentinel guard %player%"
+					reveal {NPCsFor.%player%::F_%arg 2%} to the player
+					teleport {NPCsFor.%player%::F_%arg 2%} to the player
+					set {isFollowerUnit.%{NPCsFor.%player%::F_%arg 2%}%} to the player
+					if {hpcap.%{NPCsFor.%player%::F_%arg 2%}%} is not set:
+						set {lvl.%{NPCsFor.%player%::F_%arg 2%}%} to {NPCLongtermLVLS.%player%::%arg 2%}
+						set {hp.%{NPCsFor.%player%::F_%arg 2%}%} to (22 * {NPCLongtermPromotions.%player%::%arg 2%})
+						set {str.%{NPCsFor.%player%::F_%arg 2%}%} to (10 * {NPCLongtermPromotions.%player%::%arg 2%})
+						set {def.%{NPCsFor.%player%::F_%arg 2%}%} to (11 * {NPCLongtermPromotions.%player%::%arg 2%})
+						set {skl.%{NPCsFor.%player%::F_%arg 2%}%} to (7 * {NPCLongtermPromotions.%player%::%arg 2%})
+						set {spd.%{NPCsFor.%player%::F_%arg 2%}%} to (6 * {NPCLongtermPromotions.%player%::%arg 2%})
+						set {res.%{NPCsFor.%player%::F_%arg 2%}%} to (13 * {NPCLongtermPromotions.%player%::%arg 2%})
+						set {hpcap.%{NPCsFor.%player%::F_%arg 2%}%} to (55 + (({NPCLongtermPromotions.%player%::%arg 2%} - 1) * 55))
+						set {strcap.%{NPCsFor.%player%::F_%arg 2%}%} to (24 + (({NPCLongtermPromotions.%player%::%arg 2%} - 1) * 24))
+						set {defcap.%{NPCsFor.%player%::F_%arg 2%}%} to (27 + (({NPCLongtermPromotions.%player%::%arg 2%} - 1) * 27))
+						set {sklcap.%{NPCsFor.%player%::F_%arg 2%}%} to (17 + (({NPCLongtermPromotions.%player%::%arg 2%} - 1) * 17))
+						set {spdcap.%{NPCsFor.%player%::F_%arg 2%}%} to (14 + (({NPCLongtermPromotions.%player%::%arg 2%} - 1) * 14))
+						set {rescap.%{NPCsFor.%player%::F_%arg 2%}%} to (32 + (({NPCLongtermPromotions.%player%::%arg 2%} - 1) * 32))
+						set {lvlcap.%{NPCsFor.%player%::F_%arg 2%}%} to (30 * {NPCLongtermPromotions.%player%::%arg 2%})
+					send "npc already exists..."
+				send formatted "<light yellow><italics>%arg 2% is now following you."
+		else:
+			send "<light red>That follower could not be found."
+		
+on inventory click:
+	if {managingNPCInventory.%player%} is set:
+		set {NPCsFor.%player%::F_%{managingNPCInventory.%player%}%}'s helmet to slot 0 of the player's current inventory
+		set {NPCsFor.%player%::F_%{managingNPCInventory.%player%}%}'s chestplate to slot 1 of the player's current inventory
+		set {NPCsFor.%player%::F_%{managingNPCInventory.%player%}%}'s leggings to slot 2 of the player's current inventory
+		set {NPCsFor.%player%::F_%{managingNPCInventory.%player%}%}'s boots to slot 3 of the player's current inventory
+		set {NPCsFor.%player%::F_%{managingNPCInventory.%player%}%}'s tool to slot 4 of the player's current inventory
+		if the name of the clicked item is "<light green>Finish Trading":
+			clear {managingNPCInventory.%player%}
+			clear {npcInventory.%{NPCsFor.%player%::F_%{managingNPCInventory.%player%}%}%::*}
+			#Save NPC's inventory to disk
+			loop all items in the player's current inventory:
+				add loop-item to {npcInventory.%{NPCsFor.%player%::F_%{managingNPCInventory.%player%}%}%::*}
+			cancel event
+			close the player's inventory
 			
+on inventory close:
+	#if {managingNPCInventory.%player%} is set:
+	#	make player execute command "/follower tradeItems %{managingNPCInventory.%player%}%"
+			
+#Mark NPC as follower
+command /markAsFollower <number>:
+	trigger:
+		if arg 1 is 1:
+			set {debug_markasfollower.%player%} to 1
+			send "<light blue>Right click the NPC to mark as a follower"
+		else if arg 1 is 2:
+			set {debug_markasfollower.%player%} to 2
+			send "<light red>select npc to remove follower status from"
+		else:
+			clear {debug_markasfollower.%player%}
+			clear {npcedit.%player%}
+			send "<light yellow>no longer marking npcs"
+			
+command /debugNPCList:
+	trigger:
+		loop {NPCsFor.%player%::*}:
+			send "NPC: %loop-index%" to the player
+			
+command /clearNPCPersistentData:
+	trigger:
+		clear {NPCLongtermPromotions.%player%::*}
+		clear {NPCLongtermLVLS.%player%::*}
+		#clear {NPCsFor.%player%::*}
+		send "<light blue>wiped persistent npc data"
+		
+command /warpNPCs:
+	trigger:
+		loop {NPCsFor.%player%::*}:
+			teleport loop-value to the player
+			send "<light blue>Warped %loop-value% to you."
+			
+#Follower Interactions
+on right click on an entity:
+	if citizen id of the target is set:
+		if {debug_markasfollower.%player%} is 1:
+			set {isFollowerUnit.%target%} to true
+			clear {debug_markasfollower.%player%}
+			send "<light blue>Marked %target's name% as a follower" to the player
+		else if {debug_markasfollower.%player%} is 2:
+			clear {isFollowerUnit.%target%}
+			send "<light red>Removed follower" to the player
+			clear {debug_markasfollower.%player%}
+		#Irankata
+		if the name of the target contains "Irankata":
+			if {isFollowerUnit.%{NPCsFor.%player%::F_%target%}%} is not set:
+				set {_rng} to a random integer from 1 to 3
+				if {_rng} is 1:
+					send "<light blue>Irankata: <white>Hey there!" to the player
+				else if {_rng} is 2:
+					send "<light blue>Irankata: <white>Hiya, %player's tablist name%!" to the player
+				else:
+					send "<light blue>Irankata: <white>Heyo! What's going on?" to the player
+				wait 2.5 seconds
+				send "<run command:/follower recruit Irankata><gold>1 - Follow me. I need your help." to the player
+				if {supportConvoAvailable.%player%::Irankata} is true:
+					send "<run command:/npcSupportConvo Irankata 0><gold>2 - Care to chat?" to the player
+			else:
+				if target's health is not target's maximum health:
+					if the name of the player's tool is "<light green><bold>Sacred Herb":
+						play 10 (green wool break with speed 1) at the target
+						play 2 (wolf hearts with speed 1) at the target
+						play sound "entity.player.swim" with volume 2 and pitch 1.5 at the target for the player
+						play sound "item.bucket.fill" with volume 2 and pitch 1.3 at the target for the player
+						remove 1 of tool from tool
+						if target's health is more than or equal to (target's maximum health * 0.7):
+							send "<light blue>Irankata: <white>Thanks for that!" to the player
+							add 10 to {NPCSupportPoints.%player%::Irankata}
+							npcSupportHandler(player,"Irankata")
+						else if target's health is more than or equal to (target's maximum health * 0.4):
+							send "<light blue>Irankata: <white>I needed that one, thanks!" to the player
+							add 20 to {NPCSupportPoints.%Player%::Irankata}
+							npcSupportHandler(player,"Irankata")
+						else:
+							send "<light blue>Irankata: <white>I think you just saved my life there... Thanks." to the player
+							add 40 to {NPCSupportPoints.%player%::Irankata}
+							npcSupportHandler(player,"Irankata")
+						heal the target by 6 hearts
+						wait 2.5 seconds
+					else if the name of the player's tool is "<light green><bold>Golden Herb":
+						play 10 (gold block break with speed 1) at the target
+						play 4 (wolf hearts with speed 1) at the target
+						play sound "block.enchantment_table.use" with volume 3 and pitch 2 at the target for the player
+						play sound "entity.player.swim" with volume 1 and pitch 1.5 at the target for the player
+						remove 1 of tool from tool
+						if target's health is more than or equal to (target's maximum health * 0.7):
+							send "<light blue>Irankata: <white>Thanks for that!" to the player
+							add 10 to {NPCSupportPoints.%player%::Irankata}
+							npcSupportHandler(player,"Irankata")
+						else if target's health is more than or equal to (target's maximum health * 0.4):
+							send "<light blue>Irankata: <white>I needed that one, thanks!" to the player
+							add 20 to {NPCSupportPoints.%Player%::Irankata}
+							npcSupportHandler(player,"Irankata")
+						else:
+							send "<light blue>Irankata: <white>I think you just saved my life there... Thanks." to the player
+							add 40 to {NPCSupportPoints.%player%::Irankata}
+							npcSupportHandler(player,"Irankata")
+						heal the target by 12 hearts
+						wait 2.5 seconds
+				if target's health is more than or equal to (target's maximum health * 0.7):
+					set {_rng} to a random integer from 1 to 3
+					if {_rng} is 1:
+						send "<light blue>Irankata: <white>What's next?" to the player
+					else if {_rng} is 2:
+						send "<light blue>Irankata: <white>Got more orders?" to the player
+					else:
+						send "<light blue>Irankata: <white>What do you need?" to the player
+				else if target's health is more than or equal to (target's maximum health * 0.4):
+					set {_rng} to a random integer from 1 to 3
+					if {_rng} is 1:
+						send "<light blue>Irankata: <white>I'm still good to go." to the player
+					else if {_rng} is 2:
+						send "<light blue>Irankata: <white>Just a few scratches, don't worry." to the player
+					else:
+						send "<light blue>Irankata: <white>I've still got plenty in me." to the player
+				else:
+					set {_rng} to a random integer from 1 to 3
+					if {_rng} is 1:
+						send "<light blue>Irankata: <white>Ngh... Kalus is going to kill me..." to the player
+					else if {_rng} is 2:
+						send "<light blue>Irankata: <white>I... I can still fight..." to the player
+					else:
+						send "<light blue>Irankata: <white>H-Hey... What's next..?" to the player
+				wait 2 seconds
+				send "<run command:/follower dismiss Irankata><gold>1 - I think we should part ways. [Dismisses follower.]" to the player
+				send "<run command:/follower tradeitems Irankata><gold>2 - Let's trade items. [Trade items with the follower]" to the player
+				if {isWaiting.%target%} is not set:
+					send "<run command:/follower changeWait Irankata><gold>3 - Wait here. [Follower will wait at this location]" to the player
+				else:
+					send "<run command:/follower changeWait Irankata><gold>3 - Follow me. [Follower will resume following you]" to the player
+				send "<run command:/follower viewStats Irankata><gold>4 - How are you feeling? [Check stats/HP]" to the player
+				loop all items in the player's inventory:
+					if the name of the loop-item is "<gold><bold>Warrior's Proof":
+						send formatted "<run command:/follower promote Irankata><gold>5 - Use this, it will make you stronger. [Promote Irankata, costs 1x Warrior's Proof]" to the player
+						exit 1 loop
+				if {supportConvoAvailable.%player%::Irankata} is true:
+					send "<run command:/npcSupportConvo Irankata 0><gold>5 - Care to chat? [Progresses your support with this NPC]" to the player

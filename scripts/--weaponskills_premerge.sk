@@ -1955,14 +1955,15 @@ on damage:
 			add 100 to {sklbuff.%attacker%}
 
 on right click:
-	#Fortify Health
-	if the 4th line of the lore of player's tool contains "Fortify Health":
-		apply absorption 2 to the player for 75 seconds
-		damage player's tool by 75
-	#Restore
-	if the 4th line of the lore of player's tool contains "Restore":
-		apply regeneration 3 to the player for 2 seconds
-		damage player's tool by 15
+	if player is sneaking:
+		#Fortify Health
+		if the 4th line of the lore of player's tool contains "Fortify Health":
+			apply absorption 2 to the player for 75 seconds
+			damage player's tool by 20
+		#Restore
+		if the 4th line of the lore of player's tool contains "Restore":
+			apply regeneration 3 to the player for 2 seconds
+			damage player's tool by 10
 	#Wings of Mercy
 	if the 2nd line of the lore of the player's tool contains "Wings of Mercy":
 		set {_health} to {support.%player%}'s health
@@ -2223,6 +2224,29 @@ on right click with bow:
 			play sound "block.dispenser.launch" with volume 1 and pitch 1 at the player
 		else:
 			cancel event
+
+#Bullion
+on right-click with paper:
+	if the name of the event-item is "<light green><bold>Money Voucher":
+		remove the event-item from the player's inventory
+		add 100 to the player's balance
+		send "<light green><bold>Redeemed the voucher for $100! New balance: %player's money%" to the player
+	else if the name of the event-item is "<light green><bold>Bullion (S)":
+		remove the event-item from the player's inventory
+		add 25 to the player's balance
+		send "<light green><bold>Redeemed the Bullion (S) for $25! New balance: %player's money%" to the player
+	else if the name of the event-item is "<light green><bold>Bullion (M)":
+		remove the event-item from the player's inventory
+		add 50 to the player's balance
+		send "<light green><bold>Redeemed the Bullion (M) for $50! New balance: %player's money%" to the player
+	else if the name of the event-item is "<light green><bold>Bullion (L)":
+		remove the event-item from the player's inventory
+		add 75 to the player's balance
+		send "<light green><bold>Redeemed the Bullion (L) for $75! New balance: %player's money%" to the player
+	else if the name of the event-item is "<light green><bold>Bullion (XL)":
+		remove the event-item from the player's inventory
+		add 100 to the player's balance
+		send "<light green><bold>Redeemed the Bullion (XL) for $100! New balance: %player's money%" to the player
 		
 on damage:
 	#Sandbag

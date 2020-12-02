@@ -1,0 +1,6 @@
+on break:
+	#Leaves
+	if event-block is any leaves:
+		#Drop sticks with a 14% chance.
+		chance of 14%:
+			drop 1 stick at the event-block

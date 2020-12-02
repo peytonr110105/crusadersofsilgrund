@@ -1,0 +1,62 @@
+on right click on a sign:
+	if the 1st line of the event-block is "[Carriage]":
+		if {carriageLocs.%player%::%3rd line of the event-block%} is not set:
+			set {carriageLocs.%player%::%3rd line of the event-block%} to 1
+			send formatted "<light green>Discovered carriage: %3rd line of the event-block%."
+		open chest with 1 row named "<blue>Select a location to travel to." for the player
+		if {generation.%player%} is 1:
+			if {carriageLocs.%player%::Alpia Wildlands} is 1:
+				set slot 0 of the player's current inventory to 1 ender pearl named "<light green>Alpia Wildlands" with lore "<white><italics>A vast spruce forest on the outskirts of Yied.", "<white><italics>Home to House Ulster, alongside various villages.", "<white><bold>Cost:", "25"
+			else:
+				set slot 0 of the player's current inventory to 1 obsidian named "<light red>Alpia Wildlands" with lore "<light red>You must discover this carriage before you can fast travel to it."
+			if {carriageLocs.%player%::Seros} is 1:
+				set slot 2 of the player's current inventory to 1 ender pearl named "<light green>Seros" with lore "<white><italics>A seaside town nestled on Yied's southern border.", "<white><italics>Known for its talented brewers and bakers.", "<white><bold>Cost:", "25"
+			else:
+				set slot 2 of the player's current inventory to 1 obsidian named "<light red>Seros" with lore "<light red>You must discover this carriage before you can fast travel to it."
+			if {carriageLocs.%player%::House Silgrid} is 1:
+				set slot 3 of the player's current inventory to 1 ender pearl named "<light green>House Silgrid" with lore "<white><italics>The focal point of Gallia, providing all manners of services to adventurers.", "<white><italics>Wanderers of all types gather here to share information and services.", "<white><bold>Cost:", "25"
+			else:
+				set slot 3 of the player's current inventory to 1 obsidian named "<light red>House Silgrid" with lore "<light red>You must discover this carriage before you can fast travel to it."
+			set slot 1 of the player's current inventory to 1 ender pearl named "<light green>Grann" with lore "<white><italics>The cultural heart of Yied, Grann draws wanderers from around the continent.", "<white><italics>Renowned for its smithy and strong connection to the Fighter's Guild.", "<white><bold>Cost:", "15"
+			if {carriageLocs.%player%::Nifil Frost Plains} is 1:
+				set slot 4 of the player's current inventory to 1 ender pearl named "<light green>Nifil Frost Plains" with lore "<white><italics>Frosted plains once home to the first settlers of Silgrund.", "<white><italics>Magic permeates through the icy air, though none have found the source.", "<white><bold>Cost:", "50"
+			else:
+				set slot 4 of the player's current inventory to 1 obsidian named "<light red>Nifil Frost Plains" with lore "<light red>You must discover this carriage before you can fast travel to it."
+
+
+on inventory click:
+	if the name of the player's current inventory is "<blue>Select a location to travel to.":
+		if the name of the clicked item is "<light green>Alpia Wildlands":
+			cancel event
+			if the player's balance is more than or equal to 25:
+				subtract 25 from the player's balance
+				send formatted "<light green>Paid 15 gold to use the carriage. Current funds: %player's money%"
+				teleport the player to location at 697, 66, -1526
+		else if the name of the clicked item is "<light green>Grann":
+			cancel event
+			if the player's balance is more than or equal to 15:
+				subtract 15 from the player's balance
+				send formatted "<light green>Paid 15 gold to use the carriage. Current funds: %player's money%"
+				teleport the player to location at 527, 67, -983
+		else if the name of the clicked item is "<light green>Seros":
+			cancel event
+			if the player's balance is more than or equal to 25:
+				subtract 25 from the player's balance
+				send formatted "<light green>Paid 25 gold to use the carriage. Current funds: %player's money%"
+				teleport the player to location at 296, 66, -376
+		else if the name of the clicked item is "<light green>House Silgrid":
+			cancel event
+			if the player's balance is more than or equal to 25:
+				subtract 25 from the player's balance
+				send formatted "<light green>Paid 25 gold to use the carriage. Current funds: %player's money%"
+				if {generation.%player%} is 1:
+					teleport the player to location at 472, 66, 404 in world "GenOne"
+				else:
+					teleport the player to location at 472, 66, 404 in world "adventure"
+		else if the name of the clicked item is "<light green>Nifil Frost Plains":
+			cancel event
+			if the player's balance is more than or equal to 50:
+				send formatted "<light green>Paid 50 gold to use the carriage. Current funds: %player's money%"
+				teleport the player to location at 89, 71, 285
+		else if the name of the clicked item contains "<light red>":
+			cancel event

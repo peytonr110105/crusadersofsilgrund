@@ -5,84 +5,80 @@ command /skills [<text="TopMenu">] [<text="NULL">] [<number=0>]:
 	executable by: players
 	trigger:
 		if arg 1 is "TopMenu":
-			open chest with 2 rows named "<gold><bold>Skills Menu" for the player
-			if {quests.%player%::Path of the Greats} is 999:
+			open chest with 2 rows named "<gold><bold>Smithy" for the player
+			if {quests.%player%::Breaking the Ice} is 999:
 				set slot 0 of the player's current inventory to 1 red wool named "<light red><bold>A-Slot Skills" with lore "<light red>Powerful in-combat skills."
 				set slot 1 of the player's current inventory to 1 light blue wool named "<light blue><bold>B-Slot Skills" with lore "<light blue>Situational combat skills with unique effects."
 				set slot 2 of the player's current inventory to 1 yellow wool named "<yellow><bold>C-Slot Skills" with lore "<yellow>Supportive buffing and debuffing skills."
-				set slot 3 of the player's current inventory to 1 green wool named "<light green><bold>Assist Skills" with lore "<light green>Unique skills that help allies."
-				set slot 4 of the player's current inventory to 1 purple wool named "<light purple><bold>Special Skills" with lore "<light purple>High-impact skills with a variety of effects."
+				set slot 3 of the player's current inventory to 1 green wool named "<light green><bold>Assist Skills" with lore "<light green>Utility skills that help allies."
+				set slot 4 of the player's current inventory to 1 purple wool named "<light purple><bold>Special Skills" with lore "<light purple>High-impact skills with a variety of effects.", "<light purple>Activation chance depends on SKL."
 				set slot 6 of the player's current inventory to 1 diamond chestplate named "<cyan><bold>Armour Skills" with lore "<cyan>Various utility skills for armour."
-				set slot 7 of the player's current inventory to 1 storage minecart named "<purple><bold>Inherit Skills" with lore "<purple>Transfer skills and enchantments", "<purple>from one weapon to another."
+				set slot 7 of the player's current inventory to 1 shield named "<blue><bold>Shield Skills" with lore "<white>Extra abilities for shields in your off-hand."
+				set slot 8 of the player's current inventory to 1 storage minecart named "<purple><bold>Inherit Skills" with lore "<purple>Transfer skills and enchantments", "<purple>from one weapon to another."
 			else:
-				set slot 0 of the player's current inventory to 1 obsidian named "<red>???" with lore "<white>Complete ""Path of the Greats"" to unlock."
-				set slot 1 of the player's current inventory to 1 obsidian named "<red>???" with lore "<white>Complete ""Path of the Greats"" to unlock."
-				set slot 2 of the player's current inventory to 1 obsidian named "<red>???" with lore "<white>Complete ""Path of the Greats"" to unlock."
-				set slot 3 of the player's current inventory to 1 obsidian named "<red>???" with lore "<white>Complete ""Path of the Greats"" to unlock."
-				set slot 4 of the player's current inventory to 1 obsidian named "<red>???" with lore "<white>Complete ""Path of the Greats"" to unlock."
-				set slot 6 of the player's current inventory to 1 obsidian named "<red>???" with lore "<white>Complete ""Path of the Greats"" to unlock."
-				set slot 7 of the player's current inventory to 1 obsidian named "<red>???" with lore "<white>Complete ""Path of the Greats"" to unlock."
+				set slot 0 of the player's current inventory to 1 obsidian named "<red>???" with lore "<white>Complete ""Breaking the Ice"" to unlock."
+				set slot 1 of the player's current inventory to 1 obsidian named "<red>???" with lore "<white>Complete ""Breaking the Ice"" to unlock."
+				set slot 2 of the player's current inventory to 1 obsidian named "<red>???" with lore "<white>Complete ""Breaking the Ice"" to unlock."
+				set slot 3 of the player's current inventory to 1 obsidian named "<red>???" with lore "<white>Complete ""Breaking the Ice"" to unlock."
+				set slot 4 of the player's current inventory to 1 obsidian named "<red>???" with lore "<white>Complete ""Breaking the Ice"" to unlock."
+				set slot 6 of the player's current inventory to 1 obsidian named "<red>???" with lore "<white>Complete ""Breaking the Ice"" to unlock."
+				set slot 7 of the player's current inventory to 1 obsidian named "<red>???" with lore "<white>Complete ""Breaking the Ice"" to unlock."
+				set slot 8 of the player's current inventory to 1 obsidian named "<red>???" with lore "<white>Complete ""Breaking the Ice"" to unlock."
 			if {quests.%player%::Fuel for the Fire} is 999:
-				set slot 8 of the player's current inventory to 1 wooden sword named "<gray><bold>Upgrade/Merge Tools" with lore "<gray>Increase a weapon's enchantments with tool frames", "<gray>up to enchantment level 10."
 				set slot 5 of the player's current inventory to 1 anvil named "<green><bold>Weapon Refinery" with lore "<green>Improve your weapons further."
+				set slot 9 of the player's current inventory to 1 wooden sword named "<gray><bold>Upgrade/Merge Tools" with lore "<gray>Increase an item's enchantments up to", "<gray>enchantment level 10 by using Tool Frames."
 			else:
-				set slot 8 of the player's current inventory to 1 obsidian named "<red>???" with lore "<white>Complete ""Fuel for the Fire"" to unlock."
+				set slot 9 of the player's current inventory to 1 obsidian named "<red>???" with lore "<white>Complete ""Fuel for the Fire"" to unlock."
 				set slot 5 of the player's current inventory to 1 obsidian named "<red>???" with lore "<white>Complete ""Fuel for the Fire"" to unlock."
-			set slot 9 of the player's current inventory to 1 stone sword named "<white><bold>Repair Tools" with lore "<white>Repair your broken tools for a fee based on durability."
-			set slot 10 of the player's current inventory to 1 lava bucket named "<red><bold>Deconstruct Tools" with lore "<red>Break down unused tools into enchantment and skill books.", "<red>You may need up to 12 free inventory slots."
+			set slot 10 of the player's current inventory to 1 stone sword named "<white><bold>Repair Tools" with lore "<white>Repair your broken tools for a fee based on durability."
+			set slot 11 of the player's current inventory to 1 lava bucket named "<red><bold>Deconstruct Tools" with lore "<red>Break down unused tools into enchantment and skill books.", "<red>You may need up to 12 free inventory slots."
+			set slot 12 of the player's current inventory to 1 chest named "<yellow><bold>Purchase Items" with lore "<white>Purchase raw materials and new equipment."
 		else if arg 1 is "A-Skills":
-			open chest with 5 rows named "<light red><bold>Skills Menu | A-Slot Skills" for the player
+			open chest with 6 rows named "<light red><bold>Smithy | A-Slot Skills" for the player
 			set slot 0 of the player's current inventory to 1 arrow named "<light red><bold>Distant Counter" with lore "<white>Automatically retaliate against ranged opponents.", "<light blue><bold>Melee Only"
 			set slot 1 of the player's current inventory to 1 bow named "<light red><bold>Close Counter" with lore "<white>Automatically retaliate against melee opponents.", "<light blue><bold>Bows Only"
-			set slot 2 of the player's current inventory to 1 ender pearl named "<light red><bold>Warp Strike" with lore "<white>Warp to the attacker when hit.", "<light blue><bold>Melee Only"
-			set slot 3 of the player's current inventory to 1 iron chestplate named "<light red><bold>Armour Smasher" with lore "<white>Bonus damage against armour.", "<white>The stronger the armour, the more damage."
-			set slot 4 of the player's current inventory to 1 lava bucket named "<light red><bold>Fury" with lore "<white>Attacks deal 3 more hearts of damage.", "<white>Landing an attack causes 1.5 hearts of non-lethal recoil damage."
-			set slot 5 of the player's current inventory to 1 lava bucket named "<light red><bold>Life and Death" with lore "<white>Attacks deal 50%% more damage.", "<white>Take 50%% more damage."
-			set slot 6 of the player's current inventory to 1 tnt named "<light red><bold>Death Blow" with lore "<white>Grants STR +30 for 10 seconds on-hit.", "<white>Recharge: 20 seconds"
-			set slot 7 of the player's current inventory to 1 tnt named "<light red><bold>Darting Blow" with lore "<white>Grants SPD +30 for 10 seconds on-hit.", "<white>Recharge: 20 seconds"
-			set slot 8 of the player's current inventory to 1 tnt named "<light red><bold>Armoured Blow" with lore "<white>Grants DEF +30 for 10 seconds on-hit.", "<white>Recharge: 20 seconds"
-			set slot 9 of the player's current inventory to 1 iron hoe named "<light red><bold>Defiant Attack" with lore "<white>Grants Strength 4 when HP < 50%%."
-			set slot 10 of the player's current inventory to 1 iron hoe named "<light red><bold>Defiant Speed" with lore "<white>Grants Swiftness 4 when HP < 50%%."
-			set slot 11 of the player's current inventory to 1 iron hoe named "<light red><bold>Defiant Resistance" with lore "<white>Grants Resistance 4 when HP < 50%%."
-			set slot 12 of the player's current inventory to 1 shield named "<light red><bold>Close Defence" with lore "<white>Incoming melee damage reduced by 66%%."
-			set slot 13 of the player's current inventory to 1 shield named "<light red><bold>Distant Defence" with lore "Incoming ranged damage reduced by 66%%."
-			set slot 14 of the player's current inventory to 1 bow named "<light red><bold>Quick Draw" with lore "<white>Arrows fire instantly.", "<white>Decreases range & power.", "<Light blue><bold>Bows Only"
-			set slot 15 of the player's current inventory to 1 purple shulker box named "<light red><bold>STR/SKL Bond" with lore "<white>STR/SKL +40", "Must be within 10 blocks of a party member."
-			set slot 16 of the player's current inventory to 1 purple shulker box named "<light red><bold>DEF/MAG Bond" with lore "<white>DEF/MAG +40", "Must be within 10 blocks of a party member."
-			set slot 17 of the player's current inventory to 1 purple shulker box named "<light red><bold>DEF/SKL Bond" with lore "<white>DEF/SKL +40", "Must be within 10 blocks of a party member."
-			set slot 18 of the player's current inventory to 1 purple shulker box named "<light red><bold>MAG/SKL Bond" with lore "<white>MAG/SKL +40", "Must be within 10 blocks of a party member."
-			set slot 19 of the player's current inventory to 1 purple shulker box named "<light red><bold>STR/MAG Bond" with lore "<white>STR/MAG +40", "Must be within 10 blocks of a party member."
-			set slot 20 of the player's current inventory to 1 purple shulker box named "<light red><bold>STR/DEF Bond" with lore "<white>STR/DEF +40", "Must be within 10 blocks of a party member."
-			set slot 21 of the player's current inventory to 1 totem of undying named "<light red><bold>STR/SKL Solo" with lore "<white>STR/SKL +40", "Must be at least 10 blocks away from a party member."
-			set slot 22 of the player's current inventory to 1 totem of undying named "<light red><bold>DEF/MAG Solo" with lore "<white>DEF/MAG +40", "Must be at least 10 blocks away from a party member."
-			set slot 23 of the player's current inventory to 1 totem of undying named "<light red><bold>DEF/SKL Solo" with lore "<white>DEF/SKL +40", "Must be at least 10 blocks away from a party member."
-			set slot 24 of the player's current inventory to 1 totem of undying named "<light red><bold>MAG/SKL Solo" with lore "<white>MAG/SKL +40", "Must be at least 10 blocks away from a party member."
-			set slot 25 of the player's current inventory to 1 totem of undying named "<light red><bold>STR/MAG Solo" with lore "<white>STR/MAG +40", "Must be at least 10 blocks away from a party member."
-			set slot 26 of the player's current inventory to 1 totem of undying named "<light red><bold>STR/DEF Solo" with lore "<white>STR/DEF +40", "Must be at least 10 blocks away from a party member."
-			set slot 27 of the player's current inventory to 1 book named "<light red><bold>Sorcery Aura" with lore "<white>Weapon calculates damage using attacker & foes MAG."
-			set slot 28 of the player's current inventory to 1 shield named "<light red><bold>Steady Stance" with lore "<white>Grants DEF +20 for 2 seconds when attacked."
-			set slot 29 of the player's current inventory to 1 shield named "<light red><bold>Swift Stance" with lore "<white>Grants SPD +20 for 2 seconds when attacked."
-			set slot 30 of the player's current inventory to 1 shield named "<light red><bold>Warding Stance" with lore "<white>Grants MAG +20 for 2 seconds when attacked."
-			set slot 31 of the player's current inventory to 1 shield named "<light red><bold>Fierce Stance" with lore "<white>Grants STR +20 for 2 seconds when attacked."
-			set slot 32 of the player's current inventory to 1 tnt named "<light red><bold>Swift Sparrow" with lore "<white>Grants STR/SPD +20 for 7 seconds on-hit.", "<white>Recharge: 21 seconds"
-			set slot 33 of the player's current inventory to 1 tnt named "<light red><bold>Steady Blow" with lore "<white>Grants STR/DEF +20 for 7 seconds on-hit.", "<white>Recharge: 21 seconds"
-			set slot 34 of the player's current inventory to 1 potion of strength named "<light red><bold>Power Within" with lore "<white>Grants STR/SPD/DEF/MAG +20 while equipped.", "<white>Drains health every 2 seconds."
-			set slot 35 of the player's current inventory to 1 magma block named "<light red><bold>STR Focus" with lore "<white>On kill:", "<white>Grants +10 STR.", "<white>Effect stacks, and is lost after taking damage."
-			set slot 36 of the player's current inventory to 1 magma block named "<light red><bold>SPD Focus" with lore "<white>On kill:", "<white>Grants +10 SPD.", "<white>Effect stacks, and is lost after taking damage."
-			set slot 37 of the player's current inventory to 1 magma block named "<light red><bold>SKL Focus" with lore "<white>On kill:", "<white>Grants +10 SKL.", "<white>Effect stacks, and is lost after taking damage."
-			set slot 38 of the player's current inventory to 1 magma block named "<light red><bold>DEF Focus" with lore "<white>On kill:", "<white>Grants +10 DEF.", "<white>Effect stacks, and is lost after taking damage."
-			set slot 39 of the player's current inventory to 1 magma block named "<light red><bold>MAG Focus" with lore "<white>On kill:", "<white>Grants +10 MAG.", "<white>Effect stacks, and is lost after taking damage."
-			set slot 40 of the player's current inventory to 1 tnt named "<light red><bold>Warding Blow" with lore "<white>Grants MAG +30 for 10 seconds on-hit.", "Recharge: 20 seconds"
-			set slot 41 of the player's current inventory to 1 tnt named "<light red><bold>Mirror Force" with lore "<white>Grants STR/MAG +20 for 7 seconds on-hit.", "Recharge: 21 seconds"
-			set slot 42 of the player's current inventory to 1 iron sword named "<light red><bold>Flashing Blade" with lore "<white>Grants bonus damage = 50%% of the difference between", "<white>the attacker and foe's SPD.", "<white>Capped at +7 (4.5 hearts) bonus damage."
-			set slot 43 of the player's current inventory to 1 iron sword named "<light red><bold>Heavy Blade" with lore "<white>Grants bonus damage = 50%% of the difference between", "<white>the attacker and foe's STR.", "<white>Capped at +7 (4.5 hearts) bonus damage."
+			set slot 2 of the player's current inventory to 1 iron chestplate named "<light red><bold>Armour Smasher" with lore "<white>Bonus damage against armour.", "<white>The stronger the armour, the more damage."
+			set slot 3 of the player's current inventory to 1 lava bucket named "<light red><bold>Fury" with lore "<white>Attacks deal 3 more hearts of damage.", "<white>Landing an attack causes 1.5 hearts of non-lethal recoil damage."
+			set slot 4 of the player's current inventory to 1 lava bucket named "<light red><bold>Life and Death" with lore "<white>Attacks deal 50%% more damage.", "<white>Take 50%% more damage."
+			set slot 5 of the player's current inventory to 1 tnt named "<light red><bold>Death Blow" with lore "<white>Grants STR +30 for 2 seconds on-hit.", "<white>Recharge: 10 seconds"
+			set slot 6 of the player's current inventory to 1 tnt named "<light red><bold>Darting Blow" with lore "<white>Grants SPD +30 for 2 seconds on-hit.", "<white>Recharge: 10 seconds"
+			set slot 7 of the player's current inventory to 1 tnt named "<light red><bold>Armoured Blow" with lore "<white>Grants DEF +30 for 2 seconds on-hit.", "<white>Recharge: 10 seconds"
+			set slot 8 of the player's current inventory to 1 iron hoe named "<light red><bold>Defiant Attack" with lore "<white>Grants Strength 4 when HP < 50%%."
+			set slot 9 of the player's current inventory to 1 iron hoe named "<light red><bold>Defiant Speed" with lore "<white>Grants Swiftness 4 when HP < 50%%."
+			set slot 10 of the player's current inventory to 1 iron hoe named "<light red><bold>Defiant Resistance" with lore "<white>Grants Resistance 4 when HP < 50%%."
+			set slot 11 of the player's current inventory to 1 shield named "<light red><bold>Close Defence" with lore "<white>Incoming melee damage reduced by 66%%."
+			set slot 12 of the player's current inventory to 1 shield named "<light red><bold>Distant Defence" with lore "Incoming ranged damage reduced by 66%%."
+			set slot 13 of the player's current inventory to 1 bow named "<light red><bold>Broad Shot" with lore "<white>Bows fire two extra arrows.", "<white>Extra arrows deviate randomly from the crosshair.", "<Light blue><bold>Bows Only"
+			set slot 14 of the player's current inventory to 1 purple shulker box named "<light red><bold>Offense Bond" with lore "<white>Grants STR/SPD/SKL +20", "Must be within 10 blocks of a party member."
+			set slot 15 of the player's current inventory to 1 purple shulker box named "<light red><bold>Defense Bond" with lore "<white>Grants DEF/MAG/SKL +20", "Must be within 10 blocks of a party member."
+			set slot 16 of the player's current inventory to 1 purple shulker box named "<light red><bold>Magic Bond" with lore "<white>Grants MAG/SPD/SKL +20", "Must be within 10 blocks of a party member."
+			set slot 17 of the player's current inventory to 1 totem of undying named "<light red><bold>Offense Solo" with lore "<white>Grants STR/SPD/SKL +20", "Must be at least 10 blocks away from a party member."
+			set slot 18 of the player's current inventory to 1 totem of undying named "<light red><bold>Defense Solo" with lore "<white>Grants DEF/MAG/SKL +20", "Must be at least 10 blocks away from a party member."
+			set slot 19 of the player's current inventory to 1 totem of undying named "<light red><bold>Magic Solo" with lore "<white>Grants MAG/SPD/SKL +20", "Must be at least 10 blocks away from a party member."
+			set slot 20 of the player's current inventory to 1 book named "<light red><bold>Sorcery Aura" with lore "<white>Weapon calculates damage using attacker & foes MAG."
+			set slot 21 of the player's current inventory to 1 shield named "<light red><bold>Steady Stance" with lore "<white>Grants DEF +30 for 2 seconds when attacked."
+			set slot 22 of the player's current inventory to 1 shield named "<light red><bold>Swift Stance" with lore "<white>Grants SPD +30 for 2 seconds when attacked."
+			set slot 23 of the player's current inventory to 1 shield named "<light red><bold>Warding Stance" with lore "<white>Grants MAG +30 for 2 seconds when attacked."
+			set slot 24 of the player's current inventory to 1 shield named "<light red><bold>Fierce Stance" with lore "<white>Grants STR +30 for 2 seconds when attacked."
+			set slot 25 of the player's current inventory to 1 tnt named "<light red><bold>Swift Blow" with lore "<white>Grants STR/SPD +20 for 2 seconds on-hit.", "<white>Recharge: 15 seconds"
+			set slot 26 of the player's current inventory to 1 tnt named "<light red><bold>Steady Blow" with lore "<white>Grants STR/DEF +20 for 2 seconds on-hit.", "<white>Recharge: 15 seconds"
+			set slot 27 of the player's current inventory to 1 potion of strength named "<light red><bold>Power Within" with lore "<white>Grants STR/SPD/DEF/MAG +20 while equipped.", "<white>Drains health while equipped."
+			set slot 28 of the player's current inventory to 1 magma block named "<light red><bold>STR Focus" with lore "<white>On kill:", "<white>Grants +10 STR.", "<white>Effect stacks, and is lost after taking damage."
+			set slot 29 of the player's current inventory to 1 magma block named "<light red><bold>SPD Focus" with lore "<white>On kill:", "<white>Grants +10 SPD.", "<white>Effect stacks, and is lost after taking damage."
+			set slot 30 of the player's current inventory to 1 magma block named "<light red><bold>SKL Focus" with lore "<white>On kill:", "<white>Grants +10 SKL.", "<white>Effect stacks, and is lost after taking damage."
+			set slot 31 of the player's current inventory to 1 magma block named "<light red><bold>DEF Focus" with lore "<white>On kill:", "<white>Grants +10 DEF.", "<white>Effect stacks, and is lost after taking damage."
+			set slot 32 of the player's current inventory to 1 magma block named "<light red><bold>MAG Focus" with lore "<white>On kill:", "<white>Grants +10 MAG.", "<white>Effect stacks, and is lost after taking damage."
+			set slot 33 of the player's current inventory to 1 tnt named "<light red><bold>Warding Blow" with lore "<white>Grants MAG +30 for 2 seconds on-hit.", "Recharge: 10 seconds"
+			set slot 34 of the player's current inventory to 1 tnt named "<light red><bold>Mirror Blow" with lore "<white>Grants STR/MAG +20 for 2 seconds on-hit.", "Recharge: 15 seconds"
+			set slot 35 of the player's current inventory to 1 iron sword named "<light red><bold>Flashing Blade" with lore "<white>If attacker's SPD > foe's SPD:", "<white>Grants bonus damage equal to 50%% of difference between attacker and foe's SPD.", "<white>Grants a bonus to SKL equal to bonus damage dealt.", "<white>Bonus damage capped to +14 (7 hearts)."
+			set slot 36 of the player's current inventory to 1 iron sword named "<light red><bold>Heavy Blade" with lore "<white>If attacker's STR > foe's STR:", "<white>Grants bonus damage equal to 50%% of difference between attacker and foe's STR.", "<white>Grants a bonus to SKL equal to bonus damage dealt.", "<white>Bonus damage capped to +14 (7 hearts)."
 			set slot 44 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
 		else if arg 1 is "B-Skills":
-			open chest with 3 rows named "<light blue><bold>Skills Menu | B-Slot Skills" for the player
+			open chest with 3 rows named "<light blue><bold>Smithy | B-Slot Skills" for the player
 			#set slot 6 of the player's current inventory to 1 iron sword named "<light blue><bold>Escape Route" with lore "N/A"
 			#set slot 7 of the player's current inventory to 1 iron sword named "<light blue><bold>Wings of Mercy" with lore "N/A"
 			set slot 0 of the player's current inventory to 1 potion of weakness named "<light blue><bold>Sabotage Attack" with lore "<white>Inflicts Weakness 2 on the victim."
-			set slot 1 of the player's current inventory to 1 potion of weakness named "<light blue><bold>Sabotage Defense" with lore "<white>Increases damage dealt by 25%%."
+			set slot 1 of the player's current inventory to 1 potion of weakness named "<light blue><bold>Sabotage Defense" with lore "<white>Increases damage dealt by 15%%."
 			set slot 2 of the player's current inventory to 1 potion of weakness named "<light blue><bold>Sabotage Speed" with lore "<white>Inflicts Slowness 2 on the victim."
 			set slot 3 of the player's current inventory to 1 potion of poison named "<light blue><bold>Poison Strike" with lore "<white>Inflicts Wither 3 on the victim."
 			set slot 4 of the player's current inventory to 1 fishing rod named "<light blue><bold>Desperation" with lore "<white>When HP <= 50%%:", "<white>Automatically make a follow up-attack."
@@ -94,22 +90,22 @@ command /skills [<text="TopMenu">] [<text="NULL">] [<number=0>]:
 			set slot 10 of the player's current inventory to 1 experience bottle named "<light blue><bold>Experience Sapper" with lore "<white>Grants bonus EXP on-kill."
 			set slot 11 of the player's current inventory to 1 shield named "<light blue><bold>Shield Pulse" with lore "<white>If enemy attack triggers this weapon's Special skill:", "<white>Activation chance +15%%", "<white>Reduces damage by 2.5 hearts on activation."
 			set slot 12 of the player's current inventory to 1 book of sharpness 1 named "<light blue><bold>Bonus Blade" with lore "<white>Multiplies stat bonuses by 1.5x during combat. Each stat bonus is calculated independently.", "<white>EX: Player has a +40 STR Buff,", "<white>Bonus Blade increases the bonus to +60."
-			set slot 13 of the player's current inventory to 1 iron sword named "<light blue><bold>Brave Blade" with lore "<white>Weapon attacks twice when initiating combat.", "<white>Inflicts SPD -15.", "<white>-3 Might (1.5 hearts)"
+			set slot 13 of the player's current inventory to 1 iron sword named "<light blue><bold>Brave Blade" with lore "<white>Weapon attacks twice when initiating combat.", "<white>Inflicts SPD -5.", "<white>Reduces weapon might by 2 (1 heart)."
 			set slot 14 of the player's current inventory to 1 purple wool named "<light blue><bold>Eclipse Brace" with lore "<white>If Special activation deals damage:", "<white>Reduces enemy DEF by 30%%.", "<white>Stacks with the effects of skills like Luna."
 			set slot 15 of the player's current inventory to 1 purple wool named "<light blue><bold>Solar Brace" with lore "<white>If Special activation deals damage:", "<white>Restores health equal to 50%% of damage dealt.", "<white>Stacks with the effects of skills like Sol."
 			set slot 16 of the player's current inventory to 1 shield named "<light blue><bold>Guard" with lore "When attacked:", "<white>Inflicts SKL -30 on the attacker.", "<white>Duration: 5 seconds", "<white>Effect does not stack."
 			set slot 17 of the player's current inventory to 1 purple wool named "<light blue><bold>Special Spiral" with lore "<white>If Special activation deals damage:", "<white>Increases Special activation chance by 1/2 of damage dealt.", "<white>Resets after 10 seconds."
-			set slot 18 of the player's current inventory to 1 potion of healing named "<light blue><bold>Mystic Boost" with lore "<white>Restores 1.5 hearts of health after combat."
+			set slot 18 of the player's current inventory to 1 potion of healing named "<light blue><bold>Mystic Boost" with lore "<white>Restores health equal to 7.5%% of your maximum health when attacking."
 			set slot 19 of the player's current inventory to 1 iron sword named "<light blue><bold>Windsweep" with lore "<white>If attacker's SPD is >= foe's SPD +15:", "<white>Inflicts Weakness 6 on the victim for 3 seconds."
 			set slot 20 of the player's current inventory to 1 minecart named "<light blue><bold>Flame Boost" with lore "<white>If attacker's health is >= foe's health + 3 hearts:", "<white>Grants STR/SPD/SKL +15 during combat."
 			set slot 21 of the player's current inventory to 1 minecart named "<light blue><bold>Earth Boost" with lore "<white>If defender's health is >= foe's health + 3 hearts:", "<white>Grants DEF/SPD/MAG +15 during combat."
 			set slot 22 of the player's current inventory to 1 minecart named "<light blue><bold>Aqua Boost" with lore "<white>If attacker's health is >= foe's health + 3 hearts:", "<white>Grants MAG/SPD/SKL +15 during combat."
 			set slot 23 of the player's current inventory to 1 fishing rod named "<light blue><bold>Vantage" with lore "<white>While below 50%% HP:", "<white>Nullify an enemy's attack, and counter-attack for 1/2 of the nullified damage.", "<white>This skill only activates if a counter-attack is possible.", "<white>EG: Bows cannot use Vantage against melee foes, and vice versa.", "<white>Cooldown: 10 seconds"
-			set slot 24 of the player's current inventory to 1 potion of weakness named "<light blue><bold>Seal SPD/SKL" with lore "<white>Reduces foe's SPD/SKL by -20 on-hit.", "<white>Duration: 3 seconds"
-			set slot 25 of the player's current inventory to 1 potion of weakness named "<light blue><bold>Seal DEF/MAG" with lore "<white>Reduces foe's DEF/MAG by -20 on-hit.", "<white>Duration: 3 seconds"
+			set slot 24 of the player's current inventory to 1 potion of weakness named "<light blue><bold>Seal SPD/SKL" with lore "<white>Reduces foe's SPD/SKL by 20 on-hit.", "<white>This debuff cannot stack.", "<white>Duration: 3 seconds"
+			set slot 25 of the player's current inventory to 1 potion of weakness named "<light blue><bold>Seal DEF/MAG" with lore "<white>Reduces foe's DEF/MAG by 20 on-hit.", "<white>This debuff cannot stack.", "<white>Duration: 3 seconds"
 			set slot 26 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
 		else if arg 1 is "C-Skills":
-			open chest with 4 rows named "<yellow><bold>Skills Menu | C-Slot Skills" for the player
+			open chest with 5 rows named "<yellow><bold>Smithy | C-Slot Skills" for the player
 			set slot 0 of the player's current inventory to 1 water bottle named "<light yellow><bold>Hone STR" with lore "<white>Grants +20 STR to the nearest ally within 10 blocks."
 			set slot 1 of the player's current inventory to 1 water bottle named "<light yellow><bold>Hone SPD" with lore "<white>Grants +20 SPD to the nearest ally within 10 blocks."
 			set slot 2 of the player's current inventory to 1 water bottle named "<light yellow><bold>Hone SKL" with lore "<white>Grants +20 SKL to the nearest ally within 10 blocks."
@@ -120,11 +116,11 @@ command /skills [<text="TopMenu">] [<text="NULL">] [<number=0>]:
 			set slot 7 of the player's current inventory to 1 lingering potion of swiftness named "<light yellow><bold>Drive SKL" with lore "<white>Grants +10 SKL to all allies within 10 blocks."
 			set slot 8 of the player's current inventory to 1 lingering potion of regeneration named "<light yellow><bold>Drive DEF" with lore "<white>Grants +10 DEF to all allies within 10 blocks."
 			set slot 9 of the player's current inventory to 1 lingering potion of strength named "<light yellow><bold>Drive MAG" with lore "<white>Grants +10 MAG to all allies within 10 blocks."
-			set slot 10 of the player's current inventory to 1 splash potion of strength named "<light yellow><bold>STR Smoke" with lore "<white>On Hit:", "<white>Inflicts -20 STR on all foes within 10 blocks of the victim.", "<white>Duration: 1.5 seconds", "<white>Victim is excluded from the debuff."
-			set slot 11 of the player's current inventory to 1 splash potion of swiftness named "<light yellow><bold>SPD Smoke" with lore "<white>On Hit:", "<white>Inflicts -20 SPD on all foes within 10 blocks of the victim.", "<white>Duration: 1.5 seconds", "<white>Victim is excluded from the debuff."
-			set slot 12 of the player's current inventory to 1 splash potion of swiftness named "<light yellow><bold>SKL Smoke" with lore "<white>On Hit:", "<white>Inflicts -35 SKL on all foes within 10 blocks of the victim.", "<white>Duration: 1.5 seconds", "<white>Victim is excluded from the debuff."
-			set slot 13 of the player's current inventory to 1 splash potion of regeneration named "<light yellow><bold>DEF Smoke" with lore "<white>On Hit:", "<white>Inflicts -20 DEF on all foes within 10 blocks of the victim.", "<white>Duration: 1.5 seconds", "<white>Victim is excluded from the debuff."
-			set slot 14 of the player's current inventory to 1 splash potion of strength named "<light yellow><bold>MAG Smoke" with lore "<white>On Hit:", "<white>Inflicts -20 MAG on all foes within 10 blocks of the victim.", "<white>Duration: 1.5 seconds", "<white>Victim is excluded from the debuff."
+			set slot 10 of the player's current inventory to 1 splash potion of strength named "<light yellow><bold>STR Smoke" with lore "<white>On Hit:", "<white>Inflicts -20 STR on all foes within 10 blocks of the victim.", "<white>Duration: 2 seconds", "<white>Victim is excluded from the debuff."
+			set slot 11 of the player's current inventory to 1 splash potion of swiftness named "<light yellow><bold>SPD Smoke" with lore "<white>On Hit:", "<white>Inflicts -20 SPD on all foes within 10 blocks of the victim.", "<white>Duration: 2 seconds", "<white>Victim is excluded from the debuff."
+			set slot 12 of the player's current inventory to 1 splash potion of swiftness named "<light yellow><bold>SKL Smoke" with lore "<white>On Hit:", "<white>Inflicts -20 SKL on all foes within 10 blocks of the victim.", "<white>Duration: 2 seconds", "<white>Victim is excluded from the debuff."
+			set slot 13 of the player's current inventory to 1 splash potion of regeneration named "<light yellow><bold>DEF Smoke" with lore "<white>On Hit:", "<white>Inflicts -20 DEF on all foes within 10 blocks of the victim.", "<white>Duration: 2 seconds", "<white>Victim is excluded from the debuff."
+			set slot 14 of the player's current inventory to 1 splash potion of strength named "<light yellow><bold>MAG Smoke" with lore "<white>On Hit:", "<white>Inflicts -20 MAG on all foes within 10 blocks of the victim.", "<white>Duration: 2 seconds", "<white>Victim is excluded from the debuff."
 			set slot 15 of the player's current inventory to 1 splash potion of healing named "<light yellow><bold>Breath of Life" with lore "<white>On Hit:", "<white>Allies within 10 blocks heal health equal to 25%% of damage dealt.", "<white>Excludes the attacker."
 			set slot 16 of the player's current inventory to 1 splash potion of poison named "<light yellow><bold>Savage Blow" with lore "<white>On Hit:", "<white>Foes within 10 blocks suffer damage equal to 25%% of damage dealt.", "<white>Excludes the victim."
 			set slot 17 of the player's current inventory to 1 lingering potion of poison named "<light yellow><bold>Pressure STR" with lore "<white>If player's MAG > Foe's MAG + 10:", "<white>Inflicts debuff equal to difference between both player and foe's MAG."
@@ -142,9 +138,16 @@ command /skills [<text="TopMenu">] [<text="NULL">] [<number=0>]:
 			set slot 29 of the player's current inventory to 1 egg named "<light yellow><bold>Fear" with lore "<white>On Hit:", "<white>Inflicts Weakness 2 on foes within 7 blocks of the victim.", "<white>Victim is excluded."
 			set slot 30 of the player's current inventory to 1 soul sand named "<light yellow><bold>Restrict" with lore "<white>On Hit:", "<white>Inflicts Slowness 2 on foes within 7 blocks of the victim.", "<white>Victim is excluded."
 			set slot 31 of the player's current inventory to 1 tnt named "<light yellow><bold>Blowback" with lore "<white>On Hit:", "<white>Foes within 7 blocks of the victim are blown away.", "<white>Victim is excluded."
-			set slot 32 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
+			set slot 32 of the player's current inventory to 1 white wool named "<light yellow><bold>Sally Coalition" with lore "<white>Grants STR/SPD +20 to yourself and allies within 10 blocks.", "<white>Allies must be of the same class type to recieve the buff."
+			set slot 33 of the player's current inventory to 1 white wool named "<light yellow><bold>Garrison Coalition" with lore "<white>Grants DEF/MAG +20 to yourself and allies within 10 blocks.", "<white>Allies must be of the same class type to recieve the buff."
+			set slot 34 of the player's current inventory to 1 water bottle named "<light yellow><bold>Joint-Hone STR" with lore "<white>Grants +10 STR to yourself and the closest ally within 10 blocks."
+			set slot 35 of the player's current inventory to 1 water bottle named "<light yellow><bold>Joint-Hone SPD" with lore "<white>Grants +10 SPD to yourself and the closest ally within 10 blocks."
+			set slot 36 of the player's current inventory to 1 water bottle named "<light yellow><bold>Joint-Hone SKL" with lore "<white>Grants +10 SKL to yourself and the closest ally within 10 blocks."
+			set slot 37 of the player's current inventory to 1 water bottle named "<light yellow><bold>Joint-Hone DEF" with lore "<white>Grants +10 DEF to yourself and the closest ally within 10 blocks."
+			set slot 38 of the player's current inventory to 1 water bottle named "<light yellow><bold>Joint-Hone MAG" with lore "<white>Grants +10 MAG to yourself and the closest ally within 10 blocks."
+			set slot 44 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
 		else if arg 1 is "Specials":
-			open chest with 3 rows named "<light purple><bold>Skills Menu | Special Skills" for the player
+			open chest with 3 rows named "<light purple><bold>Smithy | Special Skills" for the player
 			set slot 0 of the player's current inventory to 1 iron armor named "<light purple><bold>Moonbow" with lore "<white>Negates enemy armour bonuses.", "<white>Reduces enemy DEF by 30%%.", "<white>Activation chance: (SKL ^ 0.85)", "<white>Max: 80%%"
 			set slot 1 of the player's current inventory to 1 iron armor named "<light purple><bold>Luna" with lore "<white>Negates enemy armour bonuses and adds 50%% of it to damage dealt.", "<white>Reduces enemy DEF by 50%%.", "<white>Activation chance: (SKL ^ 0.75)", "<white>Max: 70%%"
 			set slot 2 of the player's current inventory to 1 potion of healing named "<light purple><bold>Sol" with lore "<white>Restores HP = 75%% of damage dealt.", "<white>Activation chance: (SKL ^ 0.7)", "<white>Max: 70%%"
@@ -153,19 +156,19 @@ command /skills [<text="TopMenu">] [<text="NULL">] [<number=0>]:
 			set slot 5 of the player's current inventory to 1 potion of healing named "<light purple><bold>Aether" with lore "<white>Activates both Luna and Sol at one time.", "<white>Activation chance: (SKL ^ 0.55)", "<white>Max: 65%%."
 			set slot 6 of the player's current inventory to 1 redstone torch named "<light purple><bold>Glimmer" with lore "<white>Increases damage dealt by 50%%.", "<white>Activation chance: (SKL ^ 0.765)", "<white>Max: 70%%"
 			set slot 7 of the player's current inventory to 1 torch named "<light purple><bold>Astra" with lore "<white>Increases damage dealt by 200%%.", "<white>Activation chance: (SKL ^ 0.65)", "<white>Max: 50%%"
-			set slot 8 of the player's current inventory to 1 splash potion of harming named "<light purple><bold>Blazing Light" with lore "<white>Increases damage dealt by 50%%.", "<white>Damages all enemies within 7 blocks.", "<white>Radius damage = 50%% of damage dealt.", "<white>Activation chance: (SKL ^ 0.7)", "<white>Max: 50%%"
+			set slot 8 of the player's current inventory to 1 splash potion of harming named "<light purple><bold>Blazing Light" with lore "<white>Increases damage dealt by 25%%.", "<white>Damages all enemies within 7 blocks.", "<white>Radius damage = 50%% of damage dealt.", "<white>Activation chance: (SKL ^ 0.7)", "<white>Max: 50%%"
 			set slot 9 of the player's current inventory to 1 lava bucket named "<light purple><bold>Ignis" with lore "<white>Adds 50%% of attacker's DEF to damage dealt.", "<white>Activation chance: (SKL ^ 0.7)", "<white>Max: 50%%"
 			set slot 10 of the player's current inventory to 1 ice block named "<light purple><bold>Glacies" with lore "<white>Adds 50%% of attacker's MAG to damage dealt.", "<white>Activation chance: (SKL ^ 0.7)", "<white>Max: 50%%."
 			set slot 11 of the player's current inventory to 1 feather named "<light purple><bold>Rising Wind" with lore "<white>Adds 50%% of attacker's SPD to damage dealt.", "<white>Activation chance: (SKL ^ 0.7)", "<white>Max: 50%%."
 			set slot 12 of the player's current inventory to 1 dragon egg named "<light purple><bold>Dragon Fang" with lore "<white>Adds 50%% of attacker's STR to damage dealt.", "<white>Activation chance: (SKL ^ 0.7)", "<white>Max: 50%%."
-			set slot 13 of the player's current inventory to 1 minecart named "<light purple><bold>Galeforce" with lore "<white>Grants Swiftness/Strength 4.", "<white>Foes within 10 blocks are inflicted with Slowness/Weakness 4.", "<white>Activation chance: (SKL ^ 0.5)", "<white>Max: 50%%.", "<white>Effect duration: 10 seconds.", "<white>Recharge duration: 30 seconds."
+			set slot 13 of the player's current inventory to 1 minecart named "<light purple><bold>Galeforce" with lore "<white>Grants Swiftness/Strength 6 for 5 seconds.", "<white>Foes within 15 blocks are prevented from moving or attacking for 5 seconds.", "<white>Activation chance: (SKL * 0.5)", "<white>Max: 50%%.", "<white>Recharge duration: 20 seconds."
 			set slot 14 of the player's current inventory to 1 shield named "<light purple><bold>Aegis" with lore "<white>Reduces ranged damage suffered by 50%%.", "<white>Activation chance: (SKL ^ 0.8)", "<white>Max: 85%%."
-			set slot 15 of the player's current inventory to 1 splash potion of harming named "<light purple><bold>Growing Light" with lore "<white>Increases damage dealt by 25%%.", "<white>Damages all enemies within 14 blocks.", "<white>Radius damage = 50%% of damage dealt.", "<white>Activation chance: (SKL ^ 0.7)", "<white>Max: 50%%"
+			set slot 15 of the player's current inventory to 1 splash potion of harming named "<light purple><bold>Growing Light" with lore "<white>Damages all enemies within 14 blocks.", "<white>Radius damage = 50%% of damage dealt.", "<white>Activation chance: (SKL ^ 0.7)", "<white>Max: 50%%"
 			set slot 16 of the player's current inventory to 1 shield named "<light purple><bold>Miracle" with lore "<white>If foe's attack would kill:", "<white>Nullifies foe's attack, and inflicts weakness 4 on the attacker for 3 seconds.", "<white>Activation chance: (SKL ^ 0.5)", "<white>Max: 50%%"
 			set slot 17 of the player's current inventory to 1 gold sword named "<light purple><bold>Subdue" with lore "<white>Increases damage dealt by 10 hearts.", "<white>Special activation cannot kill foes.", "<white>Activation chance: (SKL ^ 0.7)", "<white>Max: 60%%."
 			set slot 18 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
 		else if arg 1 is "Assists":
-			open chest with 3 rows named "<light green><bold>Skills Menu | Assist Skills" for the player
+			open chest with 3 rows named "<light green><bold>Smithy | Assist Skills" for the player
 			set slot 0 of the player's current inventory to 1 diamond sword named "<light green><bold>Drag Back" with lore "<white>Drags the victim backwards.", "<light green><bold>Melee only."
 			set slot 1 of the player's current inventory to 1 diamond sword named "<light green><bold>Hit and Run" with lore "<white>Pushes you backwards.", "<light green><bold>Melee only."
 			set slot 2 of the player's current inventory to 1 iron sword named "<light green><bold>Reposition" with lore "<white>Warps target behind you when right-clicked."
@@ -181,20 +184,22 @@ command /skills [<text="TopMenu">] [<text="NULL">] [<number=0>]:
 			set slot 12 of the player's current inventory to 1 dragon breath named "<light green><bold>Rally Spectrum" with lore "<white>Grants on right-click:", "<white>Strength/Swiftness/Resistance 1 to target.", "<white>Damages tool."
 			set slot 13 of the player's current inventory to 1 firework named "<light green><bold>Stinger" with lore "<white>Right-click to dash forwards.", "<light blue>Grants bonus Stylish Points to Devil Hunters."
 			set slot 14 of the player's current inventory to 1 lead named "<light green><bold>Capture" with lore "<white>Right-click to set your weapon to Capture mode.", "<white>While in Capture mode, attacks deal 50%% less damage.", "<white>If the opponent is killed while you are in Capture mode,", "<white>Their equipment will be dropped on the ground for you to collect."
-			set slot 15 of the player's current inventory to 1 bow named "<light green><bold>Ethreal Grip" with lore "<white>Warps foes to your position when hit with an arrow.", "<white>Reduces damage dealt by 50%%.", "<light green><bold>Bows only."
+			set slot 15 of the player's current inventory to 1 bow named "<light green><bold>Ethreal Grip" with lore "<white>Slings foes to your position when hit with an arrow.", "<white>Reduces damage dealt by 50%%.", "<light green><bold>Bows only."
 			set slot 16 of the player's current inventory to 1 iron sword named "<light green><bold>Smite" with lore "<white>Shoves the target forwards a great distance when right-clicked.", "<light blue>Grants bonus Stylish Points to Devil Hunters."
-			set slot 17 of the player's current inventory to 1 firework named "<light green><bold>Taunt" with lore "<white>Stand still and taunt your foe.", "Grants STR/SPD + 10 for 10 seconds if completed.", "<light blue>Also grants bonus Stylish Points to Devil Hunters."
-			set slot 18 of the player's current inventory to 1 firework of fortune 3 named "<light green><bold>MAX-Taunt" with lore "<white>Taunt for an extended period of time.", "<white>Grants STR/SPD +20 for 10 seconds if completed.", "<light blue>Grants a large amount of Style Points to Devil Hunters."
+			set slot 17 of the player's current inventory to 1 firework named "<light green><bold>Taunt" with lore "<white>Stand still and taunt your foe.", "<white>Grants STR/SPD + 15 for 10 seconds if completed.", "<light blue>Grants bonus Style Points to Devil Hunters."
+			set slot 18 of the player's current inventory to 1 firework of fortune 3 named "<light green><bold>MAX-Taunt" with lore "<white>Taunt for an extended period of time.", "<white>Grants STR/SPD +30 for 20 seconds if completed.", "<light blue>Grants a large amount of Style Points to Devil Hunters."
+			set slot 19 of the player's current inventory to 1 feather named "<light green><bold>Suspend" with lore "<white>Pushes foes upwards when an attack connects."
+			set slot 20 of the player's current inventory to 1 feather named "<light green><bold>Acrobatics" with lore "<white>Grants a slew of new movement options while equipped:", "<gold>[Wall Kick]<reset><white>: Left-click a wall while sneaking to propel yourself in the opposite direction.", "<gold>[Wall Cling]<reset><white>: Right-click on a wall while sneaking to cling to it. Stop sneaking to let go.", "<gold>[Ledge Grab]<reset><white>: Left-click a ledge to jump on top of it."
 			set slot 26 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
 		else if arg 1 is "Armour":
-			open chest with 3 rows named "<cyan><bold>Skills Menu | Armour Skills" for the player
+			open chest with 3 rows named "<cyan><bold>Smithy | Armour Skills" for the player
 			set slot 0 of the player's current inventory to 1 diamond boots named "<cyan><bold>Quick Stomp" with lore "<white>Shoot towards the ground.", "Negates fall damage while stomping."
 			set slot 1 of the player's current inventory to 1 diamond boots named "<cyan><bold>Boost Jump" with lore "<white>Leap into the sky."
 			set slot 2 of the player's current inventory to 1 diamond boots named "<cyan><bold>Long Jump" with lore "<white>Spring forwards a large distance."
 			set slot 3 of the player's current inventory to 1 diamond boots named "<cyan><bold>Hover" with lore "<white>Hold sneak to hover in mid-air.", "Consumes hunger while hovering."
 			set slot 4 of the player's current inventory to 1 diamond boots named "<cyan><bold>Quickened Pulse" with lore "Slows down time after dodging an attack.", "<light blue>Grants a large bonus of Stylish Points to Devil Hunters."
 			set slot 5 of the player's current inventory to 1 diamond boots named "<purple><bold>Witch Time" with lore "<white>Slows down time after dodging an attack.", "<light blue>Grants a large bonus of Stylish Points to Devil Hunters."
-			set slot 6 of the player's current inventory to 1 diamond chestplate named "<cyan><bold>Glory Kills" with lore "<white>Unarmed kills grant:", "<white>Strength/Resistance 1, Speed 2, Haste 4"
+			set slot 6 of the player's current inventory to 1 diamond chestplate named "<cyan><bold>Glory Kills" with lore "<white>Unarmed kills grant:", "<white>Swiftness/Resistance 3, Strength/Haste 4 for 6 seconds.", "<white>Restores health equal to 25%% of your maximum health.", "<white>Restores 3 points of hunger."
 			set slot 7 of the player's current inventory to 1 diamond leggings named "<cyan><bold>Regeneration" with lore "<white>Grants Regeneration 2 while equipped."
 			set slot 8 of the player's current inventory to 1 diamond leggings named "<cyan><bold>Swiftness" with lore "<white>Grants Swiftness 2 while equipped."
 			set slot 9 of the player's current inventory to 1 diamond leggings named "<cyan><bold>Strength" with lore "<white>Grants Strength 2 while equipped."
@@ -207,38 +212,49 @@ command /skills [<text="TopMenu">] [<text="NULL">] [<number=0>]:
 			set slot 16 of the player's current inventory to 1 diamond chestplate named "<cyan><bold>MAG Up" with lore "<white>Grants +10 MAG while equipped."
 			set slot 17 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
 		else if arg 1 is "Inherit":
-			open chest with 1 row named "<purple><Bold>Skills Menu | Inherit Skills" for the player
+			open chest with 1 row named "<purple><Bold>Smithy | Inherit Skills" for the player
 			set slot 0 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
 			set slot 2 of the player's current inventory to 1 book named "<purple><bold>Inheritor ->"
 			set slot 4 of the player's current inventory to 1 magenta glazed terracotta named "<purple><bold>Gains skills and enchantments from..."
 			set slot 6 of the player's current inventory to 1 book named "<purple><bold><- Inheritee (item will be lost)"
 			set slot 8 of the player's current inventory to 1 green stained glass named "<purple><bold>Confirm Inheritance"
 		else if arg 1 is "Refine":
-			open chest with 1 row named "<green><bold>Skills Menu | Weapon Refinery" for the player
+			open chest with 1 row named "<green><bold>Smithy | Weapon Refinery" for the player
 			set slot 0 of the player's current inventory to 1 iron sword named "<green><bold>Slaying" with lore "<white>Adds +10%% chance to Special skill activations."
-			set slot 1 of the player's current inventory to 1 iron sword named "<green><bold>Reinforced" with lore "<white>Increases damage dealt by 1.5 hearts."
-			set slot 2 of the player's current inventory to 1 iron sword named "<green><bold>Warding" with lore "<white>Reduces damage suffered by 1.5 hearts."
-			set slot 3 of the player's current inventory to 1 iron sword named "<green><bold>Piercing" with lore "<white>Attacks pierce all resistances.", "Includes invincibility."
-			set slot 4 of the player's current inventory to 1 iron sword named "<green><bold>Koenig" with lore "<white>If C-Slot activation deals damage:", "Increases damage dealt by 2.5 hearts."
-			set slot 5 of the player's current inventory to 1 iron sword named "<green><bold>Crushing" with lore "<white>If damage dealt > 7:", "Increases C-Slot activation chance by 33%% of damage dealt.", "Stacks, and is lost on C-Slot activation."
-			set slot 6 of the player's current inventory to 1 iron sword named "<green><bold>Stylish" with lore "<white>If combo system is enabled:", "Increases combo rating for this weapon."
-			set slot 7 of the player's current inventory to 1 diamond sword named "<green><bold>Unique" with lore "<white>Apply a unique refine to a Holy Weapon."
+			set slot 1 of the player's current inventory to 1 iron sword named "<green><bold>Reinforced" with lore "<white>Raises base weapon might by 3 (+1.5 hearts damage).", "<white>Increases final damage dealt during combat by 10%%."
+			set slot 2 of the player's current inventory to 1 iron sword named "<green><bold>Warding" with lore "<white>Reduces base damage suffered during combat by 1.5 hearts.", "<white>Reduces final damage suffered during combat by 10%%."
+			set slot 3 of the player's current inventory to 1 iron sword named "<green><bold>Piercing" with lore "<white>Attacks pierce all resistances."
+			set slot 4 of the player's current inventory to 1 iron sword named "<green><bold>Koenig" with lore "<white>When a Special skill is activated:", "<white>Increases the effect of the skill by 2.5 hearts.", "<white>EG: Offensive specials gain increased damage,", "<white>while defensive specials reduce damage further."
+			set slot 5 of the player's current inventory to 1 iron sword named "<green><bold>Crushing" with lore "<white>If damage dealt > 7:", "Increases Special activation chance by 33%% of damage dealt.", "Stacks, and is lost on Special activation."
+			if isStylish(player) is 1:
+				set slot 6 of the player's current inventory to 1 iron sword named "<green><bold>Stylish" with lore "<white>If the [Combo System] perk is equipped:", "Increases the amount of Style Points this weapon gains."
+			if {hasAwakened.%player%} is set:
+				set slot 7 of the player's current inventory to 1 diamond sword named "<green><bold>Unique" with lore "<white>Apply a unique refine to a Sacred Treasure."
+			set slot 8 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
+		else if arg 1 is "Shield":
+			open chest with 1 row named "<blue><bold>Smithy | Shield Skills" for the player
+			set slot 0 of the player's current inventory to 1 shield named "<blue><bold>Dull Close" with lore "<white>Grants a passive 33%% damage resistance to melee attacks."
+			set slot 1 of the player's current inventory to 1 shield named "<blue><bold>Dull Ranged" with lore "<white>Grants a passive 33%% damage resistance to ranged attacks."
+			set slot 2 of the player's current inventory to 1 minecart named "<blue><bold>Shield Charge" with lore "<white>Charge forward with your shield by right-clicking.", "<white>Charging grants a STR buff, increasing as the charge continues.", "<white>Cooldown: 10 seconds"
+			set slot 3 of the player's current inventory to 1 piston named "<blue><bold>Shield Bash" with lore "<white>Bash an enemy away with right-click.", "<white>Has a low chance to disarm the target."
+			set slot 4 of the player's current inventory to 1 iron bar named "<blue><bold>Sturdy Frame" with lore "<white>Increases the effectiveness of shielding."
+			set slot 5 of the player's current inventory to 1 iron sword named "<blue><bold>Skill Greed" with lore "<white>Enables A-Slot skills to be used in the off-hand.", "<light red>Reduces the effectiveness of shielding."
 			set slot 8 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
 		else if arg 1 is "Repair":
-			open chest with 1 row named "<white><bold>Skills Menu | Repair Tools" for the player
+			open chest with 1 row named "<white><bold>Smithy | Repair Tools" for the player
 			set slot 0 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
 			set slot 3 of the player's current inventory to 1 book named "<bold>Place item here -->"
 			set slot 5 of the player's current inventory to 1 book named "<bold><-- Place item here"
 			set slot 8 of the player's current inventory to 1 green glass pane named "<green><bold>Repair Tool"
 		else if arg 1 is "Merge":
-			open chest with 1 row named "<gray><bold>Skills Menu | Merge Tools" for the player
+			open chest with 1 row named "<gray><bold>Smithy | Merge Tools" for the player
 			set slot 0 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
 			set slot 2 of the player's current inventory to 1 book named "<gray><bold>Item recieving merges ->"
 			set slot 4 of the player's current inventory to 1 magenta glazed terracotta named "<gray><bold>Gains bonus stats from..."
 			set slot 6 of the player's current inventory to 1 book named "<gray><bold><- Item being merged (item will be lost)"
 			set slot 8 of the player's current inventory to 1 green stained glass named "<gray><bold>Merge Tools"
 		else if arg 1 is "Buy":
-			open chest with 1 row named "<gold><bold>Skills Menu | Shopping Cart" for the player
+			open chest with 1 row named "<gold><bold>Smithy | Shopping Cart" for the player
 			set slot 3 of the player's current inventory to 1 magenta glazed terracotta named "<gold><bold>Item to apply this skill to ->"
 			set slot 5 of the player's current inventory to 1 magenta glazed terracotta named "<gold><bold><- Item to apply this skill to"
 			set slot 0 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
@@ -247,16 +263,19 @@ command /skills [<text="TopMenu">] [<text="NULL">] [<number=0>]:
 			set {shoppingcart.%player%} to arg 2
 			set {menulayer.%player%} to arg 3
 		else if arg 1 is "deconstruct":
-			open chest with 1 row named "<red><bold>Skills Menu | Deconstruct Tools" for the player
+			open chest with 1 row named "<red><bold>Smithy | Deconstruct Tools" for the player
 			set slot 3 of the player's current inventory to 1 magenta glazed terracotta named "<red><bold>Place item here ->"
 			set slot 5 of the player's current inventory to 1 magenta glazed terracotta named "<red><bold><- Place item here"
 			set slot 8 of the player's current inventory to 1 green glass pane named "<green><bold>Deconstruct Tool (tool will be lost)"
 			set slot 0 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
 			
 on inventory click:
-	if the name of the player's current inventory is "<gold><bold>Skills Menu":
+	if the name of the player's current inventory is "<gold><bold>Smithy":
 		if the name of the clicked item contains "???":
 			cancel event
+		else if the name of the clicked item contains "Purchase Items":
+			cancel event
+			make player execute command "/bs-shop"
 		if the name of the clicked item is "<light red><bold>A-Slot Skills":
 			make player execute command "/skills A-Skills"
 			cancel event
@@ -275,6 +294,9 @@ on inventory click:
 		else if the name of the clicked item is "<cyan><bold>Armour Skills":
 			make player execute command "/skills Armour"
 			cancel event
+		else if the name of the clicked item is "<blue><bold>Shield Skills":
+			make player execute command "/skills Shield"
+			cancel event
 		else if the name of the clicked item is "<purple><bold>Inherit Skills":
 			make player execute command "/skills Inherit"
 			cancel event
@@ -284,7 +306,7 @@ on inventory click:
 		else if the name of the clicked item is "<gray><bold>Upgrade/Merge Tools":
 			make player execute command "/skills Merge"
 			cancel event
-		else if the name of the clicked item is "<gold><bold>Holy Weapons":
+		else if the name of the clicked item is "<gold><bold>Sacred Treasures":
 			make player execute command "/skills HW"
 			cancel event
 		else if the name of the clicked item is "<white><bold>Repair Tools":
@@ -296,7 +318,7 @@ on inventory click:
 		else if the name of the clicked item is "<bold>Go Back":
 			make player execute command "/store"
 			cancel event
-	else if the name of the player's current inventory is "<light red><bold>Skills Menu | A-Slot Skills":
+	else if the name of the player's current inventory is "<light red><bold>Smithy | A-Slot Skills":
 		if the name of the clicked item is "<bold>Go Back":
 			make player execute command "/skills"
 			cancel event
@@ -305,7 +327,7 @@ on inventory click:
 			remove "<light red><bold>" from {_skillarg}
 			make player execute command "/skills buy %{_skillarg}% 1"
 			cancel event
-	else if the name of the player's current inventory is "<light blue><bold>Skills Menu | B-Slot Skills":
+	else if the name of the player's current inventory is "<light blue><bold>Smithy | B-Slot Skills":
 		if the name of the clicked item is "<bold>Go Back":
 			make player execute command "/skills"
 			cancel event
@@ -314,7 +336,7 @@ on inventory click:
 			remove "<light blue><bold>" from {_skillarg}
 			make player execute command "/skills buy %{_skillarg}% 2"
 			cancel event
-	else if the name of the player's current inventory is "<yellow><bold>Skills Menu | C-Slot Skills":
+	else if the name of the player's current inventory is "<yellow><bold>Smithy | C-Slot Skills":
 		if the name of the clicked item is "<bold>Go Back":
 			make player execute command "/skills"
 			cancel event
@@ -323,7 +345,7 @@ on inventory click:
 			remove "<yellow><bold>" from {_skillarg}
 			make player execute command "/skills buy %{_skillarg}% 3"
 			cancel event
-	else if the name of the player's current inventory is "<light green><bold>Skills Menu | Assist Skills":
+	else if the name of the player's current inventory is "<light green><bold>Smithy | Assist Skills":
 		if the name of the clicked item is "<bold>Go Back":
 			make player execute command "/skills"
 			cancel event
@@ -332,7 +354,7 @@ on inventory click:
 			remove "<light green><bold>" from {_skillarg}
 			make player execute command "/skills buy %{_skillarg}% 6"
 			cancel event
-	else if the name of the player's current inventory is "<light purple><bold>Skills Menu | Special Skills":
+	else if the name of the player's current inventory is "<light purple><bold>Smithy | Special Skills":
 		if the name of the clicked item is "<bold>Go Back":
 			make player execute command "/skills"
 			cancel event
@@ -341,7 +363,7 @@ on inventory click:
 			remove "<light purple><bold>" from {_skillarg}
 			make player execute command "/skills buy %{_skillarg}% 7"
 			cancel event
-	else if the name of the player's current inventory is "<cyan><bold>Skills Menu | Armour Skills":
+	else if the name of the player's current inventory is "<cyan><bold>Smithy | Armour Skills":
 		if the name of the clicked item is "<bold>Go Back":
 			make player execute command "/skills"
 			cancel event
@@ -350,7 +372,16 @@ on inventory click:
 			remove "<cyan><bold>" from {_skillarg}
 			make player execute command "/skills buy %{_skillarg}% 4"
 			cancel event
-	else if the name of the player's current inventory is "<purple><bold>Skills Menu | Inherit Skills":
+	else if the name of the player's current inventory is "<blue><bold>Smithy | Shield Skills":
+		if the name of the clicked item is "<bold>Go Back":
+			make player execute command "/skills"
+			cancel event
+		else if the name of the clicked item contains "<blue><bold>":
+			set {_skillarg} to uncoloured name of the clicked item
+			remove "<blue><bold>" from {_skillarg}
+			make player execute command "/skills buy %{_skillarg}% 8"
+			cancel event
+	else if the name of the player's current inventory is "<purple><bold>Smithy | Inherit Skills":
 		if the name of the clicked item is "<bold>Go Back":
 			make player execute command "/skills"
 			cancel event
@@ -359,17 +390,23 @@ on inventory click:
 				if slot 3 of the player's current inventory is not empty:
 					if slot 5 of the player's current inventory is not empty:
 						if line 1 of slot 5 of the player's current inventory's lore is set:
-							set {_inheritanceA-Skill} to line 1 of slot 5 of the player's current inventory's lore
+							if line 1 of slot 5 of the player's current inventory's lore is not "No Skill":
+								set {_inheritanceA-Skill} to line 1 of slot 5 of the player's current inventory's lore
 						if line 2 of slot 5 of the player's current inventory's lore is set:
-							set {_inheritanceB-Skill} to line 2 of slot 5 of the player's current inventory's lore
+							if line 2 of slot 5 of the player's current inventory's lore is not "No Skill":
+								set {_inheritanceB-Skill} to line 2 of slot 5 of the player's current inventory's lore
 						if line 3 of slot 5 of the player's current inventory's lore is set:
-							set {_inheritanceC-Skill} to line 3 of slot 5 of the player's current inventory's lore
+							if line 3 of slot 5 of the player's current inventory's lore is not "No Skill":
+								set {_inheritanceC-Skill} to line 3 of slot 5 of the player's current inventory's lore
 						if line 4 of slot 5 of the player's current inventory's lore is set:
-							set {_inheritanceAssist} to line 4 of slot 5 of the player's current inventory's lore
+							if line 4 of slot 5 of the player's current inventory's lore is not "No Skill":
+								set {_inheritanceAssist} to line 4 of slot 5 of the player's current inventory's lore
 						if line 5 of slot 5 of the player's current inventory's lore is set:
-							set {_inheritanceSpecial} to line 5 of slot 5 of the player's current inventory's lore
+							if line 5 of slot 5 of the player's current inventory's lore is not "No Skill":
+								set {_inheritanceSpecial} to line 5 of slot 5 of the player's current inventory's lore
 						if line 6 of slot 5 of the player's current inventory's lore is set:
-							set {_inheritanceRefine} to line 6 of slot 5 of the player's current inventory's lore
+							if line 6 of slot 5 of the player's current inventory's lore is not "No Skill":
+								set {_inheritanceRefine} to line 6 of slot 5 of the player's current inventory's lore
 						loop enchantments of slot 5 of the player's current inventory:
 							add loop-enchantment to {_enchants::*}
 							add 1 to {_tmp}
@@ -393,7 +430,7 @@ on inventory click:
 						set slot 5 of the player's current inventory to air
 			if the name of the clicked item contains "<purple><bold>":
 				cancel event
-	else if the name of the player's current inventory is "<red><bold>Skills Menu | Deconstruct Tools":
+	else if the name of the player's current inventory is "<red><bold>Smithy | Deconstruct Tools":
 		if the name of the clicked item is "<bold>Go Back":
 			make player execute command "/skills"
 			cancel event
@@ -417,15 +454,15 @@ on inventory click:
 						add loop-enchantment to {_enchants::*}
 						add 1 to {_tmp}
 						set {_enchantslevel::%{_tmp}%} to level of loop-enchantment of slot 4 of the player's current inventory
-						send "%loop-enchantment%" to the player
-						send "%{_enchantslevel::*}%" to the player
+						send formatted "%loop-enchantment%" to the player
+						send formatted "%{_enchantslevel::*}%" to the player
 					loop {_enchants::*}:
 						add 1 to {_tmp2}
 						set {_buildEnchant} to "%loop-value% %{_enchantsLevel::%{_tmp2}%}%" parsed as enchantment type
 						set {_item} to "1 book of %{_buildEnchant}%" parsed as itemtype
 						drop {_item} at the player
 					set slot 4 of the player's current inventory to air
-	else if the name of the player's current inventory is "<gray><bold>Skills Menu | Merge Tools":
+	else if the name of the player's current inventory is "<gray><bold>Smithy | Merge Tools":
 		if the name of the clicked item is "<bold>Go Back":
 			make player execute command "/skills"
 			cancel event
@@ -471,7 +508,7 @@ on inventory click:
 						set {_tool} to "Fishing Rod"
 					else if slot 3 of the player's current inventory is a bow:
 						set {_tool} to "Bow"
-					#send "%{_tooltype}% %{_tool}% %{_toolB}%"
+					#send formatted "%{_tooltype}% %{_tool}% %{_toolB}%"
 					if the name of slot 5 of the player's current inventory contains "<light blue>%{_tooltype}% %{_tool}% Frame":
 						set slot 5 of the player's current inventory to air
 						if {_tool} is "Fishing Rod":
@@ -527,9 +564,11 @@ on inventory click:
 							if level of looting of slot 3 of the player's current inventory is less than 10:
 								set {_test} to (the level of looting of slot 3 of the player's current inventory + 1)
 								enchant slot 3 of the player's current inventory with "looting %{_test}%" parsed as enchantment type
+						if {_name} is not set:
+							set {_name} to "%{_tooltype}% %{_tool}%"
 						set the name of slot 3 of the player's current inventory to "%{_name}%"
 				cancel event
-	else if the name of the player's current inventory is "<green><bold>Skills Menu | Weapon Refinery":
+	else if the name of the player's current inventory is "<green><bold>Smithy | Weapon Refinery":
 		if the name of the clicked item is "<bold>Go Back":
 			make player execute command "/skills"
 			cancel event
@@ -538,21 +577,21 @@ on inventory click:
 			remove "<green><bold>" from {_skillarg}
 			make player execute command "/skills buy %{_skillarg}% 5"
 			cancel event
-	else if the name of the player's current inventory is "<white><bold>Skills Menu | Repair Tools":
+	else if the name of the player's current inventory is "<white><bold>Smithy | Repair Tools":
 		if the name of the clicked item is "<green><bold>Repair Tool":
 			set {_cashreq} to the damage value of slot 4 of the player's current inventory
 			if {_cashreq} is less than the player's money:
 				repair slot 4 of the player's current inventory
 				set the player's money to (player's money - {_cashreq})
-				send "<light green>Transaction complete. New balance: $%player's money%."
+				send formatted "<light green>Transaction complete. New balance: $%player's money%."
 				cancel event
 			else:
-				send "<light red>Not enough money!"
+				send formatted "<light red>Not enough money!"
 			cancel event
 		else if the name of the clicked item is "<bold>Go Back":
 			make player execute command "/skills"
 			cancel event
-	else if the name of the player's current inventory is "<gold><bold>Skills Menu | Shopping Cart":
+	else if the name of the player's current inventory is "<gold><bold>Smithy | Shopping Cart":
 		if the name of the clicked item is "<bold>Go Back":
 			if slot 4 of the player's current inventory is air:
 				if {menulayer.%player%} is 1:
@@ -569,15 +608,31 @@ on inventory click:
 					make player execute command "/skills Assists"
 				else if {menulayer.%player%} is 7:
 					make player execute command "/skills Specials"
+				else if {menulayer.%player%} is 8:
+					make player execute command "/skills Shield"
 			else:
 				cancel event
-				send "<red>Remove your tool from the purchase window before exiting!"
+				send formatted "<red>Remove your tool from the purchase window before exiting!"
 		else if the name of the clicked item is "<green><bold>Purchase Skill":
-			if {menulayer.%player%} is 5:
-				make player execute command "/refine %{shoppingcart.%player%}%"
+			if slot 4 of the player's current inventory is shield:
+				if the 2nd line of the lore of slot 4 of the player's current inventory does not contain "Skill Greed":
+					if {menulayer.%player%} is not 8:
+						send "<light red>Shields cannot have skills equipped to them!"
+					else:
+						make player execute command "/skill %{shoppingcart.%player%}%"
+				else:
+					if {menulayer.%player%} is not 1:
+						send "<light red>Skill Greed only allows A-Slot skills to be equipped!"
+					else:
+						make player execute command "/skill %{shoppingcart.%player%}%"
+			else if {menulayer.%player%} is not 8:
+				if {menulayer.%player%} is 5:
+					make player execute command "/refine %{shoppingcart.%player%}%"
+				else:
+					send formatted "%{shoppingcart.%player%}%"
+					make player execute command "/skill %{shoppingcart.%player%}%"
 			else:
-				send "%{shoppingcart.%player%}%"
-				make player execute command "/skill %{shoppingcart.%player%}%"
+				send "<light red>These skills can only be equipped to shields!"
 			cancel event
 		else if the name of the clicked item is "<gold><bold>Skill Info":
 			make player execute command "/skillhelp %{shoppingcart.%player%}% 1"
@@ -597,995 +652,1140 @@ command /skill <text> [<number=0>]:
 		if arg 2 is 0:
 			if arg 1 contains "Distant Counter":
 				if {_cash} is less than 75:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $75, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $75, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Distant Counter"
 					remove 75 from the player's balance
 			else if arg 1 contains "Close Counter":
 				if {_cash} is less than 75:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $75, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $75, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Close Counter"
 					remove 75 from the player's balance
-			else if arg 1 contains "Quick Draw":
+			else if arg 1 contains "Broad Shot":
 				if {_cash} is less than 75:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $75, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $75, but you only have %player's money%."
 				else:
-					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Quick Draw"
+					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Broad Shot"
 					remove 75 from the player's balance
 			else if arg 1 contains "Warp Strike":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Warp Strike"
 					remove 50 from the player's balance
 			else if arg 1 contains "Skill Breaker":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Skill Breaker"
 					remove 50 from the player's balance
 			else if arg 1 contains "Armour Smasher":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Armour Smasher"
 					remove 50 from the player's balance
 			else if arg 1 contains "Sorcery Aura":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Sorcery Aura"
 					remove 50 from the player's balance
 			else if arg 1 contains "Drag Back":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 4 of slot 4 of the player's current inventory's lore to "<light green><bold>Assist - Drag Back"
 					remove 50 from the player's balance
 			else if arg 1 contains "Ethreal Grip":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 4 of slot 4 of the player's current inventory's lore to "<light green><bold>Assist - Ethreal Grip"
 					remove 50 from the player's balance
 			else if arg 1 contains "Smite":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 4 of slot 4 of the player's current inventory's lore to "<light green><bold>Assist - Smite"
 					remove 50 from the player's balance
 			else if arg 1 contains "Hit and Run":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 4 of slot 4 of the player's current inventory's lore to "<light green><bold>Assist - Hit and Run"
 					remove 50 from the player's balance
 			else if arg 1 contains "Ardent Sacrifice":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 4 of slot 4 of the player's current inventory's lore to "<light green><bold>Assist - Ardent Sacrifice"
 					remove 50 from the player's balance
 			else if arg 1 contains "Restore":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 4 of slot 4 of the player's current inventory's lore to "<light green><bold>Assist - Restore"
 					remove 50 from the player's balance
 			else if arg 1 contains "Wrath":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Wrath"
 					remove 50 from the player's balance
 			else if arg 1 contains "Stomp":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
 				else:
 					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Stomp"
 					remove 100 from the player's balance
 			else if arg 1 contains "Reposition":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 4 of slot 4 of the player's current inventory's lore to "<light green><bold>Assist - Reposition"
 					remove 50 from the player's balance
 			else if arg 1 contains "Swap":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 4 of slot 4 of the player's current inventory's lore to "<light green><bold>Assist - Swap"
 					remove 100 from the player's balance
 			else if arg 1 contains "Capture":
-				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+				if {_cash} is less than 100:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 4 of slot 4 of the player's current inventory's lore to "<light green><bold>Assist - Capture"
 					remove 100 from the player's balance
 			else if arg 1 contains "Stinger":
-				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+				if {_cash} is less than 100:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 4 of slot 4 of the player's current inventory's lore to "<light green><bold>Assist - Stinger"
 					remove 100 from the player's balance
 			else if arg 1 contains "Rally Speed":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 4 of slot 4 of the player's current inventory's lore to "<light green><bold>Assist - Rally Speed"
 					remove 50 from the player's balance
 			else if arg 1 contains "Rally Strength":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 4 of slot 4 of the player's current inventory's lore to "<light green><bold>Assist - Rally Strength"
 					remove 50 from the player's balance
 			else if arg 1 contains "Rally Resistance":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 4 of slot 4 of the player's current inventory's lore to "<light green><bold>Assist - Rally Resistance"
 					remove 50 from the player's balance
+			else if arg 1 contains "Suspend":
+				if {_cash} is less than 50:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+				else:
+					set line 4 of slot 4 of the player's current inventory's lore to "<light green><bold>Assist - Suspend"
+					remove 50 from the player's balance
 			else if arg 1 contains "Rally Spectrum":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 4 of slot 4 of the player's current inventory's lore to "<light green><bold>Assist - Rally Spectrum"
 					remove 50 from the player's balance
 			else if arg 1 contains "Shove":
 				if {_cash} is less than 100:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
 				else:
 					set line 4 of slot 4 of the player's current inventory's lore to "<light green><bold>Assist - Shove"
 					remove 100 from the player's balance
 			else if arg 1 contains "Launcher":
 				if {_cash} is less than 100:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
 				else:
 					set line 4 of slot 4 of the player's current inventory's lore to "<light green><bold>Assist - Launcher"
 					remove 100 from the player's balance
 			else if arg 1 contains "Experience Sapper":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Experience Sapper"
 					remove 50 from the player's balance
+			else if arg 1 contains "Seal SPD/SKL":
+				if {_cash} is less than 50:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+				else:
+					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Seal SPD/SKL"
+					remove 50 from the player's balance
+			else if arg 1 contains "Seal DEF/MAG":
+				if {_cash} is less than 50:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+				else:
+					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Seal DEF/MAG"
+					remove 50 from the player's balance
 			else if arg 1 contains "Plenitude":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Plenitude"
 					remove 50 from the player's balance
 			else if arg 1 contains "Despoil":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Despoil"
 					remove 50 from the player's balance
 			else if arg 1 contains "Moonbow":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 5 of slot 4 of the player's current inventory's lore to "<light purple><bold>Special - Moonbow"
 					remove 50 from the player's balance
 			else if arg 1 contains "Luna":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 5 of slot 4 of the player's current inventory's lore to "<light purple><bold>Special - Luna"
 					remove 50 from the player's balance
 			else if arg 1 contains "Glimmer":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 5 of slot 4 of the player's current inventory's lore to "<light purple><bold>Special - Glimmer"
 					remove 50 from the player's balance
 			else if arg 1 contains "Astra":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 5 of slot 4 of the player's current inventory's lore to "<light purple><bold>Special - Astra"
 					remove 50 from the player's balance
 			else if arg 1 contains "Blazing Light":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 5 of slot 4 of the player's current inventory's lore to "<light purple><bold>Special - Blazing Light"
 					remove 50 from the player's balance
 			else if arg 1 contains "Growing Light":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 5 of slot 4 of the player's current inventory's lore to "<light purple><bold>Special - Growing Light"
 					remove 50 from the player's balance
 			else if arg 1 contains "Glacies":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 5 of slot 4 of the player's current inventory's lore to "<light purple><bold>Special - Glacies"
 					remove 50 from the player's balance
 			else if arg 1 contains "Ignis":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 5 of slot 4 of the player's current inventory's lore to "<light purple><bold>Special - Ignis"
 					remove 50 from the player's balance
 			else if arg 1 contains "Miracle":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 5 of slot 4 of the player's current inventory's lore to "<light purple><bold>Special - Miracle"
 					remove 50 from the player's balance
 			else if arg 1 contains "Subdue":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 5 of slot 4 of the player's current inventory's lore to "<light purple><bold>Special - Subdue"
 					remove 50 from the player's balance
 			else if arg 1 contains "Rising Wind":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 5 of slot 4 of the player's current inventory's lore to "<light purple><bold>Special - Rising Wind"
 					remove 50 from the player's balance
 			else if arg 1 contains "Dragon Fang":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 5 of slot 4 of the player's current inventory's lore to "<light purple><bold>Special - Dragon Fang"
 					remove 50 from the player's balance
 			else if arg 1 contains "Miracle":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 5 of slot 4 of the player's current inventory's lore to "<light purple><bold>Special - Miracle"
 					remove 50 from the player's balance
 			else if arg 1 contains "Galeforce":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 5 of slot 4 of the player's current inventory's lore to "<light purple><bold>Special - Galeforce"
 					remove 50 from the player's balance
 			else if arg 1 is "Sol":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 5 of slot 4 of the player's current inventory's lore to "<light purple><bold>Special - Sol"
 					remove 50 from the player's balance
 			else if arg 1 contains "Retribution":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 5 of slot 4 of the player's current inventory's lore to "<light purple><bold>Special - Retribution"
 					remove 50 from the player's balance
 			else if arg 1 contains "Pavise":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 5 of slot 4 of the player's current inventory's lore to "<light purple><bold>Special - Pavise"
 					remove 50 from the player's balance
 			else if arg 1 contains "Aegis":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 5 of slot 4 of the player's current inventory's lore to "<light purple><bold>Special - Aegis"
 					remove 50 from the player's balance
 			else if arg 1 contains "Aether":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 5 of slot 4 of the player's current inventory's lore to "<light purple><bold>Special - Aether"
 					remove 50 from the player's balance
 			else if arg 1 contains "Long Jump":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Long Jump"
 					remove 50 from the player's balance
 			else if arg 1 contains "Quick Stomp":
 				if {_cash} is less than 100:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Quick Stomp"
 					remove 100 from the player's balance
 			else if arg 1 contains "TriangleAdept":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Triangle Adept"
 					remove 50 from the player's balance
 			else if arg 1 contains "Wings of Mercy":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Wings of Mercy"
 					remove 50 from the player's balance
 			else if arg 1 contains "Escape Route":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Escape Route"
 					remove 50 from the player's balance
 			else if arg 1 contains "Triangle Breaker":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Triangle Breaker"
 					remove 50 from the player's balance
 			else if arg 1 contains "Boost Jump":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Boost Jump"
 					remove 50 from the player's balance
 			else if arg 1 contains "Quickened Pulse":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Quickened Pulse"
 					remove 50 from the player's balance
 			else if arg 1 contains "Witch Time":
 				if {_cash} is less than 50:
 					set {_cash} to {_cash} * 100
-					send "<red><bold>You lack the required funds to purchase this skill. You need 5000 Halos, but you only have {_cash} Halos."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need 5000 Halos, but you only have {_cash} Halos."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Witch Time"
 					remove 50 from the player's balance
 			else if arg 1 contains "Hover":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $350, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $350, but you only have %player's money%."
 				else:
 					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Hover"
 					remove 50 from the player's balance
 			else if arg 1 contains "Glory Kill":
 				if {_cash} is less than 50:
-					send "<red><bold>NOT ENOUGH BLOOD! RIP AND TEAR UNTIL IT IS DONE! (You need $50 for this skill.)"
+					send formatted "<red><bold>NOT ENOUGH BLOOD! RIP AND TEAR UNTIL IT IS DONE! (You need $50 for this skill.)"
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Glory Kills"
 					remove 50 from the player's balance
-					send "<red><bold>They are rage; brutal... without mercy. But you..."
+					send formatted "<red><bold>They are rage; brutal... without mercy. But you..."
 					wait 3 seconds
-					send "<red><bold>You will be worse."
+					send formatted "<red><bold>You will be worse."
 					wait 3 seconds
-					send "<red><bold>Rip and tear until it is done."
+					send formatted "<red><bold>Rip and tear until it is done."
 					wait 3 seconds
 			else if arg 1 contains "Regeneration":
 				if slot 4 of the player's current inventory is leggings:
 					if {_cash} is less than 100:
-						send "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
+						send formatted "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
 					else:
 						set line 1 of slot 4 of the player's current inventory's lore to "Skill: Regeneration"
 						remove 100 from the player's balance
-						send "Success!" to the player
+						send formatted "Success!" to the player
 			else if arg 1 contains "Swiftness":
 				if slot 4 of the player's current inventory is leggings:
 					if {_cash} is less than 100:
-						send "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
+						send formatted "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
 					else:
 						set line 1 of slot 4 of the player's current inventory's lore to "Skill: Swiftness"
 						remove 100 from the player's balance
-						send "Success!" to the player
+						send formatted "Success!" to the player
 			else if arg 1 contains "Strength":
 				if slot 4 of the player's current inventory is leggings:
 					if {_cash} is less than 100:
-						send "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
+						send formatted "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
 					else:
 						set line 1 of slot 4 of the player's current inventory's lore to "Skill: Strength"
 						remove 100 from the player's balance
-						send "Success!" to the player
+						send formatted "Success!" to the player
 			else if arg 1 contains "Resistance":
 				if slot 4 of the player's current inventory is leggings:
 					if {_cash} is less than 100:
-						send "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
+						send formatted "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
 					else:
 						set line 1 of slot 4 of the player's current inventory's lore to "Skill: Resistance"
 						remove 100 from the player's balance
-						send "Success!" to the player
+						send formatted "Success!" to the player
 			else if arg 1 contains "HP Up":
 				if {_cash} is less than 100:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "Skill: HP Up"
 					remove 100 from the player's balance
 			else if arg 1 contains "STR Up":
 				if {_cash} is less than 100:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "Skill: STR Up"
 					remove 100 from the player's balance
 			else if arg 1 contains "SKL Up":
 				if {_cash} is less than 100:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "Skill: SKL Up"
 					remove 100 from the player's balance
 			else if arg 1 contains "SPD Up":
 				if {_cash} is less than 100:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "Skill: SPD Up"
 					remove 100 from the player's balance
 			else if arg 1 contains "MAG Up":
 				if {_cash} is less than 100:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "Skill: MAG Up"
 					remove 100 from the player's balance
 			else if arg 1 contains "DEF Up":
 				if {_cash} is less than 100:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "Skill: DEF Up"
 					remove 50 from the player's balance
 			else if arg 1 contains "Fury":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Fury"
 					remove 50 from the player's balance
 			else if arg 1 contains "Heavy Blade":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Heavy Blade"
 					remove 50 from the player's balance
 			else if arg 1 contains "Flashing Blade":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Flashing Blade"
 					remove 50 from the player's balance
 			else if arg 1 contains "Life and Death":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Life and Death"
 					remove 50 from the player's balance
 			else if arg 1 contains "Death Blow":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Death Blow"
 					remove 50 from the player's balance
 			else if arg 1 contains "Darting Blow":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Darting Blow"
 					remove 50 from the player's balance
 			else if arg 1 contains "Armoured Blow":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Armoured Blow"
 					remove 50 from the player's balance
 			else if arg 1 contains "Warding Blow":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Warding Blow"
 					remove 50 from the player's balance
-			else if arg 1 contains "Mirror Force":
+			else if arg 1 contains "Mirror Blow":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
-					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Mirror Force"
+					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Mirror Blow"
 					remove 50 from the player's balance
 			else if arg 1 contains "Defiant Attack":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Defiant Attack"
 					remove 50 from the player's balance
 			else if arg 1 contains "Defiant Speed":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Defiant Speed"
 					remove 50 from the player's balance
 			else if arg 1 contains "Defiant Resistance":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Defiant Resistance"
 					remove 50 from the player's balance
 			else if arg 1 contains "Sabotage Attack":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Sabotage Attack"
 					remove 50 from the player's balance
 			else if arg 1 contains "Sabotage Speed":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Sabotage Speed"
 					remove 50 from the player's balance
 			else if arg 1 is "Sabotage Defense":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Sabotage Defense"
 					remove 50 from the player's balance
 			else if arg 1 is "Mystic Boost":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Mystic Boost"
 					remove 50 from the player's balance
 			else if arg 1 is "Windsweep":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Windsweep"
 					remove 50 from the player's balance
 			else if arg 1 is "Flame Boost":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Flame Boost"
 					remove 50 from the player's balance
 			else if arg 1 is "Earth Boost":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Earth Boost"
 					remove 50 from the player's balance
 			else if arg 1 is "Aqua Boost":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Aqua Boost"
 					remove 50 from the player's balance
 			else if arg 1 contains "Poison Strike":
 				if {_cash} is less than 350:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $350, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $350, but you only have %player's money%."
 				else:
 					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Poison Strike"
 					remove 350 from the player's balance
 			else if arg 1 contains "Close Defence":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Close Defence"
 					remove 50 from the player's balance
 			else if arg 1 contains "Distant Defence":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Distant Defence"
 					remove 50 from the player's balance
+			#Bonds
+			else if arg 1 contains "Offense Bond":
+				if {_cash} is less than 50:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+				else:
+					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Offense Bond"
+					remove 50 from the player's balance
+			else if arg 1 contains "Defense Bond":
+				if {_cash} is less than 50:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+				else:
+					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Defense Bond"
+					remove 50 from the player's balance
+			else if arg 1 contains "Magic Bond":
+				if {_cash} is less than 50:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+				else:
+					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Magic Bond"
+					remove 50 from the player's balance
+			else if arg 1 contains "Offense Solo":
+				if {_cash} is less than 50:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+				else:
+					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Offense Solo"
+					remove 50 from the player's balance
+			else if arg 1 contains "Defense Solo":
+				if {_cash} is less than 50:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+				else:
+					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Defense Solo"
+					remove 50 from the player's balance
+			else if arg 1 contains "Magic Solo":
+				if {_cash} is less than 50:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+				else:
+					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Magic Solo"
+					remove 50 from the player's balance
 			else if arg 1 contains "STR/SKL Bond":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - STR/SKL Bond"
 					remove 50 from the player's balance
 			else if arg 1 contains "STR/MAG Bond":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - STR/MAG Bond"
 					remove 50 from the player's balance
 			else if arg 1 contains "DEF/MAG Bond":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - DEF/MAG Bond"
 					remove 50 from the player's balance
 			else if arg 1 contains "DEF/SKL Bond":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - DEF/SKL Bond"
 					remove 50 from the player's balance
 			else if arg 1 contains "MAG/SKL Bond":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - MAG/SKL Bond"
 					remove 50 from the player's balance
 			else if arg 1 contains "STR/DEF Bond":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - STR/DEF Bond"
 					remove 50 from the player's balance
 			else if arg 1 contains "STR/MAG Solo":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - STR/MAG Solo"
 					remove 50 from the player's balance
 			else if arg 1 contains "STR/SKL Solo":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - STR/SKL Solo"
 					remove 50 from the player's balance
 			else if arg 1 contains "DEF/MAG Solo":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - DEF/MAG Solo"
 					remove 50 from the player's balance
 			else if arg 1 contains "DEF/SKL Solo":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - DEF/SKL Solo"
 					remove 50 from the player's balance
 			else if arg 1 contains "MAG/SKL Solo":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - MAG/SKL Solo"
 					remove 50 from the player's balance
 			else if arg 1 contains "STR/MAG Solo":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - STR/MAG Solo"
 					remove 50 from the player's balance
 			else if arg 1 contains "STR/DEF Solo":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - STR/DEF Solo"
 					remove 50 from the player's balance
 			else if arg 1 contains "Desperation":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Desperation"
 					remove 50 from the player's balance
 			else if arg 1 contains "Shield Pulse":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Shield Pulse"
 					remove 50 from the player's balance
 			else if arg 1 is "Taunt":
 				if {_cash} is less than 100:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
 				else:
 					set line 4 of slot 4 of the player's current inventory's lore to "<light green><bold>Assist - Taunt"
 					remove 100 from the player's balance
+			else if arg 1 is "Acrobatics":
+				if {_cash} is less than 150:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $150, but you only have %player's money%."
+				else:
+					set line 4 of slot 4 of the player's current inventory's lore to "<light green><bold>Assist - Acrobatics"
+					remove 150 from the player's balance
 			else if arg 1 is "MAX-Taunt":
 				if {_cash} is less than 200:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $200, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $200, but you only have %player's money%."
 				else:
 					set line 4 of slot 4 of the player's current inventory's lore to "<light green><bold>Assist - MAX-Taunt"
 					remove 200 from the player's balance
 			else if arg 1 contains "Brash Assault":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Brash Assault"
 					remove 50 from the player's balance
 			else if arg 1 contains "Riposte":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Riposte"
 					remove 50 from the player's balance
 			else if arg 1 contains "Vantage":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Vantage"
 					remove 50 from the player's balance
 			else if arg 1 contains "Special Spiral":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Special Spiral"
 					remove 50 from the player's balance
 			else if arg 1 contains "FortifyAllyHealth":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Fortify Ally Health"
 					remove 50 from the player's balance
 			else if arg 1 contains "Fortify Health":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 4 of slot 4 of the player's current inventory's lore to "<light green><bold>Assist - Fortify Health"
 					remove 50 from the player's balance
 			else if arg 1 contains "Bonus Blade":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Bonus Blade"
 					remove 50 from the player's balance
 			else if arg 1 contains "Brave Blade":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Brave Blade"
 					remove 50 from the player's balance
 			else if arg 1 contains "Power Within":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Power Within"
 					remove 50 from the player's balance
 			else if arg 1 contains "Steady Stance":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Steady Stance"
 					remove 50 from the player's balance
 			else if arg 1 contains "Swift Stance":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Swift Stance"
 					remove 50 from the player's balance
 			else if arg 1 contains "Warding Stance":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Warding Stance"
 					remove 50 from the player's balance
 			else if arg 1 contains "Fierce Stance":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Fierce Stance"
 					remove 50 from the player's balance
-			else if arg 1 contains "Swift Sparrow":
+			else if arg 1 contains "Swift Blow":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
-					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Swift Sparrow"
+					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Swift Blow"
 					remove 50 from the player's balance
 			else if arg 1 contains "Steady Blow":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - Steady Blow"
 					remove 50 from the player's balance
 			else if arg 1 contains "STR Focus":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - STR Focus"
 					remove 50 from the player's balance
 			else if arg 1 contains "SPD Focus":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - SPD Focus"
 					remove 50 from the player's balance
 			else if arg 1 contains "SKL Focus":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - SKL Focus"
 					remove 50 from the player's balance
 			else if arg 1 contains "DEF Focus":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - DEF Focus"
 					remove 50 from the player's balance
 			else if arg 1 contains "MAG Focus":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - MAG Focus"
 					remove 50 from the player's balance
 			else if arg 1 contains "Eclipse Brace":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Eclipse Brace"
 					remove 50 from the player's balance
 			else if arg 1 contains "Solar Brace":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - Solar Brace"
 					remove 50 from the player's balance
 			else if arg 1 contains "Hone STR":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Hone STR"
 					remove 50 from the player's balance
 			else if arg 1 contains "Hone SPD":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Hone SPD"
 					remove 50 from the player's balance
 			else if arg 1 contains "Hone SKL":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Hone SKL"
 					remove 50 from the player's balance
 			else if arg 1 contains "Hone DEF":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Hone DEF"
 					remove 50 from the player's balance
 			else if arg 1 contains "Hone MAG":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Hone MAG"
 					remove 50 from the player's balance
+			else if arg 1 contains "Joint-Hone STR":
+				if {_cash} is less than 100:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
+				else:
+					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Joint-Hone STR"
+					remove 100 from the player's balance
+			else if arg 1 contains "Joint-Hone SPD":
+				if {_cash} is less than 100:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
+				else:
+					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Joint-Hone SPD"
+					remove 100 from the player's balance
+			else if arg 1 contains "Joint-Hone SKL":
+				if {_cash} is less than 100:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
+				else:
+					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Joint-Hone SKL"
+					remove 100 from the player's balance
+			else if arg 1 contains "Joint-Hone DEF":
+				if {_cash} is less than 100:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
+				else:
+					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Joint-Hone DEF"
+					remove 100 from the player's balance
+			else if arg 1 contains "Joint-Hone MAG":
+				if {_cash} is less than 100:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
+				else:
+					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Joint-Hone MAG"
+					remove 100 from the player's balance
+			else if arg 1 contains "Sally Coalition":
+				if {_cash} is less than 50:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+				else:
+					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Sally Coalition"
+					remove 50 from the player's balance
+			else if arg 1 contains "Garrison Coalition":
+				if {_cash} is less than 50:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+				else:
+					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Garrison Coalition"
+					remove 50 from the player's balance
 			else if arg 1 contains "Drive STR":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Drive STR"
 					remove 50 from the player's balance
 			else if arg 1 contains "Drive SPD":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Drive SPD"
 					remove 50 from the player's balance
 			else if arg 1 contains "Drive SKL":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Drive SKL"
 					remove 50 from the player's balance
 			else if arg 1 contains "Drive DEF":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Drive DEF"
 					remove 50 from the player's balance
 			else if arg 1 contains "Drive MAG":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Drive MAG"
 					remove 50 from the player's balance
 			else if arg 1 contains "STR Authority":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - STR Authority"
 					remove 50 from the player's balance
 			else if arg 1 contains "SPD Authority":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - SPD Authority"
 					remove 50 from the player's balance
 			else if arg 1 contains "SKL Authority":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - SKL Authority"
 					remove 50 from the player's balance
 			else if arg 1 contains "DEF Authority":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - DEF Authority"
 					remove 50 from the player's balance
 			else if arg 1 contains "MAG Authority":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - MAG Authority"
 					remove 50 from the player's balance
 			else if arg 1 contains "Pressure STR":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Pressure STR"
 					remove 50 from the player's balance
 			else if arg 1 contains "Pressure SPD":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Pressure SPD"
 					remove 50 from the player's balance
 			else if arg 1 contains "Pressure SKL":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Pressure SKL"
 					remove 50 from the player's balance
 			else if arg 1 contains "Pressure DEF":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Pressure DEF"
 					remove 50 from the player's balance
 			else if arg 1 contains "Pressure MAG":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Pressure MAG"
 					remove 50 from the player's balance
 			else if arg 1 contains "STR Smoke":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - STR Smoke"
 					remove 50 from the player's balance
 			else if arg 1 contains "SPD Smoke":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - SPD Smoke"
 					remove 50 from the player's balance
 			else if arg 1 contains "SKL Smoke":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - SKL Smoke"
 					remove 50 from the player's balance
 			else if arg 1 contains "DEF Smoke":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - DEF Smoke"
 					remove 50 from the player's balance
 			else if arg 1 contains "MAG Smoke":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - MAG Smoke"
 					remove 50 from the player's balance
 			else if arg 1 contains "Breath of Life":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Breath of Life"
 					remove 50 from the player's balance
 			else if arg 1 contains "Savage Blow":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Savage Blow"
 					remove 50 from the player's balance
 			else if arg 1 contains "Gravity":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Gravity"
 					remove 50 from the player's balance
 			else if arg 1 contains "Bold Fighter":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Bold Fighter"
 					remove 50 from the player's balance
 			else if arg 1 contains "Fear":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Fear"
 					remove 50 from the player's balance
 			else if arg 1 contains "Restrict":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Restrict"
 					remove 50 from the player's balance
 			else if arg 1 contains "Blowback":
 				if {_cash} is less than 50:
-					send "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
 				else:
 					set line 3 of slot 4 of the player's current inventory's lore to "<yellow><bold>Slot C - Blowback"
 					remove 50 from the player's balance
+			else if arg 1 contains "Skill Greed":
+				if {_cash} is less than 100:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $100, but you only have %player's money%."
+				else:
+					set line 2 of slot 4 of the player's current inventory's lore to "<blue><bold>Shield Skill - Skill Greed"
+					remove 100 from the player's balance
+			else if arg 1 contains "Dull Close":
+				if {_cash} is less than 50:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+				else:
+					set line 1 of slot 4 of the player's current inventory's lore to "<blue><bold>Shield Skill - Dull Close"
+					remove 50 from the player's balance
+			else if arg 1 contains "Dull Ranged":
+				if {_cash} is less than 50:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+				else:
+					set line 1 of slot 4 of the player's current inventory's lore to "<blue><bold>Shield Skill - Dull Ranged"
+					remove 50 from the player's balance
+			else if arg 1 contains "Shield Charge":
+				if {_cash} is less than 50:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+				else:
+					set line 1 of slot 4 of the player's current inventory's lore to "<blue><bold>Shield Skill - Shield Charge"
+					remove 50 from the player's balance
+			else if arg 1 contains "Royal Guard":
+				if {_cash} is less than 50:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+				else:
+					set line 1 of slot 4 of the player's current inventory's lore to "<blue><bold>Shield Skill - Royal Guard"
+					remove 50 from the player's balance
+			else if arg 1 contains "Shield Bash":
+				if {_cash} is less than 50:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+				else:
+					set line 1 of slot 4 of the player's current inventory's lore to "<blue><bold>Shield Skill - Shield Bash"
+					remove 50 from the player's balance
+			else if arg 1 contains "Sturdy Frame":
+				if {_cash} is less than 50:
+					send formatted "<red><bold>You lack the required funds to purchase this skill. You need $50, but you only have %player's money%."
+				else:
+					set line 1 of slot 4 of the player's current inventory's lore to "<blue><bold>Shield Skill - Sturdy Frame"
+					remove 50 from the player's balance
 			if the player's balance is less than {_cash}:
-				send "<green>Success!"
+				send formatted "<green>Success!"
 			else:
-				send "<red><bold>The skill you specified was invalid!"
+				send formatted "<red><bold>The skill you specified was invalid!"
 
 #Weapon Refinery
 command /refine [<text="help">]:
@@ -1595,72 +1795,72 @@ command /refine [<text="help">]:
 	trigger:
 		set {_cash.%player%} to the player's money
 		if arg 1 is "help":
-			send "<bold>List of Weapon Refines:"
-			send "- Slaying: Add +10 to special activation chance"
-			send "- Reinforced: Add 1.5 hearts of damage to your attacks."
-			send "- Warding: Reduce incoming damage by 1.5 hearts."
-			send "- Piercing: Ignore enemy damage deductions (armour, potions, etc..), but only deal 3/4 damage."
-			send "- Koenig: Add 2.5 hearts of damage whenever you activate a special."
-			send "- Crushing: Dealing over 9 hearts of damage increases your special activation chance by 1/3 of the damage you dealt. Stacks, and is reset on special activation."
-			send "- Stylish: Combo scores are easier to increase."
+			send formatted "<bold>List of Weapon Refines:"
+			send formatted "- Slaying: Add +10 to special activation chance"
+			send formatted "- Reinforced: Add 1.5 hearts of damage to your attacks."
+			send formatted "- Warding: Reduce incoming damage by 1.5 hearts."
+			send formatted "- Piercing: Ignore enemy damage deductions (armour, potions, etc..), but only deal 3/4 damage."
+			send formatted "- Koenig: Add 2.5 hearts of damage whenever you activate a special."
+			send formatted "- Crushing: Dealing over 9 hearts of damage increases your special activation chance by 1/3 of the damage you dealt. Stacks, and is reset on special activation."
+			send formatted "- Stylish: Combo scores are easier to increase."
 		if the player's held item is tool:
 			if {_cash.%player%} is less than 150:
-				send "<red><bold>You lack the required funds to refine this weapon. | Required Funds: $150 | Your Funds: %player's money%"
+				send formatted "<red><bold>You lack the required funds to refine this weapon. | Required Funds: $150 | Your Funds: %player's money%"
 			else if arg 1 is "Slaying":
 				set line 6 of slot 4 of the player's current inventory's lore to "<green><bold>Refined: Slaying"
 				if line 6 of slot 4 of the player's current inventory's lore contains "<green><bold>Refined: Slaying":
 					remove 150 from the player's money
-					send "<light green><bold>Sucessfully refined this weapon. | Your Funds: %player's money%"
+					send formatted "<light green><bold>Sucessfully refined this weapon. | Your Funds: %player's money%"
 				else:
-					send "<light red><bold>Could not refine your weapon. You have not been charged. | Your Funds: %player's money%"
+					send formatted "<light red><bold>Could not refine your weapon. You have not been charged. | Your Funds: %player's money%"
 			else if arg 1 is "Reinforced":
 				set line 6 of slot 4 of the player's current inventory's lore to "<red><bold>Refined: Reinforced"
 				if line 6 of slot 4 of the player's current inventory's lore contains "<red><bold>Refined: Reinforced":
 					remove 150 from the player's money
-					send "<light green><bold>Sucessfully refined this weapon. | Your Funds: %player's money%"
+					send formatted "<light green><bold>Sucessfully refined this weapon. | Your Funds: %player's money%"
 				else:
-					send "<light red><bold>Could not refine your weapon. You have not been charged. | Your Funds: %player's money%"
+					send formatted "<light red><bold>Could not refine your weapon. You have not been charged. | Your Funds: %player's money%"
 			else if arg 1 is "Crushing":
 				set line 6 of slot 4 of the player's current inventory's lore to "<purple><bold>Refined: Crushing"
 				if line 6 of slot 4 of the player's current inventory's lore contains "<purple><bold>Refined: Crushing":
 					remove 150 from the player's money
-					send "<light green><bold>Sucessfully refined this weapon. | Your Funds: %player's money%"
+					send formatted "<light green><bold>Sucessfully refined this weapon. | Your Funds: %player's money%"
 				else:
-					send "<light red><bold>Could not refine your weapon. You have not been charged. | Your Funds: %player's money%"
+					send formatted "<light red><bold>Could not refine your weapon. You have not been charged. | Your Funds: %player's money%"
 			else if arg 1 is "Warding":
 				set line 6 of slot 4 of the player's current inventory's lore to "<light blue><bold>Refined: Warding"
 				if line 6 of slot 4 of the player's current inventory's lore contains "<light blue><bold>Refined: Warding":
 					remove 150 from the player's money
-					send "<light green><bold>Sucessfully refined this weapon. | Your Funds: %player's money%"
+					send formatted "<light green><bold>Sucessfully refined this weapon. | Your Funds: %player's money%"
 				else:
-					send "<light red><bold>Could not refine your weapon. You have not been charged. | Your Funds: %player's money%"
+					send formatted "<light red><bold>Could not refine your weapon. You have not been charged. | Your Funds: %player's money%"
 			else if arg 1 is "Piercing":
 				set line 6 of slot 4 of the player's current inventory's lore to "<light red><bold>Refined: Piercing"
 				if line 6 of slot 4 of the player's current inventory's lore contains "<light red><bold>Refined: Piercing":
 					remove 150 from the player's money
-					send "<light green><bold>Sucessfully refined this weapon. | Your Funds: %player's money%"
+					send formatted "<light green><bold>Sucessfully refined this weapon. | Your Funds: %player's money%"
 				else:
-					send "<light red><bold>Could not refine your weapon. You have not been charged. | Your Funds: %player's money%"
+					send formatted "<light red><bold>Could not refine your weapon. You have not been charged. | Your Funds: %player's money%"
 			else if arg 1 is "Koenig":
 				set line 6 of slot 4 of the player's current inventory's lore to "<gold><bold>Refined: Koenig"
 				if line 6 of slot 4 of the player's current inventory's lore contains "<gold><bold>Refined: Koenig":
 					remove 150 from the player's money
-					send "<light green><bold>Sucessfully refined this weapon. | Your Funds: %player's money%"
+					send formatted "<light green><bold>Sucessfully refined this weapon. | Your Funds: %player's money%"
 				else:
-					send "<light red><bold>Could not refine your weapon. You have not been charged. | Your Funds: %player's money%"
+					send formatted "<light red><bold>Could not refine your weapon. You have not been charged. | Your Funds: %player's money%"
 			else if arg 1 is "Stylish":
 				set line 6 of slot 4 of the player's current inventory's lore to "<gold><bold>Refined: Stylish"
 				if line 6 of slot 4 of the player's current inventory's lore contains "<gold><bold>Refined: Stylish":
 					remove 150 from the player's money
-					send "<light green><bold>Sucessfully refined this weapon. | Your Funds: %player's money%"
+					send formatted "<light green><bold>Sucessfully refined this weapon. | Your Funds: %player's money%"
 				else:
-					send "<light red><bold>Could not refine your weapon. You have not been charged. | Your Funds: %player's money%"
+					send formatted "<light red><bold>Could not refine your weapon. You have not been charged. | Your Funds: %player's money%"
 			else if arg 1 is "Unique":
 				set line 6 of slot 4 of the player's current inventory's lore to "<white><bold>Refined: Unique"
 				if line 6 of slot 4 of the player's current inventory's lore contains "<white><bold>Refined: Unique":
 					remove 150 from the player's money
-					send "<light green><bold>Sucessfully refined this weapon. | Your Funds: %player's money%"
+					send formatted "<light green><bold>Sucessfully refined this weapon. | Your Funds: %player's money%"
 				else:
-					send "<light red><bold>Could not refine your weapon. You have not been charged. | Your Funds: %player's money%"
+					send formatted "<light red><bold>Could not refine your weapon. You have not been charged. | Your Funds: %player's money%"
 			else:
-				send "<light red>Could not understand your command. Try again, and check that you are using a valid argument."
+				send formatted "<light red>Could not understand your command. Try again, and check that you are using a valid argument."
