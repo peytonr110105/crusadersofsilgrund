@@ -1,0 +1,267 @@
+#Randomly generate seminars for players to attend each day.
+#Only one seminar can be attended every in-game day.
+#Seminars give a variety of benefits, from slightly increasing a stat's cap or unlocking class perks.
+
+every 2 minecraft day:
+	loop all players:
+		clear {hasAttendedSeminar.%loop-player%}
+		
+on right click on a sign:
+	if the 1st line of the event-block is "[Seminars]":
+		if the 2nd line of the event-block is "-=House Silgrid=-":
+			make player execute command "/seminars 1 0"
+		else if the 2nd line of the event-block is "-=House Ulster=-":
+			make player execute command "/seminars 2 0"
+			
+#The main command for managing seminars.
+#Arg 1 = Seminar location (House Ulster, Silgrid, Etc..)
+#Arg 2 = UI Page (starts at 0)
+command /seminars <number> <number>:
+	trigger:
+		if {hasAttendedSeminar.%player%} is set:
+			send "<light red>I've already attended a seminar today. I won't learn anything if I attend any more..."
+		#House Silgrid
+		if arg 1 is 1:
+			if arg 2 is 0:
+				open chest inventory with 1 row named "<gold>House Silgrid Seminars" for the player
+				set slot 3 of the player's current inventory to 1 book named "<light blue>Magical Studies" with lore "<white>Check available seminars relating to the study of magic."
+				set slot 4 of the player's current inventory to 1 nether star named "<light yellow>Guest Speaker" with lore "<white>Learn from veterans of different classes."
+				set slot 5 of the player's current inventory to 1 sugar named "<light green>Special Training" with lore "<white>Conditioning to increase specific stat caps."
+			#Magical Studies
+			else if arg 2 is 1:
+				open chest inventory with 1 row named "<gold>House Silgrid Seminars - Magical Studies" for the player
+				if {spells.%player%::Wind} is not set:
+					if {lvl.%player%} is more than 9:
+						set slot 0 of the player's current inventory to 1 book of power 1 named "<light blue>A Youngling's Guide to Magic" with lore "<italics>A survey of basic magical spells and their applications.", "<light yellow>Unlocks the following spells:", "<white>Fire, Hail, Thunder, Wind"
+					else:
+						set slot 0 of the player's current inventory to 1 barrier named "<light red>A Youngling's Guide to Magic" with lore "<white>You're too inexperienced to get any use out of this seminar.", "<white>You'll need to be at least level 10 to attend."
+				else:
+					set slot 0 of the player's current inventory to 1 barrier named "<light red>A Youngling's Guide to Magic" with lore "<white>You've already mastered this topic."
+				if {spells.%player%::Tornado} is not set:
+					if {lvl.%player%} is more than 20:
+						set slot 1 of the player's current inventory to 1 book of power 2 named "<light blue>Mastering the Elements to Cook Steak On-Demand" with lore "<italics>A deep dive into the four elements of magic and how to exploit them in day-to-day life.", "<light yellow>Unlocks the following spells:", "<white>Elfire, Blizzard, Thoron, Tornado"
+					else:
+						set slot 1 of the player's current inventory to 1 barrier named "<light red>Mastering the Elements to Cook Steak On-Demand" with lore "<white>You're too inexperienced to get any use out of this seminar.", "<white>You'll need to be at least level 21 to attend."
+				else:
+					set slot 1 of the player's current inventory to 1 barrier named "<light red>Mastering the Elements to Cook Steak On-Demand" with lore "<white>You've already mastered this topic."
+				if {spells.%player%::Nosferatu} is not set:
+					if {lvl.%player%} is more than 29:
+						set slot 2 of the player's current inventory to 1 book of power 3 named "<light blue>Nosferatu: Borrowing Energy Without Permission" with lore "<italics>An examination of what they don't teach you at school.", "<light yellow>Unlocks the Nosferatu spell."
+					else:
+						set slot 2 of the player's current inventory to 1 barrier named "<light red>Nosferatu: Borrowing Energy Without Permission" with lore "<white>You're too inexperienced to get any use out of this seminar.", "<white>You'll need to be at least level 30 to attend."
+				else:
+					set slot 2 of the player's current inventory to 1 barrier named "<light red>Nosferatu: Borrowing Energy Without Permission" with lore "<white>You've already mastered this topic."
+				if {spells.%player%::Stone} is not set:
+					if {lvl.%player%} is more than 29:
+						set slot 3 of the player's current inventory to 1 book of power 3 named "<light blue>Dark Magic: Evil Because We Said So" with lore "<italics>We're not supposed to teach this, but...", "<light yellow>Unlocks the following spells:", "<white>Thief, Stone, Silence"
+					else:
+						set slot 3 of the player's current inventory to 1 barrier named "<light red>Dark Magic: Evil Because We Said So" with lore "<white>You're too inexperienced to get any use out of this seminar.", "<white>You'll need to be at least level 30 to attend."
+				else:
+					set slot 3 of the player's current inventory to 1 barrier named "<light red>Dark Magic: Evil Because We Said So" with lore "<white>You've already mastered this topic."
+				if {spells.%player%::Rescue} is not set:
+					if {lvl.%player%} is more than 29:
+						set slot 4 of the player's current inventory to 1 book of power 4 named "<light blue>Mobility Spells: Annoying Your Friends Efficiently" with lore "<italics>A lecture on how to yank matter around a room.", "<light yellow>Unlocks the following spells:", "<white>Rescue, Slipgate"
+					else:
+						set slot 4 of the player's current inventory to 1 barrier named "<light red>Mobility Spells: Annoying Your Friends Efficiently" with lore "<white>You're too inexperienced to get any use out of this seminar.", "<white>You'll need to be at least level 30 to attend."
+				else:
+					set slot 4 of the player's current inventory to 1 barrier named "<light red>Mobility Spells: Annoying Your Friends Efficiently" with lore "<white>You've already mastered this topic."
+				if {spells.%player%::Naga} is not set:
+					if {lvl.%player%} is more than 60:
+						set slot 5 of the player's current inventory to 1 book of power 5 named "<light blue>Master Knight Certification" with lore "<italics>A specialized session for only the most elite of mages.", "<light yellow>Unlocks the following spells:", "<white>Naga, Forseti, Loptous"
+					else:
+						set slot 5 of the player's current inventory to 1 barrier named "<light red>Master Knight Certification" with lore "<white>You're too inexperienced to attend this seminar.", "<white>You'll need to be at least level 61 to attend."
+				else:
+					set slot 5 of the player's current inventory to 1 barrier named "<light red>Master Knight Certification" with lore "<white>You've already mastered this topic."
+			#Guest Speaker
+			else if arg 2 is 2:
+				open chest inventory with 4 rows named "<gold>House Silgrid Seminars - Guest Speaker" for the player
+				#1st Tier Perks
+				#set slot 0 of the player's current inventory to 1 book named "<white>First Honor Perks:" with lore "<white>Learn a First Honor perk to be able to learn the Second Honor for that tree."
+				set slot 0 of the player's current inventory to 1 ladder named "<gold>Mage: Wisdom" with lore "<white>Focuses on rapid-fire spells."
+				set slot 1 of the player's current inventory to 1 ladder named "<gold>Mage: Serenity" with lore "<white>Focuses on stronger wand casting."
+				set slot 2 of the player's current inventory to 1 ladder named "<gold>Mage: Diligence" with lore "<white>Focuses on improved melee damage."
+				set slot 3 of the player's current inventory to 1 ladder named "<gold>Cleric: Loyalty" with lore "<white>Focuses on supporting allies in combat."
+				set slot 4 of the player's current inventory to 1 ladder named "<gold>Cleric: Pacifism" with lore "<white>Focuses on high defense and healing."
+				set slot 5 of the player's current inventory to 1 ladder named "<gold>Cleric: Hypocrisy" with lore "<white>Focuses on improved damage output."
+				set slot 6 of the player's current inventory to 1 ladder named "<gold>Strategist: Strategist_TREE_01" with lore "<white>Strategist_TREE_01_DESCRIPTION."
+				set slot 7 of the player's current inventory to 1 ladder named "<gold>Strategist: Strategist_TREE_02" with lore "<white>Strategist_TREE_02_DESCRIPTION."
+				set slot 8 of the player's current inventory to 1 ladder named "<gold>Strategist: Strategist_TREE_03" with lore "<white>Strategist_TREE_03_DESCRIPTION."
+				if ({perkTreeXP.Mage.%player%::Wisdom} + 0) is less than {perksFirstHonorXPRequirement}:
+					set slot 9 of the player's current inventory to 1 book of power 1 named "<light blue>Mage: Wisdom - Ancient Knowledge" with lore "<white>Nullifies cooldown of Magic Wands,", "<white>but deals non-lethal recoil damage equal to 50%% of the nullified cooldown time."
+				else:
+					set slot 9 of the player's current inventory to 1 barrier named "<light red>Mage: Wisdom - Ancient Knowledge" with lore "<white>Perk already unlocked."
+				if {perkTreeXP.Mage.%player%::Serenity} + 0 is less than {perksFirstHonorXPRequirement}:
+					set slot 10 of the player's current inventory to 1 book of power 1 named "<light blue>Mage: Serenity - Focused Magic" with lore "<white>Halves the cooldown of Magic Wands."
+				else:
+					set slot 10 of the player's current inventory to 1 barrier named "<light red>Mage: Serenity - Focused Magic" with lore "<white>Perk already unlocked."
+				if {perkTreeXP.Mage.%player%::Diligence} + 0 is less than {perksFirstHonorXPRequirement}:
+					set slot 11 of the player's current inventory to 1 book of power 1 named "<light blue>Mage: Diligence - Hexblade" with lore "<white>Causes melee weapons to deal magical damage instead of physical damage while equipped."
+				else:
+					set slot 11 of the player's current inventory to 1 barrier named "<light red>Mage: Diligence - Hexblade" with lore "<white>Perk already unlocked."
+				if {perkTreeXP.Cleric.%player%::Loyalty} + 0 is less than {perksFirstHonorXPRequirement}:
+					set slot 12 of the player's current inventory to 1 book of power 1 named "<light blue>Cleric: Loyalty - Breath of Life" with lore "<white>After combat, if player attacked:", "<white>restores 6 hearts to allies within 15 blocks."
+				else:
+					set slot 12 of the player's current inventory to 1 barrier named "<light red>Cleric: Loyalty - Breath of Life" with lore "<white>Perk already unlocked."
+				if {perkTreeXP.Cleric.%player%::Pacifism} + 0 is less than {perksFirstHonorXPRequirement}:
+					set slot 13 of the player's current inventory to 1 book of power 1 named "<light blue>Cleric: Pacifism - Sacred Balm" with lore "<white>Healing an ally with any staff grants DEF/RES +6", "<white>to both the healer and target through their next action."
+				else:
+					set slot 13 of the player's current inventory to 1 barrier named "<light red>Cleric: Pacifism - Sacred Balm" with lore "<white>Perk already unlocked."
+				if {perkTreeXP.Cleric.%player%::Hypocrisy} + 0 is less than {perksFirstHonorXPRequirement}:
+					set slot 14 of the player's current inventory to 1 book of power 1 named "<light blue>Cleric: Hypocrisy - Secret Training" with lore "<white>Boosts your Traditional Weapons, Magical Weapons, and Guns abilities by +13 while equipped."
+				else:
+					set slot 14 of the player's current inventory to 1 barrier named "<light red>Cleric: Hypocrisy - Secret Training" with lore "<white>Perk already unlocked."
+				if {perkTreeXP.Strategist.%player%::STRATEGIST_TREE_01} + 0 is less than {perksFirstHonorXPRequirement}:
+					set slot 15 of the player's current inventory to 1 book of power 1 named "<light blue>Strategist: Strategist_TREE_01 - Joint-Drive Spectrum" with lore "<white>If an ally is within 15 blocks, grants:", "<white>STR/MAG/SPD/LCK/DEF/RES +4 to player and all allies within 15 blocks." 
+				else:
+					set slot 15 of the player's current inventory to 1 barrier named "<light red>Strategist: Strategist_TREE_01 - Joint-Drive Spectrum" with lore "<white>Perk already unlocked."
+				if {perkTreeXP.Strategist.%player%::Strategist_TREE_02} + 0 is less than {perksFirstHonorXPRequirement}:
+					set slot 16 of the player's current inventory to 1 book of power 1 named "<light blue>Strategist: Strategist_TREE_02 - Inference" with lore "<white>When either Traditional Weapons or Magical Weapons increases,", "<white>grants +1 to the other Ability's value.", "<light purple>EX: Traditional Weapons is raised by +1 from the Journal.", "<light purple>With Inference, Magical Weapons increases by +1."
+				else:
+					set slot 16 of the player's current inventory to 1 barrier named "<light red>Strategist: Strategist_TREE_02 - Inference" with lore "<white>Perk already unlocked."
+				if {perkTreeXP.Strategist.%player%::STRATEGIST_TREE_03} + 0 is less than {perksFirstHonorXPRequirement}:
+					set slot 17 of the player's current inventory to 1 book of power 1 named "<light blue>Strategist: Strategist_TREE_03 - Near Save" with lore "<white>If foe initiates combat on an ally within 15 blocks:", "<white>Grants a (LCK / 4)%% chance to reduce the damage that ally suffers by 50%%."
+				else:
+					set slot 17 of the player's current inventory to 1 barrier named "<light red>Strategist: Strategist_TREE_03 - Near Save" with lore "<white>Perk already unlocked."
+				#2nd Tier Perks
+				set slot 18 of the player's current inventory to 1 ladder named "<gold>Mage: Wisdom | Second Honor" with lore "<white>Focuses on rapid-fire spells."
+				set slot 19 of the player's current inventory to 1 ladder named "<gold>Mage: Serenity | Second Honor" with lore "<white>Focuses on stronger wand casting."
+				set slot 20 of the player's current inventory to 1 ladder named "<gold>Mage: Diligence | Second Honor" with lore "<white>Focuses on improved melee damage."
+				set slot 21 of the player's current inventory to 1 ladder named "<gold>Cleric: Loyalty | Second Honor" with lore "<white>Focuses on supporting allies in combat."
+				set slot 22 of the player's current inventory to 1 ladder named "<gold>Cleric: Pacifism | Second Honor" with lore "<white>Focuses on high defense and healing."
+				set slot 23 of the player's current inventory to 1 ladder named "<gold>Cleric: Hypocrisy | Second Honor" with lore "<white>Focuses on improved damage output."
+				set slot 24 of the player's current inventory to 1 ladder named "<gold>Strategist: Strategist_TREE_01 | Second Honor" with lore "<white>Strategist_TREE_01_DESCRIPTION."
+				set slot 25 of the player's current inventory to 1 ladder named "<gold>Strategist: Strategist_TREE_02 | Second Honor" with lore "<white>Strategist_TREE_02_DESCRIPTION."
+				set slot 26 of the player's current inventory to 1 ladder named "<gold>Strategist: Strategist_TREE_03 | Second Honor" with lore "<white>Strategist_TREE_03_DESCRIPTION."
+				if {perkTreeXP.Mage.%player%::Wisdom} + 0 is less than {perksSecondHonorXPRequirement}:
+					if {perkTreeXP.Mage.%player%::Wisdom} + 0 is more than {perksFirstHonorXPRequirement}:
+						set slot 27 of the player's current inventory to 1 book of power 1 named "<light blue>Mage: Wisdom - Lifetaker" with lore "<white>If player initiates combat, restores health equal to 10%% of damage dealt during combat."
+					else:
+						set slot 27 of the player's current inventory to 1 barrier named "<light red>Mage: Wisdom - Lifetaker" with lore "<white>Must unlock the first honor perk first." 
+				else:
+					set slot 27 of the player's current inventory to 1 barrier named "<light red>Mage: Wisdom - Lifetaker" with lore "<white>Perk already unlocked."
+				if {perkTreeXP.Mage.%player%::Serenity} + 0 is less than {perksSecondHonorXPRequirement}:
+					if {perkTreeXP.Mage.%player%::Serenity} + 0 is more than {perksFirstHonorXPRequirement}:
+						set slot 28 of the player's current inventory to 1 book of power 1 named "<light blue>Mage: Serenity - Steadfast Casting" with lore "<white>Whenever a spell hits a foe, grants MAG +5 after combat.", "<white>This effect can stack up to MAG +25, but is lost when changing weapons."
+					else:
+						set slot 28 of the player's current inventory to 1 barrier named "<light red>Mage: Serenity - Steadfast Casting" with lore "<white>Must unlock the first honor perk first."
+				else:
+					set slot 28 of the player's current inventory to 1 barrier named "<light red>Mage: Serenity - Steadfast Casting" with lore "<white>Perk already unlocked."
+				if {perkTreeXP.Mage.%player%::Diligence} + 0 is less than {perksSecondHonorXPRequirement}:
+					if {perkTreeXP.Mage.%player%::Diligence} + 0 is more than {perksFirstHonorXPRequirement}:
+						set slot 29 of the player's current inventory to 1 book of power 1 named "<light blue>Mage: Diligence - More Than Magic" with lore "<white>Changing weapons after casting a spell grants +20%% damage for 3 seconds."
+					else:
+						set slot 29 of the player's current inventory to 1 barrier named "<light red>Mage: Diligence - More Than Magic" with lore "<white>Must unlock the first honor perk first."
+				else:
+					set slot 29 of the player's current inventory to 1 barrier named "<light red>Mage: Diligence - More Than Magic" with lore "<white>Perk already unlocked."
+				if {perkTreeXP.Cleric.%player%::Loyalty} + 0 is less than {perksSecondHonorXPRequirement}:
+					if {perkTreeXP.Cleric.%player%::Loyalty} + 0 is more than {perksFirstHonorXPRequirement}:
+						set slot 30 of the player's current inventory to 1 book of power 1 named "<light blue>Cleric: Loyalty - Herbivore" with lore "<white>Boosts the drop rates for Sacred and Golden herbs by 50%%."
+					else:
+						set slot 30 of the player's current inventory to 1 barrier named "<light red>Cleric: Loyalty - Herbivore" with lore "<white>Must unlock the first honor perk first."
+				else:
+					set slot 30 of the player's current inventory to 1 barrier named "<light red>Cleric: Loyalty - Herbivore" with lore "<white>Perk already unlocked."
+				if {perkTreeXP.Cleric.%player%::Pacifism} + 0 is less than {perksSecondHonorXPRequirement}:
+					if {perkTreeXP.Cleric.%player%::Pacifism} + 0 is more than {perksFirstHonorXPRequirement}:
+						set slot 31 of the player's current inventory to 1 book of power 1 named "<light blue>Cleric: Pacifism - Live to Serve" with lore "<white>Using a staff on an ally applies the effects to yourself as well."
+					else:
+						set slot 31 of the player's current inventory to 1 barrier named "<light red>Cleric: Pacifism - Live to Serve" with lore "<white>Must unlock the first honor perk first."
+				else:
+					set slot 31 of the player's current inventory to 1 barrier named "<light red>Cleric: Pacifism - Live to Serve" with lore "<white>Perk already unlocked."
+				if {perkTreeXP.Cleric.%player%::Hypocrisy} + 0 is less than {perksSecondHonorXPRequirement}:
+					if {perkTreeXP.Cleric.%player%::Hypocrisy} + 0 is more than {perksFirstHonorXPRequirement}:
+						set slot 32 of the player's current inventory to 1 book of power 1 named "<light blue>Cleric: Hypocrisy - Hidden Thorn" with lore "<white>During combat, if player's STR / MAG < foe's STR / MAG:", "<white>Boosts damage dealt during combat by 50%% of the difference", "<white>between stats (maximum bonus of +10 hearts).", "<white>Stat used for comparison is dependent on physical VS magical damage being used."
+					else:
+						set slot 32 of the player's current inventory to 1 barrier named "<light red>Cleric: Hypocrisy - Hidden Thorn" with lore "<white>Must unlock the first honor perk first."
+				else:
+					set slot 32 of the player's current inventory to 1 barrier named "<light red>Cleric: Hypocrisy - Hidden Thorn" with lore "<white>Perk already unlocked."
+				if {perkTreeXP.Strategist.%player%::STRATEGIST_TREE_01} + 0 is less than {perksSecondHonorXPRequirement}:
+					if {perkTreeXP.Strategist.%player%::STRATEGIST_TREE_01} + 0 is more than {perksFirstHonorXPRequirement}:
+						set slot 33 of the player's current inventory to 1 book of power 1 named "<light blue>Strategist: Strategist_TREE_01 - Under This Banner" with lore "<white>Grants CHR +6.", "<white>Doubles the effects of your Leadership bonuses."
+					else:
+						set slot 33 of the player's current inventory to 1 barrier named "<light red>Strategist: Strategist_TREE_01 - Under This Banner" with lore "<white>Must unlock the first honor perk first."
+				else:
+					set slot 33 of the player's current inventory to 1 barrier named "<light red>Strategist: Strategist_TREE_01 - Under This Banner" with lore "<white>Perk already unlocked."
+				if {perkTreeXP.Strategist.%player%::Strategist_TREE_02} + 0 is less than {perksSecondHonorXPRequirement}:
+					if {perkTreeXP.Strategist.%player%::Strategist_TREE_02} + 0 is more than {perksFirstHonorXPRequirement}:
+						set slot 34 of the player's current inventory to 1 book of power 1 named "<light blue>Strategist: Strategist_TREE_02 - Dual Strike" with lore "<white>If an ally is within 10 blocks, the player's HP >= 70%%, and the player initiates combat:", "<white>Boosts damage dealt by 10%% of the nearest ally's STR or MAG depending on damage type,", "<white>and grants a (LCK / 4)%% chance to attack twice.", "<italics>Once per combat only."
+					else:
+						set slot 34 of the player's current inventory to 1 barrier named "<light red>Strategist: Strategist_TREE_02 - Dual Strike" with lore "<white>Must unlock the first honor perk first."
+				else:
+					set slot 34 of the player's current inventory to 1 barrier named "<light red>Strategist: Strategist_TREE_02 - Dual Strike" with lore "<white>Perk already unlocked."
+				if {perkTreeXP.Strategist.%player%::STRATEGIST_TREE_03} + 0 is less than {perksSecondHonorXPRequirement}:
+					if {perkTreeXP.Strategist.%player%::STRATEGIST_TREE_03} + 0 is more than {perksFirstHonorXPRequirement}:
+						set slot 35 of the player's current inventory to 1 book of power 1 named "<light blue>Strategist: Strategist_TREE_03 - Rally Up!" with lore "<white>The effects of skills/perks that activate on a right-click action,", "<white>such as Rally Strength or Ardent Sacrifice,", "<white>apply to all allies within 10 blocks of the target at no additional cost.", "<italics>Positional skills such as Reposition are unaffected."
+					else:
+						set slot 35 of the player's current inventory to 1 barrier named "<light red>Strategist: Strategist_TREE_03 - Rally Up!" with lore "<white>Must unlock the first honor perk first."
+				else:
+					set slot 35 of the player's current inventory to 1 barrier named "<light red>Strategist: Strategist_TREE_03 - Rally Up!" with lore "<white>Perk already unlocked."
+			#Special Training
+	
+#Seminar UI Behavior					
+on inventory click:
+	#House Silgrid
+	if the name of the player's current inventory contains "<gold>House Silgrid Seminars":
+		if the name of the clicked item is "<light blue>Magical Studies":
+			cancel event
+			make player execute command "/seminars 1 1"
+		if the name of the clicked item is "<light yellow>Guest Speaker":
+			cancel event
+			make player execute command "/seminars 1 2"
+	if the name of the player's current inventory contains "Magical Studies":
+		cancel event
+		if the name of the clicked item is "<light blue>A Youngling's Guide to Magic":
+			make player execute command "/grantspell 0 Fire"
+			make player execute command "/grantspell 0 Hail"
+			make player execute command "/grantspell 0 Thunder"
+			make player execute command "/grantspell 0 Wind"
+			set {hasAttendedSeminar.%player%} to true
+			send "<light blue>Seminar complete!" to the player
+		else if the name of the clicked item is "<light blue>Mastering the Elements to Cook Steak On-Demand":
+			make player execute command "/grantspell 0 Elfire"
+			make player execute command "/grantspell 0 Blizzard"
+			make player execute command "/grantspell 0 Thoron"
+			make player execute command "/grantspell 0 Tornado"
+			set {hasAttendedSeminar.%player%} to true
+			send "<light blue>Seminar complete!" to the player
+		else if the name of the clicked item is "<light blue>Nosferatu: Borrowing Energy Without Permission":
+			make player execute command "/grantspell 0 Nosferatu"
+			set {hasAttendedSeminar.%player%} to true
+			send "<light blue>Seminar complete!" to the player
+		else if the name of the clicked item is "<light blue>Dark Magic: Evil Because We Said So":
+			make player execute command "/grantspell 0 Thief"
+			make player execute command "/grantspell 0 Stone"
+			make player execute command "/grantspell 0 Silence"
+			set {hasAttendedSeminar.%player%} to true
+			send "<light blue>Seminar complete!" to the player
+		else if the name of the clicked item is "<light blue>Mobility Spells: Annoying Your Friends Efficiently":
+			make player execute command "/grantspell 0 Rescue"
+			make player execute command "/grantspell 0 Slipgate"
+			set {hasAttendedSeminar.%player%} to true
+			send "<light blue>Seminar complete!" to the player				
+		else if the name of the clicked item is "<light blue>Master Knight Certification":
+			make player execute command "/grantspell 0 Naga"
+			make player execute command "/grantspell 0 Forseti"
+			make player execute command "/grantspell 0 Loptous"
+			set {hasAttendedSeminar.%player%} to true
+			send "<light blue>Seminar complete!" to the player
+		if {hasAttendedSeminar.%player%} is set:
+			close the player's inventory
+	#General Menus
+	else if the name of the player's current inventory contains "Guest Speaker":
+		cancel event
+		if the name of the clicked item contains "<light blue>":
+			if the name of the clicked item contains "-":
+				set {_treeName} to the name of the clicked item
+				set {_treeName} to decolorize({_treeName})
+				set {_treeSplit::*} to {_treeName} split at ": "
+				set {_treeType::*} to {_treeSplit::2} split at " "
+				set {_itemSlot} to the index of the event-slot
+				if {_itemSlot} is between 8 and 18:
+					set {perkTreeXP.%{_treeSplit::1}%.%player%::%{_treeType::1}%} to {perksFirstHonorXPRequirement}
+				else:
+					set {perkTreeXP.%{_treeSplit::1}%.%player%::%{_treeType::1}%} to {perksSecondHonorXPRequirement}
+				set {hasAttendedSeminar.%player%} to true
+				send "<light blue>Perk unlocked!" to the player
+		if {hasAttendedSeminar.%player%} is set:
+			close the player's inventory
+				

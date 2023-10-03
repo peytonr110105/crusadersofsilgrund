@@ -304,7 +304,149 @@ function checkPlayerClass(PLR: entity,CLS: text) :: number:
 				return 1
 			else:
 				return 0
-	
+		else if {_CLS} is "Summoner":
+			if {npc_class.%{_CID}%} is "Summoner":
+				return 1
+			else if {npc_class.%{_CID}%} is "Fell Commander":
+				return 1
+			else if {npc_class.%{_CID}%} is "Requisitioner":
+				return 1
+			else:
+				return 0
+				
+#Check if the player is a particular class.
+function getBaseClass(PLR: entity) :: text:
+	#Find citizen id of entity for compare checks
+	set {_CID} to citizen id of {_PLR}
+	if {_CID} is not set:
+		if {class.%{_PLR}%} is "Cavalier":
+			return "Cavalier"
+		else if {class.%{_PLR}%} is "Paladin":
+			return "Cavalier"
+		else if {class.%{_PLR}%} is "Crusader":
+			return "Cavalier"
+		else if {class.%{_PLR}%} is "Mage":
+			return "Mage"
+		else if {class.%{_PLR}%} is "Sorcerer":
+			return "Mage"
+		else if {class.%{_PLR}%} is "Archwizard":
+			return "Mage"
+		else if {class.%{_PLR}%} is "Mercenary":
+			return "Mercenary"
+		else if {class.%{_PLR}%} is "Hero":
+			return "Mercenary"
+		else if {class.%{_PLR}%} is "Prince":
+			return "Mercenary"
+		else if {class.%{_PLR}%} is "Lord":
+			return "Mercenary"
+		else if {class.%{_PLR}%} is "Knight":
+			return "Knight"
+		else if {class.%{_PLR}%} is "General":
+			return "Knight"
+		else if {class.%{_PLR}%} is "Chieftain":
+			return "Knight"
+		else if {class.%{_PLR}%} is "Bladesman":
+			return "Bladesman"
+		else if {class.%{_PLR}%} is "Myrmidon":
+			return "Bladesman"
+		else if {class.%{_PLR}%} is "Swordmaster":
+			return "Bladesman"
+		else if {class.%{_PLR}%} is "Fighter":
+			return "Fighter"
+		else if {class.%{_PLR}%} is "Berserker":
+			return "Fighter"
+		else if {class.%{_PLR}%} is "Warrior":
+			return "Fighter"
+		else if {class.%{_PLR}%} is "Cleric":
+			return "Cleric"
+		else if {class.%{_PLR}%} is "Bishop":
+			return "Cleric"
+		else if {class.%{_PLR}%} is "Sage":
+			return "Cleric"
+		else if {class.%{_PLR}%} is "Devil Hunter":
+			return "Devil Hunter"
+		else if {class.%{_PLR}%} is "Angel Slayer":
+			return "Devil Hunter"
+		else if {class.%{_PLR}%} is "Platinum Star":
+			return "Devil Hunter"
+		else if {class.%{_PLR}%} is "Gunslinger":
+			return "Gunslinger"
+		else if {class.%{_PLR}%} is "Rifleman":
+			return "Gunslinger"
+		else if {class.%{_PLR}%} is "Doom Slayer":
+			return "Gunslinger"
+		else if {class.%{_PLR}%} is "Strategist":
+			return "Strategist"
+		else if {class.%{_PLR}%} is "Tactician":
+			return "Strategist"
+		else if {class.%{_PLR}%} is "Grandmaster":
+			return "Strategist"
+		else if {class.%{_PLR}%} is "Archer":
+			return "Archer"
+		else if {class.%{_PLR}%} is "Ranger":
+			return "Archer"
+		else if {class.%{_PLR}%} is "Sniper":
+			return "Archer"
+		else if {class.%{_PLR}%} is "Survivor":
+			return "Survivor"
+		else if {class.%{_PLR}%} is "Builder":
+			return "Survivor"
+		else if {class.%{_PLR}%} is "Craftsman":
+			return "Survivor"
+		else if {class.%{_PLR}%} is "Trickster":
+			return "Trickster"
+		else if {class.%{_PLR}%} is "Rogue":
+			return "Trickster"
+		else if {class.%{_PLR}%} is "Freeblade":
+			return "Trickster"
+		else if {class.%{_PLR}%} is "Dragonborn":
+			return "Dragonborn"
+		else if {class.%{_PLR}%} is "Manakete":
+			return "Dragonborn"
+		else if {class.%{_PLR}%} is "Divine Dragon":
+			return "Dragonborn"
+		else if {class.%{_PLR}%} is "Summoner":
+			return "Summoner"
+		else if {class.%{_PLR}%} is "Fell Commander":
+			return "Summoner"
+		else if {class.%{_PLR}%} is "Requisitioner":
+			return "Summoner"
+		else if {class.%{_PLR}%} is "Keeper":
+			return "Keeper"
+		else if {class.%{_PLR}%} is "Warden":
+			return "Keeper"
+		else if {class.%{_PLR}%} is "Guardian":
+			return "Keeper"
+		else if {class.%{_PLR}%} is "Charlatan":
+			return "Charlatan"
+		else if {class.%{_PLR}%} is "Occultist":
+			return "Charlatan"
+		else if {class.%{_PLR}%} is "Augur":
+			return "Charlatan"
+		else if {class.%{_PLR}%} is "Poet":
+			return "Poet"
+		else if {class.%{_PLR}%} is "Bard":
+			return "Poet"
+		else if {class.%{_PLR}%} is "Minstrel":
+			return "Poet"
+		else if {class.%{_PLR}%} is "Outlaw":
+			return "Outlaw"
+		else if {class.%{_PLR}%} is "Cleaner":
+			return "Outlaw"
+		else if {class.%{_PLR}%} is "Assassin":
+			return "Outlaw"
+		else if {class.%{_PLR}%} is "Conjurer":
+			return "Conjurer"
+		else if {class.%{_PLR}%} is "Thaumaturge":
+			return "Conjurer"
+		else if {class.%{_PLR}%} is "Warlock":
+			return "Conjurer"
+		else if {class.%{_PLR}%} is "Troubador":
+			return "Troubador"
+		else if {class.%{_PLR}%} is "Valkyrie":
+			return "Troubador"
+		else if {class.%{_PLR}%} is "Master Knight":
+			return "Troubador"					
 #Remove coloring from a piece of text.
 function decolorize(TXT: text) :: text:
 	set {_decolored} to uncolored {_TXT}
@@ -348,6 +490,8 @@ function getHelmet(PLR: player) :: number:
 		return 4
 	else if {_PLR} is wearing a diamond helmet:
 		return 5
+	else if {_PLR} is wearing a netherite helmet:
+		return 6
 		
 #Get the type of chestplate the player is wearing.
 function getChestplate(PLR: player) :: number:
@@ -360,6 +504,8 @@ function getChestplate(PLR: player) :: number:
 	else if {_PLR} is wearing a gold chestplate:
 		return 4
 	else if {_PLR} is wearing a diamond chestplate:
+		return 5
+	else if {_PLR} is wearing a netherite chestplate:
 		return 5
 
 #Get the type of leggings the player is wearing.
@@ -374,6 +520,8 @@ function getLeggings(PLR: player) :: number:
 		return 4
 	else if {_PLR} is wearing diamond leggings:
 		return 5
+	else if {_PLR} is wearing netherite leggings:
+		return 6
 		
 #Get the type of boots the player is wearing.
 function getBoots(PLR: player) :: number:
@@ -387,6 +535,8 @@ function getBoots(PLR: player) :: number:
 		return 4
 	else if {_PLR} is wearing diamond boots:
 		return 5
+	else if {_PLR} is wearing netherite boots:
+		return 6
 		
 #Call this to display a visible buff with accompanying sfx on the player.
 function buffSFX(PLR: player):
@@ -403,57 +553,73 @@ function buffSFX(PLR: player):
 		subtract 0.1 from {_vol}
 		wait 1 ticks
 
+#Call this to play a pokemon-style low health warning
+function lowHPSFX(PLR: player):
+	loop 3 times:
+		play sound "entity.experience_orb.pickup" with volume 1 and pitch 1.4 at {_PLR} for {_PLR}
+		wait 0.15 seconds
+		play sound "entity.experience_orb.pickup" with volume 1 and pitch 0.9 at {_PLR} for {_PLR}
+		wait 0.3 seconds
+
 #Get helmet damage resistance.
-function getHelmetDamageResistance(PLR: player) :: number:
+function getHelmetDamageResistance(PLR: entity) :: number:
 	if {_PLR} is wearing a leather helmet:
-		return 0.25
+		return 4
 	else if {_PLR} is wearing a chain helmet:
-		return 0.55
+		return 8
 	else if {_PLR} is wearing an iron helmet:
-		return 0.75
+		return 8
 	else if {_PLR} is wearing a gold helmet:
-		return 0.25
+		return 8
 	else if {_PLR} is wearing a diamond helmet:
-		return 0.8
+		return 12
+	else if {_PLR} is wearing a netherite helmet:
+		return 12
 		
 #Get chestplate damage resistance.
-function getChestplateDamageResistance(PLR: player) :: number:
+function getChestplateDamageResistance(PLR: entity) :: number:
 	if {_PLR} is wearing a leather chestplate:
-		return 0.25
+		return 12
 	else if {_PLR} is wearing a chain chestplate:
-		return 0.55
+		return 20
 	else if {_PLR} is wearing an iron chestplate:
-		return 1
+		return 24
 	else if {_PLR} is wearing a gold chestplate:
-		return 0.5
+		return 20
 	else if {_PLR} is wearing a diamond chestplate:
-		return 2
+		return 32
+	else if {_PLR} is wearing a netherite chestplate:
+		return 32
 
 #Get leggings damage resistance.
-function getLeggingsDamageResistance(PLR: player) :: number:
+function getLeggingsDamageResistance(PLR: entity) :: number:
 	if {_PLR} is wearing leather leggings:
-		return 0.25
+		return 8
 	else if {_PLR} is wearing chain leggings:
-		return 0.55
+		return 16
 	else if {_PLR} is wearing iron leggings:
-		return 1
+		return 20
 	else if {_PLR} is wearing gold leggings:
-		return 0.5
+		return 12
 	else if {_PLR} is wearing diamond leggings:
-		return 2
+		return 24
+	else if {_PLR} is wearing netherite leggings:
+		return 24
 		
 #Get boots damage resistance.
-function getBootsDamageResistance(PLR: player) :: number:
+function getBootsDamageResistance(PLR: entity) :: number:
 	if {_PLR} is wearing leather boots:
-		return 0.25
+		return 4
 	else if {_PLR} is wearing chain boots:
-		return 0.55
+		return 4
 	else if {_PLR} is wearing iron boots:
-		return 0.75
+		return 8
 	else if {_PLR} is wearing gold boots:
-		return 0.25
+		return 4
 	else if {_PLR} is wearing diamond boots:
-		return 0.8
+		return 12
+	else if {_PLR} is wearing netherite boots:
+		return 12
 
 #Start a quest with the given arguments.
 function startQuest(PLR: player , QUEST: text , DESC: text):
@@ -491,19 +657,20 @@ function failQuest(PLR: player , QUEST: text , DESC: text):
 	show mob spawner flames on {_PLR}
 	
 #Calculates the player's preferred/best weapon using their weapon ranks.
-function bestWeapon(PLR: player) :: number:
-	if ({weaponrank.%{_PLR}%::swords} + {weaponrank.%{_PLR}%::lances} + {weaponrank.%{_PLR}%::bows} + {weaponrank.%{_PLR}%::magic} + {weaponrank.%{_PLR}%::staves}) is more than ({weaponrank.%{_PLR}%::axes} + {weaponrank.%{_PLR}%::lances} + {weaponrank.%{_PLR}%::bows} + {weaponrank.%{_PLR}%::magic} + {weaponrank.%{_PLR}%::staves}):
-		return 1
-	else if ({weaponrank.%{_PLR}%::axes} + {weaponrank.%{_PLR}%::lances} + {weaponrank.%{_PLR}%::bows} + {weaponrank.%{_PLR}%::magic} + {weaponrank.%{_PLR}%::staves}) is more than ({weaponrank.%{_PLR}%::swords} + {weaponrank.%{_PLR}%::lances} + {weaponrank.%{_PLR}%::bows} + {weaponrank.%{_PLR}%::magic} + {weaponrank.%{_PLR}%::staves}):
-		return 2
-	else if ({weaponrank.%{_PLR}%::lances} + {weaponrank.%{_PLR}%::swords} + {weaponrank.%{_PLR}%::bows} + {weaponrank.%{_PLR}%::magic} + {weaponrank.%{_PLR}%::staves}) is more than ({weaponrank.%{_PLR}%::axes} + {weaponrank.%{_PLR}%::swords} + {weaponrank.%{_PLR}%::bows} + {weaponrank.%{_PLR}%::magic} + {weaponrank.%{_PLR}%::staves}):
-		return 3
-	else if ({weaponrank.%{_PLR}%::bows} + {weaponrank.%{_PLR}%::lances} + {weaponrank.%{_PLR}%::swords} + {weaponrank.%{_PLR}%::magic} + {weaponrank.%{_PLR}%::staves}) is more than ({weaponrank.%{_PLR}%::axes} + {weaponrank.%{_PLR}%::lances} + {weaponrank.%{_PLR}%::swords} + {weaponrank.%{_PLR}%::magic} + {weaponrank.%{_PLR}%::staves}):
-		return 4
-	else if ({weaponrank.%{_PLR}%::magic} + {weaponrank.%{_PLR}%::lances} + {weaponrank.%{_PLR}%::bows} + {weaponrank.%{_PLR}%::swords} + {weaponrank.%{_PLR}%::staves}) is more than ({weaponrank.%{_PLR}%::axes} + {weaponrank.%{_PLR}%::lances} + {weaponrank.%{_PLR}%::bows} + {weaponrank.%{_PLR}%::swords} + {weaponrank.%{_PLR}%::staves}):
-		return 5
-	else if ({weaponrank.%{_PLR}%::staves} + {weaponrank.%{_PLR}%::lances} + {weaponrank.%{_PLR}%::bows} + {weaponrank.%{_PLR}%::magic} + {weaponrank.%{_PLR}%::swords}) is more than ({weaponrank.%{_PLR}%::axes} + {weaponrank.%{_PLR}%::lances} + {weaponrank.%{_PLR}%::bows} + {weaponrank.%{_PLR}%::magic} + {weaponrank.%{_PLR}%::swords}):
-		return 6
+#DEFUNCT
+#function bestWeapon(PLR: player) :: number:
+#	if ({weaponrank.%{_PLR}%::swords} + {weaponrank.%{_PLR}%::lances} + {weaponrank.%{_PLR}%::bows} + {weaponrank.%{_PLR}%::magic} + {weaponrank.%{_PLR}%::staves}) is more than ({weaponrank.%{_PLR}%::axes} + {weaponrank.%{_PLR}%::lances} + {weaponrank.%{_PLR}%::bows} + {weaponrank.%{_PLR}%::magic} + {weaponrank.%{_PLR}%::staves}):
+#		return 1
+#	else if ({weaponrank.%{_PLR}%::axes} + {weaponrank.%{_PLR}%::lances} + {weaponrank.%{_PLR}%::bows} + {weaponrank.%{_PLR}%::magic} + {weaponrank.%{_PLR}%::staves}) is more than ({weaponrank.%{_PLR}%::swords} + {weaponrank.%{_PLR}%::lances} + {weaponrank.%{_PLR}%::bows} + {weaponrank.%{_PLR}%::magic} + {weaponrank.%{_PLR}%::staves}):
+#		return 2
+#	else if ({weaponrank.%{_PLR}%::lances} + {weaponrank.%{_PLR}%::swords} + {weaponrank.%{_PLR}%::bows} + {weaponrank.%{_PLR}%::magic} + {weaponrank.%{_PLR}%::staves}) is more than ({weaponrank.%{_PLR}%::axes} + {weaponrank.%{_PLR}%::swords} + {weaponrank.%{_PLR}%::bows} + {weaponrank.%{_PLR}%::magic} + {weaponrank.%{_PLR}%::staves}):
+#		return 3
+#	else if ({weaponrank.%{_PLR}%::bows} + {weaponrank.%{_PLR}%::lances} + {weaponrank.%{_PLR}%::swords} + {weaponrank.%{_PLR}%::magic} + {weaponrank.%{_PLR}%::staves}) is more than ({weaponrank.%{_PLR}%::axes} + {weaponrank.%{_PLR}%::lances} + {weaponrank.%{_PLR}%::swords} + {weaponrank.%{_PLR}%::magic} + {weaponrank.%{_PLR}%::staves}):
+#		return 4
+#	else if ({weaponrank.%{_PLR}%::magic} + {weaponrank.%{_PLR}%::lances} + {weaponrank.%{_PLR}%::bows} + {weaponrank.%{_PLR}%::swords} + {weaponrank.%{_PLR}%::staves}) is more than ({weaponrank.%{_PLR}%::axes} + {weaponrank.%{_PLR}%::lances} + {weaponrank.%{_PLR}%::bows} + {weaponrank.%{_PLR}%::swords} + {weaponrank.%{_PLR}%::staves}):
+#		return 5
+#	else if ({weaponrank.%{_PLR}%::staves} + {weaponrank.%{_PLR}%::lances} + {weaponrank.%{_PLR}%::bows} + {weaponrank.%{_PLR}%::magic} + {weaponrank.%{_PLR}%::swords}) is more than ({weaponrank.%{_PLR}%::axes} + {weaponrank.%{_PLR}%::lances} + {weaponrank.%{_PLR}%::bows} + {weaponrank.%{_PLR}%::magic} + {weaponrank.%{_PLR}%::swords}):
+#		return 6
 	
 #Check if the item's name is a valid staff.
 function isStaff(NAME: text) :: number:
@@ -546,6 +713,19 @@ function npcChat(PLR: player , TXT: text):
 #Perk Slot Check Function
 function checkSlots(PLR: entity , skill: text) :: number:
 	set {_CID} to citizen id of {_PLR}
+	if {_PLR} is monster:
+		if {t_skillslot1.%{_PLR}%} is "%{_skill}%":
+			return 1
+		else if {t_skillslot2.%{_PLR}%} is "%{_skill}%":
+			return 1
+		else if {t_skillslot3.%{_PLR}%} is "%{_skill}%":
+			return 1
+		else if {t_skillslot4.%{_PLR}%} is "%{_skill}%":
+			return 1
+		else if {t_skillslot5.%{_PLR}%} is "%{_skill}%":
+			return 1
+		else:
+			return 0		
 	if {_CID} is not set:
 		if {skillslot1.%{_PLR}%} is "%{_skill}%":
 			return 1
@@ -556,6 +736,16 @@ function checkSlots(PLR: entity , skill: text) :: number:
 		else if {skillslot4.%{_PLR}%} is "%{_skill}%":
 			return 1
 		else if {skillslot5.%{_PLR}%} is "%{_skill}%":
+			return 1
+		else if {skillslot6.%{_PLR}%} is "%{_skill}%":
+			return 1
+		else if {skillslot7.%{_PLR}%} is "%{_skill}%":
+			return 1
+		else if {skillslot8.%{_PLR}%} is "%{_skill}%":
+			return 1
+		else if {skillslot9.%{_PLR}%} is "%{_skill}%":
+			return 1
+		else if {skillslot10.%{_PLR}%} is "%{_skill}%":
 			return 1
 		else:
 			return 0
@@ -592,6 +782,31 @@ function checkClass(PLR: player) :: number:
 	else:
 		return 0
 		
+#Check if the player's class can innately use magic.
+function canUseMagic(PLR: player) :: boolean:
+	if getBaseClass({_PLR}) is "Mage":
+		return true
+	else if getBaseClass({_PLR}) is "Cleric":
+		return true
+	else if getBaseClass({_PLR}) is "Strategist":
+		return true
+	else if getBaseClass({_PLR}) is "Troubador":
+		return true
+	else if getBaseClass({_PLR}) is "Keeper":
+		return true
+	else if getBaseClass({_PLR}) is "Charlatan":
+		return true
+	else if getBaseClass({_PLR}) is "Conjurer":
+		return true
+	else if getBaseClass({_PLR}) is "Poet":
+		return true
+	else if getBaseClass({_PLR}) is "Mercenary":
+		return true
+	else if getBaseClass({_PLR}) is "Summoner":
+		return true
+	else if getBaseClass({_PLR}) is "Survivor":
+		return true
+		
 #Checks to see if a player should be able to initiate a support conversation with an NPC, with a given amount of support points.
 function npcSupportHandler(PLR: player,NPC: text):
 	#Fast Supports
@@ -618,32 +833,62 @@ function npcSupportHandler(PLR: player,NPC: text):
 							exit 1 loop
 					if {_blockSupport} is not set:
 						set {supportConvoAvailable.%{_PLR}%::%{_NPC}%} to 3
-				
+		
+#custom ABS function since Skript's is broken		
 function getAbsoluteValue(NUM: number) :: number:
 	if {_NUM} is less than 0:
 		return ({_NUM} * -1)
 		
+function getPromotionCompensatedClassLevel(PLR: player) :: number:
+	set {_CID} to citizen id of {_PLR}
+	if {_CID} is not set:
+		set {_lvl} to ({lvl.%{_PLR}%} + (({promoted.%{_PLR}%} - 1) * 3))
+		return {_LVL}
+	else:
+		set {_lvl} to ({npc_lvl.%{_CID}%} + (({npc_promoted.%{_CID}%} - 1) * 3))
+		return {_LVL}		
+
 function addClassXP(PLR: entity, XP: number):
+	set {_xp} to floor({_xp})
 	#Check if PLR is an NPC or player
 	set {_CID} to citizen id of {_PLR}
 	#Is Player
 	if {_CID} is not set:
 		if {lvl.%{_PLR}%} is less than {lvlcap.%{_PLR}%}:
+			set {_plrBaseClass} to getBaseClass({_PLR})
+			if checkSlots({_PLR},"Intuition") is 1:
+				add {_XP} to {classXP.%{_PLR}%}
+				add {_XP} to {perkTreeXP.%{_plrBaseClass}%.%{_PLR}%::%{activePerkTree.%{_PLR}%::%{_plrBaseClass}%}%}
+				add {_XP} to {perkTreeXP.%{_plrBaseClass}%.%{_PLR}%::Global}
 			add {_XP} to {classXP.%{_PLR}%}
-			if {classXP.%{_PLR}%} is more than or equal to (((({lvl.%{_PLR}%} + (({promoted.%{_PLR}%} - 1) * 10)) ^ 2) / 2) + 20):
+			add {_XP} to {perkTreeXP.%{_plrBaseClass}%.%{_PLR}%::%{activePerkTree.%{_PLR}%::%{_plrBaseClass}%}%}
+			#Warn player if they have maxed out a perk tree
+			if {perkTreeXP.%{_plrBaseClass}%.%{_PLR}%::%{activePerkTree.%{_PLR}%::%{_plrBaseClass}%}%} is more than {perksSecondHonorXPRequirement}:
+				if {t_hideClassXPTreeFullWarning.%{_PLR}%} is not true:
+					send formatted "<light purple>You have unlocked all the perks in your current perk tree. It is recommended to change your active tree to unlock more perks." to {_PLR}
+					send formatted "<run command:/perks 2><light green>Click here to change your active perk tree." to {_PLR}
+					send formatted "<run command:/ignoreperktreewarning><light red>Click here to suppress this warning until the server restarts." to {_PLR}
+			add {_XP} to {perkTreeXP.%{_plrBaseClass}%.%{_PLR}%::Global}
+			set {_playerLVL} to getPromotionCompensatedClassLevel({_PLR})
+			if {classXP.%{_PLR}%} is more than or equal to ceil((({_playerLVL} + ({_playerLVL} ^ 2)) / (1 + ({promoted.%{_PLR}%} - 1))) + 10):
 				set bossbar "classxpbar.%{_PLR}'s UUID%" progress to 0
 				make console execute command "/adm_lvlup %{_PLR}%"
-				set {classXP.%{_PLR}%} to 0
 			else:
 				set {_pitch} to a random number between 0.7 and 1.3
 				play sound "entity.experience_orb.pickup" with volume 0.5 and pitch {_pitch} at {_PLR} for {_PLR}
 				play 2 (firework spark with speed 0) at {_PLR}
 				play 2 (critical hit with speed 1) at {_PLR}
-				set bossbar "classxpbar.%{_PLR}'s UUID%" progress to ({classXP.%{_PLR}%} / (((({lvl.%{_PLR}%} + (({promoted.%{_PLR}%} - 1) * 10)) ^ 2) / 2) + 20)) * 100
+				set {_XP} to ceil((({_playerLVL} + ({_playerLVL} ^ 2)) / (1 + ({promoted.%{_PLR}%} - 1))) + 10)
+				set bossbar "classxpbar.%{_PLR}'s UUID%" progress to floor({classXP.%{_PLR}%} / {_XP}) * 100
 	#Is NPC
 	else:
 		if {npc_lvl.%{_CID}%} is less than {npc_lvlcap.%{_PLR}%}:
 			add {_XP} to {npc_classXP.%{_CID}%}
-			if {npc_classXP.%{_CID}%} is more than or equal to ((({npc_lvl.%{_CID}%} + (({npc_promoted.%{_CID}%} - 1) * 10)) ^ 2) / 2) + 20:
-				make console execute command "/adm_lvlup %{_PLR}%"
-				set {npc_classXP.%{_CID}%} to 0
+			set {_playerLVL} to getPromotionCompensatedClassLevel({_PLR})
+			if {npc_classXP.%{_CID}%} is more than or equal to ceil((({_playerLVL} + (({_playerLVL} - 1) ^ 2)) / 2) + 1):
+				make console execute command "/npc_lvlup %{_CID}%"
+				
+command /ignoreperktreewarning:
+	trigger:
+		set {t_hideClassXPTreeFullWarning.%player%} to true
+		send formatted "<light green>Perk tree XP warnings have been suppressed." to the player

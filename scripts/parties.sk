@@ -1,0 +1,180 @@
+#Build an army. Trust nobody. Fire Emblem, now for Gameboy Advance!
+
+#Variable List:
+#{party.%player%} - The name of the party the player is a member of
+#{x.settings::*} - X = name of the party, this stores various flags related to the party settings
+#{x.activeInvites::*} - X = name of the party, stores the names of players who have a valid invite to the party
+#{x.storage::*} - X = name of the party, stores the party's shared remote storage
+#{x.members::*} - X = name of the party, tracks the party's members
+#{masterPartyList::*} - Acts as a directory for all active parties
+
+#Returns the total number of members in the specified party
+#If the party does not exist, returns -1.
+function getTotalPartyMembers(PTY: text) :: number:
+	if {%{_PTY}%.members::*} is not set:
+		return -1
+	else:
+		loop {%{_PTY}%.members::*}:
+			add 1 to {_members}
+		return {_members}
+
+
+#Parties text command, the Journal uses this command for the GUI interface.
+command /party <text> [<text="null">]:
+	aliases: /army, /team, /group
+	trigger:
+		if arg 1 is "help":
+			send formatted "<gold>Party Help:"
+			send formatted "<gold>/party join (name) - Join the specified party."
+			send formatted "<gold>/party leave - Leaves your current party."
+			send formatted "<gold>/party createParty (name) - Create a new party."
+			send formatted "<gold>/party sendInvite (player) - Invite a player to your party."
+			send formatted "<gold>/party disband - Disband your party."
+			send formatted "<gold>/party openStorage - Open your shared storage."
+			send formatted "<gold>/party BEX - Use some of your party's bonus exp."
+			send formatted "<gold>/party togglePrivateStatus - Toggle if your party can be joined without an invite."
+		#Join party logic
+		else if arg 1 is "join":
+			#Prevent the player from joining a party if they are already in a different party.
+			if {party.%player%} is not set:
+				#Check to see if the party the player is trying to join requires invites.
+				if {%arg 2%.settings::isPrivate} is not true:
+					add the player to {%arg 2%.members::*}
+					set {party.%player%} to arg 2
+					loop {%arg 2%.members::*}:
+						send formatted "<light purple>%player's tablist name% [%player's name%] is now a member of %arg 2%" to loop-value
+				else:
+					#Check to see if the player has an invite to the party they are trying to join.
+					loop {%arg 2%.activeInvites::*}:
+						if loop-value is the player:
+							add the player to {%arg 2%.members::*}
+							set {party.%player%} to arg 2
+							#Clears the player's invite so they can't re-join the party without a new invite.
+							clear {%arg 2%.activeInvites::%player%}
+							loop {%arg 2%.members::*}:
+								send formatted "<light purple>%player's tablist name% [%player's name%] is now a member of %arg 2%" to loop-value-2
+							exit 1 loop
+		#Leave party logic
+		else if arg 1 is "leave":
+			if {party.%player%} is not set:
+				send "<light red>You aren't in a party!"
+			else:
+				remove the player from {%{party.%player%}%.members::*}
+				send formatted "<light purple>You left %{party.%player%}%." to the player
+				loop {%{party.%player%}%.members::*}:
+					send formatted "<light purple>%player's tablist name% [%player's name%] left the party." to loop-value
+				clear {party.%player%}
+		#Kick player logic
+		else if arg 1 is "kick":
+			#Only owner can kick players
+			if {%{party.%player%}%.settings::Owner} is the player:
+				set {_player} to arg 2 parsed as player
+				remove {_player} from {%{party.%player%}%.members::*}
+				send formatted "<light red>You were kicked from %{party.%player%}% by the party leader." to {_player}
+				loop {%{party.%player%}%.members::*}:
+					send formatted "<light red>%{_player}'s tablist name% [%{_player}'s name%] was kicked from your party." to loop-value
+		#Send Invite logic
+		else if arg 1 is "sendInvite":
+			set {_player} to arg 2 parsed as player
+			add {_player} to {%{party.%player%}%.activeInvites::*}
+			send formatted "<run command:/party join %{party.%player%}%><light yellow>%player's tablist name% [%player's name%] is requesting you join their party. Click here to join!" to {_player}
+		#Set private status logic
+		else if arg 1 is "togglePrivateStatus":
+			if {%{party.%player%}%.settings::isPublic} is false:
+				set {%{party.%player%}%.settings::isPublic} to true
+				send "<light yellow>Party now public." to the player
+			else:
+				set {%{party.%player%}%.settings::isPublic} to false
+				send "<light yellow>Party now private." to the player
+		#Create Party logic
+		else if arg 1 is "createParty":
+			#Prevents party creation if the name is already taken.
+			loop {masterPartyList::*}:
+				if loop-value is arg 2:
+					set {_blockPartyCreation} to true
+					exit 1 loop
+			if {_blockPartyCreation} is true:
+				send "<light red>A party with that name already exists!" to the player
+			else:
+				add arg 2 to {masterPartyList::*}
+				set {party.%player%} to arg 2
+				clear {%arg 2%.members::*}
+				add the player to {%arg 2%.members::*}
+				set {%arg 2%.settings::Owner} to the player
+				set {%arg 2%.settings::Synergy} to 1
+				set {%arg 2%.settings::isPublic} to false
+				send formatted "<light yellow>The party %arg 2% was created successfully." to the player
+		#Disband Party logic
+		else if arg 1 is "disband":
+			#Only the owner of a party may disband it.
+			if {%{party.%player%}%.settings::Owner} is the player:
+				remove {party.%player%} from {masterPartyList::*}
+				loop {%{party.%player%}%.members::*}:
+					send "<light red>Your party was disbanded by the leader." to loop-value
+					clear {party.%loop-value%}
+			else:
+				send "<light red>You must be the owner of the party to disband it!" to the player
+		#Open Storage
+		else if arg 1 is "openStorage":
+			open chest with 6 rows named "<gold>Party Storage" for the player
+			set {_slot} to 0
+			loop {%{party.%player%}%.storage::*}:
+				set slot {_slot} of the player's current inventory to loop-value
+				add 1 to {_slot}
+		#Use BEX
+		else if arg 1 is "useBEX":
+			set {_bexToWithdraw} to arg 2 parsed as number
+			if {_bexToWithdraw} is more than {%{party.%player%}%::Bonus XP Bank}:
+				set {_bexToWithdraw} to {%{party.%player%}%::Bonus XP Bank}
+			if {_bexToWithdraw} is more than (ceil((({_playerLVL} + ({_playerLVL} ^ 2)) / (1 + ({promoted.%{_PLR}%} - 1))) + 10) - {classXP.%player%}) * -1:
+				set {_bexToWithdraw} to (ceil((({_playerLVL} + ({_playerLVL} ^ 2)) / (1 + ({promoted.%{_PLR}%} - 1))) + 10) - {classXP.%player%}) * -1
+			send "%{_bexToWithdraw}%" to the player
+			addClassXP(player,{_bexToWithdraw})
+			subtract {_bexToWithdraw} from {%{party.%player%}%::Bonus XP Bank}
+		#Poke BEX
+		else if arg 1 is "BEX":
+			if {lvl.%player%} is more than or equal to {lvlcap.%player%}:
+				send formatted "<light red>You are at the maximum level for your current class. BEX cannot be used." to the player
+			else:
+				send formatted "<gold>Your party has %{%{party.%player%}%::Bonus XP Bank}% BEX available." to the player
+				send formatted "<gold>You can withdraw up to %(ceil((({_playerLVL} + ({_playerLVL} ^ 2)) / (1 + ({promoted.%{_PLR}%} - 1))) + 10) - {classXP.%player%}) * -1% BEX for a level-up."
+				send formatted "<cyan>Type the amount of BEX to withdraw, or 0 to cancel:" to the player
+				set {withdrawBEX.%player%} to true
+				
+#Party Storage update logic
+on inventory open:
+	if the name of the player's current inventory contains "Party Storage":
+		set {%{party.%player%}%.hasPartyStorageOpen::%player%} to true
+		
+on inventory click:
+	if the name of the player's current inventory contains "Party Storage":
+		clear {%{party.%player%}%.storage::*}
+		loop all items in the player's current inventory:
+			add loop-item to {%{party.%player%}%.storage::*}
+		loop all players:
+			if {%{party.%player%}%.hasPartyStorageOpen::%loop-player%} is set:
+				make loop-player execute command "/updatePartyStorage"
+
+on inventory close:
+	if {%{party.%player%}%.hasPartyStorageOpen::%player%} is true:
+		clear {%{party.%player%}%.hasPartyStorageOpen::%player%}
+
+command /updatePartyStorage:
+	trigger:
+		if {%{party.%player%}%.hasPartyStorageOpen::%player%} is true:
+			clear the player's current inventory
+			set {_slot} to 0
+			loop {%{party.%player%}%.storage::*}:
+				set slot {_slot} of the player's current inventory to loop-value
+				add 1 to {_slot}
+		
+on damage:
+	if damage cause is attack:
+		set {_doDamageCheck} to true
+	else if projectile exists:
+		set {_doDamageCheck} to true
+	if citizen id of the attacker is set:
+		set {_doDamageCheck} to true
+	if {_doDamageCheck} is true:
+		if {party.%attacker%} is {party.%victim%}:
+			cancel event

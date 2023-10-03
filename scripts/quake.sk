@@ -1,0 +1,784 @@
+#Quake 3 Arena styled Deathmatch mode
+
+#Arena Configuration Command
+#Arg 1 - Palace Name
+#Arg 2 - Operation
+#Arg 3 - Additional Argument
+command /admin_qaconfig <text> <text> [<number=0>]:
+	trigger:
+		#If Frag Limit is set to -1, the match will go until time runs out
+		if arg 2 is "setFragLimit":
+			set {qa_mapconfig.%arg 1%::Frag Limit} to arg 3
+			send formatted "<gold>Set the Frag Limit for the %arg 1% arena to %arg 3%."
+		#Set a player spawn point (These will be randomly selected)
+		else if arg 2 is "setPlayerSpawn":
+			add player's location to {qa_mapconfig.%arg 1%.playerspawns::*}
+			send formatted "<gold>Added %player's location% to the list of player spawnpoints for the %arg 1% arena."
+		#Delete a player spawn point
+		else if arg 2 is "delPlayerSpawn":
+			loop {qa_mapconfig.%arg 1%.playerspawns::*}:
+				if player's location is loop-value:
+					clear {qa_mapconfig.%arg 1%.spawns::%loop-index%}
+					send formatted "<gold>Removed %player's location% from %arg 1%'s player spawn list."
+		#Clear all player spawn points
+		else if arg 2 is "clearPlayerSpawns":
+			clear {qa_mapconfig.%arg 1%.playerspawns::*}
+			send formatted "<gold>Cleared all player spawnpoints for the %arg 1% arena."
+		#Maps should generally not let the player exit the arena. This acts as a failsafe to catch players that manage to escape.
+		else if arg 2 is "setMapRadius":
+			set {qa_mapconfig.%arg 1%::Map Radius} to arg 3
+			send formatted "<gold>Limiting player travel to a %arg 3% block radius from the arena's center."
+		#Set the arena's center. Used for the player clip failsafe.
+		else if arg 2 is "setMapCenter":
+			set {qa_mapconfig.%arg 1%::Map Center} to player's location
+			send formatted "<gold>Set the center of the arena to %player's location%."
+		#Set the map's time limit, used if the frag limit is set to infinite
+		else if arg 2 is "setMapTimeLimit":
+			set {qa_mapconfig.%arg 1%::Time Limit} to arg 3
+			send formatted "<gold>Set the time limit of %arg 1% to %arg 3% minutes."
+		#Set the map's availability (0 = unplayable, 1 = playable)
+		else if arg 2 is "setAvailability":
+			if arg 3 is 0:
+				remove arg 1 from {qa_openMaps::*}
+				send "<gold>Removed %arg 1% from the list of available arena maps."
+			else if arg 3 is 1:
+				add arg 1 to {qa_openMaps::*}
+				send "<gold>Added %arg 1% to the list of available arena maps."
+				
+#Main arena game logic
+command /runQA <text>:
+	trigger:
+		#Unlike Defend Throne missions, the player already has the arena's attributes via {qa_lobbysettings.x::Map Selected}
+		#Save player inventories & stats
+		loop {qa_lobbyplayers.%{qa_currentlobby.%player%}%::*}:
+			set {t_playingQA.%loop-value%} to true
+			make loop-value execute command "/char save -2"
+			#Disable stats while playing
+			clear {damageAssistToggle.%loop-value-1%}
+			set {strbuff.%loop-value-1%} to 0
+			set {defbuff.%loop-value-1%} to 0
+			set {spdbuff.%loop-value-1%} to 0
+			set {magbuff.%loop-value-1%} to 0
+			set {chrbuff.%loop-value-1%} to 0
+			set {lckbuff.%loop-value-1%} to 0
+			set {resbuff.%loop-value-1%} to 0
+			set {str.%loop-value-1%} to 0
+			set {def.%loop-value-1%} to 0
+			set {spd.%loop-value-1%} to 0
+			set {mag.%loop-value-1%} to 0
+			set {lck.%loop-value-1%} to 0
+			set {chr.%loop-value-1%} to 0
+			set {res.%loop-value-1%} to 0
+			set {traits.%loop-value%::Level-Headed} to true
+			set {skillslot1.%player%} to "Empty"
+			set {skillslot2.%player%} to "Empty"
+			set {skillslot3.%player%} to "Empty"
+			set {skillslot4.%player%} to "Empty"
+			set {skillslot5.%player%} to "Empty"
+			set {skillslot6.%player%} to "Empty"
+			set {skillslot7.%player%} to "Empty"
+			set {skillslot8.%player%} to "Empty"
+			set {skillslot9.%player%} to "Empty"
+			set {skillslot10.%player%} to "Empty"
+			set {t_qa_frags.%loop-value-1%} to 0
+			#Set default perks
+			set {skillslot1.%loop-value%} to "Fast Fingers"
+			set {skillslot2.%loop-value%} to "Controlled Shot"
+			set {skillslot3.%loop-value%} to "Restock"
+			set {skillslot4.%loop-value%} to "Light Feet"
+			#Give default equipment
+			make loop-value-1 execute command "/clear"
+			set the loop-value-1's helmet to 1 iron helmet
+			set the loop-value-1's chestplate to 1 iron chestplate
+			set the loop-value-1's leggings to 1 iron leggings
+			set the loop-value-1's boots to 1 iron boots of feather falling 3
+			add 1 iron horse armor named "<light gray>Iron Pistol" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 8):", "8", "<white><italics>The perfect sidearm to turn the tides." to loop-value-1's inventory
+			add 14 iron nugget to loop-value-1's inventory
+			add 4 gunpowder to loop-value-1's inventory
+			add 1 diamond sword of sharpness 10 named "<light blue>Cleaver" to loop-value-1's inventory
+			set loop-value-1's maximum health to 45
+			heal loop-value-1 by 100 hearts
+		#Get number of spawn points
+		loop {qa_mapconfig.%arg 1%.playerspawns::*}:
+			add 1 to {_RandomSpawnpointCount}
+		clear {t_qa_SpawnpointsTaken.%arg 1%::*}
+		#Spawn players in random positions
+		loop {qa_lobbyplayers.%{qa_currentlobby.%player%}%::*}:
+			set {t_qaReturnLocation.%loop-value%} to loop-value's location
+			wait 1 tick
+			set {_Spawnpoint} to a random integer from 1 to {_RandomSpawnpointCount}
+			#Prevents players from being spawned inside of each other. Lobbies can never exceed four players, so maps need a baseline of four possible spawnpoints.
+			if {t_qa_SpawnpointsTaken.%arg 1%::%{_Spawnpoint}%} is not set:
+				teleport the loop-value to {qa_mapconfig.%arg 1%.playerspawns::%{_Spawnpoint}%}
+				set {t_qa_SpawnpointsTaken.%arg 1%::%{_Spawnpoint}%} to true
+			#If a spawnpoint isn't found, keep checking random spawnpoints until we get one.
+			else:
+				while {t_foundSpawnpointqa.%loop-value%} is not set:
+					set {_Spawnpoint} to a random integer from 1 to {_RandomSpawnpointCount}
+					#Prevents players from being spawned inside of each other. Lobbies can never exceed four players, so maps need a baseline of four possible spawnpoints.
+					if {t_qa_SpawnpointsTaken.%arg 1%::%{_Spawnpoint}%} is not set:
+						teleport the loop-value to {qa_mapconfig.%arg 1%.playerspawns::%{_Spawnpoint}%}
+						set {t_qa_SpawnpointsTaken.%arg 1%::%{_Spawnpoint}%} to true
+						set {t_foundSpawnpointqa.%loop-value%} to true
+						exit 1 loop
+				
+#Gives a weapon to the player that executes the command
+#Disables the pressure plate that triggers the command for 8 seconds
+command /giveFirearm <number>:
+	trigger:
+		set {_loc} to player's location
+		play 20 (firework spark with speed 0) at {_loc}
+		#0 = Flintlock Pistol
+		if arg 1 is 0:
+			give 1 iron horse armor named "<light gray>Flintlock Pistol" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 1):", "1", "<white><italics>Slow, but works in a pinch." to the player
+		#1 = Iron Musket
+		else if arg 1 is 1:
+			give 1 iron horse armor named "<light gray>Iron Musket" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 1):", "1", "<white><italics>Primitive, but effective... if it hits." to the player
+		#2 = Iron Pistol
+		else if arg 1 is 2:
+			give 1 iron horse armor named "<light gray>Iron Pistol" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 8):", "8", "<white><italics>The perfect sidearm to turn the tides." to the player
+		#3 = Redstone Repeater
+		else if arg 1 is 3:
+			give 1 iron horse armor named "<light gray>Redstone Repeater" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 30):", "20", "<white><italics>A middlingly accurate fully-automatic." to the player
+		#4 = Redgrave E-45 Express
+		else if arg 1 is 4:
+			give 1 iron horse armor named "<light gray>Redgrave E-45 Express" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 18):", "18", "<white><italics>Rapid-fire handgun with a large clip." to the player
+		#5 = Redgrave Coyote Alpha
+		else if arg 1 is 5:
+			give 1 golden horse armor named "<light gray>Redgrave Coyote-Alpha" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 5):", "5", "<white><italics>High-damage pump-action, but with large spread." to the player
+		#6 = Teufort Two-Timer
+		else if arg 1 is 6:
+			give 1 golden horse armor named "<light gray>Teufort Two-Timer" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 2):", "2", "<white><italics>Fires with enough force to push things around." to the player
+		#7 = Rocket Launcher
+		else if arg 1 is 7:
+			give 1 diamond horse armor named "<light gray>Rocket Launcher" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 4):", "4", "<white><italics>Fires explosive rounds that launch foes." to the player
+		#8 = Home-Made Heater
+		else if arg 1 is 8:
+			give 1 golden horse armor named "<light gray>Home-Made Heater" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 5):", "5", "<white><italics>Fires high-accuracy armour piercing shots." to the player
+		#9 = Minigun
+		else if arg 1 is 9:
+			give 1 golden horse armor named "<light gray>Minigun" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - N/A", "<white>Special - Empty", "<white>Refine - Empty", "<white><bold>Clip (MAX: 200):", "40", "<white><italics>For when you need a little more gun.", "<white><italics>Fires very quickly, but drains ammo just as fast." to the player
+		#10 = Grenade Launcher
+		else if arg 1 is 10:
+			give 1 diamond horse armor named "<light gray>Grenade Launcher" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 4):", "4", "<white><italics>Launches arcing explosives for massive direct damage." to the player
+		#11 = Vettik S-25
+		else if arg 1 is 11:
+			give 1 golden horse armor named "<light gray>Vettik S-25" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 25):", "5", "<white><italics>Load for a month, and fire for three." to the player
+		#12 = Vettik B-30AS
+		else if arg 1 is 12:
+			give 1 golden horse armor named "<light gray>Vettik B-30AS" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 30):", "30", "<white><italics>Feather the trigger to burst fire." to the player
+		#13 = Vettik A-10 Enforcer
+		else if arg 1 is 13:
+			give 1 golden horse armor named "<light gray>Vettik A-10 Enforcer" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 10):", "6", "<white><italics>Long-range accuracy bundled with full-auto fire." to the player
+		#14 = Redgrave Kalina
+		else if arg 1 is 14:
+			give 1 golden horse armor named "<light gray>Redgrave Kalina" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 10):", "6", "<white><italics>Paint the town red in one shot." to the player
+		#15 = Redgrave Ifrit
+		else if arg 1 is 15:
+			give 1 diamond horse armor named "<light gray>Redgrave Ifrit" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 7):", "7", "<white><italics>For when things get personal." to the player
+		#16 = Big Iron
+		else if arg 1 is 16:
+			give 1 iron horse armor named "<light gray>Big Iron" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 6):", "6", "<white><italics>Nobody'll dare to make a slip." to the player
+		set block at {_loc} to air
+		wait 8 seconds
+		set block at {_loc} to stone pressure plate
+		play 20 (lapis block break with speed 1) at {_loc}
+		
+#Quad Damage and Mega Armour buffs
+on damage:
+	if {t_hasQuadDamage.%attacker%} is set:
+		play sound "entity.generic.explode" with volume 0.5 and pitch 1 at the victim
+		set damage to damage * 4
+	if {t_hasMegaArmour.%victim%} is set:
+		play sound "entity.item.break" with volume 0.5 and pitch 1 at the victim
+		set damage to damage * 0.6
+
+#Give an ammo pack to the player that executes the command
+#Disables the pressure plate that triggers the command for 8 seconds
+command /giveAmmoPack <number>:
+	trigger:
+		play 10 (happy villager with speed 0) at {_loc}
+		set {_loc} to player's location
+		#0 = Gunpower Only
+		if arg 1 is 0:
+			give 15 gunpowder to the player
+		#1 = Iron Nugget x10
+		if arg 1 is 1:
+			give 15 iron nugget to the player
+		#2 = Gold Nugget x10
+		if arg 1 is 2:
+			give 15 gold nugget to the player
+		#3 = Iron Nugget x10 + Gunpowder x5
+		if arg 1 is 3:
+			give 15 iron nugget to the player
+			give 10 gunpowder to the player
+		#4 = Gold Nugget x10 + Gunpowder x5
+		if arg 1 is 4:
+			give 15 gold nugget to the player
+			give 10 gunpowder to the player
+		#5 = Firework x4
+		if arg 1 is 5:
+			give 8 firework to the player
+		#6 = Firework x4 + Gunpowder x4
+		if arg 1 is 6:
+			give 8 firework to the player
+			give 8 gunpowder to the player
+		#7 = Restore 5 HP
+		if arg 1 is 7:
+			heal the player by 5 hearts
+		#8 - Iron Ingot x7
+		if arg 1 is 8:
+			give 14 iron ingot to the player
+		set block at {_loc} to air
+		wait 8 seconds
+		set block at {_loc} to stone pressure plate
+		play 20 (gold block break with speed 1) at {_loc}
+		
+#Restores health to the player that executes the command
+#Disables the pressure plate that triggers the command for 15 seconds
+command /giveHealingItem <number>:
+	trigger:
+		play 10 (lava pop with speed 1) at {_loc}
+		set {_loc} to player's location
+		heal the player by arg 1 hearts
+		add arg 1 to the player's food bar
+		extinguish the player
+		set block at {_loc} to air
+		wait 15 seconds
+		set block at {_loc} to stone pressure plate
+		play 20 (redstone block break with speed 1) at {_loc}
+		
+#Give a special buff to the player
+#Disabled for 60 seconds when picked up
+command /giveSpecialBuff <number>:
+	trigger:
+		set {_loc} to player's location
+		set block at {_loc} to air
+		#1 = Mega Armour (diamond + 40% damage reduction)
+		if arg 1 is 1:
+			set {t_hasMegaArmour.%player%} to 30
+			loop all players in radius 200 of the player:
+				send title "<light blue><bold>%player% grabbed the Mega Armour!" with subtitle "" to loop-player for 4 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+			set the player's helmet to 1 diamond helmet
+			set the player's chestplate to 1 diamond chestplate
+			set the player's leggings to 1 diamond leggings
+			set the player's boots to 1 diamond boots of feather falling 3
+			wait 120 seconds
+			set block at {_loc} to stone pressure plate
+			play 20 (gold block break with speed 1) at {_loc}
+			loop all players in radius 200 of {_loc}:
+				send title "" with subtitle "<light blue>Mega Armour has respawned!" to loop-player for 5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+		#2 = Quad Damage
+		if arg 1 is 2:
+			set {t_hasQuadDamage.%player%} to 30
+			loop all players in radius 200 of the player:
+				send title "<light purple><bold>%player% grabbed the Quad Damage!" with subtitle "" to loop-player for 4 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+			wait 120 seconds
+			set block at {_loc} to stone pressure plate
+			play 20 (gold block break with speed 1) at {_loc}
+			loop all players in radius 200 of {_loc}:
+				send title "" with subtitle "<light blue>Quad Damage has respawned!" to loop-player for 5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+
+		
+#Arena main command.
+#Arg 1 - Menu Layer (Main, Queue, Lobby, Etc..)
+#Arg 2 - Menu Stage (Multiple pages of lobbies, rules menus, etc...)
+command /qa [<number=0>] [<number=0>]:
+	aliases: /quake
+	usage: /qa
+	trigger:
+		#Redirect player to the lobby menu if they're already in a lobby.
+		if {t_qaredirect.%player%} is set:
+			if {qa_currentlobby.%player%} is set:
+				clear {t_qaredirect.%player%}
+				make player execute command "/qa 1 0"
+			else:
+				clear {t_qaredirect.%player%}
+		else:
+			#Main Menu & Lobby Search
+			if arg 1 is 0:
+				if arg 2 is 0:
+					open chest inventory with 1 row named "<red>Arena - Main Menu" for the player
+					set slot 3 of the player's current inventory to 1 chest named "<light green>Search for Lobbies"
+					set slot 4 of the player's current inventory to 1 book named "<white>What is Arena?" with lore "<white>Battle it out with up to 20 players!", "<white>The first to hit the frag limit wins.", "<white>Search the arena for various firearms and last as long as you can.", "<white>If you die, you'll lose all weapons collected."
+					set slot 5 of the player's current inventory to 1 workbench named "<light yellow>Create New Lobby"
+					if {qa_autoqueue.%player%} is not set:
+						set slot 8 of the player's current inventory to 1 redstone block named "<light red>Auto Queue - OFF" with lore "<white>Click to enable Auto Queue.", "<white>Auto Queue will attempt to place you into", "<white>the first lobby that becomes available.", "<white>This feature will only work for public lobbies."
+					else:
+						set slot 8 of the player's current inventory to 1 emerald block named "<light green>Auto Queue - ON" with lore "<white>Auto Queue is searching for a game!", "<white>Please wait while a lobby is found."
+				else if arg 2 is 1:
+					open chest inventory with 2 rows named "<red>Arena - Lobby Search" for the player
+					set {_qaLobbyNum} to 0
+					#List all available lobbies. If the player can't join the lobby for any reason, then it will not be displayed.
+					loop {qa_openlobbies::*}:
+						#Open Lobby - 0
+						if {qa_lobbysettings.%loop-value%::Join Status} is 0:
+							set slot {_qaLobbyNum} of the player's current inventory to 1 lapis block named "<light blue>%{qa_lobbysettings.%loop-value%::Leader}%'s Lobby" with lore "<light red>Player 1 - %{qa_lobbyplayers.%loop-value%::0}'s name%", "<light blue>Player 2 - %{qa_lobbyplayers.%loop-value%::1}'s name%", "<light yellow>Player 3 - %{qa_lobbyplayers.%loop-value%::2}'s name%", "<light green>Player 4 - %{qa_lobbyplayers.%loop-value%::3}'s name%", "<white>DEBUG INFO:", "%loop-value%"
+							add 1 to {_qaLobbyNum}
+						#Friends Only  - 1
+						else if {qa_lobbysettings.%loop-value%::Join Status} is 1:
+							loop {friendsList.%player%::*}:
+								if {qa_lobbysettings.%loop-value-1%::Leader} is loop-value-2:
+									set slot {_qaLobbyNum} of the player's current inventory to 1 lapis block named "<light blue>%{qa_lobbysettings.%loop-value-1%::Leader}%'s Lobby" with lore "<light red>Player 1 - %{qa_lobbyplayers.%loop-value-1%::0}'s name%", "<light blue>Player 2 - %{qa_lobbyplayers.%loop-value-1%::1}'s name%", "<light yellow>Player 3 - %{qa_lobbyplayers.%loop-value-1%::2}'s name%", "<light green>Player 4 - %{qa_lobbyplayers.%loop-value-1%::3}'s name%"
+									add 1 to {_qaLobbyNum}
+									exit 1 loop
+			#In Lobby
+			else if arg 1 is 1:
+				#Redirect player to lobby screen when running /qa again.
+				set {t_qaredirect.%player%} to true
+				#Check if player is the lobby leader. If yes, reveal lobby settings.
+				if {qa_lobbysettings.%{qa_currentlobby.%player%}%::Leader} is the player:
+					open chest inventory with 6 rows named "<red>Arena - Lobby Configuration" for the player
+					#Enforce Frag Limit
+					if {qa_lobbysettings.%{qa_currentlobby.%player%}%::No Frag Limit} is not set:
+						set slot 47 of the player's current inventory to 1 redstone block named "<light red>First to Frag Limit" with lore "<white>Players will fight until the frag limit is reached."
+					else:
+						set slot 47 of the player's current inventory to 1 lapis block named "<light red>Play to Time" with lore "<white>The player with the most frags by the map time limit wins."
+					#Join Status Button
+					if {qa_lobbysettings.%{qa_currentlobby.%player%}%::Join Status} is 0:
+						set slot 48 of the player's current inventory to 1 lapis block named "<light blue>Join Status" with lore "<white>Click to change who can join this lobby.", "<white>Current Setting: Anyone Can Join"
+					else if {qa_lobbysettings.%{qa_currentlobby.%player%}%::Join Status} is 1:
+						set slot 48 of the player's current inventory to 1 gold block named "<light blue>Join Status" with lore "<white>Click to change who can join this lobby.", "<white>Current Setting: Friends Only"
+					#Match Level Button
+					if {qa_lobbysettings.%{qa_currentlobby.%player%}%::Match Level} is false:
+						set slot 49 of the player's current inventory to 1 barrier named "<light yellow>Level Matching" with lore "<white>Click to toggle Level Matching.", "<white>With Level Matching enabled, all players", "<white>will have matched stat totals while playing.", "<white>Levels are matched to the lobby leader.", "<light red>Current Setting: OFF"
+					else:
+						set slot 49 of the player's current inventory to 1 xp bottle named "<light yellow>Level Matching" with lore "<white>Click to toggle Level Matching.", "<white>With Level Matching enabled, all players", "<white>will have matched stat totals while playing.", "<white>Levels are matched to the lobby leader.", "<light blue>Current Setting: ON"
+					#Map Selection
+					set slot 50 of the player's current inventory to 1 map item named "<light purple>Change Map" with lore "<white>Click to change maps.", "<white>NOTE: Some maps may be unavailable during peak hours.", "<white>Current Map: %{qa_lobbysettings.%{qa_currentlobby.%player%}%::Map Selected}%"
+					#Kick Players Info
+					set slot 51 of the player's current inventory to 1 book named "<white>Click a player to kick them from the lobby."
+					#Start Game Button
+					#Unlock the Start Game button if the map is open.
+					if {qa_lobbysettings.%{qa_currentlobby.%player%}%::Map Selected} is not "No map selected.":
+						set slot 52 of the player's current inventory to 1 emerald block named "<light green>Start Game" with lore "<white>Click to start the lobby,", "<white>and get ready for a bloodbath!"
+					else:
+						set slot 52 of the player's current inventory to 1 barrier named "<light red>Cannot Start Game" with lore "<white>The map you are trying to play is not available.", "<white>You can wait for it to open,", "<white>or select a new map."
+					#Disband Lobby
+					set slot 53 of the player's current inventory to 1 barrier named "<light red>Disband Lobby" with lore "<white>Aborts the session and removes this lobby from matchmaking."
+				else:
+					open chest inventory with 6 row named "<red>Arena - Waiting for Players" for the player
+					set slot 53 of the player's current inventory to 1 barrier named "<light red>Leave Lobby" with lore "<white>Click to leave the current lobby."
+				#Display all players
+				set slot 0 of the player's current inventory to 1 red concrete named "<light red>Player 1 - %{qa_lobbyplayers.%{qa_currentlobby.%player%}%::0}'s name%"
+				#Display an empty slot if that player slot is not filled
+				loop {qa_lobbyplayers.%{qa_currentlobby.%player%}%::*}:
+					if {qa_lobbyplayers.%{qa_currentlobby.%player%}%::%loop-index%} is set:
+						set {_li} to loop-index
+						set slot {_li} of the player's current inventory to 1 blue concrete named "<light blue>Player %loop-index% - %{qa_lobbyplayers.%{qa_currentlobby.%player%}%::%loop-index%}'s name%"
+					else:
+						set slot {_li} of the player's current inventory to 1 white concrete named "<white>Empty Slot"
+			#Map Selection
+			else if arg 1 is 2:
+				if arg 2 is 0:
+					open chest inventory with 6 rows named "<red>Arena - Select Map" for the player
+					set {_qaMapNum} to 0
+					loop {qa_openMaps::*}:
+						#Redirect player to lobby screen when running /qa again.
+						set {t_qaredirect.%player%} to true
+						set slot {_qaMapNum} of the player's current inventory to 1 emerald named "<light blue>OPEN: %loop-value%" with lore "%loop-value%"
+						add 1 to {_qaMapNum}
+			#Total Results
+			else if arg 1 is 3:
+				if arg 2 is 0:
+					open chest inventory with 4 row named "<red>Arena - Post-Match Results" for the player
+					
+					#add {t_qa_cashearned.%player%} to player's money
+					#send "<light green>Money Earned from Arena: %{t_qa_cashearned.%player%}%"
+					#make player execute command "/xp %{t_qa_xpearned.%player%}% %player%"
+					#Restore the player's inventory
+					make player execute command "/clear"
+					set the player's helmet to air
+					set the player's chestplate to air
+					set the player's leggings to air
+					set the player's boots to air
+					wait 1 tick
+					make player execute command "/char load -2"
+					clear {t_qaitembackup.%player%}
+					#set slot 8 of the player's current inventory to 1 chest named "<gold>Collect Rewards!" with lore "<white>Click to get the rest of your rewards!"
+				#Physical Rewards panel (equipment)
+				else if arg 2 is 1:
+					open chest inventory with 6 rows named "<red>Arena - Rewards" for the player
+					set {_invSlot} to 0
+					loop {t_qa_rewards.%player%::*}:
+						set slot {_invslot} of the player's current inventory to loop-value
+					set slot 53 of the player's current inventory to 1 emerald block named "<light green>Finish Session" with lore "<white>Click to finish your Arena session.", "<red><bold>Any items left in this window will be lost!"
+					clear {t_qa_rewards.%player%::*}
+
+#qa Menu Behaviors
+on inventory click:
+	#Main Menu
+	if the name of the player's current inventory is "<red>Arena - Main Menu":
+		cancel event
+		#Toggle Auto-Queue
+		if the name of the clicked item is "<light red>Auto Queue - OFF":
+			set the clicked item to 1 emerald block named "<light green>Auto Queue - ON" with lore "<white>Auto Queue is searching for a game!", "<white>Please wait while a lobby is found."
+			set {qa_autoqueue.%player%} to true
+		else if the name of the clicked item is "<light green>Auto Queue - ON":
+			set the clicked item to 1 redstone block named "<light red>Auto Queue - OFF" with lore "<white>Click to enable Auto Queue.", "<white>Auto Queue will attempt to place you into", "<white>the first lobby that becomes available.", "<white>This feature will only work for public lobbies."
+			clear {qa_autoqueue.%player%}
+		#Create Lobby
+		else if the name of the clicked item is "<light yellow>Create New Lobby":
+			#Change this number to something nicer later
+			set {qa_currentlobby.%player%} to the player's uuid
+			#Adds the player's lobby to the master list for matchmaking
+			add {qa_currentlobby.%player%} to {qa_openlobbies::*}
+			#Initialize various lobby settings
+			set {qa_lobbysettings.%{qa_currentlobby.%player%}%::Join Status} to 0
+			set {qa_lobbysettings.%{qa_currentlobby.%player%}%::Match Level} to false
+			set {qa_lobbysettings.%{qa_currentlobby.%player%}%::Difficulty} to 1
+			set {qa_lobbysettings.%{qa_currentlobby.%player%}%::Map Selected} to "No map selected."
+			clear {qa_lobbyplayers.%{qa_currentlobby.%player%}%::*}
+			set {qa_lobbyplayers.%{qa_currentlobby.%player%}%::0} to the player
+			set {qa_lobbysettings.%{qa_currentlobby.%player%}%::Leader} to the player
+			#Show the lobby GUI
+			make player execute command "/qa 1"
+			set {t_qaredirect.%player%} to true
+		#Find Lobby
+		else if the name of the clicked item is "<light green>Search for Lobbies":
+			make player execute command "/qa 0 1"
+	#Lobby Selection
+	else if the name of the player's current inventory is "<red>Arena - Lobby Search":
+		cancel event
+		#Join Lobby
+		if the name of the clicked item contains "Lobby":
+			set {qa_currentlobby.%player%} to the 6th line of the lore of the clicked item
+			#Assign player to an empty slot, and notify all players in lobby
+			if {qa_lobbyplayers.%{qa_currentlobby.%player%}%::39} is not set:
+				loop {qa_lobbyplayers.%{qa_currentlobby.%player%}%::*}:
+					add 1 to {_playercount}
+				send "<light blue>%player% joined your Arena lobby (Player %{_playercount} + 1%! Use /qa to check the lobby status." to {qa_lobbyplayers.%{qa_currentlobby.%player%}%::*}
+				send "<light blue>Joined successfully as player %{_playercount} + 1%." to the player
+				add the player to {qa_lobbyplayers.%{qa_currentlobby.%player%}%::*}
+				make player execute command "/qa 1 0"
+			#If the lobby is full, prevent the player from joining.
+			else:
+				clear {qa_currentlobby.%player%}
+				send "<light red>This lobby is full!"
+	#Lobby Guest/Waiting for Players
+	else if the name of the player's current inventory is "<red>Arena - Waiting for Players":
+		cancel event
+		#Leave Lobby
+		if the name of the clicked item is "<light red>Leave Lobby":
+			remove the player from {qa_lobbyplayers.%{qa_currentlobby.%player%}%::*}
+			loop {qa_lobbyplayers.%{qa_currentlobby.%player%}%::*}:
+				send "<light red>%player% left your Arena lobby." to loop-value
+				if the name of loop-value's current inventory contains "<red>Arena":
+					loop {qa_lobbyplayers.%{qa_currentlobby.%loop-value-1%}%::*}:
+						if {qa_lobbyplayers.%{qa_currentlobby.%player%}%::%loop-index-2%} is set:
+							set {_li} to loop-index-2
+							set slot {_li} of the loop-value-1's current inventory to 1 blue concrete named "<light blue>Player %loop-index-2% - %{qa_lobbyplayers.%{qa_currentlobby.%loop-value-1%}%::%loop-index-2%}'s name%"
+						else:
+							set slot {_li} of the loop-value-1's current inventory to 1 white concrete named "<white>Empty Slot"
+			clear {qa_currentlobby.%player%}
+			send "<light red>Left the Arena lobby." to the player
+			close the player's inventory
+	#Lobby Settings
+	else if the name of the player's current inventory is "<red>Arena - Lobby Configuration":
+		cancel event
+		#Toggle Frag Limit
+		if the name of the clicked item is "<light red>First to Frag Limit":
+			set {qa_lobbysettings.%{qa_currentlobby.%player%}%::No Frag Limit} to true
+			set slot 47 of the player's current inventory to 1 lapis block named "<light red>Play to Time" with lore "<white>The player with the most frags by the map time limit wins."
+		else if the name of the clicked item is "<light red>Play to Time":
+			clear {qa_lobbysettings.%{qa_currentlobby.%player%}%::No Frag Limit}
+			set slot 47 of the player's current inventory to 1 redstone block named "<light red>First to Frag Limit" with lore "<white>Players will fight until the frag limit is reached."
+		#Disband Lobby
+		if the name of the clicked item is "<light red>Disband Lobby":
+			#Remove all players from the lobby, send notification of disbanded lobby.
+			loop {qa_lobbyplayers.%{qa_currentlobby.%player%}%::*}:
+				if loop-value is not the player:
+					clear {qa_currentlobby.%loop-value%}
+					close loop-value's inventory
+					send "<light red>The lobby leader disbanded your Arena lobby." to loop-value
+			#Add selected map back to the list of available maps if one was selected
+			if {qa_lobbysettings.%{qa_currentlobby.%player%}%::Map Selected} is not "No map selected.":
+				add {qa_lobbysettings.%{qa_currentlobby.%player%}%::Map Selected} to {qa_openMaps::*}
+			#Clear list of players
+			clear {qa_lobbyplayers.%{qa_currentlobby.%player%}%::*}
+			#Clear lobby settings
+			clear {qa_lobbysettings.%{qa_currentlobby.%player%}%::*}
+			remove {qa_currentlobby.%player%} from {qa_openlobbies::*}
+			close the player's inventory
+			send "<light red>Lobby disbanded."
+		#Select Map
+		else if the name of the clicked item is "<light purple>Change Map":
+			clear {t_qaredirect.%player%}
+			make player execute command "/qa 2 0"
+		#Change Join Status
+		else if the name of the clicked item is "<light blue>Join Status":
+			#Public --> Friends Only
+			if {qa_lobbysettings.%{qa_currentlobby.%player%}%::Join Status} is 0:
+				set {qa_lobbysettings.%{qa_currentlobby.%player%}%::Join Status} to 1
+				set slot 48 of the player's current inventory to 1 gold block named "<light blue>Join Status" with lore "<white>Click to change who can join this lobby.", "<white>Current Setting: Friends Only"
+			else:
+				set {qa_lobbysettings.%{qa_currentlobby.%player%}%::Join Status} to 0
+				set slot 48 of the player's current inventory to 1 lapis block named "<light blue>Join Status" with lore "<white>Click to change who can join this lobby.", "<white>Current Setting: Anyone Can Join"
+			refreshqaLobbyDisplay()
+		#Kick Players
+		else if the name of the clicked item contains "Player":
+			#Prevent players from kicking themselves
+			if the name of the clicked item does not contain the player's name:
+				set {_playerName} to the name of the clicked item
+				set {_playerName} to decolorize({_playerName})
+				remove "Player" from {_playerName}
+				set {_playerName} to {_playerName} parsed as player
+				#Find the player's slot and remove them from the lobby
+				remove {_playerName} from {qa_lobbyplayers.%{qa_currentlobby.%player%}%}
+				clear {qa_currentlobby.%{_playerName}%}
+				loop {qa_lobbyplayers.%{qa_currentlobby.%player%}%::*}:
+					if {qa_lobbyplayers.%{qa_currentlobby.%player%}%::%loop-index%} is set:
+						set {_li} to loop-index
+						set slot {_li} of the player's current inventory to 1 blue concrete named "<light blue>Player %loop-index% - %{qa_lobbyplayers.%{qa_currentlobby.%player%}%::%loop-index%}'s name%"
+					else:
+						set slot {_li} of the player's current inventory to 1 white concrete named "<white>Empty Slot"
+		#Start Game
+		else if the name of the clicked item is "<light green>Start Game":
+			#Close inventories of players and begin a countdown
+			loop {qa_lobbyplayers.%{qa_currentlobby.%player%}%::*}:
+				close the loop-value's inventory
+				send title "<light green><bold>Arena lobby is locked!" with subtitle "<light green>Get ready!" to loop-value for 5 seconds with fade in 0.25 seconds and fadeout 1 second
+			wait 6 seconds
+			make player execute command "/runQA %{qa_lobbysettings.%{qa_currentlobby.%player%}%::Map Selected}%"
+	#Map Selection
+	else if the name of the player's current inventory is "<red>Arena - Select Map":
+		cancel event
+		#Update selected map and return to Lobby Settings panel
+		if the name of the clicked item contains "<light blue>OPEN:":
+			set {qa_lobbysettings.%{qa_currentlobby.%player%}%::Map Selected} to the 1st line of the lore of the clicked item
+			clear {t_qaredirect.%player%}
+			remove {qa_lobbysettings.%{qa_currentlobby.%player%}%::Map Selected} from {qa_openMaps::*}
+			make player execute command "/qa 1 0"
+			refreshqaOpenMaps()
+		
+#Refresh lobby display and run the qa auto-queue behavior
+every 1 second:
+	refreshqaLobbyDisplay()
+	qaAutoQueueBehavior()
+	loop all players:
+		if {t_playingQA.%loop-player%} is set:
+			apply fire resistance 1 to the loop-player for 1 second
+			apply swiftness 1 to the loop-player for 1 second
+			remove nausea from the loop-player
+			remove poison from the loop-player
+			if {t_hasQuadDamage.%loop-player%} is less than or equal to 0:
+				clear {t_hasQuadDamage.%loop-player%}
+			if {t_hasMegaArmour.%loop-player%} is less than or equal to 0:
+				clear {t_hasMegaArmour.%loop-player%}
+			if {t_hasMegaArmour.%loop-player%} is set:
+				subtract 1 from {t_hasMegaArmour.%loop-player%}
+				play 20 (water drip with speed 1) at loop-player
+				send action bar "<light purple>Mega Armour time left: %{t_hasMegaArmour.%loop-player%}% sec." to loop-player
+			if {t_hasQuadDamage.%loop-player%} is set:
+				subtract 1 from {t_hasQuadDamage.%loop-player%}
+				play 20 (firework spark with speed 0) at loop-player
+				send action bar "<light purple>Quad Damage time left: %{t_hasQuadDamage.%loop-player%}% sec." to loop-player
+			wipe the loop-player's sidebar
+			set name of sidebar of the loop-player to "<gold>-=Frag Leaderboard=-"
+			loop {qa_lobbyplayers.%{qa_currentlobby.%loop-player%}%::*}:
+				set score "%loop-value-2%" in sidebar of the loop-player-1 to {t_qa_frags.%loop-value-2%}
+	#refreshqaOpenMaps()
+	
+#Helper function to refresh available maps for Arena
+function refreshqaOpenMaps():
+	loop all players:
+		if citizen id of the loop-player is not set:
+			if the name of the loop-player's current inventory is "<red>Arena - Lobby Configuration":
+				clear {t_qaredirect.%loop-player%}
+				make loop-player execute command "/qa 1 0"
+			else if the name of the loop-player's current inventory is "<red>Arena - Select Map":
+				clear {t_qaredirect.%loop-player%}
+				make loop-player execute command "/qa 2 0"
+		
+#Helper function to refresh current lobbies open for Arena.
+function refreshqaLobbyDisplay():
+	loop all players:
+		#Prevent NPCs from being checked
+		if citizen id of the loop-player is not set:
+			if the name of the loop-player's current inventory is "<red>Arena - Lobby Search":
+				clear {t_qaredirect.%loop-player%}
+				make loop-player execute command "/qa 0 1"
+			
+#Place players with Auto-Queue enabled into an open lobby.			
+function qaAutoQueueBehavior():
+	loop all players:
+		#Prevent NPCs from being checked
+		if citizen id of the loop-player is not set:
+			#Check to see if the player has Auto Queue enabled
+			if {qa_autoqueue.%loop-player%} is set:
+				#Check all public lobbies for empty player slots
+				loop {qa_openlobbies::*}:
+					if {qa_lobbysettings.%loop-value-2%::Join Status} is 0:
+						set {_currentlobby.%loop-player-1%} to loop-value-2
+						broadcast "%loop-value-2%"
+						#Assign player to an empty slot, and notify all players in lobby
+						if {qa_lobbyplayers.%loop-value-2%::1} is not set:
+							send "<light blue>%loop-player-1% joined your Arena lobby (Player 2)! Use /qa to check the lobby status." to {qa_lobbyplayers.%{qa_currentlobby.%loop-player-1%}%::*}
+							set {qa_lobbyplayers.%{qa_currentlobby.%loop-player-1%}%::1} to the loop-player-1
+							clear {qa_autoqueue.%loop-player-1%}
+							set {qa_currentlobby.%loop-player-1%} to loop-value-2
+							exit 1 loop
+						else if {qa_lobbyplayers.%loop-value-2%::2} is not set:
+							send "<light green>%loop-player-1% joined your Arena lobby (Player 3)! Use /qa to check the lobby status." to {qa_lobbyplayers.%{qa_currentlobby.%loop-player-1%}%::*}
+							set {qa_lobbyplayers.%{_currentlobby.%loop-player-1%}%::2} to the loop-player-1
+							clear {qa_autoqueue.%loop-player-1%}
+							set {qa_currentlobby.%loop-player-1%} to loop-value-2
+							exit 1 loop
+						else if {qa_lobbyplayers.%loop-value-2%::3} is not set:
+							send "<light yellow>%loop-player-1% joined your Arena lobby (Player 4)! Use /qa to check the lobby status." to {qa_lobbyplayers.%{qa_currentlobby.%loop-player-1%}%::*}
+							set {qa_lobbyplayers.%{_currentlobby.%loop-player-1%}%::3} to the loop-player-1
+							clear {qa_autoqueue.%loop-player-1%}
+							set {qa_currentlobby.%loop-player-1%} to loop-value-2
+							exit 1 loop
+						else:
+							clear {qa_currentlobby.%loop-player-1%}
+				#Increment the number of loops if player was not assigned to a lobby
+				if {qa_currentlobby.%loop-player-1%} is not set:
+					add 1 to {qa_autoqueue.%loop-player-1%}
+				#Create a new lobby for the player if auto-queue times out.
+				if {qa_autoqueue.%loop-player-1%} is more than 60:
+					#Initialize lobby and remove player from auto-queue
+					clear {qa_autoqueue.%loop-player-1%}
+					set {qa_currentlobby.%loop-player-1%} to loop-player-1's uuid
+					#Adds the player's lobby to the master list for matchmaking
+					add {qa_currentlobby.%loop-player-1%} to {qa_openlobbies::*}
+					#Initialize various lobby settings
+					set {qa_lobbysettings.%{qa_currentlobby.%loop-player-1%}%::Join Status} to 0
+					set {qa_lobbysettings.%{qa_currentlobby.%loop-player-1%}%::Match Level} to false
+					set {qa_lobbysettings.%{qa_currentlobby.%loop-player-1%}%::Difficulty} to 1
+					set {qa_lobbysettings.%{qa_currentlobby.%loop-player-1%}%::Map Selected} to "No map selected."
+					set {qa_lobbyplayers.%{qa_currentlobby.%loop-player-1%}%::0} to the loop-player-1
+					set {qa_lobbysettings.%{qa_currentlobby.%loop-player-1%}%::Leader} to the loop-player-1
+					send "<light yellow>Auto-Queue failed to find an open Arena lobby. A new lobby has been created for you. Use /qa to configure your lobby." to loop-player-1
+				#Wait a tick to prevent players from being assigned to the same slot (also reduces server stress)
+				#wait 1 tick
+					
+#Player death handler
+on death of a player:
+	#Allows the effects of skills like Miracle to activate without counting as a frag
+	if true:
+		if {t_playingqa.%victim%} is set:
+			uncancel event
+			add 1 to {t_qa_frags.%attacker%}
+			add 1 to {t_qa_killstreak.%attacker%}
+			set {t_qa_killstreak.%victim%} to 0
+			if {qa_lobbysettings.%{qa_currentlobby.%victim%}%::No Frag Limit} is not true:
+				if {t_qa_frags.%attacker%} is more than or equal to {qa_mapconfig.%{qa_lobbysettings.%{qa_currentlobby.%victim%}%::Map Selected}%::Floor Limit}:
+					add {qa_lobbysettings.%{qa_currentlobby.%victim%}%::Map Selected} to {qa_openMaps::*}
+					loop {qa_lobbyplayers.%{qa_currentlobby.%victim%}%::*}:
+						send title "<light yellow>%attacker% wins!" with subtitle "Frag limit reached." to loop-value for 10 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+						clear {t_playingQA.%loop-value%}
+						clear {t_qaredirect.%loop-value%}
+						make loop-value execute command "/spawn"
+						make loop-value execute command "/qa 3 0"
+				else:
+					loop {qa_lobbyplayers.%{qa_currentlobby.%victim%}%::*}:
+						if {t_qa_frags.%loop-value%} is more than or equal to {t_qa_frags.%attacker%}:
+							set {_noLeaderChange} to true
+							exit 1 loop
+					if {_noLeaderChange} is not set:
+						loop {qa_lobbyplayers.%{qa_currentlobby.%victim%}%::*}:
+							send title "<gold>%attacker% has taken the lead! (%{t_qa_frags.%attacker%}% frags)" with subtitle "" to loop-value for 5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+					set {_respawnPlayer} to true
+			else:
+				loop {qa_lobbyplayers.%{qa_currentlobby.%victim%}%::*}:
+					if {t_qa_frags.%loop-value%} is more than or equal to {t_qa_frags.%attacker%}:
+						set {_noLeaderChange} to true
+						exit 1 loop
+				if {_noLeaderChange} is not set:
+					loop {qa_lobbyplayers.%{qa_currentlobby.%victim%}%::*}:
+						send title "<gold>%attacker% has taken the lead! (%{t_qa_frags.%attacker%}% frags)" with subtitle "" to loop-value for 5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+				set {_respawnPlayer} to true
+			#Player Respawn Behavior
+			if {_respawnPlayer} is true:
+				#Block repeat killstreak messages
+				if {t_qa_killstreak.%attacker%} is more than {t_qaNotif.%attacker%}:
+					#Killstreak notification
+					if {t_qa_killstreak.%attacker%} is more than 24:
+						set {t_qaNotif.%attacker%} to 99
+					else if {t_qa_killstreak.%attacker%} is more than 19:
+						set {t_qaNotif.%attacker%} to 24
+					else if {t_qa_killstreak.%attacker%} is more than 14:
+						set {t_qaNotif.%attacker%} to 19
+					else if {t_qa_killstreak.%attacker%} is more than 9:
+						set {t_qaNotif.%attacker%} to 14
+					else if {t_qa_killstreak.%attacker%} is 8:
+						set {t_qaNotif.%attacker%} to 8
+					else if {t_qa_killstreak.%attacker%} is 7:
+						set {t_qaNotif.%attacker%} to 7
+					else if {t_qa_killstreak.%attacker%} is 6:
+						set {t_qaNotif.%attacker%} to 6
+					else if {t_qa_killstreak.%attacker%} is 5:
+						set {t_qaNotif.%attacker%} to 5
+					else if {t_qa_killstreak.%attacker%} is 4:
+						set {t_qaNotif.%attacker%} to 4
+					else if {t_qa_killstreak.%attacker%} is 3:
+						set {t_qaNotif.%attacker%} to 3
+					else if {t_qa_killstreak.%attacker%} is 2:
+						set {t_qaNotif.%attacker%} to 2
+					if {t_qaNotif.%attacker%} is set:
+						loop {qa_lobbyplayers.%{qa_currentlobby.%victim%}%::*}:
+							if {t_qaNotif.%attacker%} is 99:
+								send formatted "<red><bold>%attacker% is <gold><bold>GODLIKE!!! <red><bold>(25+ KILLSTREAK!!)" to loop-value
+							else if {t_qaNotif.%attacker%} is 24:
+								send formatted "<red><bold>%attacker% is Unstoppable!!! (20 KILLSTREAK)" to loop-value
+							else if {t_qaNotif.%attacker%} is 19:
+								send formatted "<red><bold>%attacker% is Dominating!! (15 KILLSTREAK)" to loop-value
+							else if {t_qaNotif.%attacker%} is 14:
+								send formatted "<red><bold>%attacker% is on a Rampage! (10 KILLSTREAK)" to loop-value
+							else if {t_qaNotif.%attacker%} is 8:
+								send formatted "<red><bold>%attacker% is On Fire! (8 KILLSTREAK)" to loop-value
+							else if {t_qaNotif.%attacker%} is 7:
+								send formatted "<red><bold>%attacker% is Heating Up! (7 KILLSTREAK)" to loop-value
+							else if {t_qaNotif.%attacker%} is 6:
+								send formatted "<red><bold>%attacker% scored a Monster Kill!! (6 KILLSTREAK)" to loop-value
+							else if {t_qaNotif.%attacker%} is 5:
+								send formatted "<red><bold>%attacker% scored an Ultra Kill! (5 KILLSTREAK)" to loop-value
+							else if {t_qaNotif.%attacker%} is 4:
+								send formatted "<red><bold>%attacker% scored a Mega Kill! (4 KILLSTREAK)" to loop-value
+							else if {t_qaNotif.%attacker%} is 3:
+								send formatted "<red><bold>%attacker% scored a Triple Kill!" to loop-value
+							else if {t_qaNotif.%attacker%} is 2:
+								send formatted "<red><bold>%attacker% scored a Double Kill!" to loop-value
+				play 40 (redstone block break with speed 1) at the victim
+				play sound "entity.villager.death" with volume 1 and pitch 1 at the victim
+				play sound "entity.item.break" with volume 1 and pitch 1 at the victim
+				make player execute command "/clear"
+				#Select a random spawn point
+				loop {qa_mapconfig.%{qa_lobbysettings.%{qa_currentlobby.%victim%}%::Map Selected}%.playerspawns::*}:
+					add 1 to {_RandomSpawnpointCount}
+				set {t_qaSpawnpoint.%victim%} to a random integer from 1 to {_RandomSpawnpointCount}
+				#teleport the victim to {qa_mapconfig.%{qa_lobbysettings.%{qa_currentlobby.%victim%}%::Map Selected}%.playerspawns::%{t_qaSpawnpoint.%victim%}%}
+				#set the victim's spawnpoint to {qa_mapconfig.%{qa_lobbysettings.%{qa_currentlobby.%victim%}%::Map Selected}%.playerspawns::%{t_qaSpawnpoint.%victim%}%}
+				
+on respawn:
+	if {t_playingQA.%player%} is set:
+		wait 1 tick
+		teleport the player to location at {qa_mapconfig.%{qa_lobbysettings.%{qa_currentlobby.%player%}%::Map Selected}%.playerspawns::%{t_qaSpawnpoint.%player%}%}
+		send "%{qa_mapconfig.%{qa_lobbysettings.%{qa_currentlobby.%player%}%::Map Selected}%.playerspawns::%{t_qaSpawnpoint.%player%}%}%" to the player
+		set the player's helmet to 1 iron helmet
+		set the player's chestplate to 1 iron chestplate
+		set the player's leggings to 1 iron leggings
+		set the player's boots to 1 iron boots of feather falling 3
+		give 1 iron horse armor named "<light gray>Iron Pistol" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 8):", "8", "<white><italics>The perfect sidearm to turn the tides." to the player
+		give 1 diamond sword of sharpness 10 named "<light blue>Cleaver" to the player
+		give 14 iron nugget to the player
+		give 4 gunpowder to the player
+		heal the player by 100 hearts
+		apply resistance 4 to the player for 2 seconds
+				
+#Debugging commands
+command /forceexitqa:
+	trigger:
+		clear {t_playingqa.%player%}
+		add {qa_lobbysettings.%{qa_currentlobby.%player%}%::Map Selected} to {qa_openMaps::*}
+		send "<light red>Force exited Arena."
+		
+command /flushqaLobbies:
+	trigger:
+		clear {qa_openlobbies::*}
+		send "<light red>Flushed qa Lobbies."
+		
+command /testqaVars:
+	trigger:
+		broadcast "isPlayingqa? %{t_playingqa.%player%}%"

@@ -8,15 +8,24 @@ command /sdebug <text> [<text="Alstair">]:
 			set {defbuff.%player%} to 0
 			set {spdbuff.%player%} to 0
 			set {resbuff.%player%} to 0
-			set {sklbuff.%player%} to 0
+			set {lckbuff.%player%} to 0
+			set {magbuff.%player%} to 0
+			set {chrbuff.%player%} to 0
 			set {hpbuff.%player%} to 0
+			set {specialAcceleration.%player%} to 0
+			clear {activeBuffs.hp.%player%::*}
+			clear {activeBuffs.str.%player%::*}
+			clear {activeBuffs.def.%player%::*}
+			clear {activeBuffs.mag.%player%::*}
+			clear {activeBuffs.res.%player%::*}
+			clear {activeBuffs.spd.%player%::*}
+			clear {activeBuffs.lck.%player%::*}
+			clear {activeBuffs.chr.%player%::*}
+			clear {activeBuffs.specialacceleration.%player%::*}
+			clear {specialAccelerationbuff.%player%}
+			clear {specialAcceleration.%player%}
 			clear {PTPSupportBonusActive.%{_PLR}%}
 			set player's maximum health to {hp.%player%} / 2 + {hpbuff.%player%} / 2
-			set {skillslot1.%player%} to "Empty"
-			set {skillslot2.%player%} to "Empty"
-			set {skillslot3.%player%} to "Empty"
-			set {skillslot4.%player%} to "Empty"
-			set {skillslot5.%player%} to "Empty"
 			clear {RES +5SET.%player%}
 			clear {STR +5SET.%player%}
 			clear {STR +20SET.%player%}
@@ -28,10 +37,115 @@ command /sdebug <text> [<text="Alstair">]:
 			clear {Life and DeathSET.%player%}
 			clear {supportbuffset.%player%}
 			clear {clearbonus.%player%}
+			#Apply Traits
+			#Traits
+			if {traits.%player%::All In!} is true:
+				set {_debug} to changeEntityStatBuff(player,"STR",5,"All In! (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"MAG",5,"All In! (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"SPD",5,"All In! (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"DEF",-3,"All In! (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"RES",-3,"All In! (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"HP",-3,"All In! (Trait)",0)
+			if {traits.%player%::Honorable} is true:
+				set {_debug} to changeEntityStatBuff(player,"STR",3,"Honorable (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"MAG",3,"Honorable (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"SPD",3,"Honorable (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"LCK",-5,"Honorable (Trait)",0)
+			if {traits.%player%::Small Frame} is true:
+				set {_debug} to changeEntityStatBuff(player,"SPD",5,"Small Frame (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"LCK",5,"Small Frame (Trait)",0)
+			if {traits.%player%::Veteran} is true:
+				set {_debug} to changeEntityStatBuff(player,"HP",5,"Veteran (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"STR",5,"Veteran (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"DEF",5,"Veteran (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"MAG",5,"Veteran (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"RES",5,"Veteran (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"SPD",5,"Veteran (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"LCK",5,"Veteran (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"CHR",5,"Veteran (Trait)",0)
+			if {traits.%player%::Trainee} is true:
+				set {_debug} to changeEntityStatBuff(player,"HP",-4,"Trainee (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"STR",-4,"Trainee (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"DEF",-4,"Trainee (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"MAG",-4,"Trainee (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"RES",-4,"Trainee (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"SPD",-4,"Trainee (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"LCK",-4,"Trainee (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"CHR",-4,"Trainee (Trait)",0)
+			if {traits.%player%::Perceptive} is true:
+				set {_debug} to changeEntityStatBuff(player,"SPD",-5,"Perceptive (Trait)",0)
+			if {traits.%player%::Old Fashioned} is true:
+				set {_debug} to changeEntityStatBuff(player,"STR",3,"Old Fashioned (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"DEF",3,"Old Fashioned (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"MAG",-5,"Old Fashioned (Trait)",0)
+			if {traits.%player%::Economical} is true:
+				set {_debug} to changeEntityStatBuff(player,"CHR",5,"Economical (Trait)",0)
+			if {traits.%player%::Good Natured} is true:
+				set {_debug} to changeEntityStatBuff(player,"CHR",5,"Good Natured (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"STR",-2,"Good Natured (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"MAG",-2,"Good Natured (Trait)",0)
+			if {traits.%player%::Kamikaze} is true:
+				set {_debug} to changeEntityStatBuff(player,"DEF",-5,"Kamikaze (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"RES",-5,"Kamikaze (Trait)",0)
+			if {traits.%player%::Strong-Armed} is true:
+				set {_debug} to changeEntityStatBuff(player,"STR",4,"Strong-Armed (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"DEF",4,"Strong-Armed (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"HP",2,"Strong-Armed (Trait)",0)
+			if {traits.%player%::Pacifist} is true:
+				set {_debug} to changeEntityStatBuff(player,"HP",2,"Pacifist (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"DEF",2,"Pacifist (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"RES",2,"Pacifist (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"STR",-4,"Pacifist (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"MAG",-4,"Pacifist (Trait)",0)		
+			if {traits.%player%::Forest Dweller} is true:
+				set {_debug} to changeEntityStatBuff(player,"MAG",3,"Forest Dweller (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"RES",3,"Forest Dweller (Trait)",0)
+				add 13 to {abilities.%player%::Magical Weapons}
+				set {_debug} to changeEntityStatBuff(player,"STR",-5,"Forest Dweller (Trait)",0)
+				subtract 7 from {abilities.%player%::Traditional Weapons}
+				subtract 7 from {abilities.%player%::Guns}
+			if {traits.%player%::Bruiser} is true:
+				set {_debug} to changeEntityStatBuff(player,"STR",4,"Bruiser (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"DEF",4,"Bruiser (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"MAG",4,"Bruiser (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"RES",4,"Bruiser (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"SPD",-5,"Bruiser (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"CHR",-5,"Bruiser (Trait)",0)
+			if {traits.%player%::Spellscribe} is true:
+				set {_debug} to changeEntityStatBuff(player,"MAG",5,"Spellscribe (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"RES",5,"Spellscribe (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"STR",-5,"Spellscribe (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"DEF",-5,"Spellscribe (Trait)",0)
+			else if {traits.%player%::Tinkerer} is true:
+				set {_debug} to changeEntityStatBuff(player,"STR",2,"Tinkerer (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"DEF",2,"Tinkerer (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"SPD",-5,"Tinkerer (Trait)",0)
+				set {_debug} to changeEntityStatBuff(player,"CHR",-5,"Tinkerer (Trait)",0)
+				subtract 7 from {abilities.%player%::Barter}
+			else if {traits.%player%::Half-Breed} is true:
+				if {background.%player%} is "Windcaller":
+					set {_debug} to changeEntityStatBuff(player,"SPD",7,"Windcaller Half-Breed (Trait)",0)
+					set {_debug} to changeEntityStatBuff(player,"LCK",7,"Windcaller Half-Breed (Trait)",0)
+					set {_debug} to changeEntityStatBuff(player,"STR",3,"Windcaller Half-Breed (Trait)",0)
+					set {_debug} to changeEntityStatBuff(player,"MAG",3,"Windcaller Half-Breed (Trait)",0)
+				else if {background.%player%} is "Firestorm":
+					set {_debug} to changeEntityStatBuff(player,"STR",7,"Firestorm Half-Breed (Trait)",0)
+					set {_debug} to changeEntityStatBuff(player,"MAG",7,"Firestorm Half-Breed (Trait)",0)
+					set {_debug} to changeEntityStatBuff(player,"SPD",3,"Firestorm Half-Breed (Trait)",0)
+					set {_debug} to changeEntityStatBuff(player,"LCK",3,"Firestorm Half-Breed (Trait)",0)
+				else if {background.%player%} is "Waterflow":
+					set {_debug} to changeEntityStatBuff(player,"DEF",7,"Waterflow Half-Breed (Trait)",0)
+					set {_debug} to changeEntityStatBuff(player,"RES",7,"Waterflow Half-Breed (Trait)",0)
+					set {_debug} to changeEntityStatBuff(player,"SPD",3,"Waterflow Half-Breed (Trait)",0)
+					set {_debug} to changeEntityStatBuff(player,"LCK",3,"Waterflow Half-Breed (Trait)",0)
+			make player execute command "/perk 1 DEBUG_POKE_PERKS"
 			send formatted "<bold><green>[S-DEBUG]<reset> Reset class buffs for your current character."
 		else if arg 1 is "resetwand":
 			clear {spellcooldown.%player%}
 			send formatted "<bold><green>[S-DEBUG]<reset> Reset wand cooldown."
+		else if arg 1 is "fixHP":
+			set {hpbuff.%player%} to 0
+			set the player's maximum health to (getEntityStatTotal(player,"HP") / 2)
 		else if arg 1 is "fixtaunts":
 			clear {isTaunting.%player%}
 			send formatted "<bold><green>[S-DEBUG]<reset> Fixed taunting."
@@ -98,11 +212,14 @@ command /sdebug <text> [<text="Alstair">]:
 			set {lvl.%player%} to arg 2
 			send formatted "<bold><green>[S-DEBUG]<reset> Set your class level to %arg 2%."
 		else if arg 1 is "setlvlcap":
-			set {lvlcap.%player%} to arg 2
+			set {_lvl} to arg 2 parsed as integer
+			set {lvlcap.%player%} to {_lvl}
 			send formatted "<bold><green>[S-DEBUG]<reset> Set level cap to %arg 2%."
 		else if arg 1 is "reclass":
 			set {promotionready.%player%} to 1
 			make player execute command "/class promote Journeyman_Reclass"
+		else if arg 1 is "reportLS":
+			send "%{lastStandState.%player%}%" to the player
 		else if arg 1 is "forceSRank":
 			set {kills.%player%} to 501
 			set {deaths.%player%} to 0
@@ -111,6 +228,130 @@ command /sdebug <text> [<text="Alstair">]:
 		else if arg 1 is "maxhealth":
 			set the player's maximum health to "%arg 2%" parsed as integer
 			send formatted "<bold><green>[S-DEBUG]<reset> Max health set to %arg 2%."
+		else if arg 1 is "setAbilityPoints":
+			set {abilityPoints.%player%} to arg 2 parsed as integer
+		else if arg 1 is "reportHitrates":
+			if {reportDodgeOdds.%player%} is not set:
+				set {reportDodgeOdds.%player%} to true
+				send formatted "<bold><green>[S-DEBUG]<reset> Reporting hitrates during combat."
+			else:
+				clear {reportDodgeOdds.%player%}
+				send formatted "<bold><green>[S-DEBUG]<reset> No longer reporting hitrates during combat."
+		else if arg 1 is "disableDoubleAttacks":
+			if {disableDoubleAttacks.%player%} is not set:
+				set {disableDoubleAttacks.%player%} to true
+				send formatted "<bold><green>[S-DEBUG]<reset> Doubling disabled."
+			else:
+				clear {disableDoubleAttacks.%player%}
+				send formatted "<bold><green>[S-DEBUG]<reset> Doubling enabled."
+		else if arg 1 is "resetSpecialAcceleration":
+			send formatted "%{specialAcceleration.%player%}%" to the player
+			clear {activeBuffs.specialacceleration.%player%::*}
+			clear {specialAccelerationbuff.%player%}
+			clear {specialAcceleration.%player%}
+			send formatted "<bold><green>[S-DEBUG]<reset> Cleared special acceleration buffs. Please run a "resetbuffs" to ensure it was properly cleaned up."
+		else if arg 1 is "resetConsumableCooldowns":
+			clear {itemCooldowns.%player%::*}
+		else if arg 1 is "showBuffs":
+			send "<light blue>Buffs active on your character:"
+			send "<light green>HP:"
+			loop {activeBuffs.hp.%player%::*}:
+				send "%loop-index%: +%loop-value%"
+			send "<light red>STR:"
+			loop {activeBuffs.str.%player%::*}:
+				send "%loop-index%: +%loop-value%"
+			send "<light green>SPD:"
+			loop {activeBuffs.spd.%player%::*}:
+				send "%loop-index%: +%loop-value%"
+			send "<light yellow>DEF:"
+			loop {activeBuffs.def.%player%::*}:
+				send "%loop-index%: +%loop-value%"
+			send "<light purple>MAG:"
+			loop {activeBuffs.mag.%player%::*}:
+				send "%loop-index%: +%loop-value%"
+			send "<cyan>RES:"
+			loop {activeBuffs.res.%player%::*}:
+				send "%loop-index%: +%loop-value%"
+			send "<green>LCK:"
+			loop {activeBuffs.lck.%player%::*}:
+				send "%loop-index%: +%loop-value%"
+			send "<green>CHR:"
+			loop {activeBuffs.chr.%player%::*}:
+				send "%loop-index%: +%loop-value%"
+			send "<green>Special Acceleration:"
+			loop {activeBuffs.specialacceleration.%player%::*}:
+				send "%loop-index%: +%loop-value%"
+			send "<light blue>Temp Buffs active on your character:"
+			send "<light green>HP:"
+			loop {tempactiveBuffs.hp.%player%::*}:
+				send "%loop-index%: +%loop-value%"
+			send "<light red>STR:"
+			loop {tempactiveBuffs.str.%player%::*}:
+				send "%loop-index%: +%loop-value%"
+			send "<light green>SPD:"
+			loop {tempactiveBuffs.spd.%player%::*}:
+				send "%loop-index%: +%loop-value%"
+			send "<light yellow>DEF:"
+			loop {tempactiveBuffs.def.%player%::*}:
+				send "%loop-index%: +%loop-value%"
+			send "<light purple>MAG:"
+			loop {tempactiveBuffs.mag.%player%::*}:
+				send "%loop-index%: +%loop-value%"
+			send "<cyan>RES:"
+			loop {tempactiveBuffs.res.%player%::*}:
+				send "%loop-index%: +%loop-value%"
+			send "<green>LCK:"
+			loop {tempactiveBuffs.lck.%player%::*}:
+				send "%loop-index%: +%loop-value%"
+			send "<green>CHR:"
+			loop {tempactiveBuffs.chr.%player%::*}:
+				send "%loop-index%: +%loop-value%"
+			send "<green>Special Acceleration:"
+			loop {tempactiveBuffs.specialacceleration.%player%::*}:
+				send "%loop-index%: +%loop-value%"
+		else if arg 1 is "forcePromote":
+			set {promotionready.%player%} to 1
+			make player execute command "/class promote %arg 2%"
+		else if arg 1 is "setPromotionTier":
+			set {promoted.%player%} to arg 2
+		else if arg 1 is "clearTraitCount":
+			clear {traitsSelected.%player%}
+		else if arg 1 is "showStatusEffectEntities":
+			loop {t_statusEffectEntities::*}:
+				send "%loop-value%" to the player
+		else if arg 1 is "fixguns":
+			clear {t_FirearmsCooldown.%player%::*}
+		else if arg 1 is "clearStatusEffectEntities":
+			clear {t_statusEffectEntities::*}
+		else if arg 1 is "forceDamage":
+			if arg 2 is "normal":
+				damage the player by 5
+			else if arg 2 is "potion":
+				damage the player by 5 with fake cause potion
+			else if arg 2 is "burning":
+				damage the player by 5 with fake cause burning
+			else if arg 2 is "void":
+				damage the player by 5 with fake cause void
+			else if arg 2 is "suicide":
+				damage the player by 5 with fake cause suicide
+			else if arg 2 is "lightning":
+				damage the player by 5 with fake cause lightning
+			else if arg 2 is "starvation":
+				damage the player by 5 with fake cause starvation
+			else if arg 2 is "recoil":
+				set the player's health to (player's health - 4.5)
+				damage the player by 0.5 hearts with fake cause poison
+		else if arg 1 is "setXP":
+			set {classXP.%player%} to "%arg 2%" parsed as number
+		else if arg 1 is "displayHotbars":
+			send "%{monadoHotbarSave.%player%::*}%" to the player
+		else if arg 1 is "resetHolyBlood":
+			set {holyBlood.%player%::*} to 0
+		#else if arg 1 is "fixHeavyBlade":
+			
+command /setDRWindow <number>:
+	trigger:
+		set {drDoubleTapWindow.%player%} to arg 1
 				
 on damage:
 	if {debugDamageCause} is true:
@@ -122,6 +363,14 @@ command /setItemDurability <number>:
 	trigger:
 		set damage value of the player's tool to arg 1
 		send "Reduced durability of the held item by %arg 1% uses." to the player
+
+command /addNBTValue <text> <number>:
+	trigger:
+		add "{%arg 1%:%arg 2%}" to nbt of player's tool
+
+command /addWR <number>:
+	trigger:
+		changeEntityWeaponRank(player,arg 1)
 
 #on right click on player:
 #	if target is citizen:

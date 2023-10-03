@@ -1,0 +1,643 @@
+command /cshop [<number=1>]:
+	description: In-game shop.
+	usage: /cshop (page)
+	executable by: players
+	aliases: /store, /menu, /mm, /storefront, /mainmenu
+	trigger:
+		if arg 1 is 1:
+			open chest inventory with 1 row named "<light blue>Storefront | Main Menu" for the player
+			set slot 2 of the player's current inventory to 1 chest named "<light blue>Items"
+			set slot 3 of the player's current inventory to 1 iron ingot named "<light red>Character Items"
+			set slot 4 of the player's current inventory to 1 diamond sword named "<gold>Weapon Skills & More"
+			set slot 5 of the player's current inventory to 1 emerald named "<purple>Character Perks"
+			if player's money is more than 75:
+				set slot 6 of the player's current inventory to 1 skeleton head named "<light yellow>Warp to last death point" with lore "<white>Cost: $75"
+		else if arg 1 is 2:
+			open chest inventory with 1 row named "<light blue>Storefront | Items" for the player
+			if {lvl.%player%} is less than 30:
+				set slot 0 of the player's current inventory to 1 stone sword named "<light blue>Catch-Up Pack"
+			else if {lvl.%player%} is less than 60:
+				set slot 0 of the player's current inventory to 1 iron sword named "<light blue>Accelerator Pack"
+			else:
+				set slot 0 of the player's current inventory to 1 diamond sword named "<light blue>Supply Package"
+			set slot 1 of the player's current inventory to 1 oak log named "<light blue>Wood Pack"
+			set slot 2 of the player's current inventory to 1 stone named "<light blue>Stone Pack"
+			set slot 3 of the player's current inventory to 1 gold sword named "<light blue>Dueling Pack"
+			#set slot 4 of the player's current inventory to 1 terracotta named "<light blue>Terracotta Pack"
+			set slot 4 of the player's current inventory to 1 arrow named "<light blue>Ammunition Pack"
+			set slot 7 of the player's current inventory to 1 clock named "<light blue>PDA" with lore "<white>Used to open a menu for easy management of:", "<white>Followers", "<white>Character Stats", "<white>MCMMO Stats", "<white>Home Warps", "<white>Shopping"
+			set slot 5 of the player's current inventory to 1 gold ore named "<light blue>Ore Pack"
+			set slot 6 of the player's current inventory to 1 monster spawner named "<light blue>Monster Spawner"
+			set slot 8 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
+			#send "<run command:/sxp><gold><bold>[HOT!] +1 Experience Level"
+			#send "<run command:/sheal><red><bold>Full Heal"
+			#send "<run command:/cpda><bold>PDA"
+		else if arg 1 is 3:
+			open chest inventory with 2 rows named "<light red>Storefront | Character Items" for the player
+			set {_skltmp} to 0
+			if {hp.%player%} is less than {hpcap.%player%}:
+				set slot 0 of the player's current inventory to 1 red concrete named "<light red>+HP"
+			else:
+				add 1 to {_skltmp}
+				set slot 0 of the player's current inventory to 1 cobblestone named "<light gray>+HP" with lore "<white>You've already capped this stat."
+			if {str.%player%} is less than {strcap.%player%}:
+				set slot 1 of the player's current inventory to 1 orange concrete named "<light red>+STR"
+			else:
+				add 1 to {_skltmp}
+				set slot 1 of the player's current inventory to 1 cobblestone named "<light gray>+STR" with lore "<white>You've already capped this stat."
+			if {def.%player%} is less than {defcap.%player%}:
+				set slot 2 of the player's current inventory to 1 yellow concrete named "<light red>+DEF"
+			else:
+				add 1 to {_skltmp}
+				set slot 2 of the player's current inventory to 1 cobblestone named "<light gray>+DEF" with lore "<white>You've already capped this stat."
+			if {spd.%player%} is less than {spdcap.%player%}:
+				set slot 3 of the player's current inventory to 1 lime concrete named "<light red>+SPD"
+			else:
+				add 1 to {_skltmp}
+				set slot 3 of the player's current inventory to 1 cobblestone named "<light gray>+SPD" with lore "<white>You've already capped this stat."
+			if {res.%player%} is less than {rescap.%player%}:
+				set slot 4 of the player's current inventory to 1 purple concrete named "<light red>+MAG"
+			else:
+				add 1 to {_skltmp}
+				set slot 4 of the player's current inventory to 1 cobblestone named "<light gray>+MAG" with lore "<white>You've already capped this stat."
+			if {skl.%player%} is less than {sklcap.%player%}:
+				set slot 5 of the player's current inventory to 1 light blue concrete named "<light red>+SKL"
+			else:
+				add 1 to {_skltmp}
+				set slot 5 of the player's current inventory to 1 cobblestone named "<light gray>+SKL" with lore "<white>You've already capped this stat."
+			if {_skltmp} is 6:
+				set slot 6 of the player's current inventory to 1 cobblestone named "<light gray>+Spectrum" with lore "<white>You've already capped all stats."
+			else:
+				set slot 6 of the player's current inventory to 1 chest named "<light red>+Spectrum" with lore "<white>Increases all stats."
+			set {_cashreq} to ceil(abs(the player's health - the player's maximum health) * 2)
+			if the player's health is equal to the player's maximum health:
+				set slot 7 of the player's current inventory to 1 cobblestone named "<gray>Full Heal" with lore "<white>You're already at full health."
+			else if {_cashreq} is more than the player's money:
+				set slot 7 of the player's current inventory to 1 cobblestone named "<gray>Full Heal" with lore "<white>You can't afford this!"
+			else:
+				set slot 7 of the player's current inventory to 1 apple named "<light red>Full Heal" with lore "<white>Cost: %{_cashreq}%"
+			set slot 8 of the player's current inventory to 1 chest named "<light red>Level Up"
+			set slot 9 of the player's current inventory to 1 nether star named "<gold><bold>Journey's Crest" with lore "Sacred emblem used to promote Journeymen.", "<white>Click to buy for:", "<green>$250"
+			set slot 10 of the player's current inventory to 1 nether star named "<gold><bold>Warrior's Proof" with lore "Exceedingly rare crest used to further unlock potential.", "<white>Click to buy for:", "<green>$500"
+			set slot 11 of the player's current inventory to 1 nether star named "<gold><bold>Trainee's Enrollment" with lore "Rare crest used to return units to humble origins.", "<white>Click to buy for:", "<green>$150"
+			set slot 17 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
+			#send "<run command:/statup hp 2><bold>+2 HP - $100"
+			#send "<run command:/statup str 1><bold>+1 Strength - $100"
+			#send "<run command:/statup def 1><bold>+1 Defense - $100"
+			#send "<run command:/statup spd 1><bold>+1 Speed - $100"
+			#send "<run command:/statup res 1><bold>+1 Magic - $100"
+			#send "<run command:/statup skl 1><bold>+1 Skill - $100"
+			#send "<run command:/store 3><gold>Next Page"
+			#send "<run command:/store 1><gold>Previous Page"
+		#else if arg 1 is 3:
+			#send "<run command:/sbuy spawner 1><bold>Monster Spawner - $500"
+			#send "<run command:/cup 6><bold>Wood Pack - $250"
+			#send "<run command:/cup 8><bold>Stones Pack - $350"
+			#send "<run command:/cup 10><bold>Dueler's Pack - $500"
+			#send "<run command:/cup 12><bold>Terracotta Pack - $300"
+			#send "<run command:/cup 14><bold>Mutnitions Pack - $200"
+			#send "<run command:/shop 4><gold>Next Page"
+			#send "<run command:/store 2><gold>Previous Page"
+		#else if arg 1 is 4:
+			#send "<run command:/shop 5><gold>Next Page"
+			#send "<run command:/shop 3><gold>Previous Page"
+			
+on inventory click:
+	#Main Menu
+	if the name of the player's current inventory is "<light blue>Storefront | Main Menu":
+		if the name of the clicked item is "<gold>Weapon Skills & More":
+			make player execute command "/skills"
+		else if the name of the clicked item is "<light blue>Items":
+			make player execute command "/store 2"
+		else if the name of the clicked item is "<purple>Character Perks":
+			make player execute command "/perks"
+		else if the name of the clicked item is "<light red>Character Items":
+			make player execute command "/store 3"
+		else if the name of the clicked item is "<light yellow>Warp to last death point":
+			teleport the player to {lastDeath.%player%}
+			remove 75 from the player's balance
+			apply resistance 10 to the player for 3 seconds
+		cancel event
+	#Items
+	else if the name of the player's current inventory is "<light blue>Storefront | Items":
+		if the name of the clicked item is "<light blue>Catch-Up Pack":
+			make player execute command "/cup 1"
+		else if the name of the clicked item is "<light blue>Accelerator Pack":
+			make player execute command "/cup 2"
+		else if the name of the clicked item is "<light blue>Supply Package":
+			make player execute command "/cup 3"
+		else if the name of the clicked item is "<light blue>Wood Pack":
+			make player execute command "/cup 4"
+		else if the name of the clicked item is "<light blue>Stone Pack":
+			make player execute command "/cup 5"
+		else if the name of the clicked item is "<light blue>Ammunition Pack":
+			make player execute command "/cup 6"
+		else if the name of the clicked item is "<light blue>Ore Pack":
+			make player execute command "/cup 7"
+		else if the name of the clicked item is "<light blue>Dueling Pack":
+			make player execute command "/cup 8"
+		else if the name of the clicked item is "<light blue>Monster Spawner":
+			make player execute command "/citem 52"
+			set {shoppingItem.%player%} to "Monster Spawner"
+		else if the name of the clicked item is "<light blue>PDA":
+			make player execute command "/citem PDA"
+		else if the name of the clicked item is "<bold>Go Back":
+			make player execute command "/store"
+		cancel event
+	#Class Items
+	else if the name of the player's current inventory is "<light red>Storefront | Character Items":
+		if the name of the clicked item is "<light red>Level Up":
+			make player execute command "/sxp"
+		else if the name of the clicked item is "<bold>Go Back":
+			make player execute command "/store"
+		else if the name of the clicked item is "<light red>+HP":
+			make player execute command "/statup menu 0"
+		else if the name of the clicked item is "<light red>+STR":
+			make player execute command "/statup menu 1"
+		else if the name of the clicked item is "<light red>+DEF":
+			make player execute command "/statup menu 2"
+		else if the name of the clicked item is "<light red>+SPD":
+			make player execute command "/statup menu 3"
+		else if the name of the clicked item is "<light red>+MAG":
+			make player execute command "/statup menu 4"
+		else if the name of the clicked item is "<light red>+SKL":
+			make player execute command "/statup menu 5"
+		else if the name of the clicked item is "<light red>+Spectrum":
+			make player execute command "/statup menu 6"
+		#Full Heal
+		else if the name of the clicked item is "<light red>Full Heal":
+			set {_cashreq} to ceil(abs(the player's health - the player's maximum health) * 2.5)
+			heal the player by the player's maximum health
+			remove {_cashreq} from the player's money
+			send "<light green>Your health has been restored!"
+			send "<light green>Current funds: %player's money%"
+		#Crests
+		else if the name of the clicked item is "<gold><bold>Journey's Crest":
+			if player's money is more than or equal to 250:
+				give clicked item to the player
+				subtract 250 from player's money
+		else if the name of the clicked item is "<gold><bold>Warrior's Proof":
+			if player's money is more than or equal to 500:
+				give clicked item to the player
+				subtract 500 from player's money
+		else if the name of the clicked item is "<gold><bold>Trainee's Enrollment":
+			if player's money is more than or equal to 150:
+				give clicked item to the player
+				subtract 150 from player's money
+		cancel event
+	#Level Ups
+	else if the name of the player's current inventory is "<light red>Level Up":
+		if the name of the clicked item is "<bold>Go Back":
+			make player execute command "/store 3"
+		else if the name of the clicked item is "<light red>Add 1 Level":
+			send "%{shopLevels.%player%}%"
+			add 1 to {shopLevels.%player%}
+			set {_cashreq} to 0
+			if {shopLevels.%player%} is more than 64:
+				set {shopLevels.%player%} to 64
+			set {_tmp} to "%{shopLevels.%player%}% chest" parsed as item
+			set slot 4 of the player's current inventory to {_tmp} named "<light red>Number of levels to gain." with lore "<white>Qty: %{shopLevels.%player%}%"
+			loop {shopLevels.%player%} times:
+				add ceil(player's level ^ 1.225) to {_cashreq}
+			if {_cashreq} is less than player's money:
+				set slot 8 of the player's current inventory to 1 emerald named "<light green>Purchase" with lore "<light green>Cost: %{_cashreq}%"
+			else:
+				set slot 8 of the player's current inventory to 1 cobblestone named "<light red>Too expensive!" with lore "<light green>Cost: %{_cashreq}%"
+		else if the name of the clicked item is "<light red>Subtract 1 Level":
+			subtract 1 from {shopLevels.%player%}
+			if {shopLevels.%player%} is less than 1:
+				set {shopLevels.%player%} to 1
+			set {_cashreq} to 0
+			set {_tmp} to "%{shopLevels.%player%}% chest" parsed as item
+			set slot 4 of the player's current inventory to {_tmp} named "<light red>Number of levels to gain." with lore "<white>Qty: %{shopLevels.%player%}%"
+			loop {shopLevels.%player%} times:
+				add ceil(player's level ^ 1.225) to {_cashreq}
+			if {_cashreq} is less than player's money:
+				set slot 8 of the player's current inventory to 1 emerald named "<light green>Purchase" with lore "<light green>Cost: %{_cashreq}%"
+			else:
+				set slot 8 of the player's current inventory to 1 cobblestone named "<light red>Too expensive!" with lore "<light green>Cost: %{_cashreq}%"
+		else if the name of the clicked item is "<light green>Purchase":
+			make player execute command "/sxp %{shopLevels.%player%}%"
+		cancel event
+	#Stat Ups
+	else if the name of the player's current inventory is "<light red>Stat Up":
+		if the name of the clicked item is "<bold>Go Back":
+			make player execute command "/store 3"
+		else if the name of the clicked item is "<light red>Add 1 Level":
+			add 1 to {shopLevels.%player%}
+			set {_cashreq} to 0
+			if {shopLevels.%player%} is more than 64:
+				set {shopLevels.%player%} to 64
+			else if ({shopLevels.%player%} + {%{shopStat.%player%}%.%player%}) is more than {%{shopStat.%player%}%cap.%player%}:
+				subtract 1 from {shopLevels.%player%}
+			set slot 4 of the player's current inventory to 1 chest named "<light red>Times to increase %{shopStat.%player%}%." with lore "Qty: %{shopLevels.%player%}%"
+			loop {shopLevels.%player%} times:
+				add 25 to {_cashreq}
+			if {_cashreq} is less than player's money:
+				set slot 8 of the player's current inventory to 1 emerald named "<light green>Purchase" with lore "<light green>Cost: %{_cashreq}%"
+			else:
+				set slot 8 of the player's current inventory to 1 cobblestone named "<light red>Too expensive!" with lore "<light green>Cost: %{_cashreq}%"
+		else if the name of the clicked item is "<light red>Subtract 1 Level":
+			subtract 1 from {shopLevels.%player%}
+			if {shopLevels.%player%} is less than 1:
+				set {shopLevels.%player%} to 1
+			set {_cashreq} to 0
+			set slot 4 of the player's current inventory to 1 chest named "<light red>Times to increase %{shopStat.%player%}%." with lore "<white>Qty: %{shopLevels.%player%}%"
+			loop {shopLevels.%player%} times:
+				add 25 to {_cashreq}
+			if {_cashreq} is less than player's money:
+				set slot 8 of the player's current inventory to 1 emerald named "<light green>Purchase" with lore "<light green>Cost: %{_cashreq}%"
+			else:
+				set slot 8 of the player's current inventory to 1 cobblestone named "<light red>Too expensive!" with lore "<light green>Cost: %{_cashreq}%"
+		else if the name of the clicked item is "<light green>Purchase":
+			if {shopStat.%player%} is "MAG":
+				set {shopStat.%player%} to "RES"
+			make player execute command "/statup %{shopStat.%player%}% %{shopLevels.%player%}%"
+			make player execute command "/store 3"
+		cancel event
+	#Spectrum Up
+	else if the name of the player's current inventory is "<light red>Spectrum Up":
+		if the name of the clicked item is "<bold>Go Back":
+			make player execute command "/store 3"
+		else if the name of the clicked item is "<light red>Add 1 Level":
+			#Prevent increasing stats beyond class caps
+			if ({shopLevels.%player%} + {hp.%player%}) is less than {hpcap.%player%}:
+				add 1 to {shopLevels.%player%}
+			if ({shopLevels2.%player%} + {str.%player%}) is less than {strcap.%player%}:
+				add 1 to {shopLevels2.%player%}
+			if ({shopLevels3.%player%} + {def.%player%}) is less than {defcap.%player%}:
+				add 1 to {shopLevels3.%player%}
+			if ({shopLevels4.%player%} + {spd.%player%}) is less than {spdcap.%player%}:
+				add 1 to {shopLevels4.%player%}
+			if ({shopLevels5.%player%} + {res.%player%}) is less than {rescap.%player%}:
+				add 1 to {shopLevels5.%player%}
+			if ({shopLevels6.%player%} + {skl.%player%}) is less than {sklcap.%player%}:
+				add 1 to {shopLevels6.%player%}
+			set {_cashreq} to 0
+			if {shopLevels.%player%} is less than 1:
+				set {_tmp} to "1 cobblestone" parsed as item
+			if {shopLevels2.%player%} is less than 1:
+				set {_tmp2} to "1 cobblestone" parsed as item
+			if {shopLevels3.%player%} is less than 1:
+				set {_tmp3} to "1 cobblestone" parsed as item
+			if {shopLevels4.%player%} is less than 1:
+				set {_tmp4} to "1 cobblestone" parsed as item
+			if {shopLevels5.%player%} is less than 1:
+				set {_tmp5} to "1 cobblestone" parsed as item
+			if {shopLevels6.%player%} is less than 1:
+				set {_tmp6} to "1 cobblestone" parsed as item
+			set {_tmp} to "%{shopLevels.%player%}% red concrete" parsed as item
+			set {_tmp2} to "%{shopLevels2.%player%}% orange concrete" parsed as item
+			set {_tmp3} to "%{shopLevels3.%player%}% yellow concrete" parsed as item
+			set {_tmp4} to "%{shopLevels4.%player%}% lime concrete" parsed as item
+			set {_tmp5} to "%{shopLevels5.%player%}% purple concrete" parsed as item
+			set {_tmp6} to "%{shopLevels6.%player%}% light blue concrete" parsed as item
+			set slot 2 of the player's current inventory to {_tmp} named "<light red>Times to increase HP." with lore "<white>Qty: %{shopLevels.%player%}%"
+			set slot 3 of the player's current inventory to {_tmp2} named "<light red>Times to increase STR." with lore "<white>Qty: %{shopLevels.%player%}%"
+			set slot 4 of the player's current inventory to {_tmp3} named "<light red>Times to increase DEF." with lore "<white>Qty: %{shopLevels.%player%}%"
+			set slot 5 of the player's current inventory to {_tmp4} named "<light red>Times to increase SPD." with lore "<white>Qty: %{shopLevels.%player%}%"
+			set slot 6 of the player's current inventory to {_tmp5} named "<light red>Times to increase MAG." with lore "<white>Qty: %{shopLevels.%player%}%"
+			set slot 7 of the player's current inventory to {_tmp6} named "<light red>Times to increase SKL." with lore "<white>Qty: %{shopLevels.%player%}%"
+			loop ({shopLevels.%player%} + {shopLevels2.%player%} + {shopLevels3.%player%} + {shopLevels4.%player%} + {shopLevels5.%player%} + {shopLevels6.%player%}) times:
+				add 25 to {_cashreq}
+			if {_cashreq} is less than player's money:
+				set slot 9 of the player's current inventory to 1 emerald named "<light green>Purchase" with lore "<light green>Cost: %{_cashreq}%"
+			else:
+				set slot 9 of the player's current inventory to 1 cobblestone named "<light red>Too expensive!" with lore "<light green>Cost: %{_cashreq}%"
+		else if the name of the clicked item is "<light red>Subtract 1 Level":
+			subtract 1 from {shopLevels.%player%}
+			subtract 1 from {shopLevels2.%player%}
+			subtract 1 from {shopLevels3.%player%}
+			subtract 1 from {shopLevels4.%player%}
+			subtract 1 from {shopLevels5.%player%}
+			subtract 1 from {shopLevels6.%player%}
+			if {shopLevels.%player%} is less than 1:
+				set {shopLevels.%player%} to 1
+			if {shopLevels2.%player%} is less than 1:
+				set {shopLevels2.%player%} to 1
+			if {shopLevels3.%player%} is less than 1:
+				set {shopLevels3.%player%} to 1
+			if {shopLevels4.%player%} is less than 1:
+				set {shopLevels4.%player%} to 1
+			if {shopLevels5.%player%} is less than 1:
+				set {shopLevels5.%player%} to 1
+			if {shopLevels6.%player%} is less than 1:
+				set {shopLevels6.%player%} to 1
+			set {_cashreq} to 0
+			set {_tmp} to "%{shopLevels.%player%}% red concrete" parsed as item
+			set {_tmp2} to "%{shopLevels2.%player%}% orange concrete" parsed as item
+			set {_tmp3} to "%{shopLevels3.%player%}% yellow concrete" parsed as item
+			set {_tmp4} to "%{shopLevels4.%player%}% lime concrete" parsed as item
+			set {_tmp5} to "%{shopLevels5.%player%}% purple concrete" parsed as item
+			set {_tmp6} to "%{shopLevels6.%player%}% light blue concrete" parsed as item
+			set slot 2 of the player's current inventory to {_tmp} named "<light red>Times to increase HP."
+			set slot 3 of the player's current inventory to {_tmp2} named "<light red>Times to increase STR."
+			set slot 4 of the player's current inventory to {_tmp3} named "<light red>Times to increase DEF."
+			set slot 5 of the player's current inventory to {_tmp4} named "<light red>Times to increase SPD."
+			set slot 6 of the player's current inventory to {_tmp5} named "<light red>Times to increase MAG."
+			set slot 7 of the player's current inventory to {_tmp6} named "<light red>Times to increase SKL."
+			loop ({shopLevels.%player%} + {shopLevels2.%player%} + {shopLevels3.%player%} + {shopLevels4.%player%} + {shopLevels5.%player%} + {shopLevels6.%player%}) times:
+				add 100 to {_cashreq}
+			if {_cashreq} is less than player's money:
+				set slot 9 of the player's current inventory to 1 emerald named "<light green>Purchase" with lore "<light green>Cost: %{_cashreq}%"
+			else:
+				set slot 9 of the player's current inventory to 1 cobblestone named "<light red>Too expensive!" with lore "<light green>Cost: %{_cashreq}%"
+		else if the name of the clicked item is "<light green>Purchase":
+			cancel event
+			make player execute command "/statup hp %{shopLevels.%player%}%"
+			wait 0.4 seconds
+			make player execute command "/statup str %{shopLevels2.%player%}%"
+			wait 0.4 seconds
+			make player execute command "/statup def %{shopLevels3.%player%}%"
+			wait 0.4 seconds
+			make player execute command "/statup spd %{shopLevels4.%player%}%"
+			wait 0.4 seconds
+			make player execute command "/statup res %{shopLevels5.%player%}%"
+			wait 0.4 seconds
+			make player execute command "/statup skl %{shopLevels6.%player%}%"
+			make player execute command "/store 3"
+		cancel event
+	#Item Packs
+	else if the name of the player's current inventory is "<gold><bold>Shopping Cart":
+		if the name of the clicked item is "<light green>Purchase":
+			subtract {shoppingCost.%player%} from player's money
+			set {shoppingPurchased.%player%} to 1
+			set slot 53 of the player's current inventory to 1 cobblestone named "<light green>Items Purchased!" with lore "<white>You can now take the displayed items."
+			if {packType.%player%} is 1:
+				set {str.%player%} to 20
+				set {spd.%player%} to 20
+				set {def.%player%} to 20
+				set {res.%player%} to 20
+				set {skl.%player%} to 20
+				set {hp.%player%} to 40
+				set {lvl.%player%} to 30
+			else if {packType.%player%} is 2:
+				set {str.%player%} to 40
+				set {spd.%player%} to 40
+				set {def.%player%} to 40
+				set {res.%player%} to 40
+				set {skl.%player%} to 40
+				set {hp.%player%} to 80
+				set {lvl.%player%} to 60
+				if {str.%player%} is more than {strcap.%player%}:
+					set {str.%player%} to {strcap.%player%}
+				if {def.%player%} is more than {defcap.%player%}:
+					set {def.%player%} to {defcap.%player%}
+				if {res.%player%} is more than {rescap.%player%}:
+					set {res.%player%} to {rescap.%player%}
+				if {spd.%player%} is more than {spdcap.%player%}:
+					set {spd.%player%} to {spdcap.%player%}
+				if {skl.%player%} is more than {sklcap.%player%}:
+					set {skl.%player%} to {sklcap.%player%}
+				if {hp.%player%} is more than {hpcap.%player%}:
+					set {hp.%player%} to {hpcap.%player%}
+			cancel event
+		else if the name of the clicked item is "<bold>Go Back":
+			make player execute command "/store 2"
+			cancel event
+		else if {shoppingPurchased.%player%} is not 1:
+			cancel event
+	#Individual Items
+	if the name of the player's current inventory is "<gold>Monster Spawner Shopping Cart":
+		cancel event
+		if the name of the clicked item is "<gold>Add 1 to cart":
+			if {shopLevels.%player%} is less than 64:
+				add 1 to {shopLevels.%player%}
+				add 300 to {shoppingCost.%player%}
+		else if the name of the clicked item is "<gold>Remove 1 from cart":
+			if {shopLevels.%player%} is more than 1:
+				subtract 1 from {shopLevels.%player%}
+				subtract 300 from {shoppingCost.%player%}
+		else if the name of the clicked item is "<bold>Go Back":
+			make player execute command "/store 2"
+		else if the name of the clicked item is "<light green>Purchase":
+			subtract {shoppingCost.%player%} from player's money
+			loop {shopLevels.%player%} times:
+				give 1 spawner to the player
+			send "<light green>Success!"
+		set slot 4 of the player's current inventory to 1 spawner named "<gold>Items in cart: %{shopLevels.%player%}%"
+		if {shoppingCost.%player%} is less than player's money:
+			set slot 8 of the player's current inventory to 1 emerald named "<light green>Purchase" with lore "Cost: %{shoppingCost.%player%}%"
+		else:
+			set slot 8 of the player's current inventory to 1 redstone dust named "<light red>Too Expensive!" with lore "Cost: %{shoppingCost.%player%}%"
+
+command /statup <text> <number>:
+	description: Stat-Ups helper command
+	trigger:
+		if arg 1 is not "menu":
+			set {_old%arg 1%} to {%arg 1%.%player%}
+			loop arg 2 times:
+				add 1 to {%arg 1%.%player%}
+				remove 25 from the player's balance
+			play sound "entity.experience_orb.pickup" with volume 2 and pitch 0.8 at player for player
+			if arg 1 is "str":
+				send "<bold>Strength: %{_oldstr}% --> %{str.%player%}%"
+			else if arg 1 is "def":
+				send "<bold>Defense: %{_olddef}% --> %{def.%player%}%"
+			else if arg 1 is "spd":
+				send "<bold>Speed: %{_oldspd}% --> %{spd.%player%}%"
+			else if arg 1 is "skl":
+				send "<bold>Skill: %{_oldskl}% --> %{skl.%player%}%"
+			else if arg 1 is "res":
+				send "<bold>Magic: %{_oldres}% --> %{res.%player%}%"
+			else if arg 1 is "hp":
+				send "<bold>Health: %{_oldhp}% --> %{hp.%player%}%"
+				set the player's maximum health to ({hp.%player%} / 2) + ({hpbuff.%player%} / 2)
+		else:
+			set {shopLevels.%player%} to 0
+			set {shopLevels2.%player%} to 0
+			set {shopLevels3.%player%} to 0
+			set {shopLevels4.%player%} to 0
+			set {shopLevels5.%player%} to 0
+			set {shopLevels6.%player%} to 0
+			if arg 2 is 0:
+				set {shopStat.%player%} to "HP"
+			else if arg 2 is 1:
+				set {shopStat.%player%} to "STR"
+			else if arg 2 is 2:
+				set {shopStat.%player%} to "DEF"
+			else if arg 2 is 3:
+				set {shopStat.%player%} to "SPD"
+			else if arg 2 is 4:
+				set {shopStat.%player%} to "MAG"
+			else if arg 2 is 5:
+				set {shopStat.%player%} to "SKL"
+			else if arg 2 is 6:
+				set {shopStat.%player%} to "Spectrum"
+			if arg 2 is not 6:
+				open chest inventory with 1 row named "<light red>Stat Up" for the player
+				set slot 0 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
+				set slot 3 of the player's current inventory to 1 torch named "<light red>Add 1 Level"
+				set slot 4 of the player's current inventory to 1 chest named "<light red>Times to increase %{shopStat.%player%}%"
+				set slot 5 of the player's current inventory to 1 redstone torch named "<light red>Subtract 1 Level"
+			else:
+				open chest inventory with 2 rows named "<light red>Spectrum Up" for the player
+				set slot 0 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
+				set slot 1 of the player's current inventory to 1 torch named "<light red>Add 1 Level"
+				set slot 2 of the player's current inventory to 1 red concrete named "<light red>Times to increase HP."
+				set slot 3 of the player's current inventory to 1 orange concrete named "<light red>Times to increase STR."
+				set slot 4 of the player's current inventory to 1 yellow concrete named "<light red>Times to increase DEF."
+				set slot 5 of the player's current inventory to 1 lime concrete named "<light red>Times to increase SPD."
+				set slot 6 of the player's current inventory to 1 purple concrete named "<light red>Times to increase MAG."
+				set slot 7 of the player's current inventory to 1 light blue concrete named "<light red>Times to increase SKL."
+				set slot 8 of the player's current inventory to 1 redstone torch named "<light red>Subtract 1 Level"
+			
+command /sxp [<number=0>]:
+	description: XP price calc
+	usage: You're not supposed to see this.
+	executable by: players
+	trigger:
+		if arg 1 is not 0:
+			loop arg 1 times:
+				add ceil(2 + player's level ^ 1.15) to {_cashreq}
+			make player execute command "/xp %arg 1%l"
+			set the player's money to player's money - {_cashreq}
+			send "<light green>Transaction complete. New balance: $%player's money%."
+		else:
+			open chest inventory with 1 row named "<light red>Level Up" for the player
+			set {shopLevels.%player%} to 1
+			set slot 0 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
+			set slot 3 of the player's current inventory to 1 torch named "<light red>Add 1 Level"
+			set slot 4 of the player's current inventory to 1 chest named "<light red>Number of levels to gain."
+			set slot 5 of the player's current inventory to 1 redstone torch named "<light red>Subtract 1 Level"
+
+#Item Pack Helper		
+command /cup [<number=0>]:
+	description: Purchase a Catch-Up pack.
+	usage: stop cheating
+	executable by: players
+	trigger:
+		clear {shoppingPurchased.%player%}
+		open chest inventory with 6 rows named "<gold><bold>Shopping Cart" for the player
+		if arg 1 is 1:
+			set slot 0 of player's current inventory to iron helmet
+			set slot 1 of player's current inventory to iron chestplate
+			set slot 2 of player's current inventory to iron leggings
+			set slot 3 of player's current inventory to iron boots
+			set slot 4 of player's current inventory to iron sword
+			set slot 5 of player's current inventory to iron pickaxe
+			set slot 6 of player's current inventory to iron axe
+			set slot 7 of player's current inventory to iron shovel
+			set slot 8 of player's current inventory to iron hoe
+			set slot 9 of player's current inventory to 16 iron ingot
+			set slot 10 of player's current inventory to 64 oak log
+			set slot 11 of player's current inventory to 64 cobblestone
+			set slot 12 of player's current inventory to 64 cobblestone
+			set slot 13 of player's current inventory to 8 gold ingot
+			set slot 14 of player's current inventory to 32 steak
+			set slot 15 of player's current inventory to 12 seeds
+			set slot 16 of player's current inventory to 1 nether star named "<gold><bold>Journey's Crest"
+			set {shoppingCost.%player%} to 200
+			set {packType.%player%} to 1
+		else if arg 1 is 2:
+			set slot 0 of player's current inventory to iron helmet
+			set slot 1 of player's current inventory to iron chestplate
+			set slot 2 of player's current inventory to iron leggings
+			set slot 3 of player's current inventory to iron boots
+			set slot 4 of player's current inventory to iron sword
+			set slot 5 of player's current inventory to iron pickaxe
+			set slot 6 of player's current inventory to iron axe
+			set slot 7 of player's current inventory to iron shovel
+			set slot 8 of player's current inventory to iron hoe
+			set slot 9 of player's current inventory to 16 iron ingot
+			set slot 10 of player's current inventory to 64 oak log
+			set slot 11 of player's current inventory to 8 gold ingot
+			set slot 12 of player's current inventory to 1 nether star named "<gold><bold>Trainee's Enrollment"
+			set slot 13 of player's current inventory to 1 nether star named "<gold><bold>Warrior's Proof"
+			set {shoppingCost.%player%} to 400
+			set {packType.%player%} to 2		
+		else if arg 1 is 3:
+			set slot 0 of player's current inventory to iron helmet
+			set slot 1 of player's current inventory to iron chestplate
+			set slot 2 of player's current inventory to iron leggings
+			set slot 3 of player's current inventory to iron boots
+			set slot 4 of player's current inventory to iron sword
+			set slot 5 of player's current inventory to iron pickaxe
+			set slot 6 of player's current inventory to iron axe
+			set slot 7 of player's current inventory to iron shovel
+			set slot 8 of player's current inventory to iron hoe
+			set slot 9 of player's current inventory to 16 iron ingot
+			set slot 10 of player's current inventory to 64 oak log
+			set slot 11 of player's current inventory to 64 cobblestone
+			set slot 12 of player's current inventory to 64 cobblestone
+			set slot 13 of player's current inventory to 1 nether star named "<gold><bold>Trainee's Enrollment"
+			set {shoppingCost.%player%} to 300
+			set {packType.%player%} to 3
+		else if arg 1 is 4:
+			set slot 0 of player's current inventory to 64 oak log
+			set slot 1 of player's current inventory to 64 birch log
+			set slot 2 of player's current inventory to 64 spruce log
+			set slot 3 of player's current inventory to 64 jungle log
+			set slot 4 of player's current inventory to 64 dark oak log
+			set slot 5 of player's current inventory to 64 acacia log
+			set {shoppingCost.%player%} to 150
+			set {packType.%player%} to 4
+		else if arg 1 is 5:
+			set slot 0 of player's current inventory to 64 stone
+			set slot 1 of player's current inventory to 64 cobblestone
+			set slot 2 of player's current inventory to 64 sandstone
+			set slot 3 of player's current inventory to 64 raw andesite
+			set slot 4 of player's current inventory to 64 raw diorite
+			set slot 5 of player's current inventory to 64 red sandstone
+			set slot 6 of player's current inventory to 64 purpur block
+			set slot 7 of player's current inventory to 64 brick
+			set slot 8 of player's current inventory to 64 nether brick
+			set slot 9 of player's current inventory to 64 stone bricks
+			set slot 10 of player's current inventory to 64 raw granite
+			set slot 11 of player's current inventory to 64 polished andesite
+			set slot 11 of player's current inventory to 64 polished granite
+			set slot 11 of player's current inventory to 64 polished diorite		
+			set {shoppingCost.%player%} to 250
+			set {packType.%player%} to 5
+		else if arg 1 is 6:
+			set slot 0 of player's current inventory to 64 gold nugget
+			set slot 1 of player's current inventory to 64 gold nugget
+			set slot 2 of player's current inventory to 64 iron nugget
+			set slot 3 of player's current inventory to 64 iron nugget
+			set slot 4 of player's current inventory to 64 arrow
+			set slot 5 of player's current inventory to 64 arrow
+			set slot 6 of player's current inventory to 64 gunpowder
+			set slot 7 of player's current inventory to 64 gunpowder
+			set {shoppingCost.%player%} to 325
+			set {packType.%player%} to 6
+		else if arg 1 is 7:
+			set slot 0 of player's current inventory to 64 gold ingot
+			set slot 1 of player's current inventory to 64 gold ingot
+			set slot 2 of player's current inventory to 64 iron ingot
+			set slot 3 of player's current inventory to 64 iron ingot
+			set slot 4 of player's current inventory to 8 diamond
+			set slot 5 of player's current inventory to 16 emerald
+			set {shoppingCost.%player%} to 750
+			set {packType.%player%} to 7
+		else if arg 1 is 8:
+			set slot 0 of player's current inventory to 1 iron helmet of protection 3
+			set slot 1 of player's current inventory to 1 iron chestplate of protection 3
+			set slot 2 of player's current inventory to 1 iron leggings of protection 3
+			set slot 3 of player's current inventory to 1 iron boots of protection 3
+			set slot 4 of player's current inventory to 1 iron sword of sharpness 5 named "<light blue>Silver Sword" with lore "Slot A - Empty", "Slot B - Empty", "Slot C - Empty", "<red><bold>Refined: Reinforced", "<white>A blade of exquisite quality.", "<white>Typically recieved as a gift from a lord."
+			set slot 5 of player's current inventory to 1 bow of power 2 named "<light blue>Steel Bow"
+			set slot 6 of player's current inventory to 16 steak
+			set slot 7 of player's current inventory to 2 golden apple
+			set slot 8 of player's current inventory to 64 arrow
+			set {shoppingCost.%player%} to 550
+			set {packType.%player%} to 8
+		if player's money is more than or equal to {shoppingCost.%player%}:
+			set slot 53 of player's current inventory to 1 emerald named "<light green>Purchase" with lore "<white>Cost: $%{shoppingCost.%player%}%"
+		else:
+			set slot 53 of player's current inventory to 1 redstone dust named "<light red>Too Expensive!" with lore "<white>Cost: $%{shoppingCost.%player%}%"
+		set slot 52 of player's current inventory to 1 red glass pane named "<bold>Go Back"
+		
+command /citem <number>:
+	description: Single-Item purchase helper.
+	usage: /citem (item ID)
+	trigger:
+		#set {shoppingItem.%player%} to "1 %{shoppingItem.%player%}% named "<gold>Items in cart: %{shopLevels.%player%}%"" parsed as item
+		set {shopLevels.%player%} to 0
+		set {shoppingCost.%player%} to 0
+		open chest inventory with 1 row named "<gold>%{shoppingItem.%player%}% Shopping Cart" for the player
+		set {shoppingItem.%player%} to "spawner"
+		set slot 0 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
+		set slot 3 of the player's current inventory to 1 torch named "<gold>Add 1 to cart"
+		set slot 4 of the player's current inventory to 1 spawner
+		set slot 5 of the player's current inventory to 1 redstone torch named "<gold>Remove 1 from cart"
+		set slot 8 of the player's current inventory to 1 emerald named "<light green>Purchase"

@@ -1,0 +1,1518 @@
+#locations
+#spawn/rest area: -718, 4, -357 (salindrum)
+#Maps
+#Forest Serenity: -837, 4, -500
+#Grassbowl Home: -736, 5, -820
+#Vapors: -479, 4, -792
+#Cave Escape: -699, 4, -1200
+
+
+#Character picker function
+#To select a specific character, pass two integers corresponding to the race and character ID of the character you want to manually assign
+#Otherwise, pass two -99's for a random character.
+function HOF_AssignCharacter(PLR: player,SETRACE: number,SETCHAR: number):
+	#Initialize Abilities
+	set {abilities.%{_PLR}%::Traditional Weapons} to 1
+	set {abilities.%{_PLR}%::Magical Weapons} to 1
+	set {abilities.%{_PLR}%::Guns} to 1
+	set {abilities.%{_PLR}%::Lockpicking} to 1
+	set {abilities.%{_PLR}%::Medicine} to 1
+	set {abilities.%{_PLR}%::Repair} to 1
+	set {abilities.%{_PLR}%::Fabrication} to 1
+	set {abilities.%{_PLR}%::Enchanting} to 1
+	set {abilities.%{_PLR}%::Speech} to 1
+	set {abilities.%{_PLR}%::Barter} to 1
+	set {abilities.%{_PLR}%::Survival} to 1
+	set {hpbuff.%{_PLR}%} to 0
+	set {strbuff.%{_PLR}%} to 0
+	set {defbuff.%{_PLR}%} to 0
+	set {magbuff.%{_PLR}%} to 0
+	set {resbuff.%{_PLR}%} to 0
+	set {spdbuff.%{_PLR}%} to 0
+	set {lckbuff.%{_PLR}%} to 0
+	set {chrbuff.%{_PLR}%} to 0
+	set {lvl.%{_PLR}%} to 1
+	set {lvlcap.%{_PLR}%} to 20
+	clear {traits.%{_PLR}%::*}
+	clear {activeBuffs.hp.%{_PLR}%::*}
+	clear {activeBuffs.str.%{_PLR}%::*}
+	clear {activeBuffs.def.%{_PLR}%::*}
+	clear {activeBuffs.mag.%{_PLR}%::*}
+	clear {activeBuffs.res.%{_PLR}%::*}
+	clear {activeBuffs.spd.%{_PLR}%::*}
+	clear {activeBuffs.lck.%{_PLR}%::*}
+	clear {activeBuffs.chr.%{_PLR}%::*}
+	if {_SETRACE} is not -99:
+		set {_race} to a random integer from 0 to 4
+	else:
+		set {_race} to {_SETRACE}
+	if {_race} is 0:
+		set {race.%{_PLR}%} to "Human"
+	else if {_race} is 1:
+		set {race.%{_PLR}%} to "Elf"
+	else if {_race} is 2:
+		set {race.%{_PLR}%} to "Dwarf"
+	else if {_race} is 3:
+		set {race.%{_PLR}%} to "Orc"
+	else if {_race} is 4:
+		set {race.%{_PLR}%} to "Dragonborn"
+	if {_SETCHAR} is not -99:
+		set {_character} to a random integer from 0 to 6
+	else:
+		set {_character} to {_SETCHAR}
+	#Human characters
+	if {_race} is 0:
+		#Leif - Mercenary
+		if {_character} is 0:
+			set {_PLR}'s tablist name to "Leif"
+			set {_PLR}'s display name to "Leif"
+			set {class.%{_PLR}%} to "Mercenary"
+			set {traits.%{_PLR}%::Kamikaze} to true
+			set {traits.%{_PLR}%::Kaga's Teachings} to true
+			set {perks.%{_PLR}%::Stamina Drink} to 1
+			set {background.%{_PLR}%} to "Nobility"
+			set {abilityProficiencies.%{_PLR}%::1} to "Traditional Weapons"
+			set {abilityProficiencies.%{_PLR}%::2} to "Lockpicking"
+			set {pts_HP.%{_PLR}%} to 17
+			set {pts_STR.%{_PLR}%} to 7
+			set {pts_DEF.%{_PLR}%} to 4
+			set {pts_CHR.%{_PLR}%} to 5
+			set {pts_LCK.%{_PLR}%} to 10
+			set {pts_SPD.%{_PLR}%} to 10
+			set {pts_MAG.%{_PLR}%} to 1
+			set {pts_RES.%{_PLR}%} to 3
+		#Gordin - Archer
+		else if {_character} is 1:
+			set {_PLR}'s tablist name to "Gordin"
+			set {_PLR}'s display name to "Gordin"
+			set {class.%{_PLR}%} to "Archer"
+			set {traits.%{_PLR}%::Old Fashioned} to true
+			set {perks.%{_PLR}%::Brave Impact} to 1
+			set {background.%{_PLR}%} to "Commoner"
+			set {abilityProficiencies.%{_PLR}%::1} to "Traditional Weapons"
+			set {abilityProficiencies.%{_PLR}%::2} to "Survival"
+			set {pts_HP.%{_PLR}%} to 20
+			set {pts_STR.%{_PLR}%} to 10
+			set {pts_DEF.%{_PLR}%} to 10
+			set {pts_CHR.%{_PLR}%} to 3
+			set {pts_LCK.%{_PLR}%} to 6
+			set {pts_SPD.%{_PLR}%} to 5
+			set {pts_MAG.%{_PLR}%} to 1
+			set {pts_RES.%{_PLR}%} to 2
+		#Linde - Mage
+		else if {_character} is 2:
+			set {_PLR}'s tablist name to "Linde"
+			set {_PLR}'s display name to "Linde"
+			set {class.%{_PLR}%} to "Mage"
+			set {traits.%{_PLR}%::Small Frame} to true
+			set {perks.%{_PLR}%::Blazing Light} to 1
+			set {background.%{_PLR}%} to "Enchanter"
+			set {abilityProficiencies.%{_PLR}%::1} to "Magical Weapons"
+			set {abilityProficiencies.%{_PLR}%::2} to "Enchanting"
+			set {pts_HP.%{_PLR}%} to 12
+			set {pts_STR.%{_PLR}%} to 1
+			set {pts_DEF.%{_PLR}%} to 2
+			set {pts_CHR.%{_PLR}%} to 10
+			set {pts_LCK.%{_PLR}%} to 10
+			set {pts_SPD.%{_PLR}%} to 10
+			set {pts_MAG.%{_PLR}%} to 10
+			set {pts_RES.%{_PLR}%} to 2
+		#Arden - Knight
+		else if {_character} is 3:
+			set {_PLR}'s tablist name to "Arden"
+			set {_PLR}'s display name to "Arden"
+			set {class.%{_PLR}%} to "Knight"
+			set {traits.%{_PLR}%::Old Fashioned} to true
+			set {traits.%{_PLR}%::Strong-Armed} to true
+			set {perks.%{_PLR}%::Armoured Stride} to 1
+			set {background.%{_PLR}%} to "Forager"
+			set {abilityProficiencies.%{_PLR}%::1} to "Traditional Weapons"
+			set {abilityProficiencies.%{_PLR}%::2} to "Survival"
+			set {pts_HP.%{_PLR}%} to 20
+			set {pts_STR.%{_PLR}%} to 10
+			set {pts_DEF.%{_PLR}%} to 10
+			set {pts_CHR.%{_PLR}%} to 5
+			set {pts_LCK.%{_PLR}%} to 8
+			set {pts_SPD.%{_PLR}%} to 2
+			set {pts_MAG.%{_PLR}%} to 1
+			set {pts_RES.%{_PLR}%} to 1
+		#Arthur - Fighter
+		else if {_character} is 4:
+			set {_PLR}'s tablist name to "Arthur"
+			set {_PLR}'s display name to "Arthur"
+			set {class.%{_PLR}%} to "Fighter"
+			set {traits.%{_PLR}%::Kaga's Teachings} to true
+			set {traits.%{_PLR}%::Honorable} to true
+			set {perks.%{_PLR}%::Misfortune} to 1
+			set {background.%{_PLR}%} to "Sellsword"
+			set {abilityProficiencies.%{_PLR}%::1} to "Traditional Weapons"
+			set {abilityProficiencies.%{_PLR}%::2} to "Repair"
+			set {pts_HP.%{_PLR}%} to 20
+			set {pts_STR.%{_PLR}%} to 7
+			set {pts_DEF.%{_PLR}%} to 7
+			set {pts_CHR.%{_PLR}%} to 8
+			set {pts_LCK.%{_PLR}%} to 1
+			set {pts_SPD.%{_PLR}%} to 7
+			set {pts_MAG.%{_PLR}%} to 1
+			set {pts_RES.%{_PLR}%} to 6
+		#Wrys - Cleric
+		else if {_character} is 5:
+			set {_PLR}'s tablist name to "Wrys"
+			set {_PLR}'s display name to "Wrys"
+			set {class.%{_PLR}%} to "Cleric"
+			set {traits.%{_PLR}%::Good Natured} to true
+			set {perks.%{_PLR}%::Wise Healing} to 1
+			set {background.%{_PLR}%} to "Forager"
+			set {abilityProficiencies.%{_PLR}%::1} to "Medicine"
+			set {abilityProficiencies.%{_PLR}%::2} to "Survival"
+			set {pts_HP.%{_PLR}%} to 17
+			set {pts_STR.%{_PLR}%} to 1
+			set {pts_DEF.%{_PLR}%} to 8
+			set {pts_CHR.%{_PLR}%} to 3
+			set {pts_LCK.%{_PLR}%} to 4
+			set {pts_SPD.%{_PLR}%} to 4
+			set {pts_MAG.%{_PLR}%} to 10
+			set {pts_RES.%{_PLR}%} to 10
+		#Sigurd - Cavalier
+		else if {_character} is 6:
+			set {_PLR}'s tablist name to "Sigurd"
+			set {_PLR}'s display name to "Sigurd"
+			set {class.%{_PLR}%} to "Cavalier"
+			set {traits.%{_PLR}%::Veteran} to true
+			set {traits.%{_PLR}%::Old Fashioned} to true
+			set {perks.%{_PLR}%::Crusader's Blood} to 1
+			set {background.%{_PLR}%} to "Nobility"
+			set {abilityProficiencies.%{_PLR}%::1} to "Traditional Weapons"
+			set {abilityProficiencies.%{_PLR}%::2} to "Fabrication"
+			set {pts_HP.%{_PLR}%} to 16
+			set {pts_STR.%{_PLR}%} to 8
+			set {pts_DEF.%{_PLR}%} to 9
+			set {pts_CHR.%{_PLR}%} to 6
+			set {pts_LCK.%{_PLR}%} to 9
+			set {pts_SPD.%{_PLR}%} to 7
+			set {pts_MAG.%{_PLR}%} to 1
+			set {pts_RES.%{_PLR}%} to 1
+		#Eyvel - Bladesman
+		else if {_character} is 7:
+			set {_PLR}'s tablist name to "Eyvel"
+			set {_PLR}'s display name to "Eyvel"
+			set {class.%{_PLR}%} to "Eyvel"
+			set {traits.%{_PLR}%::Old Fashioned} to true
+			set {perks.%{_PLR}%::Miracle Dodge} to 1
+			set {background.%{_PLR}%} to "Sellsword"
+			set {abilityProficiencies.%{_PLR}%::1} to "Traditional Weapons"
+			set {abilityProficiencies.%{_PLR}%::2} to "Medicine"
+			set {pts_HP.%{_PLR}%} to 20
+			set {pts_STR.%{_PLR}%} to 10
+			set {pts_DEF.%{_PLR}%} to 10
+			set {pts_CHR.%{_PLR}%} to 3
+			set {pts_LCK.%{_PLR}%} to 6
+			set {pts_SPD.%{_PLR}%} to 5
+			set {pts_MAG.%{_PLR}%} to 1
+			set {pts_RES.%{_PLR}%} to 2
+		#Robin - Strategist
+		else if {_character} is 8:
+			set {_PLR}'s tablist name to "Robin"
+			set {_PLR}'s display name to "Robin"
+			set {class.%{_PLR}%} to "Strategist"
+			set {traits.%{_PLR}%::Jack of all Trades} to true
+			set {traits.%{_PLR}%::Trainee} to true
+			set {perks.%{_PLR}%::Paragon} to 1
+			set {background.%{_PLR}%} to "Commoner"
+			set {abilityProficiencies.%{_PLR}%::1} to "Traditional Weapons"
+			set {abilityProficiencies.%{_PLR}%::2} to "Magical Weapons"
+			set {pts_HP.%{_PLR}%} to 14
+			set {pts_STR.%{_PLR}%} to 7
+			set {pts_DEF.%{_PLR}%} to 7
+			set {pts_CHR.%{_PLR}%} to 5
+			set {pts_LCK.%{_PLR}%} to 8
+			set {pts_SPD.%{_PLR}%} to 5
+			set {pts_MAG.%{_PLR}%} to 7
+			set {pts_RES.%{_PLR}%} to 4
+		#Sothe - Trickster
+		else if {_character} is 9:
+			set {_PLR}'s tablist name to "Sothe"
+			set {_PLR}'s display name to "Sothe"
+			set {class.%{_PLR}%} to "Trickster"
+			set {traits.%{_PLR}%::Veteran} to true
+			set {traits.%{_PLR}%::Kaga's Teachings} to true
+			set {perks.%{_PLR}%::Bane} to 1
+			set {background.%{_PLR}%} to "Thief"
+			set {abilityProficiencies.%{_PLR}%::1} to "Traditional Weapons"
+			set {abilityProficiencies.%{_PLR}%::2} to "Lockpicking"
+			set {pts_HP.%{_PLR}%} to 13
+			set {pts_STR.%{_PLR}%} to 7
+			set {pts_DEF.%{_PLR}%} to 4
+			set {pts_CHR.%{_PLR}%} to 10
+			set {pts_LCK.%{_PLR}%} to 10
+			set {pts_SPD.%{_PLR}%} to 10
+			set {pts_MAG.%{_PLR}%} to 1
+			set {pts_RES.%{_PLR}%} to 2		
+	else if {_race} is 4:
+		#Soren - Mage
+		else if {_character} is 2:
+			set {_PLR}'s tablist name to "Soren"
+			set {_PLR}'s display name to "Soren"
+			set {class.%{_PLR}%} to "Mage"
+			set {traits.%{_PLR}%::All In!} to true
+			set {traits.%{_PLR}%::Perceptive} to true
+			set {background.%{_PLR}%} to "Windcaller"
+			set {abilityProficiencies.%{_PLR}%::1} to "Magical Weapons"
+			set {abilityProficiencies.%{_PLR}%::2} to "Enchanting"
+			set {pts_HP.%{_PLR}%} to 16
+			set {pts_STR.%{_PLR}%} to 1
+			set {pts_DEF.%{_PLR}%} to 3
+			set {pts_CHR.%{_PLR}%} to 4
+			set {pts_LCK.%{_PLR}%} to 7
+			set {pts_SPD.%{_PLR}%} to 6
+			set {pts_MAG.%{_PLR}%} to 10
+			set {pts_RES.%{_PLR}%} to 10				
+	#Class Data (DO NOT TOUCH)
+	#Bases
+	set {hpcap.%{_PLR}%} to floor(({pts_HP.%{_PLR}%}) * 2)
+	set {strcap.%{_PLR}%} to floor(({pts_STR.%{_PLR}%}) * 2)
+	set {defcap.%{_PLR}%} to floor(({pts_DEF.%{_PLR}%}) * 2)
+	set {lckcap.%{_PLR}%} to floor(({pts_LCK.%{_PLR}%}) * 2)
+	set {chrcap.%{_PLR}%} to floor(({pts_CHR.%{_PLR}%}) * 2)
+	set {spdcap.%{_PLR}%} to floor(({pts_SPD.%{_PLR}%}) * 2)
+	set {magcap.%{_PLR}%} to floor(({pts_MAG.%{_PLR}%}) * 2)
+	set {rescap.%{_PLR}%} to floor(({pts_RES.%{_PLR}%}) * 2)
+	set {hp.%{_PLR}%} to ({pts_HP.%{_PLR}%})
+	set {str.%{_PLR}%} to ({pts_STR.%{_PLR}%})
+	set {def.%{_PLR}%} to ({pts_DEF.%{_PLR}%})
+	set {CHR.%{_PLR}%} to ({pts_CHR.%{_PLR}%})
+	set {LCK.%{_PLR}%} to ({pts_LCK.%{_PLR}%})
+	set {spd.%{_PLR}%} to ({pts_SPD.%{_PLR}%})
+	set {mag.%{_PLR}%} to ({pts_MAG.%{_PLR}%})
+	set {RES.%{_PLR}%} to ({pts_RES.%{_PLR}%})
+	if {class.%{_PLR}%} is "Mercenary":
+		set {hpgrowth.%{_PLR}%} to floor({pts_HP.%{_PLR}%}) + 25
+		set {strgrowth.%{_PLR}%} to floor({pts_STR.%{_PLR}%}) + 25
+		set {defgrowth.%{_PLR}%} to floor({pts_DEF.%{_PLR}%}) + 25
+		set {chrgrowth.%{_PLR}%} to floor({pts_CHR.%{_PLR}%}) + 25
+		set {lckgrowth.%{_PLR}%} to floor({pts_LCK.%{_PLR}%}) + 25
+		set {spdgrowth.%{_PLR}%} to floor({pts_SPD.%{_PLR}%}) + 25
+		set {maggrowth.%{_PLR}%} to floor({pts_MAG.%{_PLR}%}) + 25
+		set {resgrowth.%{_PLR}%} to floor({pts_RES.%{_PLR}%}) + 25
+		add 13 to {hpcap.%{_PLR}%}
+		add 12 to {strcap.%{_PLR}%}
+		add 12 to {defcap.%{_PLR}%}
+		add 12 to {chrcap.%{_PLR}%}
+		add 12 to {lckcap.%{_PLR}%}
+		add 12 to {spdcap.%{_PLR}%}
+		add 12 to {magcap.%{_PLR}%}
+		add 12 to {rescap.%{_PLR}%}
+		add 5 to {str.%{_PLR}%}
+		add 5 to {def.%{_PLR}%}
+		add 5 to {spd.%{_PLR}%}
+		add 5 to {mag.%{_PLR}%}
+		add 5 to {res.%{_PLR}%}
+		add 5 to {hp.%{_PLR}%}
+		add 5 to {chr.%{_PLR}%}
+		add 5 to {lck.%{_PLR}%}
+	else if {class.%{_PLR}%} is "Knight":
+		set {hpgrowth.%{_PLR}%} to floor({pts_HP.%{_PLR}%}) + 45
+		set {strgrowth.%{_PLR}%} to floor({pts_STR.%{_PLR}%}) + 25
+		set {defgrowth.%{_PLR}%} to floor({pts_DEF.%{_PLR}%}) + 45
+		set {chrgrowth.%{_PLR}%} to floor({pts_CHR.%{_PLR}%}) + 25
+		set {lckgrowth.%{_PLR}%} to floor({pts_LCK.%{_PLR}%}) + 20
+		set {spdgrowth.%{_PLR}%} to floor({pts_SPD.%{_PLR}%}) + 20
+		set {maggrowth.%{_PLR}%} to floor({pts_MAG.%{_PLR}%}) + 10
+		set {resgrowth.%{_PLR}%} to floor({pts_RES.%{_PLR}%}) + 10
+		add 16 to {hpcap.%{_PLR}%}
+		add 14 to {strcap.%{_PLR}%}
+		add 16 to {defcap.%{_PLR}%}
+		add 13 to {chrcap.%{_PLR}%}
+		add 11 to {lckcap.%{_PLR}%}
+		add 9 to {spdcap.%{_PLR}%}
+		add 8 to {magcap.%{_PLR}%}
+		add 9 to {rescap.%{_PLR}%}
+		add 9 to {hp.%{_PLR}%}
+		add 4 to {str.%{_PLR}%}
+		add 9 to {def.%{_PLR}%}
+		add 6 to {chr.%{_PLR}%}
+		add 5 to {lck.%{_PLR}%}
+		add 3 to {spd.%{_PLR}%}
+		add 2 to {mag.%{_PLR}%}
+		add 3 to {res.%{_PLR}%}
+	else if {class.%{_PLR}%} is "Bladesman":
+		set {hpgrowth.%{_PLR}%} to floor({pts_HP.%{_PLR}%}) + 20
+		set {strgrowth.%{_PLR}%} to floor({pts_STR.%{_PLR}%}) + 45
+		set {defgrowth.%{_PLR}%} to floor({pts_DEF.%{_PLR}%}) + 10
+		set {chrgrowth.%{_PLR}%} to floor({pts_CHR.%{_PLR}%}) + 25
+		set {lckgrowth.%{_PLR}%} to floor({pts_LCK.%{_PLR}%}) + 40
+		set {spdgrowth.%{_PLR}%} to floor({pts_SPD.%{_PLR}%}) + 50
+		set {maggrowth.%{_PLR}%} to floor({pts_MAG.%{_PLR}%}) + 5
+		set {resgrowth.%{_PLR}%} to floor({pts_RES.%{_PLR}%}) + 5
+		add 10 to {hpcap.%{_PLR}%}
+		add 18 to {strcap.%{_PLR}%}
+		add 6 to {defcap.%{_PLR}%}
+		add 10 to {chrcap.%{_PLR}%}
+		add 20 to {lckcap.%{_PLR}%}
+		add 21 to {spdcap.%{_PLR}%}
+		add 6 to {magcap.%{_PLR}%}
+		add 6 to {rescap.%{_PLR}%}
+		add 5 to {hp.%{_PLR}%}
+		add 8 to {str.%{_PLR}%}
+		add 2 to {def.%{_PLR}%}
+		add 2 to {chr.%{_PLR}%}
+		add 9 to {lck.%{_PLR}%}
+		add 10 to {spd.%{_PLR}%}
+		add 2 to {mag.%{_PLR}%}
+		add 2 to {res.%{_PLR}%}
+	else if {class.%{_PLR}%} is "Fighter":
+		set {hpgrowth.%{_PLR}%} to floor({pts_HP.%{_PLR}%}) + 40
+		set {strgrowth.%{_PLR}%} to floor({pts_STR.%{_PLR}%}) + 45
+		set {defgrowth.%{_PLR}%} to floor({pts_DEF.%{_PLR}%}) + 35
+		set {chrgrowth.%{_PLR}%} to floor({pts_CHR.%{_PLR}%}) + 20
+		set {lckgrowth.%{_PLR}%} to floor({pts_LCK.%{_PLR}%}) + 10
+		set {spdgrowth.%{_PLR}%} to floor({pts_SPD.%{_PLR}%}) + 25
+		set {maggrowth.%{_PLR}%} to floor({pts_MAG.%{_PLR}%}) + 10
+		set {resgrowth.%{_PLR}%} to floor({pts_RES.%{_PLR}%}) + 15
+		add 15 to {hpcap.%{_PLR}%}
+		add 16 to {strcap.%{_PLR}%}
+		add 16 to {defcap.%{_PLR}%}
+		add 12 to {chrcap.%{_PLR}%}
+		add 10 to {lckcap.%{_PLR}%}
+		add 12 to {spdcap.%{_PLR}%}
+		add 6 to {magcap.%{_PLR}%}
+		add 10 to {rescap.%{_PLR}%}
+		add 8 to {hp.%{_PLR}%}
+		add 9 to {str.%{_PLR}%}
+		add 7 to {def.%{_PLR}%}
+		add 2 to {chr.%{_PLR}%}
+		add 2 to {lck.%{_PLR}%}
+		add 5 to {spd.%{_PLR}%}
+		add 1 to {mag.%{_PLR}%}
+		add 6 to {res.%{_PLR}%}
+	else if {class.%{_PLR}%} is "Archer":
+		set {hpgrowth.%{_PLR}%} to floor({pts_HP.%{_PLR}%}) + 20
+		set {strgrowth.%{_PLR}%} to floor({pts_STR.%{_PLR}%}) + 30
+		set {defgrowth.%{_PLR}%} to floor({pts_DEF.%{_PLR}%}) + 35
+		set {chrgrowth.%{_PLR}%} to floor({pts_CHR.%{_PLR}%}) + 25
+		set {lckgrowth.%{_PLR}%} to floor({pts_LCK.%{_PLR}%}) + 25
+		set {spdgrowth.%{_PLR}%} to floor({pts_SPD.%{_PLR}%}) + 25
+		set {maggrowth.%{_PLR}%} to floor({pts_MAG.%{_PLR}%}) + 15
+		set {resgrowth.%{_PLR}%} to floor({pts_RES.%{_PLR}%}) + 20
+		add 14 to {hpcap.%{_PLR}%}
+		add 15 to {strcap.%{_PLR}%}
+		add 14 to {defcap.%{_PLR}%}
+		add 12 to {chrcap.%{_PLR}%}
+		add 12 to {lckcap.%{_PLR}%}
+		add 12 to {spdcap.%{_PLR}%}
+		add 9 to {magcap.%{_PLR}%}
+		add 9 to {rescap.%{_PLR}%}
+		add 6 to {hp.%{_PLR}%}
+		add 7 to {str.%{_PLR}%}
+		add 6 to {def.%{_PLR}%}
+		add 5 to {chr.%{_PLR}%}
+		add 5 to {lck.%{_PLR}%}
+		add 5 to {spd.%{_PLR}%}
+		add 3 to {mag.%{_PLR}%}
+		add 3 to {res.%{_PLR}%}	
+	else if {class.%{_PLR}%} is "Cavalier":
+		set {hpgrowth.%{_PLR}%} to floor({pts_HP.%{_PLR}%}) + 20
+		set {strgrowth.%{_PLR}%} to floor({pts_STR.%{_PLR}%}) + 35
+		set {defgrowth.%{_PLR}%} to floor({pts_DEF.%{_PLR}%}) + 15
+		set {chrgrowth.%{_PLR}%} to floor({pts_CHR.%{_PLR}%}) + 25
+		set {lckgrowth.%{_PLR}%} to floor({pts_LCK.%{_PLR}%}) + 30
+		set {spdgrowth.%{_PLR}%} to floor({pts_SPD.%{_PLR}%}) + 35
+		set {maggrowth.%{_PLR}%} to floor({pts_MAG.%{_PLR}%}) + 10
+		set {resgrowth.%{_PLR}%} to floor({pts_RES.%{_PLR}%}) + 30
+		add 11 to {hpcap.%{_PLR}%}
+		add 14 to {strcap.%{_PLR}%}
+		add 10 to {defcap.%{_PLR}%}
+		add 14 to {chrcap.%{_PLR}%}
+		add 14 to {lckcap.%{_PLR}%}
+		add 14 to {spdcap.%{_PLR}%}
+		add 6 to {magcap.%{_PLR}%}
+		add 14 to {rescap.%{_PLR}%}
+		add 4 to {hp.%{_PLR}%}
+		add 6 to {str.%{_PLR}%}
+		add 3 to {def.%{_PLR}%}
+		add 6 to {chr.%{_PLR}%}
+		add 7 to {lck.%{_PLR}%}
+		add 8 to {spd.%{_PLR}%}
+		add 2 to {mag.%{_PLR}%}
+		add 4 to {res.%{_PLR}%}
+	else if {class.%{_PLR}%} is "Survivor":
+		set {hpgrowth.%{_PLR}%} to floor({pts_HP.%{_PLR}%}) + 60
+		set {strgrowth.%{_PLR}%} to floor({pts_STR.%{_PLR}%}) + 20
+		set {defgrowth.%{_PLR}%} to floor({pts_DEF.%{_PLR}%}) + 40
+		set {chrgrowth.%{_PLR}%} to floor({pts_CHR.%{_PLR}%}) + 10
+		set {lckgrowth.%{_PLR}%} to floor({pts_LCK.%{_PLR}%}) + 10
+		set {spdgrowth.%{_PLR}%} to floor({pts_SPD.%{_PLR}%}) + 20
+		set {maggrowth.%{_PLR}%} to floor({pts_MAG.%{_PLR}%}) + 35
+		set {resgrowth.%{_PLR}%} to floor({pts_RES.%{_PLR}%}) + 25
+		add 20 to {hpcap.%{_PLR}%}
+		add 13 to {strcap.%{_PLR}%}
+		add 13 to {defcap.%{_PLR}%}
+		add 6 to {chrcap.%{_PLR}%}
+		add 6 to {lckcap.%{_PLR}%}
+		add 12 to {spdcap.%{_PLR}%}
+		add 14 to {magcap.%{_PLR}%}
+		add 13 to {rescap.%{_PLR}%}
+		add 10 to {hp.%{_PLR}%}
+		add 4 to {str.%{_PLR}%}
+		add 4 to {def.%{_PLR}%}
+		add 1 to {chr.%{_PLR}%}
+		add 2 to {lck.%{_PLR}%}
+		add 6 to {spd.%{_PLR}%}
+		add 6 to {mag.%{_PLR}%}
+		add 7 to {res.%{_PLR}%}
+	else if {class.%{_PLR}%} is "Gunslinger":
+		set {hpgrowth.%{_PLR}%} to floor({pts_HP.%{_PLR}%}) + 20
+		set {strgrowth.%{_PLR}%} to floor({pts_STR.%{_PLR}%}) + 35
+		set {defgrowth.%{_PLR}%} to floor({pts_DEF.%{_PLR}%}) + 20
+		set {chrgrowth.%{_PLR}%} to floor({pts_CHR.%{_PLR}%}) + 30
+		set {lckgrowth.%{_PLR}%} to floor({pts_LCK.%{_PLR}%}) + 30
+		set {spdgrowth.%{_PLR}%} to floor({pts_SPD.%{_PLR}%}) + 35
+		set {maggrowth.%{_PLR}%} to floor({pts_MAG.%{_PLR}%}) + 10
+		set {resgrowth.%{_PLR}%} to floor({pts_RES.%{_PLR}%}) + 20
+		add 12 to {hpcap.%{_PLR}%}
+		add 14 to {strcap.%{_PLR}%}
+		add 11 to {defcap.%{_PLR}%}
+		add 14 to {chrcap.%{_PLR}%}
+		add 15 to {lckcap.%{_PLR}%}
+		add 14 to {spdcap.%{_PLR}%}
+		add 6 to {magcap.%{_PLR}%}
+		add 11 to {rescap.%{_PLR}%}
+		add 4 to {hp.%{_PLR}%}
+		add 7 to {str.%{_PLR}%}
+		add 3 to {def.%{_PLR}%}
+		add 8 to {chr.%{_PLR}%}
+		add 7 to {lck.%{_PLR}%}
+		add 7 to {spd.%{_PLR}%}
+		add 1 to {mag.%{_PLR}%}
+		add 6 to {res.%{_PLR}%}
+	else if {class.%{_PLR}%} is "Devil Hunter":
+		set {combosenabled.%{_PLR}%} to true
+		set {hpgrowth.%{_PLR}%} to floor({pts_HP.%{_PLR}%}) + 15
+		set {strgrowth.%{_PLR}%} to floor({pts_STR.%{_PLR}%}) + 30
+		set {defgrowth.%{_PLR}%} to floor({pts_DEF.%{_PLR}%}) + 15
+		set {chrgrowth.%{_PLR}%} to floor({pts_CHR.%{_PLR}%}) + 30
+		set {lckgrowth.%{_PLR}%} to floor({pts_LCK.%{_PLR}%}) + 35
+		set {spdgrowth.%{_PLR}%} to floor({pts_SPD.%{_PLR}%}) + 30
+		set {maggrowth.%{_PLR}%} to floor({pts_MAG.%{_PLR}%}) + 30
+		set {resgrowth.%{_PLR}%} to floor({pts_RES.%{_PLR}%}) + 15
+		add 8 to {hpcap.%{_PLR}%}
+		add 14 to {strcap.%{_PLR}%}
+		add 8 to {defcap.%{_PLR}%}
+		add 16 to {chrcap.%{_PLR}%}
+		add 15 to {lckcap.%{_PLR}%}
+		add 14 to {spdcap.%{_PLR}%}
+		add 14 to {magcap.%{_PLR}%}
+		add 8 to {rescap.%{_PLR}%}
+		add 3 to {hp.%{_PLR}%}
+		add 6 to {str.%{_PLR}%}
+		add 2 to {def.%{_PLR}%}
+		add 8 to {chr.%{_PLR}%}
+		add 7 to {lck.%{_PLR}%}
+		add 6 to {spd.%{_PLR}%}
+		add 6 to {mag.%{_PLR}%}
+		add 2 to {res.%{_PLR}%}
+	else if {class.%{_PLR}%} is "Strategist":
+		set {hpgrowth.%{_PLR}%} to floor({pts_HP.%{_PLR}%}) + 20
+		set {strgrowth.%{_PLR}%} to floor({pts_STR.%{_PLR}%}) + 30
+		set {defgrowth.%{_PLR}%} to floor({pts_DEF.%{_PLR}%}) + 25
+		set {chrgrowth.%{_PLR}%} to floor({pts_CHR.%{_PLR}%}) + 30
+		set {lckgrowth.%{_PLR}%} to floor({pts_LCK.%{_PLR}%}) + 20
+		set {spdgrowth.%{_PLR}%} to floor({pts_SPD.%{_PLR}%}) + 20
+		set {maggrowth.%{_PLR}%} to floor({pts_MAG.%{_PLR}%}) + 35
+		set {resgrowth.%{_PLR}%} to floor({pts_RES.%{_PLR}%}) + 20
+		add 11 to {hpcap.%{_PLR}%}
+		add 13 to {strcap.%{_PLR}%}
+		add 14 to {defcap.%{_PLR}%}
+		add 14 to {chrcap.%{_PLR}%}
+		add 10 to {lckcap.%{_PLR}%}
+		add 10 to {spdcap.%{_PLR}%}
+		add 15 to {magcap.%{_PLR}%}
+		add 10 to {rescap.%{_PLR}%}
+		add 4 to {hp.%{_PLR}%}
+		add 5 to {str.%{_PLR}%}
+		add 6 to {def.%{_PLR}%}
+		add 7 to {chr.%{_PLR}%}
+		add 4 to {lck.%{_PLR}%}
+		add 4 to {spd.%{_PLR}%}
+		add 6 to {mag.%{_PLR}%}
+		add 4 to {res.%{_PLR}%}
+	else if {class.%{_PLR}%} is "Mage":
+		set {hpgrowth.%{_PLR}%} to floor({pts_HP.%{_PLR}%}) + 20
+		set {strgrowth.%{_PLR}%} to floor({pts_STR.%{_PLR}%}) + 15
+		set {defgrowth.%{_PLR}%} to floor({pts_DEF.%{_PLR}%}) + 15
+		set {chrgrowth.%{_PLR}%} to floor({pts_CHR.%{_PLR}%}) + 25
+		set {lckgrowth.%{_PLR}%} to floor({pts_LCK.%{_PLR}%}) + 30
+		set {spdgrowth.%{_PLR}%} to floor({pts_SPD.%{_PLR}%}) + 25
+		set {maggrowth.%{_PLR}%} to floor({pts_MAG.%{_PLR}%}) + 35
+		set {resgrowth.%{_PLR}%} to floor({pts_RES.%{_PLR}%}) + 35
+		add 10 to {hpcap.%{_PLR}%}
+		add 8 to {strcap.%{_PLR}%}
+		add 10 to {defcap.%{_PLR}%}
+		add 12 to {chrcap.%{_PLR}%}
+		add 12 to {lckcap.%{_PLR}%}
+		add 12 to {spdcap.%{_PLR}%}
+		add 19 to {magcap.%{_PLR}%}
+		add 14 to {rescap.%{_PLR}%}
+		add 3 to {hp.%{_PLR}%}
+		add 3 to {str.%{_PLR}%}
+		add 3 to {def.%{_PLR}%}
+		add 5 to {chr.%{_PLR}%}
+		add 5 to {lck.%{_PLR}%}
+		add 5 to {spd.%{_PLR}%}
+		add 10 to {mag.%{_PLR}%}
+		add 6 to {res.%{_PLR}%}
+	else if {class.%{_PLR}%} is "Trickster":
+		set {hpgrowth.%{_PLR}%} to floor({pts_HP.%{_PLR}%}) + 20
+		set {strgrowth.%{_PLR}%} to floor({pts_STR.%{_PLR}%}) + 20
+		set {defgrowth.%{_PLR}%} to floor({pts_DEF.%{_PLR}%}) + 20
+		set {chrgrowth.%{_PLR}%} to floor({pts_CHR.%{_PLR}%}) + 45
+		set {lckgrowth.%{_PLR}%} to floor({pts_LCK.%{_PLR}%}) + 40
+		set {spdgrowth.%{_PLR}%} to floor({pts_SPD.%{_PLR}%}) + 35
+		set {maggrowth.%{_PLR}%} to floor({pts_MAG.%{_PLR}%}) + 10
+		set {resgrowth.%{_PLR}%} to floor({pts_RES.%{_PLR}%}) + 10
+		add 13 to {hpcap.%{_PLR}%}
+		add 10 to {strcap.%{_PLR}%}
+		add 9 to {defcap.%{_PLR}%}
+		add 18 to {chrcap.%{_PLR}%}
+		add 15 to {lckcap.%{_PLR}%}
+		add 15 to {spdcap.%{_PLR}%}
+		add 8 to {magcap.%{_PLR}%}
+		add 9 to {rescap.%{_PLR}%}
+		add 4 to {hp.%{_PLR}%}
+		add 3 to {str.%{_PLR}%}
+		add 3 to {def.%{_PLR}%}
+		add 11 to {chr.%{_PLR}%}
+		add 7 to {lck.%{_PLR}%}
+		add 7 to {spd.%{_PLR}%}
+		add 2 to {mag.%{_PLR}%}
+		add 3 to {res.%{_PLR}%}
+	else if {class.%{_PLR}%} is "Summoner":
+		set {hpgrowth.%{_PLR}%} to floor({pts_HP.%{_PLR}%}) + 35
+		set {strgrowth.%{_PLR}%} to floor({pts_STR.%{_PLR}%}) + 10
+		set {defgrowth.%{_PLR}%} to floor({pts_DEF.%{_PLR}%}) + 10
+		set {chrgrowth.%{_PLR}%} to floor({pts_CHR.%{_PLR}%}) + 20
+		set {lckgrowth.%{_PLR}%} to floor({pts_LCK.%{_PLR}%}) + 30
+		set {spdgrowth.%{_PLR}%} to floor({pts_SPD.%{_PLR}%}) + 35
+		set {maggrowth.%{_PLR}%} to floor({pts_MAG.%{_PLR}%}) + 40
+		set {resgrowth.%{_PLR}%} to floor({pts_RES.%{_PLR}%}) + 20
+		add 18 to {hpcap.%{_PLR}%}
+		add 6 to {strcap.%{_PLR}%}
+		add 6 to {defcap.%{_PLR}%}
+		add 10 to {chrcap.%{_PLR}%}
+		add 12 to {lckcap.%{_PLR}%}
+		add 16 to {spdcap.%{_PLR}%}
+		add 17 to {magcap.%{_PLR}%}
+		add 12 to {rescap.%{_PLR}%}
+		add 7 to {hp.%{_PLR}%}
+		add 2 to {str.%{_PLR}%}
+		add 2 to {def.%{_PLR}%}
+		add 4 to {chr.%{_PLR}%}
+		add 5 to {lck.%{_PLR}%}
+		add 7 to {spd.%{_PLR}%}
+		add 9 to {mag.%{_PLR}%}
+		add 4 to {res.%{_PLR}%}
+	else if {class.%{_PLR}%} is "Cleric":
+		set {hpgrowth.%{_PLR}%} to floor({pts_HP.%{_PLR}%}) + 25
+		set {strgrowth.%{_PLR}%} to floor({pts_STR.%{_PLR}%}) + 5
+		set {defgrowth.%{_PLR}%} to floor({pts_DEF.%{_PLR}%}) + 10
+		set {chrgrowth.%{_PLR}%} to floor({pts_CHR.%{_PLR}%}) + 25
+		set {lckgrowth.%{_PLR}%} to floor({pts_LCK.%{_PLR}%}) + 30
+		set {spdgrowth.%{_PLR}%} to floor({pts_SPD.%{_PLR}%}) + 10
+		set {maggrowth.%{_PLR}%} to floor({pts_MAG.%{_PLR}%}) + 45
+		set {resgrowth.%{_PLR}%} to floor({pts_RES.%{_PLR}%}) + 50
+		add 15 to {hpcap.%{_PLR}%}
+		add 6 to {strcap.%{_PLR}%}
+		add 10 to {defcap.%{_PLR}%}
+		add 12 to {chrcap.%{_PLR}%}
+		add 15 to {lckcap.%{_PLR}%}
+		add 9 to {spdcap.%{_PLR}%}
+		add 12 to {magcap.%{_PLR}%}
+		add 18 to {rescap.%{_PLR}%}
+		add 6 to {hp.%{_PLR}%}
+		add 2 to {str.%{_PLR}%}
+		add 3 to {def.%{_PLR}%}
+		add 5 to {chr.%{_PLR}%}
+		add 7 to {lck.%{_PLR}%}
+		add 3 to {spd.%{_PLR}%}
+		add 7 to {mag.%{_PLR}%}
+		add 7 to {res.%{_PLR}%}
+	#Racial stat bonus
+	if {race.%{_PLR}%} is "Human":
+		add 2 to {hp.%{_PLR}%}
+		add 2 to {hpcap.%{_PLR}%}
+		add 2 to {str.%{_PLR}%}
+		add 2 to {strcap.%{_PLR}%}
+		add 2 to {def.%{_PLR}%}
+		add 2 to {defcap.%{_PLR}%}
+		add 2 to {mag.%{_PLR}%}
+		add 2 to {magcap.%{_PLR}%}
+		add 2 to {res.%{_PLR}%}
+		add 2 to {rescap.%{_PLR}%}
+		add 2 to {spd.%{_PLR}%}
+		add 2 to {spdcap.%{_PLR}%}
+		add 2 to {lck.%{_PLR}%}
+		add 2 to {lckcap.%{_PLR}%}
+		add 2 to {chr.%{_PLR}%}
+		add 2 to {chrcap.%{_PLR}%}
+	else if {race.%{_PLR}%} is "Dragonborn":
+		add 2 to {hp.%{_PLR}%}
+		add 2 to {hpcap.%{_PLR}%}
+		add 0 to {str.%{_PLR}%}
+		add 0 to {strcap.%{_PLR}%}
+		add 2 to {def.%{_PLR}%}
+		add 2 to {defcap.%{_PLR}%}
+		add 5 to {mag.%{_PLR}%}
+		add 5 to {magcap.%{_PLR}%}
+		add 3 to {res.%{_PLR}%}
+		add 3 to {rescap.%{_PLR}%}
+		add 0 to {spd.%{_PLR}%}
+		add 0 to {spdcap.%{_PLR}%}
+		add 2 to {lck.%{_PLR}%}
+		add 2 to {lckcap.%{_PLR}%}
+		subtract 4 from {chr.%{_PLR}%}
+		subtract 4 from {chrcap.%{_PLR}%}
+	else if {race.%{_PLR}%} is "Elf":
+		add 0 to {hp.%{_PLR}%}
+		add 0 to {hpcap.%{_PLR}%}
+		subtract 1 from {str.%{_PLR}%}
+		subtract 1 from {strcap.%{_PLR}%}
+		subtract 2 from {def.%{_PLR}%}
+		subtract 2 from {defcap.%{_PLR}%}
+		add 4 to {mag.%{_PLR}%}
+		add 4 to {magcap.%{_PLR}%}
+		add 2 to {res.%{_PLR}%}
+		add 2 to {rescap.%{_PLR}%}
+		add 4 to {spd.%{_PLR}%}
+		add 4 to {spdcap.%{_PLR}%}
+		add 2 to {lck.%{_PLR}%}
+		add 2 to {lckcap.%{_PLR}%}
+		add 4 to {chr.%{_PLR}%}
+		add 4 to {chrcap.%{_PLR}%}
+	else if {race.%{_PLR}%} is "Dwarf":
+		add 5 to {hp.%{_PLR}%}
+		add 5 to {hpcap.%{_PLR}%}
+		add 5 to {str.%{_PLR}%}
+		add 5 to {strcap.%{_PLR}%}
+		add 4 to {def.%{_PLR}%}
+		add 4 to {defcap.%{_PLR}%}
+		add 0 to {mag.%{_PLR}%}
+		add 0 to {magcap.%{_PLR}%}
+		add 0 to {res.%{_PLR}%}
+		add 0 to {rescap.%{_PLR}%}
+		subtract 2 from {spd.%{_PLR}%}
+		subtract 2 from {spdcap.%{_PLR}%}
+		add 2 to {lck.%{_PLR}%}
+		add 2 to {lckcap.%{_PLR}%}
+		add 2 to {chr.%{_PLR}%}
+		add 2 to {chrcap.%{_PLR}%}
+	else if {race.%{_PLR}%} is "Orc":
+		add 6 to {hp.%{_PLR}%}
+		add 6 to {hpcap.%{_PLR}%}
+		add 4 to {str.%{_PLR}%}
+		add 4 to {strcap.%{_PLR}%}
+		add 4 to {def.%{_PLR}%}
+		add 4 to {defcap.%{_PLR}%}
+		subtract 2 from {mag.%{_PLR}%}
+		subtract 2 from {magcap.%{_PLR}%}
+		add 4 to {res.%{_PLR}%}
+		add 4 to {rescap.%{_PLR}%}
+		subtract 4 from {spd.%{_PLR}%}
+		subtract 4 from {spdcap.%{_PLR}%}
+		add 2 to {lck.%{_PLR}%}
+		add 2 to {lckcap.%{_PLR}%}
+		add 2 to {chr.%{_PLR}%}
+		add 2 to {chrcap.%{_PLR}%}
+	#Backgrounds
+	if {background.%{_PLR}%} is "Commoner":
+		add 5 to {hpgrowth.%{_PLR}%}
+		add 5 to {strgrowth.%{_PLR}%}
+		add 5 to {defgrowth.%{_PLR}%}
+		add 5 to {spdgrowth.%{_PLR}%}
+		add 5 to {maggrowth.%{_PLR}%}
+		add 5 to {resgrowth.%{_PLR}%}
+		add 5 to {lckgrowth.%{_PLR}%}
+		add 5 to {chrgrowth.%{_PLR}%}
+		add 4 to {abilities.%{_PLR}%::Traditional Weapons}
+		add 4 to {abilities.%{_PLR}%::Medicine}
+		add 4 to {abilities.%{_PLR}%::Repair}
+		add 4 to {abilities.%{_PLR}%::Fabrication}
+		add 4 to {abilities.%{_PLR}%::Speech}
+		add 4 to {abilities.%{_PLR}%::Barter}
+		add 4 to {abilities.%{_PLR}%::Survival}
+	else if {background.%{_PLR}%} is "Nobility":
+		add 15 to {hpgrowth.%{_PLR}%}
+		add 5 to {strgrowth.%{_PLR}%}
+		add 5 to {maggrowth.%{_PLR}%}
+		add 15 to {lckgrowth.%{_PLR}%}
+		add 15 to {chrgrowth.%{_PLR}%}
+		add 13 to {abilities.%{_PLR}%::Traditional Weapons}
+		add 13 to {abilities.%{_PLR}%::Speech}
+		add 13 to {abilities.%{_PLR}%::Barter}
+	else if {background.%{_PLR}%} is "Chemist":
+		add 15 to {hpgrowth.%{_PLR}%}
+		add 5 to {spdgrowth.%{_PLR}%}
+		add 15 to {maggrowth.%{_PLR}%}
+		add 15 to {resgrowth.%{_PLR}%}
+		add 5 to {chrgrowth.%{_PLR}%}
+		add 13 to {abilities.%{_PLR}%::Magical Weapons}
+		add 13 to {abilities.%{_PLR}%::Medicine}
+		add 13 to {abilities.%{_PLR}%::Speech}
+	else if {background.%{_PLR}%} is "Enchanter":
+		add 15 to {hpgrowth.%{_PLR}%}
+		add 15 to {spdgrowth.%{_PLR}%}
+		add 15 to {maggrowth.%{_PLR}%}
+		add 5 to {resgrowth.%{_PLR}%}
+		add 5 to {lckgrowth.%{_PLR}%}
+		add 20 to {abilities.%{_PLR}%::Magical Weapons}
+		add 20 to {abilities.%{_PLR}%::Enchanting}
+	else if {background.%{_PLR}%} is "Sellsword":
+		add 15 to {hpgrowth.%{_PLR}%}
+		add 15 to {strgrowth.%{_PLR}%}
+		add 15 to {defgrowth.%{_PLR}%}
+		add 5 to {spdgrowth.%{_PLR}%}
+		add 5 to {resgrowth.%{_PLR}%}
+		add 13 to {abilities.%{_PLR}%::Traditional Weapons}
+		add 13 to {abilities.%{_PLR}%::Barter}
+		add 13 to {abilities.%{_PLR}%::Survival}
+	else if {background.%{_PLR}%} is "Thief":
+		add 5 to {hpgrowth.%{_PLR}%}
+		add 15 to {strgrowth.%{_PLR}%}
+		add 5 to {defgrowth.%{_PLR}%}
+		add 15 to {spdgrowth.%{_PLR}%}
+		add 5 to {resgrowth.%{_PLR}%}
+		add 15 to {lckgrowth.%{_PLR}%}
+		add 13 to {abilities.%{_PLR}%::Traditional Weapons}
+		add 13 to {abilities.%{_PLR}%::Lockpicking}
+		add 13 to {abilities.%{_PLR}%::Barter}
+	else if {background.%{_PLR}%} is "Smith":
+		add 5 to {hpgrowth.%{_PLR}%}
+		add 15 to {strgrowth.%{_PLR}%}
+		add 15 to {defgrowth.%{_PLR}%}
+		add 5 to {lckgrowth.%{_PLR}%}
+		add 15 to {chrgrowth.%{_PLR}%}
+		add 13 to {abilities.%{_PLR}%::Guns}
+		add 13 to {abilities.%{_PLR}%::Repair}
+		add 13 to {abilities.%{_PLR}%::Fabrication}
+	else if {background.%{_PLR}%} is "Forager":
+		add 15 to {hpgrowth.%{_PLR}%}
+		add 5 to {strgrowth.%{_PLR}%}
+		add 15 to {defgrowth.%{_PLR}%}
+		add 5 to {spdgrowth.%{_PLR}%}
+		add 15 to {resgrowth.%{_PLR}%}
+		add 13 to {abilities.%{_PLR}%::Medicine}
+		add 13 to {abilities.%{_PLR}%::Repair}
+		add 13 to {abilities.%{_PLR}%::Survival}
+	#Dragonborn Backgrounds
+	else if {background.%{_PLR}%} is "Windcaller":
+		add 20 to {hpgrowth.%{_PLR}%}
+		add 20 to {spdgrowth.%{_PLR}%}
+		add 10 to {strgrowth.%{_PLR}%}
+		add 10 to {maggrowth.%{_PLR}%}
+		add 13 to {abilities.%{_PLR}%::Traditional Weapons}
+		add 13 to {abilities.%{_PLR}%::Magical Weapons}
+		add 13 to {abilities.%{_PLR}%::Enchanting}
+	else if {background.%{_PLR}%} is "Firestorm":
+		add 20 to {strgrowth.%{_PLR}%}
+		add 20 to {maggrowth.%{_PLR}%}
+		add 10 to {spdgrowth.%{_PLR}%}
+		add 10 to {lckgrowth.%{_PLR}%}
+		add 13 to {abilities.%{_PLR}%::Traditional Weapons}
+		add 13 to {abilities.%{_PLR}%::Magical Weapons}
+		add 13 to {abilities.%{_PLR}%::Fabrication}
+	else if {background.%{_PLR}%} is "Waterflow":
+		add 20 to {hpgrowth.%{_PLR}%}
+		add 20 to {defgrowth.%{_PLR}%}
+		add 10 to {resgrowth.%{_PLR}%}
+		add 10 to {lckgrowth.%{_PLR}%}
+		add 13 to {abilities.%{_PLR}%::Repair}
+		add 13 to {abilities.%{_PLR}%::Medicine}
+		add 13 to {abilities.%{_PLR}%::Survival}
+	#Traits
+	if {traits.%{_PLR}%::All In!} is true:
+		set {_debug} to changeEntityStatBuff({_PLR},"STR",5,"All In! (Trait)",0)
+		set {_debug} to changeEntityStatBuff({_PLR},"MAG",5,"All In! (Trait)",0)
+		set {_debug} to changeEntityStatBuff({_PLR},"DEF",-3,"All In! (Trait)",0)
+		set {_debug} to changeEntityStatBuff({_PLR},"RES",-3,"All In! (Trait)",0)
+		set {_debug} to changeEntityStatBuff({_PLR},"HP",-4,"All In! (Trait)",0)
+	if {traits.%{_PLR}%::Honorable} is true:
+		set {_debug} to changeEntityStatBuff({_PLR},"STR",3,"Honorable (Trait)",0)
+		set {_debug} to changeEntityStatBuff({_PLR},"MAG",3,"Honorable (Trait)",0)
+		set {_debug} to changeEntityStatBuff({_PLR},"SPD",3,"Honorable (Trait)",0)
+		set {_debug} to changeEntityStatBuff({_PLR},"LCK",-5,"Honorable (Trait)",0)
+	if {traits.%{_PLR}%::Small Frame} is true:
+		set {_debug} to changeEntityStatBuff({_PLR},"SPD",5,"Small Frame (Trait)",0)
+		set {_debug} to changeEntityStatBuff({_PLR},"LCK",5,"Small Frame (Trait)",0)
+	if {traits.%{_PLR}%::Veteran} is true:
+		set {_debug} to changeEntityStatBuff({_PLR},"HP",5,"Veteran (Trait)",0)
+		set {_debug} to changeEntityStatBuff({_PLR},"STR",5,"Veteran (Trait)",0)
+		set {_debug} to changeEntityStatBuff({_PLR},"DEF",5,"Veteran (Trait)",0)
+		set {_debug} to changeEntityStatBuff({_PLR},"MAG",5,"Veteran (Trait)",0)
+		set {_debug} to changeEntityStatBuff({_PLR},"RES",5,"Veteran (Trait)",0)
+		set {_debug} to changeEntityStatBuff({_PLR},"SPD",5,"Veteran (Trait)",0)
+		set {_debug} to changeEntityStatBuff({_PLR},"LCK",5,"Veteran (Trait)",0)
+		set {_debug} to changeEntityStatBuff({_PLR},"CHR",5,"Veteran (Trait)",0)
+		subtract 30 from {hpgrowth.%{_PLR}%}
+		subtract 30 from {strgrowth.%{_PLR}%}
+		subtract 30 from {defgrowth.%{_PLR}%}
+		subtract 30 from {maggrowth.%{_PLR}%}
+		subtract 30 from {resgrowth.%{_PLR}%}
+		subtract 30 from {spdgrowth.%{_PLR}%}
+		subtract 30 from {lckgrowth.%{_PLR}%}
+		subtract 30 from {chrgrowth.%{_PLR}%}
+	if {traits.%{_PLR}%::Trainee} is true:
+		set {_debug} to changeEntityStatBuff({_PLR},"HP",-4,"Trainee (Trait)",0)
+		set {_debug} to changeEntityStatBuff({_PLR},"STR",-4,"Trainee (Trait)",0)
+		set {_debug} to changeEntityStatBuff({_PLR},"DEF",-4,"Trainee (Trait)",0)
+		set {_debug} to changeEntityStatBuff({_PLR},"MAG",-4,"Trainee (Trait)",0)
+		set {_debug} to changeEntityStatBuff({_PLR},"RES",-4,"Trainee (Trait)",0)
+		set {_debug} to changeEntityStatBuff({_PLR},"SPD",-4,"Trainee (Trait)",0)
+		set {_debug} to changeEntityStatBuff({_PLR},"LCK",-4,"Trainee (Trait)",0)
+		set {_debug} to changeEntityStatBuff({_PLR},"CHR",-4,"Trainee (Trait)",0)
+		add 10 to {hpcap.%{_PLR}%}
+		add 10 to {strcap.%{_PLR}%}
+		add 10 to {defcap.%{_PLR}%}
+		add 10 to {chrcap.%{_PLR}%}
+		add 10 to {lckcap.%{_PLR}%}
+		add 10 to {spdcap.%{_PLR}%}
+		add 10 to {magcap.%{_PLR}%}
+		add 10 to {rescap.%{_PLR}%}
+		add 30 to {hpgrowth.%{_PLR}%}
+		add 30 to {strgrowth.%{_PLR}%}
+		add 30 to {defgrowth.%{_PLR}%}
+		add 30 to {maggrowth.%{_PLR}%}
+		add 30 to {resgrowth.%{_PLR}%}
+		add 30 to {spdgrowth.%{_PLR}%}
+		add 30 to {lckgrowth.%{_PLR}%}
+		add 30 to {chrgrowth.%{_PLR}%}
+	if {traits.%{_PLR}%::Perceptive} is true:
+		set {_debug} to changeEntityStatBuff({_PLR},"SPD",-5,"Perceptive (Trait)",0)
+	if {traits.%{_PLR}%::Old Fashioned} is true:
+		set {_debug} to changeEntityStatBuff({_PLR},"STR",3,"Old Fashioned (Trait)",0)
+		set {_debug} to changeEntityStatBuff({_PLR},"DEF",3,"Old Fashioned (Trait)",0)
+		add 13 to {abilities.%{_PLR}%::Traditional Weapons}
+		set {_debug} to changeEntityStatBuff({_PLR},"MAG",-5,"Old Fashioned (Trait)",0)
+		subtract 7 from {abilities.%{_PLR}%::Magical Weapons}
+		subtract 7 from {abilities.%{_PLR}%::Guns}
+	if {traits.%{_PLR}%::Economical} is true:
+		set {_debug} to changeEntityStatBuff({_PLR},"CHR",5,"Economical (Trait)",0)
+		add 20 to {abilities.%{_PLR}%::Barter}
+		subtract 20 from {abilities.%{_PLR}%::Speech}
+	if {traits.%{_PLR}%::Good Natured} is true:
+		set {_debug} to changeEntityStatBuff({_PLR},"CHR",5,"Good Natured (Trait)",0)
+		add 10 to {abilities.%{_PLR}%::Speech}
+		add 10 to {abilities.%{_PLR}%::Medicine}
+		set {_debug} to changeEntityStatBuff({_PLR},"STR",-2,"Good Natured (Trait)",0)
+		set {_debug} to changeEntityStatBuff({_PLR},"MAG",-2,"Good Natured (Trait)",0)
+		subtract 7 from {abilities.%{_PLR}%::Traditional Weapons}
+		subtract 7 from {abilities.%{_PLR}%::Magical Weapons}
+		subtract 7 from {abilities.%{_PLR}%::Guns}
+	if {traits.%{_PLR}%::Kamikaze} is true:
+		set {_debug} to changeEntityStatBuff({_PLR},"DEF",-5,"Kamikaze (Trait)",0)
+		set {_debug} to changeEntityStatBuff({_PLR},"RES",-5,"Kamikaze (Trait)",0)
+		subtract 7 from {abilities.%{_PLR}%::Medicine}
+		subtract 7 from {abilities.%{_PLR}%::Survival}
+	if {traits.%{_PLR}%::Strong-Armed} is true:
+		set {_debug} to changeEntityStatBuff({_PLR},"STR",4,"Strong-Armed (Trait)",0)
+		set {_debug} to changeEntityStatBuff({_PLR},"DEF",4,"Strong-Armed (Trait)",0)
+		set {_debug} to changeEntityStatBuff({_PLR},"HP",2,"Strong-Armed (Trait)",0)
+		subtract 7 from {abilities.%{_PLR}%::Traditional Weapons}
+		subtract 7 from {abilities.%{_PLR}%::Magical Weapons}
+		subtract 7 from {abilities.%{_PLR}%::Guns}
+	if {traits.%{_PLR}%::Pacifist} is true:
+		set {_debug} to changeEntityStatBuff({_PLR},"HP",2,"Pacifist (Trait)",0)
+		set {_debug} to changeEntityStatBuff({_PLR},"DEF",2,"Pacifist (Trait)",0)
+		set {_debug} to changeEntityStatBuff({_PLR},"RES",2,"Pacifist (Trait)",0)
+		add 13 to {abilities.%{_PLR}%::Medicine}
+		add 13 to {abilities.%{_PLR}%::Survival}
+		set {_debug} to changeEntityStatBuff({_PLR},"STR",-4,"Pacifist (Trait)",0)
+		set {_debug} to changeEntityStatBuff({_PLR},"MAG",-4,"Pacifist (Trait)",0)
+		subtract 7 from {abilities.%{_PLR}%::Traditional Weapons}
+		subtract 7 from {abilities.%{_PLR}%::Magical Weapons}
+		subtract 7 from {abilities.%{_PLR}%::Guns}
+	if {traits.%{_PLR}%::Jack of all Trades} is true:
+		set {_statCapAverage} to ceil(({hpcap.%{_PLR}%} + {strcap.%{_PLR}%} + {defcap.%{_PLR}%} + {magcap.%{_PLR}%} + {rescap.%{_PLR}%} + {spdcap.%{_PLR}%} + {lckcap.%{_PLR}%} + {chrcap.%{_PLR}%}) / 8)
+		set {hpcap.%{_PLR}%} to floor({_statCapAverage} * 1.5)
+		set {strcap.%{_PLR}%} to {_statCapAverage}
+		set {defcap.%{_PLR}%} to {_statCapAverage}
+		set {lckcap.%{_PLR}%} to {_statCapAverage}
+		set {chrcap.%{_PLR}%} to {_statCapAverage}
+		set {spdcap.%{_PLR}%} to {_statCapAverage}
+		set {magcap.%{_PLR}%} to {_statCapAverage}
+		set {rescap.%{_PLR}%} to {_statCapAverage}			
+	else if {traits.%{_PLR}%::Spellscribe} is true:
+		set {_debug} to changeEntityStatBuff({_PLR},"MAG",5,"Spellscribe (Trait)",0)
+		add 13 to {abilities.%{_PLR}%::Magical Weapons}
+		add 13 to {abilities.%{_PLR}%::Enchanting}
+		set {_debug} to changeEntityStatBuff({_PLR},"RES",-5,"Spellscribe (Trait)",0)
+		subtract 13 from {abilities.%{_PLR}%::Traditional Weapons}
+		subtract 13 from {abilities.%{_PLR}%::Guns}
+	else if {traits.%{_PLR}%::Tinkerer} is true:
+		set {_debug} to changeEntityStatBuff({_PLR},"STR",2,"Tinkerer (Trait)",0)
+		set {_debug} to changeEntityStatBuff({_PLR},"DEF",2,"Tinkerer (Trait)",0)
+		add 10 to {abilities.%{_PLR}%::Repair}
+		add 10 to {abilities.%{_PLR}%::Fabrication}
+		add 10 to {abilities.%{_PLR}%::Traditional Weapons}
+		add 10 to {abilities.%{_PLR}%::Guns}
+		set {_debug} to changeEntityStatBuff({_PLR},"SPD",-5,"Tinkerer (Trait)",0)
+		set {_debug} to changeEntityStatBuff({_PLR},"CHR",-5,"Tinkerer (Trait)",0)
+		subtract 7 from {abilities.%{_PLR}%::Barter}
+	else if {traits.%{_PLR}%::Half-Breed} is true:
+		subtract 25 from {abilities.%{_PLR}%::Speech}
+		subtract 25 from {abilities.%{_PLR}%::Barter}
+		if {background.%{_PLR}%} is "Windcaller":
+			set {_debug} to changeEntityStatBuff({_PLR},"SPD",10,"Windcaller Half-Breed (Trait)",0)
+			set {_debug} to changeEntityStatBuff({_PLR},"LCK",10,"Windcaller Half-Breed (Trait)",0)
+			set {_debug} to changeEntityStatBuff({_PLR},"STR",5,"Windcaller Half-Breed (Trait)",0)
+			set {_debug} to changeEntityStatBuff({_PLR},"MAG",5,"Windcaller Half-Breed (Trait)",0)
+			add 7 to {abilities.%{_PLR}%::Traditional Weapons}
+			add 7 to {abilities.%{_PLR}%::Magical Weapons}
+			add 7 to {abilities.%{_PLR}%::Enchanting}
+		else if {background.%{_PLR}%} is "Firestorm":
+			set {_debug} to changeEntityStatBuff({_PLR},"STR",10,"Firestorm Half-Breed (Trait)",0)
+			set {_debug} to changeEntityStatBuff({_PLR},"MAG",10,"Firestorm Half-Breed (Trait)",0)
+			set {_debug} to changeEntityStatBuff({_PLR},"SPD",5,"Firestorm Half-Breed (Trait)",0)
+			set {_debug} to changeEntityStatBuff({_PLR},"LCK",5,"Firestorm Half-Breed (Trait)",0)
+			add 7 to {abilities.%{_PLR}%::Traditional Weapons}
+			add 7 to {abilities.%{_PLR}%::Magical Weapons}
+			add 7 to {abilities.%{_PLR}%::Fabrication}
+		else if {background.%{_PLR}%} is "Waterflow":
+			set {_debug} to changeEntityStatBuff({_PLR},"DEF",10,"Waterflow Half-Breed (Trait)",0)
+			set {_debug} to changeEntityStatBuff({_PLR},"RES",10,"Waterflow Half-Breed (Trait)",0)
+			set {_debug} to changeEntityStatBuff({_PLR},"SPD",5,"Waterflow Half-Breed (Trait)",0)
+			set {_debug} to changeEntityStatBuff({_PLR},"LCK",5,"Waterflow Half-Breed (Trait)",0)
+			add 7 to {abilities.%{_PLR}%::Medicine}
+			add 7 to {abilities.%{_PLR}%::Survival}
+			add 7 to {abilities.%{_PLR}%::Repair}
+	#LCK growth rate bonus
+	add floor({lck.%{_PLR}%} * 1.5) to {hpgrowth.%{_PLR}%}
+	add floor({lck.%{_PLR}%} * 1.5) to {strgrowth.%{_PLR}%}
+	add floor({lck.%{_PLR}%} * 1.5) to {defgrowth.%{_PLR}%}
+	add floor({lck.%{_PLR}%} * 1.5) to {chrgrowth.%{_PLR}%}
+	add floor({lck.%{_PLR}%} * 1.5) to {lckgrowth.%{_PLR}%}
+	add floor({lck.%{_PLR}%} * 1.5) to {spdgrowth.%{_PLR}%}
+	add floor({lck.%{_PLR}%} * 1.5) to {maggrowth.%{_PLR}%}
+	add floor({lck.%{_PLR}%} * 1.5) to {resgrowth.%{_PLR}%}
+	#Abilities bonus from stats
+	add floor({str.%{_PLR}%} * 1.5) to {abilities.%{_PLR}%::Traditional Weapons}
+	add floor({mag.%{_PLR}%} * 1.5) to {abilities.%{_PLR}%::Magical Weapons}
+	add floor({str.%{_PLR}%} * 1.5) to {abilities.%{_PLR}%::Guns}
+	add floor({lck.%{_PLR}%} + {spd.%{_PLR}%}) to {abilities.%{_PLR}%::Lockpicking}
+	add floor({hp.%{_PLR}%} + {mag.%{_PLR}%}) to {abilities.%{_PLR}%::Medicine}
+	add floor({str.%{_PLR}%} + {def.%{_PLR}%}) to {abilities.%{_PLR}%::Repair}
+	add floor({str.%{_PLR}%} + {def.%{_PLR}%}) to {abilities.%{_PLR}%::Fabrication}
+	add floor({mag.%{_PLR}%} + {res.%{_PLR}%}) to {abilities.%{_PLR}%::Enchanting}
+	add floor({chr.%{_PLR}%} + {lck.%{_PLR}%}) to {abilities.%{_PLR}%::Speech}
+	add floor(({chr.%{_PLR}%} + {mag.%{_PLR}%} + {str.%{_PLR}%}) * 0.75) to {abilities.%{_PLR}%::Barter}
+	add floor(({hp.%{_PLR}%} + {def.%{_PLR}%} + {res.%{_PLR}%}) * 0.75) to {abilities.%{_PLR}%::Survival}
+	
+#Table of spells picked from randomly
+function getRandomSpell() :: text:
+	set {_spell} to a random integer from 0 to 24
+	if {_spell} is 0:
+		return "Ember"
+	else if {_spell} is 1:
+		return "Frost"
+	else if {_spell} is 2:
+		return "Gust"
+	else if {_spell} is 3:
+		return "Spark"
+	else if {_spell} is 4:
+		return "Fire"
+	else if {_spell} is 5:
+		return "Hail"
+	else if {_spell} is 6:
+		return "Thunder"
+	else if {_spell} is 7:
+		return "Wind"
+	else if {_spell} is 8:
+		return "Elfire"
+	else if {_spell} is 9:
+		return "Blizzard"
+	else if {_spell} is 10:
+		return "Thoron"
+	else if {_spell} is 11:
+		return "Tornado"
+	else if {_spell} is 12:
+		return "Bolganone"
+	else if {_spell} is 13:
+		return "Aurora"
+	else if {_spell} is 14:
+		return "Nosferatu"
+	else if {_spell} is 15:
+		return "Stone"
+	else if {_spell} is 16:
+		return "Light"
+	else if {_spell} is 17:
+		return "Spellblade"
+	else if {_spell} is 18:
+		return "Forseti"
+	else if {_spell} is 19:
+		return "Naga"
+	else if {_spell} is 20:
+		return "Loptous"
+	else if {_spell} is 21:
+		return "Rescue"
+	else if {_spell} is 22:
+		return "Slipgate"
+	else if {_spell} is 23:
+		return "Silence"
+	else if {_spell} is 24:
+		return "Thief"
+	
+command /hof:
+	trigger:
+		open chest inventory with 1 row named "<gold>Hall of Forms" for the player
+		set slot 4 of the player's current inventory to 1 green wool named "<light green>Play Hall of Forms" with lore "<white>Guide a Forma character through the Hall of Forms.", "<white>Upgrade your equipment and perks after each floor cleared.", "<white>Survive the entire Hall of Forms to recruit the Forma into your army."
+
+command /hof_pick_character <number>:
+	trigger:
+		set {t_hof_desiredRace.%player%} to arg 1
+		send "<light yellow>Please select the Forma character you wish to use:"
+		if arg 1 is 0:
+			send formatted "<run command:/hof_assign %{t_hof_desiredRace.%player%}% 0><gold>1 - Leif [Mercenary]"
+			send formatted "<run command:/hof_assign %{t_hof_desiredRace.%player%}% 1><gold>2 - Gordin [Archer]"
+			send formatted "<run command:/hof_assign %{t_hof_desiredRace.%player%}% 2><gold>3 - Linde [Mage]"
+			send formatted "<run command:/hof_assign %{t_hof_desiredRace.%player%}% 3><gold>4 - Arden [Knight]"
+			send formatted "<run command:/hof_assign %{t_hof_desiredRace.%player%}% 4><gold>5 - Arthur [Fighter]"
+			send formatted "<run command:/hof_assign %{t_hof_desiredRace.%player%}% 5><gold>6 - Wrys [Cleric]"
+			send formatted "<run command:/hof_assign %{t_hof_desiredRace.%player%}% 6><gold>7 - Sigurd [Cavalier]"
+			send formatted "<run command:/hof_assign %{t_hof_desiredRace.%player%}% 7><gold>8 - Eyvel [Bladesman]"
+			send formatted "<run command:/hof_assign %{t_hof_desiredRace.%player%}% 8><gold>9 - Robin [Strategist]"
+			send formatted "<run command:/hof_assign %{t_hof_desiredRace.%player%}% 9><gold>10 - Sothe [Trickster]"
+		send formatted "<run command:/hof_assign %{t_hof_desiredRace.%player%}% -99><gold>11 - Random"
+		
+command /hof_assign <number> <number>:
+	trigger:
+		HOF_AssignCharacter(player,arg 1,arg 2)
+		
+on inventory click:
+	if the name of the player's current inventory is "<gold>Hall of Forms":
+		cancel event
+		if the name of the clicked item is "<light green>Play Hall of Forms":
+			set {isInHOF.%player%} to true
+			teleport the player to location at -718, 4, -357 in world "Salindrum"
+			wait 2 seconds
+			send "<light yellow>Please select the race of the Forma you wish to control:"
+			send formatted "<run command:/hof_pick_character 0><gold>1 - Human"
+			send formatted "<run command:/hof_pick_character 1><gold>2 - Elf"
+			send formatted "<run command:/hof_pick_character 2><gold>3 - Dwarf"
+			send formatted "<run command:/hof_pick_character 3><gold>4 - Orc"
+			send formatted "<run command:/hof_pick_character 4><gold>5 - Dragonborn"
+			send formatted "<run command:/hof_pick_character -99><gold>6 - Random"
+	else if the name of the player's current inventory is "<gold>Select an Upgrade!":
+		cancel event
+		if the name of the clicked item contains "Combat Manual":
+			give the clicked item to the player
+			close the player's inventory
+		else if the name of the clicked item contains "Randomized":
+			give the clicked item to the player
+			close the player's inventory
+		else if the name of the clicked item is "<light yellow><bold>Magic Wand":
+			give the clicked item to the player
+			close the player's inventory
+			
+#Arg 1 = room ID
+#arg 2 = spawn type (0 = ally, 1 = enemy, 2 = special, 3 = add map to playable list)
+command /hof_config_room <number> <number>:
+	trigger:
+		if arg 2 is 3:
+			add 1 to {hof_totalRoomCount}
+		else:
+			add player's location to {hof_room_spawns.roomID_%arg 1%.%arg 2%::*}
+		
+on death of monster:
+	if {t_mobsToKill.%attacker%} is set:
+		subtract 1 from {t_mobsToKill.%attacker%}
+		if {t_mobsToKill.%attacker%} is less than or equal to 0:
+			send "<light yellow>Map Clear!" to the attacker
+			wait 3 seconds
+			HOF_GiveSkills(attacker)
+			
+function HOF_GiveSkills(PLR: player):
+	teleport {_PLR} to location at -718, 4, -357 in world "Salindrum"
+	add 1 to {HOF_FloorCount.%{_PLR}%}
+	open chest inventory with 4 rows named "<gold>Select an Upgrade!" for {_PLR}
+	set slot 0 of {_PLR}'s current inventory to 1 book named "<light red>Combat Manual - Slot A" with lore "%getASlotSkill(0)%"
+	set slot 1 of {_PLR}'s current inventory to 1 book named "<light blue>Combat Manual - Slot B" with lore ", "%getBSlotSkill(0)%"
+	set slot 2 of {_PLR}'s current inventory to 1 book named "<light yellow>Combat Manual - Slot C" with lore ", ", "%getCSlotSkill(0)%"
+	set slot 3 of {_PLR}'s current inventory to 1 book named "<light green>Combat Manual - Assist" with lore ", ", ", "%getAssistSlotSkill(0)%"
+	set slot 4 of {_PLR}'s current inventory to 1 book named "<light purple>Combat Manual - Special" with lore ", ", ", ", "%getSpecialSlotSkill(0)%"
+	set slot 5 of {_PLR}'s current inventory to 1 book named "<gold>Combat Manual - Refine" with lore ", ", ", ", ", "%getRefineSlotSkill(0)%"
+	set slot 9 of {_PLR}'s current inventory to 1 any sword named "<gold>Randomized Sword" with lore "%getASlotSkill(0)%", "%getBSlotSkill(0)%", "%getCSlotSkill(0)%", "%getAssistSlotSkill(0)%", "%getSpecialSlotSkill(0)%"%getRefineSlotSkill(0)%"
+	set slot 10 of {_PLR}'s current inventory to 1 any axe named "<gold>Randomized Axe" with lore "%getASlotSkill(0)%", "%getBSlotSkill(0)%", "%getCSlotSkill(0)%", "%getAssistSlotSkill(0)%", "%getSpecialSlotSkill(0)%"%getRefineSlotSkill(0)%"
+	set slot 11 of {_PLR}'s current inventory to 1 any shovel named "<gold>Randomized Lance" with nbt "LanceType:2" with lore "%getASlotSkill(0)%", "%getBSlotSkill(0)%", "%getCSlotSkill(0)%", "%getAssistSlotSkill(0)%", "%getSpecialSlotSkill(0)%"%getRefineSlotSkill(0)%"
+	set slot 12 of {_PLR}'s current inventory to 1 any hoe named "<gold>Randomized Gauntlets" with nbt "GauntletType:2" with lore "%getASlotSkill(0)%", "%getBSlotSkill(0)%", "%getCSlotSkill(0)%", "%getAssistSlotSkill(0)%", "%getSpecialSlotSkill(0)%"%getRefineSlotSkill(0)%"
+	set slot 14 of {_PLR}'s current inventory to 1 bow named "<gold>Randomized Bow" with lore "%getASlotSkill(0)%", "%getBSlotSkill(0)%", "%getCSlotSkill(0)%", "%getAssistSlotSkill(0)%", "%getSpecialSlotSkill(0)%"%getRefineSlotSkill(0)%"
+	set slot 15 of {_PLR}'s current inventory to 1 blaze rod named "<light yellow><bold>Magic Wand" with lore "%getASlotSkill(0)%", "%getBSlotSkill(0)%", "%getCSlotSkill(0)%", "%getAssistSlotSkill(0)%", "%getSpecialSlotSkill(0)%", "%getRefineSlotSkill(0)%", "<light red>Spell 1 - %getRandomSpell()%", "<light blue>Spell 2 - %getRandomSpell()%"
+	if {lvl.%{_PLR}%} is more than 10:
+		chance of 50%:
+		#	set slot 27 of {_PLR}'s current inventory to 1
+	
+function start_HOF_Floor(PLR: player,FLOOR: number):
+	set {_map} to a random integer from 0 to {hof_totalRoomCount}
+	teleport {_PLR} to {hof_room_spawns.roomID_%{_map}%.0::0}
+	#Mob Spawn logic
+	loop {hof_room_spawns.roomID_%{_map}%.1::*}:
+		if {_FLOOR} is less than 3:
+			set {_mobType} to a random integer from 0 to 1
+		else if {_FLOOR} is less than 6:
+			set {_mobType} to a random integer from 0 to 5
+		else if {_FLOOR} is less than 10:
+			set {_mobType} to a random integer from 0 to 6
+		else if {_FLOOR} is less than 15:
+			set {_mobType} to a random integer from 0 to 9
+		else:
+			set {_mobType} to a random integer from 0 to 15
+		if {_mobType} is 0:
+			spawn 1 zombie at loop-value
+			set {_range} to 0
+		else if {_mobType} is 1:
+			spawn 1 skeleton at loop-value
+			set {_range} to 1
+		else if {_mobType} is 2:
+			spawn 1 husk at loop-value
+			set {_range} to 0
+		else if {_mobType} is 3:
+			spawn 1 stray at loop-value
+			set {_range} to 1
+		else if {_mobType} is 4:
+			spawn 1 spider at loop-value
+		else if {_mobType} is 5:
+			spawn 1 witch at loop-value
+		else if {_mobType} is 6:
+			spawn 1 cave spider at loop-value
+		else if {_mobType} is 7:
+			spawn 1 enderman at loop-value
+			set {_range} to 0
+		else if {_mobType} is 8:
+			spawn 1 wither skeleton at loop-value
+			set {_range} to 0
+		else if {_mobType} is 9:
+			spawn 1 zombie pigman at loop-value
+			set {_range} to 0
+		else if {_mobType} is 10:
+			spawn 1 blaze at loop-value
+		else if {_mobType} is 11:
+			spawn 1 vex at loop-value
+		else if {_mobType} is 12:
+			spawn 1 vindicator at loop-value
+			set {_range} to 0
+		else if {_mobType} is 13:
+			spawn 1 ghast at loop-value
+		else if {_mobType} is 14:
+			spawn 1 evoker at loop-value
+			set {_range} to 1
+		else if {_mobType} is 15:
+			spawn 1 creeper at loop-value
+		set {_lastSpawn} to the last spawned entity
+		if {_FLOOR} is less than 10:
+			set {_moblvl} to {_FLOOR}
+		else:
+			set {_moblvl} to floor({_FLOOR} ^ 1.05)
+		#Change mob base & growths depending on mob type
+		if {_lastSpawn} is zombie:
+			set {_phys} to true
+		else if {_lastSpawn} is skeleton:
+			set {_phys} to true
+		else if {_lastSpawn} is husk:
+			set {_magic} to true
+		else if {_lastSpawn} is stray:
+			set {_magic} to true
+		else if {_lastSpawn} is enderman:
+			set {_magic} to true
+		else if {_lastSpawn} is spider:
+			set {_phys} to true
+		else if {_lastSpawn} is blaze:
+			set {_magic} to true
+		else if {_lastSpawn} is wither skeleton:
+			set {_magic} to true
+		else if {_lastSpawn} is zombie pigman:
+			set {_phys} to true
+		else if {_lastSpawn} is ghast:
+			set {_magic} to true
+		else if {_lastSpawn} is witch:
+			chance of 50%:
+				set {_phys} to true
+			else:
+				set {_magic} to true
+		else if {_lastSpawn} is cave spider:
+			set {_magic} to true
+		#JUST IN CASE the system is calcing abilities for mobs
+		set {t_abilities.%{_lastSpawn}%::Traditional Weapons} to 100
+		set {t_abilities.%{_lastSpawn}%::Magical Weapons} to 100
+		set {t_abilities.%{_lastSpawn}%::Lockpicking} to a random integer from 0 to ({_moblvl} / 2)
+		if {_phys} is true:
+			#Select archetype to distribute the mob's stats
+			set {_archetype} to a random integer from 1 to 4
+			#Duelist
+			if {_archetype} is 1:
+				set {t_hp.%{_lastSpawn}%} to 23
+				set {t_str.%{_lastSpawn}%} to 18
+				set {t_def.%{_lastSpawn}%} to 13
+				set {t_spd.%{_lastSpawn}%} to 11
+				set {t_mag.%{_lastSpawn}%} to 0
+				set {t_res.%{_lastSpawn}%} to 3
+				set {t_chr.%{_lastSpawn}%} to 0
+				set {t_lck.%{_lastSpawn}%} to 1
+				loop {_moblvl} times:
+					chance of 95%:
+						add 1 to {t_hp.%{_lastSpawn}%}
+					chance of 84%:
+						add 1 to {t_str.%{_lastSpawn}%}
+					chance of 59%:
+						add 1 to {t_def.%{_lastSpawn}%}
+					chance of 54%:
+						add 1 to {t_spd.%{_lastSpawn}%}
+					chance of 4%:
+						add 1 to {t_mag.%{_lastSpawn}%}
+					chance of 14%:
+						add 1 to {t_res.%{_lastSpawn}%}
+					chance of 24%:
+						add 1 to {t_chr.%{_lastSpawn}%}
+					chance of 19%:
+						add 1 to {t_lck.%{_lastSpawn}%}
+			#Tank
+			else if {_archetype} is 2:
+				set {t_hp.%{_lastSpawn}%} to 24
+				set {t_str.%{_lastSpawn}%} to 8
+				set {t_def.%{_lastSpawn}%} to 15
+				set {t_spd.%{_lastSpawn}%} to 0
+				set {t_mag.%{_lastSpawn}%} to 0
+				set {t_res.%{_lastSpawn}%} to 8
+				set {t_chr.%{_lastSpawn}%} to 6
+				set {t_lck.%{_lastSpawn}%} to 5
+				loop {_moblvl} times:
+					add 1 to {t_hp.%{_lastSpawn}%}
+					chance of 26%:
+						add 1 to {t_hp.%{_lastSpawn}%}
+					chance of 64%:
+						add 1 to {t_str.%{_lastSpawn}%}
+					chance of 85%:
+						add 1 to {t_def.%{_lastSpawn}%}
+					chance of 20%:
+						add 1 to {t_spd.%{_lastSpawn}%}
+					chance of 30%:
+						add 1 to {t_mag.%{_lastSpawn}%}
+					chance of 10%:
+						add 1 to {t_res.%{_lastSpawn}%}
+					chance of 45%:
+						add 1 to {t_chr.%{_lastSpawn}%}
+					chance of 40%:
+						add 1 to {t_lck.%{_lastSpawn}%}
+			#Sweeper
+			else if {_archetype} is 3:
+				set {t_hp.%{_lastSpawn}%} to 13
+				set {t_str.%{_lastSpawn}%} to 19
+				set {t_def.%{_lastSpawn}%} to 0
+				set {t_spd.%{_lastSpawn}%} to 15
+				set {t_mag.%{_lastSpawn}%} to 1
+				set {t_res.%{_lastSpawn}%} to 0
+				set {t_chr.%{_lastSpawn}%} to 2
+				set {t_lck.%{_lastSpawn}%} to 14
+				loop {_moblvl} times:
+					chance of 68%:
+						add 1 to {t_hp.%{_lastSpawn}%}
+					add 1 to {t_str.%{_lastSpawn}%}
+					chance of 23%:
+						add 1 to {t_str.%{_lastSpawn}%}
+					chance of 28%:
+						add 1 to {t_def.%{_lastSpawn}%}
+					add 1 to {t_spd.%{_lastSpawn}%}
+					chance of 28%:
+						add 1 to {t_spd.%{_lastSpawn}%}
+					chance of 33%:
+						add 1 to {t_mag.%{_lastSpawn}%}
+					chance of 23%:
+						add 1 to {t_res.%{_lastSpawn}%}
+					chance of 58%:
+						add 1 to {t_chr.%{_lastSpawn}%}
+					add 1 to {t_lck.%{_lastSpawn}%}
+					chance of 18%:
+						add 1 to {t_lck.%{_lastSpawn}%}
+			#Leader
+			else if {_archetype} is 4:
+				set {t_hp.%{_lastSpawn}%} to 30
+				set {t_str.%{_lastSpawn}%} to 12
+				set {t_def.%{_lastSpawn}%} to 12
+				set {t_spd.%{_lastSpawn}%} to 15
+				set {t_mag.%{_lastSpawn}%} to 12
+				set {t_res.%{_lastSpawn}%} to 12
+				set {t_chr.%{_lastSpawn}%} to 20
+				set {t_lck.%{_lastSpawn}%} to 14
+				loop {_moblvl} times:
+					add 1 to {t_hp.%{_lastSpawn}%}
+					chance of 68%:
+						add 1 to {t_hp.%{_lastSpawn}%}
+					add 1 to {t_str.%{_lastSpawn}%}
+					chance of 23%:
+						add 1 to {t_str.%{_lastSpawn}%}
+					chance of 28%:
+						add 1 to {t_def.%{_lastSpawn}%}
+					add 1 to {t_spd.%{_lastSpawn}%}
+					chance of 28%:
+						add 1 to {t_spd.%{_lastSpawn}%}
+					chance of 33%:
+						add 1 to {t_mag.%{_lastSpawn}%}
+					chance of 23%:
+						add 1 to {t_res.%{_lastSpawn}%}
+					add 1 to {t_chr.%{_lastSpawn}%}
+					chance of 58%:
+						add 1 to {t_chr.%{_lastSpawn}%}
+					add 1 to {t_lck.%{_lastSpawn}%}
+					chance of 18%:
+						add 1 to {t_lck.%{_lastSpawn}%}
+		else if {_magic} is true:
+			#Select archetype to distribute the mob's stats
+			set {_archetype} to a random integer from 1 to 4
+			#Duelist
+			if {_archetype} is 1:
+				set {t_hp.%{_lastSpawn}%} to 23
+				set {t_str.%{_lastSpawn}%} to 0
+				set {t_def.%{_lastSpawn}%} to 3
+				set {t_spd.%{_lastSpawn}%} to 8
+				set {t_mag.%{_lastSpawn}%} to 14
+				set {t_res.%{_lastSpawn}%} to 9
+				set {t_chr.%{_lastSpawn}%} to 0
+				set {t_lck.%{_lastSpawn}%} to 1
+				loop {_moblvl} times:
+					chance of 95%:
+						add 1 to {t_hp.%{_lastSpawn}%}
+					chance of 4%:
+						add 1 to {t_str.%{_lastSpawn}%}
+					chance of 14%:
+						add 1 to {t_def.%{_lastSpawn}%}
+					chance of 54%:
+						add 1 to {t_spd.%{_lastSpawn}%}
+					chance of 84%:
+						add 1 to {t_mag.%{_lastSpawn}%}
+					chance of 59%:
+						add 1 to {t_res.%{_lastSpawn}%}
+					chance of 24%:
+						add 1 to {t_chr.%{_lastSpawn}%}
+					chance of 19%:
+						add 1 to {t_lck.%{_lastSpawn}%}
+			#Tank
+			else if {_archetype} is 2:
+				set {t_hp.%{_lastSpawn}%} to 24
+				set {t_str.%{_lastSpawn}%} to 2
+				set {t_def.%{_lastSpawn}%} to 0
+				set {t_spd.%{_lastSpawn}%} to 0
+				set {t_mag.%{_lastSpawn}%} to 8
+				set {t_res.%{_lastSpawn}%} to 13
+				set {t_chr.%{_lastSpawn}%} to 6
+				set {t_lck.%{_lastSpawn}%} to 5
+				loop {_moblvl} times:
+					add 1 to {t_hp.%{_lastSpawn}%}
+					chance of 26%:
+						add 1 to {t_hp.%{_lastSpawn}%}
+					chance of 30%:
+						add 1 to {t_str.%{_lastSpawn}%}
+					chance of 10%:
+						add 1 to {t_def.%{_lastSpawn}%}
+					chance of 20%:
+						add 1 to {t_spd.%{_lastSpawn}%}
+					chance of 64%:
+						add 1 to {t_mag.%{_lastSpawn}%}
+					chance of 85%:
+						add 1 to {t_res.%{_lastSpawn}%}
+					chance of 45%:
+						add 1 to {t_chr.%{_lastSpawn}%}
+					chance of 40%:
+						add 1 to {t_lck.%{_lastSpawn}%}
+			#Sweeper
+			else if {_archetype} is 3:
+				set {t_hp.%{_lastSpawn}%} to 13
+				set {t_str.%{_lastSpawn}%} to 1
+				set {t_def.%{_lastSpawn}%} to 0
+				set {t_spd.%{_lastSpawn}%} to 15
+				set {t_mag.%{_lastSpawn}%} to 19
+				set {t_res.%{_lastSpawn}%} to 0
+				set {t_chr.%{_lastSpawn}%} to 2
+				set {t_lck.%{_lastSpawn}%} to 14
+				loop {_moblvl} times:
+					chance of 68%:
+						add 1 to {t_hp.%{_lastSpawn}%}
+					chance of 33%:
+						add 1 to {t_str.%{_lastSpawn}%}
+					chance of 23%:
+						add 1 to {t_def.%{_lastSpawn}%}
+					add 1 to {t_spd.%{_lastSpawn}%}
+					chance of 28%:
+						add 1 to {t_spd.%{_lastSpawn}%}
+					add 1 to {t_mag.%{_lastSpawn}%}
+					chance of 23%:
+						add 1 to {t_mag.%{_lastSpawn}%}
+					chance of 28%:
+						add 1 to {t_res.%{_lastSpawn}%}
+					chance of 58%:
+						add 1 to {t_chr.%{_lastSpawn}%}
+					add 1 to {t_lck.%{_lastSpawn}%}
+					chance of 18%:
+						add 1 to {t_lck.%{_lastSpawn}%}
+			#Leader
+			else if {_archetype} is 4:
+				set {t_hp.%{_lastSpawn}%} to 30
+				set {t_str.%{_lastSpawn}%} to 12
+				set {t_def.%{_lastSpawn}%} to 12
+				set {t_spd.%{_lastSpawn}%} to 15
+				set {t_mag.%{_lastSpawn}%} to 12
+				set {t_res.%{_lastSpawn}%} to 12
+				set {t_chr.%{_lastSpawn}%} to 20
+				set {t_lck.%{_lastSpawn}%} to 14
+				loop {_moblvl} times:
+					add 1 to {t_hp.%{_lastSpawn}%}
+					chance of 68%:
+						add 1 to {t_hp.%{_lastSpawn}%}
+					add 1 to {t_str.%{_lastSpawn}%}
+					chance of 23%:
+						add 1 to {t_str.%{_lastSpawn}%}
+					chance of 28%:
+						add 1 to {t_def.%{_lastSpawn}%}
+					add 1 to {t_spd.%{_lastSpawn}%}
+					chance of 28%:
+						add 1 to {t_spd.%{_lastSpawn}%}
+					chance of 33%:
+						add 1 to {t_mag.%{_lastSpawn}%}
+					chance of 23%:
+						add 1 to {t_res.%{_lastSpawn}%}
+					add 1 to {t_chr.%{_lastSpawn}%}
+					chance of 58%:
+						add 1 to {t_chr.%{_lastSpawn}%}
+					add 1 to {t_lck.%{_lastSpawn}%}
+					chance of 18%:
+						add 1 to {t_lck.%{_lastSpawn}%}
+		else:
+			loop {_moblvl} times:
+				#add 1 to {t_str.%{_lastSpawn}%}
+				chance of 80%:
+					add 1 to {t_str.%{_lastSpawn}%}
+					chance of 35%:
+						add 1 to {t_str.%{_lastSpawn}%}
+				#add 1 to {t_def.%{_lastSpawn}%}
+				chance of 65%:
+					add 1 to {t_def.%{_lastSpawn}%}
+					chance of 25%:
+						add 1 to {t_def.%{_lastSpawn}%}
+				#add 1 to {t_spd.%{_lastSpawn}%}
+				chance of 50%:
+					add 1 to {t_spd.%{_lastSpawn}%}
+					chance of 30%:
+						add 1 to {t_spd.%{_lastSpawn}%}
+				#add 1 to {t_LCK.%{_lastSpawn}%}
+				chance of 45%:
+					add 1 to {t_LCK.%{_lastSpawn}%}
+					chance of 40%:
+						add 1 to {t_LCK.%{_lastSpawn}%}
+				#add 1 to {t_res.%{_lastSpawn}%}
+				chance of 80%:
+					add 1 to {t_res.%{_lastSpawn}%}
+					chance of 25%:
+						add 1 to {t_res.%{_lastSpawn}%}
+				add 0.5 to {_lastSpawn}'s maximum health
+				chance of 80%:
+					add 0.5 to {_lastSpawn}'s maximum health
+					chance of 35%:
+						add 0.5 to {_lastSpawn}'s maximum health
+		set {_lastSpawn}'s maximum health to {t_hp.%{_lastSpawn}%}
+		humanoidEquipmentHandler({_lastSpawn},{t_lvl.%{_lastSpawn}%},{_range})
+		add 1 to {t_mobsToKill.%{_PLR}%}

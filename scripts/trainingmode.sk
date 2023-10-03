@@ -3,17 +3,11 @@ command /salindrum:
 	aliases: /void, /training, /testroom, /sd
 	trigger:
 		if {sd.rewarp.%player%} is set:
-			open chest with 2 rows named "<red>Salindrum Configuration" for the player
+			open chest inventory with 2 rows named "<red>Salindrum Configuration" for the player
 			set slot 0 of the player's current inventory to 1 nether star named "<gold>Exit Salindrum" with lore "<white>Click to exit the training mode."
 			set slot 1 of the player's current inventory to 1 zombie spawn egg named "<white>Spawn Monsters" with lore "<white>Generate a variety of monsters to practice with."
-			if {quests.%player%::Breaking the Ice} is 999:
-				set slot 2 of the player's current inventory to 1 iron sword named "<white>Test Skills" with lore "<white>Equip any unlocked skills for free."
-			else:
-				set slot 2 of the player's current inventory to 1 obsidian named "<light red>Locked" with lore "<white>Complete the quest ""With Pride in Your Heart"" to access this feature."
-			if {quests.%player%::Awakening} is 999:
-				set slot 3 of the player's current inventory to 1 diamond sword named "<white>Test Sacred Treasures" with lore "<white>Try out one of the Sacred Treasures."
-			else:
-				set slot 3 of the player's current inventory to 1 obsidian named "<light red>Locked" with lore "<white>Complete the quest ""Awakening"" to access this feature."
+			set slot 2 of the player's current inventory to 1 iron sword named "<white>Test Skills" with lore "<white>Equip any unlocked skills for free."
+			set slot 3 of the player's current inventory to 1 diamond sword named "<white>Test Sacred Treasures" with lore "<white>Try out one of the Sacred Treasures."
 			set slot 8 of the player's current inventory to 1 tnt named "<white>Reset Session" with lore "<white>Resets the session back to when you entered."
 			set slot 7 of the player's current inventory to 1 totem of undying named "<white>Damage Modifiers" with lore "<white>Fine-tune how much damage you take from and deal to foes."
 			set slot 4 of the player's current inventory to 1 anvil named "<white>Fix Equipment" with lore "<white>Click to repair any damaged items in your inventory."
@@ -23,8 +17,12 @@ command /salindrum:
 			else:
 				set slot 6 of the player's current inventory to 1 rotten flesh named "<white>Infinite Hunger: OFF" with lore "<white>Your hunger bar will decrease normally.", "<white>Click to toggle."
 			set slot 9 of the player's current inventory to 1 workbench named "<white>Combat Calculator" with lore "<white>Run a variety of calculations on your weapons."
+			if {sd.infabilities.%player%} is true:
+				set slot 10 of the player's current inventory to 1 iron chestplate named "<white>Max Abilities: ON" with lore "<white>You can wield any weapon with no penalty.", "<white>Click to toggle."
+			else:
+				set slot 10 of the player's current inventory to 1 iron chestplate named "<white>Max Abilities: OFF" with lore "<white>Your weapon abilities are unchanged.", "<white>Click to toggle."
 		else:
-			open chest with 2 rows named "<red>Select a room." for the player
+			open chest inventory with 2 rows named "<red>Select a room." for the player
 			set {_roomnum} to 0
 			loop {sd::*}:
 				add 1 to {_roomnum}
@@ -35,7 +33,7 @@ command /salindrum:
 				
 command /sdsupplies:
 	trigger:
-		open chest with 4 rows named "<red>Supply Crate" for the player
+		open chest inventory with 4 rows named "<red>Supply Crate" for the player
 		set slot 0 of the player's current inventory to 1 wooden sword of unbreaking 100
 		set slot 1 of the player's current inventory to 1 stone sword of unbreaking 100
 		set slot 2 of the player's current inventory to 1 iron sword of unbreaking 100
@@ -71,7 +69,7 @@ command /sdsupplies:
 
 command /sdmults:
 	trigger:
-		open chest with 2 rows named "<red>Damage Modifiers" for the player
+		open chest inventory with 2 rows named "<red>Damage Modifiers" for the player
 		set slot 4 of the player's current inventory to 1 iron sword named "<light green>Damage Dealt" with lore "<white>Current Modifier: %{sd.outgoingmult.%player%}%x"
 		set slot 3 of the player's current inventory to 1 red glass pane named "<light red>Decrease Damage Dealt by 0.1x"
 		set slot 5 of the player's current inventory to 1 light green glass pane named "<light green>Increase Damage Dealt by 0.1x"
@@ -85,12 +83,12 @@ command /sdmults:
 
 command /sdcalcs:
 	trigger:
-		open chest with 2 rows named "<red>Calculator" for the player
+		open chest inventory with 2 rows named "<red>Calculator" for the player
 		set slot 0 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
 		set slot 9 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
 		set slot 4 of the player's current inventory to 1 purple wool named "<gold>Special Odds" with lore "<white>Special Skill: %{sd.calcSpecial.%player%}%", "<white>Base Activation Chance: %{sd.calcOdds.%player%}%", "<white>Highest Possible Chance: %{sd.calcMaxOdds.%player%}%", "<white>SKL Needed To Cap: %{sd.calcMaxSKL.%player%}%", "<white>Critical Chance: %{sd.calcCritChance.%player%}%", "<white>Max Unbuffed Crit Chance: %{sd.calcMaxCritChance.%player%}%"
 		set slot 5 of the player's current inventory to 1 splash potion of harming named "<gold>Damage Output" with lore "<white>Base Damage: %{sd.calcBaseDamage.%player%}%", "<white>With Skills & No Special: %{sd.calcSkillsDamage.%player%}%", "<white>With Skills & Special: %{sd.calcSpecialDamage.%player%}%", "<white>Maximum Damage Possible (With Double): %{sd.calcMaxDamage.%player%}%", "<white>Can Double Foes Below: %{sd.calcPlayerDoubleRange.%player%}% SPD", "<white>Foes Double From: %{sd.calcFoeDoubleRange.%player%}%+ SPD"
-		set slot 13 of the player's current inventory to 1 book named "<gold>How to Use" with lore "<white>Click a weapon to add it to the calculator.", "<white>Click the ""Calculate"" button to view detailed info on your weapon.", "<white>Damage assumes foe has no equipment, and is a player.", "<white>Bows are assumed to deal a base damage of 3.5."
+		set slot 13 of the player's current inventory to 1 book named "<gold>How to Use" with lore "<white>Click a weapon to add it to the calculator.", "<white>Click the "Calculate" button to view detailed info on your weapon.", "<white>Damage assumes foe has no equipment, and is a player.", "<white>Bows are assumed to deal a base damage of 3.5."
 		set slot 8 of the player's current inventory to 1 workbench named "<gold>Calculate" with lore "<white>Click to run calculations on the selected weapon."
 command /sdsetup <number> <number> <number> <number>:
 	trigger:
@@ -100,14 +98,14 @@ command /sdsetup <number> <number> <number> <number>:
 		
 command /sdmonsters:
 	trigger:
-		open chest with 6 rows named "<red>Spawn Monsters" for the player
+		open chest inventory with 6 rows named "<red>Spawn Monsters" for the player
 		set slot 0 of the player's current inventory to 1 zombie spawn egg named "<white>Zombie" with lore "<white>An innocent soul reawakened via fell magic.", "<white>They move slowly, but have high attack power.", "<white>Occasionally, they can pick up fallen weapons and armour."
 		set slot 1 of the player's current inventory to 1 skeleton spawn egg named "<white>Skeleton" with lore "<white>An innocent soul reawakened via fell magic.", "<white>The flesh has completely rotted, leaving nothing but an exposed skeleton.", "<white>Scrappy but fragile, skeletons prefer bows to harass their victims at range."
 		set slot 2 of the player's current inventory to 1 spider spawn egg named "<white>Spider" with lore "<white>One of many beasts summonable by dark mages.", "<white>Spiders move quickly and can climb walls, but lack in damage output."
 		set slot 3 of the player's current inventory to 1 creeper spawn egg named "<white>Creeper" with lore "<white>A rather odd beast summonable by dark mages.", "<white>Singling out their target, they rush in and detonate themselves for massive damage.", "<white>They can become supercharged via lightning."
 		set slot 4 of the player's current inventory to 1 husk spawn egg named "<white>Husk" with lore "<white>The dusty remains of a deserted wanderer.", "<white>Their corrosive bites can pierce through armour and poison victims."
 		set slot 5 of the player's current inventory to 1 witch spawn egg named "<white>Witch" with lore "<white>A dark mage from Elrid.", "<white>They choose to battle indirectly, utilizing various potions."
-		set slot 6 of the player's current inventory to 1 enderman spawn egg named "<white>Enderman" with lore "<white>A shadowy creature born of ""The End"".", "<white>They possess teleportation capabilities, and strike using vicious magical attacks."
+		set slot 6 of the player's current inventory to 1 enderman spawn egg named "<white>Enderman" with lore "<white>A shadowy creature born of "The End".", "<white>They possess teleportation capabilities, and strike using vicious magical attacks."
 		set slot 7 of the player's current inventory to 1 cave spider spawn egg named "<white>Cave Spider" with lore "<white>A rarer version of the Spider.", "<white>These smaller spiders are much faster and can poison unsuspecting adventurers."
 		set slot 8 of the player's current inventory to 1 evoker spawn egg named "<white>Evoker" with lore "<white>A summonder from Elrid.", "<white>They utilize various spells to attack, and are capable of summoning familiars for assistance."
 		set slot 9 of the player's current inventory to 1 vex spawn egg named "<white>Vex" with lore "<white>Weak summonable familiars.", "<white>These maligned spirits fly about and attack as a pack.", "<white>Their weak nature makes them easy to dispel with sweeping attacks."
@@ -143,51 +141,72 @@ command /sdmonsters:
 		set slot 51 of the player's current inventory to 1 book named "<white>Summoning Info:" with lore "<white>Summoned monsters will appear at this room's spawn point.", "<white>Only one monster can be summoned at once.", "<white>You will not recieve XP and money for defeating summoned monsters."
 		set slot 53 of the player's current inventory to 1 red glass pane named "<white>Salindrum Menu"
 
-command /sdhw:
+command /sdhw <number>:
 	trigger:
-		open chest with 6 rows named "<red><bold>Salindrum - Sacred Treasures" for the player
-		set slot 0 of the player's current inventory to 1 diamond sword named "<gold><bold>Falchion" with lore "<white>Increases weapon might based on distance from foe during combat.", "<white>Maximum bonus: +12.", "<white>Grants 1.5x damage against End monsters.", "<white>Right-click to restore health.", "<light green>Unique Refine:", "<light green>Grants STR/SPD/SKL/DEF/MAG +10 to nearby party members.", "<light red>Requires the Lord's Blood perk OR A rank in Swords to wield."
-		set slot 1 of the player's current inventory to 1 diamond sword named "<gold><bold>Binding Blade" with lore "<white>+4 weapon might.", "<white>Grants DEF/MAG +10 while equipped.", "<white>Grants 1.5x damage against End monsters.", "<white>Sneak & Right-click to restore health.", "<light green>Unique Refine:", "<light green>Reduces damage suffered by 33%% during combat.", "<light green>Grants <light blue>[Riposte]<light green>.", "<light blue>[Riposte]: <white>Automatically counter-attack foes during combat.", "<white>Riposte's effect only activates if foe is in range.", "<light red>Requires the Lord's Blood perk OR A rank in Swords wield."
-		set slot 2 of the player's current inventory to 1 diamond sword named "<gold><bold>Tyrfing" with lore "<white>+4 weapon might.", "<white>Reduces ranged damage suffered by 50%%.", "<white>Grants <light purple>[Miracle]<white>.", "<light green>Unique Refine:", "<light green>Grants MAG +20, SPD/SKL +10.", "<light purple>[Miracle]: <white>Nullifies foe's attack if it would kill the player during combat.", "<white>Activation chance: (SKL ^ 0.5)", "<white>Max: 50%%", "<light red><bold>Requires Crusader's Blood perk OR A rank in Swords to wield."
-		set slot 3 of the player's current inventory to 1 diamond sword named "<gold><bold>Ragnell" with lore "<white>+8 weapon might.", "<white>Grants <light purple>[Radiant Aether].", "<light green>Unique Refine:", "<light green>+4 weapon might (+12 total).", "<light green>Grants <light red>[Distant Counter]<light green>.", "<light red>[Distant Counter]: <white>Counter-attack ranged foes automatically when hit.", "<light purple>[Radiant Aether]: <white>Activate Luna and Sol in one strike.", "<white>Exclusive to Ragnell.", "<light red><bold>Requires A rank in Swords to wield."
-		set slot 4 of the player's current inventory to 1 diamond sword named "<gold><bold>Light Brand" with lore "<white>+2 weapon might.", "<white>Grants SKL/MAG +10 while equipped.", "<white>Grants <light purple>[Growing Light]<reset>.", "<light green>Unique Refine:", "<light green>Damage from this weapon is calculated using the","<light green>lower of the foe's DEF or MAG, and, if targeting MAG,", "<light green>treats the player's MAG as their STR during damage calculation.", "<light purple>[Growing Light]: <reset><white>Damages all foes within 14 blocks of the victim.", "<white>Activation chance: (SKL ^ 0.7)", "<white>Max: 50%%.","<light red><bold>Requires B rank in Swords to wield."
-		set slot 5 of the player's current inventory to 1 diamond axe named "<gold><bold>Armads" with lore "<white>+6 weapon might.", "<white>Grants <light red>[Distant Counter]<white>.", "<light green>Unique Refine:", "<light green>Reduces damage from ranged attacks by 66%%.", "<light green>Grants <light blue>[Riposte]<light green>.", "<light red>[Distant Counter]: <white>Counter-attack ranged foes automatically when hit.", "<light blue>[Riposte]: <white>Automatically counter-attack foes during combat.", "<white>Riposte's effect only activates if foe is in range.", "<light red>Requires A rank in Axes to wield."
-		set slot 6 of the player's current inventory to 1 bow named "<gold><bold>Parthia" with lore "<white>+3 weapon might.", "<white>Reduces ranged damage suffered by 20%%.", "<white>Grants <light blue>[Experience Sapper]<white>.", "<light green>Unique Refine:", "<light green>+10 weapon might against ranged opponents.", "<light green>Inflicts Slowness/Weakness 2 on foe after combat.", "<light red>Requires A rank in Bows to wield."
-		set slot 7 of the player's current inventory to 1 iron horse armour named "<gold><bold>Super Shotgun" with lore "<white>The double-barreled classic. Plenty of risk & plenty of reward.", "<white>Right-click to fire.", "<white>Left-click to reload. Costs 6 gold nuggets."
-		set slot 8 of the player's current inventory to 1 diamond shovel named "<gold><bold>Siegmund" with lore "<white>+5 weapon might.", "<white>Grants <light green>[Rally Strength]<white>.", "<light green>Unique Refine:", "<light green>If number of foes >= number of allies within 10 blocks:", "<light green>Automatically make a follow-up attack during combat.", "<light green>[Rally Strength]: <white>Grants Strength 2 to allies when right-clicked.", "<light red>Requires the Lord's Blood perk OR A rank in Lances to wield."
-		set slot 9 of the player's current inventory to 1 diamond sword named "<gold><bold>Sieglinde" with lore "<white>+5 weapon might.", "<white>Grants <light green>[Rally Strength]<white>.", "<light green>Unique Refine:", "<light green>Rallies also apply to yourself.", "<light green>Rally skills and perks apply in a 7-block radius.", "<light green>[Rally Strength]: <white>Grants Strength 2 to allies when right-clicked.", "<light red>Requires the Lord's Blood perk OR A rank in Swords to wield."
-		set slot 10 of the player's current inventory to 1 diamond sword named "<gold><bold>Durandal" with lore "<white>+4 weapon might.", "<white>Grants <gold>[Crushing]<white>.", "<light green>Unique Refine:", "<light green>Accelerates Special activation (+10%% activation chance).", "<light green>Grants STR/SKL +20 when initiating combat.", "<gold>[Crushing]: <white>Accelerates Special activation based on damage dealt.", "<white>Minimum of 7 damage dealt required to activate effect.", "<light red>Requires A Rank in Swords to wield."
-		set slot 11 of the player's current inventory to 1 diamond shovel named "<gold><bold>Gae Bolg" with lore "<white>Grants STR/DEF/SKL +10 while equipped.", "<white>Grants <light blue>[Guard]<white>.", "<light blue>[Guard]: <white>Inflicts SKL -50 on foe during combat.", "<light red>Requires the Crusader's Blood perk OR A rank in Lances to wield."
-		set slot 12 of the player's current inventory to 1 diamond sword named "<gold><bold>Mercurius" with lore "<white>+3 weapon might.", "<white>Grants <light blue>[Experience Sapper]<white>.", "<light blue>[Experience Sapper]: <white>Increases EXP awarded for defeating foes.", "<light red>Requires B rank in Swords to wield."
-		set slot 13 of the player's current inventory to 1 diamond axe named "<gold><bold>Basilikos" with lore "<white>+6 weapon might.", "<light green>Unique Refine:", "<light green>Increases damage dealt and suffered during combat by 50%%.", "<light red>Requires B rank in Axes to wield."
-		set slot 14 of the player's current inventory to 1 diamond axe named "<gold><bold>Hauteclere" with lore "<white>+3 weapon might.", "<white>Grants SKL +15 while equipped.", "<light green>Unique Refine:", "<light green>Accelerates Special trigger (+20%% activation chance).", "<light green>If Special activates, increases damage dealt by 2.5 hearts.", "<light red>Requires B rank in Axes to wield."
-		set slot 15 of the player's current inventory to 1 diamond sword named "<gold><bold>Mystletainn" with lore "<white>+4 weapon might.", "<white>Grants SKL +10 while equipped.", "<white>If HP < 75%%, grants SKL +30, and deals +4 damage when Special activates.", "<light green>Unique refine:", "<light green>Grants STR/DEF/SPD/SKL/MAG +15.", "<light green>Inflicts 1.5 hearts of recoil damage when attacking.", "<light red>Requires the Crusader's Blood perk OR B rank in Swords to wield."
-		set slot 16 of the player's current inventory to 1 diamond shovel named "<gold><bold>Fensalir" with lore "<white>+4 weapon might.", "<white>While within 10 blocks of a party member, grants +6 weapon might.", "<light green>Unique Refine:", "<light green>While within 10 blocks of a party member, grants STR/SKL +40.", "<light red>Requires the Lord's Blood perk OR A rank in Lances wield."
-		set slot 17 of the player's current inventory to 1 diamond sword named "<gold><bold>Folkvangr" with lore "<white>+4 weapon might.", "<white>While within 10 blocks of a party member, grants +6 weapon might.", "<light green>Unique Refine:", "<light green>If HP < 70%%, grants STR/DEF +40.", "<light red>Requires the Lord's Blood perk OR A rank in Swords to wield."
-		set slot 18 of the player's current inventory to 1 diamond shovel named "<gold><bold>Gradivus" with lore "<white>+4 weapon might.", "<white>Grants <light blue>[Experience Sapper]<white>.", "<light blue>[Experience Sapper]: <white>Increases EXP awarded for defeating foes.", "<light red>Requires B rank or higher in Lances to wield."
-		#set slot 19 of the player's current inventory to 1 diamond horse armour named "<gold><bold>Love is Blue" with lore "<white>Right-click to fire bullets at the cost of EXP.", "Melee hits restore 5 EXP.", "<bold>Skills cannot be equipped to this weapon.", "<bold>This weapon cannot be refined."
-		#set slot 20 of the player's current inventory to 1 gold horse armour named "<gold><bold>Scarborough Fair" with lore "<white>Right-click to fire bullets at the cost of EXP.", "Melee hits restore 5 EXP.", "<bold>Skills cannot be equipped to this weapon.", "<bold>This weapon cannot be refined."
-		set slot 19 of the player's current inventory to 1 diamond sword named "<gold><bold>Balder Side Sword" with lore "<white>+4 weapon might.", "<white>Right-click to parry attacks.", "<white>Parry has a 0.5 second cooldown.", "<light green>Unique Refine:", "<light green>Grants STR/DEF +20 when attacked.", "<light red>Requires B rank in Swords to wield."
-		set slot 20 of the player's current inventory to 1 bow named "<gold><bold>Fujin Yumi" with lore "<white>Grants MAG +20 while equipped.", "<white>Grants <light red>[Close Counter]<white>.", "<light green>Unique Refine:", "<light green>Holding sneak and firing an arrow teleports you to where it lands.", "<light red>[Close Counter]: <white>Automatically counter-attacks melee foes during combat.", "<light red>Requires B rank in Bows to wield."
-		set slot 21 of the player's current inventory to 1 diamond sword named "<gold><bold>Blessed Sword" with lore "<white>Reduces damage suffered by 1.5 hearts during combat.", "<white>Deals 2x damage to monsters.", "<white>Grants <light blue>[Plenitude]<white>.", "<light green>Unique Refine:", "<light green>Grants Regeneration 2 while equipped.", "<light green>Nullifies negative potion effects.", "<light blue>[Plenitude]: <white>Restores hunger and randomly drops steak when a foe is defeated."
-		set slot 22 of the player's current inventory to 1 diamond axe named "<gold><bold>Devil Axe" with lore "<white>+3 weapon might.", "<white>Grants <light red>[Fury]<white>.", "<white>Inflicts Wither 4 on foe after combat.", "<light green>Unique Refine:", "<light green>Grants weapon might +6.", "<light green>Inflicts 3 hearts of recoil damage when attacking.", "<light red>[Fury]: <white>Weapon might +3. Inflicts 1.5 hearts of recoil damage when attacking."
-		set slot 23 of the player's current inventory to 1 diamond shovel named "<gold><bold>Crusader's Lance" with lore "<white>+8 weapon might.", "<white>Can be thrown for no durability cost.", "<white>Reduces damage suffered by 30%% during combat.", "<light green>Unique Refine:", "<light green>Reduces damage suffered by 20%% during combat.", "<light green>Grants 1.5x damage while above 80%% HP."
-		set slot 24 of the player's current inventory to 1 bow named "<gold><bold>Lunar Bow" with lore "<white>+3 weapon might.", "<white>Grants <light purple>[Luna]<white>.", "<white>Calculates damage using the lower of foe's DEF or MAG.", "<light green>Unique Refine:", "<light green>If Special activates, increases damage by 20%% of the player's SPD."
-		set slot 25 of the player's current inventory to 1 diamond shovel named "<gold><bold>Rex Hasta" with lore "<white>Increases damage dealt by Special activations by 5 hearts.", "<light green>Unique Refine:", "<light green>+4 weapon might.", "<light green>Accelerates special activation (activation chance +20%%).", "<light red>Requires A rank in Lances to wield."
-		set slot 26 of the player's current inventory to 1 diamond sword named "<gold><bold>Meisterschwert" with lore "<white>Attacks twice during combat.", "<light green>Unique Refine:", "<light green>Grants <light blue>[Accost]<light green>.", "<light blue>[Accost]: <white>If attacker's HP & SPD > foe's HP & SPD:", "<white>Damage dealt for that round of combat is doubled.", "<light red>Requires B rank in Swords to wield."
-		set slot 27 of the player's current inventory to 1 book named "<gold><bold>Dire Thunder" with lore "<white>Attacks twice when initiating combat.", "<light green>Unique Refine:", "<light green>Grants <light blue>[Accost]<light green>.", "<light blue>[Accost]: <white>If attacker's HP & SPD > foe's HP & SPD:", "<white>Damage dealt for that round of combat is doubled.", "<light red>Requires B rank in Magic to wield."
-		set slot 28 of the player's current inventory to 1 diamond shovel named "<gold><bold>Rhomphaia" with lore "<white>Deals bonus damage equal to 25%% of the player's SPD.", "<light red>Requires B rank or higher in Lances to wield."
-		set slot 29 of the player's current inventory to 1 diamond sword named "<gold><bold>Alondite" with lore "<white>Grants <light purple>[Eclipse]<white>.", "<light purple>[Eclipse]: <white>Pierces armour and reduces foe's DEF/MAG by 80%%.", "<white>Activation chance: (SKL ^ 0.65) | Max: 50%%.", "<light red>Requires S rank in Swords to wield."
-		set slot 30 of the player's current inventory to 1 bow named "<gold><bold>Guard Bow" with lore "<white>Reduces damage suffered by 1.5 hearts.", "<light red>Requires C rank or higher in Bows to wield."
-		set slot 31 of the player's current inventory to 1 bow named "<gold><bold>Brave Bow" with lore "<white>Inflicts SPD -7.", "<white>-3 weapon might.", "<white>Weapon attacks twice during combat.", "<light red>Requires C rank or higher in Bows to wield."
-		set slot 32 of the player's current inventory to 1 diamond axe named "<gold><bold>Tomahawk" with lore "<white>Grants <gold>[Distant Counter]<white>.", "<gold>[Distant Counter]<white>: Automatically retaliate against ranged opponents."
-		set slot 33 of the player's current inventory to 1 diamond shovel named "<gold><bold>Javelin" with lore "<white>Grants <gold>[Distant Counter]<white>.", "<gold>[Distant Counter]<white>: Automatically retaliate against ranged opponents."
-		set slot 34 of the player's current inventory to 1 diamond sword named "<gold><bold>Tornado Blade" with lore "<white>Grants <gold>[Distant Counter]<white>.", "<gold>[Distant Counter]<white>: Automatically retaliate against ranged opponents."
-		set slot 35 of the player's current inventory to 1 diamond shovel named "<gold><bold>Swift-Winds Lance" with lore "<white>Grants <gold>[Sweeper]<white>.", "<light green>Unique Refine:", "<light green>If any ally within 10 blocks shares the wielder's class:", "<light green>Grants STR/SPD +30.", "<gold>[Sweeper]<white>: Disables player & foe's skills that guarantee counter-attacks during combat."
-		set slot 36 of the player's current inventory to 1 diamond sword named "<gold><bold>Kindled-Fire Sword" with lore "<white>Grants <gold>[Brave]<white>.", "<light green>Unique Refine:", "<light green>If any ally within 10 blocks shares the wielder's class:", "<light green>Grants STR/SPD +30.", "<gold>[Brave]<white>: Inflicts SPD -7. Weapon attacks twice during combat."
-		#set slot 37 of the player's current inventory to 1 diamond axe named "<gold><bold>Axtinguisher" with lore "<white>+50%% damage against burning targets.", "<white>-50%% damage against non-burning targets."
-		set slot 37 of the player's current inventory to 1 diamond sword named "<gold><bold>Yamato" with lore "<white>+3 weapon might.", "<white>Grants <light blue><bold>[Judgement Cut]<reset><white>.", "<light blue><bold>[Judgement Cut]:<reset><white> Sneak and right-click to activate.", "<white>Gain power by holding sneak, then unleash it by standing up.", "<white>Targets all foes within 20 blocks. Damage based on charge time.", "<light red>Requires S rank in Swords to wield."
-		set slot 38 of the player's current inventory to 1 bow named "<gold><bold>Bow of Aresha" with lore "<white>If player's DEF >= Foe's DEF +5:", "<white>Grants STR/DEF +X,", "<white>Where X = (Player's DEF - [foe's DEF + 5]) * 5.", "<white>(Maximum bonus of +20 to each stat.)", "<light red>Requires A rank in Bows to wield."
+		if arg 1 is 9:
+			open chest inventory with 1 row named "<red><bold>Salindrum - Select Weapon Class" for the player
+			set slot 0 of the player's current inventory to 1 iron sword named "<gold>Swords"
+			set slot 1 of the player's current inventory to 1 iron axe named "<gold>Axes"
+			set slot 2 of the player's current inventory to 1 iron shovel named "<gold>Lances"
+			set slot 3 of the player's current inventory to 1 bow named "<gold>Bows"
+			set slot 4 of the player's current inventory to 1 arrow named "<gold>Daggers"
+			set slot 5 of the player's current inventory to 1 iron hoe named "<gold>Gauntlets"
+		else:
+			open chest inventory with 6 rows named "<red><bold>Salindrum - Sacred Treasures" for the player
+			#Swords
+			if arg 1 is 0:
+				set slot 0 of the player's current inventory to 1 diamond sword named "<gold><bold>Falchion" with nbt "{bakedRefine:776,sacredTreasureID:0}" with lore "<white>Grants increased damage the farther away you are from your foe during combat.", "<white>Deals effective damage to end-type foes.", "<light green>Unique Refine:", "<light green>Grants STR/MAG/SPD/LCK/DEF/RES +4 to allies within 15 blocks during combat.", "<white>Weapon Ability: +30"
+				set slot 1 of the player's current inventory to 1 diamond sword named "<gold><bold>Binding Blade" with nbt "{bakedRefine:776,sacredTreasureID:1}" with lore "<white>+4 weapon might.", "<white>If foe initiates combat, grants DEF/RES +6 during that combat.", "<white>Deals effective damage to end-type foes.", "<light green>Unique Refine:", "<light green>Reduces damage suffered by 20%% during combat.", "<light green>Grants <light blue>[Quick Riposte]<light green>.", "<light blue>[Quick Riposte]: <white>Automatically counter-attack foes during combat.", "<white>Quick Riposte's effect only activates if foe is in range.", "<white>Weapon Ability: +30"
+				set slot 2 of the player's current inventory to 1 diamond sword named "<gold><bold>Tyrfing" with nbt "{bakedRefine:776,sacredTreasureID:2}" with lore "<white>+4 weapon might.", "<white>Reduces ranged damage suffered by 25%%.", "<white>Grants <light purple>[Miracle]<white>.", "<light green>Unique Refine:", "<light green>Grants MAG/RES +10, SPD/LCK +5 during combat.", "<light purple>[Miracle]: <white>Nullifies foe's attack if it would kill the player during combat.", "<white>Activation chance: (LCK * 0.5)", "<white>Max: 50%%", "<white>Weapon Ability: +30"
+				set slot 3 of the player's current inventory to 1 diamond sword named "<gold><bold>Ragnell" with nbt "{bakedRefine:776,sacredTreasureID:3}" with lore "<white>+8 weapon might.", "<white>Grants <light purple>[Radiant Aether].", "<light green>Unique Refine:", "<light green>+4 weapon might (+12 total).", "<light green>Grants <light red>[Distant Counter]<light green>.", "<light red>[Distant Counter]: <white>Counter-attack ranged foes automatically when hit.", "<light purple>[Radiant Aether]: <white>Activate Luna and Sol in one strike.", "<white>Exclusive to Ragnell.", "<white>Weapon Ability: +65"
+				set slot 4 of the player's current inventory to 1 diamond sword named "<gold><bold>Light Brand" with nbt "{bakedRefine:776,sacredTreasureID:4}" with lore "<white>+2 weapon might.", "<white>Grants LCK +10 during combat.", "<white>Damage from this weapon is calculated using the", "<white>lower of the foe's DEF or RES, and, if targeting RES,", "<white>treats the player's MAG as their STR during damage calculation.", "<light green>Unique Refine:", "<light green>If foe's HP = 100%% at start of combat:", "<light green>Grants STR/MAG/SPD/DEF +4 and <light red>[Armour Smasher]<light green>.", "<white>Weapon Ability: +45"
+				set slot 5 of the player's current inventory to 1 diamond sword named "<gold><bold>Mystletainn" with nbt "{bakedRefine:776,sacredTreasureID:5}" with lore "<white>+4 weapon might.", "<white>Grants LCK +10 during combat.", "<white>If HP < 70%%, grants LCK +10, and deals +5 damage when Special activates.", "<light green>Unique refine:", "<light green>Grants <light red>[Fury]<light green> during combat.", "<white>Weapon Ability: +50"
+				set slot 6 of the player's current inventory to 1 diamond sword named "<gold><bold>Tornado Blade" with nbt "{bakedRefine:776,sacredTreasureID:6}" with lore "<white>Grants <gold>[Distant Counter]<white>.", "<gold>[Distant Counter]<white>: Automatically retaliate against ranged opponents.", "<white>Weapon Ability: +19"
+				set slot 7 of the player's current inventory to 1 diamond sword named "<gold><bold>Kindled-Fire Sword" with nbt "{bakedRefine:776,sacredTreasureID:7}" with lore "<white>Grants <light blue>[Brave Blade]<white>.", "<white>If player's HP >= foe's HP -3:", "<white>Grants STR/DEF +7 during combat.", "<light green>Unique Refine:", "<light green>If any ally within 15 blocks shares the wielder's class:", "<light green>Grants STR/DEF +12.",  "<white>Weapon Ability: +35"
+				set slot 8 of the player's current inventory to 1 diamond sword named "<gold><bold>Monado" with nbt "{bakedRefine:776,sacredTreasureID:40}" with lore "<white>When this weapon triggers a Finishing Blow,", "<white>the Monado Arts gauge is filled by 1/3.", "<white>When the Monado Arts gague is full, right-click with the Monado Art you want to use.", "<white>Enchant: Grants STR/MAG +10 to party for 10 seconds.", "<white>Buster: Grants STR/MAG +20 through next action (player only).", "<white>Speed: Grants SPD/LCK +10 to party for 10 seconds.", "<white>Shield: Grants DEF/RES +10 for 10 seconds.", "<white>Eater: Inflicts STR/MAG/DEF/RES -10 on foes within 10 blocks through next action.", "<white>Weapon Ability: +60"
+				set slot 9 of the player's current inventory to 1 diamond sword named "<gold><bold>Yamato" with nbt "{bakedRefine:776,sacredTreasureID:41}" with lore "<white>Sneak + Right-Click to use Judgement Cut,", "<white>which attacks the nearest foe within 8 blocks with magical damage.", "<white>Judgement Cut triggers instantly when airborne.", "<white>If in Devil Trigger state, upgrades Judgement Cut into", "Judgement Cut End, which heavily damages all foes within 15 blocks.", "<white>Using Judgement Cut End immediately drains the DT gauge.", "<white>Weapon Ability: +60"
+			#Axes
+			else if arg 1 is 1:
+				set slot 0 of the player's current inventory to 1 diamond axe named "<gold><bold>Armads" with nbt "{bakedRefine:776,sacredTreasureID:8}" with lore "<white>+6 weapon might.", "<white>Grants <light red>[Distant Counter]<white>.", "<light green>Unique Refine:", "<light green>Reduces damage from ranged attacks by 40%%.", "<light green>Grants <light blue>[Quick Riposte]<light green>.", "<light red>[Distant Counter]: <white>Counter-attack ranged foes automatically when hit.", "<light blue>[Quick Riposte]: <white>Automatically counter-attack foes during combat.", "<white>Riposte's effect only activates if foe is in range.", "<white>Weapon Ability: +50"
+				set slot 1 of the player's current inventory to 1 diamond axe named "<gold><bold>Basilikos" with nbt "{bakedRefine:776,sacredTreasureID:9}" with lore "<white>+9 weapon might.", "<white>Grants STR/SPD +7, inflicts DEF/RES -5 during combat.", "<light green>Unique Refine:", "<light green>Increases damage dealt and suffered during combat by 50%%.", "<light red>Weapon Ability: +23"
+				set slot 2 of the player's current inventory to 1 diamond axe named "<gold><bold>Hauteclere" with nbt "{bakedRefine:776,sacredTreasureID:10}" with lore "<white>+3 weapon might.", "<white>Grants LCK +10 while equipped.", "<white>Accelerates Special skill activation (+15%% activation chance).", "<light green>Unique Refine:", "<light green>Accelerates Special trigger (+5%% activation chance).", "<light green>If Special activates, increases damage dealt by 2.5 hearts.", "<white>Weapon Ability: +50"
+				set slot 3 of the player's current inventory to 1 diamond axe named "<gold><bold>Tomahawk" with nbt "{bakedRefine:776,sacredTreasureID:11}" with lore "<white>Grants <gold>[Distant Counter]<white>.", "<gold>[Distant Counter]<white>: Automatically retaliate against ranged opponents.", "<white>Weapon Ability: +19"
+				set slot 4 of the player's current inventory to 1 diamond axe named "<gold><bold>Daybreak" with nbt "{bakedRefine:776,sacredTreasureID:12}" with lore "<white>Grants DEF/RES +4 during combat.", "<white>When initiating combat, restores 6 HP.", "<light green>Unique Refine:", "<light green>Restores health equal to 25%% of damage dealt during combat.", "<light green>If a Special skill activates and deals damage:", "<light green>Restores health equal to 30%% of damage dealt.", "<white>Weapon Ability: +60"
+				set slot 5 of the player's current inventory to 1 diamond axe named "<gold><bold>Goddess's Axe" with nbt "{bakedRefine:776,sacredTreasureID:13}" with lore "<white>Grants STR/DEF +4 during combat.", "<white>Inflicts SPD/RES -4 during combat.", "<white>Grants <light blue>[Brave Blade]<reset> during combat.", "<light green>Unique Refine:", "<light green>If player's HP <= 75%% and foe initiates combat:", "<light green>Player counter-attacks automatically before foe's attack.", "<light green>Foe must be using a melee weapon, or player must have Counter equipped.", "<white>Weapon Ability: +50"
+				set slot 6 of the player's current inventory to 1 diamond axe named "<gold><bold>Arthur's Axe" with nbt "{bakedRefine:776,sacredTreasureID:14}" with lore "<white>Boosts Critical Dodge chance by 35%% during combat.", "<white>Raises Critical Miss chance by 20%% during combat.", "<white>If player initiates combat and does not Critically Miss,", "<white>boosts damage dealt by 15%% and grants DEF/RES +7 through player's next action.", "<white>If foe initiates combat and player Critically Dodges,", "<white>grants STR/SPD/LCK +7 through player's next action.", "<white>Weapon Ability: +50"
+			#Lances
+			else if arg 1 is 2:
+				set slot 0 of the player's current inventory to 1 diamond shovel named "<gold><bold>Siegmund" with nbt "{bakedRefine:776,sacredTreasureID:15}" with lore "<white>+5 weapon might.", "<white>Grants <light green>[Rally Strength]<white>.", "<light green>Unique Refine:", "<light green>If number of foes >= number of allies within 10 blocks:", "<light green>Weapon attacks twice during combat.", "<light green>[Rally Strength]: <white>Grants Strength 2 to allies when right-clicked.", "<white>Weapon Ability: +40"
+				set slot 1 of the player's current inventory to 1 diamond shovel named "<gold><bold>Gae Bolg" with nbt "{bakedRefine:776,sacredTreasureID:16}" with lore "<white>Grants STR/DEF/SKL +4 during combat.", "<white>Grants <light blue>[Guard]<white>.", "<light blue>[Guard]: <white>Inflicts LCK -50 on foe during combat.", "<white>Weapon Ability: +30"
+				set slot 2 of the player's current inventory to 1 diamond shovel named "<gold><bold>Gradivus" with nbt "{bakedRefine:776,sacredTreasureID:17}" with lore "<white>+4 weapon might.", "<white>Grants <light blue>[Experience Sapper]<white>.", "<light blue>[Experience Sapper]: <white>Increases EXP awarded for defeating foes.", "<white>Weapon Ability: +19"
+				set slot 3 of the player's current inventory to 1 diamond shovel named "<gold><bold>Rex Hasta" with nbt "{bakedRefine:776,sacredTreasureID:18}" with lore "<white>Increases damage dealt by Special activations by 10 hearts.", "<light green>Unique Refine:", "<light green>Grants <light blue>[Wrath]<light green>.", "<light green>If Special skill activates, boosts damage dealt by 25%%.", "<white>Weapon Ability: +40"
+				set slot 4 of the player's current inventory to 1 diamond shovel named "<gold><bold>Rhomphaia" with nbt "{bakedRefine:776,sacredTreasureID:19}" with lore "<white>Deals bonus damage equal to 25%% of the player's SPD.", "<white>Weapon Ability: +60"
+				set slot 5 of the player's current inventory to 1 diamond shovel named "<gold><bold>Javelin" with nbt "{bakedRefine:776,sacredTreasureID:20}" with lore "<white>Grants <gold>[Distant Counter]<white>.", "<gold>[Distant Counter]<white>: Automatically retaliate against ranged opponents.", "<white>Weapon Ability: +19"
+				set slot 6 of the player's current inventory to 1 diamond shovel named "<gold><bold>Swift-Winds Lance" with nbt "{bakedRefine:776,sacredTreasureID:21}" with lore "<white>Grants <gold>[Sweeper]<white>.", "<white>If player initiates combat, grants STR/SPD +4 during combat.", "<light green>Unique Refine:", "<light green>If any ally within 15 blocks shares the wielder's class:", "<light green>Grants STR/SPD +12.", "<gold>[Sweeper]<white>: Disables player & foe's skills that guarantee counter-attacks during combat.", "<white>Weapon Ability: +35"
+			#Bows
+			else if arg 1 is 3:
+				set slot 0 of the player's current inventory to 1 bow named "<gold><bold>Parthia" with nbt "{bakedRefine:776,sacredTreasureID:22}" with lore "<white>+3 weapon might.", "<white>Reduces ranged damage suffered by 20%%.", "<white>Grants <light blue>[Experience Sapper]<white>.", "<light green>Unique Refine:", "<light green>+10 weapon might against ranged opponents.", "<light green>Inflicts Slowness/Weakness 2 on foe after combat.", "<white>Weapon Ability: +30"
+				set slot 1 of the player's current inventory to 1 iron horse armour named "<gold><bold>Super Shotgun" with nbt "{bakedRefine:776,sacredTreasureID:23}" with lore "<white>The double-barreled classic. Plenty of risk & plenty of reward.", "<white>Right-click to fire.", "<white>Left-click to reload. Costs 6 gold nuggets.", "<white>Weapon Ability: +65"
+				set slot 2 of the player's current inventory to 1 bow named "<gold><bold>Fujin Yumi" with nbt "{bakedRefine:776,sacredTreasureID:24}" with lore "<white>Grants MAG/RES +10 while equipped.", "<white>Grants <light red>[Close Counter]<white>.", "<light green>Unique Refine:", "<light green>Holding sneak and firing an arrow teleports you to where it lands.", "<light red>[Close Counter]: <white>Automatically counter-attacks melee foes during combat.", "<white>Weapon Ability: +35"
+				set slot 3 of the player's current inventory to 1 bow named "<gold><bold>Guard Bow" with nbt "{bakedRefine:776,sacredTreasureID:25}" with lore "<white>Reduces damage suffered by 25%% during combat.", "<white>Inflicts LCK -30 on player and foe during combat.", "<white>Weapon Ability: +19"
+				set slot 4 of the player's current inventory to 1 bow named "<gold><bold>Brave Bow" with nbt "{bakedRefine:776,sacredTreasureID:26}" with lore "<white>Inflicts SPD -5.", "<white>Weapon attacks twice during combat.", "<white>Inflicts STR/DEF -4 on foe during combat.", "<white>Weapon Ability: +24"
+				set slot 5 of the player's current inventory to 1 bow named "<gold><bold>Bow of Aresha" with nbt "{bakedRefine:776,sacredTreasureID:27}" with lore "<white>If player's DEF >= Foe's DEF +5:", "<white>Grants STR/DEF +X,", "<white>Where X = (Player's DEF - [foe's DEF + 5])", "<white>(Maximum bonus of +15 to each stat.)", "<white>Weapon Ability: +60"
+				set slot 6 of the player's current inventory to 1 iron horse armour named "<gold><bold>Martin Mil-4 Automatic" with nbt "{bakedRefine:776,sacredTreasureID:39}" with lore "<white>Sneak + right click a wall to take cover behind it.", "<white>While in cover, restores 0.5 HP/s", "<white>Firing your weapon while in cover will blind-fire over it, if it is less than 2.5 blocks tall.", "<italics>What happened here was out of my control.", "<white>Weapon Ability: +70"
+			#Gauntlets
+			else if arg 1 is 4:
+				set slot 0 of the player's current inventory to 1 diamond hoe named "<gold><bold>Vajra-Mushti" with nbt "{bakedRefine:776,sacredTreasureID:28,GauntletType:Vajra-Mushti}" with lore "<white>If player's HP = 100%% and player initiates combat:", "<white>Inflicts STR/MAG/DEF/RES -6 on foe during combat, and", "<white>nullifies foe's armour bonuses.", "<white>Weapon Ability: +60"
+				set slot 1 of the player's current inventory to 1 diamond hoe named "<gold><bold>Aura Knuckles" with nbt "{bakedRefine:776,sacredTreasureID:29,GauntletType:AuraKnuckles}" with lore "<white>Grants SPD +5.", "<white>This weapon deals Magical damage instead of physical damage.", "<white>Weapon Ability: +23"
+				set slot 2 of the player's current inventory to 1 diamond hoe named "<gold><bold>Hell Razers" with nbt "{bakedRefine:776,sacredTreasureID:30,GauntletType:HellRazers}" with lore "<white>Inflicts SPD -10 during combat.", "<white>If player initiates combat, grants STR/DEF +7 during combat, and", "<white>if foe's HP >= 70%%, grants an additional STR/DEF +7.", "<white>Weapon Ability: +60"
+				set slot 3 of the player's current inventory to 1 diamond hoe named "<gold><bold>Dragon Claws" with nbt "{bakedRefine:776,sacredTreasureID:31,GauntletType:DragonClaws}" with lore "<white>Cursed by an ancient dragon.", "<white>Wearing these Gauntlets temporarily transforms you into the Dragonborn race,", "<white>or, if already a Dragonborn, grants infinite Soul Gauge while equipped.", "<white>Weapon Ability: +40"
+				set slot 4 of the player's current inventory to 1 diamond hoe named "<gold><bold>Sky Piercer" with nbt "{bakedRefine:776,sacredTreasureID:32,GauntletType:SkyPiercer}" with lore "<white>Grants SPD/LCK +6.", "<white>Inflicts STR -10.", "<white>If player initiates combat, grants a guaranteed follow-up attack.", "<white>Weapon Ability: +60"
+			#Daggers
+			else if arg 1 is 5:
+				set slot 0 of the player's current inventory to 64 arrow named "<gold><bold>Peshkatz" with nbt "{bakedRefine:776,sacredTreasureID:33,daggerType:4}" with lore "<white>Accelerates Special activation (+10%% activation chance).", "<white>If player initiates combat and has HP >= 70%%:", "<white>Grants STR/SPD/LCK/DEF/RES +5 through next action,", "<white>and inflicts STR/SPD -5 on foe through their next action.", "<white>Weapon Ability: +50"
+				set slot 1 of the player's current inventory to 64 arrow named "<gold><bold>Smoke Dagger" with nbt "{bakedRefine:776,sacredTreasureID:34,daggerType:4}" with lore "<white>After combat, if player attacked:", "<white>Inflicts STR/SPD/LCK/DEF/RES -7 on foe through their next action.", "<white>This effect stacks with <gold>[Dagger 7]<reset><white>.", "<white>Weapon Ability: +24"
+				set slot 2 of the player's current inventory to 64 arrow named "<gold><bold>Kard" with nbt "{bakedRefine:776,sacredTreasureID:35,daggerType:4}" with lore "<white>Accelerates Special activation (+30%% activation chance).", "<white>Inflicts STR/SPD/DEF/RES -9 during combat.", "<white>Weapon Ability: +60"
+				set slot 3 of the player's current inventory to 64 arrow named "<gold><bold>Assasin's Dagger" with nbt "{bakedRefine:776,sacredTreasureID:36,daggerType:4}" with lore "<white>Nullifies foe's skills that guarantee counter-attacks during combat.", "<white>If player triggers a Special skill during combat,", "<white>boosts damage dealt by 30%%, and", "<white>inflicts <light blue>[Poison 5]<white>on foe.", "<white>Weapon Ability: +40"
+				set slot 4 of the player's current inventory to 64 arrow named "<gold><bold>Loyalist's Dagger" with nbt "{bakedRefine:776,sacredTreasureID:37,daggerType:4}" with lore "<white>During combat, if player is within 20 block of any ally:", "<white>Grants STR/SPD/LCK/DEF/RES +4,", "<white>and player attacks twice.", "<white>Weapon Ability: +40"
+				set slot 5 of the player's current inventory to 64 arrow named "<gold><bold>Cutlaseer" with nbt "{bakedRefine:776,sacredTreasureID:38,daggerType:4}" with lore "<white>+6 weapon might.", "<white>If number of foes within 15 blocks > number of allies within 15 blocks + 1:", "<white>Grants STR/SPD +7 during combat and boost Special odds by +15%%.", "<white>Can be thrown with no cost, but does not inflict <gold>[Dagger 7]<white> when thrown.", "<white>Weapon Ability: +43"
 
 on spawn of a slime:
 	if entity's world is "Salindrum":
@@ -206,14 +225,6 @@ on experience spawn:
 on food bar change:
 	if {sd.nohunger.%player%} is true:
 		increase the player's food level by 10
-		
-on damage:
-	if attacker is player:
-		if attacker's world is "Salindrum":
-			set damage to damage * {sd.outgoingmult.%attacker%}
-	else if victim is player:
-		if victim's world is "Salindrum":
-			set damage to damage * {sd.incomingmult.%victim%}
 		
 on inventory click:
 	#Room Selector
@@ -264,12 +275,32 @@ on inventory click:
 			clear {sditems.%player%::*}
 			clear {sd.rewarp.%player%}
 			set {sd::%{sdroom.%player%}%} to 0
+			if {sd.infabilities.%player%} is set:
+				clear {sd.infabilities.%player%}
+				set {abilities.%player%::Traditional Weapons} to {sd_abilityBackup.%player%::Traditional Weapons}
+				set {abilities.%player%::Magical Weapons} to {sd_abilityBackup.%player%::Magical Weapons}
+				set {abilities.%player%::Guns} to {sd_abilityBackup.%player%::Guns}
 			send "<light blue>Exited Salindrum."
 		else if the name of the clicked item contains "Infinite Hunger":
 			if {sd.nohunger.%player%} is not set:
 				set {sd.nohunger.%player%} to true
 			else:
 				clear {sd.nohunger.%player%}
+			make player execute command "/sd"
+		else if the name of the clicked item contains "Max Abilities":
+			if {sd.infabilities.%player%} is not set:
+				set {sd.infabilities.%player%} to true
+				set {sd_abilityBackup.%player%::Traditional Weapons} to {abilities.%player%::Traditional Weapons}
+				set {sd_abilityBackup.%player%::Magical Weapons} to {abilities.%player%::Magical Weapons}
+				set {sd_abilityBackup.%player%::Guns} to {abilities.%player%::Guns}
+				set {abilities.%player%::Traditional Weapons} to 999
+				set {abilities.%player%::Magical Weapons} to 999
+				set {abilities.%player%::Guns} to 999
+			else:
+				clear {sd.infabilities.%player%}
+				set {abilities.%player%::Traditional Weapons} to {sd_abilityBackup.%player%::Traditional Weapons}
+				set {abilities.%player%::Magical Weapons} to {sd_abilityBackup.%player%::Magical Weapons}
+				set {abilities.%player%::Guns} to {sd_abilityBackup.%player%::Guns}
 			make player execute command "/sd"
 		else if the name of the clicked item contains "Damage Modifiers":
 			make player execute command "/sdmults"
@@ -280,9 +311,9 @@ on inventory click:
 		else if the name of the clicked item is "<white>Spawn Monsters":
 			make player execute command "/sdmonsters"
 		else if the name of the clicked item is "<white>Test Skills":
-			make player execute command "/skills"
+			make player execute command "/buyToolSkills 0 0"
 		else if the name of the clicked item is "<white>Test Sacred Treasures":
-			make player execute command "/sdhw"
+			make player execute command "/sdhw 9"
 		else if the name of the clicked item is "<white>Combat Calculator":
 			make player execute command "/sdcalcs"
 		else if the name of the clicked item is "<white>Reset Session":
@@ -310,6 +341,21 @@ on inventory click:
 		cancel event
 		if the name of the clicked item contains "<gold><bold>":
 			give clicked item to the player
+	#Sacred Treasures Weapon Type Select
+	else if the name of the player's current inventory is "<red><bold>Salindrum - Select Weapon Class":
+		cancel event
+		if the name of the clicked item contains "Swords":
+			make player execute command "/sdhw 0"
+		else if the name of the clicked item contains "Axes":
+			make player execute command "/sdhw 1"
+		else if the name of the clicked item contains "Lances":
+			make player execute command "/sdhw 2"
+		else if the name of the clicked item contains "Bows":
+			make player execute command "/sdhw 3"
+		else if the name of the clicked item contains "Gauntlets":
+			make player execute command "/sdhw 4"
+		else if the name of the clicked item contains "Daggers":
+			make player execute command "/sdhw 5"
 	#Damage Modifiers
 	else if the name of the player's current inventory is "<red>Damage Modifiers":
 		cancel event

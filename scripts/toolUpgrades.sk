@@ -1,0 +1,351 @@
+#Contains code relating to creation of "Stage 2" weapons that feature built-in skills.
+
+on load:
+	set {_temperedIron} to 1 iron ingot named "<light blue>Tempered Iron Ingot" with nbt "{specialIngotType:0}" with lore "<white>Used to upgrade tier 2 Iron weapons."
+	set {_temperedGold} to 1 gold ingot named "<light blue>Tempered Gold Ingot" with nbt "{specialIngotType:1}" with lore "<white>Used to upgrade tier 2 Gold weapons."
+	set {_toolHandle} to 1 blaze rod named "<light yellow>Tool Handle" with nbt "{specialIngotType:7}" with lore "<white>Used in conjunction with Stage 2/3 ores to upgrade weapons."
+	#Tool Handle
+	#register new shapeless recipe for 1 blaze rod named "<light yellow>Tool Handle" with nbt "{specialIngotType:7}" with lore "<white>Used in conjunction with Stage 2/3 ores to upgrade weapons." using stick, iron ingot, gold ingot, air, air, air, air, air, air
+	#Everything else has to be handled by CraftBook
+	
+#debug command to give the stage ores for adding them to CraftBook.
+command /giveDebugStagedOres:
+	trigger:
+		give 1 blaze rod named "<light yellow>Tool Handle" with nbt "{specialIngotType:7}" with lore "<white>Used in conjunction with Stage 2/3 ores to upgrade weapons." to the player
+		give 1 iron ingot named "<cyan>Tempered Iron Ingot" with nbt "{specialIngotType:0}" with lore "<white>Used to upgrade Stage 1 Iron weapons." to the player
+		give 1 gold ingot named "<cyan>Tempered Gold Ingot" with nbt "{specialIngotType:1}" with lore "<white>Used to upgrade Stage 1 Gold weapons." to the player
+		give 1 diamond named "<cyan>Tempered Diamond" with nbt "{specialIngotType:2}" with lore "<white>Used to upgrade Stage 1 Diamond weapons." to the player
+		give 1 iron ingot named "<light blue>Forged Iron Ingot" with nbt "{specialIngotType:3}" with lore "<white>Used to upgrade Stage 2 Iron weapons." to the player
+		give 1 gold ingot named "<light blue>Forged Gold Ingot" with nbt "{specialIngotType:4}" with lore "<white>Used to upgrade Stage 2 Gold weapons." to the player
+		give 1 diamond named "<light blue>Forged Diamond" with nbt "{specialIngotType:5}" with lore "<white>Used to upgrade Stage 2 Diamond weapons." to the player
+		give 1 diamond named "<gold>Purified Diamond" with nbt "{specialIngotType:6}" with lore "<white>Used to upgrade Sacred Treasures." to the player
+		#Blocks
+		give 1 iron block named "<cyan>Tempered Iron Block" with nbt "{specialIngotType:0}" with lore "<white>A block of Tempered Iron.", "<white>Smelt this in a furnace to produce a Forged Iron Ingot." to the player
+		give 1 gold block named "<cyan>Tempered Gold Block" with nbt "{specialIngotType:1}" with lore "<white>A block of Tempered Gold.", "<white>Smelt this in a furnace to produce a Forged Gold Ingot." to the player
+		give 1 diamond block named "<cyan>Tempered Diamond Block" with nbt "{specialIngotType:2}" with lore "<white>A block of Tempered Diamond.", "<white>Smelt this in a furnace to produce a Forged Diamond." to the player
+		give 1 iron block named "<light blue>Forged Iron Block" with nbt "{specialIngotType:3}" with lore "<white>A block of Forged Iron." to the player
+		give 1 gold block named "<light blue>Forged Gold Block" with nbt "{specialIngotType:4}" with lore "<white>A block of Forged Gold." to the player
+		give 1 diamond block named "<light blue>Forged Diamond Block" with nbt "{specialIngotType:5}" with lore "<white>A block of Forged Diamond.", "<white>Smelt this in a furnace to produce a Purified Diamond." to the player
+
+#0 - frames
+#1 - evo'd iron
+#2 - evo'd gold
+#3 - evo'd diamond
+#arg 2 - which weapon type to give
+command /givedebugweaponevolutions <number> [<number=0>]:
+	trigger:
+		if arg 1 is 0:
+			give 1 bucket named "<light blue>Slaying-Weapon Cast" with nbt "{castType:0}" with lore "<white>Used to evolve a +10 base weapon to a +0 Slaying-type weapon.", "<white>Inherit this Cast to a +10 base weapon in the Upgrade/Inherit Skills menu." to the player
+			give 1 bucket named "<light blue>Reinforced-Weapon Cast" with nbt "{castType:1}" with lore "<white>Used to evolve a +10 base weapon to a +0 Reinforced-type weapon.", "<white>Inherit this Cast to a +10 base weapon in the Upgrade/Inherit Skills menu." to the player
+			give 1 bucket named "<light blue>Warding-Weapon Cast" with nbt "{castType:2}" with lore "<white>Used to evolve a +10 base weapon to a +0 Warding-type weapon.", "<white>Inherit this Cast to a +10 base weapon in the Upgrade/Inherit Skills menu." to the player
+			give 1 bucket named "<light blue>Piercing-Weapon Cast" with nbt "{castType:3}" with lore "<white>Used to evolve a +10 base weapon to a +0 Piercing-type weapon.", "<white>Inherit this Cast to a +10 base weapon in the Upgrade/Inherit Skills menu." to the player
+			give 1 bucket named "<light blue>Koenig-Weapon Cast" with nbt "{castType:4}" with lore "<white>Used to evolve a +10 base weapon to a +0 Koenig-type weapon.", "<white>Inherit this Cast to a +10 base weapon in the Upgrade/Inherit Skills menu." to the player
+			give 1 bucket named "<light blue>Crushing-Weapon Cast" with nbt "{castType:5}" with lore "<white>Used to evolve a +10 base weapon to a +0 Crushing-type weapon.", "<white>Inherit this Cast to a +10 base weapon in the Upgrade/Inherit Skills menu." to the player
+		else if arg 1 is 1:
+			if arg 2 is 0:
+				give 1 iron sword named "<light blue>Iron Slaying Edge [+0]" with nbt "{bakedRefine:0,mergeCount:0}" with lore "<italics>The Slaying refine is built into this weapon.", "<italics>Each merge adds +1%% Special activation chance." to the player
+				give 1 iron sword named "<light blue>Iron Reforged Blade [+0]" with nbt "{bakedRefine:1,mergeCount:0}" with lore "<italics>The Reinforced refine is built into this weapon.", "<italics>Each merge adds +1 heart of damage dealt." to the player
+				give 1 iron sword named "<light blue>Iron Barrier Blade [+0]" with nbt "{bakedRefine:2,mergeCount:0}" with lore "<italics>The Warding refine is built into this weapon.", "<italics>Each merge reduces damage taken by 1/2 heart." to the player
+				give 1 iron sword named "<light blue>Iron Armoursmasher [+0]" with nbt "{bakedRefine:3,mergeCount:0}" with lore "<italics>The Piercing refine is built into this weapon.", "<italics>Each merge increases the damage dealt based on foe's armour." to the player
+				give 1 iron sword named "<light blue>Iron King Sword [+0]" with nbt "{bakedRefine:4,mergeCount:0}" with lore "<italics>The Koenig refine is built into this weapon.", "<italics>Each merge adds +1 damage dealt when a Special activates." to the player
+			else if arg 2 is 1:
+				give 1 iron axe named "<light blue>Iron Slaying Axe [+0]" with nbt "{bakedRefine:0,mergeCount:0}" with lore "<italics>The Slaying refine is built into this weapon.", "<italics>Each merge adds +1%% Special activation chance." to the player
+				give 1 iron axe named "<light blue>Iron Reforged Axe [+0]" with nbt "{bakedRefine:1,mergeCount:0}" with lore "<italics>The Reinforced refine is built into this weapon.", "<italics>Each merge adds +1 heart of damage dealt." to the player
+				give 1 iron axe named "<light blue>Iron Barrier Axe [+0]" with nbt "{bakedRefine:2,mergeCount:0}" with lore "<italics>The Warding refine is built into this weapon.", "<italics>Each merge reduces damage taken by 1/2 heart." to the player
+				give 1 iron axe named "<light blue>Iron Hammer [+0]" with nbt "{bakedRefine:3,mergeCount:0}" with lore "<italics>The Piercing refine is built into this weapon.", "<italics>Each merge increases the damage dealt based on foe's armour." to the player
+				give 1 iron axe named "<light blue>Iron King Axe [+0]" with nbt "{bakedRefine:4,mergeCount:0}" with lore "<italics>The Koenig refine is built into this weapon.", "<italics>Each merge adds +1 damage dealt when a Special activates." to the player
+			else if arg 2 is 2:
+				give 1 iron shovel named "<light blue>Iron Slaying Lance [+0]" with nbt "{bakedRefine:0,mergeCount:0,LanceType:2}" with lore "<italics>The Slaying refine is built into this weapon.", "<italics>Each merge adds +1%% Special activation chance." to the player
+				give 1 iron shovel named "<light blue>Iron Reforged Lance [+0]" with nbt "{bakedRefine:1,mergeCount:0,LanceType:2}" with lore "<italics>The Reinforced refine is built into this weapon.", "<italics>Each merge adds +1 heart of damage dealt." to the player
+				give 1 iron shovel named "<light blue>Iron Barrier Lance [+0]" with nbt "{bakedRefine:2,mergeCount:0,LanceType:2}" with lore "<italics>The Warding refine is built into this weapon.", "<italics>Each merge reduces damage taken by 1/2 heart." to the player
+				give 1 iron shovel named "<light blue>Iron Shieldreaver [+0]" with nbt "{bakedRefine:3,mergeCount:0,LanceType:2}" with lore "<italics>The Piercing refine is built into this weapon.", "<italics>Each merge increases the damage dealt based on foe's armour." to the player
+				give 1 iron shovel named "<light blue>Iron King Lance [+0]" with nbt "{bakedRefine:4,mergeCount:0,LanceType:2}" with lore "<italics>The Koenig refine is built into this weapon.", "<italics>Each merge adds +1 damage dealt when a Special activates." to the player
+			else if arg 2 is 3:
+				give 1 bow named "<light blue>Slaying Bow [+0]" with nbt "{bakedRefine:0,mergeCount:0}" with lore "<italics>The Slaying refine is built into this weapon.", "<italics>Each merge adds +1%% Special activation chance." to the player
+				give 1 bow named "<light blue>Reforged Bow [+0]" with nbt "{bakedRefine:1,mergeCount:0}" with lore "<italics>The Reinforced refine is built into this weapon.", "<italics>Each merge adds +1 heart of damage dealt." to the player
+				give 1 bow named "<light blue>Barrier Bow [+0]" with nbt "{bakedRefine:2,mergeCount:0}" with lore "<italics>The Warding refine is built into this weapon.", "<italics>Each merge reduces damage taken by 1/2 heart." to the player
+				give 1 bow named "<light blue>Lunar Arc [+0]" with nbt "{bakedRefine:3,mergeCount:0}" with lore "<italics>The Piercing refine is built into this weapon.", "<italics>Each merge increases the damage dealt based on foe's armour." to the player
+				give 1 bow named "<light blue>King Bow [+0]" with nbt "{bakedRefine:4,mergeCount:0}" with lore "<italics>The Koenig refine is built into this weapon.", "<italics>Each merge adds +1 damage dealt when a Special activates." to the player
+			else if arg 2 is 4:
+				give 1 iron hoe named "<light blue>Iron Slaying Gaunlets [+0]" with nbt "{bakedRefine:0,mergeCount:0,GauntletType:2}" with lore "<italics>The Slaying refine is built into this weapon.", "<italics>Each merge adds +1%% Special activation chance." to the player
+				give 1 iron hoe named "<light blue>Iron Reforged Gauntlets [+0]" with nbt "{bakedRefine:1,mergeCount:0,GauntletType:2}" with lore "<italics>The Reinforced refine is built into this weapon.", "<italics>Each merge adds +1 heart of damage dealt." to the player
+				give 1 iron hoe named "<light blue>Iron Barrier Gauntlets [+0]" with nbt "{bakedRefine:2,mergeCount:0,GauntletType:2}" with lore "<italics>The Warding refine is built into this weapon.", "<italics>Each merge reduces damage taken by 1/2 heart." to the player
+				give 1 iron hoe named "<light blue>Iron Mailcrusher [+0]" with nbt "{bakedRefine:3,mergeCount:0,GauntletType:2}" with lore "<italics>The Piercing refine is built into this weapon.", "<italics>Each merge increases the damage dealt based on foe's armour." to the player
+				give 1 iron hoe named "<light blue>Iron King Gauntlets [+0]" with nbt "{bakedRefine:4,mergeCount:0,GauntletType:2}" with lore "<italics>The Koenig refine is built into this weapon.", "<italics>Each merge adds +1 damage dealt when a Special activates." to the player
+			else if arg 2 is 5:
+				give 16 arrow named "<light blue>Iron Slaying Dagger [+0]" with nbt "{bakedRefine:0,mergeCount:0,DaggerType:2}" with lore "<italics>The Slaying refine is built into this weapon.", "<italics>Each merge adds +1%% Special activation chance." to the player
+				give 16 arrow named "<light blue>Iron Reforged Dagger [+0]" with nbt "{bakedRefine:1,mergeCount:0,DaggerType:2}" with lore "<italics>The Reinforced refine is built into this weapon.", "<italics>Each merge adds +1 heart of damage dealt." to the player
+				give 16 arrow named "<light blue>Iron Barrier Dagger [+0]" with nbt "{bakedRefine:2,mergeCount:0,DaggerType:2}" with lore "<italics>The Warding refine is built into this weapon.", "<italics>Each merge reduces damage taken by 1/2 heart." to the player
+				give 16 arrow named "<light blue>Iron Barbed Dagger [+0]" with nbt "{bakedRefine:3,mergeCount:0,DaggerType:2}" with lore "<italics>The Piercing refine is built into this weapon.", "<italics>Each merge increases the damage dealt based on foe's armour." to the player
+				give 16 arrow named "<light blue>Iron King Dagger [+0]" with nbt "{bakedRefine:4,mergeCount:0,DaggerType:2}" with lore "<italics>The Koenig refine is built into this weapon.", "<italics>Each merge adds +1 damage dealt when a Special activates." to the player
+		else if arg 1 is 2:
+			if arg 2 is 0:
+				give 1 Golden sword named "<light blue>Golden Slaying Edge [+0]" with nbt "{bakedRefine:0,mergeCount:0}" with lore "<italics>The Slaying refine is built into this weapon.", "<italics>Each merge adds +1%% Special activation chance." to the player
+				give 1 Golden sword named "<light blue>Golden Reforged Blade [+0]" with nbt "{bakedRefine:1,mergeCount:0}" with lore "<italics>The Reinforced refine is built into this weapon.", "<italics>Each merge adds +1 heart of damage dealt." to the player
+				give 1 Golden sword named "<light blue>Golden Barrier Blade [+0]" with nbt "{bakedRefine:2,mergeCount:0}" with lore "<italics>The Warding refine is built into this weapon.", "<italics>Each merge reduces damage taken by 1/2 heart." to the player
+				give 1 Golden sword named "<light blue>Golden Armoursmasher [+0]" with nbt "{bakedRefine:3,mergeCount:0}" with lore "<italics>The Piercing refine is built into this weapon.", "<italics>Each merge increases the damage dealt based on foe's armour." to the player
+				give 1 Golden sword named "<light blue>Golden King Sword [+0]" with nbt "{bakedRefine:4,mergeCount:0}" with lore "<italics>The Koenig refine is built into this weapon.", "<italics>Each merge adds +1 damage dealt when a Special activates." to the player
+			else if arg 2 is 1:
+				give 1 Golden axe named "<light blue>Golden Slaying Axe [+0]" with nbt "{bakedRefine:0,mergeCount:0}" with lore "<italics>The Slaying refine is built into this weapon.", "<italics>Each merge adds +1%% Special activation chance." to the player
+				give 1 Golden axe named "<light blue>Golden Reforged Axe [+0]" with nbt "{bakedRefine:1,mergeCount:0}" with lore "<italics>The Reinforced refine is built into this weapon.", "<italics>Each merge adds +1 heart of damage dealt." to the player
+				give 1 Golden axe named "<light blue>Golden Barrier Axe [+0]" with nbt "{bakedRefine:2,mergeCount:0}" with lore "<italics>The Warding refine is built into this weapon.", "<italics>Each merge reduces damage taken by 1/2 heart." to the player
+				give 1 Golden axe named "<light blue>Golden Hammer [+0]" with nbt "{bakedRefine:3,mergeCount:0}" with lore "<italics>The Piercing refine is built into this weapon.", "<italics>Each merge increases the damage dealt based on foe's armour." to the player
+				give 1 Golden axe named "<light blue>Golden King Axe [+0]" with nbt "{bakedRefine:4,mergeCount:0}" with lore "<italics>The Koenig refine is built into this weapon.", "<italics>Each merge adds +1 damage dealt when a Special activates." to the player
+			else if arg 2 is 2:
+				give 1 Golden shovel named "<light blue>Golden Slaying Lance [+0]" with nbt "{bakedRefine:0,mergeCount:0,LanceType:3}" with lore "<italics>The Slaying refine is built into this weapon.", "<italics>Each merge adds +1%% Special activation chance." to the player
+				give 1 Golden shovel named "<light blue>Golden Reforged Lance [+0]" with nbt "{bakedRefine:1,mergeCount:0,LanceType:3}" with lore "<italics>The Reinforced refine is built into this weapon.", "<italics>Each merge adds +1 heart of damage dealt." to the player
+				give 1 Golden shovel named "<light blue>Golden Barrier Lance [+0]" with nbt "{bakedRefine:2,mergeCount:0,LanceType:3}" with lore "<italics>The Warding refine is built into this weapon.", "<italics>Each merge reduces damage taken by 1/2 heart." to the player
+				give 1 Golden shovel named "<light blue>Golden Shieldreaver [+0]" with nbt "{bakedRefine:3,mergeCount:0,LanceType:3}" with lore "<italics>The Piercing refine is built into this weapon.", "<italics>Each merge increases the damage dealt based on foe's armour." to the player
+				give 1 Golden shovel named "<light blue>Golden King Lance [+0]" with nbt "{bakedRefine:4,mergeCount:0,LanceType:3}" with lore "<italics>The Koenig refine is built into this weapon.", "<italics>Each merge adds +1 damage dealt when a Special activates." to the player
+			else if arg 2 is 3:
+				give 1 bow named "<light blue>Slaying Bow [+0]" with nbt "{bakedRefine:0,mergeCount:0}" with lore "<italics>The Slaying refine is built into this weapon.", "<italics>Each merge adds +1%% Special activation chance." to the player
+				give 1 bow named "<light blue>Reforged Bow [+0]" with nbt "{bakedRefine:1,mergeCount:0}" with lore "<italics>The Reinforced refine is built into this weapon.", "<italics>Each merge adds +1 heart of damage dealt." to the player
+				give 1 bow named "<light blue>Barrier Bow [+0]" with nbt "{bakedRefine:2,mergeCount:0}" with lore "<italics>The Warding refine is built into this weapon.", "<italics>Each merge reduces damage taken by 1/2 heart." to the player
+				give 1 bow named "<light blue>Lunar Arc [+0]" with nbt "{bakedRefine:3,mergeCount:0}" with lore "<italics>The Piercing refine is built into this weapon.", "<italics>Each merge increases the damage dealt based on foe's armour." to the player
+				give 1 bow named "<light blue>King Bow [+0]" with nbt "{bakedRefine:4,mergeCount:0}" with lore "<italics>The Koenig refine is built into this weapon.", "<italics>Each merge adds +1 damage dealt when a Special activates." to the player
+			else if arg 2 is 4:
+				give 1 Golden hoe named "<light blue>Golden Slaying Gaunlets [+0]" with nbt "{bakedRefine:0,mergeCount:0,GauntletType:3}" with lore "<italics>The Slaying refine is built into this weapon.", "<italics>Each merge adds +1%% Special activation chance." to the player
+				give 1 Golden hoe named "<light blue>Golden Reforged Gauntlets [+0]" with nbt "{bakedRefine:1,mergeCount:0,GauntletType:3}" with lore "<italics>The Reinforced refine is built into this weapon.", "<italics>Each merge adds +1 heart of damage dealt." to the player
+				give 1 Golden hoe named "<light blue>Golden Barrier Gauntlets [+0]" with nbt "{bakedRefine:2,mergeCount:0,GauntletType:3}" with lore "<italics>The Warding refine is built into this weapon.", "<italics>Each merge reduces damage taken by 1/2 heart." to the player
+				give 1 Golden hoe named "<light blue>Golden Mailcrusher [+0]" with nbt "{bakedRefine:3,mergeCount:0,GauntletType:3}" with lore "<italics>The Piercing refine is built into this weapon.", "<italics>Each merge increases the damage dealt based on foe's armour." to the player
+				give 1 Golden hoe named "<light blue>Golden King Gauntlets [+0]" with nbt "{bakedRefine:4,mergeCount:0,GauntletType:3}" with lore "<italics>The Koenig refine is built into this weapon.", "<italics>Each merge adds +1 damage dealt when a Special activates." to the player
+			else if arg 2 is 5:
+				give 16 arrow named "<light blue>Golden Slaying Dagger [+0]" with nbt "{bakedRefine:0,mergeCount:0,DaggerType:3}" with lore "<italics>The Slaying refine is built into this weapon.", "<italics>Each merge adds +1%% Special activation chance." to the player
+				give 16 arrow named "<light blue>Golden Reforged Dagger [+0]" with nbt "{bakedRefine:1,mergeCount:0,DaggerType:3}" with lore "<italics>The Reinforced refine is built into this weapon.", "<italics>Each merge adds +1 heart of damage dealt." to the player
+				give 16 arrow named "<light blue>Golden Barrier Dagger [+0]" with nbt "{bakedRefine:2,mergeCount:0,DaggerType:3}" with lore "<italics>The Warding refine is built into this weapon.", "<italics>Each merge reduces damage taken by 1/2 heart." to the player
+				give 16 arrow named "<light blue>Golden Barbed Dagger [+0]" with nbt "{bakedRefine:3,mergeCount:0,DaggerType:3}" with lore "<italics>The Piercing refine is built into this weapon.", "<italics>Each merge increases the damage dealt based on foe's armour." to the player
+				give 16 arrow named "<light blue>Golden King Dagger [+0]" with nbt "{bakedRefine:4,mergeCount:0,DaggerType:3}" with lore "<italics>The Koenig refine is built into this weapon.", "<italics>Each merge adds +1 damage dealt when a Special activates." to the player
+		else if arg 1 is 3:
+			if arg 2 is 0:
+				give 1 Diamond sword named "<light blue>Diamond Slaying Edge [+0]" with nbt "{bakedRefine:0,mergeCount:0}" with lore "<italics>The Slaying refine is built into this weapon.", "<italics>Each merge adds +1%% Special activation chance." to the player
+				give 1 Diamond sword named "<light blue>Diamond Reforged Blade [+0]" with nbt "{bakedRefine:1,mergeCount:0}" with lore "<italics>The Reinforced refine is built into this weapon.", "<italics>Each merge adds +1 heart of damage dealt." to the player
+				give 1 Diamond sword named "<light blue>Diamond Barrier Blade [+0]" with nbt "{bakedRefine:2,mergeCount:0}" with lore "<italics>The Warding refine is built into this weapon.", "<italics>Each merge reduces damage taken by 1/2 heart." to the player
+				give 1 Diamond sword named "<light blue>Diamond Armoursmasher [+0]" with nbt "{bakedRefine:3,mergeCount:0}" with lore "<italics>The Piercing refine is built into this weapon.", "<italics>Each merge increases the damage dealt based on foe's armour." to the player
+				give 1 Diamond sword named "<light blue>Diamond King Sword [+0]" with nbt "{bakedRefine:4,mergeCount:0}" with lore "<italics>The Koenig refine is built into this weapon.", "<italics>Each merge adds +1 damage dealt when a Special activates." to the player
+			else if arg 2 is 1:
+				give 1 Diamond axe named "<light blue>Diamond Slaying Axe [+0]" with nbt "{bakedRefine:0,mergeCount:0}" with lore "<italics>The Slaying refine is built into this weapon.", "<italics>Each merge adds +1%% Special activation chance." to the player
+				give 1 Diamond axe named "<light blue>Diamond Reforged Axe [+0]" with nbt "{bakedRefine:1,mergeCount:0}" with lore "<italics>The Reinforced refine is built into this weapon.", "<italics>Each merge adds +1 heart of damage dealt." to the player
+				give 1 Diamond axe named "<light blue>Diamond Barrier Axe [+0]" with nbt "{bakedRefine:2,mergeCount:0}" with lore "<italics>The Warding refine is built into this weapon.", "<italics>Each merge reduces damage taken by 1/2 heart." to the player
+				give 1 Diamond axe named "<light blue>Diamond Hammer [+0]" with nbt "{bakedRefine:3,mergeCount:0}" with lore "<italics>The Piercing refine is built into this weapon.", "<italics>Each merge increases the damage dealt based on foe's armour." to the player
+				give 1 Diamond axe named "<light blue>Diamond King Axe [+0]" with nbt "{bakedRefine:4,mergeCount:0}" with lore "<italics>The Koenig refine is built into this weapon.", "<italics>Each merge adds +1 damage dealt when a Special activates." to the player
+			else if arg 2 is 2:
+				give 1 Diamond shovel named "<light blue>Diamond Slaying Lance [+0]" with nbt "{bakedRefine:0,mergeCount:0,LanceType:2}" with lore "<italics>The Slaying refine is built into this weapon.", "<italics>Each merge adds +1%% Special activation chance." to the player
+				give 1 Diamond shovel named "<light blue>Diamond Reforged Lance [+0]" with nbt "{bakedRefine:1,mergeCount:0,LanceType:2}" with lore "<italics>The Reinforced refine is built into this weapon.", "<italics>Each merge adds +1 heart of damage dealt." to the player
+				give 1 Diamond shovel named "<light blue>Diamond Barrier Lance [+0]" with nbt "{bakedRefine:2,mergeCount:0,LanceType:2}" with lore "<italics>The Warding refine is built into this weapon.", "<italics>Each merge reduces damage taken by 1/2 heart." to the player
+				give 1 Diamond shovel named "<light blue>Diamond Shieldreaver [+0]" with nbt "{bakedRefine:3,mergeCount:0,LanceType:2}" with lore "<italics>The Piercing refine is built into this weapon.", "<italics>Each merge increases the damage dealt based on foe's armour." to the player
+				give 1 Diamond shovel named "<light blue>Diamond King Lance [+0]" with nbt "{bakedRefine:4,mergeCount:0,LanceType:2}" with lore "<italics>The Koenig refine is built into this weapon.", "<italics>Each merge adds +1 damage dealt when a Special activates." to the player
+			else if arg 2 is 3:
+				give 1 bow named "<light blue>Slaying Bow [+0]" with nbt "{bakedRefine:0,mergeCount:0}" with lore "<italics>The Slaying refine is built into this weapon.", "<italics>Each merge adds +1%% Special activation chance." to the player
+				give 1 bow named "<light blue>Reforged Bow [+0]" with nbt "{bakedRefine:1,mergeCount:0}" with lore "<italics>The Reinforced refine is built into this weapon.", "<italics>Each merge adds +1 heart of damage dealt." to the player
+				give 1 bow named "<light blue>Barrier Bow [+0]" with nbt "{bakedRefine:2,mergeCount:0}" with lore "<italics>The Warding refine is built into this weapon.", "<italics>Each merge reduces damage taken by 1/2 heart." to the player
+				give 1 bow named "<light blue>Lunar Arc [+0]" with nbt "{bakedRefine:3,mergeCount:0}" with lore "<italics>The Piercing refine is built into this weapon.", "<italics>Each merge increases the damage dealt based on foe's armour." to the player
+				give 1 bow named "<light blue>King Bow [+0]" with nbt "{bakedRefine:4,mergeCount:0}" with lore "<italics>The Koenig refine is built into this weapon.", "<italics>Each merge adds +1 damage dealt when a Special activates." to the player
+			else if arg 2 is 4:
+				give 1 diamond hoe named "<light blue>Diamond Slaying Gaunlets [+0]" with nbt "{bakedRefine:0,mergeCount:0,GauntletType:2}" with lore "<italics>The Slaying refine is built into this weapon.", "<italics>Each merge adds +1%% Special activation chance." to the player
+				give 1 diamond hoe named "<light blue>Diamond Reforged Gauntlets [+0]" with nbt "{bakedRefine:1,mergeCount:0,GauntletType:2}" with lore "<italics>The Reinforced refine is built into this weapon.", "<italics>Each merge adds +1 heart of damage dealt." to the player
+				give 1 diamond hoe named "<light blue>Diamond Barrier Gauntlets [+0]" with nbt "{bakedRefine:2,mergeCount:0,GauntletType:2}" with lore "<italics>The Warding refine is built into this weapon.", "<italics>Each merge reduces damage taken by 1/2 heart." to the player
+				give 1 diamond hoe named "<light blue>Diamond Mailcrusher [+0]" with nbt "{bakedRefine:3,mergeCount:0,GauntletType:2}" with lore "<italics>The Piercing refine is built into this weapon.", "<italics>Each merge increases the damage dealt based on foe's armour." to the player
+				give 1 diamond hoe named "<light blue>Diamond King Gauntlets [+0]" with nbt "{bakedRefine:4,mergeCount:0,GauntletType:2}" with lore "<italics>The Koenig refine is built into this weapon.", "<italics>Each merge adds +1 damage dealt when a Special activates." to the player
+			else if arg 2 is 5:
+				give 16 arrow named "<light blue>Diamond Slaying Dagger [+0]" with nbt "{bakedRefine:0,mergeCount:0,DaggerType:2}" with lore "<italics>The Slaying refine is built into this weapon.", "<italics>Each merge adds +1%% Special activation chance." to the player
+				give 16 arrow named "<light blue>Diamond Reforged Dagger [+0]" with nbt "{bakedRefine:1,mergeCount:0,DaggerType:2}" with lore "<italics>The Reinforced refine is built into this weapon.", "<italics>Each merge adds +1 heart of damage dealt." to the player
+				give 16 arrow named "<light blue>Diamond Barrier Dagger [+0]" with nbt "{bakedRefine:2,mergeCount:0,DaggerType:2}" with lore "<italics>The Warding refine is built into this weapon.", "<italics>Each merge reduces damage taken by 1/2 heart." to the player
+				give 16 arrow named "<light blue>Diamond Barbed Dagger [+0]" with nbt "{bakedRefine:3,mergeCount:0,DaggerType:2}" with lore "<italics>The Piercing refine is built into this weapon.", "<italics>Each merge increases the damage dealt based on foe's armour." to the player
+				give 16 arrow named "<light blue>Diamond King Dagger [+0]" with nbt "{bakedRefine:4,mergeCount:0,DaggerType:2}" with lore "<italics>The Koenig refine is built into this weapon.", "<italics>Each merge adds +1 damage dealt when a Special activates." to the player
+
+#0-2 for the corresponding frame stage
+command /givedebugstagedframes <number>:
+	trigger:
+		if arg 1 is 0:
+			#Tempered Iron frames
+			give 1 wooden sword named "<light blue>Tempered Iron Sword Frame" with nbt "{frameType:0,upgradeTier:0,oreType:0}" with lore "<white>Used in Inherit/Upgrade Tools to add +1 merge to any Iron Sword." to the player
+			give 1 wooden axe named "<light blue>Tempered Iron Axe Frame" with nbt "{frameType:1,upgradeTier:0,oreType:0}" with lore "<white>Used in Inherit/Upgrade Tools to add +1 merge to any Iron Axe." to the player
+			give 1 wooden shovel named "<light blue>Tempered Iron Lance Frame" with nbt "{frameType:2,upgradeTier:0,oreType:0}" with lore "<white>Used in Inherit/Upgrade Tools to add +1 merge to any Iron Lance." to the player
+			give 1 bow named "<light blue>Tempered Bow Frame" with nbt "{frameType:3,upgradeTier:0,oreType:0}" with lore "<white>Used in Inherit/Upgrade Tools to add +1 merge to any Bow." to the player
+			give 1 wooden hoe named "<light blue>Tempered Iron Gauntlets Frame" with nbt "{frameType:4,upgradeTier:0,oreType:0}" with lore "<white>Used in Inherit/Upgrade Tools to add +1 merge to any Iron Gauntlets." to the player
+			give 1 arrow named "<light blue>Tempered Iron Dagger Frame" with nbt "{frameType:5,upgradeTier:0,oreType:0}" with lore "<white>Used in Inherit/Upgrade Tools to add +1 merge to any set of Iron Dagger(s)." to the player
+			#Tempered Gold frames
+			give 1 wooden sword named "<light blue>Tempered Golden Sword Frame" with nbt "{frameType:0,upgradeTier:0,oreType:1}" with lore "<white>Used in Inherit/Upgrade Tools to add +1 merge to any Golden Sword." to the player
+			give 1 wooden axe named "<light blue>Tempered Golden Axe Frame" with nbt "{frameType:1,upgradeTier:0,oreType:1}" with lore "<white>Used in Inherit/Upgrade Tools to add +1 merge to any Golden Axe." to the player
+			give 1 wooden shovel named "<light blue>Tempered Golden Lance Frame" with nbt "{frameType:2,upgradeTier:0,oreType:1}" with lore "<white>Used in Inherit/Upgrade Tools to add +1 merge to any Golden Lance." to the player
+			give 1 wooden hoe named "<light blue>Tempered Golden Gauntlets Frame" with nbt "{frameType:4,upgradeTier:0,oreType:1}" with lore "<white>Used in Inherit/Upgrade Tools to add +1 merge to any Golden Gauntlets." to the player
+			give 1 arrow named "<light blue>Tempered Golden Dagger Frame" with nbt "{frameType:5,upgradeTier:0,oreType:1}" with lore "<white>Used in Inherit/Upgrade Tools to add +1 merge to any set of Golden Dagger(s)." to the player
+			#Tempered Diamond frames
+			give 1 wooden sword named "<light blue>Tempered Diamond Sword Frame" with nbt "{frameType:0,upgradeTier:0,oreType:2}" with lore "<white>Used in Inherit/Upgrade Tools to add +1 merge to any Diamond Sword." to the player
+			give 1 wooden axe named "<light blue>Tempered Diamond Axe Frame" with nbt "{frameType:1,upgradeTier:0,oreType:2}" with lore "<white>Used in Inherit/Upgrade Tools to add +1 merge to any Diamond Axe." to the player
+			give 1 wooden shovel named "<light blue>Tempered Diamond Lance Frame" with nbt "{frameType:2,upgradeTier:0,oreType:2}" with lore "<white>Used in Inherit/Upgrade Tools to add +1 merge to any Diamond Lance." to the player
+			give 1 wooden hoe named "<light blue>Tempered Diamond Gauntlets Frame" with nbt "{frameType:4,upgradeTier:0,oreType:2}" with lore "<white>Used in Inherit/Upgrade Tools to add +1 merge to any Diamond Gauntlets." to the player
+			give 1 arrow named "<light blue>Tempered Diamond Dagger Frame" with nbt "{frameType:5,upgradeTier:0,oreType:2}" with lore "<white>Used in Inherit/Upgrade Tools to add +1 merge to any set of Diamond Dagger(s)." to the player
+		else if arg 1 is 1:
+			#Forged Iron frames
+			give 1 wooden sword named "<light blue>Forged Iron Sword Frame" with nbt "{frameType:0,upgradeTier:1,oreType:0}" with lore "<white>Used in Inherit/Upgrade Tools to add +1 merge to any Stage 2 Iron Sword." to the player
+			give 1 wooden axe named "<light blue>Forged Iron Axe Frame" with nbt "{frameType:1,upgradeTier:1,oreType:0}" with lore "<white>Used in Inherit/Upgrade Tools to add +1 merge to any Stage 2 Iron Axe." to the player
+			give 1 wooden shovel named "<light blue>Forged Iron Lance Frame" with nbt "{frameType:2,upgradeTier:1,oreType:0}" with lore "<white>Used in Inherit/Upgrade Tools to add +1 merge to any Stage 2 Iron Lance." to the player
+			give 1 bow named "<light blue>Forged Bow Frame" with nbt "{frameType:3,upgradeTier:1,oreType:0}" with lore "<white>Used in Inherit/Upgrade Tools to add +1 merge to any Stage 2 Bow." to the player
+			give 1 wooden hoe named "<light blue>Forged Iron Gauntlets Frame" with nbt "{frameType:4,upgradeTier:1,oreType:0}" with lore "<white>Used in Inherit/Upgrade Tools to add +1 merge to any Stage 2 Iron Gauntlets." to the player
+			give 1 arrow named "<light blue>Forged Iron Dagger Frame" with nbt "{frameType:5,upgradeTier:1,oreType:0}" with lore "<white>Used in Inherit/Upgrade Tools to add +1 merge to any set of Stage 2 Iron Dagger(s)." to the player
+			#Forged Gold frames
+			give 1 wooden sword named "<light blue>Forged Golden Sword Frame" with nbt "{frameType:0,upgradeTier:1,oreType:1}" with lore "<white>Used in Inherit/Upgrade Tools to add +1 merge to any Stage 2 Golden Sword." to the player
+			give 1 wooden axe named "<light blue>Forged Golden Axe Frame" with nbt "{frameType:1,upgradeTier:1,oreType:1}" with lore "<white>Used in Inherit/Upgrade Tools to add +1 merge to any Stage 2 Golden Axe." to the player
+			give 1 wooden shovel named "<light blue>Forged Golden Lance Frame" with nbt "{frameType:2,upgradeTier:1,oreType:1}" with lore "<white>Used in Inherit/Upgrade Tools to add +1 merge to any Stage 2 Golden Lance." to the player
+			give 1 wooden hoe named "<light blue>Forged Golden Gauntlets Frame" with nbt "{frameType:4,upgradeTier:1,oreType:1}" with lore "<white>Used in Inherit/Upgrade Tools to add +1 merge to any Stage 2 Golden Gauntlets." to the player
+			give 1 arrow named "<light blue>Forged Golden Dagger Frame" with nbt "{frameType:5,upgradeTier:1,oreType:1}" with lore "<white>Used in Inherit/Upgrade Tools to add +1 merge to any set of Stage 2 Golden Dagger(s)." to the player
+			#Forged Diamond frames
+			give 1 wooden sword named "<light blue>Forged Diamond Sword Frame" with nbt "{frameType:0,upgradeTier:1,oreType:2}" with lore "<white>Used in Inherit/Upgrade Tools to add +1 merge to any Stage 2 Diamond Sword." to the player
+			give 1 wooden axe named "<light blue>Forged Diamond Axe Frame" with nbt "{frameType:1,upgradeTier:1,oreType:2}" with lore "<white>Used in Inherit/Upgrade Tools to add +1 merge to any Stage 2 Diamond Axe." to the player
+			give 1 wooden shovel named "<light blue>Forged Diamond Lance Frame" with nbt "{frameType:2,upgradeTier:1,oreType:2}" with lore "<white>Used in Inherit/Upgrade Tools to add +1 merge to any Stage 2 Diamond Lance." to the player
+			give 1 wooden hoe named "<light blue>Forged Diamond Gauntlets Frame" with nbt "{frameType:4,upgradeTier:1,oreType:2}" with lore "<white>Used in Inherit/Upgrade Tools to add +1 merge to any Stage 2 Diamond Gauntlets." to the player
+			give 1 arrow named "<light blue>Forged Diamond Dagger Frame" with nbt "{frameType:5,upgradeTier:1,oreType:2}" with lore "<white>Used in Inherit/Upgrade Tools to add +1 merge to any set of Stage 2 Diamond Dagger(s)." to the player
+		else if arg 1 is 2:
+			#Purified Diamond frames
+			give 1 nether star named "<gold>Mythic Cast" with nbt "{frameType:0,upgradeTier:1,oreType:776}" with lore "<white>Converts a +10 Diamond Evolved weapon to a Sacred Treasure.", "<white>Inherit this onto any +10 Diamond Evolved Weapon,", "<white>such as a Diamond Slaying Edge <gold>[+10]." to the player
+			give 1 wooden sword named "<light blue>Purified Diamond Weapon Frame" with nbt "{frameType:0,upgradeTier:2,oreType:2}" with lore "<white>Used in Inherit/Upgrade Tools to add +1 merge to any Sacred Treasure." to the player
+			
+#Automatically append merge count to renamed weapons
+on inventory click:
+	if type of clicked inventory is anvil inventory:
+		if index of clicked slot is 2:
+			set {_tool} to the name of the clicked slot
+			#Remove merge counter if present
+			if decolorize({_tool}) contains " [":
+				set {_itemName::*} to {_tool} split at " <gold>["
+			else:
+				set {_itemName::1} to {_tool}
+			remove "<gold>[+%tag "mergeCount" of event-item's nbt%]" from {_itemName::1}
+			#Block non-weapons from merge appending
+			if clicked item is any sword:
+				set {_applyMergeCount} to true
+			else if clicked item is any axe:
+				set {_applyMergeCount} to true
+			else if clicked item is bow:
+				set {_applyMergeCount} to true
+			else if nbt of the clicked item contains "LanceType:":
+				set {_applyMergeCount} to true
+			else if nbt of the clicked item contains "GauntletType:":
+				set {_applyMergeCount} to true
+			else if nbt of the clicked item contains "DaggerType:":
+				set {_applyMergeCount} to true
+			else if nbt of the clicked item contains "FirearmType:":
+				set {_applyMergeCount} to true
+			else if nbt of the clicked item contains "isWand:":
+				set {_applyMergeCount} to true
+			else if nbt of the clicked item contains "TomeType:":
+				set {_applyMergeCount} to true
+			if {_applyMergeCount} is true:
+				#Apply rename with merge counter
+				if tag "mergeCount" of event-item's nbt is not set:
+					set the name of the event-item to colored "%{_itemName::1}% <gold>[+0]"
+				else:
+					set the name of the event-item to colored "%{_itemName::1}% <gold>[+%tag "mergeCount" of event-item's nbt%]"
+				#play sound "block.anvil.use" with volume 1 and pitch 1 at the player
+	
+#Select Sacred Treasure upgrade
+#Argument specifies what types of weapons to offer
+#
+#latest ST ID: 41
+command /evolveToSacredTreasure <number>:
+	trigger:
+		open chest inventory with 3 rows named "<gold>Select a Sacred Treasure:" for the player
+		#Swords
+		if arg 1 is 0:
+			set slot 0 of the player's current inventory to 1 diamond sword named "<gold><bold>Falchion" with nbt "{bakedRefine:776,sacredTreasureID:0}" with lore "<white>Grants increased damage the farther away you are from your foe during combat.", "<white>Deals effective damage to end-type foes.", "<light green>Unique Refine:", "<light green>Grants STR/MAG/SPD/LCK/DEF/RES +4 to allies within 15 blocks during combat.", "<white>Weapon Ability: +30"
+			set slot 1 of the player's current inventory to 1 diamond sword named "<gold><bold>Binding Blade" with nbt "{bakedRefine:776,sacredTreasureID:1}" with lore "<white>+4 weapon might.", "<white>If foe initiates combat, grants DEF/RES +6 during that combat.", "<white>Deals effective damage to end-type foes.", "<light green>Unique Refine:", "<light green>Reduces damage suffered by 20%% during combat.", "<light green>Grants <light blue>[Quick Riposte]<light green>.", "<light blue>[Quick Riposte]: <white>Automatically counter-attack foes during combat.", "<white>Quick Riposte's effect only activates if foe is in range.", "<white>Weapon Ability: +30"
+			set slot 2 of the player's current inventory to 1 diamond sword named "<gold><bold>Tyrfing" with nbt "{bakedRefine:776,sacredTreasureID:2}" with lore "<white>+4 weapon might.", "<white>Reduces ranged damage suffered by 25%%.", "<white>Grants <light purple>[Miracle]<white>.", "<light green>Unique Refine:", "<light green>Grants MAG/RES +10, SPD/LCK +5 during combat.", "<light purple>[Miracle]: <white>Nullifies foe's attack if it would kill the player during combat.", "<white>Activation chance: (LCK * 0.5)", "<white>Max: 50%%", "<white>Weapon Ability: +30"
+			set slot 3 of the player's current inventory to 1 diamond sword named "<gold><bold>Ragnell" with nbt "{bakedRefine:776,sacredTreasureID:3}" with lore "<white>+8 weapon might.", "<white>Grants <light purple>[Radiant Aether].", "<light green>Unique Refine:", "<light green>+4 weapon might (+12 total).", "<light green>Grants <light red>[Distant Counter]<light green>.", "<light red>[Distant Counter]: <white>Counter-attack ranged foes automatically when hit.", "<light purple>[Radiant Aether]: <white>Activate Luna and Sol in one strike.", "<white>Exclusive to Ragnell.", "<white>Weapon Ability: +65"
+			set slot 4 of the player's current inventory to 1 diamond sword named "<gold><bold>Light Brand" with nbt "{bakedRefine:776,sacredTreasureID:4}" with lore "<white>+2 weapon might.", "<white>Grants LCK +10 during combat.", "<white>Damage from this weapon is calculated using the", "<white>lower of the foe's DEF or RES, and, if targeting RES,", "<white>treats the player's STR as their MAG during damage calculation.", "<light green>Unique Refine:", "<light green>If foe's HP = 100%% at start of combat:", "<light green>Grants STR/MAG/SPD/DEF +4 and <light red>[Armour Smasher]<light green>.", "<white>Weapon Ability: +45"
+			set slot 5 of the player's current inventory to 1 diamond sword named "<gold><bold>Mystletainn" with nbt "{bakedRefine:776,sacredTreasureID:5}" with lore "<white>+4 weapon might.", "<white>Grants LCK +10 during combat.", "<white>If HP < 70%%, grants LCK +10, and deals +10 damage when Special activates.", "<light green>Unique refine:", "<light green>Grants <light red>[Fury]<light green> during combat.", "<white>Weapon Ability: +50"
+			set slot 6 of the player's current inventory to 1 diamond sword named "<gold><bold>Tornado Blade" with nbt "{bakedRefine:776,sacredTreasureID:6}" with lore "<white>Grants <gold>[Distant Counter]<white>.", "<white>During combat, if foe uses any ranged weapon:", "<white>Grants Spectrum +6, and reduces foe's damage by 33%%.", "<white>Then, after combat, grants STR/SPD +7 through next action.", "<gold>[Distant Counter]<white>: Automatically retaliate against ranged opponents.", "<white>Weapon Ability: +19"
+			set slot 7 of the player's current inventory to 1 diamond sword named "<gold><bold>Kindled-Fire Sword" with nbt "{bakedRefine:776,sacredTreasureID:7}" with lore "<white>Grants <light blue>[Brave Blade]<white>.", "<white>If player's HP >= foe's HP -3:", "<white>Grants STR/DEF +7 during combat.", "<light green>Unique Refine:", "<light green>If any ally within 15 blocks shares the wielder's class:", "<light green>Grants STR/DEF +12.",  "<white>Weapon Ability: +35"
+			set slot 8 of the player's current inventory to 1 diamond sword named "<gold><bold>Monado" with nbt "{bakedRefine:776,sacredTreasureID:40}" with lore "<white>When this weapon triggers a Finishing Blow,", "<white>the Monado Arts gauge is filled by 1/3.", "<white>When the Monado Arts gague is full, right-click with the Monado Art you want to use.", "<white>Enchant: Grants STR/MAG +10 to party for 10 seconds.", "<white>Buster: Grants STR/MAG +20 through next action (player only).", "<white>Speed: Grants SPD/LCK +10 to party for 10 seconds.", "<white>Shield: Grants DEF/RES +10 for 10 seconds.", "<white>Eater: Inflicts STR/MAG/DEF/RES -10 on foes within 10 blocks through next action.", "<white>Weapon Ability: +60"
+			set slot 9 of the player's current inventory to 1 diamond sword named "<gold><bold>Yamato" with nbt "{bakedRefine:776,sacredTreasureID:41}" with lore "<white>Sneak + Right-Click to use Judgement Cut,", "<white>which attacks the nearest foe within 8 blocks with magical damage.", "<white>Judgement Cut triggers instantly when airborne.", "<white>If in Devil Trigger state, upgrades Judgement Cut into", "Judgement Cut End, which heavily damages all foes within 15 blocks.", "<white>Using Judgement Cut End immediately drains the DT gauge.", "<white>Weapon Ability: +60"
+		#Axes
+		else if arg 1 is 1:
+			set slot 0 of the player's current inventory to 1 diamond axe named "<gold><bold>Armads" with nbt "{bakedRefine:776,sacredTreasureID:8}" with lore "<white>Accelerates Special trigger (+10%% activation chance).", "<white>During combat, foe cannot perform a follow-up attack via SPD.", "<white>Grants <light red>[Distant Counter]<white>.", "<light green>Unique Refine:", "<light green>Reduces damage from ranged attacks by 40%%.", "<light green>Grants <light blue>[Quick Riposte]<light green>.", "<light red>[Distant Counter]: <white>Counter-attack ranged foes automatically when hit.", "<light blue>[Quick Riposte]: <white>Automatically counter-attack foes during combat.", "<white>Riposte's effect only activates if foe is in range.", "<white>Weapon Ability: +50"
+			set slot 1 of the player's current inventory to 1 diamond axe named "<gold><bold>Basilikos" with nbt "{bakedRefine:776,sacredTreasureID:9}" with lore "<white>+9 weapon might.", "<white>Grants STR/SPD +7, inflicts DEF/RES -5 during combat.", "<light green>Unique Refine:", "<light green>Increases damage dealt and suffered during combat by 50%%.", "<light red>Weapon Ability: +23"
+			set slot 2 of the player's current inventory to 1 diamond axe named "<gold><bold>Hauteclere" with nbt "{bakedRefine:776,sacredTreasureID:10}" with lore "<white>+3 weapon might.", "<white>Grants LCK +10, SPD +5 while equipped.", "<white>Accelerates Special skill activation (+15%% activation chance).", "<light green>Unique Refine:", "<light green>Accelerates Special trigger (+5%% activation chance).", "<light green>If Special activates, increases damage dealt by 5 hearts.", "<white>Weapon Ability: +50"
+			set slot 3 of the player's current inventory to 1 diamond axe named "<gold><bold>Tomahawk" with nbt "{bakedRefine:776,sacredTreasureID:11}" with lore "<white>Grants <gold>[Distant Counter]<white>.", "<white>During combat, if foe uses any ranged weapon:", "<white>Grants Spectrum +6, and reduces foe's damage by 33%%.", "<white>Then, after combat, grants STR/SPD +7 through next action.",  "<gold>[Distant Counter]<white>: Automatically retaliate against ranged opponents.", "<white>Weapon Ability: +19"
+			set slot 4 of the player's current inventory to 1 diamond axe named "<gold><bold>Daybreak" with nbt "{bakedRefine:776,sacredTreasureID:12}" with lore "<white>Grants DEF/RES +6 during combat.", "<white>After combat, restores 6 HP.", "<light green>Unique Refine:", "<light green>Restores health equal to 25%% of damage dealt during combat.", "<light green>If a Special skill activates and deals damage:", "<light green>Restores health equal to 30%% of damage dealt.", "<white>Weapon Ability: +60"
+			set slot 5 of the player's current inventory to 1 diamond axe named "<gold><bold>Goddess's Axe" with nbt "{bakedRefine:776,sacredTreasureID:13}" with lore "<white>Grants STR/DEF +7 during combat.", "<white>Inflicts SPD/RES -4 during combat.", "<white>Grants <light blue>[Brave Blade]<reset> during combat.", "<light green>Unique Refine:", "<light green>If player's HP <= 75%% and foe initiates combat:", "<light green>Player counter-attacks automatically before foe's attack.", "<light green>Foe must be using a melee weapon, or player must have Counter equipped.", "<white>Weapon Ability: +50"
+			set slot 6 of the player's current inventory to 1 diamond axe named "<gold><bold>Arthur's Axe" with nbt "{bakedRefine:776,sacredTreasureID:14}" with lore "<white>Boosts Critical Dodge chance by 35%% during combat.", "<white>Raises Critical Miss chance by 35%% during combat.", "<white>If player initiates combat and does not Critically Miss,", "<white>boosts damage dealt by 15%% and grants DEF/RES +7 through player's next action.", "<white>If foe initiates combat and player Critically Dodges,", "<white>grants STR/SPD/LCK +7 through player's next action.", "<white>Weapon Ability: +50"
+		#Lances
+		else if arg 1 is 2:
+			set slot 0 of the player's current inventory to 1 diamond shovel named "<gold><bold>Siegmund" with nbt "{bakedRefine:776,sacredTreasureID:15}" with lore "<white>+5 weapon might.", "<white>Grants <light green>[Rally Strength]<white>.", "<light green>Unique Refine:", "<light green>If number of foes >= number of allies within 10 blocks:", "<light green>Weapon attacks twice during combat.", "<light green>[Rally Strength]: <white>Grants Strength 2 to allies when right-clicked.", "<white>Weapon Ability: +40"
+			set slot 1 of the player's current inventory to 1 diamond shovel named "<gold><bold>Gae Bolg" with nbt "{bakedRefine:776,sacredTreasureID:16}" with lore "<white>Grants STR/DEF/LCK +6 during combat.", "<white>If player initates combat:", "<white>Grants STR +6, DEF +10 during combat.", "<white>Grants <light blue>[Guard]<white>.", "<light blue>[Guard]: <white>Inflicts LCK -50 on foe during combat.", "<white>Weapon Ability: +30"
+			set slot 2 of the player's current inventory to 1 diamond shovel named "<gold><bold>Gradivus" with nbt "{bakedRefine:776,sacredTreasureID:17}" with lore "<white>+4 weapon might.", "<white>Grants <light blue>[Experience Sapper]<white>.", "<light blue>[Experience Sapper]: <white>Increases EXP awarded for defeating foes.", "<white>Weapon Ability: +19"
+			set slot 3 of the player's current inventory to 1 diamond shovel named "<gold><bold>Rex Hasta" with nbt "{bakedRefine:776,sacredTreasureID:18}" with lore "<white>Increases damage dealt by Special activations by 10 hearts.", "<light green>Unique Refine:", "<light green>Grants <light blue>[Wrath]<light green>.", "<light green>If Special skill activates, boosts damage dealt by 25%%.", "<white>Weapon Ability: +40"
+			set slot 4 of the player's current inventory to 1 diamond shovel named "<gold><bold>Rhomphaia" with nbt "{bakedRefine:776,sacredTreasureID:19}" with lore "<white>Deals bonus damage equal to 25%% of the player's SPD.", "<white>Weapon Ability: +60"
+			set slot 5 of the player's current inventory to 1 diamond shovel named "<gold><bold>Javelin" with nbt "{bakedRefine:776,sacredTreasureID:20}" with lore "<white>Grants <gold>[Distant Counter]<white>.", "<white>During combat, if foe uses any ranged weapon:", "<white>Grants Spectrum +6, and reduces foe's damage by 33%%.", "<white>Then, after combat, grants STR/SPD +7 through next action.", "<gold>[Distant Counter]<white>: Automatically retaliate against ranged opponents.", "<white>Weapon Ability: +19"
+			set slot 6 of the player's current inventory to 1 diamond shovel named "<gold><bold>Swift-Winds Lance" with nbt "{bakedRefine:776,sacredTreasureID:21}" with lore "<white>Grants <gold>[Sweeper]<white>.", "<white>If player initiates combat, grants STR/SPD +4 during combat.", "<light green>Unique Refine:", "<light green>If any ally within 15 blocks shares the wielder's class:", "<light green>Grants STR/SPD +12.", "<gold>[Sweeper]<white>: Disables player & foe's skills that guarantee counter-attacks during combat.", "<white>Weapon Ability: +35"
+		#Bows
+		else if arg 1 is 3:
+			set slot 0 of the player's current inventory to 1 bow named "<gold><bold>Parthia" with nbt "{bakedRefine:776,sacredTreasureID:22}" with lore "<white>+3 weapon might.", "<white>Reduces ranged damage suffered by 50%%.", "<white>Grants <light blue>[Experience Sapper]<white>.", "<light green>Unique Refine:", "<light green>+10 weapon might against ranged opponents.", "<light green>Inflicts SPD/DEF -7 on foe after combat.", "<white>Weapon Ability: +30"
+			set slot 1 of the player's current inventory to 1 iron horse armour named "<gold><bold>Super Shotgun" with nbt "{bakedRefine:776,sacredTreasureID:23}" with lore "<white>The double-barreled classic. Plenty of risk & plenty of reward.", "<white>Right-click to fire.", "<white>Left-click to reload. Costs 6 gold nuggets.", "<white>Weapon Ability: +65"
+			set slot 2 of the player's current inventory to 1 bow named "<gold><bold>Fujin Yumi" with nbt "{bakedRefine:776,sacredTreasureID:24}" with lore "<white>Grants MAG/RES +10 while equipped.", "<white>Grants <light red>[Close Counter]<white>.", "<light green>Unique Refine:", "<light green>Holding sneak and firing an arrow teleports you to where it lands.", "<light red>[Close Counter]: <white>Automatically counter-attacks melee foes during combat.", "<white>Weapon Ability: +35"
+			set slot 3 of the player's current inventory to 1 bow named "<gold><bold>Guard Bow" with nbt "{bakedRefine:776,sacredTreasureID:25}" with lore "<white>Reduces damage suffered by 25%% during combat.", "<white>Inflicts LCK -30 on player and foe during combat.", "<white>Weapon Ability: +19"
+			set slot 4 of the player's current inventory to 1 bow named "<gold><bold>Brave Bow" with nbt "{bakedRefine:776,sacredTreasureID:26}" with lore "<white>Inflicts SPD -5.", "<white>Weapon attacks twice during combat.", "<white>Inflicts STR/DEF -4 on foe during combat.", "<white>Weapon Ability: +24"
+			set slot 5 of the player's current inventory to 1 bow named "<gold><bold>Bow of Aresha" with nbt "{bakedRefine:776,sacredTreasureID:27}" with lore "<white>If player's DEF >= Foe's DEF +5:", "<white>Grants STR/DEF +X,", "<white>Where X = (Player's DEF - [foe's DEF + 5])", "<white>(Maximum bonus of +15 to each stat.)", "<white>Weapon Ability: +60"
+			#set slot 6 of the player's current inventory to 1 iron horse armour named "<gold><bold>Martin Mil-4 Automatic" with nbt "{bakedRefine:776,sacredTreasureID:39}" with lore "<white>Sneak + right click a wall to take cover behind it.", "<white>While in cover, restores 0.5 HP/s", "<white>Firing your weapon while in cover will blind-fire over it, if it is less than 2.5 blocks tall.", "<italics>What happened here was out of my control.", "<white>Weapon Ability: +70"
+			set slot 6 of the player's current inventory to 1 bow named "<gold><bold>Double Bow" with nbt "{bakedRefine:776,sacredTreasureID:42}" with lore "<white>Accelerates special trigger (+10%% activation chance).", "<white>Grants STR/DEF +3 during combat.", "<white>If foe initiates combat, grants DEF/RES +4 and player automatically counters and,", "<white>if foe uses ranged damage, inflicts STR/DEF -4 on foe during combat.", "<white>Weapon Ability: +50"
+			set slot 7 of the player's current inventory to 1 bow named "<gold><bold>Nidhogg" with nbt "{bakedRefine:776,sacredTreasureID:43}" with lore "<white>Grants LCK +20 during combat.", "<white>Accelerates Special trigger (+20%% activation chance).", "<white>Weapon Ability: +70"
+		#Gauntlets
+		else if arg 1 is 4:
+			set slot 0 of the player's current inventory to 1 diamond hoe named "<gold><bold>Vajra-Mushti" with nbt "{bakedRefine:776,sacredTreasureID:28,GauntletType:Vajra-Mushti}" with lore "<white>If player's HP = 100%% and player initiates combat:", "<white>Inflicts STR/SPD/DEF/RES -6 on foe during combat, and", "<white>nullifies foe's armour bonuses.", "<white>Weapon Ability: +60"
+			set slot 1 of the player's current inventory to 1 diamond hoe named "<gold><bold>Aura Knuckles" with nbt "{bakedRefine:776,sacredTreasureID:29,GauntletType:AuraKnuckles}" with lore "<white>Grants SPD +5.", "<white>This weapon deals Magical damage instead of physical damage.", "<white>Weapon Ability: +23"
+			set slot 2 of the player's current inventory to 1 diamond hoe named "<gold><bold>Hell Razers" with nbt "{bakedRefine:776,sacredTreasureID:30,GauntletType:HellRazers}" with lore "<white>Inflicts SPD -10 during combat.", "<white>If player initiates combat, grants STR/DEF +7 during combat, and", "<white>if foe's HP >= 70%%, grants an additional STR/DEF +7.", "<white>Weapon Ability: +60"
+			set slot 3 of the player's current inventory to 1 diamond hoe named "<gold><bold>Dragon Claws" with nbt "{bakedRefine:776,sacredTreasureID:31,GauntletType:DragonClaws}" with lore "<white>Cursed by an ancient dragon.", "<white>Wearing these Gauntlets temporarily transforms you into the Dragonborn race,", "<white>or, if already a Dragonborn, grants infinite Soul Gauge while equipped.", "<white>Weapon Ability: +40"
+			set slot 4 of the player's current inventory to 1 diamond hoe named "<gold><bold>Sky Piercer" with nbt "{bakedRefine:776,sacredTreasureID:32,GauntletType:SkyPiercer}" with lore "<white>Grants SPD/LCK +6.", "<white>Inflicts STR -10.", "<white>If player initiates combat, grants a guaranteed follow-up attack.", "<white>Weapon Ability: +60"
+		#Daggers
+		else if arg 1 is 5:
+			set slot 0 of the player's current inventory to 64 arrow named "<gold><bold>Peshkatz" with nbt "{bakedRefine:776,sacredTreasureID:33,daggerType:4}" with lore "<white>Accelerates Special activation (+10%% activation chance).", "<white>If player initiates combat and has HP >= 70%%:", "<white>Grants STR/SPD/LCK/DEF/RES +5 through next action,", "<white>and inflicts STR/SPD -5 on foe through their next action.", "<white>Weapon Ability: +50"
+			set slot 1 of the player's current inventory to 64 arrow named "<gold><bold>Smoke Dagger" with nbt "{bakedRefine:776,sacredTreasureID:34,daggerType:4}" with lore "<white>After combat, if player attacked:", "<white>Inflicts STR/SPD/LCK/DEF/RES -7 on foe through their next action.", "<white>This effect stacks with <gold>[Dagger 7]<reset><white>.", "<white>Weapon Ability: +24"
+			set slot 2 of the player's current inventory to 64 arrow named "<gold><bold>Kard" with nbt "{bakedRefine:776,sacredTreasureID:35,daggerType:4}" with lore "<white>Accelerates Special activation (+40%% activation chance).", "<white>Inflicts STR/SPD/DEF/RES -5 during combat.", "<white>Weapon Ability: +60"
+			set slot 3 of the player's current inventory to 64 arrow named "<gold><bold>Black Fang Dagger" with nbt "{bakedRefine:776,sacredTreasureID:36,daggerType:4}" with lore "<white>Nullifies foe's skills that guarantee counter-attacks during combat.", "<white>If player triggers a Special skill during combat,", "<white>boosts damage dealt by 30%%, and", "<white>inflicts <light blue>[Poison 5]<white>on foe.", "<white>Weapon Ability: +40"
+			set slot 4 of the player's current inventory to 64 arrow named "<gold><bold>Loyalist's Dagger" with nbt "{bakedRefine:776,sacredTreasureID:37,daggerType:4}" with lore "<white>During combat, if player is within 20 block of any ally:", "<white>Grants STR/SPD/LCK/DEF/RES +4,", "<white>and player attacks twice.", "<white>Weapon Ability: +40"
+			set slot 5 of the player's current inventory to 64 arrow named "<gold><bold>Cutlaseer" with nbt "{bakedRefine:776,sacredTreasureID:38,daggerType:5}" with lore "<white>+6 weapon might.", "<white>If number of foes within 15 blocks > number of allies within 15 blocks + 1:", "<white>Grants STR/SPD +7 during combat and boost Special odds by +15%%.", "<white>Can be thrown with no cost, but does not inflict <gold>[Dagger 7]<white> when thrown.", "<white>Weapon Ability: +43"
+		#UNUSED
+		#set slot 9 of the player's current inventory to 1 diamond sword named "<gold><bold>Sieglinde" with lore "<white>+5 weapon might.", "<white>Grants <light green>[Rally Strength]<white>.", "<light green>Unique Refine:", "<light green>Rallies also apply to yourself.", "<light green>Rally skills and perks apply in a 7-block radius.", "<light green>[Rally Strength]: <white>Grants Strength 2 to allies when right-clicked.", "<white>Weapon Ability: +30"
+		#set slot 10 of the player's current inventory to 1 diamond sword named "<gold><bold>Durandal" with lore "<white>+4 weapon might.", "<white>Grants <gold>[Crushing]<white>.", "<light green>Unique Refine:", "<light green>Accelerates Special activation (+10%% activation chance).", "<light green>Grants <light red>[Sturdy Impact]<light green>.", "<gold>[Crushing]: <white>Accelerates Special activation based on damage dealt.", "<white>Minimum of 7 damage dealt required to activate effect.", "<white>Weapon Ability: +40"
+		#set slot 12 of the player's current inventory to 1 diamond sword named "<gold><bold>Mercurius" with lore "<white>+3 weapon might.", "<white>Grants <light blue>[Experience Sapper]<white>.", "<light blue>[Experience Sapper]: <white>Increases EXP awarded for defeating foes.", "<white>Weapon Ability: +19"
+		#set slot 16 of the player's current inventory to 1 diamond shovel named "<gold><bold>Fensalir" with lore "<white>+4 weapon might.", "<white>While within 10 blocks of a party member, grants +8 weapon might.", "<light green>Unique Refine:", "<light green>While within 15 blocks of a party member, grants STR/SKL +7 during combat.", "<white>Weapon Ability: +30"
+		#set slot 17 of the player's current inventory to 1 diamond sword named "<gold><bold>Folkvangr" with lore "<white>+4 weapon might.", "<white>While within 10 blocks of a party member, grants +8 weapon might.", "<light green>Unique Refine:", "<light green>If HP < 70%%, grants STR/DEF +7.", "<white>Weapon Ability: +30"
+		#set slot 19 of the player's current inventory to 1 diamond horse armour named "<gold><bold>Love is Blue" with lore "<white>Right-click to fire bullets at the cost of EXP.", "Melee hits restore 5 EXP.", "<bold>Skills cannot be equipped to this weapon.", "<bold>This weapon cannot be refined."
+		#set slot 20 of the player's current inventory to 1 gold horse armour named "<gold><bold>Scarborough Fair" with lore "<white>Right-click to fire bullets at the cost of EXP.", "Melee hits restore 5 EXP.", "<bold>Skills cannot be equipped to this weapon.", "<bold>This weapon cannot be refined."
+		#set slot 19 of the player's current inventory to 1 diamond sword named "<gold><bold>Balder Side Sword" with lore "<white>+4 weapon might.", "<white>Right-click to parry attacks.", "<white>Parry has a 0.5 second cooldown.", "<light green>Unique Refine:", "<light green>Grants STR/DEF +7 when attacked.", "<white>Weapon Ability: +30"
+		#set slot 21 of the player's current inventory to 1 diamond sword named "<gold><bold>Blessed Sword" with lore "<white>Reduces damage suffered by 1.5 hearts during combat.", "<white>Deals 2x damage to monsters.", "<white>Grants <light blue>[Plenitude]<white>.", "<light green>Unique Refine:", "<light green>Grants Regeneration 2 while equipped.", "<light green>Nullifies negative potion effects.", "<light blue>[Plenitude]: <white>Restores hunger and randomly drops steak when a foe is defeated.", "<white>Weapon Ability: +60"
+		#set slot 22 of the player's current inventory to 1 diamond axe named "<gold><bold>Devil Axe" with lore "<white>+3 weapon might.", "<white>Grants <light red>[Fury]<white>.", "<white>Inflicts Wither 4 on foe after combat.", "<light green>Unique Refine:", "<light green>Grants <light red>[Fury]<light green> and <light blue>[Wrath]<light green>.", "<white>Weapon Ability: +60"
+		#set slot 23 of the player's current inventory to 1 diamond shovel named "<gold><bold>Crusader's Lance" with lore "<white>+8 weapon might.", "<white>Can be thrown for no durability cost.", "<white>Reduces damage suffered by 15%% during combat.", "<light green>Unique Refine:", "<light green>Reduces damage suffered by 15%% during combat.", "<light green>Boosts damage dealt by 20%% while above 80%% HP.", "<white>Weapon Ability: +60"
+		#set slot 24 of the player's current inventory to 1 bow named "<gold><bold>Lunar Bow" with lore "<white>+3 weapon might.", "<white>Grants <light purple>[Luna]<white>.", "<light green>Unique Refine:", "<light green>If Special activates, increases damage by 20%% of the player's SPD.", "<light green>Calculates damage using the lower of foe's DEF or MAG.", "<white>Weapon Ability: +60"
+		#set slot 26 of the player's current inventory to 1 diamond sword named "<gold><bold>Meisterschwert" with lore "<white>Grants <light blue>[Brave Blade]<white>.", "<light green>Unique Refine:", "<light green>Grants SPD +5 while equipped.", "<light green>Grants <light blue>[Quick Riposte]<light green>.", "<white>Weapon Ability: +40"
+		#set slot 27 of the player's current inventory to 1 book named "<gold><bold>Dire Thunder" with lore "<white>Grants <light blue>[Brave Blade]<white>.", "<light green>Unique Refine:", "<light green>Grants SPD +5 while equipped.", "<light green>Grants <light blue>[Quick Riposte]<light green>.", "<white>Weapon Ability: +40"
+		#set slot 29 of the player's current inventory to 1 diamond sword named "<gold><bold>Alondite" with lore "<white>Grants <gold>[Nihl]<white>.", "<white>Grants <light purple>[Eclipse]<white>.", "<light purple>[Eclipse]: <white>Pierces armour and reduces foe's DEF/MAG by 80%%.", "<white>Activation chance: (LCK ^ 0.65) | Max: 50%%.", "<gold>[Nihl]:", "<white>Disables foe's skills and perks that guarantee counter-attacks and prevent player's follow-up attacks.", "<white>Weapon Ability: +100"
+		#set slot 37 of the player's current inventory to 1 diamond axe named "<gold><bold>Axtinguisher" with lore "<white>+50%% damage against burning targets.", "<white>-50%% damage against non-burning targets."
+		#set slot 37 of the player's current inventory to 1 diamond sword named "<gold><bold>Yamato" with lore "<white>+3 weapon might.", "<white>Grants <light blue><bold>[Judgement Cut]<reset><white>.", "<light blue><bold>[Judgement Cut]:<reset><white> Sneak and right-click to activate.", "<white>Gain power by holding sneak, then unleash it by standing up.", "<white>Targets all foes within 20 blocks. Damage based on charge time.", "<white>Weapon Ability: +100"
+		#set slot 39 of the player's current inventory to 1 diamond sword named "<gold><bold>Rebellion" with lore "<white>Hold Sneak and Right-click to change this weapon's active Style.", "<white>Right-click to use the active Style's ability.", "<light red>Trickster: Dash forwards invincibily.", "<orange>Swordmaster: Launch enemies into the air.", "<light green>Gunslinger: Fire damaging shockwaves from the sword.", "<light blue>Royalguard: Block an attack and add the blocked damage to your next attack.", "<white>Weapon Ability: +50"
+
+#Sacred Treasure selection		
+on inventory click:
+	if the name of the player's current inventory contains "<gold>Select a Sacred Treasure:":
+		if the name of the clicked item contains "<gold><bold>":
+			if nbt of the clicked item contains "sacredTreasureID:":
+				set {_treasureID} to "%tag "sacredTreasureID" of clicked item's nbt%" parsed as integer
+				set {_skillDescLineCount} to 0
+				loop 10 times:
+					add 1 to {_skillDescLineCount}
+					if line {_skillDescLineCount} of the clicked item's lore contains "<white>Weapon Ability:":
+						set {_fabReq::*} to line {_skillDescLineCount} of the clicked item's lore split at "+"
+						exit 1 loop
+				if {_fabReq::*} is set:
+					#Adds the weapon ability requirement to the global database if the entry does not exist (these can be adjusted/added/removed manually by editing the apropriate field in the database.
+					if {wpndata_abilityrequirements::%{t_skillToBuy.%player%}%} is not set:
+						#broadcast "%{t_skillToBuy.%player%}% was added to the database."
+						set {_weaponAbilityReq::*} to line {_skillDescLineCount} of the lore of the clicked item split at "+"
+						#send {_weaponAbilityReq::2} to the player
+						set {wpndata_abilityrequirements::hw_%{_treasureID}%} to "%{_weaponAbilityReq::2}%" parsed as integer
+				give the clicked item to the player
+				close the player's inventory
+				strike lightning effect at the player
+				wait 10 ticks
+				create safe explosion of force 0 at the player
+				play 40 (gold block break with speed 1) at the player
+				send formatted "<gold><bold>Sacred Treasure %name of the clicked item% was forged!" to the player
+				

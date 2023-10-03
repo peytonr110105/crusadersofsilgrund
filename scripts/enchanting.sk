@@ -1,0 +1,25 @@
+#Higher Enchanting ability boosts the level of applied enchants
+on enchant prepare:
+	set {_enchantBonusAttempts} to floor({abilities.%player%::Enchanting} / 20)
+	loop all enchantment offers:
+		if "%loop-value%" contains "protection":
+			set {_enchantBonusPenalty} to 3
+		else:
+			set {_enchantBonusPenalty} to 0
+		set level of offer loop-value to (level of offer loop-value + {_enchantBonusAttempts} - {_enchantBonusPenalty})
+		
+on enchant:
+	set {_enchantBonusAttempts} to floor({abilities.%player%::Enchanting} / 20)
+	loop applied enchantments:
+		set {_var} to "%loop-value%"
+		add {_var} to {_enchants::*}
+	broadcast "%{_enchants::*}%"
+	loop {_enchants::*}:
+		set {_enchantType} to first (length of loop-value - 2) characters of loop-value
+		add "%last 1 character of loop-value%" parsed as integer to {_finalEnchantLevels::*}
+		add {_enchantType} to {_finalEnchants::*}
+	clear {_enchants::*}
+	loop {_finalEnchants::*}:
+		broadcast "%loop-value% %{_finalEnchantLevels::%loop-index%}%"
+		add "%loop-value% %{_finalEnchantLevels::%loop-index%} + {_enchantBonusAttempts}%" parsed as enchantment type to {_enchants::*}
+	set applied enchantments to {_enchants::*}

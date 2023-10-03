@@ -4,22 +4,92 @@ function summonRecoil(MOB: text,PLR: player) :: number:
 		set {_Recoil} to 9
 	else if {_MOB} is "Skeleton":
 		set {_Recoil} to 9
+	else if {_MOB} is "Husk":
+		set {_Recoil} to 9
+	else if {_MOB} is "Stray":
+		set {_recoil} to 9
+	else if {_MOB} is "Seeker":
+		set {_recoil} to 9
+	else if {_MOB} is "Bruiser":
+		set {_recoil} to 15
+	else if {_MOB} is "Ranger":
+		set {_recoil} to 15
+	else if {_MOB} is "H. Bruiser":
+		set {_recoil} to 15
+	else if {_MOB} is "S. Ranger":
+		set {_recoil} to 15
+	else if {_MOB} is "Blocker":
+		set {_recoil} to 18
 	else if {_MOB} is "Mimicry":
 		set {_Recoil} to 27
-	if checkSlots({_PLR},"Demon Breeder") is 1:
-		set {_recoil} to {_recoil} / 2
+	if checkSlots({_PLR},"Crimson Cloud") is 1:
+		set {_recoil} to ceil({_recoil} * 0.66)
 	return {_recoil}
 
-command /summons [<number=0>]:
+command /summons [<text="Menu">]:
 	description: Show all summons available.
 	trigger:
-		if arg 1 is 0:
-			open chest with 4 rows named "<light purple>Available Summons:" for the player
+		if arg 1 is "Menu":
+			open chest inventory with 2 rows named "<light purple>Select a summon to equip:" for the player
+			set slot 0 of the player's current inventory to 1 emerald block named "<light purple>Zombie" with lore "<white>Basic melee summon. Moves slowly, but hits hard.", "<light yellow>Base Summon Cost: 9 Hearts", "<cyan>Movement Speed: <light red>Slow", "<light green>Attack Power: <light yellow>Medium"
+			set slot 1 of the player's current inventory to 1 emerald block named "<light purple>Skeleton" with lore "<white>Basic ranged summon. Moves quickly in a pinch.", "<light yellow>Base Summon Cost: 9 Hearts", "<cyan>Movement Speed: <light yellow>Medium", "<light green>Attack Power: <light yellow>Medium-Low"
+			set slot 2 of the player's current inventory to 1 emerald block named "<light purple>Husk" with lore "<white>Magic-damage variant of the Zombie.", "<light yellow>Base Summon Cost: 9 Hearts", "<cyan>Movement Speed: <light red>Slow", "<light green>Attack Power: <light yellow>Medium"
+			set slot 3 of the player's current inventory to 1 emerald block named "<light purple>Stray" with lore "<white>Magic-damage variant of the Skeleton.", "<light yellow>Base Summon Cost: 9 Hearts", "<cyan>Movement Speed: <light yellow>Medium", "<light green>Attack Power: <light yellow>Medium-Low"
+			set slot 4 of the player's current inventory to 1 emerald block named "<light purple>Seeker" with lore "<white>Extremely fast and deadly, but instantly detonates if hit.", "<light yellow>Base Summon Cost: 9 Hearts", "<cyan>Movement Speed: <light green>High", "<light green>Attack Power: High"
+			set slot 5 of the player's current inventory to 1 emerald block named "<light purple>Bruiser" with lore "<white>Stronger variation of the Zombie. Clad in iron equipment.", "<light yellow>Base Summon Cost: 15 Hearts", "<cyan>Movement Speed: <light red>Slow", "<light green>Attack Power: <light yellow>Medium"
+			set slot 6 of the player's current inventory to 1 emerald block named "<light purple>Ranger" with lore "<white>Stronger variation of the Skeleton. Clad in iron equipment.", "<light yellow>Base Summon Cost: 15 Hearts", "<cyan>Movement Speed: <light yellow>Medium", "<light green>Attack Power: <light yellow>Medium-Low"
+			set slot 7 of the player's current inventory to 1 emerald block named "<light purple>H. Bruiser" with lore "<white>Stronger variation of the Husk. Clad in iron equipment.", "<light yellow>Base Summon Cost: 15 Hearts", "<cyan>Movement Speed: <light red>Slow", "<light green>Attack Power: <light yellow>Medium"
+			set slot 8 of the player's current inventory to 1 emerald block named "<light purple>S. Ranger" with lore "<white>Stronger variation of the Stray. Clad in iron equipment.", "<light yellow>Base Summon Cost: 15 Hearts", "<cyan>Movement Speed: <light yellow>Medium", "<light green>Attack Power: <light yellow>Medium-Low"
+			set slot 9 of the player's current inventory to 1 emerald block named "<light purple>Blocker" with lore "<white>Completely immobile, but prevents its enemies from moving past it.", "<light yellow>Base Summon Cost: 18 Hearts", "<cyan>Movement Speed: <red>Poor", "<light green>Attack Power: <light red>Low"
+			set slot 17 of the player's current inventory to 1 emerald block named "<light purple>Mimicry" with lore "<white>Advanced summon that takes on the likeness of the summoner.", "<light yellow>Base Summon Cost: 27 Hearts", "<cyan>Movement Speed: <light red>Slow", "<light green>Attack Power: <light yellow>Medium"
 		else:
-			open chest with 4 rows named "<light purple>Select a summon to equip:" for the player
-		set slot 0 of the player's current inventory to 1 emerald block named "<light purple>Zombie" with lore "<white>Basic melee summon. Moves slowly, but hits hard.", "<light yellow>Summon Cost: 1.5 Hearts", "<cyan>Movement Speed: <light red>Slow", "<light green>Attack Power: <light yellow>Medium"
-		set slot 1 of the player's current inventory to 1 emerald block named "<light purple>Skeleton" with lore "<white>Basic ranged summon. Moves quickly in a pinch.", "<light yellow>Summon Cost: 2 Hearts", "<cyan>Movement Speed: <light yellow>Medium", "<light green>Attack Power: <light yellow>Medium-Low"
-		set slot 2 of the player's current inventory to 1 emerald block named "<light purple>Mimicry" with lore "<white>Advanced summon that takes on the likeness of the summoner."
+			open chest inventory with 1 rows named "<light purple>Equip Summon To:" for the player
+			set slot 0 of the player's current inventory to 1 red glass pane named "<light red>Return to summon list."
+			set slot 1 of the player's current inventory to 1 book named arg 1
+			set slot 2 of the player's current inventory to 1 dirt
+			set slot 3 of the player's current inventory to 1 dirt
+			set slot 5 of the player's current inventory to 1 dirt
+			set slot 6 of the player's current inventory to 1 dirt
+			set slot 7 of the player's current inventory to 1 chest named "<light yellow>Change Summon Slot" with lore "<white>Applying summon to:", "<light red>Slot 1"
+			set slot 8 of the player's current inventory to 1 green glass pane named "<light green>Equip Summon"
+
+#Summon Equip menu
+on inventory click:
+	if the name of the player's current inventory is "<light purple>Select a summon to equip:":
+		set {_summonSelected} to the name of the clicked item
+		set {_summonSelected} to decolorize({_summonSelected})
+		make player execute command "/summons %{_summonSelected}%"
+	else if the name of the player's current inventory is "<light purple>Equip Summon To:":
+		if the name of the clicked item is "<light yellow>Summoner's Cane":
+			if slot 4 of the player's current inventory is not the clicked item:
+				cancel event
+				set slot 4 of the player's current inventory to the clicked item
+				remove the clicked item from the player
+			else:
+				give clicked item to the player
+				remove the clicked item from the player's current inventory
+		else:
+			cancel event
+			if the name of the clicked item is "<light yellow>Change Summon Slot":
+				if the 2nd line of the lore of the clicked item contains "Slot 1":
+					set the 2nd line of the lore of the clicked item to "<light blue>Slot 2"
+				else if the 2nd line of the lore of the clicked item contains "Slot 2":
+					set the 2nd line of the lore of the clicked item to "<light yellow>Slot 3"
+				else:
+					set the 2nd line of the lore of the clicked item to "<light red>Slot 1"
+				cancel event
+			else if the name of the clicked item is "<light red>Return to summon list.":
+				if slot 4 of the player's current inventory is not air:
+					give slot 4 of the player's current inventory to the player
+					remove slot 4 of the player's current inventory from the player's current inventory
+				make player execute command "/summons Menu"
+			else if the name of the clicked item is "<light green>Equip Summon":
+				if the 2nd line of the lore of slot 7 of the player's current inventory contains "Slot 1":
+					set the 1st line of the lore of slot 4 of the player's current inventory to "<light red>%name of slot 1 of the player's current inventory%"
+				else if the 2nd line of the lore of slot 7 of the player's current inventory contains "Slot 2":
+					set the 2nd line of the lore of slot 4 of the player's current inventory to "<light blue>%name of slot 1 of the player's current inventory%"
+				else:
+					set the 3rd line of the lore of slot 4 of the player's current inventory to "<light yellow>%name of slot 1 of the player's current inventory%"
 
 #Focus a summon's attacks on a particular monster.
 on left click with blaze rod:
@@ -57,14 +127,18 @@ on damage:
 				play 40 (purple wool break with speed 1) at {NPCsFor.%attacker%::C_%{_mobtype}% Summon}
 				teleport {NPCsFor.%attacker%::C_%{_mobtype}% Summon} to the victim
 				play 40 (purple wool break with speed 1) at the victim
-				send "<light blue>Summon now focusing on %victim%."
+				send formatted "<light blue>Summon now focusing on %victim%." to the attacker
 			else:
-				send "<light red>This monster isn't summoned!"
+				send formatted "<light red>This monster isn't summoned!" to the attacker
 			cancel event
 		
-
+#Summoning Behavior
 on right click with blaze rod:
 	if the name of the player's tool contains "<light yellow>Summoner's Cane":
+		#Initialize summon count variable
+		if {activeSummonCount.%player%} is not set:
+			set {activeSummonCount.%player%} to 0
+		#Cycle through equipped summons
 		if player is sneaking:
 			if the 1st line of the lore of the player's tool contains "ACTIVE -> ":
 				remove "<bold>ACTIVE -> " from the 1st line of the lore of the player's tool
@@ -82,6 +156,7 @@ on right click with blaze rod:
 				send "<light purple>ACTIVE SUMMON: %1st line of the lore of the player's tool%"
 				set the 1st line of the lore of the player's tool to "<bold>ACTIVE -> <reset>%1st line of the lore of the player's tool%"
 			play sound "entity.zombie.infect" with volume 1 and pitch 1 at the player for the player
+		#Summon a familiar
 		else:
 			if the 1st line of the lore of the player's tool contains "ACTIVE -> ":
 				remove "<bold>ACTIVE -> " from the 1st line of the lore of the player's tool
@@ -96,104 +171,246 @@ on right click with blaze rod:
 				set {_mobtype} to the 3rd line of the lore of the player's tool
 				set the 3rd line of the lore of the player's tool to "<bold>ACTIVE -> <reset>%3rd line of the lore of the player's tool%"
 			remove "<bold>ACTIVE -> " from {_mobtype}
-			broadcast "%{_mobtype}%"
 			set {_mobtype} to decolorize({_mobtype})
-			broadcast "%{_mobtype}% - %summonRecoil({_mobtype},player)%"
+			broadcast "%{_mobtype}%"
+			#Debugging text for summon cost
+			#broadcast "%{_mobtype}% - %summonRecoil({_mobtype},player)%"
 			if {NPCsFor.%player%::C_%{_mobtype}% Summon} is not set:
-				if summonRecoil({_mobtype},player) is less than the player's health:
-					damage the player by summonRecoil({_mobtype},player)
-					set {inCutscene.%player%} to true
-					set {summoningMonster.%player%} to true
-					set {_location} to vector of location of block at player
-					make player execute command "/npc create %{_mobtype}% Summon --at %x of {_location}%,%y of {_location}%,%z of {_location}% --trait Sentinel"
+				#Variable max summon limit for Concentrated Summoning perk
+				if {activeSummonCount.%player%} is less than (3 - (checkSlots(player,"Concentrated Summoning"))):
+					#Block summon attempt if player doesn't have enough health
+					if summonRecoil({_mobtype},player) is less than the player's health:
+						applyRecoilDamage(player,(summonRecoil({_mobtype},player)))
+						#Set summoning variables for NPC Wizardry (see quests.sk for the actual code)
+						set {inCutscene.%player%} to true
+						set {summoningMonster.%player%} to true
+						set {interruptNPCWizardry.%player%} to true
+						#Get player's location so we can spawn the summon directly at the player
+						set {_location} to vector of location of block at player
+						make player execute command "/npc create %{_mobtype}% Summon --at %x of {_location}%,%1 + y of {_location}%,%z of {_location}% --trait Sentinel"
+						#Set up mob name with a new variable
+						set {_rawType} to {_mobtype}
+						set {_mobtype} to "%{_mobtype}% Summon"
+						#Delay code until summon is detected & assigned to the player
+						while {summoningMonster.%player%} is set:
+							add 1 to {_break}
+							wait 1 tick
+							send "<light red>waiting for summon..."
+							if {_break} is more than 90:
+								send "fuck"
+								exit 1 loop
+								send "<light red>fuck"
+						set {NPCsFor.%player%::C_%{_mobtype}%}'s helmet to 1 leather helmet of protection 2
+						set {NPCsFor.%player%::C_%{_mobtype}%}'s chestplate to 1 leather chestplate of protection 2
+						set {NPCsFor.%player%::C_%{_mobtype}%}'s leggings to 1 leather leggings of protection 2
+						set {NPCsFor.%player%::C_%{_mobtype}%}'s boots to 1 leather boots of protection 2
+						#Base summon stats
+						set {npc_str.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%} to floor({str.%player%} / 1.5)
+						set {npc_def.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%} to floor({def.%player%} / 1.5)
+						set {npc_spd.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%} to floor({spd.%player%} / 1.5)
+						set {npc_lck.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%} to floor({lck.%player%} / 1.5)
+						set {npc_res.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%} to floor({res.%player%} / 1.5)
+						set {npc_mag.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%} to floor({mag.%player%} / 1.5)
+						set {npc_hp.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%} to floor({hp.%player%} / 1.5)
+						set {npc_summonOwner.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%} to the player
+						broadcast "TEST: %{npc_summonOwner.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%}%"
+						make console execute command "/npc sel %citizen id of {NPCsFor.%player%::C_%{_mobtype}%}%"
+						#Mimicry / Doppelganger Equipment + Stats
+						if {_rawType} contains "Mimicry":
+							if getEntityStat(player,"STR") is more than getEntityStat(player,"MAG"):
+								set {NPCsFor.%player%::C_%{_mobtype}%}'s tool to 1 diamond sword
+							else:
+								set {NPCsFor.%player%::C_%{_mobtype}%}'s tool to 1 bow of power 4 with lore "<light red><bold>Slot A - Sorcery Aura"
+							set {_rawType} to player's name
+							set {npc_str.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%} to floor({str.%player%} / 1.25)
+							set {npc_def.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%} to floor({def.%player%} / 1.25)
+							set {npc_spd.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%} to floor({spd.%player%} / 1.25)
+							set {npc_lck.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%} to floor({lck.%player%} / 1.25)
+							set {npc_res.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%} to floor({res.%player%} / 1.25)
+							set {npc_mag.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%} to floor({mag.%player%} / 1.25)
+							set {npc_hp.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%} to floor({hp.%player%} / 1.25)
+							make console execute command "/sentinel needammo false"
+							make console execute command "/sentinel avoidrange 8"
+							make console execute command "/sentinel range 12"
+						#Standard Skeleton
+						else if {_rawType} contains "Skeleton":
+							set {NPCsFor.%player%::C_%{_mobtype}%}'s tool to 1 bow of power 2
+							make console execute command "/sentinel needammo false"
+							make console execute command "/sentinel avoidrange 8"
+							make console execute command "/sentinel chaseclose false"
+							make console execute command "/sentinel range 12"
+						#Standard Zombie
+						else if {_rawType} contains "Zombie":
+							set {NPCsFor.%player%::C_%{_mobtype}%}'s tool to 1 iron sword of sharpness 2
+						#Standard Stray
+						else if {_rawType} contains "Stray":
+							set {NPCsFor.%player%::C_%{_mobtype}%}'s tool to 1 bow of power 2 with lore "<light red><bold>Slot A - Sorcery Aura"
+							make console execute command "/sentinel needammo false"
+							make console execute command "/sentinel avoidrange 8"
+							make console execute command "/sentinel chaseclose false"
+							make console execute command "/sentinel range 12"
+						#Standard Husk
+						else if {_rawType} contains "Husk":
+							set {NPCsFor.%player%::C_%{_mobtype}%}'s tool to 1 iron sword of sharpness 2 with lore "<light red><bold>Slot A - Sorcery Aura"
+						#Bruiser equipment upgrade
+						else if {_rawType} contains "Bruiser":
+							set {NPCsFor.%player%::C_%{_mobtype}%}'s helmet to 1 iron helmet of protection 2
+							set {NPCsFor.%player%::C_%{_mobtype}%}'s chestplate to 1 iron chestplate of protection 2
+							set {NPCsFor.%player%::C_%{_mobtype}%}'s leggings to 1 iron leggings of protection 2
+							set {NPCsFor.%player%::C_%{_mobtype}%}'s boots to 1 iron boots of protection 2
+							if {_rawType} contains "H.":
+								set {NPCsFor.%player%::C_%{_mobtype}%}'s tool to 1 iron sword of sharpness 3 with lore "<light red><bold>Slot A - Sorcery Aura"
+							else:
+								set {NPCsFor.%player%::C_%{_mobtype}%}'s tool to 1 iron sword of sharpness 3
+						#Ranger equipment upgrade
+						else if {_rawType} contains "Ranger":
+							set {NPCsFor.%player%::C_%{_mobtype}%}'s helmet to 1 iron helmet of protection 2
+							set {NPCsFor.%player%::C_%{_mobtype}%}'s chestplate to 1 iron chestplate of protection 2
+							set {NPCsFor.%player%::C_%{_mobtype}%}'s leggings to 1 iron leggings of protection 2
+							set {NPCsFor.%player%::C_%{_mobtype}%}'s boots to 1 iron boots of protection 2
+							if {_rawType} contains "S.":
+								set {NPCsFor.%player%::C_%{_mobtype}%}'s tool to 1 bow of power 2 with lore "<light red><bold>Slot A - Sorcery Aura"
+							else:
+								set {NPCsFor.%player%::C_%{_mobtype}%}'s tool to 1 bow of power 2
+						make console execute command "/npc skin %{_rawType}%"
+						make console execute command "/sentinel addtarget MONSTERS"
+						make console execute command "/sentinel guard %player%"
+						make console execute command "/sentinel speed 1.25"
+						set {npc_party.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%} to {party.%player%}
+						loop {%{party.%player%}%.members::*}:
+							make console execute command "/sentinel addignore PLAYER:%loop-value%"
+						loop ((floor({lvl.%player%} * 1.25)) + ((checkSlots(player,"Uncontrollable Spirit")) * 10)) times:
+							chance of (40 + floor(summonRecoil({_mobtype},player) * 2.5))%:
+								add 1 to {npc_str.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%}
+							chance of (40 + floor(summonRecoil({_mobtype},player) * 2.5))%:
+								add 1 to {npc_spd.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%}
+							chance of (40 + floor(summonRecoil({_mobtype},player) * 2.5))%:
+								add 1 to {npc_lck.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%}
+							chance of (40 + floor(summonRecoil({_mobtype},player) * 2.5))%:
+								add 1 to {npc_def.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%}
+							chance of (40 + floor(summonRecoil({_mobtype},player) * 2.5))%:
+								add 1 to {npc_res.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%}
+							chance of (40 + floor(summonRecoil({_mobtype},player) * 2.5))%:
+								add 1 to {npc_mag.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%}
+							chance of (80 + floor(summonRecoil({_mobtype},player) * 3.5))%:
+								add 1 to {npc_hp.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%}
+						set {npc_lvl.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%} to {lvl.%player%}
+						#Seeker (goes after stats for overrides)
+						if {_rawType} contains "Seeker":
+							set {NPCsFor.%player%::C_%{_mobtype}%}'s helmet to 1 gold helmet of protection 2
+							set {NPCsFor.%player%::C_%{_mobtype}%}'s chestplate to 1 gold chestplate of protection 2
+							set {NPCsFor.%player%::C_%{_mobtype}%}'s leggings to 1 gold leggings of protection 2
+							set {NPCsFor.%player%::C_%{_mobtype}%}'s boots to 1 gold boots of protection 2
+							set {NPCsFor.%player%::C_%{_mobtype}%}'s tool to 1 gold sword of sharpness 10 with lore "<light red><bold>Slot A - Armour Smasher"
+							#Seeker stat overrides
+							set {npc_hp.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%} to 2
+							set {npc_res.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%} to 0
+							set {npc_def.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%} to 0
+							add 30 to {npc_str.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%}
+							apply swiftness 4 to {NPCsFor.%player%::C_%{_mobtype}%} for 1 day
+							apply strength 4 to {NPCsFor.%player%::C_%{_mobtype}%} for 1 day
+							set {npc_isSpecialSummon.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%} to "Seeker"
+						#Blocker (goes after stats for overrides)
+						else if {_rawType} contains "Blocker":
+							set {NPCsFor.%player%::C_%{_mobtype}%}'s helmet to 1 diamond helmet of protection 2
+							set {NPCsFor.%player%::C_%{_mobtype}%}'s chestplate to 1 diamond chestplate of protection 2
+							set {NPCsFor.%player%::C_%{_mobtype}%}'s leggings to 1 diamond leggings of protection 2
+							set {NPCsFor.%player%::C_%{_mobtype}%}'s boots to 1 diamond boots of protection 2
+							#Seeker stat overrides
+							add 15 to {npc_res.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%}
+							add 15 to {npc_def.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%}
+							set {npc_spd.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%} to 0
+							apply slowness 6 to {NPCsFor.%player%::C_%{_mobtype}%} for 1 day
+							apply strength 2 to {NPCsFor.%player%::C_%{_mobtype}%} for 1 day
+							apply resistance 2 to {NPCsFor.%player%::C_%{_mobtype}%} for 1 day
+							set {npc_isSpecialSummon.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%} to "Blocker"
+						add 1 to {activeSummonCount.%player%}
+						if checkSlots(player,"Concentrated Summoning") is 1:
+							apply swiftness 3 to {NPCsFor.%player%::C_%{_mobtype}%} for 1 day
+							apply strength 3 to {NPCsFor.%player%::C_%{_mobtype}%} for 1 day
+							apply resistance 2 to {NPCsFor.%player%::C_%{_mobtype}%} for 1 day
+						#broadcast "%{npc_str.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%}%"
+						#broadcast "%getEntityStatTotal({NPCsFor.%player%.ID::C_%{_mobtype}%},"STR")%"
+						if checkSlots(player,"Uncontrollable Spirit") is 1:
+							set {npc_summonAutoRemove.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%} to 15
+						play 40 (purple wool break with speed 1) at {NPCsFor.%player%::C_%{_mobtype}%}
+						play sound "entity.zombie_villager.cure" with volume 1 and pitch 1.2 at the player
+						make console execute command "/sentinel health %{npc_hp.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%}%"
+						clear {inCutscene.%player%}
+						clear {summoningMonster.%player%}
+					else:
+						send "<light red>You don't have enough health to summon this monster!"
+				else:
+					send formatted "<light red>Cannot summon any additional summons [%{activeSummonCount.%player%}% active]!" to the player
+			else:
+				if checkSlots(player,"Uncontrollable Spirit") is 1:
+					send "<light red>Cannot recall summons when Uncontrollable Spirit is equipped!" to the player
+				else:
 					set {_rawType} to {_mobtype}
 					set {_mobtype} to "%{_mobtype}% Summon"
-					while {summoningMonster.%player%} is set:
-						add 1 to {_break}
-						wait 1 tick
-						send "<light red>waiting for summon..."
-						if {_break} is more than 90:
-							send "fuck"
-							exit 1 loop
-							send "<light red>fuck"
-					set {str.%{NPCsFor.%player%::C_%{_mobtype}%}%} to floor({str.%player%} / 4)
-					set {def.%{NPCsFor.%player%::C_%{_mobtype}%}%} to floor({def.%player%} / 4)
-					set {spd.%{NPCsFor.%player%::C_%{_mobtype}%}%} to floor({spd.%player%} / 4)
-					set {skl.%{NPCsFor.%player%::C_%{_mobtype}%}%} to floor({skl.%player%} / 4)
-					set {res.%{NPCsFor.%player%::C_%{_mobtype}%}%} to floor({res.%player%} / 4)
-					set {hp.%{NPCsFor.%player%::C_%{_mobtype}%}%} to floor({hp.%player%} / 4)
-					set {summonOwner.%{NPCsFor.%player%::C_%{_mobtype}%}%} to the player's name
-					broadcast "TEST: %{summonOwner.%{NPCsFor.%player%::C_%{_mobtype}%}%}%"
-					make console execute command "/npc sel %citizen id of {NPCsFor.%player%::C_%{_mobtype}%}%"
-					if {_rawType} contains "Mimicry":
-						if {weaponrank.%player%::swords} is more than {weaponrank.%player%::bows}:
-							set {NPCsFor.%player%::C_%{_mobtype}%}'s tool to 1 diamond sword
-						else:
-							set {NPCsFor.%player%::C_%{_mobtype}%}'s tool to 1 bow of power 4
-						set {_rawType} to player's name
-						set {str.%{NPCsFor.%player%::C_%{_mobtype}%}%} to floor({str.%player%} / 2)
-						set {def.%{NPCsFor.%player%::C_%{_mobtype}%}%} to floor({def.%player%} / 2)
-						set {spd.%{NPCsFor.%player%::C_%{_mobtype}%}%} to floor({spd.%player%} / 2)
-						set {skl.%{NPCsFor.%player%::C_%{_mobtype}%}%} to floor({skl.%player%} / 2)
-						set {res.%{NPCsFor.%player%::C_%{_mobtype}%}%} to floor({res.%player%} / 2)
-						set {hp.%{NPCsFor.%player%::C_%{_mobtype}%}%} to floor({hp.%player%} / 2)
-						make console execute command "/sentinel needammo false"
-						make console execute command "/sentinel avoidrange 8"
-						make console execute command "/sentinel range 12"
-					else if {_rawType} contains "Skeleton":
-						set {NPCsFor.%player%::C_%{_mobtype}%}'s tool to 1 bow
-						make console execute command "/sentinel needammo false"
-						make console execute command "/sentinel avoidrange 8"
-						make console execute command "/sentinel chaseclose false"
-						make console execute command "/sentinel range 12"
-					else:
-						set {NPCsFor.%player%::C_%{_mobtype}%}'s tool to 1 iron sword
-					make console execute command "/npc skin %{_rawType}%"
-					make console execute command "/sentinel addtarget MONSTERS"
-					make console execute command "/sentinel guard %player%"
-					make console execute command "/sentinel speed 1.25"
-					loop {%{party.%player%}%.members::*}:
-						make console execute command "/sentinel addignore PLAYER:%loop-value%"
-					loop {lvl.%player%} times:
-						chance of (40 + (summonRecoil({_mobtype},player) * 2.5))%:
-							add 1 to {str.%{NPCsFor.%player%::C_%{_mobtype}%}%}
-						chance of (40 + (summonRecoil({_mobtype},player) * 2.5))%:
-							add 1 to {spd.%{NPCsFor.%player%::C_%{_mobtype}%}%}
-						chance of (40 + (summonRecoil({_mobtype},player) * 2.5))%:
-							add 1 to {skl.%{NPCsFor.%player%::C_%{_mobtype}%}%}
-						chance of (40 + (summonRecoil({_mobtype},player) * 2.5))%:
-							add 1 to {def.%{NPCsFor.%player%::C_%{_mobtype}%}%}
-						chance of (40 + (summonRecoil({_mobtype},player) * 2.5))%:
-							add 1 to {res.%{NPCsFor.%player%::C_%{_mobtype}%}%}
-						chance of (80 + (summonRecoil({_mobtype},player) * 3.5))%:
-							add 1 to {hp.%{NPCsFor.%player%::C_%{_mobtype}%}%}
-					broadcast "%{str.%{NPCsFor.%player%::C_%{_mobtype}%}%}%"
 					play 40 (purple wool break with speed 1) at {NPCsFor.%player%::C_%{_mobtype}%}
-					play sound "entity.zombie_villager.cure" with volume 1 and pitch 1.2 at the player
-					make console execute command "/sentinel health %{hp.%{NPCsFor.%player%::C_%{_mobtype}%}%}%"
-					clear {inCutscene.%player%}
-					clear {summoningMonster.%player%}
-				else:
-					send "<light red>You don't have enough health to summon this monster!"
-			else:
-				set {_rawType} to {_mobtype}
-				set {_mobtype} to "%{_mobtype}% Summon"
-				play 40 (purple wool break with speed 1) at {NPCsFor.%player%::C_%{_mobtype}%}
-				play 40 (smoke with speed 1) at {NPCsFor.%player%::C_%{_mobtype}%}
-				make console execute command "/npc sel %citizen id of {NPCsFor.%player%::C_%{_mobtype}%}%"
-				make console execute command "/npc remove"
-				clear {str.%{NPCsFor.%player%::C_%{_mobtype}%}%}
-				clear {spd.%{NPCsFor.%player%::C_%{_mobtype}%}%}
-				clear {def.%{NPCsFor.%player%::C_%{_mobtype}%}%}
-				clear {res.%{NPCsFor.%player%::C_%{_mobtype}%}%}
-				clear {skl.%{NPCsFor.%player%::C_%{_mobtype}%}%}
-				clear {hp.%{NPCsFor.%player%::C_%{_mobtype}%}%}
-				clear {summonOwner.%{NPCsFor.%player%::C_%{_mobtype}%}%}
-				clear {NPCsFor.%player%::C_%{_mobtype}%}
-				heal the player by (summonRecoil({_rawtype},player) / 2)
-				play sound "entity.zombie_villager.cure" with volume 1 and pitch 0.8 at the player
-				send formatted "<light blue>Recalled %{_mobtype}%."
-				
+					play 40 (smoke with speed 1) at {NPCsFor.%player%::C_%{_mobtype}%}
+					make console execute command "/npc sel %citizen id of {NPCsFor.%player%::C_%{_mobtype}%}%"
+					make console execute command "/npc remove"
+					clear {npc_str.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%}
+					clear {npc_mag.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%}
+					clear {npc_spd.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%}
+					clear {npc_def.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%}
+					clear {npc_res.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%}
+					clear {npc_lck.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%}
+					clear {npc_hp.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%}
+					clear {npc_summonOwner.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%}
+					clear {npc_party.%{NPCsFor.%player%.ID::C_%{_mobtype}%}%}
+					clear {NPCsFor.%player%::C_%{_mobtype}%}
+					subtract 1 from {activeSummonCount.%player%}
+					heal the player by floor(summonRecoil({_rawtype},player) / 1.5)
+					play sound "entity.zombie_villager.cure" with volume 1 and pitch 0.8 at the player
+					send formatted "<light blue>Recalled %{_mobtype}%."
+	
+command /flushSummonCount:
+	trigger:
+		set {activeSummonCount.%player%} to 0
+	
+#Passive effects related to summons
+every 1 second:
+	loop all players:
+		#Check if targeted player is a summon
+		if citizen id of loop-player is set:
+			if {npc_summonOwner.%citizen id of loop-player%} is set:
+				#Synergy health recovery
+				if checkSlots({npc_summonOwner.%citizen id of loop-player%},"Synergy") is 1:
+					if distance between loop-player and {npc_summonOwner.%citizen id of loop-player%} is less than or equal to 10.1:
+						heal the loop-player by 2
+						play 4 (happy villager with speed 1) at the loop-player
+				if {npc_isSpecialSummon.%citizen id of loop-player%} is "Blocker":
+					loop all entities in radius 10 of the loop-player:
+						if getEntityVarByName(loop-player,"party") is not getEntityVarByName(loop-entity-2,"party"):
+							apply slowness 4 to the loop-entity-2 for 1 second
+							apply weakness 2 to the loop-entity-2 for 1 second
+							play 10 (purple wool break with speed 1) at the loop-entity-2
+				if {npc_summonAutoRemove.%citizen id of loop-player%} is set:
+					if {npc_summonAutoRemove.%citizen id of loop-player%} is more than 0:
+						subtract 1 from {npc_summonAutoRemove.%citizen id of loop-player%}
+					else:
+						set {_mobtype} to loop-player's name
+						play 40 (purple wool break with speed 1) at {NPCsFor.%{npc_summonOwner.%citizen id of loop-player%}%::C_%{_mobtype}%}
+						play 40 (smoke with speed 1) at {NPCsFor.%{npc_summonOwner.%citizen id of loop-player%}%::C_%{_mobtype}%}
+						make console execute command "/npc sel %citizen id of loop-player%"
+						make console execute command "/npc remove"
+						clear {npc_str.%{NPCsFor.%{npc_summonOwner.%citizen id of loop-player%}%.ID::C_%{_mobtype}%}%}
+						clear {npc_mag.%{NPCsFor.%{npc_summonOwner.%citizen id of loop-player%}%.ID::C_%{_mobtype}%}%}
+						clear {npc_spd.%{NPCsFor.%{npc_summonOwner.%citizen id of loop-player%}%.ID::C_%{_mobtype}%}%}
+						clear {npc_def.%{NPCsFor.%{npc_summonOwner.%citizen id of loop-player%}%.ID::C_%{_mobtype}%}%}
+						clear {npc_res.%{NPCsFor.%{npc_summonOwner.%citizen id of loop-player%}%.ID::C_%{_mobtype}%}%}
+						clear {npc_lck.%{NPCsFor.%{npc_summonOwner.%citizen id of loop-player%}%.ID::C_%{_mobtype}%}%}
+						clear {npc_hp.%{NPCsFor.%{npc_summonOwner.%citizen id of loop-player%}%.ID::C_%{_mobtype}%}%}
+						clear {npc_party.%{NPCsFor.%{npc_summonOwner.%citizen id of loop-player%}%.ID::C_%{_mobtype}%}%}
+						clear {NPCsFor.%{npc_summonOwner.%citizen id of loop-player%}%::C_%{_mobtype}%}
+						subtract 1 from {activeSummonCount.%{npc_summonOwner.%citizen id of loop-player%}%}
+						play sound "entity.zombie_villager.cure" with volume 1 and pitch 0.8 at {npc_summonOwner.%citizen id of loop-player%}
+						send formatted "<light blue>%{_mobtype}% departed." to {npc_summonOwner.%citizen id of loop-player%}
+						clear {npc_summonOwner.%{NPCsFor.%{npc_summonOwner.%citizen id of loop-player%}%.ID::C_%{_mobtype}%}%}						
+
 #Stop players from attacking allied summons.
 #on damage:
 #	if {NPCsFor.%attacker%::C_%victim's name%} is set:

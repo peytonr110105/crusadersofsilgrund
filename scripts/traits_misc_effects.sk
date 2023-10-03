@@ -1,0 +1,75 @@
+#Script for trait effects that don't fit into any other script neatly.
+
+#Animal death effects
+on death:
+	if victim is cow:
+		set {_animalDeath} to true
+	else if victim is sheep:
+		set {_animalDeath} to true
+	else if victim is pig:
+		set {_animalDeath} to true
+	else if victim is chicken:
+		set {_animalDeath} to true
+	else if victim is rabbit:
+		set {_animalDeath} to true
+	else if victim is any horse:
+		set {_animalDeath} to true
+	else if victim is wolf:
+		set {_animalDeath} to true
+	else if victim is ocelot:
+		set {_animalDeath} to true
+	else if victim is squid:
+		set {_animalDeath} to true
+	if {_animalDeath} is true:
+		if {traits.%attacker%::Veganist} is set:
+			remove weakness from the attacker
+			apply weakness 4 to the attacker for 2 minutes
+		if {traits.%attacker%::Always Prepared} is set:
+			wait 1 tick
+			set {_drops::*} to dropped items in radius 1.25 of the victim
+			loop {_drops::*}:
+				chance of 50%:
+					drop {_drops::loop-index} at event-location
+					
+on consume:
+	if {traits.%player%::Veganist} is set:
+		set {_regenAmount} to the player's food level - {t_currentFoodLevel.%player%}
+		if event-item is any meat:
+			damage the player by {_regenAmount}
+		else if event-item is any fish:
+			damage the player by {_regenAmount}
+		else if event-item is any monster meat:
+			damage the player by {_regenAmount}
+		else:
+			add 2 to the player's food level
+			
+on block break:
+	if {traits.%player%::Veganist} is set:
+		#Block whitelist
+		set {_targetBlock} to "%event-block%"
+		#send "%{_targetBlock}%"
+		if {_targetBlock} contains "wheat plant":
+			set {_toolOK} to 1
+		else if {_targetBlock} contains "pumpkin stem":
+			set {_toolOK} to 1
+		else if {_targetBlock} contains "beetroot plant":
+			set {_toolOK} to 1
+		else if {_targetBlock} contains "potato plant":
+			set {_toolOK} to 1
+		else if {_targetBlock} contains "melon stem":
+			set {_toolOK} to 1
+		else if {_targetBlock} contains "carrot plant":
+			set {_toolOK} to 1
+		if {_toolOK} is 1:
+			set {_abilityBonus} to (10 + (floor({abilities.%player%::Survival} * 0.5)))
+			if {_abilityBonus} is more than 50:
+				set {_abilityBonus} to 50
+			wait 1 tick
+			set {_drops::*} to dropped items in radius 1.25 of the event-block
+			loop {_drops::*}:
+				set {_itemtype} to "%loop-value%"
+				set {_dropParsing::*} to {_itemtype} split at "dropped "
+				set {_item} to "1 %{_dropParsing::2}%" parsed as item type
+				drop {_item} at event-location
+				chance of {_abilityBonus}%:
+					drop {_item} at event-location

@@ -26,37 +26,60 @@ command /cheats <text>:
 			finishQuest(player,"Monster Hunt","")
 			finishQuest(player,"Path of the Greats","")
 			finishQuest(player,"The Wizard of House Silgrid","")
+			finishQuest(player,"Legend in the Making","")
+			finishQuest(player,"Search and Destroy","")
+			finishQuest(player,"A Hero Rises","")
+			finishQuest(player,"Breaking the Ice","")
 			#set {generation.%player%} to 2
-			set {unlockedClasses.%player%::Dragonborn} to 1
-			set {unlockedClasses.%player%::Gunslinger} to 1
-			set {unlockedClasses.%player%::Devil Hunter} to 1
-			set {unlockedClasses.%player%::Survivor} to 1
-			set {unlockedClasses.%player%::Summoner} to 1
-			set {unlockedClasses.%player%::Strategist} to 1
+			set {unlockedClasses.%player%::Dragonborn} to true
+			set {unlockedClasses.%player%::Gunslinger} to true
+			set {unlockedClasses.%player%::Devil Hunter} to true
+			set {unlockedClasses.%player%::Survivor} to true
+			set {unlockedClasses.%player%::Summoner} to true
+			set {unlockedClasses.%player%::Strategist} to true
+			set {unlockedClasses.%player%::Trickster} to true
+			set {unlockedClasses.%player%::Keeper} to true
+			set {unlockedClasses.%player%::Charlatan} to true
+			set {unlockedClasses.%player%::Poet} to true
+			set {unlockedClasses.%player%::Outlaw} to true
+			set {unlockedClasses.%player%::Conjurer} to true
+			set {unlockedClasses.%player%::Troubador} to true
 			set {mqComplete.%player%} to true
 			send formatted "<gold>All items unlocked!"
 		else if arg 1 is "unlockallclasses":
-			set {unlockedClasses.%player%::Dragonborn} to 1
-			set {unlockedClasses.%player%::Gunslinger} to 1
-			set {unlockedClasses.%player%::Devil Hunter} to 1
-			set {unlockedClasses.%player%::Survivor} to 1
-			set {unlockedClasses.%player%::Summoner} to 1
-			set {unlockedClasses.%player%::Strategist} to 1
+			set {unlockedClasses.%player%::Dragonborn} to true
+			set {unlockedClasses.%player%::Gunslinger} to true
+			set {unlockedClasses.%player%::Devil Hunter} to true
+			set {unlockedClasses.%player%::Survivor} to true
+			set {unlockedClasses.%player%::Summoner} to true
+			set {unlockedClasses.%player%::Strategist} to true
+			set {unlockedClasses.%player%::Trickster} to true
+			set {unlockedClasses.%player%::Keeper} to true
+			set {unlockedClasses.%player%::Charlatan} to true
+			set {unlockedClasses.%player%::Poet} to true
+			set {unlockedClasses.%player%::Outlaw} to true
+			set {unlockedClasses.%player%::Conjurer} to true
+			set {unlockedClasses.%player%::Troubador} to true
 			send formatted "<gold>All classes now available!"
-		else if arg 1 is "idkfa":
-			set {weapongrade.%player%::swords} to "<gold><bold>S"
-			set {weapongrade.%player%::lances} to "<gold><bold>S"
-			set {weapongrade.%player%::axes} to "<gold><bold>S"
-			set {weapongrade.%player%::bows} to "<gold><bold>S"
-			set {weapongrade.%player%::magic} to "<gold><bold>S"
-			set {weapongrade.%player%::staves} to "<gold><bold>S"
-			set {weaponrank.%player%::swords} to 999999
-			set {weaponrank.%player%::lances} to 999999
-			set {weaponrank.%player%::axes} to 999999
-			set {weaponrank.%player%::bows} to 999999
-			set {weaponrank.%player%::magic} to 999999
-			set {weaponrank.%player%::staves} to 9999999
-			send formatted "<gold>All weapons can now be wielded!"
+		else if arg 1 is "unlockgen1":
+			finishQuest(player,"Legend in the Making","")
+			finishQuest(player,"Search and Destroy","")
+			finishQuest(player,"A Hero Rises","")
+			finishQuest(player,"Breaking the Ice","")
+		#else if arg 1 is "idkfa":
+		#	set {weapongrade.%player%::swords} to "<gold><bold>S"
+		#	set {weapongrade.%player%::lances} to "<gold><bold>S"
+		#	set {weapongrade.%player%::axes} to "<gold><bold>S"
+		#	set {weapongrade.%player%::bows} to "<gold><bold>S"
+		#	set {weapongrade.%player%::magic} to "<gold><bold>S"
+		#	set {weapongrade.%player%::staves} to "<gold><bold>S"
+		#	set {weaponrank.%player%::swords} to 999999
+		#	set {weaponrank.%player%::lances} to 999999
+		#	set {weaponrank.%player%::axes} to 999999
+		#	set {weaponrank.%player%::bows} to 999999
+		#	set {weaponrank.%player%::magic} to 999999
+		#	set {weaponrank.%player%::staves} to 9999999
+		#	send formatted "<gold>All weapons can now be wielded!"
 		else if arg 1 is "rosebud":
 			add 1000 to the player's balance
 			send formatted "<gold>$1000 obtained!"
@@ -79,7 +102,7 @@ command /cheats <text>:
 			give 64 arrow to the player
 			send formatted "<gold>Cover me in diamond!"
 		else if arg 1 is "blingbling":
-			open chest with 2 rows named "<gold><bold>Select a ring." for the player
+			open chest inventory with 2 rows named "<gold><bold>Select a ring." for the player
 			set slot 0 of the player's current inventory to 1 music disc far with name "<light green><bold>Life Ring" with lore "<white>While in your inventory:", "<light green>Recover 10%% of your max HP every 15 seconds."
 			set slot 1 of the player's current inventory to 1 music disc wait named "<light blue><bold>Elite Ring" with lore "<white>While in your inventory:", "<light blue>Gain bonus experience for slaying monsters."
 			set slot 2 of the player's current inventory to 1 music disc 13 named "<yellow><bold>Thief Ring" with lore "<white>While in your inventory:", "<yellow>Slain monsters have a chance to drop extra money."
@@ -89,11 +112,11 @@ command /cheats <text>:
 			set slot 6 of the player's current inventory to 1 music disc strad named "<white><bold>Shield Ring" with lore "<white>While in your inventory:", "<white>Grants Resistance 2."
 			set slot 7 of the player's current inventory to 1 music disc 13 named "<orange><bold>Prayer Ring" with lore "<white>While in your inventory:", "<orange>Attacks while below 50%% health will always be critical hits."
 			set slot 8 of the player's current inventory to 1 music disc cat named "<green><bold>Pursuit Ring" with lore "<white>While in your inventory:", "<green>Automatically perform a follow-up attack in combat.", "<green>Auto follow-ups deal 50%% less damage."
-		else if arg 1 is "inamerica":
-			set {perdiff.%player%} to "Thracian"
-			send formatted "<light green>Personal Difficulty increased to Thracian!"
-			send formatted "<light yellow>On Thracian difficulty, your attacks have a chance to miss based on your SPD and SKL."
-			send formatted "<light yellow>Lunatic damage multipliers are also active."
+		#else if arg 1 is "inamerica":
+		#	set {perdiff.%player%} to "Thracian"
+		#	send formatted "<light green>Personal Difficulty increased to Thracian!"
+		#	send formatted "<light yellow>On Thracian difficulty, your attacks have a chance to miss based on your SPD and SKL."
+		#	send formatted "<light yellow>Lunatic damage multipliers are also active."
 		else if arg 1 is "thedarksoulsofminecraftservers":
 			give 1 diamond sword named "<gold><bold>Estoc" with lore "<light red><bold>Slot A - Power Within", "<light blue><bold>Slot B - Bonus Blade", "<light yellow><bold>Slot C - Bold Fighter", "<light green><bold>Assist - Stinger", "<light purple><bold>Special - Dragon Fang", "<light red><bold>Refined - Reinforced", "<white>Grants bonus damage equal to 25%% of your STR.", "<white>Nullifies foe's bonuses granted by armour." to the player
 			send "<light green><bold>Obtained <reset><gold><bold>Estoc<reset><light green><bold>!" to the player

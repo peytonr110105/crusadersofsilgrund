@@ -1,0 +1,15 @@
+on damage of a player:
+	if damage cause is fire:
+		applyRecoilDamage(victim,1)
+		set damage to (victim's maximum health * 0.01)
+	else if damage cause is lava:
+		applyRecoilDamage(victim,1.5)
+		set damage to (victim's maximum health * 0.05)
+	else if damage cause is fall:
+		set damage to damage * 2
+	else if damage cause is starvation:
+		applyRecoilDamage(victim,1)
+		set damage to (victim's maximum health * 0.1)
+	else if damage cause is drowning:
+		applyRecoilDamage(victim,1)
+		set damage to (victim's maximum health * 0.1)

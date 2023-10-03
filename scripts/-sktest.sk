@@ -1,0 +1,11 @@
+command /sktest:
+	trigger:
+		open chest inventory with 6 rows named "<gold>test" for the player
+		set slot 1 of the player's current inventory to 1 iron sword named "<gold>Smart Sword" with lore "It won't hurt anyone friendly!"
+		set slot 0 of the player's current inventory to 1 ladder named "<gold>ROPE" with lore "You want it?"
+		
+on damage:
+	loop all items in the victim's inventory:
+		send "found an item" to the victim
+	set damage to 2
+	send "ouch!" to the victim

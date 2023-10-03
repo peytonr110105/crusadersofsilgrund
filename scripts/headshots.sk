@@ -1,0 +1,8 @@
+on shoot:
+	set {_ycoord} to y-coordinate of the event-projectile
+	set metadata value "yInit" of the event-projectile to {_ycoord}
+	#broadcast "%metadata value "yInit" of the event-projectile%"
+	loop all entities in radius 0.5 of the shooter:
+		if loop-entity is not the shooter:
+			set metadata value "yInit" of the loop-entity to y-coordinate of the loop-entity
+			#broadcast "%metadata value "yInit" of the loop-entity%"

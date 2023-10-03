@@ -1,0 +1,206 @@
+on right click:
+	if the event-block is chest:
+		if {regularChests::%location of event-block%} is not set:
+			set {regularChests::%location of event-block%} to true
+			set {LootChestConvertLoc.%player%} to location of event-block
+			send formatted "<light yellow>Player chest not recognized. Convert to Loot Chest?" to the player
+			send formatted "<run command:/convertToLootChest 0><light green>Common Lootchest" to the player
+			send formatted "<run command:/convertToLootChest 1><light green>Rare Lootchest" to the player
+			send formatted "<run command:/convertToLootChest 2><light green>Legendary Lootchest" to the player
+			send formatted "<run command:/convertToLootChest 3><light green>Combat Lootchest" to the player
+		else if {lootChests.%player%::%location of event-block%} is not set:
+			set {t_refreshLootChest.%player%} to location of event-block
+			clear {t_blockChestDuping.%player%}
+		#	send "loot chest opened" to the player
+		else:
+			set {t_openSavedChest.%player%} to location of event-block
+			clear {t_blockChestDuping.%player%}
+			
+#Allow admins to auto-place loot chests via chat command
+on block place:
+	if event-block is any chest:
+		if the name of the event-block does not contain "Common Lootchest":
+			if the name of the event-block does not contain "Rare Lootchest":
+				if the name of the event-block does not contain "Legendary Lootchest":
+					if the name of the event-block does not contain "Combat Lootchest":
+						set {regularChests::%location of event-block%} to true
+		
+command /convertToLootChest <number>:
+	trigger:
+		clear {regularChests::%{LootChestConvertLoc.%player%}%}
+		play 20 (chest break with speed 1) at {LootChestConvertLoc.%player%}
+		play 10 (firework spark with speed 0) at {LootChestConvertLoc.%player%}
+		play sound "block.wood.break" with volume 1 and pitch 1 at the player for the player
+		play sound "entity.player.levelup" with volume 0.5 and pitch 1.2 at the player for the player
+		if arg 1 is 0:
+			#add "{CustomName:"<gold>Common Lootchest"}" to nbt of block at {LootChestConvertLoc.%player%}
+			set block at {LootChestConvertLoc.%player%} to 1 chest
+			#set name of block at {LootChestConvertLoc.%player%} to "<gold>Common Lootchest"
+			set display name of block at {LootChestConvertLoc.%player%} to "<gold>Common Lootchest"
+			#give 1 chest named "<gold>Common Lootchest" to the player
+		else if arg 1 is 1:
+			#set block at {LootChestConvertLoc.%player%} to air
+			set block at {LootChestConvertLoc.%player%} to 1 chest
+			set display name of block at {LootChestConvertLoc.%player%} to "<gold>Rare Lootchest"
+			#give 1 chest named "<gold>Rare Lootchest" to the player
+		else if arg 1 is 2:
+			#set block at {LootChestConvertLoc.%player%} to air
+			set block at {LootChestConvertLoc.%player%} to 1 chest
+			set display name of block at {LootChestConvertLoc.%player%} to "<gold>Legendary Lootchest"
+			#give 1 chest named "<gold>Legendary Lootchest" to the player
+		else if arg 1 is 3:
+			#set block at {LootChestConvertLoc.%player%} to air
+			set block at {LootChestConvertLoc.%player%} to 1 chest
+			set display name of block at {LootChestConvertLoc.%player%} to "<gold>Combat Lootchest"
+			#give 1 chest named "<gold>Combat Lootchest" to the player
+#Loot chest opening	
+on inventory open:
+	if {t_refreshLootChest.%player%} is set:
+		if {t_blockChestDuping.%player%} is not set:
+			clear {t_openSavedChest.%player%}
+			#Bad hack to stop the chests from reopening before anything gets placed inside them
+			set {t_blockChestDuping.%player%} to true
+			wait 1 tick
+			if the name of the player's current inventory contains "Common Lootchest":
+				addClassXP(player,20 + ({lvl.%player%} * 2))
+				send formatted "<light yellow>[Exploration Bonus] +%20 + ({lvl.%player%} * 2)% EXP" to the player
+				open chest inventory with 3 rows named "<gold>Common Lootchest" for the player
+				set {lootChests.%player%::%{t_refreshLootChest.%player%}%} to 7
+				play sound "entity.player.levelup" with volume 1 and pitch 1.2 at the player for the player
+				play 20 (firework spark with speed 0) at the player
+				set slot 0 of the player's current inventory to (getCommonLoot(player))
+				set slot 1 of the player's current inventory to (getCommonLoot(player))
+				set slot 2 of the player's current inventory to (getCommonLoot(player))
+				set slot 3 of the player's current inventory to (getCommonLoot(player))
+				set slot 4 of the player's current inventory to (getCommonLoot(player))
+				chance of 20%:
+					set slot 5 of the player's current inventory to (getRareLoot())
+					chance of 20%:
+						set slot 6 of the player's current inventory to (getRareLoot())
+				else:
+					chance of 10%:
+						set slot 5 of the player's current inventory to (getPerkManual(player))
+					else:
+						chance of 1%:
+							set slot 5 of the player's current inventory to (getUltraRareLoot())
+				if checkSlots(player,"Locktouch") is 1:
+					set slot 7 of the player's current inventory to (getCommonLoot(player))
+				clear {t_blockChestDuping.%player%}
+			else if the name of the player's current inventory is "<gold>Rare Lootchest":
+				addClassXP(player,40 + ({lvl.%player%} * 2))
+				send formatted "<light yellow>[Exploration Bonus] +%40 + ({lvl.%player%} * 2)% EXP" to the player
+				open chest inventory with 3 rows named "<gold>Rare Lootchest" for the player
+				set {lootChests.%player%::%{t_refreshLootChest.%player%}%} to 7
+				play sound "entity.player.levelup" with volume 1 and pitch 1.2 at the player for the player
+				play 20 (firework spark with speed 0) at the player
+				set slot 0 of the player's current inventory to (getCommonLoot(player))
+				set slot 1 of the player's current inventory to (getCommonLoot(player))
+				set slot 2 of the player's current inventory to (getCommonLoot(player))
+				set slot 3 of the player's current inventory to (getRareLoot())
+				set slot 4 of the player's current inventory to (getRareLoot())
+				chance of 40%:
+					set slot 5 of the player's current inventory to (getRareLoot())
+					chance of 35%:
+						set slot 6 of the player's current inventory to (getRareLoot())
+				else:
+					chance of 25%:
+						set slot 5 of the player's current inventory to (getPerkManual(player))
+					else:
+						chance of 5%:
+							set slot 5 of the player's current inventory to (getUltraRareLoot())
+				if checkSlots(player,"Locktouch") is 1:
+					set slot 7 of the player's current inventory to (getRareLoot())
+				clear {t_blockChestDuping.%player%}
+			else if the name of the player's current inventory is "<gold>Legendary Lootchest":
+				addClassXP(player,80 + ({lvl.%player%} * 2))
+				send formatted "<light yellow>[Exploration Bonus] +%80 + ({lvl.%player%} * 2)% EXP" to the player
+				open chest inventory with 3 rows named "<gold>Legendary Lootchest" for the player
+				set {lootChests.%player%::%{t_refreshLootChest.%player%}%} to 7
+				play sound "entity.player.levelup" with volume 1 and pitch 1.2 at the player for the player
+				play 20 (firework spark with speed 0) at the player
+				set slot 0 of the player's current inventory to (getCommonLoot(player))
+				set slot 1 of the player's current inventory to (getCommonLoot(player))
+				set slot 2 of the player's current inventory to (getRareLoot())
+				set slot 3 of the player's current inventory to (getRareLoot())
+				set slot 4 of the player's current inventory to (getUltraRareLoot())
+				chance of 10%:
+					set slot 5 of the player's current inventory to (getRareLoot())
+					chance of 80%:
+						set slot 6 of the player's current inventory to (getRareLoot())
+				else:
+					chance of 35%:
+						set slot 5 of the player's current inventory to (getPerkManual(player))
+					else:
+						chance of 10%:
+							set slot 5 of the player's current inventory to (getUltraRareLoot())
+				if checkSlots(player,"Locktouch") is 1:
+					set slot 7 of the player's current inventory to (getUltraRareLoot())
+				clear {t_blockChestDuping.%player%}
+			else if the name of the player's current inventory is "<gold>Combat Lootchest":
+				addClassXP(player,40 + ({lvl.%player%} * 2))
+				send formatted "<light yellow>[Exploration Bonus] +%40 + ({lvl.%player%} * 2)% EXP" to the player
+				open chest inventory with 3 rows named "<gold>Combat Lootchest" for the player
+				set {lootChests.%player%::%{t_refreshLootChest.%player%}%} to 7
+				play sound "entity.player.levelup" with volume 1 and pitch 1.2 at the player for the player
+				play 20 (firework spark with speed 0) at the player
+				set slot 0 of the player's current inventory to 1 book named "<light red>Combat Manual - Slot A" with lore "%getASlotSkill(0)%"
+				set slot 1 of the player's current inventory to 1 book named "<light blue>Combat Manual - Slot B" with lore "", "%getBSlotSkill(0)%"
+				set slot 2 of the player's current inventory to 1 book named "<light yellow>Combat Manual - Slot C" with lore "", "", "%getCSlotSkill(0)%"
+				set slot 3 of the player's current inventory to 1 book named "<light green>Combat Manual - Assist" with lore "", "", "", "%getAssistSlotSkill(0)%"
+				set slot 4 of the player's current inventory to 1 book named "<light purple>Combat Manual - Special" with lore "", "", "", "", "%getSpecialSlotSkill(0)%"
+				set slot 5 of the player's current inventory to 1 book named "<gold>Combat Manual - Refine" with lore "", "", "", "", "", "%getRefineSlotSkill(0)%"
+				chance of 50%:
+					set slot 9 of the player's current inventory to 1 any sword named "<gold>Randomized Sword" with lore "%getASlotSkill(0)%", "%getBSlotSkill(0)%", "%getCSlotSkill(0)%", "%getAssistSlotSkill(0)%", "%getSpecialSlotSkill(0)%", "%getRefineSlotSkill(0)%"
+				chance of 50%:
+					set slot 10 of the player's current inventory to 1 any axe named "<gold>Randomized Axe" with lore "%getASlotSkill(0)%", "%getBSlotSkill(0)%", "%getCSlotSkill(0)%", "%getAssistSlotSkill(0)%", "%getSpecialSlotSkill(0)%", "%getRefineSlotSkill(0)%"
+				chance of 50%:
+					set slot 11 of the player's current inventory to 1 any shovel named "<gold>Randomized Lance" with nbt "LanceType:2" with lore "%getASlotSkill(0)%", "%getBSlotSkill(0)%", "%getCSlotSkill(0)%", "%getAssistSlotSkill(0)%", "%getSpecialSlotSkill(0)%", "%getRefineSlotSkill(0)%"
+				chance of 50%:
+					set slot 12 of the player's current inventory to 1 any hoe named "<gold>Randomized Gauntlets" with nbt "GauntletType:2" with lore "%getASlotSkill(0)%", "%getBSlotSkill(0)%", "%getCSlotSkill(0)%", "%getAssistSlotSkill(0)%", "%getSpecialSlotSkill(0)%", "%getRefineSlotSkill(0)%"
+				chance of 50%:
+					set slot 14 of the player's current inventory to 1 bow named "<gold>Randomized Bow" with lore "%getASlotSkill(0)%", "%getBSlotSkill(0)%", "%getCSlotSkill(0)%", "%getAssistSlotSkill(0)%", "%getSpecialSlotSkill(0)%", "%getRefineSlotSkill(0)%"
+				chance of 50%:
+					set slot 15 of the player's current inventory to 1 blaze rod named "<light yellow><bold>Magic Wand" with lore "%getASlotSkill(0)%", "%getBSlotSkill(0)%", "%getCSlotSkill(0)%", "%getAssistSlotSkill(0)%", "%getSpecialSlotSkill(0)%", "%getRefineSlotSkill(0)%"
+				chance of 20%:
+					set slot 16 of the player's current inventory to (getRareLoot())
+					chance of 20%:
+						set slot 17 of the player's current inventory to (getRareLoot())
+				else:
+					chance of 10%:
+						set slot 16 of the player's current inventory to (getPerkManual(player))
+					else:
+						chance of 1%:
+							set slot 16 of the player's current inventory to (getUltraRareLoot())
+				if checkSlots(player,"Locktouch") is 1:
+					set slot 18 of the player's current inventory to (getPerkManual(player))
+				clear {t_blockChestDuping.%player%}
+	else if {t_openSavedChest.%player%} is set:
+		set {t_refreshLootChest.%player%} to {t_openSavedChest.%player%}
+		clear {t_openSavedChest.%player%}
+		#Bad hack to stop the chests from reopening before anything gets placed inside them
+		set {t_blockChestDuping.%player%} to true
+		wait 1 tick
+		open chest inventory with 3 rows named "<gold>Saved Lootchest" for the player
+		set {_slot} to 0
+		loop {lootChestItems.%player%.%{t_refreshLootChest.%player%}%::*}:
+			set slot {_slot} of the player's current inventory to loop-value
+			add 1 to {_slot}
+		clear {t_blockChestDuping.%player%}
+						
+#Loot chest inventory preservation
+on inventory close:
+	if {t_refreshLootChest.%player%} is set:
+		if {t_blockChestDuping.%player%} is not set:
+			send formatted "<light purple>Chest contents saved. You have <bold>%{lootChests.%player%::%{t_refreshLootChest.%player%}%}% days<reset><light purple> before this chest's inventory resets." to the player
+			clear {lootChestItems.%player%.%{t_refreshLootChest.%player%}%::*}
+			loop all items in the player's current inventory:
+				add loop-value to {lootChestItems.%player%.%{t_refreshLootChest.%player%}%::*}
+			clear {t_refreshLootChest.%player%}
+			
+command /purgelootchests:
+	trigger:
+		loop {lootChests.%player%::*}:
+			clear {lootChestItems.%player%.%loop-index%::*}
+			send "cleared %loop-index%" to the player
+		clear {lootChests.%player%::*}
+		send "cleared loot chests" to the player

@@ -3,8 +3,37 @@ on right click on a sign:
 		if {carriageLocs.%player%::%3rd line of the event-block%} is not set:
 			set {carriageLocs.%player%::%3rd line of the event-block%} to 1
 			send formatted "<light green>Discovered carriage: %3rd line of the event-block%."
-		open chest with 1 row named "<blue>Select a location to travel to." for the player
-		if {generation.%player%} is 1:
+		make player execute command "/carriage main"
+
+command /carriage <text>:
+	trigger:
+		if arg 1 is "main":
+			open chest inventory with 1 row named "<blue>Carriage" for the player
+			set slot 3 of the player's current inventory to 1 nether star named "<gold>Key Locations" with lore "<white>Carriage destinations for key holds, such as Silgrid Castle Town."
+			set slot 4 of the player's current inventory to 1 dirt named "<gold>Wilderness" with lore "<white>Warp to unbuilt wildlife preserves to start a new adventure."
+			set slot 5 of the player's current inventory to 1 chest named "<light purple>Player Destinations" with lore "<white>Select from a player's custom destinations to warp to."
+		else if arg 1 is "Key":
+			open chest inventory with 1 row named "<blue>Select a location to travel to." for the player
+			set slot 0 of the player's current inventory to 1 nether star named "<light green>Fiana Village" with lore "<white>A small village you call home.", "<white>Fiana Village is the perfect start for any adventure."
+			if {carriageLocs.%player%::Silgrund Castle Town} is not set:
+				set slot 1 of the player's current inventory to 1 obsidian named "<light red>Silgrund Castle Town" with lore "<white>You need to discover this location to fast travel to it."
+			else:
+				set slot 1 of the player's current inventory to 1 nether star named "<light green>Silgrund Castle Town" with lore "<white>The heart of Silgrund, the", "<white>castle town boasts countless shops for adventurers of all types."
+			if {carriageLocs.%player%::Seros Pirateers} is not set:
+				set slot 2 of the player's current inventory to 1 obsidian named "<light red>Seros Pirateers" with lore "<white>You need to discover this location to fast travel to it."
+			else:
+				set slot 2 of the player's current inventory to 1 nether star named "<light green>Seros Pirateers" with lore "<white>A large island home to a band of pirates-for-hire.", "<white>Rich in minerals and a great location for boat construction."
+			if {carriageLocs.%player%::Skyclaw Island} is not set:
+				set slot 3 of the player's current inventory to 1 obsidian named "<light red>Skyclaw Island" with lore "<white>You need to discover this location to fast travel to it."
+			else:
+				set slot 3 of the player's current inventory to 1 nether star named "<light green>Skyclaw Island" with lore "<white>A remote island inhabited by Half-Breed Dragonborn."
+			if {carriageLocs.%player%::Jehannah City} is not set:
+				set slot 4 of the player's current inventory to 1 obsidian named "<light red>Jehannah City" with lore "<white>You need to discover this location to fast travel to it."
+			else:
+				set slot 4 of the player's current inventory to 1 nether star named "<light green>Jehannah City" with lore "<white>localize this plz."
+			set slot 8 of the player's current inventory to 1 red glass pane named "<bold>Go Back" with lore "<white>Return to the previous screen."
+		else if arg 1 is "Legacy":
+			open chest inventory with 1 row named "<blue>Select a location to travel to." for the player
 			if {carriageLocs.%player%::Alpia Wildlands} is 1:
 				set slot 0 of the player's current inventory to 1 ender pearl named "<light green>Alpia Wildlands" with lore "<white><italics>A vast spruce forest on the outskirts of Yied.", "<white><italics>Home to House Ulster, alongside various villages.", "<white><bold>Cost:", "25"
 			else:
@@ -22,41 +51,157 @@ on right click on a sign:
 				set slot 4 of the player's current inventory to 1 ender pearl named "<light green>Nifil Frost Plains" with lore "<white><italics>Frosted plains once home to the first settlers of Silgrund.", "<white><italics>Magic permeates through the icy air, though none have found the source.", "<white><bold>Cost:", "50"
 			else:
 				set slot 4 of the player's current inventory to 1 obsidian named "<light red>Nifil Frost Plains" with lore "<light red>You must discover this carriage before you can fast travel to it."
+			set slot 8 of the player's current inventory to 1 red glass pane named "<bold>Go Back" with lore "<white>Return to the previous screen."
+		else if arg 1 is "Wilderness":
+			open chest inventory with 1 row named "<blue>Select a location to travel to." for the player
+			set slot 0 of the player's current inventory to 1 ender pearl named "<light green>Mountains" with lore "<white><italics>A tall mountain range flanked by forests.", "<white>Coordinates:", "2171, 73, -257"
+			set slot 1 of the player's current inventory to 1 ender pearl named "<light green>Desert Plains" with lore "<white><italics>A small desert flanked by savannahs. Features an oasis.", "<white>Coordinates:", "-4565, 87, -196"
+			set slot 2 of the player's current inventory to 1 ender pearl named "<light green>Bright Grassland" with lore "<white><italics>Gentle grass plains north of Silgrund Castle Town.", "<white>Coordinates:", "-1544, 70, -1256"
+			set slot 3 of the player's current inventory to 1 ender pearl named "<light green>Giant Forest" with lore "<white><italics>Hilled terrain dominated by massive spruce trees.", "<white>Coordinates:", "4725, 68, -270"
+			set slot 4 of the player's current inventory to 1 ender pearl named "<light green>Redwood Cliffs" with lore "<white><italics>A large forest with sharp elevation changes.", "<white>Coordinates:", "1040, 64, -9376"
+			set slot 5 of the player's current inventory to 1 ender pearl named "<light green>Seafoam Isle" with lore "<white><italics>A curious island made of prismarine.", "<white>Coordinates:", "2184, 103, 2355"
+			set slot 8 of the player's current inventory to 1 red glass pane named "<bold>Go Back" with lore "<white>Return to the previous screen."
+		else if arg 1 is "playerlist":
+			open chest inventory with 6 rows named "<blue>Select a player." for the player
+			set {_invSlot} to 0
+			loop {playersWithDestinations::*}:
+				set slot {_invSlot} of the player's current inventory to 1 ender chest named "%loop-value%"
+				add 1 to {_invSlot}
+		else:
+			open chest inventory with 5 rows named "<blue>%arg 1%'s Destinations" for the player
+			set {_invSlot} to 0
+			loop {carriageDestinations.%arg 1%::*}:
+				set slot {_invSlot} of the player's current inventory to 1 ender pearl named "<light green>%loop-index%" with lore "<white>Coordinates:", "%loop-value%"
+				add 1 to {_invSlot}
+			set slot 54 of the player's current inventory to 1 red glass pane named "<bold>Go Back" with lore "<white>Return to the previous screen."
 
+command /carriagewarp <number>:
+	trigger:
+		subtract arg 1 from the player's money
+		make server execute command "/tp %player% %{t_finalWarpLoc.%player%::x}% %{t_finalWarpLoc.%player%::y}% %{t_finalWarpLoc.%player%::z}%"
+		clear {t_finalWarpLoc.%player%::*}
+
+on right click:
+	if the name of the player's tool is "<gold>Portable Carriage":
+		make player execute command "/carriage main"
 
 on inventory click:
-	if the name of the player's current inventory is "<blue>Select a location to travel to.":
-		if the name of the clicked item is "<light green>Alpia Wildlands":
+	#Menus
+	if the name of the player's current inventory is "<blue>Carriage":
+		cancel event
+		if the name of the clicked item is "<gold>Key Locations":
+			make player execute command "/carriage Key"
+		else if the name of the clicked item is "<gold>Wilderness":
+			make player execute command "/carriage Wilderness"
+		else if the name of the clicked item is "<purple>Legacy":
+			make player execute command "/carriage Legacy"
+		else if the name of the clicked item is "<light purple>Player Destinations":
+			make player execute command "/carriage playerlist"
+	else if the name of the player's current inventory is "<blue>Select a player.":
+		if the clicked item is ender chest:
+			if the name of the clicked item is set:
+				make player execute command "/carriage %name of the clicked item%"
+	#Pre-set destinations
+	else if the name of the player's current inventory is "<blue>Select a location to travel to.":
+		#BNW Warps
+		if the name of the clicked item is "<light green>Fiana Village":
+			cancel event
+			teleport the player to location at 125, 64, 52 in world "adventure"
+		else if the name of the clicked item is "<light green>Silgrund Castle Town":
+			cancel event
+			teleport the player to location at -951, 64, -625 in world "adventure"
+		else if the name of the clicked item is "<light green>Seros Pirateers":
+			cancel event
+			teleport the player to location at 307, 64, 2189 in world "adventure"
+		else if the name of the clicked item is "<light green>Skyclaw Island":
+			cancel event
+			teleport the player to location at -471, 128, -7176
+		else if the name of the clicked item is "<light green>Jehannah City":
+			cancel event
+			teleport the player to location at 4117, 64, -473
+		#Wilderness Warps
+		else if the name of the clicked item is "<light green>Mountains":
+			cancel event
+			teleport the player to location at 2171, 73, -257 in world "adventure"
+		else if the name of the clicked item is "<light green>Desert Plains":
+			cancel event
+			teleport the player to location at -4565, 87, -196 in world "adventure"
+		else if the name of the clicked item is "<light green>Bright Grassland":
+			cancel event
+			teleport the player to location at -1544, 70, -1256 in world "adventure"
+		else if the name of the clicked item is "<light green>Giant Forest":
+			cancel event
+			teleport the player to location at 4725, 68, -270 in world "adventure"
+		else if the name of the clicked item is "<light green>Redwood Cliffs":
+			cancel event
+			teleport the player to location at 1040, 64, -9376
+		else if the name of the clicked item is "<light green>Seafoam Isle":
+			cancel event
+			teleport the player to location at 2184, 103, 2355
+		#Legacy warps
+		else if the name of the clicked item is "<light green>Alpia Wildlands":
 			cancel event
 			if the player's balance is more than or equal to 25:
 				subtract 25 from the player's balance
 				send formatted "<light green>Paid 15 gold to use the carriage. Current funds: %player's money%"
-				teleport the player to location at 697, 66, -1526
+				teleport the player to location at 697, 66, -1526 in world "LEGACY_GenOne"
 		else if the name of the clicked item is "<light green>Grann":
 			cancel event
 			if the player's balance is more than or equal to 15:
 				subtract 15 from the player's balance
 				send formatted "<light green>Paid 15 gold to use the carriage. Current funds: %player's money%"
-				teleport the player to location at 527, 67, -983
+				teleport the player to location at 527, 67, -983 in world "LEGACY_GenOne"
 		else if the name of the clicked item is "<light green>Seros":
 			cancel event
 			if the player's balance is more than or equal to 25:
 				subtract 25 from the player's balance
 				send formatted "<light green>Paid 25 gold to use the carriage. Current funds: %player's money%"
-				teleport the player to location at 296, 66, -376
+				teleport the player to location at 296, 66, -376 in world "LEGACY_GenOne"
 		else if the name of the clicked item is "<light green>House Silgrid":
 			cancel event
 			if the player's balance is more than or equal to 25:
 				subtract 25 from the player's balance
 				send formatted "<light green>Paid 25 gold to use the carriage. Current funds: %player's money%"
-				if {generation.%player%} is 1:
-					teleport the player to location at 472, 66, 404 in world "GenOne"
-				else:
-					teleport the player to location at 472, 66, 404 in world "adventure"
+				teleport the player to location at 472, 66, 404 in world "LEGACY_GenOne"
 		else if the name of the clicked item is "<light green>Nifil Frost Plains":
 			cancel event
 			if the player's balance is more than or equal to 50:
 				send formatted "<light green>Paid 50 gold to use the carriage. Current funds: %player's money%"
-				teleport the player to location at 89, 71, 285
-		else if the name of the clicked item contains "<light red>":
+				teleport the player to location at 89, 71, 285 in world "LEGACY_GenOne"
+		else if the name of the clicked item contains "<bold>Go Back":
 			cancel event
+			make player execute command "/carriage main"
+	#Custom destinations
+	else if the name of the player's current inventory contains "Destinations":
+		if the name of the player's current inventory does not contain "Journal":
+			if the clicked item is an ender pearl:
+				if 1st line of the lore of the clicked item contains "Coordinates:":
+					cancel event
+					close the player's inventory
+					#Extract custom destination coordinates from item lore
+					set {_teleport} to the 2nd line of the lore of the clicked item
+					set {_coords::*} to {_teleport} split at ", "
+					set {_coordX::*} to {_coords::1} split at "x: "
+					set {_coordY::*} to {_coords::2} split at "y: "
+					set {_coordZ::*} to {_coords::3} split at "z: "
+					#Get base price of travel, 1g = 1 block traveled
+					set {_loc} to location at ({_coordX::2} parsed as number, {_coordY::2} parsed as number, {_coordZ::2} parsed as number)
+					set {_costToWarp} to distance between player and {_loc}
+					set {_costToWarp} to ({_costToWarp} / 4)
+					#Barter modifier for carriage price
+					set {_discountFactor} to ({abilities.%player%::Barter} / 20)
+					if {_discountFactor} is less than 0.5:
+						set {_discountFactor} to 0.5
+					else if {_discountFactor} is more than 2:
+						set {_discountFactor} to ({_discountFactor} ^ 0.8)
+						if {_discountFactor} is less than 2:
+							set {_discountFactor} to 2
+					set {_costToWarp} to ({_costToWarp} / {_discountFactor})
+					if {_costToWarp} is less than player's money:
+						set {t_finalWarpLoc.%player%::x} to {_coordX::2}
+						set {t_finalWarpLoc.%player%::y} to {_coordY::2}
+						set {t_finalWarpLoc.%player%::z} to {_coordZ::2}
+						send formatted "<run command:/carriagewarp %{_costToWarp}%><gold>Taking this carriage will cost %{_costToWarp}% gold. Click here to confirm." to the player
+					else:
+						send formatted "<light red>Not enough gold to travel to this Destination! Cost: %{_costToWarp}% gold."
+			

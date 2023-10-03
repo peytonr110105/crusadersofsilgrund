@@ -3,7 +3,7 @@
 command /cvault [<text="open">]:
 	trigger:
 		if arg 1 is "open":
-			open chest with 6 rows named "<gold>%player's tablist name%<reset><gold>'s vault" for the player
+			open chest inventory with 6 rows named "<gold>%player's tablist name%<reset><gold>'s vault" for the player
 			set {_slot} to -1
 			loop {db_charvault.%player%::*}:
 				add 1 to {_slot}

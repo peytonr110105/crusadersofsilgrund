@@ -1,7 +1,8 @@
-function enchantHelmet(MOB: entity):
+function enchantHelmet(MOB: entity,LVL: number):
+	enchant {_MOB}'s helmet with curse of vanishing
 	set {_diamondBlock} to ({_LVL} - 5)
-	if {_diamondBlock} is more than 75:
-		set {_diamondBlock} to 75
+	if {_diamondBlock} is more than 40:
+		set {_diamondBlock} to 40
 	chance of ({_LVL} + 65)%:
 		chance of 50%:
 			enchant {_MOB}'s helmet with protection 1
@@ -31,17 +32,48 @@ function enchantHelmet(MOB: entity):
 			enchant {_MOB}'s helmet with respiration 4
 		chance of 25%:
 			enchant {_MOB}'s helmet with aqua affinity 1
+	chance of ({_diamondBlock} - 10)%:
+		chance of 50%:
+			enchant {_MOB}'s helmet with protection 6
+		chance of 20%:
+			enchant {_MOB}'s helmet with respiration 4
+		chance of 25%:
+			enchant {_MOB}'s helmet with aqua affinity 1		
 	chance of ({_diamondBlock} - 20)%:
+		chance of 50%:
+			enchant {_MOB}'s helmet with protection 7
+		chance of 20%:
+			enchant {_MOB}'s helmet with respiration 4
+		chance of 25%:
+			enchant {_MOB}'s helmet with aqua affinity 1
 		chance of 8%:
 			enchant {_MOB}'s helmet with mending 1
-	chance of ({_diamondBlock} - 35)%:
+	chance of ({_diamondBlock} - 25)%:
+		chance of 50%:
+			enchant {_MOB}'s helmet with protection 8
+		chance of 20%:
+			enchant {_MOB}'s helmet with respiration 4
+		chance of 25%:
+			enchant {_MOB}'s helmet with aqua affinity 1
 		chance of 8%:
+			enchant {_MOB}'s helmet with mending 1
+	chance of ({_diamondBlock} - 30)%:
+		chance of 50%:
+			enchant {_MOB}'s helmet with protection 9
+		chance of 20%:
+			enchant {_MOB}'s helmet with respiration 4
+		chance of 25%:
+			enchant {_MOB}'s helmet with aqua affinity 1
+		chance of 8%:
+			enchant {_MOB}'s helmet with mending 1
+		chance of 25%:
 			enchant {_MOB}'s helmet with thorns 1
 			
-function enchantLeggings(MOB: entity):
+function enchantLeggings(MOB: entity,LVL: number):
+	enchant {_MOB}'s leggings with curse of vanishing
 	set {_diamondBlock} to ({_LVL} - 5)
-	if {_diamondBlock} is more than 75:
-		set {_diamondBlock} to 75
+	if {_diamondBlock} is more than 40:
+		set {_diamondBlock} to 40
 	chance of ({_LVL} + 65)%:
 		chance of 50%:
 			enchant {_MOB}'s leggings with protection 1
@@ -57,17 +89,30 @@ function enchantLeggings(MOB: entity):
 	chance of {_diamondBlock}%:
 		chance of 50%:
 			enchant {_MOB}'s leggings with protection 5
+	chance of ({_diamondBlock} - 10)%:
+		chance of 50%:
+			enchant {_MOB}'s leggings with protection 6
 	chance of ({_diamondBlock} - 20)%:
+		chance of 50%:
+			enchant {_MOB}'s leggings with protection 7
+		chance of 8%:
+			enchant {_MOB}'s leggings with mending 1
+	chance of ({_diamondBlock} - 25)%:
+		chance of 50%:
+			enchant {_MOB}'s leggings with protection 8
 		chance of 8%:
 			enchant {_MOB}'s leggings with mending 1
 	chance of ({_diamondBlock} - 35)%:
+		chance of 50%:
+			enchant {_MOB}'s leggings with protection 9	
 		chance of 8%:
 			enchant {_MOB}'s leggings with thorns 1
 			
-function enchantBoots(MOB: entity):
+function enchantBoots(MOB: entity,LVL: number):
+	enchant {_MOB}'s boots with curse of vanishing
 	set {_diamondBlock} to ({_LVL} - 5)
-	if {_diamondBlock} is more than 75:
-		set {_diamondBlock} to 75
+	if {_diamondBlock} is more than 40:
+		set {_diamondBlock} to 40
 	chance of ({_LVL} + 65)%:
 		chance of 50%:
 			enchant {_MOB}'s boots with protection 1
@@ -99,125 +144,208 @@ function enchantBoots(MOB: entity):
 			enchant {_MOB}'s boots with feather falling 4
 		chance of 15%:
 			enchant {_MOB}'s boots with depth strider 4
+	chance of ({_diamondBlock} - 10)%:
+		chance of 50%:
+			enchant {_MOB}'s boots with protection 6
+		chance of 25%:
+			enchant {_MOB}'s boots with feather falling 5
+		chance of 15%:
+			enchant {_MOB}'s boots with depth strider 5
 	chance of ({_diamondBlock} - 15)%:
+		chance of 50%:
+			enchant {_MOB}'s boots with protection 7
+		chance of 25%:
+			enchant {_MOB}'s boots with feather falling 5
+		chance of 15%:
+			enchant {_MOB}'s boots with depth strider 5
+		chance of 8%:
+			enchant {_MOB}'s boots with mending 1
+	chance of ({_diamondBlock} - 25)%:
+		chance of 50%:
+			enchant {_MOB}'s boots with protection 8
+		chance of 25%:
+			enchant {_MOB}'s boots with feather falling 5
+		chance of 15%:
+			enchant {_MOB}'s boots with depth strider 5
 		chance of 8%:
 			enchant {_MOB}'s boots with mending 1
 	chance of ({_diamondBlock} - 35)%:
+		chance of 50%:
+			enchant {_MOB}'s boots with protection 9
+		chance of 25%:
+			enchant {_MOB}'s boots with feather falling 5
+		chance of 15%:
+			enchant {_MOB}'s boots with depth strider 5
+		chance of 8%:
+			enchant {_MOB}'s boots with mending 1
 		chance of 8%:
 			enchant {_MOB}'s boots with thorns 1
 			
-function enchantChestplate(MOB: entity):
+function enchantChestplate(MOB: entity,LVL: number):
+	enchant {_MOB}'s chestplate with curse of vanishing
 	set {_diamondBlock} to ({_LVL} - 5)
-	if {_diamondBlock} is more than 75:
-		set {_diamondBlock} to 75
+	if {_diamondBlock} is more than 40:
+		set {_diamondBlock} to 40
 	chance of ({_LVL} + 65)%:
 		chance of 50%:
 			enchant {_MOB}'s chestplate with protection 1
+		chance of 50%:
+			enchant {_MOB}'s chestplate with projectile protection 1
 	chance of ({_LVL} + 45)%:
 		chance of 50%:
 			enchant {_MOB}'s chestplate with protection 2
+		chance of 50%:
+			enchant {_MOB}'s chestplate with projectile protection 2
 	chance of ({_LVL} + 25)%:
 		chance of 50%:
 			enchant {_MOB}'s chestplate with protection 3
+		chance of 50%:
+			enchant {_MOB}'s chestplate with projectile protection 3
 	chance of ({_LVL} + 15)%:
 		chance of 50%:
 			enchant {_MOB}'s chestplate with protection 4
+		chance of 50%:
+			enchant {_MOB}'s chestplate with projectile protection 4
 	chance of {_diamondBlock}%:
 		chance of 50%:
 			enchant {_MOB}'s chestplate with protection 5
+		chance of 50%:
+			enchant {_MOB}'s chestplate with projectile protection 5
+	chance of ({_diamondBlock} - 10)%:
+		chance of 50%:
+			enchant {_MOB}'s chestplate with protection 6
+		chance of 50%:
+			enchant {_MOB}'s chestplate with projectile protection 6
 	chance of ({_diamondBlock} - 15)%:
-		chance of 8%:
-			enchant {_MOB}'s chestplate with mending
+		chance of 50%:
+			enchant {_MOB}'s chestplate with protection 7
+		chance of 50%:
+			enchant {_MOB}'s chestplate with projectile protection 7
+		chance of 50%:
+			enchant {_MOB}'s chestplate with mending 1
+	chance of ({_diamondBlock} - 20)%:
+		chance of 50%:
+			enchant {_MOB}'s chestplate with protection 8
+		chance of 50%:
+			enchant {_MOB}'s chestplate with projectile protection 8
 	chance of ({_diamondBlock} - 35)%:
+		chance of 50%:
+			enchant {_MOB}'s chestplate with protection 9
+		chance of 50%:
+			enchant {_MOB}'s chestplate with projectile protection 9
 		chance of 8%:
 			enchant {_MOB}'s chestplate with thorns 1
 
 function humanoidEquipmentHandler(MOB: entity, LVL: number, RANGE: number):
-	chance of ({_LVL} + 100)%:
-		chance of 50%:
-			set {_MOB}'s helmet to 1 leather helmet
-			enchantHelmet({_MOB})
-		chance of 50%:
-			set {_MOB}'s chestplate to 1 leather chestplate
-			enchantChestplate({_MOB})
-		chance of 50%:
-			set {_MOB}'s leggings to 1 leather leggings
-			enchantLeggings({_MOB})
-		chance of 50%:
-			set {_MOB}'s boots to 1 leather boots
-			enchantBoots({_MOB})
-	chance of ({_LVL} + 65)%:
-		chance of 50%:
-			set {_MOB}'s helmet to 1 chainmail helmet
-			enchantHelmet({_MOB})
-		chance of 50%:
-			set {_MOB}'s chestplate to 1 chainmail chestplate
-			enchantChestplate({_MOB})
-		chance of 50%:
-			set {_MOB}'s leggings to 1 chainmail leggings
-			enchantLeggings({_MOB})
-		chance of 50%:
-			set {_MOB}'s boots to 1 chainmail boots
-			enchantBoots({_MOB})
-	chance of ({_LVL} + 20)%:
-		chance of 50%:
-			set {_MOB}'s helmet to 1 iron helmet
-			enchantHelmet({_MOB})
-		chance of 50%:
-			set {_MOB}'s chestplate to 1 iron chestplate
-			enchantChestplate({_MOB})
-		chance of 50%:
-			set {_MOB}'s leggings to 1 iron leggings
-			enchantLeggings({_MOB})
-		chance of 50%:
-			set {_MOB}'s boots to 1 iron boots
-			enchantBoots({_MOB})
 	set {_diamondBlock} to ({_LVL} - 5)
-	if {_diamondBlock} is more than 75:
-		set {_diamondBlock} to 75
+	if {_diamondBlock} is more than 40:
+		set {_diamondBlock} to 40
 	chance of {_diamondBlock}%:
-		chance of 50%:
-			set {_MOB}'s helmet to 1 diamond helmet
-			enchantHelmet({_MOB})
-		chance of 50%:
-			set {_MOB}'s chestplate to 1 diamond chestplate
-			enchantChestplate({_MOB})
-		chance of 50%:
-			set {_MOB}'s leggings to 1 diamond leggings
-			enchantLeggings({_MOB})
-		chance of 50%:
-			set {_MOB}'s boots to 1 diamond boots
-			enchantBoots({_MOB})
+		if {_MOB}'s helmet is air:
+			chance of 50%:
+				set {_MOB}'s helmet to 1 diamond helmet
+				enchantHelmet({_MOB},{_LVL})
+		if {_MOB}'s chestplate is air:
+			chance of 50%:
+				set {_MOB}'s chestplate to 1 diamond chestplate
+				enchantChestplate({_MOB},{_LVL})
+		if {_MOB}'s leggings is air:
+			chance of 50%:
+				set {_MOB}'s leggings to 1 diamond leggings
+				enchantLeggings({_MOB},{_LVL})
+		if {_MOB}'s boots is air:
+			chance of 50%:
+				set {_MOB}'s boots to 1 diamond boots
+				enchantBoots({_MOB},{_LVL})
+	else:
+		chance of ({_LVL} + 100)%:
+			chance of 50%:
+				set {_MOB}'s helmet to 1 leather helmet
+				enchantHelmet({_MOB},{_LVL})
+			chance of 50%:
+				set {_MOB}'s chestplate to 1 leather chestplate
+				enchantChestplate({_MOB},{_LVL})
+			chance of 50%:
+				set {_MOB}'s leggings to 1 leather leggings
+				enchantLeggings({_MOB},{_LVL})
+			chance of 50%:
+				set {_MOB}'s boots to 1 leather boots
+				enchantBoots({_MOB},{_LVL})
+		chance of ({_LVL} + 65)%:
+			chance of 50%:
+				set {_MOB}'s helmet to 1 chainmail helmet
+				enchantHelmet({_MOB},{_LVL})
+			chance of 50%:
+				set {_MOB}'s chestplate to 1 chainmail chestplate
+				enchantChestplate({_MOB},{_LVL})
+			chance of 50%:
+				set {_MOB}'s leggings to 1 chainmail leggings
+				enchantLeggings({_MOB},{_LVL})
+			chance of 50%:
+				set {_MOB}'s boots to 1 chainmail boots
+				enchantBoots({_MOB},{_LVL})
+		chance of ({_LVL} + 20)%:
+			chance of 50%:
+				set {_MOB}'s helmet to 1 iron helmet
+				enchantHelmet({_MOB},{_LVL})
+			chance of 50%:
+				set {_MOB}'s chestplate to 1 iron chestplate
+				enchantChestplate({_MOB},{_LVL})
+			chance of 50%:
+				set {_MOB}'s leggings to 1 iron leggings
+				enchantLeggings({_MOB},{_LVL})
+			chance of 50%:
+				set {_MOB}'s boots to 1 iron boots
+				enchantBoots({_MOB},{_LVL})
+	if {_RANGE} is 1:
+		chance of 25%:
+			set {_RANGE} to 0
 	if {_RANGE} is 0:
-		set {_weapon} to a random integer from 1 to 3
+		set {_weapon} to a random integer from 1 to 5
 		chance of ({_LVL} + 100)%:
 			if {_weapon} is 1:
 				set {_MOB}'s tool to 1 wooden sword
 			else if {_weapon} is 2:
 				set {_MOB}'s tool to 1 wooden axe
 			else if {_weapon} is 3:
-				set {_MOB}'s tool to 1 wooden shovel named "<bold>Wooden Lance"
+				set {_MOB}'s tool to 1 wooden shovel named "<bold>Wooden Lance" with nbt "{LanceType:0}"
+			ELSE IF {_WEAPON} is 4:
+				set {_MOB}'s tool to 1 wooden hoe named "<bold>Wooden Gauntlets" with nbt "{GauntletType:0}"
+			else if {_WEAPON} is 5:
+				set {_MOB}'s tool to 16 arrow named "<bold>Wooden Dagger" with nbt "{DaggerType:0}"
 		chance of ({_LVL} + 65)%:
 			if {_weapon} is 1:
 				set {_MOB}'s tool to 1 stone sword
 			else if {_weapon} is 2:
 				set {_MOB}'s tool to 1 stone axe
 			else if {_weapon} is 3:
-				set {_MOB}'s tool to 1 stone shovel named "<bold>Stone Lance"
+				set {_MOB}'s tool to 1 stone shovel named "<bold>Stone Lance" with nbt "{LanceType:1}"
+			ELSE IF {_WEAPON} is 4:
+				set {_MOB}'s tool to 1 stone hoe named "<bold>Stone Gauntlets" with nbt "{GauntletType:1}"
+			else if {_WEAPON} is 5:
+				set {_MOB}'s tool to 16 arrow named "<bold>Stone Dagger" with nbt "{DaggerType:1}"
 		chance of ({_LVL} + 20)%:
 			if {_weapon} is 1:
 				set {_MOB}'s tool to 1 iron sword
 			else if {_weapon} is 2:
 				set {_MOB}'s tool to 1 iron axe
 			else if {_weapon} is 3:
-				set {_MOB}'s tool to 1 iron shovel named "<bold>Iron Lance"
+				set {_MOB}'s tool to 1 iron shovel named "<bold>Iron Lance" with nbt "{LanceType:2}"
+			ELSE IF {_WEAPON} is 4:
+				set {_MOB}'s tool to 1 iron hoe named "<bold>Iron Gauntlets" with nbt "{GauntletType:2}"
+			else if {_WEAPON} is 5:
+				set {_MOB}'s tool to 16 arrow named "<bold>Iron Dagger" with nbt "{DaggerType:2}"
 		chance of {_diamondBlock}%:
 			if {_weapon} is 1:
 				set {_MOB}'s tool to 1 diamond sword
 			else if {_weapon} is 2:
 				set {_MOB}'s tool to 1 diamond axe
 			else if {_weapon} is 3:
-				set {_MOB}'s tool to 1 diamond shovel named "<bold>Diamond Lance"
+				set {_MOB}'s tool to 1 diamond shovel named "<bold>Diamond Lance" with nbt "{LanceType:4}"
+			ELSE IF {_WEAPON} is 4:
+				set {_MOB}'s tool to 1 diamond hoe named "<bold>Diamond Gauntlets" with nbt "{GauntletType:4}"
+			else if {_WEAPON} is 5:
+				set {_MOB}'s tool to 16 arrow named "<bold>Diamond Dagger" with nbt "{DaggerType:4}"
 		chance of ({_LVL} + 65)%:
 			enchant {_MOB}'s tool with sharpness 1
 		chance of ({_LVL} + 45)%:
@@ -228,6 +356,16 @@ function humanoidEquipmentHandler(MOB: entity, LVL: number, RANGE: number):
 			enchant {_MOB}'s tool with sharpness 4
 		chance of ({_LVL} + 3)%:
 			enchant {_MOB}'s tool with sharpness 5
+		chance of ({_LVL} - 5)%:
+			enchant {_MOB}'s tool with sharpness 6
+		chance of ({_LVL} - 15)%:
+			enchant {_MOB}'s tool with sharpness 7
+		chance of ({_LVL} - 25)%:
+			enchant {_MOB}'s tool with sharpness 8
+		chance of ({_LVL} - 40)%:
+			enchant {_MOB}'s tool with sharpness 9
+		chance of ({_LVL} - 60)%:
+			enchant {_MOB}'s tool with sharpness 10
 		chance of ({_LVL} - 10)%:
 			enchant {_MOB}'s tool with fire aspect 1
 	else if {_RANGE} is 1:
@@ -244,179 +382,211 @@ function humanoidEquipmentHandler(MOB: entity, LVL: number, RANGE: number):
 			enchant {_MOB}'s tool with punch 2
 	chance of ({_LVL})%:
 		set line 1 of {_MOB}'s tool's lore to getASlotSkill({_RANGE})
-	chance of ({_LVL} * 0.9)%:
+	chance of floor({_LVL} * 0.9)%:
 		set line 2 of {_MOB}'s tool's lore to getBSlotSkill({_RANGE})
 	chance of ({_LVL})%:
 		set line 3 of {_MOB}'s tool's lore to getCSlotSkill({_RANGE})
 	chance of ({_LVL})%:
 		set line 4 of {_MOB}'s tool's lore to getAssistSlotSkill({_RANGE})
-	chance of ({_LVL} * 0.8)%:
+	chance of floor({_LVL} * 0.8)%:
 		set line 5 of {_MOB}'s tool's lore to getSpecialSlotSkill({_RANGE})
-	chance of ({_LVL} * 0.8)%:
+	chance of floor({_LVL} * 0.8)%:
 		set line 6 of {_MOB}'s tool's lore to getRefineSlotSkill({_RANGE})
 		
 function getASlotSkill(RANGE: number) :: text:
-	set {_RN} to a random integer from 1 to 42
+	set {_RN} to a random integer from 1 to 49
 	if {_RN} is 1:
-		if {_RANGE} is 0:
-			return "<light red><bold>Slot A - Distant Counter"
-		else:
-			return "<light red><bold>Slot A - Close Counter"
-	else if {_RN} is 2:
-		if {_RANGE} is 0:
-			return "<light red><bold>Slot A - Distant Counter"
-		else:
-			return "<light red><bold>Slot A - Broad Shot"
-	else if {_RN} is 3:
-		return "<light red><bold>Slot A - Armour Smasher"
-	else if {_RN} is 4:
-		return "<light red><bold>Slot A - Fury"
-	else if {_RN} is 5:
-		return "<light red><bold>Slot A - Life and Death"
-	else if {_RN} is 6:
 		return "<light red><bold>Slot A - Death Blow"
-	else if {_RN} is 7:
-		return "<light red><bold>Slot A - Darting Blow"
-	else if {_RN} is 8:
+	else if {_RN} is 2:
+		return "<light red><bold>Slot A - Hexing Blow"
+	else if {_RN} is 3:
 		return "<light red><bold>Slot A - Armoured Blow"
-	else if {_RN} is 9:
-		return "<light red><bold>Slot A - Defiant Attack"
-	else if {_RN} is 10:
-		return "<light red><bold>Slot A - Defiant Speed"
-	else if {_RN} is 11:
-		return "<light red><bold>Slot A - Defiant Resistance"
-	else if {_RN} is 12:
-		return "<light red><bold>Slot A - Close Defence"
-	else if {_RN} is 13:
-		return "<light red><bold>Slot A - Distant Defence"
-	else if {_RN} is 14:
-		return "<light red><bold>Slot A - Offense Bond"
-	else if {_RN} is 15:
-		return "<light red><bold>Slot A - Defense Bond"
-	else if {_RN} is 16:
-		return "<light red><bold>Slot A - Magic Bond"
-	else if {_RN} is 17:
-		return "<light red><bold>Slot A - Offense Solo"
-	else if {_RN} is 18:
-		return "<light red><bold>Slot A - Defense Solo"
-	else if {_RN} is 19:
-		return "<light red><bold>Slot A - Magic Solo"
-	else if {_RN} is 20:
-		return "<light red><bold>Slot A - Sorcery Aura"
-	else if {_RN} is 21:
-		return "<light red><bold>Slot A - Steady Stance"
-	else if {_RN} is 22:
-		return "<light red><bold>Slot A - Fierce Stance"
-	else if {_RN} is 23:
-		return "<light red><bold>Slot A - Warding Stance"
-	else if {_RN} is 24:
-		return "<light red><bold>Slot A - Swift Stance"
-	else if {_RN} is 25:
-		return "<light red><bold>Slot A - Swift Blow"
-	else if {_RN} is 26:
-		return "<light red><bold>Slot A - Steady Blow"
-	else if {_RN} is 27:
-		return "<light red><bold>Slot A - Power Within"
-	else if {_RN} is 28:
-		return "<light red><bold>Slot A - STR Focus"
-	else if {_RN} is 29:
-		return "<light red><bold>Slot A - DEF Focus"
-	else if {_RN} is 30:
-		return "<light red><bold>Slot A - SKL Focus"
-	else if {_RN} is 31:
-		return "<light red><bold>Slot A - DEF Focus"
-	else if {_RN} is 32:
-		return "<light red><bold>Slot A - MAG Focus"
-	else if {_RN} is 33:
+	else if {_RN} is 4:
 		return "<light red><bold>Slot A - Warding Blow"
-	else if {_RN} is 34:
-		return "<light red><bold>Slot A - Mirror Blow"
-	else if {_RN} is 35:
-		return "<light red><bold>Slot A - Flashing Blade"
-	else if {_RN} is 36:
-		return "<light red><bold>Slot A - Heavy Blade"
-		
-function getBSlotSkill(RANGE: number) :: text:
-	set {_RN} to a random integer from 1 to 28
-	if {_RN} is 1:
-		return "<light blue><bold>Slot B - Sabotage Attack"
-	else if {_RN} is 2:
-		return "<light blue><bold>Slot B - Sabotage Defense"
-	else if {_RN} is 3:
-		return "<light blue><bold>Slot B - Sabotage Speed"
-	else if {_RN} is 4:
-		return "<light blue><bold>Slot B - Poison Strike"
 	else if {_RN} is 5:
-		return "<light blue><bold>Slot B - Desperation"
+		return "<light red><bold>Slot A - Fury"
 	else if {_RN} is 6:
-		return "<light blue><bold>Slot B - Riposte"
+		return "<light red><bold>Slot A - Defiant STR"
 	else if {_RN} is 7:
-		return "<light blue><bold>Slot B - Brash Assault"
+		return "<light red><bold>Slot A - Defiant MAG"
 	else if {_RN} is 8:
-		return "<light blue><bold>Slot B - Wrath"
+		return "<light red><bold>Slot A - Defiant SPD"
 	else if {_RN} is 9:
-		return "<light blue><bold>Slot B - Plenitude"
+		return "<light red><bold>Slot A - Defiant DEF"
 	else if {_RN} is 10:
-		return "<light blue><bold>Slot B - Experience Sapper"
+		return "<light red><bold>Slot A - Defiant RES"
 	else if {_RN} is 11:
-		return "<light blue><bold>Slot B - Shield Pulse"
+		return "<light red><bold>Slot A - Life and Death"
 	else if {_RN} is 12:
-		return "<light blue><bold>Slot B - Bonus Blade"
+		return "<light red><bold>Slot A - STR +3"
 	else if {_RN} is 13:
-		return "<light blue><bold>Slot B - Brave Blade"
+		return "<light red><bold>Slot A - MAG +3"
 	else if {_RN} is 14:
-		return "<light blue><bold>Slot B - Eclipse Brace"
+		return "<light red><bold>Slot A - SPD +3"
 	else if {_RN} is 15:
-		return "<light blue><bold>Slot B - Solar Brace"
+		return "<light red><bold>Slot A - DEF +3"
 	else if {_RN} is 16:
-		return "<light blue><bold>Slot B - Guard"
+		return "<light red><bold>Slot A - RES +3"
 	else if {_RN} is 17:
-		return "<light blue><bold>Slot B - Special Spiral"
+		return "<light red><bold>Slot A - Heavy Blade"
 	else if {_RN} is 18:
-		return "<light blue><bold>Slot B - Mystic Boost"
+		return "<light red><bold>Slot A - Flashing Blade"
 	else if {_RN} is 19:
-		return "<light blue><bold>Slot B - Windsweep"
+		return "<light red><bold>Slot A - Sorcery Aura"
 	else if {_RN} is 20:
-		return "<light blue><bold>Slot B - Flame Boost"
+		return "<light red><bold>Slot A - Power Within"
 	else if {_RN} is 21:
-		return "<light blue><bold>Slot B - Earth Boost"
+		return "<light red><bold>Slot A - Broad Shot"
 	else if {_RN} is 22:
-		return "<light blue><bold>Slot B - Aqua Boost"
+		return "<light red><bold>Slot A - Armour Slayer"
 	else if {_RN} is 23:
-		return "<light blue><bold>Slot B - Vantage"
+		return "<light red><bold>Slot A - ATK/SPD Push"
 	else if {_RN} is 24:
-		return "<light blue><bold>Slot B - Seal SPD/SKL"
+		return "<light red><bold>Slot A - ATK/DEF Push"
 	else if {_RN} is 25:
-		return "<light blue><bold>Slot B - Seal DEF/MAG"
+		return "<light red><bold>Slot A - ATK/RES Push"
 	else if {_RN} is 26:
-		return "<light blue><bold>Slot B - Despoil"
+		return "<light red><bold>Slot A - DEF/RES Push"
 	else if {_RN} is 27:
-		return "<light blue><bold>Slot B - Escape Route"
+		return "<light red><bold>Slot A - Steady Stance"
 	else if {_RN} is 28:
-		return "<light blue><bold>Slot B - Wings of Mercy"
-		
-function getCSlotSkill(RANGE: number) :: text:
-	set {_RN} to a random integer from 1 to 32
+		return "<light red><bold>Slot A - Warding Stance"
+	else if {_RN} is 29:
+		return "<light red><bold>Slot A - Bracing Stance"
+	else if {_RN} is 30:
+		return "<light red><bold>Slot A - Fierce Stance"
+	else if {_RN} is 31:
+		return "<light red><bold>Slot A - Hexing Stance"
+	else if {_RN} is 32:
+		return "<light red><bold>Slot A - Kestrel Stance"
+	else if {_RN} is 33:
+		return "<light red><bold>Slot A - Fortress DEF/RES"
+	else if {_RN} is 34:
+		return "<light red><bold>Slot A - Sturdy Impact"
+	else if {_RN} is 35:
+		return "<light red><bold>Slot A - Warding Impact"
+	else if {_RN} is 36:
+		return "<light red><bold>Slot A - Critical Impact"
+	else if {_RN} is 37:
+		return "<light red><bold>Slot A - Dominator"
+	else if {_RN} is 38:
+		return "<light red><bold>Slot A - Mayhem"
+	else if {_RN} is 39:
+		return "<light red><bold>Slot A - Rage"
+	else if {_RN} is 40:
+		return "<light red><bold>Slot A - Blazing Storm"
+	else if {_RN} is 41:
+		return "<light red><bold>Slot A - ATK/SPD Ideal"
+	else if {_RN} is 42:
+		return "<light red><bold>Slot A - DEF/RES Ideal"
+	else if {_RN} is 43:
+		return "<light red><bold>Slot A - ATK/SPD Catch"
+	else if {_RN} is 44:
+		return "<light red><bold>Slot A - DEF/RES Catch"
+	else if {_RN} is 45:
+		return "<light red><bold>Slot A - ATK/SPD Bond"
+	else if {_RN} is 46:
+		return "<light red><bold>Slot A - ATK/DEF Bond"
+	else if {_RN} is 47:
+		return "<light red><bold>Slot A - ATK/RES Bond"
+	else if {_RN} is 48:
+		return "<light red><bold>Slot A - DEF/RES Bond"
+	else if {_RN} is 49:
+		return "<light red><bold>Slot A - Sacae's Grace"
+function getBSlotSkill(RANGE: number) :: text:
+	set {_RN} to a random integer from 1 to 22
 	if {_RN} is 1:
-		return "<light yellow><bold>Slot C - Hone STR"
+		return "<light blue><bold>Slot B - Vantage"
 	else if {_RN} is 2:
-		return "<light yellow><bold>Slot C - Hone SPD"
+		return "<light blue><bold>Slot B - Desperation"
 	else if {_RN} is 3:
-		return "<light yellow><bold>Slot C - Hone SKL"
+		return "<light blue><bold>Slot B - Brash Assault"
 	else if {_RN} is 4:
-		return "<light yellow><bold>Slot C - Hone DEF"
+		return "<light blue><bold>Slot B - Seal STR"
 	else if {_RN} is 5:
-		return "<light yellow><bold>Slot C - Hone MAG"
+		return "<light blue><bold>Slot B - Seal MAG"
+	else if {_RN} is 6:
+		return "<light blue><bold>Slot B - Seal SPD"
+	else if {_RN} is 7:
+		return "<light blue><bold>Slot B - Seal DEF"
+	else if {_RN} is 8:
+		return "<light blue><bold>Slot B - Seal RES"
+	else if {_RN} is 9:
+		return "<light blue><bold>Slot B - Close Breaker"
+	else if {_RN} is 10:
+		return "<light blue><bold>Slot B - Ranged Breaker"
+	else if {_RN} is 11:
+		return "<light blue><bold>Slot B - Poison Strike"
+	else if {_RN} is 12:
+		return "<light blue><bold>Slot B - Renewal"
+	else if {_RN} is 13:
+		return "<light blue><bold>Slot B - Riposte"
+	else if {_RN} is 14:
+		return "<light blue><bold>Slot B - Brave Blade"
+	else if {_RN} is 15:
+		return "<light blue><bold>Slot B - Experience Sapper"
+	else if {_RN} is 16:
+		return "<light blue><bold>Slot B - Wrath"
+	else if {_RN} is 17:
+		return "<light blue><bold>Slot B - Despoil"
+	else if {_RN} is 18:
+		return "<light blue><bold>Slot B - Shield Pulse"
+	else if {_RN} is 19:
+		return "<light blue><bold>Slot B - Bonus Doubler"
+	else if {_RN} is 20:
+		return "<light blue><bold>Slot B - Solar Brace"
+	else if {_RN} is 21:
+		return "<light blue><bold>Slot B - Lunar Brace"
+	else if {_RN} is 22:
+		return "<light blue><bold>Slot B - Mystic Boost"
+	else if {_RN} is 23:
+		return "<light blue><bold>Slot B - Lull STR/DEF"
+	else if {_RN} is 24:
+		return "<light blue><bold>Slot B - Lull MAG/RES"
+	else if {_RN} is 25:
+		return "<light blue><bold>Slot B - Lull SPD/DEF"
+	else if {_RN} is 26:
+		return "<light blue><bold>Slot B - Lull SPD/RES"
+	else if {_RN} is 27:
+		return "<light blue><bold>Slot B - Lull ATK/SPD"
+	else if {_RN} is 28:
+		return "<light blue><bold>Slot B - Close Call"
+	else if {_RN} is 29:
+		return "<light blue><bold>Slot B - Dragon Wall"
+	else if {_RN} is 30:
+		return "<light blue><bold>Slot B - Arcane Ward"
+	else if {_RN} is 31:
+		return "<light blue><bold>Slot B - Deadly Balance"
+	else if {_RN} is 32:
+		return "<light blue><bold>Slot B - Windsweep"
+	else if {_RN} is 33:
+		return "<light blue><bold>Slot B - Special Spiral"
+	else if {_RN} is 34:
+		return "<light blue><bold>Slot B - Pass"
+	else if {_RN} is 35:
+		return "<light blue><bold>Slot B - Obstruct"
+function getCSlotSkill(RANGE: number) :: text:
+	set {_RN} to a random integer from 1 to 49
+	if {_RN} is 1:
+		return "<light yellow><bold>Slot C - Spur STR"
+	else if {_RN} is 2:
+		return "<light yellow><bold>Slot C - Spur MAG"
+	else if {_RN} is 3:
+		return "<light yellow><bold>Slot C - Spur SPD"
+	else if {_RN} is 4:
+		return "<light yellow><bold>Slot C - Spur DEF"
+	else if {_RN} is 5:
+		return "<light yellow><bold>Slot C - Spur RES"
 	else if {_RN} is 6:
 		return "<light yellow><bold>Slot C - Drive STR"
 	else if {_RN} is 7:
 		return "<light yellow><bold>Slot C - Drive SPD"
 	else if {_RN} is 8:
-		return "<light yellow><bold>Slot C - Drive SKL"
+		return "<light yellow><bold>Slot C - Drive MAG"
 	else if {_RN} is 9:
 		return "<light yellow><bold>Slot C - Drive DEF"
 	else if {_RN} is 10:
-		return "<light yellow><bold>Slot C - Drive MAG"
+		return "<light yellow><bold>Slot C - Drive RES"
 	else if {_RN} is 11:
 		return "<light yellow><bold>Slot C - STR Smoke"
 	else if {_RN} is 12:
@@ -424,46 +594,79 @@ function getCSlotSkill(RANGE: number) :: text:
 	else if {_RN} is 13:
 		return "<light yellow><bold>Slot C - SPD Smoke"
 	else if {_RN} is 14:
-		return "<light yellow><bold>Slot C - SKL Smoke"
-	else if {_RN} is 15:
 		return "<light yellow><bold>Slot C - MAG Smoke"
+	else if {_RN} is 15:
+		return "<light yellow><bold>Slot C - RES Smoke"
 	else if {_RN} is 16:
 		return "<light yellow><bold>Slot C - Breath of Life"
 	else if {_RN} is 17:
 		return "<light yellow><bold>Slot C - Savage Blow"
 	else if {_RN} is 18:
-		return "<light yellow><bold>Slot C - Pressure STR"
+		return "<light yellow><bold>Slot C - Rouse STR"
 	else if {_RN} is 19:
-		return "<light yellow><bold>Slot C - Pressure SPD"
+		return "<light yellow><bold>Slot C - Rouse SPD"
 	else if {_RN} is 20:
-		return "<light yellow><bold>Slot C - Pressure SKL"
+		return "<light yellow><bold>Slot C - Rouse MAG"
 	else if {_RN} is 21:
-		return "<light yellow><bold>Slot C - Pressure DEF"
+		return "<light yellow><bold>Slot C - Rouse DEF"
 	else if {_RN} is 22:
-		return "<light yellow><bold>Slot C - Pressure MAG"
+		return "<light yellow><bold>Slot C - Rouse RES"
 	else if {_RN} is 23:
-		return "<light yellow><bold>Slot C - STR Authority"
+		return "<light yellow><bold>Slot C - Slaying Pulse"
 	else if {_RN} is 24:
-		return "<light yellow><bold>Slot C - DEF Authority"
+		return "<light yellow><bold>Slot C - Flashing Rush"
 	else if {_RN} is 25:
-		return "<light yellow><bold>Slot C - SPD Authority"
+		return "<light yellow><bold>Slot C - Heavy Rush"
 	else if {_RN} is 26:
-		return "<light yellow><bold>Slot C - SKL Authority"
+		return "<light yellow><bold>Slot C - STR/DEF Rein"
 	else if {_RN} is 27:
-		return "<light yellow><bold>Slot C - MAG Authority"
+		return "<light yellow><bold>Slot C - MAG/RES Rein"
 	else if {_RN} is 28:
-		return "<light yellow><bold>Slot C - Gravity"
+		return "<light yellow><bold>Slot C - Antigravity"
 	else if {_RN} is 29:
-		return "<light yellow><bold>Slot C - Bold Fighter"
+		return "<light yellow><bold>Slot C - DEF/RES Rein"
 	else if {_RN} is 30:
 		return "<light yellow><bold>Slot C - Fear"
 	else if {_RN} is 31:
-		return "<light yellow><bold>Slot C - Restrict"
+		return "<light yellow><bold>Slot C - Lethargy"
 	else if {_RN} is 32:
-		return "<light yellow><bold>Slot C - Blowback"
-		
+		return "<light yellow><bold>Slot C - SPD/DEF Rein"
+	else if {_RN} is 33:
+		return "<light yellow><bold>Slot C - SPD/RES Rein"
+	else if {_RN} is 34:
+		return "<light yellow><bold>Slot C - Drive STR"
+	else if {_RN} is 35:
+		return "<light yellow><bold>Slot C - Drive MAG"
+	else if {_RN} is 36:
+		return "<light yellow><bold>Slot C - Drive SPD"
+	else if {_RN} is 37:
+		return "<light yellow><bold>Slot C - Drive DEF"		
+	else if {_RN} is 38:
+		return "<light yellow><bold>Slot C - Drive RES"
+	else if {_RN} is 39:
+		return "<light yellow><bold>Slot C - Quickened Pulse"
+	else if {_RN} is 40:
+		return "<light yellow><bold>Slot C - Time's Pulse"
+	else if {_RN} is 41:
+		return "<light yellow><bold>Slot C - Offence Blaze"
+	else if {_RN} is 42:
+		return "<light yellow><bold>Slot C - Defence Blaze"
+	else if {_RN} is 43:
+		return "<light yellow><bold>Slot C - Critical Blaze"
+	else if {_RN} is 44:
+		return "<light yellow><bold>Slot C - STR/MAG Ploy"
+	else if {_RN} is 45:
+		return "<light yellow><bold>Slot C - STR/DEF Ploy"
+	else if {_RN} is 46:
+		return "<light yellow><bold>Slot C - MAG/RES Ploy"
+	else if {_RN} is 47:
+		return "<light yellow><bold>Slot C - SPD/DEF Ploy"
+	else if {_RN} is 48:
+		return "<light yellow><bold>Slot C - SPD/RES Ploy"
+	else if {_RN} is 49:
+		return "<light yellow><bold>Slot C - ATK/SPD Ploy"
 function getAssistSlotSkill(RANGE: number) :: text:
-	set {_RN} to a random integer from 1 to 18
+	set {_RN} to a random integer from 1 to 16
 	if {_RN} is 1:
 		if {_RANGE} is 0:
 			return "<light green><bold>Assist - Drag Back"
@@ -508,7 +711,7 @@ function getAssistSlotSkill(RANGE: number) :: text:
 		return "<light green><bold>Assist - MAX-Taunt"
 		
 function getSpecialSlotSkill(RANGE: number) :: text:
-	set {_RN} to a random integer from 1 to 18
+	set {_RN} to a random integer from 1 to 20
 	if {_RN} is 1:
 		return "<light purple><bold>Special - Moonbow"
 	else if {_RN} is 2:
@@ -526,13 +729,13 @@ function getSpecialSlotSkill(RANGE: number) :: text:
 	else if {_RN} is 8:
 		return "<light purple><bold>Special - Astra"
 	else if {_RN} is 9:
-		return "<light purple><bold>Special - Blazing Light"
+		return "<light purple><bold>Special - Rising Thunder"
 	else if {_RN} is 10:
-		return "<light purple><bold>Special - Ignis"
+		return "<light purple><bold>Special - Bonfire"
 	else if {_RN} is 11:
-		return "<light purple><bold>Special - Glacies"
+		return "<light purple><bold>Special - Iceberg"
 	else if {_RN} is 12:
-		return "<light purple><bold>Special - Rising Wind"
+		return "<light purple><bold>Special - Dragon Fang"
 	else if {_RN} is 13:
 		return "<light purple><bold>Special - Dragon Fang"
 	else if {_RN} is 14:
@@ -540,28 +743,31 @@ function getSpecialSlotSkill(RANGE: number) :: text:
 	else if {_RN} is 15:
 		return "<light purple><bold>Special - Aegis"
 	else if {_RN} is 16:
-		return "<light purple><bold>Special - Growing Light"
+		return "<light purple><bold>Special - Blazing Thunder"
 	else if {_RN} is 17:
 		return "<light purple><bold>Special - Miracle"
 	else if {_RN} is 18:
-		return "<light purple><bold>Special - Subdue"
-		
+		return "<light purple><bold>Special - Buckler"
+	else if {_RN} is 19:
+		return "<light purple><bold>Special - Ruptured Sky"
+	else if {_RN} is 20:
+		return "<light purple><bold>Special - Holy Vestments"		
 function getRefineSlotSkill(RANGE: number) :: text:
-	set {_RN} to a random integer from 1 to 7
+	set {_RN} to a random integer from 1 to 6
 	if {_RN} is 1:
-		return "<green><bold>Refined: Slaying"
+		return "<gold><italics>Refined - Slaying"
 	else if {_RN} is 2:
-		return "<red><bold>Refined: Reinforced"
+		return "<gold><italics>Refined - Reinforced"
 	else if {_RN} is 3:
-		return "<purple><bold>Refined: Crushing"
+		return "<gold><italics>Refined - Crushing"
 	else if {_RN} is 4:
-		return "<light blue><bold>Refined: Warding"
+		return "<gold><italics>Refined - Warding"
 	else if {_RN} is 5:
-		return "<light red><bold>Refined: Piercing"
+		return "<gold><italics>Refined - Piercing"
 	else if {_RN} is 6:
-		return "<gold><bold>Refined: Koenig"
+		return "<gold><italics>Refined - Koenig"
 	else if {_RN} is 7:
-		return "<gold><bold>Refined: Stylish"
+		return "<gold><italics>Refined - Stylish"
 	
 
 command /fe <number> <number>:
@@ -576,7 +782,7 @@ command /fe <number> <number>:
 				set {t_str.%{_deadlord}%} to 85
 				set {t_def.%{_deadlord}%} to 55
 				set {t_spd.%{_deadlord}%} to 65
-				set {skl.%{_deadlord}%} to 120
+				set {LCK.%{_deadlord}%} to 120
 				set {t_res.%{_deadlord}%} to 30
 				set the maximum health of {_deadlord} to 80
 				set {lvl.%{_deadlord}%} to 70
@@ -596,7 +802,7 @@ command /fe <number> <number>:
 				set {t_str.%{_deadlord}%} to 65
 				set {t_def.%{_deadlord}%} to 70
 				set {t_spd.%{_deadlord}%} to 55
-				set {skl.%{_deadlord}%} to 80
+				set {LCK.%{_deadlord}%} to 80
 				set {t_res.%{_deadlord}%} to 85
 				set {lvl.%{_deadlord}%} to 70
 				set the maximum health of {_deadlord} to 85
@@ -618,7 +824,7 @@ command /fe <number> <number>:
 				set {t_str.%{_deadlord}%} to 120
 				set {t_def.%{_deadlord}%} to 29
 				set {t_spd.%{_deadlord}%} to 160
-				set {skl.%{_deadlord}%} to 175
+				set {LCK.%{_deadlord}%} to 175
 				set {t_res.%{_deadlord}%} to 25
 				set {lvl.%{_deadlord}%} to 75
 				set the maximum health of {_deadlord} to 60
@@ -639,7 +845,7 @@ command /fe <number> <number>:
 				set {t_str.%{_deadlord}%} to 120
 				set {t_def.%{_deadlord}%} to 10
 				set {t_spd.%{_deadlord}%} to 120
-				set {skl.%{_deadlord}%} to 175
+				set {LCK.%{_deadlord}%} to 175
 				set {t_res.%{_deadlord}%} to 10
 				set {lvl.%{_deadlord}%} to 75
 				set the maximum health of {_deadlord} to 70
@@ -659,7 +865,7 @@ command /fe <number> <number>:
 				set {t_str.%{_deadlord}%} to 120
 				set {t_def.%{_deadlord}%} to 255
 				set {t_spd.%{_deadlord}%} to 100
-				set {skl.%{_deadlord}%} to 90
+				set {LCK.%{_deadlord}%} to 90
 				set {t_res.%{_deadlord}%} to 100
 				set {lvl.%{_deadlord}%} to 150
 				set the maximum health of {_deadlord} to 135
@@ -682,7 +888,7 @@ command /fe <number> <number>:
 				set {t_str.%{_deadlord}%} to 95
 				set {t_def.%{_deadlord}%} to 60
 				set {t_spd.%{_deadlord}%} to 55
-				set {skl.%{_deadlord}%} to 85
+				set {LCK.%{_deadlord}%} to 85
 				set {t_res.%{_deadlord}%} to 30
 				set {lvl.%{_deadlord}%} to 70
 				set the maximum health of {_deadlord} to 90
@@ -704,7 +910,7 @@ command /fe <number> <number>:
 				set {t_str.%{_deadlord}%} to 30
 				set {t_def.%{_deadlord}%} to 100
 				set {t_spd.%{_deadlord}%} to 60
-				set {skl.%{_deadlord}%} to 80
+				set {LCK.%{_deadlord}%} to 80
 				set {t_res.%{_deadlord}%} to 120
 				set {lvl.%{_deadlord}%} to 70
 				set the maximum health of {_deadlord} to 70
@@ -725,7 +931,7 @@ command /fe <number> <number>:
 				set {t_str.%{_deadlord}%} to 570
 				set {t_def.%{_deadlord}%} to 570
 				set {t_spd.%{_deadlord}%} to 230
-				set {skl.%{_deadlord}%} to 595
+				set {LCK.%{_deadlord}%} to 595
 				set {t_res.%{_deadlord}%} to 910
 				set {lvl.%{_deadlord}%} to 750
 				set the maximum health of {_deadlord} to 190
@@ -751,7 +957,7 @@ command /fe <number> <number>:
 				set {t_str.%{_deadlord}%} to 85
 				set {t_def.%{_deadlord}%} to 65
 				set {t_spd.%{_deadlord}%} to 35
-				set {skl.%{_deadlord}%} to 80
+				set {LCK.%{_deadlord}%} to 80
 				set {t_res.%{_deadlord}%} to 65
 				set {lvl.%{_deadlord}%} to 80
 				set the maximum health of {_deadlord} to 80
@@ -772,7 +978,7 @@ command /fe <number> <number>:
 				set {t_str.%{_deadlord}%} to 65
 				set {t_def.%{_deadlord}%} to 65
 				set {t_spd.%{_deadlord}%} to 65
-				set {skl.%{_deadlord}%} to 65
+				set {LCK.%{_deadlord}%} to 65
 				set {t_res.%{_deadlord}%} to 65
 				set {lvl.%{_deadlord}%} to 80
 				set the maximum health of {_deadlord} to 85
@@ -791,7 +997,7 @@ command /fe <number> <number>:
 				set {t_str.%{_deadlord}%} to 40
 				set {t_def.%{_deadlord}%} to 65
 				set {t_spd.%{_deadlord}%} to 80
-				set {skl.%{_deadlord}%} to 60
+				set {LCK.%{_deadlord}%} to 60
 				set {t_res.%{_deadlord}%} to 125
 				set {lvl.%{_deadlord}%} to 80
 				set the maximum health of {_deadlord} to 70
@@ -811,7 +1017,7 @@ command /fe <number> <number>:
 				set {t_str.%{_deadlord}%} to 45
 				set {t_def.%{_deadlord}%} to 45
 				set {t_spd.%{_deadlord}%} to 65
-				set {skl.%{_deadlord}%} to 80
+				set {LCK.%{_deadlord}%} to 80
 				set {t_res.%{_deadlord}%} to 100
 				set {lvl.%{_deadlord}%} to 70
 				set the maximum health of {_deadlord} to 60
@@ -830,7 +1036,7 @@ command /fe <number> <number>:
 				set {t_str.%{_deadlord}%} to 50
 				set {t_def.%{_deadlord}%} to 75
 				set {t_spd.%{_deadlord}%} to 115
-				set {skl.%{_deadlord}%} to 135
+				set {LCK.%{_deadlord}%} to 135
 				set {t_res.%{_deadlord}%} to 75
 				set {lvl.%{_deadlord}%} to 70
 				set the maximum health of {_deadlord} to 65
@@ -850,7 +1056,7 @@ command /fe <number> <number>:
 				set {t_str.%{_deadlord}%} to 65
 				set {t_def.%{_deadlord}%} to 100
 				set {t_spd.%{_deadlord}%} to 45
-				set {skl.%{_deadlord}%} to 55
+				set {LCK.%{_deadlord}%} to 55
 				set {t_res.%{_deadlord}%} to 45
 				set {lvl.%{_deadlord}%} to 75
 				set the maximum health of {_deadlord} to 65
@@ -876,7 +1082,7 @@ command /fe <number> <number>:
 				set {t_str.%{_deadlord}%} to 75
 				set {t_def.%{_deadlord}%} to 65
 				set {t_spd.%{_deadlord}%} to 60
-				set {skl.%{_deadlord}%} to 75
+				set {LCK.%{_deadlord}%} to 75
 				set {t_res.%{_deadlord}%} to 40
 				set {lvl.%{_deadlord}%} to 75
 				set the maximum health of {_deadlord} to 70
@@ -886,7 +1092,7 @@ command /fe <number> <number>:
 				set {_deadlord}'s leggings to diamond leggings of protection 4
 				set {_deadlord}'s boots to diamond boots of protection 4
 				set {class.%{_deadlord}%} to "Crusader"
-				set {skillslot1.%{_deadlord}%} to "Brazen SKL"
+				set {skillslot1.%{_deadlord}%} to "Brazen LCK"
 				set {skillslot2.%{_deadlord}%} to "Brazen STR"
 				set {skillslot3.%{_deadlord}%} to "Crusader's Blood"
 				set {t_isBoss.%{_deadlord}%} to true
@@ -897,7 +1103,7 @@ command /fe <number> <number>:
 				set {t_str.%{_deadlord}%} to 100
 				set {t_def.%{_deadlord}%} to 35
 				set {t_spd.%{_deadlord}%} to 135
-				set {skl.%{_deadlord}%} to 100
+				set {LCK.%{_deadlord}%} to 100
 				set {t_res.%{_deadlord}%} to 10
 				set {lvl.%{_deadlord}%} to 70
 				set the maximum health of {_deadlord} to 60
@@ -921,7 +1127,7 @@ command /fe <number> <number>:
 				set {t_str.%{_deadlord}%} to 55
 				set {t_def.%{_deadlord}%} to 55
 				set {t_spd.%{_deadlord}%} to 20
-				set {skl.%{_deadlord}%} to 55
+				set {LCK.%{_deadlord}%} to 55
 				set {t_res.%{_deadlord}%} to 80
 				set {lvl.%{_deadlord}%} to 80
 				set the maximum health of {_deadlord} to 40
@@ -946,7 +1152,7 @@ command /fe <number> <number>:
 				set {t_str.%{_deadlord}%} to 225
 				set {t_def.%{_deadlord}%} to 180
 				set {t_spd.%{_deadlord}%} to 100
-				set {skl.%{_deadlord}%} to 95
+				set {LCK.%{_deadlord}%} to 95
 				set {t_res.%{_deadlord}%} to 180
 				set {lvl.%{_deadlord}%} to 250
 				set the maximum health of {_deadlord} to 80
@@ -966,7 +1172,7 @@ command /fe <number> <number>:
 				set {t_str.%{_deadlord}%} to 150
 				set {t_def.%{_deadlord}%} to 150
 				set {t_spd.%{_deadlord}%} to 150
-				set {skl.%{_deadlord}%} to 150
+				set {LCK.%{_deadlord}%} to 150
 				set {t_res.%{_deadlord}%} to 150
 				set {lvl.%{_deadlord}%} to 120
 				set the maximum health of {_deadlord} to 100
@@ -989,7 +1195,7 @@ command /fe <number> <number>:
 				set {t_str.%{_deadlord}%} to 80
 				set {t_def.%{_deadlord}%} to 30
 				set {t_spd.%{_deadlord}%} to 65
-				set {skl.%{_deadlord}%} to 55
+				set {LCK.%{_deadlord}%} to 55
 				set {t_res.%{_deadlord}%} to 25
 				set {lvl.%{_deadlord}%} to 60
 				set the maximum health of {_deadlord} to 45
@@ -1008,7 +1214,7 @@ command /fe <number> <number>:
 				set {t_str.%{_deadlord}%} to 115
 				set {t_def.%{_deadlord}%} to 65
 				set {t_spd.%{_deadlord}%} to 55
-				set {skl.%{_deadlord}%} to 75
+				set {LCK.%{_deadlord}%} to 75
 				set {t_res.%{_deadlord}%} to 65
 				set {lvl.%{_deadlord}%} to 75
 				set the maximum health of {_deadlord} to 60
@@ -1028,7 +1234,7 @@ command /fe <number> <number>:
 				set {t_str.%{_deadlord}%} to 25
 				set {t_def.%{_deadlord}%} to 45
 				set {t_spd.%{_deadlord}%} to 130
-				set {skl.%{_deadlord}%} to 75
+				set {LCK.%{_deadlord}%} to 75
 				set {t_res.%{_deadlord}%} to 125
 				set {lvl.%{_deadlord}%} to 95
 				set the maximum health of {_deadlord} to 55
@@ -1047,7 +1253,7 @@ command /fe <number> <number>:
 				set {t_str.%{_deadlord}%} to 66
 				set {t_def.%{_deadlord}%} to 35
 				set {t_spd.%{_deadlord}%} to 25
-				set {skl.%{_deadlord}%} to 65
+				set {LCK.%{_deadlord}%} to 65
 				set {t_res.%{_deadlord}%} to 80
 				set {lvl.%{_deadlord}%} to 50
 				set the maximum health of {_deadlord} to 70
@@ -1070,7 +1276,7 @@ command /fe <number> <number>:
 				set {t_str.%{_deadlord}%} to 135
 				set {t_def.%{_deadlord}%} to 80
 				set {t_spd.%{_deadlord}%} to 65
-				set {skl.%{_deadlord}%} to 80
+				set {LCK.%{_deadlord}%} to 80
 				set {t_res.%{_deadlord}%} to 45
 				set {lvl.%{_deadlord}%} to 70
 				set the maximum health of {_deadlord} to 75
@@ -1090,7 +1296,7 @@ command /fe <number> <number>:
 				set {t_str.%{_deadlord}%} to 72
 				set {t_def.%{_deadlord}%} to 60
 				set {t_spd.%{_deadlord}%} to 100
-				set {skl.%{_deadlord}%} to 70
+				set {LCK.%{_deadlord}%} to 70
 				set {t_res.%{_deadlord}%} to 34
 				set {lvl.%{_deadlord}%} to 70
 				set the maximum health of {_deadlord} to 75
@@ -1111,7 +1317,7 @@ command /fe <number> <number>:
 				set {t_str.%{_deadlord}%} to 80
 				set {t_def.%{_deadlord}%} to 160
 				set {t_spd.%{_deadlord}%} to 15
-				set {skl.%{_deadlord}%} to 45
+				set {LCK.%{_deadlord}%} to 45
 				set {t_res.%{_deadlord}%} to 15
 				set {lvl.%{_deadlord}%} to 70
 				set the maximum health of {_deadlord} to 90
@@ -1138,7 +1344,7 @@ command /fe <number> <number>:
 					subtract 1 from {t_str.%{_deadlord}%}
 					subtract 1 from {t_def.%{_deadlord}%}
 					subtract 1 from {t_spd.%{_deadlord}%}
-					subtract 1 from {skl.%{_deadlord}%}
+					subtract 1 from {LCK.%{_deadlord}%}
 					subtract 1 from {t_res.%{_deadlord}%}
 					subtract 0.5 from the maximum health of {_deadlord}
 					subtract 1 from {lvl.%{_deadlord}%}
@@ -1148,7 +1354,7 @@ command /fe <number> <number>:
 					add 1 to {t_str.%{_deadlord}%}
 					add 1 to {t_def.%{_deadlord}%}
 					add 1 to {t_spd.%{_deadlord}%}
-					add 1 to {skl.%{_deadlord}%}
+					add 1 to {LCK.%{_deadlord}%}
 					add 1 to {t_res.%{_deadlord}%}
 					add 0.5 to the maximum health of {_deadlord}
 					add 1 to {lvl.%{_deadlord}%}
@@ -1170,602 +1376,230 @@ command /fe <number> <number>:
 			broadcast "<light red>Level: %{lvl.%{_deadlord}%}%"
 			broadcast "<light red>Weapon: %{_deadlord}'s tool%"			
 
+#Fudge overworld mob spawns by chaining them off animal spawns
+on spawn:
+	if entity is phantom:
+		cancel event
+	if entity is cow:
+		set {_animalSpawn} to true
+	else if entity is sheep:
+		set {_animalSpawn} to true
+	else if entity is pig:
+		set {_animalSpawn} to true
+	else if entity is chicken:
+		set {_animalSpawn} to true
+	else if entity is rabbit:
+		set {_animalSpawn} to true
+	else if entity is any horse:
+		set {_animalSpawn} to true
+	else if entity is wolf:
+		set {_animalSpawn} to true
+	else if entity is ocelot:
+		set {_animalSpawn} to true
+	if {_animalSpawn} is true:
+		loop all players in radius 30 of the entity:
+			if loop-player is alive:
+				set {_blockDaytimeMobSpawn} to true
+				exit 1 loop
+		if {_blockDaytimeMobSpawn} is not true:
+			chance of 5%:
+				spawn 1 zombie at the entity
+			chance of 5%:
+				spawn 1 skeleton at the entity
+
 
 #Spawned monsters scale to players with classes.
 on spawn of a monster:
+	if entity is phantom:
+		cancel event
 	if entity is alive:
 		set {_OK} to true
 		if {_OK} is true:
+			if entity's world is "FreeBuild":
+				if {allowFreeBuildMobSpawn} is not set:
+					cancel event
+				else:
+					clear {allowFreeBuildMobSpawn}
 			if entity's world is not "Salindrum":
 				set {_modifier} to 20
 				if the entity's world is "GenOne":
-					set {_modifier} to 0
+					add -19 to {_modifier}
 				if the entity's world is "Alstair":
-					add 55 to {_modifier}
+					add -17 to {_modifier}
 				else if the entity's world is "Alstair_Nether":
-					add 55 to {_modifier}
+					add -17 to {_modifier}
 				else if the entity's world is "Alstair_End":
-					subtract 1 from {_modifier}
+					subtract 15 from {_modifier}
 				chance of 1%:
-					chance of {_modifier}%:
+					chance of 1%:
 						cancel event
 						broadcast "<light red>A fallen hero has arisen..."
-						set {_name} to a random integer from 1 to 26
+						set {_name} to a random integer from 1 to 7
 						set {_loc} to location of block at entity
 						if {_name} is 1:
 							spawn 1 zombie at the entity
 							set {_deadlord} to the last spawned entity
-							set the name of the last spawned entity to "<light red>Hero of Prophecy: Alm"
-							set {str.%{_deadlord}%} to 85
-							set {def.%{_deadlord}%} to 55
-							set {spd.%{_deadlord}%} to 65
-							set {skl.%{_deadlord}%} to 120
-							set {res.%{_deadlord}%} to 30
-							set the maximum health of {_deadlord} to 80
-							set {lvl.%{_deadlord}%} to 70
-							set {_deadlord}'s tool to diamond sword of sharpness 5 named "<gold><bold>Falchion" with lore "Slot A - Armour Smasher", "Slot B - Brave Blade", "<light yellow><bold>Slot C - Pressure DEF", "<light green><bold>Assist - Swap", "<light purple><bold>Special - Luna", "<red><bold>Refined: Reinforced"
+							set the name of the last spawned entity to "<light red>King of Valentia: Alm"
+							set {t_str.%{_deadlord}%} to 85
+							set {t_def.%{_deadlord}%} to 55
+							set {t_spd.%{_deadlord}%} to 65
+							set {t_LCK.%{_deadlord}%} to 80
+							set {t_res.%{_deadlord}%} to 30
+							set {t_mag.%{_deadlord}%} to 20
+							set the maximum health of {_deadlord} to 140
+							set {t_lvl.%{_deadlord}%} to 45
+							set {_deadlord}'s tool to diamond sword of sharpness 5 named "<gold><bold>Falchion" with nbt "{bakedRefine:776,sacredTreasureID:0}" with lore "<light red><bold>Slot A - Armour Smasher", "<light blue><bold>Slot B - Brave Blade", "<light yellow><bold>Slot C - STR/DEF Rein", "<light green><bold>Assist - Swap", "<light purple><bold>Special - Luna", "<gold>Refined: Reinforced"
 							set {_deadlord}'s helmet to diamond helmet of protection 4
 							set {_deadlord}'s chestplate to diamond chestplate of protection 4
 							set {_deadlord}'s leggings to diamond leggings of protection 4
 							set {_deadlord}'s boots to diamond boots of protection 4
-							set {class.%{_deadlord}%} to "Lord"
-							set {skillslot1.%{_deadlord}%} to "Double Lion"
-							set {skillslot2.%{_deadlord}%} to "Lord's Blood"
+							set {t_skillslot1.%{_deadlord}%} to "Scendscale"
+							set {t_skillslot2.%{_deadlord}%} to "Shrug It Off"
+							set {t_skillslot3.%{_deadlord}%} to "Brazen STR/DEF"
 							set {t_isBoss.%{_deadlord}%} to true
 						else if {_name} is 2:
 							spawn 1 zombie at the entity
 							set {_deadlord} to the last spawned entity
-							set the name of the last spawned entity to "<light red>Young Lion: Roy"
-							set {str.%{_deadlord}%} to 65
-							set {def.%{_deadlord}%} to 70
-							set {spd.%{_deadlord}%} to 55
-							set {skl.%{_deadlord}%} to 80
-							set {res.%{_deadlord}%} to 85
-							set {lvl.%{_deadlord}%} to 70
-							set the maximum health of {_deadlord} to 85
-							set {_deadlord}'s tool to diamond sword of sharpness 5 named "<gold><bold>Binding Blade" with lore "<light red><bold>Slot A - Close Defence", "<light blue><bold>Slot B - Sabotage Attack", "<light yellow><bold>Slot C - Pressure STR", "<light green><bold>Assist - Reposition", "<light purple><bold>Special - Dragon Fang", "<bold>Refined: Unique"
+							set the name of the last spawned entity to "<light red>Hero of Yore: Marth"
+							set {t_str.%{_deadlord}%} to 65
+							set {t_def.%{_deadlord}%} to 55
+							set {t_spd.%{_deadlord}%} to 85
+							set {t_LCK.%{_deadlord}%} to 100
+							set {t_res.%{_deadlord}%} to 45
+							set {t_mag.%{_deadlord}%} to 30
+							set the maximum health of {_deadlord} to 140
+							set {t_lvl.%{_deadlord}%} to 45
+							set {_deadlord}'s tool to diamond sword of sharpness 5 named "<gold><bold>Falchion" with nbt "{bakedRefine:776,sacredTreasureID:0}" with lore "<light red><bold>Slot A - ATK/SPD Push", "<light blue><bold>Slot B - Solar Brace", "<light yellow><bold>Slot C - SPD/DEF Rein", "<light green><bold>Assist - Stinger", "<light purple><bold>Special - Aether", "<gold>Refined: Slaying"
 							set {_deadlord}'s helmet to diamond helmet of protection 4
 							set {_deadlord}'s chestplate to diamond chestplate of protection 4
 							set {_deadlord}'s leggings to diamond leggings of protection 4
 							set {_deadlord}'s boots to diamond boots of protection 4
-							set {class.%{_deadlord}%} to "Lord"
-							set {skillslot1.%{_deadlord}%} to "Distant Defence"
-							set {skillslot2.%{_deadlord}%} to "Sword Specialist"
-							set {skillslot3.%{_deadlord}%} to "Lord's Blood"
+							set {t_skillslot1.%{_deadlord}%} to "Darting Blow II"
+							set {t_skillslot2.%{_deadlord}%} to "Critical Snag"
+							set {t_skillslot3.%{_deadlord}%} to "Mystic Boost"
 							set {t_isBoss.%{_deadlord}%} to true
 						else if {_name} is 3:
 							spawn 1 zombie at the entity
 							set {_deadlord} to the last spawned entity
-							set the name of the last spawned entity to "<light red>Scarlett Sword: Navarre"
-							apply swiftness 4 to the entity for 999 days
-							set {str.%{_deadlord}%} to 120
-							set {def.%{_deadlord}%} to 29
-							set {spd.%{_deadlord}%} to 160
-							set {skl.%{_deadlord}%} to 175
-							set {res.%{_deadlord}%} to 25
-							set {lvl.%{_deadlord}%} to 75
-							set the maximum health of {_deadlord} to 60
-							set {_deadlord}'s tool to diamond sword of sharpness 5 named "<red><bold>Scarlett Sword" with lore "<light red><bold>Slot A - Armour Smasher", "<light blue><bold>Slot B - Desperation", "<light yellow><bold>Slot C - Savage Blow", "<light green><bold>Assist - Rally Speed", "<light purple><bold>Special - Galeforce", "<bold>Refined: Slaying"
-							set {_deadlord}'s helmet to leather helmet of protection 5
-							set {_deadlord}'s chestplate to leather chestplate of protection 5
-							set {_deadlord}'s leggings to leather leggings of protection 5
-							set {_deadlord}'s boots to leather boots of protection 5
-							set {class.%{_deadlord}%} to "Swordmaster"
-							set {skillslot1.%{_deadlord}%} to "Vantage"
-							set {skillslot2.%{_deadlord}%} to "Sword Specialist"
-							set {t_isBoss.%{_deadlord}%} to true
+							set the name of the last spawned entity to "<light red>Holy Knight: Sigurd"
+							set {t_str.%{_deadlord}%} to 80
+							set {t_def.%{_deadlord}%} to 70
+							set {t_spd.%{_deadlord}%} to 65
+							set {t_LCK.%{_deadlord}%} to 55
+							set {t_res.%{_deadlord}%} to 50
+							set {t_mag.%{_deadlord}%} to 20
+							set the maximum health of {_deadlord} to 180
+							set {t_lvl.%{_deadlord}%} to 45
+							set {_deadlord}'s tool to diamond sword of sharpness 5 named "<gold><bold>Tyrfing" with nbt "{bakedRefine:776,sacredTreasureID:2}" with lore "<light red><bold>Slot A - Armour Smasher", "<light blue><bold>Slot B - Brave Blade", "<light yellow><bold>Slot C - STR/DEF Rein", "<light green><bold>Assist - Swap", "<light purple><bold>Special - Luna", "<gold>Refined: Reinforced"
+							set {_deadlord}'s helmet to diamond helmet of protection 4
+							set {_deadlord}'s chestplate to diamond chestplate of protection 4
+							set {_deadlord}'s leggings to diamond leggings of protection 4
+							set {_deadlord}'s boots to diamond boots of protection 4
+							set {t_skillslot1.%{_deadlord}%} to "Crusader's Charge"
+							set {t_skillslot2.%{_deadlord}%} to "Well-Trained"
+							set {t_skillslot3.%{_deadlord}%} to "Canto"
+							set {t_skillslot4.%{_deadlord}%} to "Heavy Blow"
+							set {t_skillslot4.%{_deadlord}%} to "Bracing Blow"
+							set {t_isBoss.%{_deadlord}%} to true	
+							spawn 1 horse at the entity
+							make {_deadlord} ride the last spawned horse
 						else if {_name} is 4:
-							spawn 1 skeleton at the entity
+							spawn 1 zombie at the entity
 							set {_deadlord} to the last spawned entity
-							set the name of the last spawned entity to "<light red>Altean Sniper: Jeorge"
-							apply swiftness 4 to the entity for 999 days
-							set {str.%{_deadlord}%} to 120
-							set {def.%{_deadlord}%} to 10
-							set {spd.%{_deadlord}%} to 120
-							set {skl.%{_deadlord}%} to 175
-							set {res.%{_deadlord}%} to 10
-							set {lvl.%{_deadlord}%} to 75
-							set the maximum health of {_deadlord} to 70
-							set {_deadlord}'s tool to bow of power 5 named "<gold><bold>Parthia" with lore "<light red><bold>Slot A - Close Counter", "<light blue><bold>Slot B - Sabotage Speed", "<light yellow><bold>Slot C - Savage Blow", "<light green><bold>Assist - None", "<light purple><bold>Special - Moonbow", "<bold>Refined: Unique"
-							set {_deadlord}'s helmet to gold helmet of protection 4
-							set {_deadlord}'s chestplate to gold chestplate of protection 4
-							set {_deadlord}'s leggings to gold leggings of protection 4
-							set {_deadlord}'s boots to gold boots of protection 4
-							set {class.%{_deadlord}%} to "Sniper"
-							set {skillslot1.%{_deadlord}%} to "Distant Defence"
-							set {skillslot2.%{_deadlord}%} to "Heavy Draw"
+							set the name of the last spawned entity to "<light red>Young Lion: Roy"
+							set {t_str.%{_deadlord}%} to 65
+							set {t_def.%{_deadlord}%} to 65
+							set {t_spd.%{_deadlord}%} to 65
+							set {t_LCK.%{_deadlord}%} to 110
+							set {t_res.%{_deadlord}%} to 60
+							set {t_mag.%{_deadlord}%} to 30
+							set the maximum health of {_deadlord} to 180
+							set {t_lvl.%{_deadlord}%} to 45
+							set {_deadlord}'s tool to diamond sword of sharpness 5 named "<gold><bold>Binding Blade" with nbt "{bakedRefine:776,sacredTreasureID:1}" with lore "<light red><bold>Slot A - Bracing Stance", "<light blue><bold>Slot B - Riposte", "<light yellow><bold>Slot C - STR/DEF Rein", "<light green><bold>Assist - Counter", "<light purple><bold>Special - Bonfire", "<gold>Refined: Warding"
+							set {_deadlord}'s helmet to diamond helmet of protection 4
+							set {_deadlord}'s chestplate to diamond chestplate of protection 4
+							set {_deadlord}'s leggings to diamond leggings of protection 4
+							set {_deadlord}'s boots to diamond boots of protection 4
+							set {t_skillslot1.%{_deadlord}%} to "Bracing Stance"
+							set {t_skillslot2.%{_deadlord}%} to "Shrug It Off"
+							set {t_skillslot3.%{_deadlord}%} to "Mystic Boost"
+							set {t_skillslot4.%{_deadlord}%} to "Seal ATK"
+							set {t_skillslot5.%{_deadlord}%} to "Seal DEF/RES"
 							set {t_isBoss.%{_deadlord}%} to true
 						else if {_name} is 5:
 							spawn 1 zombie at the entity
 							set {_deadlord} to the last spawned entity
-							set the name of the last spawned entity to "<light red>Chosen Undead: Skiddlezz"
-							set {str.%{_deadlord}%} to 120
-							set {def.%{_deadlord}%} to 255
-							set {spd.%{_deadlord}%} to 100
-							set {skl.%{_deadlord}%} to 90
-							set {res.%{_deadlord}%} to 100
-							set {lvl.%{_deadlord}%} to 150
-							set the maximum health of {_deadlord} to 135
-							set {_deadlord}'s tool to diamond sword of sharpness 5 named "<gold><bold>Balder Side Sword" with lore "<light red><bold>Slot A - Close Defence", "<light blue><bold>Slot B - Riposte", "<light yellow><bold>Slot C - Pressure DEF", "<light green><bold>Assist - Swap", "<light purple><bold>Special - Ignis", "<bold>Refined: Unique"
-							set {_deadlord}'s helmet to diamond helmet 
-							set {_deadlord}'s chestplate to diamond chestplate 
-							set {_deadlord}'s leggings to diamond leggings 
-							set {_deadlord}'s boots to diamond boots 
-							set {class.%{_deadlord}%} to "Chieftain"
-							set {skillslot1.%{_deadlord}%} to "Distant Defence"
-							set {skillslot2.%{_deadlord}%} to "Axe Specialist"
-							set {t_isBoss.%{_deadlord}%} to true
-						else if {_name} is 6:
-							spawn 1 zombie at the entity
-							set the name of the last spawned entity to "<light red>Holy Knight: Sigurd"
-							set {_deadlord} to the last spawned entity
-							spawn 1 horse at the entity
-							apply swiftness 3 to the last spawned entity
-							apply resistance 3 to the last spawned entity
-							set {str.%{_deadlord}%} to 95
-							set {def.%{_deadlord}%} to 60
-							set {spd.%{_deadlord}%} to 55
-							set {skl.%{_deadlord}%} to 85
-							set {res.%{_deadlord}%} to 30
-							set {lvl.%{_deadlord}%} to 70
-							set the maximum health of {_deadlord} to 90
-							set {_deadlord}'s tool to diamond sword of sharpness 5 named "<gold><bold>Divine Tyrfing" with lore "<light red><bold>Slot A - Distant Counter", "<light blue><bold>Slot B - Eclipse Brace", "<light yellow><bold>Slot C - Savage Blow", "<light green><bold>Assist - Swap", "<light purple><bold>Special - Luna", "<bold>Refined: Koenig"
-							set {_deadlord}'s helmet to diamond helmet of protection 4
-							set {_deadlord}'s chestplate to diamond chestplate of protection 4
-							set {_deadlord}'s leggings to diamond leggings of protection 4
-							set {_deadlord}'s boots to diamond boots of protection 4
-							set {class.%{_deadlord}%} to "Crusader"
-							set {skillslot1.%{_deadlord}%} to "Crusader's Ward"
-							set {skillslot2.%{_deadlord}%} to "Sword Specialist"
-							set {skillslot3.%{_deadlord}%} to "Crusader's Blood"
-							set {skillslot4.%{_deadlord}%} to "Lord's Blood"
-							set {t_isBoss.%{_deadlord}%} to true
-						else if {_name} is 7:
-							spawn 1 zombie at the entity
-							set {_deadlord} to the last spawned entity
-							set the name of the last spawned entity to "<light red>Divine Dragon: Tiki"
-							set {str.%{_deadlord}%} to 30
-							set {def.%{_deadlord}%} to 100
-							set {spd.%{_deadlord}%} to 60
-							set {skl.%{_deadlord}%} to 80
-							set {res.%{_deadlord}%} to 120
-							set {lvl.%{_deadlord}%} to 70
-							set the maximum health of {_deadlord} to 70
-							set {_deadlord}'s tool to diamond sword of sharpness 5 named "<orange><bold>Flametounge" with lore "<light red><bold>Slot A - Distant Counter", "<light blue><bold>Slot B - Sabotage Speed", "<light yellow><bold>Slot C - Pressure MAG", "<light green><bold>Assist - Swap", "<light purple><bold>Special - Glacies", "<bold>Refined: Warding"
-							set {_deadlord}'s helmet to diamond helmet 
-							set {_deadlord}'s chestplate to diamond chestplate 
-							set {_deadlord}'s leggings to diamond leggings 
-							set {_deadlord}'s boots to diamond boots 
-							set {class.%{_deadlord}%} to "Divine Dragon"
-							set {skillslot1.%{_deadlord}%} to "Draconic Rage"
-							set {skillslot2.%{_deadlord}%} to "Brazen Spectrum"
-							set {t_isBoss.%{_deadlord}%} to true
-						else if {_name} is 8:
-							spawn 1 zombie at the entity
-							set {_deadlord} to the last spawned entity
-							apply swiftness 6 to the last spawned entity for 999 days
-							set the name of the last spawned entity to "<red><bold>Obsidian Knight: Alastor"
-							set {str.%{_deadlord}%} to 80
-							set {def.%{_deadlord}%} to 77
-							set {spd.%{_deadlord}%} to 55
-							set {skl.%{_deadlord}%} to 80
-							set {res.%{_deadlord}%} to 59
-							set {lvl.%{_deadlord}%} to 80
-							set the maximum health of {_deadlord} to 190
-							set {_deadlord}'s tool to diamond sword of sharpness 8 named "<gold><bold>Niur" with lore "Slot A - Distant Counter", "Slot B - Desperation", "Slot C - Pressure DEF","<light green><bold>Assist - None", "<light purple><bold>Special - Dragon Fang", "<purple><bold>Refined: Crushing"
-							set {_deadlord}'s helmet to leather helmet of protection 10
-							set {_deadlord}'s chestplate to leather chestplate of protection 10
-							set {_deadlord}'s leggings to leather leggings of protection 10
-							set {_deadlord}'s boots to leather leggings of protection 10
+							set the name of the last spawned entity to "<light red>Enigmatic General: Black Knight"
+							set {t_str.%{_deadlord}%} to 95
+							set {t_def.%{_deadlord}%} to 85
+							set {t_spd.%{_deadlord}%} to 105
+							set {t_LCK.%{_deadlord}%} to 180
+							set {t_res.%{_deadlord}%} to 45
+							set {t_mag.%{_deadlord}%} to 30
+							set the maximum health of {_deadlord} to 120
+							set {t_lvl.%{_deadlord}%} to 60
+							set {_deadlord}'s tool to diamond sword of sharpness 5 named "<gold><bold>Alondite" with nbt "{bakedRefine:776,sacredTreasureID:3}" with lore "<light red><bold>Slot A - ATK/SPD Catch", "<light blue><bold>Slot B - Riposte", "<light yellow><bold>Slot C - Time's Pulse", "<light green><bold>Assist - Counter", "<light purple><bold>Special - Luna", "<gold>Refined: Slaying"
+							set {_deadlord}'s helmet to leather helmet of protection 8
+							set {_deadlord}'s chestplate to leather chestplate of protection 8
+							set {_deadlord}'s leggings to leather leggings of protection 8
+							set {_deadlord}'s boots to leather boots of protection 8
 							dye {_deadlord}'s helmet black
 							dye {_deadlord}'s chestplate black
 							dye {_deadlord}'s leggings black
 							dye {_deadlord}'s boots black
-							set {class.%{_deadlord}%} to "Lord"
-							set {skillslot1.%{_deadlord}%} to "Double Lion"
-							set {skillslot3.%{_deadlord}%} to "Brazen Spectrum"
-							set {skillslot4.%{_deadlord}%} to "Brazen STR"
+							set {t_skillslot1.%{_deadlord}%} to "Heavy Blow"
+							set {t_skillslot2.%{_deadlord}%} to "Indomitable Will"
+							set {t_skillslot3.%{_deadlord}%} to "STR/SPD Solo"
+							set {t_skillslot4.%{_deadlord}%} to "Boundless Stamina"
+							set {t_skillslot5.%{_deadlord}%} to "Avoidance +20"
 							set {t_isBoss.%{_deadlord}%} to true
-						else if {_name} is 9:
-							spawn 1 zombie at the entity
-							set the name of the last spawned entity to "<light red>Thunder's Sword: Reinhardt"
-							set {_deadlord} to the last spawned entity
-							spawn 1 horse at the entity
-							apply swiftness 3 to the last spawned entity
-							apply resistance 3 to the last spawned entity
-							set {str.%{_deadlord}%} to 85
-							set {def.%{_deadlord}%} to 65
-							set {spd.%{_deadlord}%} to 35
-							set {skl.%{_deadlord}%} to 80
-							set {res.%{_deadlord}%} to 65
-							set {lvl.%{_deadlord}%} to 80
-							set the maximum health of {_deadlord} to 80
-							set {_deadlord}'s tool to diamond sword of sharpness 5 named "<gold><bold>Meisterschwert" with lore "<light red><bold>Slot A - Distant Counter", "<light blue><bold>Slot B - Shield Pulse", "<light yellow><bold>Slot C - Pressure DEF", "<light green><bold>Assist - Swap", "<light purple><bold>Special - Pavise", "<bold>Refined: Slaying"
-							set {_deadlord}'s helmet to diamond helmet of protection 4
-							set {_deadlord}'s chestplate to diamond chestplate of protection 4
-							set {_deadlord}'s leggings to diamond leggings of protection 4
-							set {_deadlord}'s boots to diamond boots of protection 4
-							set {class.%{_deadlord}%} to "Mage Knight"
-							set {skillslot1.%{_deadlord}%} to "Brazen Spectrum"
-							set {skillslot2.%{_deadlord}%} to "Brazen STR"
-							set {skillslot3.%{_deadlord}%} to "Brazen DEF"
-							set {t_isBoss.%{_deadlord}%} to true
-						else if {_name} is 10:
-							spawn 1 zombie at the entity
-							set {_deadlord} to the last spawned entity
-							set the name of the last spawned entity to "<light red>Blazing Lord: Cinder"
-							set {str.%{_deadlord}%} to 70
-							set {def.%{_deadlord}%} to 70
-							set {spd.%{_deadlord}%} to 70
-							set {skl.%{_deadlord}%} to 70
-							set {res.%{_deadlord}%} to 70
-							set {lvl.%{_deadlord}%} to 80
-							set the maximum health of {_deadlord} to 85
-							set {_deadlord}'s tool to diamond sword of sharpness 5, fire aspect 1 and knockback 2 named "<yellow><bold>The Grandmaster" with lore "<light red><bold>Slot A - Close Defence", "<light blue><bold>Slot B - Eclipse Brace", "<light yellow><bold>Slot C - Pressure STR", "<light green><bold>Assist - Rally Attack", "<light purple><bold>Special - Moonbow", "<bold>Refined: Koenig"
-							set {_deadlord}'s helmet to diamond helmet of protection 4
-							set {_deadlord}'s chestplate to diamond chestplate of protection 4
-							set {_deadlord}'s leggings to diamond leggings of protection 4
-							set {_deadlord}'s boots to diamond boots of protection 4
-							set {class.%{_deadlord}%} to "Grandmaster"
-							set {skillslot1.%{_deadlord}%} to "Brazen Spectrum"
-							set {t_isBoss.%{_deadlord}%} to true
-						else if {_name} is 11:
-							spawn 1 zombie at the entity
-							set {_deadlord} to the last spawned entity
-							set the name of the last spawned entity to "<light red>Kindled Spirit: Irankata"
-							set {str.%{_deadlord}%} to 40
-							set {def.%{_deadlord}%} to 65
-							set {spd.%{_deadlord}%} to 80
-							set {skl.%{_deadlord}%} to 60
-							set {res.%{_deadlord}%} to 125
-							set {lvl.%{_deadlord}%} to 80
-							set the maximum health of {_deadlord} to 70
-							set {_deadlord}'s tool to diamond sword of sharpness 5 named "<teal><bold>Dragon's Talons" with lore "<light red><bold>Slot A - Warding Stance", "<light blue><bold>Slot B - Bonus Blade", "<light yellow><bold>Slot C - Pressure MAG", "<light green><bold>Assist - Hit and Run", "<light purple><bold>Special - Ignis", "<bold>Refined: Slaying"
-							set {_deadlord}'s helmet to chainmail helmet of protection 6
-							set {_deadlord}'s chestplate to chainmail chestplate of protection 6
-							set {_deadlord}'s leggings to chainmail leggings of protection 6
-							set {_deadlord}'s boots to chainmail boots of protection 6
-							set {class.%{_deadlord}%} to "Dragonborn"
-							set {skillslot1.%{_deadlord}%} to "Draconic Rage"
-							set {skillslot2.%{_deadlord}%} to "Brazen MAG"
-							set {t_isBoss.%{_deadlord}%} to true
-						else if {_name} is 12:
-							spawn 1 skeleton at the entity
+						else if {_name} is 6:
+							spawn 1 stray at the entity
 							set {_deadlord} to the last spawned entity
 							set the name of the last spawned entity to "<light red>Warrior Priestess: Celica"
-							set {str.%{_deadlord}%} to 45
-							set {def.%{_deadlord}%} to 45
-							set {spd.%{_deadlord}%} to 65
-							set {skl.%{_deadlord}%} to 80
-							set {res.%{_deadlord}%} to 100
-							set {lvl.%{_deadlord}%} to 70
-							set the maximum health of {_deadlord} to 60
-							set {_deadlord}'s tool to bow of power 7 and punch 2 named "<gold><bold>Ragnarok" with lore "<light red><bold>Slot A - Sorcery Blade", "<light blue><bold>Slot B - Bonus Blade", "<light yellow><bold>Slot C - Pressure MAG", "<light green><bold>Assist - None", "<light purple><bold>Special - Growing Light", "<bold>Refined: Slaying"
-							set {_deadlord}'s chestplate to leather chestplate of protection 5
-							set {_deadlord}'s leggings to leather leggings of protection 5
-							set {_deadlord}'s boots to leather boots of protection 5
-							set {class.%{_deadlord}%} to "Sorcerer"
-							set {skillslot1.%{_deadlord}%} to "Brazen MAG"
-							set {skillslot2.%{_deadlord}%} to "Brazen SPD"
-							set {t_isBoss.%{_deadlord}%} to true
-						else if {_name} is 13:
-							spawn 1 zombie at the entity
-							set {_deadlord} to the last spawned entity
-							set the name of the last spawned entity to "<light red>Young Light: Leif"
-							set {str.%{_deadlord}%} to 50
-							set {def.%{_deadlord}%} to 75
-							set {spd.%{_deadlord}%} to 115
-							set {skl.%{_deadlord}%} to 135
-							set {res.%{_deadlord}%} to 75
-							set {lvl.%{_deadlord}%} to 70
-							set the maximum health of {_deadlord} to 65
-							set {_deadlord}'s tool to gold sword of sharpness 10 and unbreaking 10 named "<gold><bold>Light Brand" with lore "<light red><bold>Slot A - Sorcery Aura", "<light blue><bold>Slot B - Wrath", "<light yellow><bold>Slot C - Pressure MAG", "<light green><bold>Assist - None", "<light purple><bold>Special - Blazing Light", "<bold>Refined: Reinforced"
-							set {_deadlord}'s helmet to gold helmet of protection 5
-							set {_deadlord}'s chestplate to gold chestplate of protection 5
-							set {_deadlord}'s leggings to gold leggings of protection 5
-							set {_deadlord}'s boots to gold boots of protection 5
-							set {class.%{_deadlord}%} to "Prince"
-							set {skillslot1.%{_deadlord}%} to "Brazen MAG"
-							set {skillslot2.%{_deadlord}%} to "Crushing Offense"
-							set {t_isBoss.%{_deadlord}%} to true
-						else if {_name} is 14:
-							spawn 1 zombie at the entity
-							set {_deadlord} to the last spawned entity
-							set the name of the last spawned entity to "<light red>Scion of Light: Seliph"
-							set {str.%{_deadlord}%} to 65
-							set {def.%{_deadlord}%} to 100
-							set {spd.%{_deadlord}%} to 45
-							set {skl.%{_deadlord}%} to 55
-							set {res.%{_deadlord}%} to 45
-							set {lvl.%{_deadlord}%} to 75
-							set the maximum health of {_deadlord} to 65
-							set {_deadlord}'s tool to diamond sword of sharpness 5 named "<gold><bold>Tyrfing" with lore "<light red><bold>Slot A - Distant Defence", "<light blue><bold>Slot B - Brash Assault", "<light yellow><bold>Slot C - STR Smoke", "<light green><bold>Assist - Shove", "<light purple><bold>Special - Ignis", "<bold>Refined: Slaying"
-							set {_deadlord}'s helmet to diamond helmet of protection 3
-							set {_deadlord}'s chestplate to diamond chestplate of protection 3
-							set {_deadlord}'s leggings to diamond leggings of projectile protection 3
-							set {_deadlord}'s boots to diamond boots of projectile protection 3
-							set {class.%{_deadlord}%} to "Prince"
-							set {skillslot1.%{_deadlord}%} to "Crusader's Ward"
-							set {skillslot2.%{_deadlord}%} to "Brazen DEF"
-							set {skillslot3.%{_deadlord}%} to "Crusader's Blood"
-							set {skillslot4.%{_deadlord}%} to "Lord's Blood"
-							set {skillslot5.%{_deadlord}%} to "Steady Breath"
-							set {t_isBoss.%{_deadlord}%} to true
-						else if {_name} is 15:
-							spawn 1 zombie at the entity
-							set the name of the last spawned entity to "<light red>Lionheart: Eldigan"
-							set {_deadlord} to the last spawned entity
-							spawn 1 horse at the entity
-							apply swiftness 3 to the last spawned entity
-							apply resistance 3 to the last spawned entity
-							set {str.%{_deadlord}%} to 75
-							set {def.%{_deadlord}%} to 65
-							set {spd.%{_deadlord}%} to 60
-							set {skl.%{_deadlord}%} to 75
-							set {res.%{_deadlord}%} to 40
-							set {lvl.%{_deadlord}%} to 75
-							set the maximum health of {_deadlord} to 70
-							set {_deadlord}'s tool to diamond sword of sharpness 5 named "<gold><bold>Mystletainn" with lore "<light red><bold>Slot A - Fury", "<light blue><bold>Slot B - Sabotage Defense", "<light yellow><bold>Slot C - Savage Blow", "<light green><bold>Assist - None", "<light purple><bold>Special - Retribution", "<bold>Refined: Unique"
+							set {t_str.%{_deadlord}%} to 35
+							set {t_def.%{_deadlord}%} to 40
+							set {t_spd.%{_deadlord}%} to 85
+							set {t_LCK.%{_deadlord}%} to 130
+							set {t_res.%{_deadlord}%} to 65
+							set {t_mag.%{_deadlord}%} to 95
+							set the maximum health of {_deadlord} to 160
+							set {t_lvl.%{_deadlord}%} to 45
+							set {_deadlord}'s tool to 1 bow of power 7 named "<gold><bold>Lunar Arc" with lore "<light red><bold>Slot A - Rage", "<light blue><bold>Slot B - Mystic Boost", "<light yellow><bold>Slot C - SPD/RES Rein", "<light green><bold>Assist - Stinger", "<light purple><bold>Special - Glimmer", "<gold>Refined: Reinforced"
 							set {_deadlord}'s helmet to diamond helmet of protection 4
 							set {_deadlord}'s chestplate to diamond chestplate of protection 4
 							set {_deadlord}'s leggings to diamond leggings of protection 4
 							set {_deadlord}'s boots to diamond boots of protection 4
-							set {class.%{_deadlord}%} to "Crusader"
-							set {skillslot1.%{_deadlord}%} to "Brazen SKL"
-							set {skillslot2.%{_deadlord}%} to "Brazen STR"
-							set {skillslot3.%{_deadlord}%} to "Crusader's Blood"
+							set {t_skillslot1.%{_deadlord}%} to "Darting Blow II"
+							set {t_skillslot2.%{_deadlord}%} to "Lifetaker"
+							set {t_skillslot3.%{_deadlord}%} to "Mystic Boost"
+							set {t_skillslot4.%{_deadlord}%} to "Sudden Panic"
 							set {t_isBoss.%{_deadlord}%} to true
-						else if {_name} is 16:
-							spawn 1 zombie at the entity
+						else if {_name} is 7:
+							spawn 1 stray at the entity
 							set {_deadlord} to the last spawned entity
-							set the name of the last spawned entity to "<light red>Peerless Fighter: Raven"
-							set {str.%{_deadlord}%} to 100
-							set {def.%{_deadlord}%} to 35
-							set {spd.%{_deadlord}%} to 135
-							set {skl.%{_deadlord}%} to 100
-							set {res.%{_deadlord}%} to 10
-							set {lvl.%{_deadlord}%} to 70
-							set the maximum health of {_deadlord} to 60
-							set {_deadlord}'s tool to diamond axe of sharpness 5 named "<gold><bold>Basilikos" with lore "<light red><bold>Slot A - Life and Death", "<light blue><bold>Slot B - Sabotage Defense", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - Rising Wind", "<bold>Refined: Crushing"
-							set {_deadlord}'s helmet to chainmail helmet of protection 6
-							set {_deadlord}'s chestplate to chainmail chestplate of protection 6
-							set {_deadlord}'s leggings to chainmail leggings of protection 6
-							set {_deadlord}'s boots to chainmail boots of protection 6
-							set {class.%{_deadlord}%} to "Barbarian"
-							set {skillslot1.%{_deadlord}%} to "Crushing Offense"
-							set {skillslot2.%{_deadlord}%} to "Brazen STR"
-							set {t_isBoss.%{_deadlord}%} to true
-						else if {_name} is 17:
-							spawn 1 zombie at the entity
-							set the name of the last spawned entity to "<light red>Thunder's Fist: Reinhardt"
-							set {_deadlord} to the last spawned entity
-							spawn 1 horse at the entity
-							apply swiftness 3 to the last spawned entity
-							apply resistance 3 to the last spawned entity
-							make {_deadlord} ride the last spawned entity
-							set {str.%{_deadlord}%} to 55
-							set {def.%{_deadlord}%} to 55
-							set {spd.%{_deadlord}%} to 20
-							set {skl.%{_deadlord}%} to 55
-							set {res.%{_deadlord}%} to 80
-							set {lvl.%{_deadlord}%} to 80
-							set the maximum health of {_deadlord} to 40
-							set {_deadlord}'s tool to bow of power 5 and punch 2 named "<gold><bold>Dire Thunder" with lore "<light red><bold>Slot A - Sorcery Aura", "<light blue><bold>Slot B - Eclipse Brace", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - Moonbow", "<bold>Refined: Slaying"
-							set {_deadlord}'s helmet to leather helmet of protection 5
-							set {_deadlord}'s chestplate to diamond chestplate of protection 2
-							set {_deadlord}'s leggings to leather leggings of protection 5
-							set {_deadlord}'s boots to leather boots of protection 5
-							set {class.%{_deadlord}%} to "Mage Knight"
-							set {skillslot1.%{_deadlord}%} to "Distant Defence"
-							set {skillslot2.%{_deadlord}%} to "Brazen MAG"
-							set {skillslot3.%{_deadlord}%} to "Brazen Spectrum"
-							set {t_isBoss.%{_deadlord}%} to true
-						else if {_name} is 18:
-							spawn 1 skeleton at the entity
-							set the name of the last spawned entity to "<red><bold>Undead Rider: Barakov"
-							spawn 1 skeleton horse at the entity
-							apply swiftness 3 to the last spawned entity
-							apply resistance 3 to the last spawned entity
-							make {_deadlord} ride the last spawned entity
-							set {_deadlord} to the last spawned entity
-							set {str.%{_deadlord}%} to 225
-							set {def.%{_deadlord}%} to 180
-							set {spd.%{_deadlord}%} to 100
-							set {skl.%{_deadlord}%} to 95
-							set {res.%{_deadlord}%} to 180
-							set {lvl.%{_deadlord}%} to 250
-							set the maximum health of {_deadlord} to 80
-							set {_deadlord}'s tool to bow of power 7 named "<gold><bold>Barakov" with lore "Slot A - Armour Smasher", "Slot B - Poison Strike", "Slot C - Retribution", "<green><bold>Refined: Slaying", "<white>A bow infused with darkness.", "<white>Entrusted to only Alstair's most trusted companions."
-							set {_deadlord}'s helmet to diamond helmet 
-							set {_deadlord}'s chestplate to diamond chestplate 
-							set {_deadlord}'s leggings to diamond leggings 
-							set {_deadlord}'s boots to diamond boots 
-							set {class.%{_deadlord}%} to "Paladin"
-							set {skillslot1.%{_deadlord}%} to "Crusader's Ward"
-							set {skillslot2.%{_deadlord}%} to "Brazen STR"
-							set {t_isBoss.%{_deadlord}%} to true
-						else if {_name} is 19:
-							spawn 1 zombie at the entity
-							set {_deadlord} to the last spawned entity
-							set the name of the last spawned entity to "<light red>Hero of Yore: Marth"
-							set {str.%{_deadlord}%} to 150
-							set {def.%{_deadlord}%} to 150
-							set {spd.%{_deadlord}%} to 150
-							set {skl.%{_deadlord}%} to 150
-							set {res.%{_deadlord}%} to 150
-							set {lvl.%{_deadlord}%} to 150
-							set the maximum health of {_deadlord} to 100
-							set {_deadlord}'s tool to diamond sword of sharpness 5 named "<gold><bold>Falchion" with lore "<light red><bold>Slot A - Armour Smasher", "<light blue><bold>Slot B - Desperation", "<light yellow><bold>Slot C - Pressure STR", "<light green><bold>Assist - Rally Spectrum", "<light purple><bold>Special - Growing Light", "<bold>Refined: Slaying"
-							set {_deadlord}'s helmet to gold helmet of protection 10 and unbreaking 15
-							set {_deadlord}'s chestplate to diamond chestplate of protection 10 and unbreaking 10
-							set {_deadlord}'s leggings to diamond leggings of protection 10 and unbreaking 10
-							set {_deadlord}'s boots to diamond boots of protection 10 and unbreaking 10
-							set {class.%{_deadlord}%} to "Lord"
-							set {skillslot1.%{_deadlord}%} to "Lord's Blood"
-							set {skillslot2.%{_deadlord}%} to "Brazen Spectrum"
-							set {skillslot3.%{_deadlord}%} to "Crushing Offense"
-							set {skillslot4.%{_deadlord}%} to "Vantage"
-							set {skillslot5.%{_deadlord}%} to "Brazen STR"
-							set {t_isBoss.%{_deadlord}%} to true
-						else if {_name} is 20:
-							spawn 1 skeleton at the entity
-							set {_deadlord} to the last spawned entity
-							set the name of the last spawned entity to "<light red>Shadowed Sniper: Clarisse"
-							set {str.%{_deadlord}%} to 80
-							set {def.%{_deadlord}%} to 30
-							set {spd.%{_deadlord}%} to 65
-							set {skl.%{_deadlord}%} to 55
-							set {res.%{_deadlord}%} to 25
-							set {lvl.%{_deadlord}%} to 60
-							set the maximum health of {_deadlord} to 45
-							set {_deadlord}'s tool to bow of power 5 named "<white><bold>Clarisse's Bow" with lore "<light red><bold>Slot A - Life and Death", "<light blue><bold>Slot B - Poison Strike", "<light yellow><bold>Slot C - None", "<light green><bold>Assist - None", "<light purple><bold>Special - Glimmer", "<bold>Refined: Slaying"
-							set {_deadlord}'s helmet to leather helmet of protection 4
-							set {_deadlord}'s chestplate to leather chestplate of protection 4
-							set {_deadlord}'s leggings to leather leggings of protection 4
-							set {_deadlord}'s boots to leather boots of protection 4
-							set {class.%{_deadlord}%} to "Sniper"
-							set {skillslot1.%{_deadlord}%} to "Heavy Draw"
-							set {t_isBoss.%{_deadlord}%} to true
-						else if {_name} is 21:
-							spawn 1 skeleton at the entity
-							set {_deadlord} to the last spawned entity
-							set the name of the last spawned entity to "<light red>Forest's Breeze: Jamke"
-							set {str.%{_deadlord}%} to 115
-							set {def.%{_deadlord}%} to 65
-							set {spd.%{_deadlord}%} to 55
-							set {skl.%{_deadlord}%} to 75
-							set {res.%{_deadlord}%} to 65
-							set {lvl.%{_deadlord}%} to 75
-							set the maximum health of {_deadlord} to 60
-							set {_deadlord}'s tool to bow of power 5 named "<white><bold>Slaying Bow" with lore "<light red><bold>Slot A - Armour Smasher", "<light blue><bold>Slot B - Wrath", "<light yellow><bold>Slot C - Savage Blow", "<light green><bold>Assist - None", "<light purple><bold>Special - Astra", "<bold>Refined: Slaying"
-							set {_deadlord}'s chestplate to leather chestplate of protection 5
-							set {_deadlord}'s leggings to diamond leggings of protection 3
-							set {_deadlord}'s boots to diamond boots of protection 3
-							set {class.%{_deadlord}%} to "Sniper"
-							set {skillslot1.%{_deadlord}%} to "Crushing Offense"
-							set {skillslot2.%{_deadlord}%} to "Heavy Draw"
-							set {t_isBoss.%{_deadlord}%} to true
-						else if {_name} is 22:
-							spawn 1 skeleton at the entity
-							apply swiftness 4 to the last spawned entity for 999 days
-							set {_deadlord} to the last spawned entity
-							set the name of the last spawned entity to "<light red>Wind's Call: Lewyn"
-							set {str.%{_deadlord}%} to 25
-							set {def.%{_deadlord}%} to 25
-							set {spd.%{_deadlord}%} to 150
-							set {skl.%{_deadlord}%} to 75
-							set {res.%{_deadlord}%} to 125
-							set {lvl.%{_deadlord}%} to 95
-							set the maximum health of {_deadlord} to 55
-							set {_deadlord}'s tool to bow of power 10 named "<gold><bold>Forseti" with lore "<light red><bold>Slot A - Sorcery Aura", "<light blue><bold>Slot B - Desperation", "<light yellow><bold>Slot C - Pressure MAG", "<light green><bold>Assist - None", "<light purple><bold>Special - Rising Wind", "<bold>Refined: Slaying"
-							set {_deadlord}'s chestplate to leather chestplate of protection 5
-							set {_deadlord}'s leggings to iron leggings of protection 3
-							set {_deadlord}'s boots to iron boots of protection 3
-							set {class.%{_deadlord}%} to "Sorcerer"
-							set {skillslot1.%{_deadlord}%} to "Distant Defense"
-							set {skillslot2.%{_deadlord}%} to "Heavy Draw"
-							set {t_isBoss.%{_deadlord}%} to true
-						else if {_name} is 23:
-							spawn 1 skeleton at the entity
-							set {_deadlord} to the last spawned entity
-							set the name of the last spawned entity to "<light red>Kindly Priest: Wrys"
-							set {str.%{_deadlord}%} to 66
-							set {def.%{_deadlord}%} to 35
-							set {spd.%{_deadlord}%} to 25
-							set {skl.%{_deadlord}%} to 65
-							set {res.%{_deadlord}%} to 80
-							set {lvl.%{_deadlord}%} to 70
-							set the maximum health of {_deadlord} to 70
-							set {_deadlord}'s tool to bow of power 5 named "<white><bold>Slow" with lore "<light red><bold>Slot A - Close Counter", "<light blue><bold>Slot B - Sabotage Speed", "<light yellow><bold>Slot C - Pressure DEF", "<light green><bold>Assist - Restore", "<light purple><bold>Special - Glacies", "<bold>Refined: Slaying"
-							set {_deadlord}'s helmet to leather helmet of protection 5
-							set {_deadlord}'s chestplate to leather chestplate of protection 5
-							set {_deadlord}'s leggings to leather leggings of protection 5
-							set {_deadlord}'s boots to leather boots of protection 5
-							set {class.%{_deadlord}%} to "Sage"
-							set {skillslot1.%{_deadlord}%} to "Wrathful Staff"
-							set {skillslot2.%{_deadlord}%} to "Brazen STR"
-							set {skillslot3.%{_deadlord}%} to "Miracle"
-							set {skillslot4.%{_deadlord}%} to "Distant Defence"
-							set {skillslot5.%{_deadlord}%} to "Ranged Specialist"
-							set {t_isBoss.%{_deadlord}%} to true
-						else if {_name} is 24:
-							spawn 1 zombie at the entity
-							set {_deadlord} to the last spawned entity
-							set the name of the last spawned entity to "<light red>Vanguard Legend: Ike"
-							set {str.%{_deadlord}%} to 135
-							set {def.%{_deadlord}%} to 80
-							set {spd.%{_deadlord}%} to 65
-							set {skl.%{_deadlord}%} to 80
-							set {res.%{_deadlord}%} to 45
-							set {lvl.%{_deadlord}%} to 70
-							set the maximum health of {_deadlord} to 75
-							set {_deadlord}'s tool to diamond sword of sharpness 5 named "<gold><bold>Ragnell" with lore "<light red><bold>Slot A - Fierce Stance", "<light blue><bold>Slot B - Solar Brace", "<light yellow><bold>Slot C - Pressure DEF", "<light green><bold>Assist - Shove", "<light purple><bold>Special - Sol", "<bold>Refined: Unique"
+							set the name of the last spawned entity to "<light red>Thruud's Prodigy: Reinhardt"
+							set {t_str.%{_deadlord}%} to 65
+							set {t_def.%{_deadlord}%} to 70
+							set {t_spd.%{_deadlord}%} to 45
+							set {t_LCK.%{_deadlord}%} to 60
+							set {t_res.%{_deadlord}%} to 85
+							set {t_mag.%{_deadlord}%} to 125
+							set the maximum health of {_deadlord} to 160
+							set {t_lvl.%{_deadlord}%} to 45
+							set {_deadlord}'s tool to 1 bow of power 7 named "<gold><bold>Dire Thunder" with lore "<light red><bold>Slot A - ATK/DEF Push", "<light blue><bold>Slot B - Brave Blade", "<light yellow><bold>Slot C - SPD/RES Ploy", "<light green><bold>Assist - Counter", "<light purple><bold>Special - Bonfire", "<gold>Refined: Slaying"
 							set {_deadlord}'s helmet to diamond helmet of protection 4
 							set {_deadlord}'s chestplate to diamond chestplate of protection 4
 							set {_deadlord}'s leggings to diamond leggings of protection 4
 							set {_deadlord}'s boots to diamond boots of protection 4
-							set {class.%{_deadlord}%} to "Hero"
-							set {skillslot1.%{_deadlord}%} to "Crushing Offense"
-							set {skillslot2.%{_deadlord}%} to "Vantage"
+							set {t_skillslot1.%{_deadlord}%} to "Vantage"
+							set {t_skillslot2.%{_deadlord}%} to "Bracing Stance"
+							set {t_skillslot3.%{_deadlord}%} to "Well-Trained"
+							set {t_skillslot4.%{_deadlord}%} to "Canto"
+							set {t_skillslot4.%{_deadlord}%} to "Bracing Blow"
 							set {t_isBoss.%{_deadlord}%} to true
-						else if {_name} is 25:
-							spawn 1 zombie at the entity
-							set {_deadlord} to the last spawned entity
-							set the name of the last spawned entity to "<light red>Lance of Legend: Finn"
-							set {str.%{_deadlord}%} to 72
-							set {def.%{_deadlord}%} to 60
-							set {spd.%{_deadlord}%} to 100
-							set {skl.%{_deadlord}%} to 70
-							set {res.%{_deadlord}%} to 34
-							set {lvl.%{_deadlord}%} to 70
-							set the maximum health of {_deadlord} to 75
-							set {_deadlord}'s tool to diamond shovel of sharpness 7 named "<white><bold>Diamond Lance" with lore "<light red><bold>Slot A - Life and Death", "<light blue><bold>Slot B - Brave Blade", "<light yellow><bold>Slot C - Breath of Life", "<light green><bold>Assist - Reposition", "<light purple><bold>Special - Luna", "<bold>Refined: Slaying"
-							set {_deadlord}'s helmet to diamond helmet of protection 3
-							set {_deadlord}'s chestplate to diamond chestplate of protection 3
-							set {_deadlord}'s leggings to diamond leggings of protection 3
-							set {_deadlord}'s boots to diamond boots of protection 3
-							set {class.%{_deadlord}%} to "Lord"
-							set {skillslot1.%{_deadlord}%} to "Double Lion"
-							set {skillslot2.%{_deadlord}%} to "Crushing Offense"
-							set {skillslot3.%{_deadlord}%} to "Miracle"
-							set {t_isBoss.%{_deadlord}%} to true
-						else if {_name} is 26:
-							spawn 1 zombie at the entity
-							set {_deadlord} to the last spawned entity
-							set the name of the last spawned entity to "<light red>Strong and Tough: Arden"
-							set {str.%{_deadlord}%} to 80
-							set {def.%{_deadlord}%} to 160
-							set {spd.%{_deadlord}%} to 15
-							set {skl.%{_deadlord}%} to 45
-							set {res.%{_deadlord}%} to 15
-							set {lvl.%{_deadlord}%} to 70
-							set the maximum health of {_deadlord} to 90
-							set {_deadlord}'s tool to diamond sword of sharpness 5 named "<bold>Slaying Edge" with lore "<light red><bold>Slot A - Steady Stance", "<light blue><bold>Slot B - Eclipse Brace", "<light yellow><bold>Slot C - DEF Smoke", "<light green><bold>Assist - None", "<light purple><bold>Special - Ignis", "<bold>Refined: Slaying"
-							set {_deadlord}'s helmet to diamond helmet of protection 5
-							set {_deadlord}'s chestplate to diamond chestplate of protection 5
-							set {_deadlord}'s leggings to diamond leggings of protection 5
-							set {_deadlord}'s boots to diamond boots of protection 5
-							set {class.%{_deadlord}%} to "Chieftain"
-							set {skillslot1.%{_deadlord}%} to "Unbreakable"
-							set {skillslot2.%{_deadlord}%} to "Guard"
-							set {skillslot3.%{_deadlord}%} to "Brazen STR"
-							set {skillslot4.%{_deadlord}%} to "Brazen DEF"
-							set {t_isBoss.%{_deadlord}%} to true
-						else if {_name} is 27:
-							spawn 1 skeleton at the entity
-							set the name of the last spawned entity to "<light purple>Cantor"
-							set {str.%{_deadlord}%} to 0
-							set {def.%{_deadlord}%} to 0
-							set {spd.%{_deadlord}%} to 0
-							set {skl.%{_deadlord}%} to 0
-							set {res.%{_deadlord}%} to 0
-							set {lvl.%{_deadlord}%} to 60
-							set the maximum health of {_deadlord} to 90
-							set {_deadlord}'s tool to bow of power 3 named "<purple>Nosferatu" with lore "<light red><bold>Slot A - Sorcery Aura", "<light blue><bold>Slot B - Mystic Boost", "<light yellow><bold>Slot C - Gravity", "<light green><bold>Assist - None", "<light purple><bold>Special - Sol", "<bold>Refined: Slaying"
-							set {_deadlord}'s helmet to diamond helmet of protection 5
-							set {_deadlord}'s chestplate to diamond chestplate of protection 5
-							set {_deadlord}'s leggings to diamond leggings of protection 5
-							set {_deadlord}'s boots to diamond boots of protection 5
+							spawn 1 horse at the entity
+							make {_deadlord} ride the last spawned horse
 						set {_lvlbal} to 0
 						loop all players in radius 256 of {_deadlord}:
 							if citizen id of loop-player is not set:
@@ -1775,23 +1609,24 @@ on spawn of a monster:
 						set {_lvlbal} to ({_lvlbal} / {_players}) + 10
 						if {_lvlbal} is less than {lvl.%{_deadlord}%}:
 							if {_lvlbal} is not 0:
-								set {_balance} to abs({_lvlbal} - {lvl.%{_deadlord}%})
+								set {_balance} to abs({_lvlbal} - {t_lvl.%{_deadlord}%})
 								loop {_balance} times:
-									subtract 1 from {str.%{_deadlord}%}
-									subtract 1 from {def.%{_deadlord}%}
-									subtract 1 from {spd.%{_deadlord}%}
-									subtract 1 from {skl.%{_deadlord}%}
-									subtract 1 from {res.%{_deadlord}%}
-									subtract 0.5 from the maximum health of {_deadlord}
-									subtract 1 from {lvl.%{_deadlord}%}
-						else if {_lvlbal} is more than {lvl.%{_deadlord}%}:
-							set {_balance} to ({_lvlbal} - {lvl.%{_deadlord}%})
+									subtract 2 from {t_str.%{_deadlord}%}
+									subtract 2 from {t_def.%{_deadlord}%}
+									subtract 2 from {t_spd.%{_deadlord}%}
+									subtract 2 from {t_LCK.%{_deadlord}%}
+									subtract 2 from {t_res.%{_deadlord}%}
+									subtract 2 from {t_mag.%{_deadlord}%}
+									subtract 1 from the maximum health of {_deadlord}
+									subtract 1 from {t_lvl.%{_deadlord}%}
+						else if {_lvlbal} is more than {t_lvl.%{_deadlord}%}:
+							set {_balance} to ({_lvlbal} - {t_lvl.%{_deadlord}%})
 							loop {_balance} times:
-								add 1 to {str.%{_deadlord}%}
-								add 1 to {def.%{_deadlord}%}
-								add 1 to {spd.%{_deadlord}%}
-								add 1 to {skl.%{_deadlord}%}
-								add 1 to {res.%{_deadlord}%}
+								add 1 to {t_str.%{_deadlord}%}
+								add 1 to {t_def.%{_deadlord}%}
+								add 1 to {t_spd.%{_deadlord}%}
+								add 1 to {t_LCK.%{_deadlord}%}
+								add 1 to {t_res.%{_deadlord}%}
 								add 0.5 to the maximum health of {_deadlord}
 								add 1 to {lvl.%{_deadlord}%}
 						if the maximum health of {_deadlord} is less than 20:
@@ -1809,496 +1644,965 @@ on spawn of a monster:
 						heal {_deadlord} by 999
 						set {_loc} to location of block at the last spawned entity
 						broadcast "<light red>Coordinates: %{_loc}%"
-						broadcast "<light red>Level: %{lvl.%{_deadlord}%}%"
+						broadcast "<light red>Level: %{t_lvl.%{_deadlord}%}%"
 						broadcast "<light red>Weapon: %{_deadlord}'s tool%"
-			if {_deadlord} is not set:
-				if entity's world is "Alstair":
-					loop all players in radius 128 of the entity:
-						if citizen id of loop-player is not set:
-							add {lvl.%loop-player%} + 15 to {_moblvl}
-							add ({promoted.%loop-player%} * 10) to {_moblvl}
-							add 1 to {_players}
-					set {_moblvl} to ({_moblvl} / {_players})
-					set {_max} to {_moblvl} + 35
-					set {_balancer} to {_moblvl}
-					set {_moblvl} to a random integer from 1 to {_max}
-					add floor({_balancer} / 2) to {_moblvl}
-				else if entity's world is "adventure":
-					loop all players in radius 128 of the entity:
-						if citizen id of loop-player is not set:
-							add {lvl.%loop-player%} + 5 to {_moblvl}
-							add ({promoted.%loop-player%} * 10) to {_moblvl}
-							add 1 to {_players}
-					set {_moblvl} to ({_moblvl} / {_players})
-					set {_max} to {_moblvl} + 20
-					if {_max} is less than 0:
-						set {_max} to 1
-					set {_balancer} to {_moblvl} + 5
-					set {_moblvl} to a random integer from 1 to {_max}
-					add floor({_balancer} / 2) to {_moblvl}
-				else if entity's world is "adventure_nether":
-					loop all players in radius 128 of the entity:
-						if citizen id of loop-player is not set:
-							add {lvl.%loop-player%} - 5 to {_moblvl}
-							add ({promoted.%loop-player%} * 10) to {_moblvl}
-							add 1 to {_players}
-					set {_moblvl} to ({_moblvl} / {_players})
-					set {_max} to {_moblvl} + 25
-					set {_balancer} to {_moblvl}
-					set {_moblvl} to a random integer from 1 to {_max}
-					add floor({_balancer} / 2) to {_moblvl}
-				else if entity's world is "adventure_the_end":
-					loop all players in radius 128 of the entity:
-						if citizen id of loop-player is not set:
-							add {lvl.%loop-player%} to {_moblvl}
-							add ({promoted.%loop-player%} * 10) to {_moblvl}
-							add 1 to {_players}
-					set {_moblvl} to ({_moblvl} / {_players})
-					set {_max} to {_moblvl} + 20
-					set {_balancer} to {_moblvl}
-					set {_moblvl} to a random integer from 1 to {_max}
-					add floor({_balancer} / 2) to {_moblvl}
-				else if entity's world is "GenOne":
-					loop all players in radius 128 of the entity:
-						if citizen id of loop-player is not set:
-							add {lvl.%loop-player%} to {_moblvl}
-							add (({promoted.%loop-player%} - 1) * 10) to {_moblvl}
-							add 1 to {_players}
-					set {_moblvl} to ({_moblvl} / {_players})
-					set {_max} to {_moblvl} + 15
-					if {_max} is less than 0:
-						set {_max} to 1
-					set {_balancer} to {_moblvl} - 5
-					set {_moblvl} to a random integer from 1 to {_max}
-					add floor({_balancer} / 4) to {_moblvl}
-				if {_moblvl} is not set:
-					set {_moblvl} to 1
-				if {_moblvl} is more than {_max}:
-					set {_moblvl} to {_max}
-				if {_moblvl} is less than 1:
-					set {_moblvl} to 1
-				set {_moblvl} to ceil({_moblvl})
-				loop {_moblvl} times:
-					#add 1 to {t_str.%entity%}
-					chance of 80%:
-						add 1 to {t_str.%entity%}
-						chance of 35%:
-							add 1 to {t_str.%entity%}
-					#add 1 to {t_def.%entity%}
-					chance of 65%:
-						add 1 to {t_def.%entity%}
-						chance of 25%:
-							add 1 to {t_def.%entity%}
-					#add 1 to {t_spd.%entity%}
-					chance of 50%:
-						add 1 to {t_spd.%entity%}
-						chance of 30%:
-							add 1 to {t_spd.%entity%}
-					#add 1 to {t_skl.%entity%}
-					chance of 45%:
-						add 1 to {t_skl.%entity%}
-						chance of 40%:
-							add 1 to {t_skl.%entity%}
-					#add 1 to {t_res.%entity%}
-					chance of 80%:
-						add 1 to {t_res.%entity%}
-						chance of 25%:
-							add 1 to {t_res.%entity%}
-					add 0.5 to the entity's maximum health
-					chance of 80%:
-						add 0.5 to the entity's maximum health
-						chance of 35%:
-							add 0.5 to the entity's maximum health
-				set {t_lvl.%entity%} to {_moblvl}
-				heal the entity by 999
-				#Make mobs spawn in clusters
-				#while {_mobClusterSpawning} is less than 7:
-				#	add 1 to {_mobClusterSpawning}
-				#	chance of 50%:
-				#		set {_rng} to a random integer from 0 to 1
-				#		if {_rng} is 1:
-				#			spawn 1 husk at the entity
-				#		else:
-				#			spawn 1 stray at the entity
-				#Additional mobs exempt from cluster spawn rules
-				if {blockAdditionalAltMobSpawn} is not set:
-					set {blockAdditionalAltMobSpawn} to true
-					chance of 75%:
-						set {_rng} to a random integer from 0 to 1
-						if {_rng} is 1:
-							spawn 1 husk at the entity
+				if {_deadlord} is not set:
+					if entity's world is "Alstair":
+						loop all players in radius 128 of the entity:
+							if citizen id of loop-player is not set:
+								add {lvl.%loop-player%} + 5 to {_moblvl}
+								add ({promoted.%loop-player%} * 8) to {_moblvl}
+								add 1 to {_players}
+						set {_moblvl} to ({_moblvl} / {_players})
+						set {_max} to {_moblvl} + 8
+						set {_balancer} to {_moblvl}
+						set {_moblvl} to a random integer from 1 to {_max}
+						add floor({_balancer} / 2) to {_moblvl}
+					else if entity's world is "adventure":
+						loop all players in radius 128 of the entity:
+							if citizen id of loop-player is not set:
+								add {lvl.%loop-player%} - 1 to {_moblvl}
+								add (({promoted.%loop-player%} - 1) * 10) to {_moblvl}
+								add {promoted.%loop-player%} to {_playerPromotions}
+								#Silently promote enemies when a player is nearing their level cap
+								if {promoted.%loop-player%} is 1:
+									if {lvl.%loop-player%} is more than 15:
+										add ({lvl.%loop-player%} - 15) to {_moblvl}
+								else if {promoted.%loop-player%} is 2:
+									if {lvl.%loop-player%} is more than 35:
+										add ({lvl.%loop-player%} - 35) to {_moblvl}
+								else if {promoted.%loop-player%} is 3:
+									if {lvl.%loop-player%} is more than 55:
+										add ({lvl.%loop-player%} - 55) to {_moblvl}
+								#Scale enemies higher if their difficulty is higher than Normal
+								#Get an average difficulty setting based on the nearest party
+								#LUNATIC and higher count as 1 difficulty lower for balance
+								if {playerDifficulty.%loop-player%} is more than or equal to 4:
+									add ({playerDifficulty.%loop-player%} - 4) to {_playerdiffmodifier}
+								else if {playerDifficulty.%loop-player%} is more than 2:
+									add ({playerDifficulty.%loop-player%} - 1) to {_playerdiffmodifier}
+								add 1 to {_players}
+						set {_moblvl} to ({_moblvl} / {_players})
+						set {_max} to {_moblvl}
+						if {_max} is less than 0:
+							set {_max} to 1
+						set {_balancer} to {_moblvl}
+						set {_moblvl} to a random integer from 1 to {_max}
+						add floor({_balancer} / 3) to {_moblvl}
+					else if entity's world is "Terra":
+						loop all players in radius 128 of the entity:
+							if citizen id of loop-player is not set:
+								add {lvl.%loop-player%} - 1 to {_moblvl}
+								add (({promoted.%loop-player%} - 1) * 10) to {_moblvl}
+								add {promoted.%loop-player%} to {_playerPromotions}
+								#Silently promote enemies when a player is nearing their level cap
+								if {promoted.%loop-player%} is 1:
+									if {lvl.%loop-player%} is more than 15:
+										add ({lvl.%loop-player%} - 15) to {_moblvl}
+								else if {promoted.%loop-player%} is 2:
+									if {lvl.%loop-player%} is more than 35:
+										add ({lvl.%loop-player%} - 35) to {_moblvl}
+								else if {promoted.%loop-player%} is 3:
+									if {lvl.%loop-player%} is more than 55:
+										add ({lvl.%loop-player%} - 55) to {_moblvl}
+								#Scale enemies higher if their difficulty is higher than Normal
+								#Get an average difficulty setting based on the nearest party
+								#LUNATIC and higher count as 1 difficulty lower for balance
+								if {playerDifficulty.%loop-player%} is more than or equal to 4:
+									add ({playerDifficulty.%loop-player%} - 4) to {_playerdiffmodifier}
+								else if {playerDifficulty.%loop-player%} is more than 2:
+									add ({playerDifficulty.%loop-player%} - 1) to {_playerdiffmodifier}
+								add 1 to {_players}
+						set {_moblvl} to ({_moblvl} / {_players})
+						set {_max} to {_moblvl}
+						if {_max} is less than 0:
+							set {_max} to 1
+						set {_balancer} to {_moblvl}
+						set {_moblvl} to a random integer from 1 to {_max}
+						add floor({_balancer} / 3) to {_moblvl}
+					else if entity's world is "adventure_nether":
+						loop all players in radius 128 of the entity:
+							if citizen id of loop-player is not set:
+								add {lvl.%loop-player%} - 5 to {_moblvl}
+								add (({promoted.%loop-player%} - 1) * 10) to {_moblvl}
+								add 1 to {_players}
+						set {_moblvl} to ({_moblvl} / {_players})
+						set {_max} to {_moblvl} + 18
+						set {_balancer} to {_moblvl}
+						set {_moblvl} to a random integer from 1 to {_max}
+						add floor({_balancer} / 2) to {_moblvl}
+					else if entity's world is "adventure_the_end":
+						loop all players in radius 128 of the entity:
+							if citizen id of loop-player is not set:
+								add {lvl.%loop-player%} to {_moblvl}
+								add (({promoted.%loop-player%} - 1) * 10) to {_moblvl}
+								add 1 to {_players}
+						set {_moblvl} to ({_moblvl} / {_players})
+						set {_max} to {_moblvl} + 28
+						set {_balancer} to {_moblvl}
+						set {_moblvl} to a random integer from 1 to {_max}
+						add floor({_balancer} / 2) to {_moblvl}
+					else if entity's world is "Terra_Nether":
+						loop all players in radius 128 of the entity:
+							if citizen id of loop-player is not set:
+								add {lvl.%loop-player%} - 5 to {_moblvl}
+								add (({promoted.%loop-player%} - 1) * 10) to {_moblvl}
+								add 1 to {_players}
+						set {_moblvl} to ({_moblvl} / {_players})
+						set {_max} to {_moblvl} + 18
+						set {_balancer} to {_moblvl}
+						set {_moblvl} to a random integer from 1 to {_max}
+						add floor({_balancer} / 2) to {_moblvl}
+					else if entity's world is "Terra_End":
+						loop all players in radius 128 of the entity:
+							if citizen id of loop-player is not set:
+								add {lvl.%loop-player%} to {_moblvl}
+								add (({promoted.%loop-player%} - 1) * 10) to {_moblvl}
+								add 1 to {_players}
+						set {_moblvl} to ({_moblvl} / {_players})
+						set {_max} to {_moblvl} + 28
+						set {_balancer} to {_moblvl}
+						set {_moblvl} to a random integer from 1 to {_max}
+						add floor({_balancer} / 2) to {_moblvl}
+					else if entity's world is "GenOne":
+						loop all players in radius 128 of the entity:
+							if citizen id of loop-player is not set:
+								add {lvl.%loop-player%} to {_moblvl}
+								add (({promoted.%loop-player%} - 1) * 10) to {_moblvl}
+								add 1 to {_players}
+						set {_moblvl} to ({_moblvl} / {_players})
+						set {_max} to {_moblvl} + 15
+						if {_max} is less than 0:
+							set {_max} to 1
+						set {_balancer} to {_moblvl} - 5
+						set {_moblvl} to a random integer from 1 to {_max}
+						add floor({_balancer} / 4) to {_moblvl}
+					else if entity's world is "FinalFrontier":
+						loop all players in radius 128 of the entity:
+							if citizen id of loop-player is not set:
+								add {lvl.%loop-player%} - 5 to {_moblvl}
+								add ({promoted.%loop-player%} * 10) to {_moblvl}
+								add 1 to {_players}
+						set {_moblvl} to ({_moblvl} / {_players})
+						set {_max} to {_moblvl} + 25
+						set {_balancer} to {_moblvl}
+						set {_moblvl} to a random integer from 1 to {_max}
+						add floor({_balancer} / 2) to {_moblvl}
+					else:
+						loop all players in radius 128 of the entity:
+							if citizen id of loop-player is not set:
+								add {lvl.%loop-player%} - 1 to {_moblvl}
+								add (({promoted.%loop-player%} - 1) * 10) to {_moblvl}
+								add {promoted.%loop-player%} to {_playerPromotions}
+								#Silently promote enemies when a player is nearing their level cap
+								if {promoted.%loop-player%} is 1:
+									if {lvl.%loop-player%} is more than 15:
+										add ({lvl.%loop-player%} - 15) to {_moblvl}
+								else if {promoted.%loop-player%} is 2:
+									if {lvl.%loop-player%} is more than 35:
+										add ({lvl.%loop-player%} - 35) to {_moblvl}
+								else if {promoted.%loop-player%} is 3:
+									if {lvl.%loop-player%} is more than 55:
+										add ({lvl.%loop-player%} - 55) to {_moblvl}
+								#Scale enemies higher if their difficulty is higher than Normal
+								#Get an average difficulty setting based on the nearest party
+								#LUNATIC and higher count as 1 difficulty lower for balance
+								if {playerDifficulty.%loop-player%} is more than or equal to 4:
+									add ({playerDifficulty.%loop-player%} - 4) to {_playerdiffmodifier}
+								else if {playerDifficulty.%loop-player%} is more than 2:
+									add ({playerDifficulty.%loop-player%} - 1) to {_playerdiffmodifier}
+								add 1 to {_players}
+						set {_moblvl} to ({_moblvl} / {_players})
+						set {_max} to {_moblvl}
+						if {_max} is less than 0:
+							set {_max} to 1
+						set {_balancer} to {_moblvl}
+						set {_moblvl} to a random integer from 1 to {_max}
+						add floor({_balancer} / 3) to {_moblvl}
+					if {_moblvl} is not set:
+						set {_moblvl} to 1
+						set {_max} to 10
+					if {_moblvl} is more than {_max}:
+						set {_moblvl} to {_max}
+					if {_moblvl} is less than 1:
+						set {_moblvl} to 1
+					set {_moblvl} to ceil({_moblvl})
+					#this was dumb
+					#add a random integer from 1 to 10 to {_moblvl}
+					#
+					#Add a hidden level bonus that isn't displayed if players have difficulty higher than Normal
+					#Formula: [DifficultyAverage], round down to nearest whole number, subtract 1 and then multiply by 4.
+					set {_playerdiffmodifier} to ((floor({_playerdiffmodifier} / {_players})) - 1) * 4
+					#Difficulty modifier increases the scaling of promoted mobs
+					#Get average promotion tier of all nearby players.
+					#Floor is used so that "Jagens" do not make the game more difficult for their party
+					set {_playerPromotions} to floor({_playerPromotions} / {_players})
+					#Promotion tier 1 is unaffected
+					#Only apply level bonuses once the player has some XP
+					if {_moblvl} is more than 10:
+						set {_playerdiffmodifier} to {_playerdiffmodifier} + ((({_playerPromotions} - 1) * {_playerdiffmodifier}) * 2)
+					#Increase mob difficulty if they're spawning inside a cave
+					if entity's y-coordinate is less than or equal to 100:
+						if entity's y-coordinate is more than 0:
+							set {_caveLVLBonus} to 20 - (ceil(entity's y-coordinate / 7.5))
 						else:
-							spawn 1 stray at the entity
+							set {_caveLVLBonus} to 20 - (ceil(entity's y-coordinate / 12))
+					add {_caveLVLBonus} to {_moblvl}
+					#Change mob base & growths depending on mob type
+					set {_phys} to true
+					if entity is zombie:
+						set {_phys} to true
+					else if entity is skeleton:
+						set {_phys} to true
+					else if "%entity's entity type%" contains "husk":
+						set {_magic} to true
+					else if "%entity's entity type%" contains "stray":
+						set {_magic} to true
+					else if entity is enderman:
+						set {_magic} to true
+					else if entity is spider:
+						set {_phys} to true
+					else if entity is blaze:
+						set {_magic} to true
+					else if entity is wither skeleton:
+						set {_magic} to true
+					else if entity is zombie pigman:
+						set {_phys} to true
+					else if entity is ghast:
+						set {_magic} to true
+					else if entity is witch:
+						set {_magic} to true
+					else if entity is cave spider:
+						set {_magic} to true
+					else if entity is evoker:
+						set {_magic} to true
+					else if entity is guardian:
+						set {_magic} to true
+					else if entity is elder guardian:
+						set {_magic} to true
+					else if entity is illusioner:
+						set {_magic} to true
+					#JUST IN CASE the system is calcing abilities for mobs
+					set {t_abilities.%entity%::Traditional Weapons} to 100
+					set {t_abilities.%entity%::Magical Weapons} to 100
+					#Mob lockpicking starts at 30
+					set {t_abilities.%entity%::Lockpicking} to a random integer from 30 to ({_moblvl} + 30)
+					if {_phys} is true:
+						#Select archetype to distribute the mob's stats
+						set {_archetype} to a random integer from 1 to 4
+						#Duelist
+						if {_archetype} is 1:
+							set {t_hp.%entity%} to 23
+							set {t_str.%entity%} to 13
+							set {t_def.%entity%} to 8
+							set {t_spd.%entity%} to 8
+							set {t_mag.%entity%} to 0
+							set {t_res.%entity%} to 3
+							set {t_chr.%entity%} to 0
+							set {t_lck.%entity%} to 1
+							loop ((floor({_moblvl} ^ 1)) + 4 + {_playerdiffmodifier}) times:
+								chance of 65%:
+									add 1 to {t_hp.%entity%}
+								chance of 60%:
+									add 1 to {t_str.%entity%}
+								chance of 59%:
+									add 1 to {t_def.%entity%}
+								chance of 54%:
+									add 1 to {t_spd.%entity%}
+								chance of 4%:
+									add 1 to {t_mag.%entity%}
+								chance of 14%:
+									add 1 to {t_res.%entity%}
+								chance of 24%:
+									add 1 to {t_chr.%entity%}
+								chance of 19%:
+									add 1 to {t_lck.%entity%}
+						#Tank
+						else if {_archetype} is 2:
+							set {t_hp.%entity%} to 24
+							set {t_str.%entity%} to 8
+							set {t_def.%entity%} to 10
+							set {t_spd.%entity%} to 0
+							set {t_mag.%entity%} to 0
+							set {t_res.%entity%} to 8
+							set {t_chr.%entity%} to 6
+							set {t_lck.%entity%} to 5
+							loop ((floor({_moblvl} ^ 1)) + 4 + {_playerdiffmodifier}) times:
+								add 1 to {t_hp.%entity%}
+								chance of 14%:
+									add 1 to {t_hp.%entity%}
+								chance of 49%:
+									add 1 to {t_str.%entity%}
+								chance of 61%:
+									add 1 to {t_def.%entity%}
+								chance of 11%:
+									add 1 to {t_spd.%entity%}
+								chance of 30%:
+									add 1 to {t_mag.%entity%}
+								chance of 10%:
+									add 1 to {t_res.%entity%}
+								chance of 45%:
+									add 1 to {t_chr.%entity%}
+								chance of 30%:
+									add 1 to {t_lck.%entity%}
+						#Sweeper
+						else if {_archetype} is 3:
+							set {t_hp.%entity%} to 13
+							set {t_str.%entity%} to 15
+							set {t_def.%entity%} to 0
+							set {t_spd.%entity%} to 11
+							set {t_mag.%entity%} to 1
+							set {t_res.%entity%} to 0
+							set {t_chr.%entity%} to 2
+							set {t_lck.%entity%} to 14
+							loop ((floor({_moblvl} ^ 1)) + 4 + {_playerdiffmodifier}) times:
+								chance of 39%:
+									add 1 to {t_hp.%entity%}
+								add 1 to {t_str.%entity%}
+								chance of 14%:
+									add 1 to {t_str.%entity%}
+								chance of 28%:
+									add 1 to {t_def.%entity%}
+								add 1 to {t_spd.%entity%}
+								chance of 28%:
+									add 1 to {t_spd.%entity%}
+								chance of 33%:
+									add 1 to {t_mag.%entity%}
+								chance of 23%:
+									add 1 to {t_res.%entity%}
+								chance of 58%:
+									add 1 to {t_chr.%entity%}
+								add 1 to {t_lck.%entity%}
+								chance of 18%:
+									add 1 to {t_lck.%entity%}
+						#Leader
+						else if {_archetype} is 4:
+							set {t_hp.%entity%} to 20
+							set {t_str.%entity%} to 9
+							set {t_def.%entity%} to 8
+							set {t_spd.%entity%} to 7
+							set {t_mag.%entity%} to 4
+							set {t_res.%entity%} to 6
+							set {t_chr.%entity%} to 11
+							set {t_lck.%entity%} to 10
+							loop ((floor({_moblvl} ^ 1)) + 4 + {_playerdiffmodifier}) times:
+								add 1 to {t_hp.%entity%}
+								chance of 28%:
+									add 1 to {t_hp.%entity%}
+								add 1 to {t_str.%entity%}
+								chance of 23%:
+									add 1 to {t_str.%entity%}
+								chance of 28%:
+									add 1 to {t_def.%entity%}
+								add 1 to {t_spd.%entity%}
+								chance of 28%:
+									add 1 to {t_spd.%entity%}
+								chance of 33%:
+									add 1 to {t_mag.%entity%}
+								chance of 23%:
+									add 1 to {t_res.%entity%}
+								add 1 to {t_chr.%entity%}
+								chance of 58%:
+									add 1 to {t_chr.%entity%}
+								add 1 to {t_lck.%entity%}
+								chance of 18%:
+									add 1 to {t_lck.%entity%}
+					else if {_magic} is true:
+						#Select archetype to distribute the mob's stats
+						set {_archetype} to a random integer from 1 to 4
+						#Duelist
+						if {_archetype} is 1:
+							set {t_hp.%entity%} to 23
+							set {t_str.%entity%} to 0
+							set {t_def.%entity%} to 3
+							set {t_spd.%entity%} to 8
+							set {t_mag.%entity%} to 13
+							set {t_res.%entity%} to 9
+							set {t_chr.%entity%} to 0
+							set {t_lck.%entity%} to 1
+							loop ((floor({_moblvl} ^ 1)) + 4 + {_playerdiffmodifier}) times:
+								chance of 65%:
+									add 1 to {t_hp.%entity%}
+								chance of 4%:
+									add 1 to {t_str.%entity%}
+								chance of 14%:
+									add 1 to {t_def.%entity%}
+								chance of 54%:
+									add 1 to {t_spd.%entity%}
+								chance of 68%:
+									add 1 to {t_mag.%entity%}
+								chance of 59%:
+									add 1 to {t_res.%entity%}
+								chance of 24%:
+									add 1 to {t_chr.%entity%}
+								chance of 19%:
+									add 1 to {t_lck.%entity%}
+						#Tank
+						else if {_archetype} is 2:
+							set {t_hp.%entity%} to 24
+							set {t_str.%entity%} to 2
+							set {t_def.%entity%} to 0
+							set {t_spd.%entity%} to 0
+							set {t_mag.%entity%} to 12
+							set {t_res.%entity%} to 13
+							set {t_chr.%entity%} to 6
+							set {t_lck.%entity%} to 5
+							loop ((floor({_moblvl} ^ 1)) + 4 + {_playerdiffmodifier}) times:
+								add 1 to {t_hp.%entity%}
+								chance of 26%:
+									add 1 to {t_hp.%entity%}
+								chance of 30%:
+									add 1 to {t_str.%entity%}
+								chance of 10%:
+									add 1 to {t_def.%entity%}
+								chance of 20%:
+									add 1 to {t_spd.%entity%}
+								chance of 64%:
+									add 1 to {t_mag.%entity%}
+								chance of 60%:
+									add 1 to {t_res.%entity%}
+								chance of 45%:
+									add 1 to {t_chr.%entity%}
+								chance of 40%:
+									add 1 to {t_lck.%entity%}
+						#Sweeper
+						else if {_archetype} is 3:
+							set {t_hp.%entity%} to 13
+							set {t_str.%entity%} to 1
+							set {t_def.%entity%} to 0
+							set {t_spd.%entity%} to 15
+							set {t_mag.%entity%} to 17
+							set {t_res.%entity%} to 0
+							set {t_chr.%entity%} to 2
+							set {t_lck.%entity%} to 14
+							loop ((floor({_moblvl} ^ 1)) + 4 + {_playerdiffmodifier}) times:
+								chance of 29%:
+									add 1 to {t_hp.%entity%}
+								chance of 33%:
+									add 1 to {t_str.%entity%}
+								chance of 23%:
+									add 1 to {t_def.%entity%}
+								add 1 to {t_spd.%entity%}
+								chance of 28%:
+									add 1 to {t_spd.%entity%}
+								add 1 to {t_mag.%entity%}
+								chance of 23%:
+									add 1 to {t_mag.%entity%}
+								chance of 28%:
+									add 1 to {t_res.%entity%}
+								chance of 58%:
+									add 1 to {t_chr.%entity%}
+								add 1 to {t_lck.%entity%}
+								chance of 18%:
+									add 1 to {t_lck.%entity%}
+						#Leader
+						else if {_archetype} is 4:
+							set {t_hp.%entity%} to 20
+							set {t_str.%entity%} to 6
+							set {t_def.%entity%} to 8
+							set {t_spd.%entity%} to 8
+							set {t_mag.%entity%} to 8
+							set {t_res.%entity%} to 10
+							set {t_chr.%entity%} to 11
+							set {t_lck.%entity%} to 10
+							loop ((floor({_moblvl} ^ 1)) + 4 + {_playerdiffmodifier}) times:
+								add 1 to {t_hp.%entity%}
+								chance of 68%:
+									add 1 to {t_hp.%entity%}
+								add 1 to {t_str.%entity%}
+								chance of 23%:
+									add 1 to {t_str.%entity%}
+								chance of 28%:
+									add 1 to {t_def.%entity%}
+								add 1 to {t_spd.%entity%}
+								chance of 28%:
+									add 1 to {t_spd.%entity%}
+								chance of 33%:
+									add 1 to {t_mag.%entity%}
+								chance of 23%:
+									add 1 to {t_res.%entity%}
+								add 1 to {t_chr.%entity%}
+								chance of 58%:
+									add 1 to {t_chr.%entity%}
+								add 1 to {t_lck.%entity%}
+								chance of 18%:
+									add 1 to {t_lck.%entity%}
+					else:
+						loop ((floor({_moblvl} ^ 1)) + 4 + {_playerdiffmodifier}) times:
+							#add 1 to {t_str.%entity%}
+							chance of 80%:
+								add 1 to {t_str.%entity%}
+								chance of 35%:
+									add 1 to {t_str.%entity%}
+							#add 1 to {t_def.%entity%}
+							chance of 65%:
+								add 1 to {t_def.%entity%}
+								chance of 25%:
+									add 1 to {t_def.%entity%}
+							#add 1 to {t_spd.%entity%}
+							chance of 50%:
+								add 1 to {t_spd.%entity%}
+								chance of 30%:
+									add 1 to {t_spd.%entity%}
+							#add 1 to {t_LCK.%entity%}
+							chance of 45%:
+								add 1 to {t_LCK.%entity%}
+								chance of 40%:
+									add 1 to {t_LCK.%entity%}
+							#add 1 to {t_res.%entity%}
+							chance of 80%:
+								add 1 to {t_res.%entity%}
+								chance of 25%:
+									add 1 to {t_res.%entity%}
+							add 0.5 to the entity's maximum health
+							chance of 80%:
+								add 0.5 to the entity's maximum health
+								chance of 35%:
+									add 0.5 to the entity's maximum health
+					set the entity's maximum health to {t_hp.%entity%}
+					loop floor({_moblvl} / 2) times:
+						add 0.5 to the entity's maximum health
 						chance of 50%:
-							set {_rng} to a random integer from 0 to 3
-							if {_rng} is 1:
-								spawn 1 husk at the entity
-							else if {_rng} is 2:
-								spawn 1 zombie at the entity
-							else if {_rng} is 3:
-								spawn 1 skeleton at the entity
-							else:
-								spawn 1 stray at the entity
-							chance of 25%:
-								set {_rng} to a random integer from 0 to 3
+							add 0.5 to the entity's maximum health
+					set {t_lvl.%entity%} to {_moblvl}
+					heal the entity by 9999
+					#Make mobs spawn in clusters
+					#while {_mobClusterSpawning} is less than 7:
+					#	add 1 to {_mobClusterSpawning}
+					#	chance of 50%:
+					#		set {_rng} to a random integer from 0 to 1
+					#		if {_rng} is 1:
+					#			spawn 1 husk at the entity
+					#		else:
+					#			spawn 1 stray at the entity
+					#Additional mobs are exempt from cluster spawn rules
+					if {t_spd.%entity%} is more than 60:
+						apply swiftness 3 to the entity for 1 day
+					else if {t_spd.%entity%} is more than 40:
+						apply swiftness 2 to the entity for 1 day
+					else if {t_spd.%entity%} is more than 20:
+						apply swiftness 1 to the entity for 1 day
+					#block deep-underground additional spawns so caves don't lag server
+					#maybe not needed if chunks are pre-genned
+					#if the entity's y-coordinate is less than 0:
+					#	set {blockAdditionalAltMobSpawn} to true
+					#set {blockAdditionalAltMobSpawn} to true
+					if entity's maximum health is more than or equal to 25000:
+						cancel event
+					if spawn reason is natural:
+						if {blockAdditionalAltMobSpawn} is not set:
+							set {blockAdditionalAltMobSpawn} to true
+							loop 1 times:
+								chance of 50%:
+									set {_rng} to a random integer from 0 to 1
+									if {_rng} is 1:
+										spawn 1 husk at the entity
+									else:
+										spawn 1 stray at the entity
+									chance of 35%:
+										set {_rng} to a random integer from 0 to 6
+										if {_rng} is 1:
+											spawn 1 husk at the entity
+										else if {_rng} is 2:
+											spawn 1 zombie at the entity
+										else if {_rng} is 3:
+											spawn 1 skeleton at the entity
+										else if {_rng} is 4:
+											spawn 1 enderman at the entity
+										else if {_rng} is 5:
+											spawn 1 spider at the entity
+										else if {_rng} is 6:
+											spawn 1 cave spider at the entity
+										else:
+											spawn 1 stray at the entity
+										chance of 35%:
+											set {_rng} to a random integer from 0 to 6
+											if {_rng} is 1:
+												spawn 1 husk at the entity
+											else if {_rng} is 2:
+												spawn 1 zombie at the entity
+											else if {_rng} is 3:
+												spawn 1 skeleton at the entity
+											else if {_rng} is 4:
+												spawn 1 enderman at the entity
+											else if {_rng} is 5:
+												spawn 1 spider at the entity
+											else if {_rng} is 6:
+												spawn 1 cave spider at the entity
+											else:
+												spawn 1 stray at the entity
+											chance of 15%:
+												set {_rng} to a random integer from 0 to 6
+												if {_rng} is 1:
+													spawn 1 husk at the entity
+												else if {_rng} is 2:
+													spawn 1 zombie at the entity
+												else if {_rng} is 3:
+													spawn 1 skeleton at the entity
+												else if {_rng} is 4:
+													spawn 1 enderman at the entity
+												else if {_rng} is 5:
+													spawn 1 spider at the entity
+												else if {_rng} is 6:
+													spawn 1 cave spider at the entity
+												else:
+													spawn 1 stray at the entity
+								chance of 15%:
+									spawn 1 enderman at the entity
+								chance of 25%:
+									spawn 1 witch at the entity
+								chance of 33%:
+									spawn 1 spider at the entity
+								chance of 33%:
+									spawn 1 cave spider at the entity
+					#At night, mob cluster spawns are more aggressive
+					if time in entity's world is not between 18:00 and 6:00:
+						if spawn reason is natural:
+							clear {blockAdditionalAltMobSpawn}
+							if {blockAdditionalAltMobSpawn} is not set:
+								set {blockAdditionalAltMobSpawn} to true
+								loop 1 times:
+									chance of 50%:
+										set {_rng} to a random integer from 0 to 1
+										if {_rng} is 1:
+											spawn 1 husk at the entity
+										else:
+											spawn 1 stray at the entity
+										chance of 35%:
+											set {_rng} to a random integer from 0 to 8
+											if {_rng} is 1:
+												spawn 1 husk at the entity
+											else if {_rng} is 2:
+												spawn 1 zombie at the entity
+											else if {_rng} is 3:
+												spawn 1 skeleton at the entity
+											else if {_rng} is 4:
+												spawn 1 enderman at the entity
+											else if {_rng} is 5:
+												spawn 1 stray at the entity
+											else if {_rng} is 6:
+												spawn 1 evoker at the entity
+											else if {_rng} is 7:
+												spawn 1 spider at the entity
+											else if {_rng} is 8:
+												spawn 1 cave spider at the entity
+											else:
+												spawn 1 vindicator at the entity
+											chance of 35%:
+												set {_rng} to a random integer from 0 to 8
+												if {_rng} is 1:
+													spawn 1 husk at the entity
+												else if {_rng} is 2:
+													spawn 1 zombie at the entity
+												else if {_rng} is 3:
+													spawn 1 skeleton at the entity
+												else if {_rng} is 4:
+													spawn 1 enderman at the entity
+												else if {_rng} is 5:
+													spawn 1 stray at the entity
+												else if {_rng} is 6:
+													spawn 1 evoker at the entity
+												else if {_rng} is 7:
+													spawn 1 spider at the entity
+												else if {_rng} is 8:
+													spawn 1 cave spider at the entity
+												else:
+													spawn 1 vindicator at the entity
+												chance of 15%:
+													set {_rng} to a random integer from 0 to 7
+													if {_rng} is 1:
+														spawn 1 husk at the entity
+													else if {_rng} is 2:
+														spawn 1 zombie at the entity
+													else if {_rng} is 3:
+														spawn 1 skeleton at the entity
+													else if {_rng} is 4:
+														spawn 1 enderman at the entity
+													else if {_rng} is 5:
+														spawn 1 stray at the entity
+													else if {_rng} is 6:
+														spawn 1 evoker at the entity
+													else if {_rng} is 7:
+														spawn 1 illusioner at the entity
+													else:
+														spawn 1 vindicator at the entity
+									chance of 15%:
+										spawn 1 enderman at the entity
+									chance of 25%:
+										spawn 1 witch at the entity
+									chance of 33%:
+										spawn 1 spider at the entity
+									else:
+										chance of 50%:
+											spawn 1 cave spider at the entity
+					#Spawners generate extra mobs to ensure fights are always in groups
+					else if "%spawn reason%" is "mob spawner":
+						if {blockAdditionalAltMobSpawn} is not set:
+							set {blockAdditionalAltMobSpawn} to true
+							chance of 20%:
+								set {_rng} to a random integer from 0 to 1
 								if {_rng} is 1:
 									spawn 1 husk at the entity
-								else if {_rng} is 2:
-									spawn 1 zombie at the entity
-								else if {_rng} is 3:
-									spawn 1 skeleton at the entity
 								else:
 									spawn 1 stray at the entity
-								chance of 25%:
-									set {_rng} to a random integer from 0 to 3
+								chance of 20%:
+									set {_rng} to a random integer from 0 to 4
 									if {_rng} is 1:
 										spawn 1 husk at the entity
 									else if {_rng} is 2:
 										spawn 1 zombie at the entity
 									else if {_rng} is 3:
 										spawn 1 skeleton at the entity
+									else if {_rng} is 4:
+										spawn 1 enderman at the entity
 									else:
 										spawn 1 stray at the entity
-					chance of 5%:
-						spawn 1 enderman at the entity
-					chance of 15%:
-						spawn 1 witch at the entity
-				if the entity's maximum health is more than 1000:
-					set the entity's maximum health to 1000
-					chance of 5%:
-						set the entity's maximum health to ({t_lvl.%entity%} * 50)
-						set the entity's name to "<gold>Treasure %entity%"
-						apply weakness 4 to the entity for 1 hour
-						apply swiftness 4 to the entity for 1 hour
-						set the entity's helmet to gold helmet of protection 4
-						set the entity's chestplate to gold chestplate of protection 4
-						set the entity's leggings to gold leggings of protection 4
-						set the entity's boots to gold boots of protection 4
-						if entity is a zombie:
-							set the entity's tool to 1 gold sword of looting 5 named "<gold>Fortune Sword" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - Despoil"
-						else if entity is a skeleton:
-							set the entity's tool to 1 bow of looting 5 named "<gold>Fortune Bow" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - Despoil"
-						loop all players:
-							send formatted "<gold>A %entity's name% has appeared!" to loop-player
-							set {_loc} to location of block at the entity
-							send formatted "<gold>Coordinates: %{_loc}%" to loop-player
-					else:
-						chance of 80%:
-							cancel event
-						else:
-							chance of 20%:
-								loop 5 times:
-									if entity is zombie:
-										spawn 1 zombie at the entity
-									else if entity is skeleton:
-										spawn 1 skeleton at the entity
-									else if entity is spider:
-										spawn 1 spider at the entity
-									else if entity is creeper:
-										spawn 1 creeper at the entity
-									else if entity is zombie pigman:
-										spawn 1 zombie pigman at the entity
-									else if entity is enderman:
-										spawn 1 enderman at the entity
+									chance of 10%:
+										set {_rng} to a random integer from 0 to 4
+										if {_rng} is 1:
+											spawn 1 husk at the entity
+										else if {_rng} is 2:
+											spawn 1 zombie at the entity
+										else if {_rng} is 3:
+											spawn 1 skeleton at the entity
+										else if {_rng} is 4:
+											spawn 1 enderman at the entity
+										else:
+											spawn 1 stray at the entity
+										chance of 5%:
+											set {_rng} to a random integer from 0 to 4
+											if {_rng} is 1:
+												spawn 1 husk at the entity
+											else if {_rng} is 2:
+												spawn 1 zombie at the entity
+											else if {_rng} is 3:
+												spawn 1 skeleton at the entity
+											else if {_rng} is 4:
+												spawn 1 enderman at the entity
+											else:
+												spawn 1 stray at the entity
+							chance of 10%:
+								spawn 1 enderman at the entity
+							chance of 10%:
+								spawn 1 witch at the entity						
+					if {t_lvl.%entity%} is more than or equal to 15:
+						chance of 20%:
+							#set the entity's maximum health to 500
+							chance of 1%:
+								set the entity's maximum health to ({t_lvl.%entity%} * 15)
+								set the entity's name to "<gold>Treasure %entity%"
+								apply weakness 4 to the entity for 1 hour
+								apply swiftness 4 to the entity for 1 hour
+								set the entity's helmet to gold helmet of protection 4
+								set the entity's chestplate to gold chestplate of protection 4
+								set the entity's leggings to gold leggings of protection 4
+								set the entity's boots to gold boots of protection 4
+								if entity is zombie:
+									set the entity's tool to 1 gold sword of looting 5 named "<gold>Fortune Sword" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - Despoil"
+								else if entity is skeleton:
+									set the entity's tool to 1 bow of looting 5 named "<gold>Fortune Bow" with lore "<light red><bold>Slot A - None", "<light blue><bold>Slot B - Despoil"
 								loop all players:
-									send formatted "<light purple>A %entity% horde approaches!" to loop-player
+									send formatted "<gold>A %entity's name% has appeared!" to loop-player
 									set {_loc} to location of block at the entity
-									send formatted "<light purple>Coordinates: %{_loc}%" to loop-player
+									send formatted "<gold>Coordinates: %{_loc}%" to loop-player
 							else:
-								set {t_isBoss.%entity%} to true
-								add 20 to {t_lvl.%entity%}
-								loop 20 times:
-									chance of 55%:
-										add 1 to {t_str.%entity%}
-									chance of 55%:
-										add 1 to {t_def.%entity%}
-									chance of 55%:
-										add 1 to {t_spd.%entity%}
-									chance of 55%:
-										add 1 to {t_skl.%entity%}
-									chance of 55%:
-										add 1 to {t_res.%entity%}
-								set the entity's maximum health to ({t_lvl.%entity%} * 50)
-								heal the entity by 1000
-								set the entity's name to "<light red>%entity% Boss"
-								humanoidEquipmentHandler(entity,{t_lvl.%entity%} + 25,0)
-								loop all players:
-									send formatted "<light red>An incredibly powerful %entity% has appeared!" to loop-player
-									set {_loc} to location of block at the entity
-									send formatted "<light red>Coordinates: %{_loc}%" to loop-player
-				if {_deadlord} is not set:
-					if entity is zombie:
-						humanoidEquipmentHandler(entity,{t_lvl.%entity%},0)
-						if {t_lvl.%entity%} is more than 20:
-							chance of (({t_lvl.%entity%} - 19) / 4)%:
-								set metadata value "isMimic" of the entity to 1
-							else:
-								chance of (({t_lvl.%entity%} - 29) / 4)%:
-									set metadata value "isMalediction" of the entity to 1
+								chance of 98%:
+									cancel event
 								else:
-									chance of (({t_lvl.%entity%} - 39) / 4)%:
-										set metadata value "isRegret" of the entity to 1
+									chance of 50%:
+										loop 5 times:
+											if entity is zombie:
+												spawn 1 zombie at the entity
+											else if entity is skeleton:
+												spawn 1 skeleton at the entity
+											else if entity is spider:
+												spawn 1 spider at the entity
+											else if entity is creeper:
+												spawn 1 creeper at the entity
+											else if entity is zombie pigman:
+												spawn 1 zombie pigman at the entity
+											else if entity is enderman:
+												spawn 1 enderman at the entity
+										loop all players:
+											send formatted "<light purple>A %entity% horde approaches!" to loop-player
+											set {_loc} to location of block at the entity
+											send formatted "<light purple>Coordinates: %{_loc}%" to loop-player
 									else:
-										chance of (({t_lvl.%entity%} - 69) / 4)%:
-											set metadata value "isZPurgia" of the entity to 1
-					else if entity is skeleton:
-						humanoidEquipmentHandler(entity,{t_lvl.%entity%},1)
-						if {t_lvl.%entity%} is more than 20:
-							chance of (({t_lvl.%entity%} - 19) / 4)%:
-								set metadata value "isMimic" of the entity to 1
-							else:
-								chance of (({t_lvl.%entity%} - 29) / 4)%:
-									set metadata value "isMalediction" of the entity to 1
+										set {t_isBoss.%entity%} to true
+										add 20 to {t_lvl.%entity%}
+										loop 20 times:
+											chance of 55%:
+												add 1 to {t_str.%entity%}
+											chance of 55%:
+												add 1 to {t_def.%entity%}
+											chance of 55%:
+												add 1 to {t_spd.%entity%}
+											chance of 55%:
+												add 1 to {t_lck.%entity%}
+											chance of 55%:
+												add 1 to {t_res.%entity%}
+											chance of 55%:
+												add 1 to {t_mag.%entity%}
+											chance of 55%:
+												add 1 to {t_chr.%entity%}
+										set the entity's maximum health to ({t_lvl.%entity%} * 50)
+										heal the entity by 1000
+										set the entity's name to "<light red>%entity% Boss"
+										humanoidEquipmentHandler(entity,{t_lvl.%entity%} + 25,0)
+										loop all players:
+											send formatted "<light red>An incredibly powerful %entity% has appeared!" to loop-player
+											set {_loc} to location of block at the entity
+											send formatted "<light red>Coordinates: %{_loc}%" to loop-player
+					if {_deadlord} is not set:
+						set {_mobSpecialChance} to ceil({t_lvl.%entity%} / 1.5)
+						subtract 5 from {_mobSpecialChance}
+						if {_mobSpecialChance} is more than 15:
+							set {_mobSpecialChance} to 15
+						if entity is zombie:
+							humanoidEquipmentHandler(entity,{t_lvl.%entity%},0)
+							if {_mobSpecialChance} is more than 1:
+								chance of {_mobSpecialChance}%:
+									set metadata value "isMimic" of the entity to 1
 								else:
-									chance of (({t_lvl.%entity%} - 39) / 4)%:
-										set metadata value "isEnrapture" of the entity to 1
-									else:
-										chance of (({t_lvl.%entity%} - 69) / 4)%:
-											set metadata value "isSPurgia" of the entity to 1
-					else if entity is creeper:
-						if {t_lvl.%entity%} is more than 20:
-							chance of (({t_lvl.%entity%} - 19) / 4)%:
-								set metadata value "isSkulker" of the entity to 1
-							else:
-								chance of (({t_lvl.%entity%} - 29) / 4)%:
-									set metadata value "isStalker" of the entity to 1
-								else:
-									chance of (({t_lvl.%entity%} - 39) / 4)%:
+									set {_mobSpecialChance} to ceil({_mobSpecialChance} * 1)
+									chance of {_mobSpecialChance}%:
 										set metadata value "isMalediction" of the entity to 1
 									else:
-										chance of (({t_lvl.%entity%} - 69) / 4)%:
-											set metadata value "isCPurgia" of the entity to 1
-					else if entity is spider:
-						if {t_lvl.%entity%} is more than 20:
-							chance of (({t_lvl.%entity%} - 19) / 4)%:
-								set metadata value "isVenomSpider" of the entity to 1
-							else:
-								chance of (({t_lvl.%entity%} - 29) / 4)%:
-									set metadata value "isShadow" of the entity to 1
+										set {_mobSpecialChance} to ceil({_mobSpecialChance} * 1)
+										chance of {_mobSpecialChance}%:
+											set metadata value "isRegret" of the entity to 0
+										else:
+											set {_mobSpecialChance} to ceil({_mobSpecialChance} * 0.7)
+											chance of {_mobSpecialChance}%:
+												set metadata value "isZPurgia" of the entity to 1
+						else if entity is skeleton:
+							humanoidEquipmentHandler(entity,{t_lvl.%entity%},1)
+							if {_mobSpecialChance} is more than 1:
+								chance of {_mobSpecialChance}%:
+									set metadata value "isMimic" of the entity to 1
 								else:
-									chance of (({t_lvl.%entity%} - 39) / 4)%:
+									set {_mobSpecialChance} to ceil({_mobSpecialChance} * 1)
+									chance of {_mobSpecialChance}%:
 										set metadata value "isMalediction" of the entity to 1
-					else if entity is zombie pigman:
-						humanoidEquipmentHandler(entity,{t_lvl.%entity%},0)
-						if {t_lvl.%entity%} is more than 20:
-							chance of (({t_lvl.%entity%} - 19) / 4)%:
-								set metadata value "isMimic" of the entity to 1
-							else:
-								chance of (({t_lvl.%entity%} - 29) / 4)%:
-									set metadata value "isMalediction" of the entity to 1
-								else:
-									chance of (({t_lvl.%entity%} - 39) / 4)%:
-										set metadata value "isRegret" of the entity to 1
 									else:
-										chance of (({t_lvl.%entity%} - 69) / 4)%:
-											set metadata value "isZPPurgia" of the entity to 1
-				clear {blockAdditionalAltMobSpawn}
+										set {_mobSpecialChance} to ceil({_mobSpecialChance} * 1)
+										chance of {_mobSpecialChance}%:
+											set metadata value "isEnrapture" of the entity to 1
+										else:
+											set {_mobSpecialChance} to ceil({_mobSpecialChance} * 0.7)
+											chance of {_mobSpecialChance}%:
+												set metadata value "isSPurgia" of the entity to 1
+						else if entity is creeper:
+							if {_mobSpecialChance} is more than 1:
+								chance of {_mobSpecialChance}%:
+									set metadata value "isSkulker" of the entity to 1
+								else:
+									set {_mobSpecialChance} to ceil({_mobSpecialChance} * 1)
+									chance of {_mobSpecialChance}%:
+										set metadata value "isStalker" of the entity to 1
+									else:
+										set {_mobSpecialChance} to ceil({_mobSpecialChance} * 1)
+										chance of {_mobSpecialChance}%:
+											set metadata value "isMalediction" of the entity to 1
+										else:
+											set {_mobSpecialChance} to ceil({_mobSpecialChance} * 0.7)
+											chance of {_mobSpecialChance}%:
+												set metadata value "isCPurgia" of the entity to 1
+						else if entity is spider:
+							if {_mobSpecialChance} is more than 1:
+								chance of {_mobSpecialChance}%:
+									set metadata value "isVenomSpider" of the entity to 1
+								else:
+									set {_mobSpecialChance} to ceil({_mobSpecialChance} * 1)
+									chance of {_mobSpecialChance}%:
+										set metadata value "isShadow" of the entity to 1
+									else:
+										set {_mobSpecialChance} to ceil({_mobSpecialChance} * 1)
+										chance of {_mobSpecialChance}%:
+											set metadata value "isMalediction" of the entity to 1
+						else if entity is zombie pigman:
+							humanoidEquipmentHandler(entity,{t_lvl.%entity%},0)
+							if {_mobSpecialChance} is more than 1:
+								chance of {_mobSpecialChance}%:
+									set metadata value "isMimic" of the entity to 1
+								else:
+									set {_mobSpecialChance} to ceil({_mobSpecialChance} * 1)
+									chance of {_mobSpecialChance}%:
+										set metadata value "isMalediction" of the entity to 1
+									else:
+										set {_mobSpecialChance} to ceil({_mobSpecialChance} * 1)
+										chance of {_mobSpecialChance}%:
+											set metadata value "isRegret" of the entity to 0
+										else:
+											set {_mobSpecialChance} to ceil({_mobSpecialChance} * 1)
+											chance of {_mobSpecialChance}%:
+												set metadata value "isZPPurgia" of the entity to 1
+					clear {blockAdditionalAltMobSpawn}
 every 5 ticks:
 	clear {blockAdditionalAltMobSpawn}
-		
+	
+#Ender Dragon buffs
 on spawn of ender dragon:
 	if entity's world is "adventure_the_end":
-		set {t_lvl.%entity%} to 90
-		set {t_str.%entity%} to 110
-		set {t_def.%entity%} to 110
-		set {t_spd.%entity%} to 110
-		set {t_skl.%entity%} to 110
-		set {t_res.%entity%} to 110
-		loop all players in world:
-			add {lvl.%loop-player%} to {_moblvl}
-			add 1 to {_players}
-		set {_balance} to 90 - ({_moblvl} / {_players})
-		if {_balance} is less than 1:
-			set {_balance} to abs({_balance} + 15)
-			loop {_balance} times:
+		loop all players in radius 256 of the entity:
+			if citizen id of loop-player is not set:
+				add {lvl.%loop-player%} to {_moblvl}
+				add (({promoted.%loop-player%} - 1) * 10) to {_moblvl}
+				add 1 to {_players}
+		set {_moblvl} to ({_moblvl} / {_players})
+		set {_max} to {_moblvl} + 28
+		set {_balancer} to {_moblvl}
+		set {_moblvl} to a random integer from 1 to {_max}
+		add floor({_balancer} / 2) to {_moblvl}
+		if {_moblvl} is not set:
+			set {_moblvl} to 1
+			set {_max} to 10
+		if {_moblvl} is more than {_max}:
+			set {_moblvl} to {_max}
+		if {_moblvl} is less than 1:
+			set {_moblvl} to 1
+		set {_moblvl} to ceil({_moblvl})
+		add a random integer from 1 to 10 to {_moblvl}
+		#Add a hidden level bonus that isn't displayed if players have difficulty higher than Normal
+		#Formula: [DifficultyAverage], round down to nearest whole number, subtract 1 and then multiply by 4.
+		set {_playerdiffmodifier} to ((floor({_playerdiffmodifier} / {_players})) - 1) * 4
+		#Difficulty modifier increases the scaling of promoted mobs
+		#Get average promotion tier of all nearby players.
+		#Floor is used so that "Jagens" do not make the game more difficult for their party
+		set {_playerPromotions} to floor({_playerPromotions} / {_players})
+		#Promotion tier 1 is unaffected
+		set {_playerdiffmodifier} to {_playerdiffmodifier} + ((({_playerPromotions} - 1) * {_playerdiffmodifier}) * 2)
+		set {t_hp.%entity%} to 60
+		set {t_str.%entity%} to 30
+		set {t_def.%entity%} to 30
+		set {t_spd.%entity%} to 30
+		set {t_mag.%entity%} to 30
+		set {t_res.%entity%} to 25
+		set {t_chr.%entity%} to 30
+		set {t_lck.%entity%} to 50
+		loop ({_moblvl} + 2 + {_playerdiffmodifier}) times:
+			add 2 to {t_hp.%entity%}
+			chance of 68%:
+				add 1 to {t_hp.%entity%}
+			add 2 to {t_str.%entity%}
+			chance of 23%:
 				add 1 to {t_str.%entity%}
+			add 2 to {t_def.%entity%}
+			chance of 28%:
 				add 1 to {t_def.%entity%}
+			add 2 to {t_spd.%entity%}
+			chance of 28%:
 				add 1 to {t_spd.%entity%}
-				add 1 to {t_skl.%entity%}
+			add 2 to {t_mag.%entity%}
+			chance of 33%:
+				add 1 to {t_mag.%entity%}
+			add 2 to {t_res.%entity%}
+			chance of 23%:
 				add 1 to {t_res.%entity%}
-				add 3 to the entity's maximum health
-		heal the entity by 9999
-		set {t_isBoss.%entity%} to true
-		set the entity's name to "<light red>Lurzen, the Gatekeeper"
-		apply strength 3 to the last spawned entity for 1 day
-		apply swiftness 3 to the last spawned entity for 1 day
-		apply resistance 3 to the last spawned entity for 1 day
-		set {_temp} to the entity's maximum health
-		set the entity's maximum health to {_temp} * 2
-		heal the entity by 9000
-		broadcast "<light red>An ancient foe awakens..."
-		broadcast "<light red>Level: %90 + {_balance}%"
-		broadcast "<light red>STR/SPD/DEF/MAG/SKL: %{t_str.%entity%}%"
-
-on damage of a zombie:
-	if the name of the victim contains "Alstair":
-		set {_bossbar} to new boss bar
-		add attacker to {_bossbar}
-		set title of bossbar {_bossbar} to "<red><bold>Fallen General: Helmund"
-		set {_health} to health of victim / max health of victim - 0.1
-		set progress of bossbar {_bossbar} to {_health}
-		show boss bar {_bossbar}
-		set the visibility of bossbar {_bossbar} to true
-
-on damage:
-	if the 1st line of the lore of the attacker's tool contains "Deathly Duel":
-		set {_bonusDamage} to getHelmetDamageResistance(victim)
-		add getChestplateDamageResistance(victim) to {_bonusdamage}
-		add getLeggingsDamageResistance(victim) to {_bonusdamage}
-		add getBootsDamageResistance(victim) to {_bonusdamage}
-		set {_bonusdamage} to {_bonusdamage} * 1.5
-		set damage to damage + {_bonusdamage}
-		apply strength 2 to the attacker for 5 seconds
-		
-		
-#End Credits routine
-on player portal:
-	if the player's world is "Alstair_End":
-		if {quests.%player%::Legacy} is 999:
-			cancel event
-			make player execute command "/spawn"
-			wait 3 seconds
-			send title "<gold>And so, Helmund's attempt to conquer" with subtitle "<gold>the continent of Silgrund was defeated once more." to the player for 4.5 seconds with fade in 0.5 seconds and fade out 0.5 seconds
-			wait 5.5 seconds
-			send title "<gold>Lord Kiln extended his gratitude towards %player's tablist name%" with subtitle "<gold>and the rest of their allies for saving his realm." to the player for 4.5 seconds with fade in 0.5 seconds and fade out 0.5 seconds
-			wait 5.5 seconds
-			send title "<gold>A grand feast was held for the motley crew of heroes," with subtitle "<gold>who would come to be known as the Crusaders of Silgrund." to the player for 4.5 seconds with fade in 0.5 seconds and fade out 0.5 seconds
-			wait 5.5 seconds
-			send title "<gold>A shrine would later be erected" with subtitle "<gold>for the Crusaders, ensuring that their memory would last through the ages." to the player for 4.5 seconds with fade in 0.5 seconds and fade out 0.5 seconds
-			wait 5.5 seconds
-			send title "<gold>Not much is known about the Crusaders" with subtitle "<gold>after their battle with Helmund." to the player for 4.5 seconds with fade in 0.5 seconds and fade out 0.5 seconds
-			wait 5.5 seconds
-			send title "<gold>Some say they ventured off" with subtitle "<gold>towards new lands, seeking greater challenges." to the player for 3.5 seconds with fade in 0.5 seconds and fade out 0.5 seconds
-			wait 4.5 seconds
-			send title "<gold>Others claim they sealed their legendary weapons" with subtitle "<gold>away, and vanished without a trace." to the player for 3.5 seconds with fade in 0.5 seconds and fade out 0.5 seconds
-			wait 4.5 seconds
-			send title "<gold>Only one thing is known for certain:" with subtitle "<gold><bold>The Crusaders of Silgrund had exceeded all hopes and become truly legendary heroes." to the player for 4 seconds with fade in 0.5 seconds and fade out 0.5 seconds
-			wait 5 seconds
-			send title "<gold>Their legend would be retold for generations," with subtitle "<gold>Inspiring hope for all just as the Great Heroes had done long ago." to the player for 4 seconds with fade in 0.5 seconds and fade out 0.5 seconds
-			wait 5 seconds
-			send title "<gold>Rest well, %player's tablist name%." to the player for 1.5 seconds with fade in 0.5 seconds and fade out 0.5 seconds
-			wait 2.5 seconds
-			send title "<gold>Your journey has finally come to an end." to the player for 2 seconds with fade in 0.5 seconds and fade out 1.5 seconds
-			wait 4 seconds
-			send title "<light cyan><bold>THE CRUSADERS OF SILGRUND" with subtitle "<light cyan>Produced and hosted by Flamecrest Games." to the player for 6 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-			wait 6.5 seconds
-			send title "<light cyan>Lead Developer: IAmTheMostWanted" with subtitle "<light cyan>Programming: IAmTheMostWanted" to the player for 3.5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-			wait 4 seconds
-			send title "<light cyan>Skill/Perk Creation: IAmTheMostWanted,Skiddlezz" with subtitle "<light cyan>Skill/Perk Balancing: IAmTheMostWanted,Skiddlezz,rockgraham101" to the player for 3.5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-			wait 4 seconds
-			send title "<light cyan>Story: IAmTheMostWanted, Skiddlezz" with subtitle "<light cyan>World Concepts: Skiddlezz" to the player for 3.5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-			wait 4 seconds
-			send title "<light cyan>Map Design: IAmTheMostWanted,Skiddlezz," with subtitle "<light cyan>rockgraham101,AngelDog626,ButterMonsta,coolkid <gold>...and you!" to the player for 3.5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-			wait 4 seconds
-			send title "<light cyan>Quality Assurance: IAmTheMostWanted,Skiddlezz," with subtitle "<light cyan>rockgraham101,AngelDog626,ButterMonsta,coolkid,NavalSaucer899" to the player for 3.5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-			wait 4 seconds
-			send title "<light cyan>Special Thanks: Spigot Team, Shouzou Kaga" with subtitle "<light cyan><bold>And all of the plugin developers who made this crazy project possible." to the player for 4 seconds with fade in 0.25 seconds and fade out 1.25 seconds
-			wait 5.5 seconds
-			send title "<gold>%player's tablist name%, <gold>the level %{lvl.%player%}% %{class.%player%}%:" with subtitle "<gold>Final Stat Total: %{bst.%player%}%" to the player for 2.5 seconds with fade in 0.75 seconds and fade out 0.25 seconds
-			wait 3.5 seconds
-			send title "<gold>Combat Victories: %{kills.%player%}%" with subtitle "<gold>Deaths: %{deaths.%player%}%" to the player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-			wait 3 seconds
-			send title "<gold>Most damage dealt in one hit: %{highestdamage.%player%}%" with subtitle "<gold>Most damage suffered in one hit: %{highestsuffered.%player%}%" to the player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-			wait 3.5 seconds
-			send title "<gold>Perks Unlocked: %{skillstotal.%player%}%" with subtitle "<gold>Times Reclassed: %{reclassed.%player%}%" to the player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-			wait 3.5 seconds
-			if {perdiff.%player%} is 0:
-				set {_diff} to "<green>Relaxed"
-			else if {perdiff.%player%} is 1:
-				set {_diff} to "<light green>Easy"
-			else if {perdiff.%player%} is 2:
-				set {_diff} to "Normal"
-			else if {perdiff.%player%} is 3:
-				set {_diff} to "<light red>Hard"
-			else if {perdiff.%player%} is 4:
-				set {_diff} to "<light purple>Lunatic"
-			else if {perdiff.%player%} is 5:
-				set {_diff} to "<purple><bold>Infernal"
-			else if {perdiff.%player%} is 6:
-				set {_diff} to "<light yellow>Thracian"
-			else if {perdiff.%player%} is 7:
-				set {_diff} to "<light yellow><bold>Lunatic (Thracian)"
-			else if {perdiff.%player%} is 8:
-				set {_diff} to "<gold><bold>Infernal (Thracian)"
-			send title "<gold>Promotion Tier: %{promoted.%player%}%" with subtitle "<gold>Difficulty: %{_diff}%" to the player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-			wait 3.5 seconds
-			send title "<gold>Blocks Mined: %{blocksmined.%player%}%" with subtitle "<gold>Tools Broken: %{toolbreaktally.%player%}%" to the player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-			wait 3.5 seconds
-			send title "<gold>Fall Damage Suffered: %{slfalltotal.%player%}%" with subtitle "<gold>Total Funds: %player's money%" to the player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-			wait 4.25 seconds
-			send title "<gold>---===Character Rankings===---" to the player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-			wait 3.5 seconds
-			if {kills.%player%} is more than 500:
-				set {_killrank} to "<gold><bold>S"
-				give 1 nether star named "<gold><bold>Crest of Valor" with lore "<gold>Awarded to heroes with exemplary combat prowess.", "<white>Grants Strength 4 while in your inventory." to the player
-			else if {kills.%player%} is more than 400:
-				set {_killrank} to "A"
-			else if {kills.%player%} is more than 300:
-				set {_killrank} to "B"
-			else if {kills.%player%} is more than 200:
-				set {_killrank} to "C"
-			else if {kills.%player%} is more than 100:
-				set {_killrank} to "D"
-			else:
-				set {_killrank} to "E"
-			if {deaths.%player%} is less than or equal to 3:
-				set {_survival} to "<gold><bold>S"
-				give 1 nether star named "<gold><bold>Crest of Resilience" with lore "<gold>Awarded to heroes with unparalleled vitality.", "<white>Grants Regeneration 4 while in your inventory." to the player
-			else if {deaths.%player%} is less than or equal to 5:
-				set {_survival} to "A"
-			else if {deaths.%player%} is less than or equal to 7:
-				set {_survival} to "B"
-			else if {deaths.%player%} is less than or equal to 9:
-				set {_survival} to "C"
-			else if {deaths.%player%} is less than or equal to 12:
-				set {_survival} to "D"
-			else:
-				set {_survival} to "E"
-			send title "Combat: %{_killrank}%" with subtitle "Survival: %{_survival}%" to the player for 3.5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-			wait 4 seconds
-			if {lvl.%player%} is more than 150:
-				set {_funds} to "<gold><bold>S"
-				give 1 nether star named "<gold><bold>Crest of Mastery" with lore "<gold>Awarded to heroes with peerless experience.", "<white>Grants 2x experience while in your inventory." to the player
-			else if {lvl.%player%} is more than 120:
-				set {_funds} to "A"
-			else if {lvl.%player%} is more than 90:
-				set {_funds} to "B"
-			else if {lvl.%player%} is more than 60:
-				set {_funds} to "C"
-			else if {lvl.%player%} is more than 30:
-				set {_funds} to "D"
-			else:
-				set {_funds} to "E"
-			if {hoursplayed.%player%} is less than 10:
-				set {_tactics} to "<gold><bold>S"
-				give 1 nether star named "<gold><bold>Crest of Wisdom" with lore "<gold>Awarded to heroes with unmatched tactics.", "<white>Grants <gold>[Spectrum Tactic]<white> while in your inventory.", "<gold>[Spectrum Tactic]<white>: Grants +25 to all stats if number of players with that class in range <= 3.", "<white>Buffs apply in a 10 block radius. Targets all allies (includes skill wielder)." to the player
-			else if {hoursplayed.%player%} is less than 15:
-				set {_tactics} to "A"
-			else if {hoursplayed.%player%} is less than 20:
-				set {_tactics} to "B"
-			else if {hoursplayed.%player%} is less than 25:
-				set {_tactics} to "C"
-			else if {hoursplayed.%player%} is less than 30:
-				set {_tactics} to "D"
-			else:
-				set {_tactics} to "E"
-			send title "Experience: %{_funds}%" with subtitle "Tactics: %{_tactics}%" to the player for 3.5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-			wait 4 seconds
-			send title "Final Ranks:" with subtitle "%{_killrank}% <reset>%{_survival}% <reset>%{_funds}% <reset>%{_tactics}%" to the player for 5 seconds with fade in 1 seconds and fade out 1 seconds
-			wait 7 seconds
-			if {_killrank} is "<gold><bold>S":
-				if {_survival} is "<gold><bold>S":
-					if {_funds} is "<gold><bold>S":
-						if {_tactics} is "<gold><bold>S":
-							play sound "entity.player.levelup" with volume 1 and pitch 0.5 at player for player
-							play mob spawner flames at the player
-							strike lightning effect at the player
-							give 1 diamond sword of unbreaking 100, sharpness 15, looting 10, smite 10, fire aspect 3 named "<gold><bold>Legend's Resonance" with lore "<light red><bold>Slot A - Deathly Duel", "<light blue><bold>Slot B - Wrath", "<light yellow><bold>Slot C - Breath of Life", "<light green><bold>Assist - Swap", "<light purple><bold>Special - Aether", "<light blue><bold>Refined: Warding", "<white>A mythical sword that presents itself only to true heroes.", "<white>The blade shines with a divine light, piercing darkness and igniting the flames of hope." to the player
-							send title "<light yellow>Achieved S rank in all categories!" with subtitle "<gold><bold>You are a truly legendary hero! You have been granted a special reward." to the player for 5 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-							make player say "%{maxLevelQuote.%player%}%"
-							wait 5.5 seconds
-			send title "<gold><bold>THANK YOU FOR PLAYING!" with subtitle "<gold><bold>You may continue your adventures with this character, or start a new journey with /char new." to the player for 5 seconds with fade in 0.5 seconds and fade out 1 second
-			play sound "entity.player.levelup" with volume 1 and pitch 1 at player for player
-		
-		
-	
+			add 4 to {t_chr.%entity%}
+			chance of 58%:
+				add 1 to {t_chr.%entity%}
+			add 4 to {t_lck.%entity%}
+			chance of 18%:
+				add 1 to {t_lck.%entity%}
+		set the entity's max health to ({t_hp.%entity%} / 2)

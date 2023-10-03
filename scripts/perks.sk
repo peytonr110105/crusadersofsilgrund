@@ -1,71 +1,37 @@
+command /admin_setPerkTreeHonorXPRequirement <number> <number>:
+	trigger:
+		if arg 1 is 1:
+			set {perksFirstHonorXPRequirement} to arg 2
+		else if arg 1 is 2:
+			set {perksSecondHonorXPRequirement} to arg 2
+		else if arg 1 is 3:
+			set {perksThirdHonorXPRequirement} to arg 2
+
+
 command /grantskill <number> <text>:
 	description: Grants a skill.
 	usage: This should not be displayed
 	trigger:
 		if arg 1 is 1:
-			if arg 2 is "resetall":
-				clear {Renewal.%player%}
-				clear {Restock.%player%}
-				clear {HP +5.%player%}
-				clear {STR +5.%player%}
-				clear {DEF +5.%player%}
-				clear {SPD +5.%player%}
-				clear {MAG +5.%player%}
-				clear {SKL +5.%player%}
-				clear {Smooth Landing.%player%}
-				clear {Guard.%player%}
-				clear {Steady Breath.%player%}
-				clear {Life and Death.%player%}
-				clear {Vantage.%player%}
-				clear {Everlasting Bond.%player%}
-				clear {Hoard.%player%}
-				clear {Light Feet.%player%}
-				clear {Quickened Pulse.%player%}
-				clear {Hammerne.%player%}
-				clear {Double Lion.%player%}
-				clear {Dancing Duel.%player%}
-				clear {Friends With Benefits.%player%}
-				clear {Rightful King.%player%}
-				clear {Unbreakable.%player%}
-				clear {Gamble.%player%}
-				clear {Crushing Offense.%player%}
-				clear {Haste.%player%}
-				clear {Crusader's Blood.%player%}
-				clear {Lord's Blood.%player%}
-				clear {Crusader's Ward.%player%}
-				clear {Miracle.%player%}
-				clear {Brazen STR.%player%}
-				clear {Brazen SPD.%player%}
-				clear {Brazen SKL.%player%}
-				clear {Brazen DEF.%player%}
-				clear {Brazen MAG.%player%}
-				clear {STR Smoke.%player%}
-				clear {SPD Smoke.%player%}
-				clear {DEF Smoke.%player%}
-				clear {SKL Smoke.%player%}
-				clear {Devilish Style.%player%}
-				clear {Steady Breath.%player%}
-				clear {Warding Breath.%player%}
-				clear {Wrathful Staff.%player%}
-				clear {Dazzling Staff.%player%}
-				clear {Paragon.%player%}
-				clear {Mount.%player%}
+			if arg 2 is "unequipall":
 				set {skillstotal.%player%} to 0
 				set {skillslot1.%player%} to "Empty"
 				set {skillslot2.%player%} to "Empty"
 				set {skillslot3.%player%} to "Empty"
 				set {skillslot4.%player%} to "Empty"
 				set {skillslot5.%player%} to "Empty"
-				send formatted "<bold>Reset all perk data."
+				set {skillslot6.%player%} to "Empty"
+				set {skillslot7.%player%} to "Empty"
+				set {skillslot8.%player%} to "Empty"
+				set {skillslot9.%player%} to "Empty"
+				set {skillslot10.%player%} to "Empty"
+				send formatted "<bold>Unequipped all perks."
 			else:
 				clear {%arg 2%.%player%}
 				send formatted "<bold>Cleared perk %arg 2%."
 		else:
 			set {perks.%player%::%arg 2%} to 1
-			set {skillsTotal.%player%} to 0
-			loop {perks.%player%::*}:
-				if {perks.%player%::%loop-index%} is 1:
-					add 1 to {skillstotal.%player%}
+			add 1 to {totalUnlockedPerks.%player%}
 			send formatted "<bold>Learned Perk: %arg 2%."
 			play sound "entity.player.levelup" with volume 1 and pitch 1.5 at player for player
 			spawn a firework at the player
@@ -105,477 +71,16 @@ command /mount:
 			tame last spawned entity to the player
 			make the last spawned entity wear a saddle
 			wait 1 tick
+			apply speed 3 to the last spawned entity for 999 days
 			make the player ride the last spawned entity
-			
-command /perks [<number=1>]:
-	description: Lists the current perks that you have unlocked.
-	usage: /listperks
-	aliases: /seeallperks, /seeperks, /listskills, /perks
-	trigger:
-		if arg 1 is 1:
-			open chest with 6 rows named "<bold>Universal Perks | (%{skillsTotal.%player%}% perks unlocked)" for the player
-			if {perks.%player%::Renewal} is 1:
-				set slot 0 of the player's current inventory to 1 emerald block named "<bold>Renewal" with lore "<white>Restores 1 heart every 15 seconds.", ""
-			else:
-				set slot 0 of the player's current inventory to 1 obsidian named "<bold>Renewal" with lore "<white>Restores 1 heart every 15 seconds.", "Unlocked at: Level 10"
-			if {perks.%player%::Restock} is 1:
-				set slot 1 of the player's current inventory to 1 emerald block named "<bold>Restock" with lore "<white>Restores 1 hunger point every 15 seconds."
-			else:
-				set slot 1 of the player's current inventory to 1 obsidian named "<bold>Restock" with lore "<white>Restores 1 hunger point every 15 seconds.", "Unlocked at: Level 15"
-			if {perks.%player%::HP +5} is 1:
-				set slot 2 of the player's current inventory to 1 emerald block named "<bold>HP +5" with lore "<white>Grants +5 HP."
-			else:
-				set slot 2 of the player's current inventory to 1 obsidian named "<bold>HP +5" with lore "<white>Grants +5 HP.", "Unlocked at: Level 1"
-			if {perks.%player%::STR +5} is 1:
-				set slot 3 of the player's current inventory to 1 emerald block named "<bold>STR +5" with lore "<white>Grants +5 STR."
-			else:
-				set slot 3 of the player's current inventory to 1 obsidian named "<bold>STR +5" with lore "<white>Grants +5 STR.", "Unlocked at: Level 3"
-			if {perks.%player%::DEF +5} is 1:
-				set slot 4 of the player's current inventory to 1 emerald block named "<bold>DEF +5" with lore "<white>Grants +5 DEF."
-			else:
-				set slot 4 of the player's current inventory to 1 obsidian named "<bold>DEF +5" with lore "<white>Grants +5 DEF.", "Unlocked at: Level 5"
-			if {perks.%player%::SKL +5} is 1:
-				set slot 5 of the player's current inventory to 1 emerald block named "<bold>SKL +5" with lore "<white>Grants +5 SKL."
-			else:
-				set slot 5 of the player's current inventory to 1 obsidian named "<bold>SKL +5" with lore "<white>Grants +5 SKL.", "Unlocked at: Level 7"
-			if {perks.%player%::SPD +5} is 1:
-				set slot 6 of the player's current inventory to 1 emerald block named "<bold>SPD +5" with lore "<white>Grants +5 SPD."
-			else:
-				set slot 6 of the player's current inventory to 1 obsidian named "<bold>SPD +5" with lore "<white>Grants +5 SPD.", "Unlocked at: Level 9"
-			if {perks.%player%::MAG +5} is 1:
-				set slot 7 of the player's current inventory to 1 emerald block named "<bold>MAG +5" with lore "<white>Grants +5 MAG."
-			else:
-				set slot 7 of the player's current inventory to 1 obsidian named "<bold>MAG +5" with lore "<white>Grants +5 MAG.", "Unlocked at: Level 11"
-			if {perks.%player%::Acrobatics} is 1:
-				set slot 8 of player's current inventory to 1 emerald block named "<bold>Acrobatics" with lore "<white>Grants a slew of new movement options while equipped:", "<gold>[Wall Kick]<reset><white>: Left-click a wall while sneaking to propel yourself in the opposite direction.", "<gold>[Wall Cling]<reset><white>: Right-click on a wall while sneaking to cling to it. Stop sneaking to let go.", "<gold>[Ledge Grab]<reset><white>: Left-click a ledge to jump on top of it."
-			else:
-				set slot 8 of player's current inventory to 1 obsidian named "<bold>Acrobatics" with lore "<white>Grants a slew of new movement options while equipped:", "<gold>[Wall Kick]<reset><white>: Left-click a wall while sneaking to propel yourself in the opposite direction.", "<gold>[Wall Cling]<reset><white>: Right-click on a wall while sneaking to cling to it. Stop sneaking to let go.", "<gold>[Ledge Grab]<reset><white>: Left-click a ledge to jump on top of it.", "Unlocked at: Level 14"
-			if {perks.%player%::Brazen MAG} is 1:
-				set slot 9 of the player's current inventory to 1 emerald block named "<bold>Brazen MAG" with lore "<white>In a pinch, grants MAG +30."
-			else:
-				set slot 9 of the player's current inventory to 1 obsidian named "<bold>Brazen MAG" with lore "<white>In a pinch, grants MAG +30.", "Unlocked at: Level 15"
-			if {perks.%player%::Brazen SKL} is 1:
-				set slot 10 of player's current inventory to 1 emerald block named "<bold>Brazen SKL" with lore "<white>In a pinch, grants SKL +30."
-			else:
-				set slot 10 of player's current inventory to 1 obsidian named "<bold>Brazen SKL" with lore "<white>In a pinch, grants SKL +30.", "Unlocked at: Level 20"
-			if {perks.%player%::Brazen DEF} is 1:
-				set slot 11 of player's current inventory to 1 emerald block named "<bold>Brazen DEF" with lore "<white>In a pinch, grants DEF +30."
-			else:
-				set slot 11 of player's current inventory to 1 obsidian named "<bold>Brazen DEF" with lore "<white>In a pinch, grants DEF +30.", "Unlocked at: Level 25"
-			if {perks.%player%::Brazen SPD} is 1:
-				set slot 12 of player's current inventory to 1 emerald block named "<bold>Brazen SPD" with lore "<white>In a pinch, grants SPD +30."
-			else:
-				set slot 12 of player's current inventory to 1 obsidian named "<bold>Brazen SPD" with lore "<white>In a pinch, grants SPD +30.", "Unlocked at: Level 30"
-			if {perks.%player%::Brazen STR} is 1:
-				set slot 13 of the player's current inventory to 1 emerald block named "<bold>Brazen STR" with lore "<white>In a pinch, grants STR +30."
-			else:
-				set slot 13 of the player's current inventory to 1 obsidian named "<bold>Brazen STR" with lore "<white>In a pinch, grants STR +30.", "Unlocked at: Level 35"
-			if {perks.%player%::High Jumper} is 1:
-				set slot 14 of player's current inventory to 1 emerald block named "<bold>High Jumper" with lore "<white>Grants Jump Boost 2 while equipped."
-			else:
-				set slot 14 of player's current inventory to 1 obsidian named "<bold>High Jumper" with lore "<white>Grants Jump Boost 2 while equipped.", "Unlocked at: Level 40"
-			if {perks.%player%::Ranged Specialist} is 1:
-				set slot 15 of player's current inventory to 1 emerald block named "<bold>Ranged Specialist" with lore "<white>Arrows drop at your foes when shot.", "<white>Inflicts foes with Slowness 1 on-hit.", "<white>Bows can perform Critical Hits."
-			else:
-				set slot 15 of player's current inventory to 1 obsidian named "<bold>Ranged Specialist" with lore "<white>Arrows drop at your foes when shot.", "<white>Inflicts foes with Slowness 1 on-hit.", "<white>Bows perform Critical Hits more often.", "Unlocked at: Level 48"
-			if {perks.%player%::Lance Specialist} is 1:
-				set slot 16 of player's current inventory to 1 emerald block named "<bold>Lance Specialist" with lore "<white>Reduces durability cost for throwing lances.", "<white>Lances perform Critical Hits more often."
-			else:
-				set slot 16 of player's current inventory to 1 obsidian named "<bold>Lance Specialist" with lore "<white>Reduces durability cost for throwing lances.", "<white>Lances perform Critical Hits more often.", "Unlocked at: Level 55"
-			if {perks.%player%::Axe Specialist} is 1:
-				set slot 17 of player's current inventory to 1 emerald block named "<bold>Axe Specialist" with lore "<white>Axes ignore armour bonuses.", "<white>Axes perform Critical Hits more often."
-			else:
-				set slot 17 of player's current inventory to 1 obsidian named "<bold>Axe Specialist" with lore "<white>Axes ignore armour bonuses.", "<white>Axes perform Critical Hits more often.", "Unlocked at: Level 60"
-			if {perks.%player%::Sword Specialist} is 1:
-				set slot 18 of player's current inventory to 1 emerald block named "<bold>Sword Specialist" with lore "<white>Swords deal 25%% more damage.", "<white>Swords perform Critical Hits more often."
-			else:
-				set slot 18 of player's current inventory to 1 obsidian named "<bold>Sword Specialist" with lore "<white>Swords deal 25%% more damage.", "<white>Swords perform Critical Hits more often.", "Unlocked at: Level 65"
-			if {perks.%player%::Mystic Boost} is 1:
-				set slot 19 of player's current inventory to 1 emerald block named "<bold>Mystic Boost" with lore "<white>Restores 1.5 hearts of health when attacking."
-			else:
-				set slot 19 of player's current inventory to 1 obsidian named "<bold>Mystic Boost" with lore "<white>Restores 1.5 hearts of health when attacking.", "Unlocked at: Level 70"
-			if {perks.%player%::Sacred Boost} is 1:
-				set slot 20 of player's current inventory to 1 emerald block named "<bold>Sacred Boost" with lore "<white>If HP = 100%%, grants:", "<white>STR/SPD/DEF/SKL/MAG +10 during combat."
-			else:
-				set slot 20 of player's current inventory to 1 obsidian named "<bold>Sacred Boost" with lore "<white>If HP = 100%%, grants:", "<white>STR/SPD/DEF/SKL/MAG +10 during combat.", "Unlocked at: Level 80"
-			if {perks.%player%::Paragon} is 1:
-				set slot 21 of player's current inventory to 1 emerald block named "<bold>Paragon" with lore "<white>Grants bonus experience for slaying monsters."
-			else:
-				set slot 21 of player's current inventory to 1 obsidian named "<bold>Paragon" with lore "<white>Grants bonus experience for slaying monsters.", "Exclusive to New Game+."
-			if {perks.%player%::Smooth Landing} is 1:
-				set slot 22 of player's current inventory to 1 emerald block named "<bold>Smooth Landing" with lore "<white>Nullifies fall damage."
-			else:
-				set slot 22 of player's current inventory to 1 obsidian named "<bold>Smooth Landing" with lore "<white>Nullifies fall damage.", "Unlocked at: Take 100 total fall damage"
-			if {perks.%player%::Nihl} is 1:
-				set slot 23 of player's current inventory to 1 emerald block named "<bold>Nihl" with lore "<white>Prevents player and foes from doubling via SPD."
-			else:
-				set slot 23 of player's current inventory to 1 obsidian named "<bold>Nihl" with lore "<white>Prevents player and foes from doubling via SPD.", "Unlocked at: Level 75"
-			if {perks.%player%::Ancient Gift} is 1:
-				set slot 24 of player's current inventory to 1 emerald block named "<bold>Ancient Gift" with lore "<white>Attacks calculate damage using lower of foe's DEF or MAG."
-			else:
-				set slot 24 of player's current inventory to 1 obsidian named "<bold>Ancient Gift" with lore "<white>Attacks calculate damage using lower of foe's DEF or MAG.", "Complete ""Requiem for the Brave"" to unlock."
-			if {perks.%player%::Champion of Silgrund} is 1:
-				set slot 25 of player's current inventory to 1 emerald block named "<bold>Champion of Silgrund" with lore "<gold>Grants +20 to all stats."
-			else:
-				set slot 25 of player's current inventory to 1 obsidian named "<bold>Champion of Silgrund" with lore "<gold>Grants +20 to all stats.", "Complete the main story to unlock."
-			if {perks.%player%::Quick Revive} is 1:
-				set slot 26 of player's current inventory to 1 emerald block named "<bold>Quick Revive" with lore "<white>Automatically revives the player upon death.", "<white>Cooldown: 3 minutes"
-			else:
-				set slot 26 of player's current inventory to 1 obsidian named "<bold>Quick Revive" with lore "<white>Automatically revives the player upon death.", "<white>Cooldown: 3 minutes", "Complete ""The Dusty Palace"" to unlock."
-			if {perks.%player%::Quickened Pulse} is 1:
-				set slot 27 of player's current inventory to 1 emerald block named "<bold>Quickened Pulse" with lore "<white>Sucessfully dodging an attack with a Dodge Roll slows down time temporarily."
-			else:
-				set slot 27 of player's current inventory to 1 obsidian named "<bold>Quickened Pulse" with lore "<white>Sucessfully dodging an attack with a Dodge Roll slows down time temporarily.", "Unlocked at: Dodge 15 attacks by using Dodge Rolls"
-			if {perks.%player%::Hammerne} is 1:
-				set slot 28 of player's current inventory to 1 emerald block named "<bold>Hammerne" with lore "<white>Prevents tools from breaking, for a fee."
-			else:
-				set slot 28 of player's current inventory to 1 obsidian named "<bold>Hammerne" with lore "<white>Prevents tools from breaking, for a fee.", "Unlocked at: Break 10 tools"
-			if {perks.%player%::Haste} is 1:
-				set slot 29 of player's current inventory to 1 emerald block named "<bold>Haste" with lore "<white>Grants Haste 2."
-			else:
-				set slot 29 of player's current inventory to 1 obsidian named "<bold>Haste" with lore "<white>Grants Haste 2.", "Unlocked at: Break 750 blocks"
-			if {perks.%player%::Optimism} is 1:
-				set slot 30 of player's current inventory to 1 emerald block named "<bold>Optimism" with lore "<italics>Why let life get you down, when you could be making things better?", "<italics>Your hopeful outlook improves your critical strikes, but causes you to overlook your diminished base strength.", "<white>Grants SKL +10.", "<white>Accelerates Special skill activation (activation chance +10%%).", "<light red>Inflicts STR/MAG -10."
-			else:
-				set slot 30 of player's current inventory to 1 obsidian block named "<bold>Optimism" with lore "<italics>Why let life get you down, when you could be making things better?", "<italics>Your hopeful outlook improves your critical strikes, but causes you to overlook your diminished base strength.", "<white>Grants SKL +10.", "<white>Accelerates Special skill activation (activation chance +10%%).", "<light red>Inflicts STR/MAG -10.", "Find a less destructive solution during ""Creeping Shadows""."
-			if {perks.%player%::Pessimism} is 1:
-				set slot 31 of player's current inventory to 1 emerald block named "<bold>Pessimism" with lore "<italics>It's a dog-eat-dog world out there, and you're not going roll over and get snatched up.", "<italics>Your hardened outlook improves your consistency in combat, but makes it harder to push yourself for critical strikes.", "<white>Grants STR +10.", "<white>Increases damage dealt by 15%% during combat.", "<light red>Inflicts SKL -20."
-			else:
-				set slot 31 of player's current inventory to 1 obsidian block named "<bold>Pessimism" with lore "<italics>It's a dog-eat-dog world out there, and you're not going roll over and get snatched up.", "<italics>Your hardened outlook improves your consistency in combat, but makes it harder to push yourself for critical strikes.", "<white>Grants STR +10.", "<white>Increases damage dealt by 15%% during combat.", "<light red>Inflicts SKL -20.", "Find a more permanent solution during ""Creeping Shadows""."
-			if {perks.%player%::Fierce Posture} is 1:
-				set slot 32 of player's current inventory to 1 emerald block named "<bold>Fierce Posture" with lore "<white>Grants +10 STR/SPD.", "<light red>Inflicts -10 DEF/MAG."
-			else:
-				set slot 32 of player's current inventory to 1 obsidian block named "<bold>Fierce Posture" with lore "<white>Grants +10 STR/SPD.", "<light red>Inflicts -10 DEF/MAG.", "Unlocked at: Level 38"
-			if {perks.%player%::Steady Posture} is 1:
-				set slot 33 of player's current inventory to 1 emerald block named "<bold>Steady Posture" with lore "<white>Grants +10 DEF/MAG.", "<light red>Inflicts -10 STR/SPD."
-			else:
-				set slot 33 of player's current inventory to 1 obsidian named "<bold>Steady Posture" with lore "<white>Grants +10 DEF/MAG.", "<light red>Inflicts -10 STR/SPD.", "Unlocked at: Level 42"
-			if {perks.%player%::Rally Strength} is 1:
-				set slot 34 of player's current inventory to 1 emerald block named "<bold>Rally Strength" with lore "<white>Grant Strength 2 to an ally by right-clicking them."
-			else:
-				set slot 34 of player's current inventory to 1 obsidian named "<bold>Rally Strength" with lore "<white>Grant Strength 2 to an ally by right-clicking them.", "Unlocked at: Level 18."
-			if {perks.%player%::Rally Speed} is 1:
-				set slot 35 of player's current inventory to 1 emerald block named "<bold>Rally Speed" with lore "<white>Grant Swiftness 2 to an ally by right-clicking them."
-			else:
-				set slot 35 of player's current inventory to 1 obsidian named "<bold>Rally Speed" with lore "<white>Grant Swiftness 2 to an ally by right-clicking them.", "Unlocked at: Level 23."
-			if {perks.%player%::Rally Resistance} is 1:
-				set slot 36 of player's current inventory to 1 emerald block named "<bold>Rally Resistance" with lore "<white>Grant Resistance 2 to an ally by right-clicking them."
-			else:
-				set slot 36 of player's current inventory to 1 obsidian named "<bold>Rally Resistance" with lore "<white>Grant Resistance 2 to an ally by right-clicking them.", "Unlocked at Level 28."
-			if {perks.%player%::Vantage} is 1:
-				set slot 37 of player's current inventory to 1 emerald block named "<bold>Vantage" with lore "<white>In a pinch, counter-attacks an enemy before they can complete their attack."
-			else:
-				set slot 37 of player's current inventory to 1 obsidian named "<bold>Vantage" with lore "<white>In a pinch, counter-attacks an enemy before they attack.", "Unlocked at: Level 45"
-			if {perks.%player%::Underdog} is 1:
-				set slot 38 of player's current inventory to 1 emerald block named "<bold>Underdog" with lore "<white>If foe's class level is >= player's class level:", "<white>Increases damage dealt, and reduces damage suffered by X%%,", "<white>where X = difference between class level * 5."
-			else:
-				set slot 38 of player's current inventory to 1 obsidian named "<bold>Underdog" with lore "<white>If foe's class level is >= player's class level:", "<white>Increases damage dealt, and reduces damage suffered by X%%,", "<white>where X = difference between class level * 5.", "Secret unlock during ""COS_QUEST_PART1_04""."
-			if {perks.%player%::Charisma} is 1:
-				set slot 39 of player's current inventory to 1 emerald block named "<bold>Charisma" with lore "<white>Grants +10 SKL while equipped.", "<white>10%% of any gold spent at a vendor is refunded.", "<white>EX: Spending 100 gold at a Blacksmith refunds 10 gold after the purchase."
-			else:
-				set slot 39 of player's current inventory to 1 obsidian named "<bold>Charisma" with lore "<white>Grants +10 SKL while equipped.", "<white>10%% of any gold spent at a vendor is refunded.", "<white>EX: Spending 100 gold at a Blacksmith refunds 10 gold after the purchase.", "Unlock by completing ""Setting up Shop""."
-			set slot 53 of player's current inventory to 1 book named "<bold>Next Page"
-		else if arg 1 is 2:
-			open chest with 6 rows named "<bold>Class-Specific Perks | (%{skillsTotal.%player%}% perks unlocked)" for the player
-			#Mercenary
-			if {perks.%player%::Brazen STR/DEF} is 1:
-				set slot 0 of player's current inventory to 1 emerald block named "<bold>Brazen STR/DEF" with lore "<white>In a pinch, grants STR/DEF +20."
-			else:
-				set slot 0 of player's current inventory to 1 obsidian named "<bold>Brazen STR/DEF" with lore "<white>In a pinch, grants STR/DEF +20.", "Unlocked at: Promotion to Mercenary"
-			if {perks.%player%::Double Lion} is 1:
-				set slot 1 of player's current inventory to 1 emerald block named "<bold>Double Lion" with lore "<white>If HP = 100%%, automatically make a follow-up attack.", "<white>Damages the user by 1 heart if activated."
-			else:
-				set slot 1 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Hero"
-			if {perks.%player%::Lord's Blood} is 1:
-				set slot 2 of player's current inventory to 1 emerald block named "<bold>Lord's Blood" with lore "<white>Grants HP +10.", "<gold>Allows you to wield certain Sacred Treasures unconditionally."
-			else:
-				set slot 2 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Prince"
-			if {perks.%player%::Rightful King} is 1:
-				set slot 3 of player's current inventory to 1 emerald block named "<bold>Rightful King" with lore "<white><bold>Grants HP +15, SKL +20."
-			else:
-				set slot 3 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Lord"
-			#Knight
-			if {perks.%player%::Unbreakable} is 1:
-				set slot 4 of player's current inventory to 1 emerald block named "<bold>Unbreakable" with lore "<white>Reduces damage taken by 25%%."
-			else:
-				set slot 4 of player's current inventory to 1 obsidian named "<bold>Unbreakable" with lore "<white>Reduces damage taken by 15%%.", "Unlocked at: Promotion to Knight"
-			if {perks.%player%::Guard} is 1:
-				set slot 5 of player's current inventory to 1 emerald block named "<bold>Guard" with lore "<white>Inflicts SKL -50 on foe when attacked."
-			else:
-				set slot 5 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Chieftain"
-			if {perks.%player%::Steady Breath} is 1:
-				set slot 6 of player's current inventory to 1 emerald block named "<bold>Steady Breath" with lore "<white>Grants DEF +5.","<white>Converts 50%% of damage suffered during combat into a SKL bonus.", "<white>Bonus is reset when a Special skill activates."
-			else:
-				set slot 6 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to General"
-			#Bladesman
-			if {perks.%player%::Light Feet} is 1:
-				set slot 7 of player's current inventory to 1 emerald block named "<bold>Light Feet" with lore "<white>Halves the hunger penalty for Dodge Rolling."
-			else:
-				set slot 7 of player's current inventory to 1 obsidian named "<bold>Light Feet" with lore "<white>Halves the hunger penalty for Dodge Rolling.", "Unlocked at: Promotion to Bladesman"
-			if {perks.%player%::Life and Death} is 1:
-				set slot 8 of player's current inventory to 1 emerald block named "<bold>Life and Death" with lore "<white>Grants STR/SPD/SKL +20. Inflicts DEF/MAG -20."
-			else:
-				set slot 8 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Myrmidon"
-			if {perks.%player%::Close Call} is 1:
-				set slot 9 of player's current inventory to 1 emerald block named "<bold>Close Call" with lore "<white>Grants SPD +5.", "<white>Grants a random chance to dodge an opponent's attack, based on SPD and SKL."
-			else:
-				set slot 9 of player's current inventory to 1 obsidian block named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Swordmaster"
-			#Fighter
-			if {perks.%player%::Gamble} is 1:
-				set slot 10 of player's current inventory to 1 emerald block named "<bold>Gamble" with lore "<white>Grants +60 STR.", "<white>Attacks may miss based on player and foe's SPD and SKL."
-			else:
-				set slot 10 of player's current inventory to 1 obsidian named "<bold>Gamble" with lore "<white>Grants +60 STR.", "<white>Attacks may miss based on player and foe's SPD and SKL.", "Unlocked at: Promotion to Fighter"
-			if {perks.%player%::Crushing Offense} is 1:
-				set slot 11 of player's current inventory to 1 emerald block named "<bold>Crushing Offense" with lore "<white>Attacks that deal over 7 hearts of damage adds a buff to your SKL.", "<white>Resets on a special activation."
-			else:
-				set slot 11 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Berserker"
-			if {perks.%player%::Overwhelm} is 1:
-				set slot 12 of player's current inventory to 1 emerald block named "<bold>Overwhelm" with lore "<white>During combat, increases damage dealt by 25%% of the player's STR."
-			else:
-				set slot 12 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Warrior"
-			#Mage
-			if {perks.%player%::Magic Ward} is 1:
-				set slot 13 of player's current inventory to 1 emerald block named "<bold>Magic Ward" with lore "<white>Reduces the cooldown of all spells."
-			else:
-				set slot 13 of player's current inventory to 1 obsidian named "<bold>Magic Ward" with lore "<white>Reduces the cooldown of all spells.", "Unlocked at: Promotion to Mage"
-			if {perks.%player%::Elder Knowledge} is 1:
-				set slot 14 of player's current inventory to 1 emerald block named "<bold>Elder Knowledge" with lore "<white>Nullifies spell cooldowns.", "<white>Inflicts recoil damage for 1/2 of the cast spell's cooldown time."
-			else:
-				set slot 14 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Sorcerer"
-			if {perks.%player%::Brazen Spectrum} is 1:
-				set slot 15 of player's current inventory to 1 emerald block named "<bold>Brazen Spectrum" with lore "<white>In a pinch, grants STR/SPD/SKL/DEF/MAG +20"
-			else:
-				set slot 15 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Archwizard"
-			#Cleric
-			if {perks.%player%::Live to Serve} is 1:
-				set slot 16 of player's current inventory to 1 emerald block named "<bold>Live to Serve" with lore "<white>Healing staves also apply to yourself when used."	
-			else:
-				set slot 16 of player's current inventory to 1 obsidian named "<bold>Live to Serve" with lore "<white>Healing staves also apply to yourself when used.", "Unlocked at: Promotion to Cleric"
-			if {perks.%player%::Miracle} is 1:
-				set slot 17 of player's current inventory to 1 emerald block named "<bold>Miracle" with lore "<white>Survive a lethal attack with a chance based on your SKL."
-			else:
-				set slot 17 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Bishop"
-			if {perks.%player%::Wolf Fangs} is 1:
-				set slot 18 of player's current inventory to 1 emerald block named "<bold>Wolf Fangs" with lore "<white>If attacker's STR < foe's STR - 5:", "<white>Grants bonus damage equal to 50%% of the difference between the attacker and foe's STR.", "<white>Bonus damage caps at +20."
-			else:
-				set slot 18 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Sage"
-			#Archer
-			if {perks.%player%::Quick Draw} is 1:
-				set slot 19 of player's current inventory to 1 emerald block named "<bold>Quick Draw" with lore "<white>Arrows fire from bows instantly, but have lower range."
-			else:
-				set slot 19 of player's current inventory to 1 obsidian named "<bold>Quick Draw" with lore "<white>Arrows fire from bows instantly, but have lower range.", "Unlocked at: Promotion to Archer"
-			if {perks.%player%::True Shot} is 1:
-				set slot 20 of player's current inventory to 1 emerald block named "<bold>True Shot" with lore "<white>Increases the damage arrows deal based on distance travelled."
-			else:
-				set slot 20 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Ranger"
-			if {perks.%player%::Heavy Draw} is 1:
-				set slot 21 of player's current inventory to 1 emerald block named "<bold>Heavy Draw" with lore "<white>Arrows deal +3 extra damage and ignore foe's bonuses from armour."
-			else:
-				set slot 21 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Sniper"
-			#Cavalier
-			if {perks.%player%::Mount} is 1:
-				set slot 22 of player's current inventory to 1 emerald block named "<bold>Mount" with lore "<white>Unlocks the /mount command, which summons a saddled horse."
-			else:
-				set slot 22 of player's current inventory to 1 obsidian named "<bold>Mount" with lore "<white>Unlocks the /mount command, which summons a saddled horse.", "Unlocked at: Promotion to Cavalier"
-			if {perks.%player%::Pursuit} is 1:
-				set slot 23 of player's current inventory to 1 emerald block named "<bold>Pursuit" with lore "<white>Reduces the SPD advantage needed to double foes to 1.", "<white>Defeating a foe while mounted grants Swiftness 4 for 4 seconds."
-			else:
-				set slot 23 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Paladin"
-			if {perks.%player%::Crusader's Blood} is 1:
-				set slot 24 of player's current inventory to 1 emerald block named "<bold>Crusader's Blood" with lore "<white>Grants +5 to all stats.", "<gold>Allows you to wield certain weapons unconditionally."
-			else:
-				set slot 24 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Crusader"
-			if {perks.%player%::Crusader's Charge} is 1:
-				set slot 25 of player's current inventory to 1 emerald block named "<bold>Crusader's Charge" with lore "<white>If player initiates combat within 10 blocks of another Cavalier, and player's HP >= 70%%:", "<white>Grants +3 damage.", "<white>Player attacks twice."
-			else:
-				set slot 25 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Crusader"
-			#Gunslinger
-			if {perks.%player%::Fast Fingers} is 1:
-				set slot 26 of player's current inventory to 1 emerald block named "<bold>Fast Fingers" with lore "<white>Halves reload time of all firearms."
-			else:
-				set slot 26 of player's current inventory to 1 obsidian named "<bold>Fast Fingers" with lore "<white>Halves reload time of all firearms.", "Inherit this ability from Mustang or Sally."
-			if {perks.%player%::Controlled Shot} is 1:
-				set slot 27 of player's current inventory to 1 emerald block named "<bold>Controlled Shot" with lore "<white>Firearms have less innate spread."
-			else:
-				set slot 27 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Further the skills passed down from Mustang or Sally."
-			if {perks.%player%::Resourceful} is 1:
-				set slot 28 of player's current inventory to 1 emerald block named "<bold>Resourceful" with lore "<white>Weapons cost no ammo to reload."
-			else:
-				set slot 28 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Bite the bullet and fully embrace the new."
-			#Devil Hunter
-			if {perks.%player%::Combo System} is 1:
-				set slot 29 of player's current inventory to 1 emerald block named "<bold>Combo System" with lore "<white>Utilize stylish combos to earn extra damage and gold."
-			else:
-				set slot 29 of player's current inventory to 1 obsidian named "<bold>Combo System" with lore "<white>Utilize stylish combos to earn extra damage and gold.", "Inherit this ability from Alastor."
-			if {perks.%player%::Air Hike} is 1:
-				set slot 30 of player's current inventory to 1 emerald block named "<bold>Air Hike" with lore "<white>Allows double-jumps to be performed.", "<white>Double-jump by pressing the JUMP key twice.", "<white>Disables fall damage while equipped."
-			else:
-				set slot 30 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Inherit this ability from Alastor."
-			if {perks.%player%::Devil Trigger} is 1:
-				set slot 31 of player's current inventory to 1 emerald block named "<bold>Devil Trigger" with lore "<white>Fill the Trigger Gauge with high combo scores.", "<white>Sneak and right click with an empty hand to activate <gold>[Devil Trigger]<white>.", "<gold>[Devil Trigger]: <white>Grants STR/SPD/SKL +30 while active.", "<white>Restores 1 heart per second while active."
-			else:
-				set slot 31 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Further the power inherited from Alastor."
-			if {perks.%player%::Trigger Heart} is 1:
-				set slot 32 of player's current inventory to 1 emerald block named "<bold>Trigger Heart" with lore "<white>Increases the duration of <gold>[Devil Trigger]<reset><white>."
-			else:
-				set slot 32 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unleash the devil within."
-			#Strategist
-			if {perks.%player%::Rally Spectrum} is 1:
-				set slot 33 of player's current inventory to 1 emerald block named "<bold>Rally Spectrum" with lore "<white>Grant an ally Strength/Swiftness/Resistance 2 by right-clicking them."
-			else:
-				set slot 33 of player's current inventory to 1 obsidian named "<bold>Rally Spectrum" with lore "<white>Grant an ally Strength/Swiftness/Resistance 2 by right-clicking them.", "Unlocked at: Promotion to Strategist"
-			if {perks.%player%::Commanding Presence} is 1:
-				set slot 34 of player's current inventory to 1 emerald block named "<bold>Commanding Presence" with lore "<white>Grants the following bonuses to all allies within 10 blocks:", "<white>+10 STR/SPD/SKL/DEF/MAG"
-			else:
-				set slot 34 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Tactician"
-			if {perks.%player%::Spectrum +10} is 1:
-				set slot 35 of player's current inventory to 1 emerald block named "<bold>Spectrum +10" with lore "<white>Raises all stats by +10."
-			else:
-				set slot 35 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Grandmaster"
-			#Dragonborn
-			if {perks.%player%::Gale Soul} is 1:
-				set slot 36 of player's current inventory to 1 emerald block named "<bold>Gale Soul" with lore "<white>Transform into your draconic state by dealing damage.", "<white>Once the Transformation Meter is filled,", "<white>hold Sneak and Right-click with an empty hand to Transform into a <gold>[Gale Dragon]", "<light red>Only one Dragon Soul perk may be equipped at a time.", "<gold>[Gale Dragon]:<reset> Grants SPD/SKL +25.", "<white>If attacker's HP is >= foe's HP:", "<white>Projectiles deal +6 damage, pierce armour, and ignite foes.", "<white>Calculates damage using the lower of foe's DEF or MAG, and, if damage is calcuated using DEF:", "<white>Treats the player's STR as their MAG during combat."
-			else:
-				set slot 36 of player's current inventory to 1 obsidian named "<bold>Gale Soul" with lore "<white>???", "Inherit this ability from Kalus."
-			if {perks.%player%::Flame Soul} is 1:
-				set slot 37 of player's current inventory to 1 emerald block named "<bold>Flame Soul" with lore "<white>Transform into your draconic state by dealing damage.", "<white>Once the Transformation Meter is filled,", "<white>hold Sneak and Right-click with an empty hand to Transform into a <gold>[Flame Dragon]", "<light red>Only one Dragon Soul perk may be equipped at a time.", "<gold>[Flame Dragon]:<reset> Grants MAG/DEF +25.", "<white>If attacker's HP >= 50%%:", "<white>Attack twice when initiating combat with a melee weapon.", "<white>Grants Strength 5 for 4 seconds on-hit."
-			else:
-				set slot 37 of player's current inventory to 1 obsidian named "<bold>Flame Soul" with lore "<white>???", "Inherit this ability from Irankata."
-			if {perks.%player%::Aqua Soul} is 1:
-				set slot 38 of player's current inventory to 1 emerald block named "<bold>Aqua Soul" with lore "<white>Transform into your draconic state by dealing damage.", "<white>Once the Transformation Meter is filled,", "<white>hold Sneak and Right-click with an empty hand to Transform into a <gold>[Water Dragon]", "<light red>Only one Dragon Soul perk may be equipped at a time.", "<gold>[Water Dragon]:<reset> Grants MAG/SPD +25.", "<white>If attacker's HP <= 70%%:", "<white>Grants bonus damage equal to 25%% of health missing.", "<white>Grants damage resistance during combat that scales with damage suffered.", "<white>Grants Strength/Resistance 3 while transformed."
-			else:
-				set slot 38 of player's current inventory to 1 obsidian named "<bold>Aqua Soul" with lore "<white>???", "Reach S-Support with either Kalus or Irankata."
-			if {perks.%player%::Flight} is 1:
-				set slot 39 of player's current inventory to 1 emerald block named "<bold>Flight" with lore "<white>Take to the skies for a limited time.", "<white>Disables Dodge Rolling."
-			else:
-				set slot 39 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???.", "???"
-			if {perks.%player%::Draconic Aura} is 1:
-				set slot 40 of player's current inventory to 1 emerald block named "<bold>Draconic Aura" with lore "<white>Increases the duration of Transformations.", "<white>Grants <gold>[Slaying]<white> while transformed.", "<gold>[Slaying]:<white> Accelerates Special skill activations (Activation chance +10%%)."
-			else:
-				set slot 40 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "???"
-			#Survivor
-			if {perks.%player%::Scavenger} is 1:
-				set slot 41 of player's current inventory to 1 emerald block named "<bold>Scavenger" with lore "<white>Broken ores occasionally drop more items.", "<white>Ores have an extremely rare chance to duplicate.", "<white>Activation chance is based on MAG."
-			else:
-				set slot 41 of player's current inventory to 1 obsidian named "<bold>Scavenger" with lore "<white>Broken ores occasionally drop more items.", "<white>Ores have an extremely rare chance to duplicate.", "<white>Activation chance is based on MAG.", "Unlocked at: Promotion to Survivor"
-			if {perks.%player%::Efficiency} is 1:
-				set slot 42 of player's current inventory to 1 emerald block named "<bold>Efficiency" with lore "<white>Grants Swiftness and Haste 2."
-			else:
-				set slot 42 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Builder"
-			if {perks.%player%::Craftsmanship} is 1:
-				set slot 43 of player's current inventory to 1 emerald block named "<bold>Craftsmanship" with lore "<white>Gain bonus XP when crafting."
-			else:
-				set slot 43 of player's current inventory to 1 obsidian named "<bold>???" with lore "<white>???", "Unlocked at: Promotion to Craftsman"
-			#Trickster
-			if {perks.%player%::Midas Touch} is set:
-				set slot 44 of player's current inventory to 1 emerald block named "<bold>Midas Touch" with lore "<white>Defeated foes have a small chance to drop Bullion.", "<white>Bullion (S): 20%% chance", "<white>Bullion (M): 5%% chance", "<white>Bullion (L): 0.1%% chance"
-			else:
-				set slot 44 of player's current inventory to 1 obsidian named "<bold>Midas Touch" with lore "<white>Defeated foes have a small chance to drop Bullion.", "<white>Bullion (S): 20%% chance", "<white>Bullion (M): 5%% chance", "<white>Bullion (L): 0.1%% chance", "Unlocked at: Promotion to Trickster"
-			if {perks.%player%::Saboteur} is set:
-				set slot 45 of player's current inventory to 1 emerald block named "<bold>Saboteur" with lore "<white>On hit: Inflicts SKL/DEF/MAG -20 for 5 seconds on foes within 10 blocks of the victim,", "<white>and inflicts Poison 4 for 5 seconds on the victim."
-			else:
-				set slot 45 of player's current inventory to 1 obsidian named "<bold>Saboteur" with lore "<white>???", "Unlocked at: Promotion to Rogue"
-			if {perks.%player%::Lethality} is set:
-				set slot 46 of player's current inventory to 1 emerald block named "<bold>Lethality" with lore "<white>If a Critical Hit is performed, or if a Special skill activates and deals damage:", "<white>Foe takes additional non-lethal damage equal to 20%% of damage dealt that hit,", "<white>and, if foe is killed that hit,", "<white>a duplicate of the foe's weapon will be dropped on the ground."
-			else:
-				set slot 46 of player's current inventory to 1 obsidian named "<bold>Lethality" with lore "<white>???", "Unlocked at: Promotion to Freeblade"
-			#set slot 52 of player's current inventory to 1 red glass pane named "<bold>Main Menu"
-			if {perks.%player%::Adaptable} is 1:
-				set slot 20 of the player's current inventory to 1 emerald block named "<light green>Adaptable" with lore "<white>Grants HP +5. If Realism mode is enabled, you are less vulnerable to temperature changes."
-			set slot 53 of player's current inventory to 1 book named "<bold>Previous Page"
-		else if arg 1 is 3:
-			close the player's inventory
-			open chest with 1 row named "<gold>Select a slot to equip %{perkSelected.%player%}% to." for the player
-			set slot 0 of player's current inventory to 1 red glass pane named "<bold>Exit"
-			set slot 2 of player's current inventory to 1 chest named "<bold>%{skillslot1.%player%}%"
-			set slot 3 of player's current inventory to 1 chest named "<bold>%{skillslot2.%player%}%"
-			set slot 4 of player's current inventory to 1 chest named "<bold>%{skillslot3.%player%}%"
-			set slot 5 of player's current inventory to 1 chest named "<bold>%{skillslot4.%player%}%"
-			set slot 6 of player's current inventory to 1 chest named "<bold>%{skillslot5.%player%}%"
-		#if {Dazzling Staff.%player%} is 1:
-		#	set slot "<bold>Dazzling Staff" with lore "<white>Applies weakness 2 to enemies when hit with a staff."
-		#if {Everlasting Bond.%player%} is 1:
-		#	set slot "<bold>Everlasting Bond" with lore "<white>Activating Wings of Mercy or Escape Route boosts your support partner's abilities for a few seconds."
-		#if {Friends With Benefits.%player%} is 1:
-		#	set slot "<bold>Friends With Benefits" with lore "<white>Doubles support bonuses for both you and your support partner while equipped."
-		#if {STR Smoke.%player%} is 1:
-		#	set slot "<bold>STR Smoke" with lore "<white>In combat, applies STR -30 to enemies on hit."
-		#if {SPD Smoke.%player%} is 1:
-		#	set slot "<bold>SPD Smoke" with lore "<white>In combat, applies SPD -30 to enemies on hit."
-		#if {DEF Smoke.%player%} is 1:
-		#	set slot "<bold>DEF Smoke" with lore "<white>In combat, applies DEF -30 to enemies on hit."
-		#if {SKL Smoke.%player%} is 1:
-		#	set slot "<bold>SKL Smoke" with lore "<white>In combat, applies SKL -30 to enemies on hit."
-		#if {Devilish Style.%player%} is 1:
-		#	set slot "<bold>Devilish Style" with lore "<white>Damage multipliers at S combo score or higher are increased."
-		#if {Steady Breath.%player%} is 1:
-		#	set slot "<bold>Steady Breath" with lore "<white>Converts 1/2 of incoming physical damage to a SKL buff during combat. Resets on special activation."
-		#if {Warding Breath.%player%} is 1:
-		#	set slot "<bold>Warding Breath" with lore "<white>Converts 1/2 of incoming magical damage to a SKL buff during combat. Resets on special activation."
-
-on inventory click:
-	if the name of the player's current inventory contains "Perks":
-		if the clicked item is emerald block:
-			set {perkSelected.%player%} to uncoloured name of the clicked item
-			remove "<bold>" from {perkSelected.%player%}
-			#send formatted "%{perkSelected.%player%}%" to the player
-			make player execute command "/perks 3"
-		else if the name of the clicked item is "<bold>Next Page":
-			make player execute command "/perks 2"
-		else if the name of the clicked item is "<bold>Previous Page":
-			make player execute command "/perks 1"
-		else if the name of the clicked item is "<bold>Main Menu":
-			make player execute command "/store"
-		cancel event
-	else if the name of the player's current inventory contains "<gold>Select a slot to equip":
-		if the clicked item is chest:
-			set {_perk} to {perkSelected.%player%}
-			remove "<bold>" from {perkSelected.%player%}
-			add "<bold>" to {_perk}
-			loop all items in the player's current inventory:
-				if the name of the loop-item is {_perk}:
-					exit 1 loop
-					cancel event
-					set {_p} to 1
-			if {_p} is not set:
-				if the clicked slot is 2:
-					make player execute command "/perk 1 %{perkSelected.%player%}%"
-					make player execute command "/perks 3"
-				else if the clicked slot is 3:
-					make player execute command "/perk 2 %{perkSelected.%player%}%"
-					make player execute command "/perks 3"
-				else if the clicked slot is 4:
-					make player execute command "/perk 3 %{perkSelected.%player%}%"
-					make player execute command "/perks 3"
-				else if the clicked slot is 5:
-					make player execute command "/perk 4 %{perkSelected.%player%}%"
-					make player execute command "/perks 3"
-				else if the clicked slot is 6:
-					make player execute command "/perk 5 %{perkSelected.%player%}%"
-					make player execute command "/perks 3"
-				if {quests.%player%::Breaking the Ice} is 4:
-					cancel event
-					close the player's inventory
-					send formatted "<light blue>Combat Instructor: <white>Feel better yet? I thought so. Remember to stop and change out your perks whenever you get new ones, they'll give you an edge in combat." to the player
-					wait 5 seconds
-					send formatted "<light blue>Combat Instructor: <white>You should've noticed that you got some stats when you leveled up. These are an evaluation of your abilities in combat. The more of them you have, the stronger you'll be."
-					wait 5.5 seconds
-					send formatted "<light blue>Combat Instructor: <white>Strength and Defense influence how much damage you deal and take for physical hits. This means anything that's not magical. If you have enough defense, an enemy's attack will ""dink"" off you and be cancelled. Strength and Defense also make you better at using shields to block damage, so make sure to bulk up before using one."
-					wait 7 seconds
-					send formatted "<light blue>Combat Instructor: <white>If you've got 7 more Speed than your opponent, then you'll ""double"" and deal 2x damage. If you're on the receiving end, getting doubled can tear you to shreds. Stay limber. With enough Speed, you'll find your running speeds improved as well."
-					wait 7 seconds
-					send formatted "<light blue>Combat Instructor: <white>Magic is how adept you are with, well, magic. The more magic you have, the more damage you deal with it and the less damage you'll take from it."
-					wait 5 seconds
-					send formatted "<light blue>Combat Instructor: <white>Skill affects how often you perform Critical Hits with your weapons, and can help you dodge attacks in specific situations. It's also useful for persuading others to help you out."
-					wait 5.5 seconds
-					send formatted "<light blue>Combat Instructor: <white>Alright, that should be it for today. Go ahead and grab some rest upstairs. You've earned it."
-					wait 4 seconds
-					send formatted "<light blue>Combat Instructor: Make sure you talk to some of the other Knights before you call it quits for today. I'd imagine they're dying to meet the new recruit."
-					setQuestProgress(player,"Breaking the Ice",5,"Meet the rest of the Knights of Ulster upstairs.")
-		if the clicked item is red glass pane:
-			make player execute command "/perks 1"
-			clear {perkSelected.%player%}
-		cancel event
+			#Deep Bond
+			set {_slot} to checkSlots(player,"Deep Bond")
+			if {_slot} is 1:
+				apply speed 5 to the last spawned entity for 999 days
+				apply resistance 5 to the last spawned entity for 999 days
+				set the last spawned entity's max health to the last spawned entity's maximum health * 3
+				wait a tick
+				heal the last spawned entity by last spawned entity's maximum health
 		
 command /perk [<number=0>] <text>:
 	description: Equip perks.
@@ -583,7 +88,7 @@ command /perk [<number=0>] <text>:
 	aliases: /eqperk, /equipperk, /setperk
 	executable by: players
 	trigger:
-		if {perks.%player%::%arg 2%} is 1:
+		if arg 2 is not "DEBUG_POKE_PERKS":
 			set {_slotCheck.%player%} to checkSlots(player,arg 2)
 			if {_slotCheck.%player%} is 0:
 				set {skillslot%arg 1%.%player%} to arg 2
@@ -601,557 +106,827 @@ command /perk [<number=0>] <text>:
 			send formatted "Perk Slot 3: %{skillslot3.%player%}%"
 			send formatted "Perk Slot 4: %{skillslot4.%player%}%"
 			send formatted "Perk Slot 5: %{skillslot5.%player%}%"
+			send formatted "Perk Slot 6: %{skillslot6.%player%}%"
+			send formatted "Perk Slot 7: %{skillslot7.%player%}%"
+			send formatted "Perk Slot 8: %{skillslot8.%player%}%"
+			send formatted "Perk Slot 9: %{skillslot9.%player%}%"
+			send formatted "Perk Slot 10: %{skillslot10.%player%}%"
 		#Devil Trigger Gauge
-		set {_sklcheck} to checkSlots(player,"Devil Trigger")
-		if {_sklcheck} is 1:
-			create bossbar titled "<light red>Devil Trigger" and id "dt.%player's uuid%" for player with progress 0 with colors red
-			display bossbar "dt.%player's uuid%"
-		else:
-			hide bossbar "dt.%player's uuid%"
-			destroy bossbar "dt.%player's uuid%"
+		#set {_LCKcheck} to checkSlots(player,Devil Trigger)
+		#if {_LCKcheck} is 1:
+		#	create bossbar titled "<light red>Devil Trigger" and id "dt.%player's uuid%" for player with progress 0 with colors red
+		#	display bossbar "dt.%player's uuid%"
+		#else:
+		#	hide bossbar "dt.%player's uuid%"
+		#	destroy bossbar "dt.%player's uuid%"
 		#Dragon Soul Gauges
 		#Gale Soul
-		set {_sklcheck} to checkSlots(player,"Gale Soul")
-		if {_sklcheck} is 1:
+		#set {_LCKcheck} to checkSlots(player,"Gale Soul")
+		#if {_LCKcheck} is 1:
+		#	create bossbar titled "<light green>Gale Soul" and id "dsoul.%player's uuid%" for player with progress 0 with colors green
+		#	display bossbar "dsoul.%player's uuid%"
+		#else:
+		#	#Flame Soul
+		#	set {_LCKcheck} to checkSlots(player,"Flame Soul")
+		#	if {_LCKcheck} is 1:
+		#		create bossbar titled "<orange>Flame Soul" and id "dsoul.%player's uuid%" for player with progress 0 with colors red
+		#		display bossbar "dsoul.%player's uuid%"
+		#	else:
+		#		#Aqua Soul
+		#		set {_LCKcheck} to checkSlots(player,"Aqua Soul")
+		#		if {_LCKcheck} is 1:
+		#			create bossbar titled "<light blue>Aqua Soul" and id "dsoul.%player's uuid%" for player with progress 0 with colors blue
+		#			display bossbar "dsoul.%player's uuid%"
+		#		else:
+		#			hide bossbar "dsoul.%player's uuid%"
+		#			destroy bossbar "dsoul.%player's uuid%"
+		#HP +5
+		if checkSlots(player,"HP +5") is 1:
+			if {activeBuffs.hp.%player%::HP +5 (Perk)} is not set:
+				set {_debug} to changeEntityStatBuff(player,"HP",5,"HP +5 (Perk)",0)
+		else if {activeBuffs.hp.%player%::HP +5 (Perk)} is set:
+			set {_debug} to changeEntityStatBuff(player,"HP",-5,"HP +5 (Perk)",0)
+		#STR +3
+		if checkSlots(player,"STR +3") is 1:
+			if {activeBuffs.str.%player%::STR +3 (Perk)} is not set:
+				set {_debug} to changeEntityStatBuff(player,"STR",3,"STR +3 (Perk)",0)
+		else if {activeBuffs.str.%player%::STR +3 (Perk)} is set:
+			set {_debug} to changeEntityStatBuff(player,"STR",-3,"STR +3 (Perk)",0)
+		#DEF +3
+		if checkSlots(player,"DEF +3") is 1:
+			if {activeBuffs.def.%player%::DEF +3 (Perk)} is not set:
+				set {_debug} to changeEntityStatBuff(player,"DEF",3,"DEF +3 (Perk)",0)
+		else if {activeBuffs.def.%player%::DEF +3 (Perk)} is set:
+			set {_debug} to changeEntityStatBuff(player,"DEF",-3,"DEF +3 (Perk)",0)
+		#RES +3
+		if checkSlots(player,"RES +3") is 1:
+			if {activeBuffs.RES.%player%::RES +3 (Perk)} is not set:
+				set {_debug} to changeEntityStatBuff(player,"RES",3,"RES +3 (Perk)",0)
+		else if {activeBuffs.RES.%player%::RES +3 (Perk)} is set:
+			set {_debug} to changeEntityStatBuff(player,"RES",-3,"RES +3 (Perk)",0)
+		#LCK +3
+		if checkSlots(player,"LCK +3") is 1:
+			if {activeBuffs.LCK.%player%::LCK +3 (Perk)} is not set:
+				set {_debug} to changeEntityStatBuff(player,"LCK",3,"LCK +3 (Perk)",0)
+		else if {activeBuffs.LCK.%player%::LCK +3 (Perk)} is set:
+			set {_debug} to changeEntityStatBuff(player,"LCK",-3,"LCK +3 (Perk)",0)
+		#SPD +3
+		if checkSlots(player,"SPD +3") is 1:
+			if {activeBuffs.SPD.%player%::SPD +3 (Perk)} is not set:
+				set {_debug} to changeEntityStatBuff(player,"SPD",3,"SPD +3 (Perk)",0)
+		else if {activeBuffs.SPD.%player%::SPD +3 (Perk)} is set:
+			set {_debug} to changeEntityStatBuff(player,"SPD",-3,"SPD +3 (Perk)",0)
+		#MAG +3
+		if checkSlots(player,"MAG +3") is 1:
+			if {activeBuffs.MAG.%player%::MAG +3 (Perk)} is not set:
+				set {_debug} to changeEntityStatBuff(player,"MAG",3,"MAG +3 (Perk)",0)
+		else if {activeBuffs.MAG.%player%::MAG +3 (Perk)} is set:
+			set {_debug} to changeEntityStatBuff(player,"MAG",-3,"MAG +3 (Perk)",0)
+		#CHR +7
+		if checkSlots(player,"CHR +7") is 1:
+			if {activeBuffs.CHR.%player%::CHR +7 (Perk)} is not set:
+				set {_debug} to changeEntityStatBuff(player,"CHR",7,"CHR +7 (Perk)",0)
+		else if {activeBuffs.CHR.%player%::CHR +7 (Perk)} is set:
+			set {_debug} to changeEntityStatBuff(player,"CHR",-7,"CHR +7 (Perk)",0)
+		#Renown
+		if checkSlots(player,"Renown") is 1:
+			if {activeBuffs.CHR.%player%::Renown (Perk)} is not set:
+				set {_debug} to changeEntityStatBuff(player,"CHR",20,"Renown (Perk)",0)
+		else if {activeBuffs.CHR.%player%::Renown (Perk)} is set:
+			set {_debug} to changeEntityStatBuff(player,"CHR",-20,"Renown (Perk)",0)
+		#Fierce Posture
+		if checkSlots(player,"Fierce Posture") is 1:
+			if {activeBuffs.str.%player%::Fierce Posture (Perk)} is not set:
+				set {_debug} to changeEntityStatBuff(player,"STR",6,"Fierce Posture (Perk)",0)
+				set {_debug} to changeEntityStatBuff(player,"SPD",6,"Fierce Posture (Perk)",0)
+				set {_debug} to changeEntityStatBuff(player,"MAG",6,"Fierce Posture (Perk)",0)
+				set {_debug} to changeEntityStatBuff(player,"DEF",-6,"Fierce Posture (Perk)",0)
+				set {_debug} to changeEntityStatBuff(player,"RES",-6,"Fierce Posture (Perk)",0)
+		else if {activeBuffs.str.%player%::Fierce Posture (Perk)} is set:
+			set {_debug} to changeEntityStatBuff(player,"STR",-6,"Fierce Posture (Perk)",0)
+			set {_debug} to changeEntityStatBuff(player,"SPD",-6,"Fierce Posture (Perk)",0)
+			set {_debug} to changeEntityStatBuff(player,"MAG",-6,"Fierce Posture (Perk)",0)
+			set {_debug} to changeEntityStatBuff(player,"DEF",6,"Fierce Posture (Perk)",0)
+			set {_debug} to changeEntityStatBuff(player,"RES",6,"Fierce Posture (Perk)",0)
+		#Steady Posture
+		if checkSlots(player,"Steady Posture") is 1:
+			if {activeBuffs.def.%player%::Steady Posture (Perk)} is not set:
+				set {_debug} to changeEntityStatBuff(player,"STR",-6,"Steady Posture (Perk)",0)
+				set {_debug} to changeEntityStatBuff(player,"SPD",-6,"Steady Posture (Perk)",0)
+				set {_debug} to changeEntityStatBuff(player,"MAG",-6,"Steady Posture (Perk)",0)
+				set {_debug} to changeEntityStatBuff(player,"DEF",6,"Steady Posture (Perk)",0)
+				set {_debug} to changeEntityStatBuff(player,"RES",6,"Steady Posture (Perk)",0)
+		else if {activeBuffs.def.%player%::Steady Posture (Perk)} is set:
+			set {_debug} to changeEntityStatBuff(player,"STR",6,"Steady Posture (Perk)",0)
+			set {_debug} to changeEntityStatBuff(player,"SPD",6,"Steady Posture (Perk)",0)
+			set {_debug} to changeEntityStatBuff(player,"MAG",6,"Steady Posture (Perk)",0)
+			set {_debug} to changeEntityStatBuff(player,"DEF",-6,"Steady Posture (Perk)",0)
+			set {_debug} to changeEntityStatBuff(player,"RES",-6,"Steady Posture (Perk)",0)
+		#Life or Death
+		if checkSlots(player,"Life or Death") is 1:
+			if {activeBuffs.str.%player%::Life or Death (Perk)} is not set:
+				set {_debug} to changeEntityStatBuff(player,"STR",7,"Life or Death (Perk)",0)
+				set {_debug} to changeEntityStatBuff(player,"SPD",7,"Life or Death (Perk)",0)
+				set {_debug} to changeEntityStatBuff(player,"LCK",7,"Life or Death (Perk)",0)
+				set {_debug} to changeEntityStatBuff(player,"DEF",-5,"Life or Death (Perk)",0)
+				set {_debug} to changeEntityStatBuff(player,"RES",-5,"Life or Death (Perk)",0)
+		else if {activeBuffs.str.%player%::Life or Death (Perk)} is set:
+			set {_debug} to changeEntityStatBuff(player,"STR",-7,"Life or Death (Perk)",0)
+			set {_debug} to changeEntityStatBuff(player,"SPD",-7,"Life or Death (Perk)",0)
+			set {_debug} to changeEntityStatBuff(player,"LCK",-7,"Life or Death (Perk)",0)
+			set {_debug} to changeEntityStatBuff(player,"DEF",5,"Life or Death (Perk)",0)
+			set {_debug} to changeEntityStatBuff(player,"RES",5,"Life or Death (Perk)",0)
+		#Gamble
+		if checkSlots(player,"Gamble") is 1:
+			if {activeBuffs.str.%player%::Gamble (Perk)} is not set:
+				set {_debug} to changeEntityStatBuff(player,"STR",12,"Gamble (Perk)",0)
+		else if {activeBuffs.str.%player%::Gamble (Perk)} is set:
+			set {_debug} to changeEntityStatBuff(player,"STR",-12,"Gamble (Perk)",0)
+		#Ascended Magic
+		if checkSlots(player,"Ascended Magic") is 1:
+			if {activeBuffs.mag.%player%::Ascended Magic (Perk)} is not set:
+				set {_debug} to changeEntityStatBuff(player,"MAG",9,"Ascended Magic (Perk)",0)
+				set {_debug} to changeEntityStatBuff(player,"RES",6,"Ascended Magic (Perk)",0)
+				set {_debug} to changeEntityStatBuff(player,"LCK",6,"Ascended Magic (Perk)",0)
+				add 100 to {abilities.%player%::Magical Weapons}
+		else if {activeBuffs.mag.%player%::Ascended Magic (Perk)} is set:
+			set {_debug} to changeEntityStatBuff(player,"MAG",-9,"Ascended Magic (Perk)",0)
+			set {_debug} to changeEntityStatBuff(player,"RES",-6,"Ascended Magic (Perk)",0)
+			set {_debug} to changeEntityStatBuff(player,"LCK",-6,"Ascended Magic (Perk)",0)
+			subtract 100 from {abilities.%player%::Magical Weapons}
+		#Lord's Blood
+		if checkSlots(player,"Lord's Blood") is 1:
+			if {activeBuffs.hp.%player%::Lord's Blood (Perk)} is not set:
+				set {_debug} to changeEntityStatBuff(player,"HP",10,"Lord's Blood (Perk)",0)
+				set {_debug} to changeEntityStatBuff(player,"STR",5,"Lord's Blood (Perk)",0)
+				set {_debug} to changeEntityStatBuff(player,"LCK",5,"Lord's Blood (Perk)",0)
+				add 100 to {abilities.%player%::Traditional Weapons}
+		else if {activeBuffs.hp.%player%::Lord's Blood (Perk)} is set:
+			set {_debug} to changeEntityStatBuff(player,"HP",-10,"Lord's Blood (Perk)",0)
+			set {_debug} to changeEntityStatBuff(player,"STR",-5,"Lord's Blood (Perk)",0)
+			set {_debug} to changeEntityStatBuff(player,"LCK",-5,"Lord's Blood (Perk)",0)
+			subtract 100 from {abilities.%player%::Traditional Weapons}
+		#Skim the Books
+		if checkSlots(player,"Skim the Books") is 1:
+			if {activeBuffs.traditional_weapons.%player%::Skim the Books (Perk)} is not set:
+				add 20 to {abilities.%player%::Traditional Weapons}
+				set {activeBuffs.traditional_weapons.%player%::Skim the Books (Perk)} to 20
+		else if {activeBuffs.traditional_weapons.%player%::Skim the Books (Perk)} is set:
+			subtract 20 from {abilities.%player%::Traditional Weapons}
+			clear {activeBuffs.traditional_weapons.%player%::Skim the Books (Perk)}
+		#Locktouch
+		if checkSlots(player,"Locktouch") is 1:
+			if {activeBuffs.lockpicking.%player%::Locktouch (Perk)} is not set:
+				add 35 to {abilities.%player%::Lockpicking}
+				set {activeBuffs.lockpicking.%player%::Locktouch (Perk)} to 35
+		else if {activeBuffs.traditional_weapons.%player%::Locktouch (Perk)} is set:
+			subtract 35 from {abilities.%player%::Lockpicking}
+			clear {activeBuffs.lockpicking.%player%::Locktouch (Perk)}
+		#Secret Training
+		if checkSlots(player,"Secret Training") is 1:
+			if {activeBuffs.traditional_weapons.%player%::Secret Training (Perk)} is not set:
+				add 20 to {abilities.%player%::Traditional Weapons}
+				add 20 to {abilities.%player%::Magical Weapons}
+				add 20 to {abilities.%player%::Guns}
+				set {activeBuffs.traditional_weapons.%player%::Secret Training (Perk)} to 13
+		else if {activeBuffs.traditional_weapons.%player%::Secret Training (Perk)} is set:
+			subtract 20 from {abilities.%player%::Traditional Weapons}
+			subtract 20 from {abilities.%player%::Magical Weapons}
+			subtract 20 from {abilities.%player%::Guns}
+			clear {activeBuffs.traditional_weapons.%player%::Secret Training (Perk)}
+		#Under This Banner
+		if checkSlots(player,"Under This Banner") is 1:
+			if {activeBuffs.CHR.%player%::Under This Banner (Perk)} is not set:
+				set {_debug} to changeEntityStatBuff(player,"CHR",7,"Under This Banner (Perk)",0)
+		else if {activeBuffs.CHR.%player%::Under This Banner (Perk)} is set:
+			set {_debug} to changeEntityStatBuff(player,"CHR",-7,"Under This Banner (Perk)",0)
+		#Spectrum +4
+		if checkSlots(player,"Spectrum +4") is 1:
+			if {activeBuffs.STR.%player%::Spectrum +4 (Perk)} is not set:
+				set {_debug} to changeEntityStatBuff(player,"STR",4,"Spectrum +4 (Perk)",0)
+				set {_debug} to changeEntityStatBuff(player,"MAG",4,"Spectrum +4 (Perk)",0)
+				set {_debug} to changeEntityStatBuff(player,"SPD",4,"Spectrum +4 (Perk)",0)
+				set {_debug} to changeEntityStatBuff(player,"LCK",4,"Spectrum +4 (Perk)",0)
+				set {_debug} to changeEntityStatBuff(player,"CHR",4,"Spectrum +4 (Perk)",0)
+				set {_debug} to changeEntityStatBuff(player,"DEF",4,"Spectrum +4 (Perk)",0)
+				set {_debug} to changeEntityStatBuff(player,"RES",4,"Spectrum +4 (Perk)",0)
+		else if {activeBuffs.STR.%player%::Spectrum +4 (Perk)} is set:
+			set {_debug} to changeEntityStatBuff(player,"STR",-4,"Spectrum +4 (Perk)",0)
+			set {_debug} to changeEntityStatBuff(player,"MAG",-4,"Spectrum +4 (Perk)",0)
+			set {_debug} to changeEntityStatBuff(player,"SPD",-4,"Spectrum +4 (Perk)",0)
+			set {_debug} to changeEntityStatBuff(player,"LCK",-4,"Spectrum +4 (Perk)",0)
+			set {_debug} to changeEntityStatBuff(player,"CHR",-4,"Spectrum +4 (Perk)",0)
+			set {_debug} to changeEntityStatBuff(player,"DEF",-4,"Spectrum +4 (Perk)",0)
+			set {_debug} to changeEntityStatBuff(player,"RES",-4,"Spectrum +4 (Perk)",0)
+		#Optimism
+		if checkSlots(player,"Optimism") is 1:
+			if {activeBuffs.lck.%player%::Optimism (Perk)} is not set:
+				set {_debug} to changeEntityStatBuff(player,"LCK",6,"Optimism (Perk)",0)
+				set {_debug} to changeEntityStatBuff(player,"SpecialAcceleration",10,"Optimism (Perk)",0)
+				changeEntityStatBuff(player,"STR",-4,"Optimism (Perk)",0)
+				changeEntityStatBuff(player,"MAG",-4,"Optimism (Perk)",0)
+		else if {activeBuffs.lck.%player%::Optimism (Perk)} is set:
+			set {_debug} to changeEntityStatBuff(player,"LCK",-6,"Optimism (Perk)",0)
+			set {_debug} to changeEntityStatBuff(player,"SpecialAcceleration",-10,"Optimism (Perk)",0)
+			changeEntityStatBuff(player,"STR",4,"Optimism (Perk)",0)
+			changeEntityStatBuff(player,"MAG",4,"Optimism (Perk)",0)
+		#Pessimism
+		if checkSlots(player,"Pessimism") is 1:
+			if {activeBuffs.lck.%player%::Pessimism (Perk)} is not set:
+				set {_debug} to changeEntityStatBuff(player,"STR",6,"Pessimism (Perk)",0)
+				set {_debug} to changeEntityStatBuff(player,"MAG",6,"Pessimism (Perk)",0)
+				set {_debug} to changeEntityStatBuff(player,"LCK",-12,"Pessimism (Perk)",0)
+		else if {activeBuffs.lck.%player%::Pessimism (Perk)} is set:
+			set {_debug} to changeEntityStatBuff(player,"STR",-6,"Pessimism (Perk)",0)
+			set {_debug} to changeEntityStatBuff(player,"MAG",-6,"Pessimism (Perk)",0)
+			set {_debug} to changeEntityStatBuff(player,"LCK",12,"Pessimism (Perk)",0)	
+		#Combo System - maybe bring this back to let other classes access the combo system?
+		#set {_LCKcheck} to checkSlots(player,"Combo System")
+		#if {_LCKcheck} is 1:
+		#	if {combosenabled.%player%} is not 1:
+		#		make player execute command "/combo enable"
+		#else:
+		#	if {combosenabled.%player%} is 1:
+		#		make player execute command "/combo disable"
+		#Dragon Soul gagues
+		set {_LCKcheck} to checkSlots(player,"Gale Soul")
+		if {_LCKcheck} is 1:
 			create bossbar titled "<light green>Gale Soul" and id "dsoul.%player's uuid%" for player with progress 0 with colors green
 			display bossbar "dsoul.%player's uuid%"
+			set {dragonSoulMeter.%player%} to 0
+			set {dragonSoulMeterCap} to {lvl.%player%} * 15
+			set bossbar "dsoul.%player's uuid%" progress to {dragonSoulMeter.%player%} / {dragonSoulMeterCap.%player%} * 100
 		else:
 			#Flame Soul
-			set {_sklcheck} to checkSlots(player,"Flame Soul")
-			if {_sklcheck} is 1:
+			set {_LCKcheck} to checkSlots(player,"Flame Soul")
+			if {_LCKcheck} is 1:
 				create bossbar titled "<orange>Flame Soul" and id "dsoul.%player's uuid%" for player with progress 0 with colors red
 				display bossbar "dsoul.%player's uuid%"
+				set {dragonSoulMeter.%player%} to 0
+				set {dragonSoulMeterCap} to {lvl.%player%} * 15
+				set bossbar "dsoul.%player's uuid%" progress to {dragonSoulMeter.%player%} / {dragonSoulMeterCap.%player%} * 100
 			else:
 				#Aqua Soul
-				set {_sklcheck} to checkSlots(player,"Aqua Soul")
-				if {_sklcheck} is 1:
+				set {_LCKcheck} to checkSlots(player,"Aqua Soul")
+				if {_LCKcheck} is 1:
 					create bossbar titled "<light blue>Aqua Soul" and id "dsoul.%player's uuid%" for player with progress 0 with colors blue
 					display bossbar "dsoul.%player's uuid%"
+					set {dragonSoulMeter.%player%} to 0
+					set {dragonSoulMeterCap} to {lvl.%player%} * 15
+					set bossbar "dsoul.%player's uuid%" progress to {dragonSoulMeter.%player%} / {dragonSoulMeterCap.%player%} * 100
 				else:
 					hide bossbar "dsoul.%player's uuid%"
 					destroy bossbar "dsoul.%player's uuid%"
-		#Optimism
-		set {_sklcheck} to checkSlots(player,"Optimism")
-		if {_sklcheck} is 1:
-			if {perksEquipped.%player%::Optimism} is not set:
-				set {perksEquipped.%player%::Optimism} to true
-				add 10 to {sklbuff.%player%}
-				subtract 10 from {strbuff.%player%}
-				subtract 10 from {resbuff.%player%}
-		else if {perksEquipped.%player%::Optimism} is set:
-			subtract 10 from {sklbuff.%player%}
-			add 10 to {strbuff.%player%}
-			add 10 to {resbuff.%player%}
-		#Pessimism
-		set {_sklcheck} to checkSlots(player,"Pessimism")
-		if {_sklcheck} is 1:
-			if {perksEquipped.%player%::Pessimism} is not set:
-				set {perksEquipped.%player%::Pessimism} to true
-				subtract 20 from {sklbuff.%player%}
-				add 10 to {strbuff.%player%}
-		else if {perksEquipped.%player%::Pessimism} is set:
-			add 20 to {sklbuff.%player%}
-			subtract 10 from {strbuff.%player%}
-		#STR +5
-		set {_sklcheck.%player%} to checkSlots(player,"STR +5")
-		if {_sklcheck.%player%} is 1:
-			if {perksEquipped.%player%::STR +5} is not set:
-				set {perksEquipped.%player%::STR +5} to true
-				add 5 to {strbuff.%player%}
-		else if {perksEquipped.%player%::STR +5} is set:
-			subtract 5 from {strbuff.%player%}
-			clear {perksEquipped.%player%::STR +5}
-		#STR +20
-		set {_sklcheck.%player%} to checkSlots(player,"STR +20")
-		if {_sklcheck.%player%} is 1:
-			if {perksEquipped.%player%::STR +20} is not set:
-				set {perksEquipped.%player%::STR +20} to true
-				add 20 to {strbuff.%player%}
-		else if {perksEquipped.%player%::STR +20} is set:
-			subtract 20 from {strbuff.%player%}
-			clear {perksEquipped.%player%::STR +20}
-		#DEF +5
-		set {_sklcheck.%player%} to checkSlots(player,"DEF +5")
-		if {_sklcheck.%player%} is 1:
-			if {perksEquipped.%player%::DEF +5} is not set:
-				set {perksEquipped.%player%::DEF +5} to true
-				add 5 to {defbuff.%player%}
-		else if {perksEquipped.%player%::DEF +5} is set:
-			clear {perksEquipped.%player%::DEF +5}
-			subtract 5 from {defbuff.%player%}
-		#SPD +5
-		set {_sklcheck.%player%} to checkSlots(player,"SPD +5")
-		if {_sklcheck.%player%} is 1:
-			if {perksEquipped.%player%::SPD +5} is not set:
-				set {perksEquipped.%player%::SPD +5} to true
-				add 5 to {spdbuff.%player%}
-		else if {perksEquipped.%player%::SPD +5} is set:
-			subtract 5 from {spdbuff.%player%}
-			clear {perksEquipped.%player%::SPD +5}
-		#MAG +5
-		set {_sklcheck.%player%} to checkSlots(player,"MAG +5")
-		if {_sklcheck.%player%} is 1:
-			if {perksEquipped.%player%::MAG +5} is not set:
-				add 5 to {resbuff.%player%}
-				set {perksEquipped.%player%::MAG +5} to 1
-		else if {perksEquipped.%player%::MAG +5} is set:
-			subtract 5 from {resbuff.%player%}
-			clear {perksEquipped.%player%::MAG +5}
-		#SKL +5
-		set {_sklcheck.%player%} to checkSlots(player,"SKL +5")
-		if {_sklcheck.%player%} is 1:
-			if {perksEquipped.%player%::SKL +5} is not set:
-				add 5 to {sklbuff.%player%}
-				set {perksEquipped.%player%::SKL +5} to 1
-		else if {perksEquipped.%player%::SKL +5} is set:
-			subtract 5 from {sklbuff.%player%}
-			clear {perksEquipped.%player%::SKL +5}
-		#HP +5
-		set {_sklcheck.%player%} to checkSlots(player,"HP +5")
-		if {_sklcheck.%player%} is 1:
-			if {perksEquipped.%player%::HP +5} is not set:
-				add 5 to {hpbuff.%player%}
-				set player's maximum health to ({hp.%player%} / 2) + ({hpbuff.%player%} / 2)
-				set {perksEquipped.%player%::HP +5} to 1
-		else if {perksEquipped.%player%::HP +5} is set:
-			subtract 5 from {hpbuff.%player%}
-			set player's maximum health to ({hp.%player%} / 2) + ({hpbuff.%player%} / 2)
-			clear {perksEquipped.%player%::HP +5}
-		#Fierce Posture
-		set {_sklcheck.%player%} to checkSlots(player,"Fierce Posture")
-		if {_sklcheck.%player%} is 1:
-			if {perksEquipped.%player%::Fierce Posture} is not set:
-				set {perksEquipped.%player%::Fierce Posture} to true
-				add 10 to {strbuff.%player%}
-				add 10 to {spdbuff.%player%}
-				subtract 10 from {defbuff.%player%}
-				subtract 10 from {resbuff.%player%}
-		else if {perksEquipped.%player%::Fierce Posture} is set:
-			subtract 10 from {strbuff.%player%}
-			subtract 10 from {spdbuff.%player%}
-			add 10 to {defbuff.%player%}
-			add 10 to {resbuff.%player%}
-			clear {perksEquipped.%player%::Fierce Posture}
-		#Steady Posture
-		set {_sklcheck.%player%} to checkSlots(player,"Steady Posture")
-		if {_sklcheck.%player%} is 1:
-			if {perksEquipped.%player%::Steady Posture} is not set:
-				set {perksEquipped.%player%::Steady Posture} to true
-				subtract 10 from {strbuff.%player%}
-				subtract 10 from {spdbuff.%player%}
-				add 10 to {defbuff.%player%}
-				add 10 to {resbuff.%player%}
-		else if {perksEquipped.%player%::Steady Posture} is set:
-			add 10 to {strbuff.%player%}
-			add 10 to {spdbuff.%player%}
-			subtract 10 from {defbuff.%player%}
-			subtract 10 from {resbuff.%player%}
-			clear {perksEquipped.%player%::Steady Posture}
-		#Rightful King
-		set {_sklcheck.%player%} to checkSlots(player,"Rightful King")
-		if {_sklcheck.%player%} is 1:
-			if {perksEquipped.%player%::Rightful King} is not set:
-				add 15 to {hpbuff.%player%}
-				add 20 to {sklbuff.%player%}
-				set player's maximum health to ({hp.%player%} / 2) + ({hpbuff.%player%} / 2)
-				set {perksEquipped.%player%::Rightful King} to 1
-		else if {perksEquipped.%player%::Rightful King} is set:
-			subtract 15 from {hpbuff.%player%}
-			subtract 20 from {sklbuff.%player%}
-			set player's maximum health to ({hp.%player%} / 2) + ({hpbuff.%player%} / 2)
-			clear {perksEquipped.%player%::Rightful King}
-		#Steady Breath
-		set {_sklcheck.%player%} to checkSlots(player,"Steady Breath")
-		if {_sklcheck.%player%} is 1:
-			if {perksEquipped.%player%::Steady Breath} is not set:
-				add 5 to {defbuff.%player%}
-				set {perksEquipped.%player%::Steady Breath} to 1
-		else:
-			if {perksEquipped.%player%::Steady Breath} is set:
-				subtract 5 from {defbuff.%player%} 
-				clear {perksEquipped.%player%::Steady Breath}
-		#Life and Death
-		set {_sklcheck.%player%} to checkSlots(player,"Life and Death")
-		if {_sklcheck.%player%} is 1:
-			if {perksEquipped.%player%::Life and Death} is not set:
-				add 20 to {strbuff.%player%}
-				add 20 to {sklbuff.%player%}
-				add 20 to {spdbuff.%player%}
-				subtract 20 from {defbuff.%player%}
-				subtract 20 from {resbuff.%player%}
-				set {perksEquipped.%player%::Life and Death} to 1
-		else:
-			if {perksEquipped.%player%::Life and Death} is set:
-				subtract 20 from {strbuff.%player%}
-				subtract 20 from {sklbuff.%player%}
-				subtract 20 from {spdbuff.%player%}
-				add 20 to {defbuff.%player%}
-				add 20 to {resbuff.%player%}
-				clear {perksEquipped.%player%::Life and Death}
-		#Lord's Blood
-		set {_sklcheck.%player%} to checkSlots(player,"Lord's Blood")
-		if {_sklcheck.%player%} is 1:
-			if {perksEquipped.%player%::Lord's Blood} is not set:
-				add 10 to {hpbuff.%player%}
-				set {perksEquipped.%player%::Lord's Blood} to true
-				set player's maximum health to ({hp.%player%} / 2) + ({hpbuff.%player%} / 2)
-		else:
-			if {perksEquipped.%player%::Lord's Blood} is set:
-				subtract 10 from {hpbuff.%player%}
-				clear {perksEquipped.%player%::Lord's Blood}
-				set player's maximum health to ({hp.%player%} / 2) + ({hpbuff.%player%} / 2)
-		#Crusader's Blood
-		set {_sklcheck.%player%} to checkSlots(player,"Crusader's Blood")
-		if {_sklcheck.%player%} is 1:
-			if {perksEquipped.%player%::Crusader's Blood} is not set:
-				add 5 to {hpbuff.%player%}
-				add 5 to {strbuff.%player%}
-				add 5 to {sklbuff.%player%}
-				add 5 to {defbuff.%player%}
-				add 5 to {spdbuff.%player%}
-				add 5 to {resbuff.%player%}
-				set {perksEquipped.%player%::Crusader's Blood} to 1
-				set player's maximum health to ({hp.%player%} / 2) + ({hpbuff.%player%} / 2)
-		else:
-			if {perksEquipped.%player%::Crusader's Blood} is set:
-				subtract 5 from {hpbuff.%player%}
-				subtract 5 from {strbuff.%player%}
-				subtract 5 from {sklbuff.%player%}
-				subtract 5 from {defbuff.%player%}
-				subtract 5 from {spdbuff.%player%}
-				subtract 5 from {resbuff.%player%}
-				clear {perksEquipped.%player%::Crusader's Blood}
-				set player's maximum health to ({hp.%player%} / 2) + ({hpbuff.%player%} / 2)
-		#Spectrum +10
-		set {_sklcheck.%player%} to checkSlots(player,"Spectrum +10")
-		if {_sklcheck.%player%} is 1:
-			if {perksEquipped.%player%::Spectrum +10} is not set:
-				add 10 to {hpbuff.%player%}
-				add 10 to {strbuff.%player%}
-				add 10 to {sklbuff.%player%}
-				add 10 to {defbuff.%player%}
-				add 10 to {spdbuff.%player%}
-				add 10 to {resbuff.%player%}
-				set player's maximum health to ({hp.%player%} / 2) + ({hpbuff.%player%} / 2)
-				set {perksEquipped.%player%::Spectrum +10} to 1
-		else:
-			if {perksEquipped.%player%::Spectrum +10} is set:
-				subtract 10 from {hpbuff.%player%}
-				subtract 10 from {strbuff.%player%}
-				subtract 10 from {sklbuff.%player%}
-				subtract 10 from {defbuff.%player%}
-				subtract 10 from {spdbuff.%player%}
-				subtract 10 from {resbuff.%player%}
-				set player's maximum health to ({hp.%player%} / 2) + ({hpbuff.%player%} / 2)
-				clear {perksEquipped.%player%::Spectrum +10}
-		#Champion of Silgrund
-		set {_sklcheck.%player%} to checkSlots(player,"Champion of Silgrund")
-		if {_sklcheck.%player%} is 1:
-			if {perksEquipped.%player%::Champion of Silgrund} is not set:
-				add 20 to {hpbuff.%player%}
-				add 20 to {strbuff.%player%}
-				add 20 to {sklbuff.%player%}
-				add 20 to {defbuff.%player%}
-				add 20 to {spdbuff.%player%}
-				add 20 to {resbuff.%player%}
-				set player's maximum health to ({hp.%player%} / 2) + ({hpbuff.%player%} / 2)
-				set {perksEquipped.%player%::Champion of Silgrund} to 1
-		else:
-			if {perksEquipped.%player%::Champion of Silgrund} is set:
-				subtract 20 from {hpbuff.%player%}
-				subtract 20 from {strbuff.%player%}
-				subtract 20 from {sklbuff.%player%}
-				subtract 20 from {defbuff.%player%}
-				subtract 20 from {spdbuff.%player%}
-				subtract 20 from {resbuff.%player%}
-				set player's maximum health to ({hp.%player%} / 2) + ({hpbuff.%player%} / 2)
-				clear {perksEquipped.%player%::Champion of Silgrund}
-		#Gamble
-		set {_sklcheck.%player%} to checkSlots(player,"Gamble")
-		if {_sklcheck.%player%} is 1:
-			if {perksEquipped.%player%::Gamble} is not set:
-				add 60 to {strbuff.%player%}
-				set {perksEquipped.%player%::Gamble} to 1
-		else:
-			if {perksEquipped.%player%::Gamble} is set:
-				subtract 60 from {strbuff.%player%}
-				clear {perksEquipped.%player%::Gamble}
-		#Combo System
-		set {_sklcheck} to checkSlots(player,"Combo System")
-		if {_sklcheck} is 1:
-			set {combosenabled.%player%} to 1
-			apply jump boost 3 to the player for 1 day
-			#send formatted "<bold>[Combo System]<reset> Enabled combo system. Consecutive hits and stylish actions like dodge rolls increase your combo score. Raise your score to earn a damage multiplier!"
-		else:
-			if {combosenabled.%player%} is 1:
-				clear {combosenabled.%player%}
-				remove jump boost from the player
-				send formatted "<bold>[Combo System]<reset> Disabled combo system."
-#Perk Definitions Start Here
+
+#Perk Effects Start Here
 
 on mine:
 	#Scavenger
 	add 1 to {blocksmined.%player%}
-	set {_perk} to checkSlots(player,"Scavenger")
+	set {_perk} to checkSlots(player,"Oretouch")
 	if {_perk} is 1:
 		if event-block is any ore:
-			chance of (({res.%player%} + {resbuff.%player%} + 10) / 2)%:
+			chance of (({lck.%player%} + {lckbuff.%player%} + 10) / 2)%:
 				drop event-block at the player
-			chance of ({res.%player%} + {resbuff.%player%} - 20)%:
+			chance of (({lck.%player%} + {lckbuff.%player%} + 10) / 2)%:
+				set {_abilityBonus} to (10 + (floor({abilities.%player%::Fabrication} * 0.25)))
+				if {_abilityBonus} is more than 50:
+					set {_abilityBonus} to 50
 				wait 1 tick
-				set {_drops::*} to dropped items in radius 0.75 of event-location
+				set {_drops::*} to dropped items in radius 1.25 of the event-block
 				loop {_drops::*}:
-					drop {_drops::loop-index} at event-location
+					set {_itemtype} to "%loop-value%"
+					set {_dropParsing::*} to {_itemtype} split at "dropped "
+					set {_item} to "1 %{_dropParsing::2}%" parsed as item type
+					drop {_item} at event-location
+					chance of {_abilityBonus}%:
+						drop {_item} at event-location
+	#Gold Digger
+	set {_perk} to checkSlots(player,"Gold Digger")
+	if {_perk} is 1:
+		if event-block is any ore:
+			set {_abilityBonus} to (10 + (floor({abilities.%player%::Fabrication} * 0.25)))
+			if {_abilityBonus} is more than 50:
+				set {_abilityBonus} to 50
+			wait 1 tick
+			set {_drops::*} to dropped items in radius 1.25 of the event-block
+			loop {_drops::*}:
+				set {_itemtype} to "%loop-value%"
+				set {_dropParsing::*} to {_itemtype} split at "dropped "
+				set {_item} to "1 %{_dropParsing::2}%" parsed as item type
+				drop {_item} at event-location
+				chance of {_abilityBonus}%:
+					drop {_item} at event-location
 	#Haste
 	if {perks.%player%::Haste} is not 1:
 		if {blocksmined.%player%} is more than 749:
 			make player execute command "/grantskill 0 Haste"
-
-#Hoard
-every 12 minecraft hours:
+		
+#Odd Recovery
+every 3 seconds:
 	loop all players:
-		set {_hoard} to checkSlots(loop-player,"Hoard")
-		if {_hoard} is 1:
-			set {_bonus} to ({res.%loop-player%} + {resbuff.%loop-player%}) + (loop-player's money ^ 0.25)
-			add {_bonus} to the loop-player's balance
-			send formatted "Hoarded $%{_bonus}%!" to loop-player
+		if checkSlots(loop-player,"Odd Recovery") is 1:
+			loop all players in radius 30 of the loop-player:
+				if {party.%loop-player-2%} is {party.%loop-player-1%}:
+					heal loop-player-2 by 1.5 hearts
+					remove weakness from the loop-player-2
+					remove slowness from the loop-player-2
+					remove poison from the loop-player-2
+					remove wither from the loop-player-2
+		if checkSlots(loop-player,"Dancing Blade") is 1:
+			loop all players in radius 30 of the loop-player:
+				if {party.%loop-player-2%} is {party.%loop-player-1%}:
+					apply strength 2 to the loop-player-2 for 3 seconds
+					apply swiftness 2 to the loop-player-2 for 3 seconds
+					apply strength 2 to the loop-player-1 for 3 seconds
+					apply swiftness 2 to the loop-player-1 for 3 seconds
+		if checkSlots(loop-player,"Live to Serve") is 1:
+			loop all players in radius 30 of the loop-player:
+				if {party.%loop-player-2%} is {party.%loop-player-1%}:
+					heal loop-player-2 by 0.5 hearts
+		if checkSlots(loop-player,"Concentration") is 1:
+			if {t_concentration.%loop-player%} is less than 1.3:
+				add 0.05 to {t_concentration.%loop-player%}
+				if {t_concentration.%loop-player%} is more than or equal to 1.3:
+					send "<light blue>You're fully focused." to loop-player
+					play 20 (diamond block break with speed 1) at loop-player
+					play sound "entity.zombie_villager.cure" with volume 0.25 and pitch 1.5 at loop-player
+		if loop-player is alive:
+			#Haste:
+			set {_LCKcheck.%loop-player%} to checkSlots(loop-player,"Haste")
+			if {_LCKcheck.%loop-player%} is 1:
+				apply haste 2 to loop-player for 3 seconds
+			#High Jumper:
+			set {_LCKcheck.%loop-player%} to checkSlots(loop-player,"High Jumper")
+			if {_LCKcheck.%loop-player%} is 1:
+				apply jump boost 2 to loop-player for 3 seconds
+			#Efficiency
+			set {_LCKcheck} to checkSlots(loop-player,"Efficiency")
+			if {_LCKcheck} is 1:
+				apply swiftness 2 to loop-player for 3 seconds
+				apply haste 2 to loop-player for 3 seconds
+			#Built to Destroy Trait
+			if {traits.%loop-player%::Built to Destroy} is true:
+				apply strength 2 to loop-player for 3 seconds
+				apply haste 2 to loop-player for 3 seconds
+			#Blade Sponge [Trait]
+			if {traits.%loop-player%::Blade Sponge} is true:
+				apply regeneration 2 to loop-player for 3 seconds
 
 #Craftsmanship
 on craft:
+	#Very, VERY tiny XP bonus for crafting
+	addClassXP(player,1 + {lvl.%player%})
+	send formatted "<light yellow>[Crafting] +%1 + {lvl.%player%}% EXP" to the player
 	set {_perk} to checkSlots(player,"Craftsmanship")
 	if {_perk} is 1:
 		set {_xp} to ceil(player's level ^ 0.25)
 		make console execute command "/xp %{_xp}% %player%"
 		send formatted "<light green>Gained a bonus %{_xp}% experience from Craftsmanship!" to the player
+	#Super Smelter
+	if event-item is furnace:
+		if checkSlots(player,"Super Smelter") is 1:
+			give 1 furnace of efficiency 5, unbreaking 3, fortune 3 named "<gold>Super Smelter" to the player
 		
-#Rallies
-on rightclick on a player:
-	set {_perk} to checkSlots(player,"Rally Strength")
-	if {_perk} is 1:
-		remove strength from the target
-		apply strength 2 to the target for 10 seconds
-	set {_perk} to checkSlots(player,"Rally Speed")
-	if {_perk} is 1:
-		remove swiftness from the target
-		apply swiftness 2 to the target for 10 seconds
-	set {_perk} to checkSlots(player,"Rally Resistance")
-	if {_perk} is 1:
-		remove resistance from the target
-		apply resistance 2 to the target for 10 seconds
-	set {_perk} to checkSlots(player,"Rally Spectrum")
-	if {_perk} is 1:
-		remove resistance from the target
-		remove strength from the target
-		remove swiftness from the target
-		apply resistance 2 to the target for 10 seconds
-		apply strength 2 to the target for 10 seconds
-		apply swiftness 2 to the target for 10 seconds
+#Bottomless Stomache
+on food bar change:
+	if checkSlots(player,"Bottomless Stomache") is 1:
+		chance of 50%:
+			add 0.5 to the player's food level
+		set {t_currentFoodLevel.%player%} to the player's food level
+	
+#Bottomless Stomache healing	
+on consume:
+	if checkSlots(player,"Bottomless Stomache") is 1:
+		set {_regenAmount} to the player's food level - {t_currentFoodLevel.%player%}
+		heal the player by {_regenAmount}
+	if checkSlots(player,"Flask of Madness") is 1:
+		if event-item is potion:
+			chance of 25%:
+				apply strength 3 to the player for 30 seconds
+			else:
+				chance of 25%:
+					apply swiftness 3 to the player for 30 seconds
+				else:
+					chance of 25%:
+						apply resistance 3 to the player for 30 seconds
+					else:
+						apply regeneration 3 to the player for 30 seconds
 		
-#Quick Revive
-on death:
-	set {_skl} to checkSlots(victim,"Quick Revive")
-	if {_skl} is 1:
-		if {qrevivecd.%victim%} is not set:
-			cancel event
-			set the victim's health to 10
-			play 100 (heart with speed 1) at the victim
-			apply regeneration 5 to the victim for 5 seconds
-			send formatted "<light cyan>Quick Revive was used." to the victim
-			set {qrevivecd.%victim%} to true
-			wait 3 minutes
-			clear {qrevivecd.%victim%}
+#Shadow Walker disable
+on sneak toggle:
+	if {ShadowWalkerArmourStorage.%player%::Helmet} is set:
+		remove invisibility from the player
+		set the player's helmet to {ShadowWalkerArmourStorage.%player%::Helmet}
+		set the player's chestplate to {ShadowWalkerArmourStorage.%player%::Chestplate}
+		set the player's leggings to {ShadowWalkerArmourStorage.%player%::Leggings}
+		set the player's boots to {ShadowWalkerArmourStorage.%player%::Boots}
+		send formatted "<purple><italics>Returning to the light..." to the player
+		clear {ShadowWalkerArmourStorage.%player%::*}
+		
+on right click:
+	#Dragon Soul Perks
+	if player is sneaking:
+		if isEntityToolAir(player) is true:
+			if {dragonSoulActive.%player%} is not set:
+				if {dragonSoulMeter.%player%} is more than 10:
+					#Gale Soul
+					set {_LCKcheck} to checkSlots(player,"Gale Soul")
+					if {_LCKcheck} is 1:
+						play sound "entity.enderdragon.flap" with volume 0.6 and pitch 0.6 at the player
+						play 20 (emerald block break with speed 1) at the player
+						set {_soulType} to 0
+					else:
+						#Flame Soul
+						set {_LCKcheck} to checkSlots(player,"Flame Soul")
+						if {_LCKcheck} is 1:
+							play sound "block.fire.ambient" with volume 1 and pitch 0.6 at the player
+							play mob spawner flames at the player
+							set {_soulType} to 1
+						else:
+							#Aqua Soul
+							set {_LCKcheck} to checkSlots(player,"Aqua Soul")
+							if {_LCKcheck} is 1:
+								play sound "entity.generic.splash" with volume 1 and pitch 0.6 at the player
+								play 10 (water splash with speed 1) at the player
+								set {_soulType} to 2
+					if {_soulType} is set:
+						set {dragonSoulActive.%player%} to true
+						play sound "entity.enderdragon.growl" with volume 0.5 and pitch 1 at the player
+						clear {t_blockMeterAnnoyance.%player%}
+						play large explosion at the player
+						if {_soulType} is 0:
+							set {_debug} to changeEntityStatBuff(player,"STR",6,"Gale Soul (Perk)",0)
+							set {_debug} to changeEntityStatBuff(player,"MAG",6,"Gale Soul (Perk)",0)
+							set {_debug} to changeEntityStatBuff(player,"SPD",14,"Gale Soul (Perk)",0)
+							set {_debug} to changeEntityStatBuff(player,"LCK",14,"Gale Soul (Perk)",0)
+							send "<light red>You spread your wings and transform into your Wind Dragon form."
+						else if {_soulType} is 1:
+							set {_debug} to changeEntityStatBuff(player,"STR",14,"Flame Soul (Perk)",0)
+							set {_debug} to changeEntityStatBuff(player,"MAG",14,"Flame Soul (Perk)",0)
+							set {_debug} to changeEntityStatBuff(player,"SPD",6,"Flame Soul (Perk)",0)
+							set {_debug} to changeEntityStatBuff(player,"LCK",6,"Flame Soul (Perk)",0)
+							send "<light red>You kindle your flame and transform into your Flame Dragon form."							
+						else if {_soulType} is 2:
+							set {_debug} to changeEntityStatBuff(player,"DEF",14,"Aqua Soul (Perk)",0)
+							set {_debug} to changeEntityStatBuff(player,"RES",14,"Aqua Soul (Perk)",0)
+							set {_debug} to changeEntityStatBuff(player,"SPD",6,"Aqua Soul (Perk)",0)
+							set {_debug} to changeEntityStatBuff(player,"LCK",6,"Aqua Soul (Perk)",0)
+							send "<light red>You calm your heart and transform into your Water Dragon form."
+						#DSoul Meter Depletion
+						while {dragonSoulMeter.%player%} is more than 0:
+							if {_soulType} is 0:
+								play 10 (emerald block break with speed 1) at the player
+							else if {_soulType} is 1:					
+								play mob spawner flames at the player
+							else if {_soulType} is 2:
+								play 10 (water splash with speed 1) at the player
+							heal the player by 0.5
+							set player's flight state to true
+							wait 0.5 seconds
+							subtract 5 from {dragonSoulMeter.%player%}
+							set {_dtMeterDisplay} to {dtMeter.%player%} / {dtMeterCap.%player%} * 100
+							set bossbar "dt.%player's uuid%" progress to {_dtMeterDisplay}
+							if {dragonSoulActive.%player%} is not set:
+								exit 1 loop
+						if {_soulType} is 0:
+							set {_debug} to changeEntityStatBuff(player,"STR",-6,"Gale Soul (Perk)",0)
+							set {_debug} to changeEntityStatBuff(player,"MAG",-6,"Gale Soul (Perk)",0)
+							set {_debug} to changeEntityStatBuff(player,"SPD",-14,"Gale Soul (Perk)",0)
+							set {_debug} to changeEntityStatBuff(player,"LCK",-14,"Gale Soul (Perk)",0)
+							play 20 (emerald block break with speed 1) at the player
+						else if {_soulType} is 1:
+							set {_debug} to changeEntityStatBuff(player,"STR",-14,"Flame Soul (Perk)",0)
+							set {_debug} to changeEntityStatBuff(player,"MAG",-14,"Flame Soul (Perk)",0)
+							set {_debug} to changeEntityStatBuff(player,"SPD",-6,"Flame Soul (Perk)",0)
+							set {_debug} to changeEntityStatBuff(player,"LCK",-6,"Flame Soul (Perk)",0)
+							play mob spawner flames at the player							
+						else if {_soulType} is 2:
+							set {_debug} to changeEntityStatBuff(player,"DEF",-14,"Aqua Soul (Perk)",0)
+							set {_debug} to changeEntityStatBuff(player,"RES",-14,"Aqua Soul (Perk)",0)
+							set {_debug} to changeEntityStatBuff(player,"SPD",-6,"Aqua Soul (Perk)",0)
+							set {_debug} to changeEntityStatBuff(player,"LCK",-6,"Aqua Soul (Perk)",0)
+							play 10 (water splash with speed 1) at the player
+						play sound "entity.generic.explode" with volume 1 and pitch 1 at the player
+						play sound "entity.enderdragon.growl" with volume 0.5 and pitch 0.2 at the player
+						play large explosion at the player
+						clear {dragonSoulActive.%player%}
+						set player's flight state to false
+						send "<light red>You revert back to human form."
+				else:
+					clear {dtActive.%player%}
+					play 20 (redstone block break with speed 1) at the player
+	#Shadow Walker
+	if checkSlots(player,"Shadow Walker") is 1:
+		if player is sneaking:
+			apply invisibility 1 to the player for 1 day
+			set {ShadowWalkerArmourStorage.%player%::Helmet} to the player's helmet
+			set {ShadowWalkerArmourStorage.%player%::Chestplate} to the player's chestplate
+			set {ShadowWalkerArmourStorage.%player%::Leggings} to the player's leggings
+			set {ShadowWalkerArmourStorage.%player%::Boots} to the player's boots
+			wait 1 tick
+			set the player's helmet to air
+			set the player's chestplate to air
+			set the player's leggings to air
+			set the player's boots to air
+			play sound "entity.blaze.shoot" with volume 1 and pitch 0.5 at the player for the player
+			play 30 (black wool break with speed 1) at the player
+			send formatted "<purple><italics>Going dark..." to the player
+	#Royal Fork
+	if checkSlots(player,"Royal Fork") is 1:
+		if player is sneaking:
+			if player is not on ground:
+				if isEntityToolAir(player) is true:
+					if {t_royalForkCD.%player%} is not set:
+						loop all monsters in radius 10 of the player:
+							set {t_royalForkCD.%player%} to 10
+							make the player shoot an arrow with speed 2
+							push the last shot projectile in direction of the loop-monster at speed 2
+							set metadata value "isMirageBolt" of the last shot projectile to 1
+	#Block whitelist
+	set {_targetBlock} to "%clicked block%"
+	if {_targetBlock} contains "wheat plant":
+		set {_toolOK} to 1
+	else if {_targetBlock} contains "pumpkin stem":
+		set {_toolOK} to 1
+	else if {_targetBlock} contains "beetroot plant":
+		set {_toolOK} to 1
+	else if {_targetBlock} contains "potato plant":
+		set {_toolOK} to 1
+	else if {_targetBlock} contains "melon stem":
+		set {_toolOK} to 1
+	else if {_targetBlock} contains "carrot plant":
+		set {_toolOK} to 1
+	if {_toolOK} is 1:
+		#Super Fertilizer
+		if checkSlots(player,"Super Fertilizer") is 1:
+			if player's tool is bone meal:
+				if {_targetBlock} contains "wheat plant":
+					set the clicked block to fully grown wheat plant
+				else if {_targetBlock} contains "pumpkin stem":
+					set the clicked block to fully grown pumpkin stem
+				else if {_targetBlock} contains "beetroot plant":
+					set the clicked block to fully grown beetroot plant
+				else if {_targetBlock} contains "potato plant":
+					set the clicked block to fully grown potato plant
+				else if {_targetBlock} contains "melon stem":
+					set the clicked block to fully grown melon stem
+				else if {_targetBlock} contains "carrot plant":
+					set the clicked block to fully grown carrot plant
+		#Lush Farming
+		if checkSlots(player,"Lush Farming") is 1:
+			if player's tool is bone meal:
+				loop all blocks in radius 5 of the clicked block:
+					set {_toolOK} to 0
+					set {_targetBlock} to "%loop-block%"
+					#Block whitelist (again, fuck skript's aliases dude)
+					if {_targetBlock} contains "wheat plant":
+						set {_toolOK} to 1
+					else if {_targetBlock} contains "pumpkin stem":
+						set {_toolOK} to 1
+					else if {_targetBlock} contains "beetroot plant":
+						set {_toolOK} to 1
+					else if {_targetBlock} contains "potato plant":
+						set {_toolOK} to 1
+					else if {_targetBlock} contains "melon stem":
+						set {_toolOK} to 1
+					else if {_targetBlock} contains "carrot plant":
+						set {_toolOK} to 1
+					if {_toolOK} is 1:
+						if checkSlots(player,"Super Fertilizer") is 1:
+							if {_targetBlock} contains "wheat plant":
+								set the loop-block to fully grown wheat plant
+							else if {_targetBlock} contains "pumpkin stem":
+								set the loop-block to fully grown pumpkin stem
+							else if {_targetBlock} contains "beetroot plant":
+								set the loop-block to fully grown beetroot plant
+							else if {_targetBlock} contains "potato plant":
+								set the loop-block to fully grown potato plant
+							else if {_targetBlock} contains "melon stem":
+								set the loop-block to fully grown melon stem
+							else if {_targetBlock} contains "carrot plant":
+								set the loop-block to fully grown carrot plant
+						else:
+							if data value of loop-block is not 7:
+								if data value of loop-block is less than 5:
+									set {_rng} to a random integer from 1 to 3
+									add {_rng} to data value of loop-block
+								else:
+									add 1 to data value of loop-block
+	if clicked block is not air:
+		if the 4th line of the lore of the player's tool is "<light green><bold>Assist - Acrobatics":
+			set {_ledgeGrab} to 1
 		else:
-			clear {qrevivecd.%victim%}
-		
-#Sacred Boost
-every 1 second:
-	loop all players:
-		if loop-player is alive:
-			set {_skl} to checkSlots(loop-player,"Sacred Boost")
-			if {_skl} is 1:
-				if loop-player's health is loop-player's maximum health:
-					set {_debug} to changeEntityStatBuff(loop-player,"STR",10)
-					set {_debug} to changeEntityStatBuff(loop-player,"DEF",10)
-					set {_debug} to changeEntityStatBuff(loop-player,"SPD",10)
-					set {_debug} to changeEntityStatBuff(loop-player,"SKL",10)
-					set {_debug} to changeEntityStatBuff(loop-player,"RES",10)
-					wait 1 second
-					set {_debug} to changeEntityStatBuff(loop-player,"STR",-10)
-					set {_debug} to changeEntityStatBuff(loop-player,"DEF",-10)
-					set {_debug} to changeEntityStatBuff(loop-player,"SPD",-10)
-					set {_debug} to changeEntityStatBuff(loop-player,"SKL",-10)
-					set {_debug} to changeEntityStatBuff(loop-player,"RES",-10)
-			set {_skl} to checkSlots(loop-player,"Commanding Presence")
-			if {_skl} is 1:
-				loop all players in radius 10 of the loop-player:
-					if loop-player-2 is not the loop-player-1:
-						if {t_hasCommandingPresenceBuff.%loop-player-2%} is not set:
-							set {_debug} to setEntityVariableByName(loop-player-2,"hasCommandingPresenceBuff",1)
-							play 10 (gold block break with speed 1) at loop-player-2
-							set {_debug} to changeEntityStatBuff(loop-player-2,"STR",10)
-							set {_debug} to changeEntityStatBuff(loop-player-2,"DEF",10)
-							set {_debug} to changeEntityStatBuff(loop-player-2,"SPD",10)
-							set {_debug} to changeEntityStatBuff(loop-player-2,"SKL",10)
-							set {_debug} to changeEntityStatBuff(loop-player-2,"RES",10)
-							wait 1 second
-							clear {t_hasCommandingPresenceBuff.%loop-player-2%}
-							subtract 10 from {strbuff.%loop-player-2%}
-							subtract 10 from {spdbuff.%loop-player-2%}
-							subtract 10 from {defbuff.%loop-player-2%}
-							subtract 10 from {resbuff.%loop-player-2%}
-							subtract 10 from {sklbuff.%loop-player-2%}
+			set {_ledgeGrab} to checkSlots(player,"Acrobatics")
+		if {_ledgeGrab} is 1:
+			if player's tool is a block:
+				set {_ledgeGrab} to 0
+			if isEntityToolAir(player) is true:
+				set {_ledgeGrab} to 1
+			else:
+				set {_ledgeGrab} to 0
+			if clicked block is coal block:
+				set {_ledgeGrab} to 0
+			if player's tool is any horse armor:
+				set {_ledgeGrab} to 0
+		if {_ledgeGrab} is 1:
+			set {_loc} to event-block's location
+			#send "%{_loc}%" to the player
+			#send "%y location of event-block%" to the player
+			if y location of the player is less than or equal to y location of event-block + 0.5:
+				#send "ledge grab?" to the player
+				if distance between player and event-block is less than or equal to 3.75:
+					#send "distance check passed" to the player
+					if block at location at x location of the player, y location of the player + 2, z location of the player is air:
+						#send "first ledge check passed"
+						if block at location at x location of the player, y location of the player + 3, z location of the player is air:
+							#send "second ledge check passed"
+							if block at location at x location of the player, y location of the player + 4, z location of the player is air:
+								#send "third ledge check passed"
+								if block at location at (x-coordinate of event-block, y-coordinate of event-block + 1, z-coordinate of event-block) is air:
+									if block at location at (x-coordinate of event-block, y-coordinate of event-block + 2, z-coordinate of event-block) is air:
+										teleport the player to location at (x-coordinate of event-block, y-coordinate of event-block + 1, z-coordinate of event-block)
+								else if isEntityToolAir(player) is true:
+									push the player upwards at speed 0.3
+									push the player in horizontal direction of the player at speed 0.5
+	#Wings of Mercy (Perk)
+	if checkSlots(player,"Wings of Mercy") is 1:
+		if player is sneaking:
+			loop {%{party.%player%}%.members::*}:
+				if loop-value is online:
+					if loop-value's health is less than or equal to (loop-value's maximum health * 0.5):
+						if loop-value is not the player:
+							teleport the player to loop-value
+							send formatted "<light blue>%player% has arrived via Wings of Mercy!" to the loop-value
+							send formatted "<light blue>Warped to %loop-value% via Wings of Mercy!" to the player
+							exit 1 loop
+					else if {bleedoutState.%loop-value%} is 1:
+						if loop-value is not the player:
+							teleport the player to loop-value
+							send formatted "<light blue>%player% has arrived via Wings of Mercy!" to the loop-value
+							send formatted "<light blue>Warped to %loop-value% via Wings of Mercy!" to the player					
+							exit 1 loop
+	#Acrobatics wall cling
+	if clicked block is set:
+		if the 4th line of the lore of the player's tool is "<light green><bold>Assist - Acrobatics":
+			set {_isStylish} to 1
+		else:
+			set {_isStylish} to checkSlots(player,"Acrobatics")
+		if {_isStylish} is 1:
+			if player is not on ground:
+				if player is sneaking:
+					if {WallClingActive.%player%} is not set:
+						if clicked block is not coal block:
+							if player's tool is not any horse armor:
+								play 20 (stone block break with speed 1) at the target
+								play sound "block.stone.break" with volume 1 and pitch 1 at the player
+								#Halt vertical momentum
+								set y of player's velocity to 0
+								set {WallKickReady.%player%} to true
+								set {WallClingActive.%player%} to true
+								while player is sneaking:
+									apply levitation 256 to the player for 1 second
+									wait 1 tick
+									if distance between player and event-block is more than or equal to 3.75:
+										set player's velocity to vector(0,0,0)
+										exit 1 loop
+									if player is on ground:
+										exit 1 loop
+									if y of player's velocity is more than 0:
+										set y of player's velocity to 0
+								remove levitation from the player
+								set player's velocity to vector(0,0,0)
+								clear {WallKickReady.%player%}
+								clear {WallClingActive.%player%}
+	#True Block
+	if checkSlots(player,"True Block") is 1:
+		if player's tool is any sword:
+			if player's offhand tool is air:
+				set player's offhand tool to 1 shield named "<light yellow>Sword Block"
+	#Rallies
+	if target is a player:
+		set {_perk} to checkSlots(player,"Rally Strength")
+		if {_perk} is 1:
+			remove strength from the target
+			apply strength 2 to the target for 10 seconds
+			if checkSlots(player,"Rally Up!") is 1:
+				loop all players in radius 10 of the player:
+					if {party.%loop-player%} is {party.%player%}:
+						apply strength 2 to the loop-player for 10 seconds
+		set {_perk} to checkSlots(player,"Rally Speed")
+		if {_perk} is 1:
+			remove swiftness from the target
+			apply swiftness 2 to the target for 10 seconds
+			if checkSlots(player,"Rally Up!") is 1:
+				loop all players in radius 10 of the player:
+					if {party.%loop-player%} is {party.%player%}:
+						apply swiftness 2 to the target for 10 seconds
+		set {_perk} to checkSlots(player,"Rally Resistance")
+		if {_perk} is 1:
+			remove resistance from the target
+			apply resistance 2 to the target for 10 seconds
+			if checkSlots(player,"Rally Up!") is 1:
+				loop all players in radius 10 of the player:
+					if {party.%loop-player%} is {party.%player%}:
+						apply resistance 2 to the loop-player for 10 seconds
+		set {_perk} to checkSlots(player,"Rally Spectrum")
+		if {_perk} is 1:
+			remove resistance from the target
+			remove strength from the target
+			remove swiftness from the target
+			apply resistance 2 to the target for 10 seconds
+			apply strength 2 to the target for 10 seconds
+			apply swiftness 2 to the target for 10 seconds
+			if checkSlots(player,"Rally Up!") is 1:
+				loop all players in radius 10 of the player:
+					if {party.%loop-player%} is {party.%player%}:
+						apply resistance 2 to the loop-player for 10 seconds
+						apply strength 2 to the loop-player for 10 seconds
+						apply swiftness 2 to the loop-player for 10 seconds
+	#Lush Farming
+	if clicked block is soil:
+		if checkSlots(player,"Lush Farming") is 1:
+			if player's tool is seeds:
+				set {_toolOK} to 1
+			else if player's tool is pumpkin seeds:
+				set {_toolOK} to 1
+			else if player's tool is beetroot seeds:
+				set {_toolOK} to 1
+			else if player's tool is potato:
+				set {_toolOK} to 1
+			else if player's tool is melon seeds:
+				set {_toolOK} to 1
+			else if player's tool is carrot:
+				set {_toolOK} to 1
+			if {_toolOK} is 1:
+				loop all blocks in radius 5 of the clicked block:
+					if loop-block is soil:
+						if block above loop-block is air:
+							#Figure out what crop they actually planted
+							if player's tool is seeds:
+								set block above loop-block to freshly planted wheat plant
+							else if player's tool is pumpkin seeds:
+								set block above loop-block to freshly planted pumpkin stem
+							else if player's tool is beetroot seeds:
+								set block above loop-block to freshly planted beetroot plant
+							else if player's tool is potato:
+								set block above loop-block to freshly planted potato plant
+							else if player's tool is melon seeds:
+								set block above loop-block to freshly planted melon stem
+							else if player's tool is carrot:
+								set block above loop-block to freshly planted carrot plant
+	else if clicked block is sapling:
+		if checkSlots(player,"Super Fertilizer") is 1:
+			if player's tool is bone meal:
+				give 1 bone meal to the player
+				
+#True Block shield removal checks
+on tool change:
+	if the name of the player's offhand tool is "<light yellow>Sword Block":
+		set the player's offhand tool to air
+
+on inventory open:
+	if the name of the player's offhand tool is "<light yellow>Sword Block":
+		set the player's offhand tool to air
+
+#Quick Revive
+#on death:
+#	set {_LCK} to checkSlots(victim,"Quick Revive")
+#	if {_LCK} is 1:
+#		if {qrevivecd.%victim%} is not set:
+#			cancel event
+#			set the victim's health to 10
+#			play 100 (heart with speed 1) at the victim
+#			apply regeneration 5 to the victim for 5 seconds
+#			send formatted "<light cyan>Quick Revive was used." to the victim
+#			set {qrevivecd.%victim%} to true
+#			wait 3 minutes
+#			clear {qrevivecd.%victim%}
+#		else:
+#			clear {qrevivecd.%victim%}
 
 #Renewal/Restock
-every 15 seconds:
+every 10 seconds:
 	loop all players:
 		if loop-player is alive:
 			#Renewal
-			set {_sklcheck.%loop-player%} to checkSlots(loop-player,"Renewal")
-			if {_sklcheck.%loop-player%} is 1:
-				heal loop-player by 1 hearts
-			clear {_sklcheck.%loop-player%}
+			set {_LCKcheck.%loop-player%} to checkSlots(loop-player,"Renewal")
+			if {_LCKcheck.%loop-player%} is 1:
+				heal loop-player by (loop-player's maximum health * 0.1) hearts
+			clear {_LCKcheck.%loop-player%}
 			#Restock:
-			set {_sklcheck.%loop-player%} to checkSlots(loop-player,"Restock")
-			if {_sklcheck.%loop-player%} is 1:
-				increase the loop-player's food level by 1
-
-#Efficiency/High Jumper/Brazens
-every 2 seconds:
-	loop all players:
-		if loop-player is alive:
-			#Haste:
-			set {_sklcheck.%loop-player%} to checkSlots(loop-player,"Haste")
-			if {_sklcheck.%loop-player%} is 1:
-				apply haste 2 to loop-player for 2 seconds
-			#High Jumper:
-			set {_sklcheck.%loop-player%} to checkSlots(loop-player,"High Jumper")
-			if {_sklcheck.%loop-player%} is 1:
-				apply jump boost 2 to loop-player for 2 seconds
-			#Efficiency
-			set {_sklcheck} to checkSlots(loop-player,"Efficiency")
-			if {_sklcheck} is 1:
-				apply swiftness 2 to loop-player for 2 seconds
-				apply haste 2 to loop-player for 2 seconds
-			if loop-player's health is less than (loop-player's max health * 0.7):
-				#Brazen STR
-				set {_sklcheck.%loop-player%} to checkSlots(loop-player,"Brazen STR")
-				if {_sklcheck.%loop-player%} is 1:
-					set {_debug} to changeEntityStatBuff(loop-player,"STR",30)
-					play 10 (red wool break with speed 1) at loop-player
-					wait 2 seconds
-					set {_debug} to changeEntityStatBuff(loop-player,"STR",-30)
-				#Brazen DEF
-				set {_sklcheck.%loop-player%} to checkSlots(loop-player,"Brazen DEF")
-				if {_sklcheck.%loop-player%} is 1:
-					set {_debug} to changeEntityStatBuff(loop-player,"DEF",30)
-					play 10 (yellow wool break with speed 1) at loop-player
-					wait 2 seconds
-					set {_debug} to changeEntityStatBuff(loop-player,"DEF",-30)
-				#Brazen MAG
-				set {_sklcheck.%loop-player%} to checkSlots(loop-player,"Brazen MAG")
-				if {_sklcheck.%loop-player%} is 1:
-					set {_debug} to changeEntityStatBuff(loop-player,"RES",30)
-					play 10 (light blue wool break with speed 1) at loop-player
-					wait 2 seconds
-					set {_debug} to changeEntityStatBuff(loop-player,"RES",-30)
-				#Brazen SPD
-				set {_sklcheck.%loop-player%} to checkSlots(loop-player,"Brazen SPD")
-				if {_sklcheck.%loop-player%} is 1:
-					set {_debug} to changeEntityStatBuff(loop-player,"SPD",30)
-					play 10 (emerald block break with speed 1) at loop-player
-					wait 2 seconds
-					set {_debug} to changeEntityStatBuff(loop-player,"SPD",-30)
-				#Brazen SKL
-				set {_sklcheck.%loop-player%} to checkSlots(loop-player,"Brazen SKL")
-				if {_sklcheck.%loop-player%} is 1:
-					set {_debug} to changeEntityStatBuff(loop-player,"SKL",30)
-					play 10 (purple wool break with speed 1) at loop-player
-					wait 2 seconds
-					set {_debug} to changeEntityStatBuff(loop-player,"SKL",-30)
-				#Brazen Spectrum
-				set {_sklcheck.%loop-player%} to checkSlots(loop-player,"Brazen Spectrum")
-				if {_sklcheck.%loop-player%} is 1:
-					set {_debug} to changeEntityStatBuff(loop-player,"STR",20)
-					set {_debug} to changeEntityStatBuff(loop-player,"DEF",20)
-					set {_debug} to changeEntityStatBuff(loop-player,"SPD",20)
-					set {_debug} to changeEntityStatBuff(loop-player,"SKL",20)
-					set {_debug} to changeEntityStatBuff(loop-player,"RES",20)
-					play 5 (purple wool break with speed 1) at loop-player
-					play 5 (emerald block break with speed 1) at loop-player
-					play 5 (light blue wool break with speed 1) at loop-player
-					play 5 (yellow wool break with speed 1) at loop-player
-					play 5 (red wool break with speed 1) at loop-player
-					wait 2 seconds
-					set {_debug} to changeEntityStatBuff(loop-player,"STR",-20)
-					set {_debug} to changeEntityStatBuff(loop-player,"DEF",-20)
-					set {_debug} to changeEntityStatBuff(loop-player,"SPD",-20)
-					set {_debug} to changeEntityStatBuff(loop-player,"SKL",-20)
-					set {_debug} to changeEntityStatBuff(loop-player,"RES",-20)
-			if loop-player's health is less than (loop-player's max health * 0.7):
-				set {_sklcheck.%loop-player%} to checkSlots(loop-player,"Brazen STR/DEF")
-				if {_sklcheck.%loop-player%} is 1:
-					set {_debug} to changeEntityStatBuff(loop-player,"STR",20)
-					set {_debug} to changeEntityStatBuff(loop-player,"DEF",20)
-					play 10 (red wool break with speed 1) at loop-player
-					play 10 (yellow wool break with speed 1) at loop-player
-					wait 2 seconds
-					set {_debug} to changeEntityStatBuff(loop-player,"STR",-20)
-					set {_debug} to changeEntityStatBuff(loop-player,"DEF",-20)
-			#Monsters special cases
-			loop all monsters in radius 50 of the loop-player:
-				if loop-monster's health is less than (loop-monster's max health * 0.7):
-					#Brazen STR
-					set {_sklcheck.%loop-monster%} to checkSlots(loop-monster,"M_Brazen STR")
-					if {_sklcheck.%loop-monster%} is 1:
-						add 30 to {t_strbuff.%loop-monster%}
-						show mob spawner flames on the loop-monster
-						wait 2 seconds
-						subtract 30 from {t_strbuff.%loop-monster%}
-					#Brazen DEF
-					set {_sklcheck.%loop-monster%} to checkSlots(loop-monster,"M_Brazen DEF")
-					if {_sklcheck.%loop-monster%} is 1:
-						add 30 to {t_defbuff.%loop-monster%}
-						show mob spawner flames on the loop-monster
-						wait 2 seconds
-						subtract 30 from {t_defbuff.%loop-monster%}
-					#Brazen MAG
-					set {_sklcheck.%loop-monster%} to checkSlots(loop-monster,"M_Brazen MAG")
-					if {_sklcheck.%loop-monster%} is 1:
-						add 30 to {t_resbuff.%loop-monster%}
-						show mob spawner flames on the loop-monster
-						wait 2 seconds
-						subtract 30 from {t_resbuff.%loop-monster%}
-					#Brazen SPD
-					set {_sklcheck.%loop-monster%} to checkSlots(loop-monster,"M_Brazen SPD")
-					if {_sklcheck.%loop-monster%} is 1:
-						add 30 to {t_spdbuff.%loop-monster%}
-						show mob spawner flames on the loop-monster
-						wait 2 seconds
-						subtract 30 from {t_spdbuff.%loop-monster%}
-					#Brazen SKL
-					set {_sklcheck.%loop-monster%} to checkSlots(loop-monster,"M_Brazen SKL")
-					if {_sklcheck.%loop-monster%} is 1:
-						add 30 to {t_sklbuff.%loop-monster%}
-						show mob spawner flames on the loop-monster
-						wait 2 seconds
-						subtract 30 from {t_sklbuff.%loop-monster%}
-					#Brazen Spectrum
-					set {_sklcheck.%loop-monster%} to checkSlots(loop-monster,"M_Brazen Spectrum")
-					if {_sklcheck.%loop-monster%} is 1:
-						add 20 to {t_sklbuff.%loop-monster%}
-						add 20 to {t_spdbuff.%loop-monster%}
-						add 20 to {t_resbuff.%loop-monster%}
-						add 20 to {t_defbuff.%loop-monster%}
-						add 20 to {t_strbuff.%loop-monster%}
-						show mob spawner flames on the loop-monster
-						wait 2 seconds
-						subtract 20 from {t_sklbuff.%loop-monster%}
-						subtract 20 from {t_spdbuff.%loop-monster%}
-						subtract 20 from {t_resbuff.%loop-monster%}
-						subtract 20 from {t_defbuff.%loop-monster%}
-						subtract 20 from {t_strbuff.%loop-monster%}
-					
+			set {_LCKcheck.%loop-player%} to checkSlots(loop-player,"Restock")
+			if {_LCKcheck.%loop-player%} is 1:
+				increase the loop-player's food level by 2
+			
 on damage:
+	#Riccochet
+	if projectile exists:
+		if metadata value "canRiccochet" of the projectile is 1:
+			set {_riccoHorizontal} to random number from -0.75 to 0.75
+			make the victim shoot an arrow at speed -2
+			push the last shot projectile left at speed {_riccoHorizontal}
+			set metadata value "canRiccochet" of the last shot projectile to 1
 	#Smooth Landing
 	if victim is player:
 		if damage cause is fall:
@@ -1159,57 +934,59 @@ on damage:
 			if {slfalltotal.%victim%} is more than 100:
 				if {perks.%victim%::Smooth Landing} is not set:
 					make victim execute command "/grantskill 0 Smooth Landing"
-			set {_sklcheck.%victim%} to checkSlots(victim,"Smooth Landing")
-			if {_sklcheck.%victim%} is 1:
+			set {_LCKcheck.%victim%} to checkSlots(victim,"Smooth Landing")
+			if {_LCKcheck.%victim%} is 1:
 				cancel event
-	#Steady Breath
-	if victim is player:
-		set {_skl} to checkSlots(victim,"Steady Breath")
-		if {_skl} is 1:
-			add final damage to {crushing.%victim%}
-	#Draconic Aura
-	set {_sklcheck} to checkSlots(victim,"Draconic Aura")
-	if {_sklcheck} is 1:
-		if (victim's health - final damage) is less than (victim's maximum health * 0.5):
-			if {dragonform.%victim%} is not set:
-				apply strength 4 to the victim for 20 seconds
-				apply swiftness 4 to the victim for 20 seconds
-				apply resistance 3 to the victim for 20 seconds
-				apply regeneration 2 to the victim for 20 seconds
-				apply jump boost 8 to the victim for 20 seconds
-				set {_armour} to the victim's chestplate
-				set the victim's chestplate to 1 elytra
-				play explosion at the victim
-				play sound "entity.generic.explode" with volume 0.5 and pitch 0.75 at victim for victim
-				play sound "entity.generic.explode" with volume 0.5 and pitch 0.75 at victim for attacker
-				play sound "entity.enderdragon.growl" with volume 1 and pitch 1 at victim for victim
-				play sound "entity.enderdragon.growl" with volume 1 and pitch 1 at victim for attacker
-				play 20 (smoke with speed 0) at victim
-				play 20 (spell with speed 0) at victim
-				play 20 (ender signal with speed 0) at victim
-				send formatted "<light blue>%victim%'s Draconic Aura activated!" to the attacker
-				send formatted "<light blue>Draconic Aura activated!" to the victim
-				set {dragonform.%victim%} to 1
-				set {_rng} to a random integer between 1 and 4
-				if {_rng} is 1:
-					make victim say "%{skillquote1.%victim%}%"
-				else if {_rng} is 2:
-					make victim say "%{skillquote2.%victim%}%"
-				else if {_rng} is 3:
-					make victim say "%{skillquote3.%victim%}%"
-				else if {_rng} is 4:
-					make victim say "%{skillquote4.%victim%}%"
-				loop 20 times:
-					play 20 (smoke with speed 0) at victim
-					play 20 (spell with speed 0) at victim
-					play 20 (ender signal with speed 0) at victim
-					play sound "block.fire.ambient" at victim for victim
-					wait 1 second
-				set the victim's chestplate to {_armour}
-				send formatted "<light red>Your rage fades..." to the victim
-				wait 40 seconds
-				clear {dragonform.%victim%}
-				send formatted "<light blue>Your draconic strength has returned." to the victim
+			else if {t_isRappeling.%victim%} is "Rappeling":
+				cancel event
+	#Dragon Soul perks
+	#Gale Soul
+	set {_LCKcheck} to checkSlots(attacker,"Gale Soul")
+	if {_LCKcheck} is 1:
+		set {dragonSoulMeterCap.%attacker%} to ({lvl.%attacker%} * 15)
+		add (final damage / 4) to {dragonSoulMeter.%attacker%}
+		if {dragonSoulMeter.%attacker%} is more than {dragonSoulMeterCap.%attacker%}:
+			set {dragonSoulMeter.%attacker%} to {dragonSoulMeterCap.%attacker%}
+		set {_dtMeterDisplay} to ceil(({dragonSoulMeter.%attacker%} / {dragonSoulMeterCap.%attacker%}) * 100)
+		if {_dtMeterDisplay} is more than 100:
+			if {t_blockMeterAnnoyance.%attacker%} is not set:
+				set {_dtMeterDisplay} to 100
+				play sound "block.end_portal.spawn" with volume 1 and pitch 1 at the attacker
+				send "<gold>Gale Soul meter full! Sneak + Right click with an empty hand to transform." to the attacker
+		set bossbar "dsoul.%attacker's uuid%" progress to {_dtMeterDisplay}
+		send "<green>Gale Soul Meter: %{dragonSoulMeter.%attacker%}% | Max Meter: %{dragonSoulMeterCap.%attacker%}%" to the attacker
+	else:
+		#Flame Soul
+		set {_LCKcheck} to checkSlots(attacker,"Flame Soul")
+		if {_LCKcheck} is 1:
+			set {dragonSoulMeterCap.%attacker%} to ({lvl.%attacker%} * 15)
+			add (final damage / 4) to {dragonSoulMeter.%attacker%}
+			if {dragonSoulMeter.%attacker%} is more than {dragonSoulMeterCap.%attacker%}:
+				set {dragonSoulMeter.%attacker%} to {dragonSoulMeterCap.%attacker%}
+			set {_dtMeterDisplay} to ceil(({dragonSoulMeter.%attacker%} / {dragonSoulMeterCap.%attacker%}) * 100)
+			if {_dtMeterDisplay} is more than 100:
+				if {t_blockMeterAnnoyance.%attacker%} is not set:
+					set {_dtMeterDisplay} to 100
+					play sound "block.end_portal.spawn" with volume 1 and pitch 1 at the attacker
+					send "<gold>Flame Soul meter full! Sneak + Right click with an empty hand to transform." to the attacker
+			set bossbar "dsoul.%attacker's uuid%" progress to {_dtMeterDisplay}
+			send "<orange>Flame Soul Meter: %{dragonSoulMeter.%attacker%}% | Max Meter: %{dragonSoulMeterCap.%attacker%}%" to the attacker
+		else:
+			#Aqua Soul
+			set {_LCKcheck} to checkSlots(attacker,"Aqua Soul")
+			if {_LCKcheck} is 1:
+				set {dragonSoulMeterCap.%attacker%} to ({lvl.%attacker%} * 15)
+				add (final damage / 4) to {dragonSoulMeter.%attacker%}
+				if {dragonSoulMeter.%attacker%} is more than {dragonSoulMeterCap.%attacker%}:
+					set {dragonSoulMeter.%attacker%} to {dragonSoulMeterCap.%attacker%}
+				set {_dtMeterDisplay} to ceil(({dragonSoulMeter.%attacker%} / {dragonSoulMeterCap.%attacker%}) * 100)
+				if {_dtMeterDisplay} is more than 100:
+					if {t_blockMeterAnnoyance.%attacker%} is not set:
+						set {_dtMeterDisplay} to 100
+						play sound "block.end_portal.spawn" with volume 1 and pitch 1 at the attacker
+						send "<gold>Aqua Soul meter full! Sneak + Right click with an empty hand to transform." to the attacker
+				set bossbar "dsoul.%attacker's uuid%" progress to {_dtMeterDisplay}
+				send "<blue>Aqua Soul Meter: %{dragonSoulMeter.%attacker%}% | Max Meter: %{dragonSoulMeterCap.%attacker%}%" to the attacker
 				
 #Quick Draw
 on right click with bow:
@@ -1217,6 +994,7 @@ on right click with bow:
 	if {_checkslots} is 1:
 		if the player has an arrow:
 			if {QDCooldown.%player%} is not set:
+				cancel event
 				set {QDCooldown.%player%} to true
 				make the player shoot an arrow at speed 3
 				if the player's tool is not enchanted with infinity:
@@ -1227,10 +1005,58 @@ on right click with bow:
 				clear {QDCooldown.%player%}
 		else:
 			cancel event
+	else if checkSlots(player,"Electro Heart") is 1:
+		if {dtActive.%player%} is true:
+			if the player has an arrow:
+				if {QDCooldown.%player%} is not set:
+					cancel event
+					set {QDCooldown.%player%} to true
+					make the player shoot an arrow at speed 3
+					if the player's tool is not enchanted with infinity:
+						remove 1 arrow from the player
+					damage the player's tool by 1
+					play sound "block.dispenser.launch" with volume 1 and pitch 1 at the player
+					wait 0.33 seconds
+					clear {QDCooldown.%player%}
+			else:
+				cancel event
+			
+#Riccochet - apply NBT
+on shoot:
+	if shooter's tool is bow:
+		if checkSlots(shooter,"Riccochet") is 1:
+			set metadata value "canRiccochet" of the last shot projectile to 1
 
 #Air Hike/Smooth Landing
 on flight toggle:
 	if the player's gamemode is not creative:
+		#Half-Breed native flight
+		if {traits.%player%::Half-Breed} is true:
+			if player is not flying:
+				if player's food level is more than 9:
+					while player's food level is more than or equal to 4:
+						reduce the player's food level by 1
+						play sound "entity.enderdragon.flap" with volume 0.5 and pitch 1.2 at the player
+						wait 1 second
+						if player's food level is less than 4:
+							send "<light red>Your wings grow tired..." to the player
+							force player to stop flying
+							exit 1 loop
+						if player is on ground:
+							send "<italics>You rest your wings." to the player
+							force player to stop flying
+							exit 1 loop
+						if player is not flying:
+							set gliding of player to on
+							exit 1 loop
+					force player to stop flying
+					play sound "entity.enderdragon.flap" with volume 0.5 and pitch 0.8 at the player
+				else:
+					cancel event
+					send "<light red>You are too exhausted to take flight." to the player
+		if {dragonSoulActive.%player%} is true:
+			if player is flying:
+				set gliding of player to on
 		set {_ak} to checkSlots(player,"Air Hike")
 		if {_ak} is 1:
 			cancel event
@@ -1255,20 +1081,87 @@ on flight toggle:
 					play 2 (cloud with speed 0) at the player
 					wait 1 tick
 			else:
-				push the player downwards at speed 0.05
+				loop all monsters in radius 1 of the player:
+					if loop-monster is alive:
+						if loop-monster is not player:
+							set {_allowEnemyStep} to true
+				if {_allowEnemyStep} is true:
+					play sound "entity.painting.place" with volume 1.5 and pitch 0.6 at the player for the player
+					wait 1 tick
+					set {AirHikeReady.%player%} to false
+					set {_magnitude} to (y of player's velocity)
+					if {_magnitude} is less than 0:
+						set {_magnitude} to {_magnitude} * -1.05
+					else:
+						set {_magnitude} to {_magnitude} / 4
+					play 60 (redstone block break with speed 1) at the player
+					push the player upwards at speed ({_magnitude} + 1.05)
+					set {_m2} to sqrt(((x of player's velocity) ^ 2) + ((z of player's velocity) ^ 2))
+					#add (z of player's velocity) to {_m2}
+					#broadcast "%{_m2}%"
+					push the player in horizontal direction of the player at speed {_m2}
+					play sound "entity.blaze.shoot" with volume 0.75 and pitch 0.7 at the player for the player
+					loop 10 times:
+						play 2 (redstone block break with speed 1) at the player
+						play 2 (cloud with speed 0) at the player
+						wait 1 tick
+				else:
+					push the player downwards at speed 0.05
 		set {_sl} to checkSlots(player,"Smooth Landing")
 		if {_sl} is 1:
 			cancel event
 			push the player downwards at speed 0.05
+		if checkSlots(player,"Air Raid") is 1:
+			if {dtActive.%player%} is true:
+				while player is flying:
+					if checkSlots(player,"Trigger Heart") is 1:
+						wait 1 tick
+						subtract 1 from {dtMeter.%player%}
+					else:
+						wait 2 tick
+						subtract 1 from {dtMeter.%player%}
+					if {dtActive.%player%} is not true:
+						exit 1 loop
+						set player's flight state to false
 
-#Air Hike Refresh
+#Air Hike refresh
 every 0.1 seconds:
 	loop all players:
 		if citizen id of loop-player is not set:
+			#Air Hike
 			set {_ak} to checkSlots(loop-player,"Air Hike")
 			if {_ak} is 1:
 				if loop-player is on ground:
 					set {AirHikeReady.%loop-player%} to true
+			#Well-Trained
+			if checkSlots(loop-player,"Well-Trained") is 1:
+				if loop-player is riding a horse:
+					if {activeBuffs.traditional_weapons.%loop-player%::Well-Trained (Perk)} is not set:
+						add 20 to {abilities.%loop-player%::Traditional Weapons}
+						add 20 to {abilities.%loop-player%::Magical Weapons}
+						set {_debug} to changeEntityStatBuff(loop-player,"STR",4,"Well-Trained (Perk)",0)
+						set {_debug} to changeEntityStatBuff(loop-player,"MAG",4,"Well-Trained (Perk)",0)
+						set {_debug} to changeEntityStatBuff(loop-player,"LCK",4,"Well-Trained (Perk)",0)
+						set {activeBuffs.traditional_weapons.%loop-player%::Well-Trained (Perk)} to true
+				else if {activeBuffs.traditional_weapons.%loop-player%::Well-Trained (Perk)} is true:
+					subtract 20 from {abilities.%loop-player%::Traditional Weapons}
+					subtract 20 from {abilities.%loop-player%::Magical Weapons}
+					clear {activeBuffs.traditional_weapons.%loop-player%::Well-Trained (Perk)}
+			#Precision gun lockout clear
+			if {t_precisionTimeout.%loop-player%} is set:
+				subtract 0.1 from {t_precisionTimeout.%loop-player%}
+				if {t_precisionTimeout.%loop-player%} is less than or equal to 0:
+					clear {t_precisionTimeout.%loop-player%}
+					play sound "entity.experience_orb.pickup" with volume 1 and pitch 0.6 at loop-player for loop-player
+					wait 5 ticks
+					play sound "entity.experience_orb.pickup" with volume 1 and pitch 0.8 at loop-player for loop-player
+			if {t_royalForkCD.%loop-player%} is set:
+				if {t_royalForkCD.%loop-player%} is more than 0:
+					subtract 0.1 from {t_royalForkCD.%loop-player%}
+				else:
+					clear {t_royalForkCD.%loop-player%}
+					send "<light purple>Royal Fork available." to loop-player
+					play sound "entity.experience_orb.pickup" with volume 2 and pitch 1 at loop-player for loop-player
 	
 #Air Hike/Smooth Landing
 on jump:
@@ -1276,40 +1169,100 @@ on jump:
 		if block below player is not air or water:
 			set {_ak} to checkSlots(player,"Air Hike")
 			set {_sl} to checkSlots(player,"Smooth Landing")
+			set {_airraid} to checkSlots(player,"Air Raid")
 			if {_ak} is 1:
 				set player's flight state to true
 				set {AirHikeReady.%player%} to true
 			else if {_sl} is 1:
 				set player's flight state to true
+			if {_airraid} is 1:
+				if {dtActive.%player%} is true:
+					set player's flight state to true
+				else:
+					set player's flight state to false
+			if {traits.%player%::Half-Breed} is true:
+				set player's flight state to true
 
 on tame:
-	#Taming Mastery
-	set {_slot} to checkSlots(player,"Taming Mastery")
+	#Deep Bond
+	set {_slot} to checkSlots(player,"Deep Bond")
 	if {_slot} is 1:
-		apply speed 1 to the entity for 999 days
-		apply resistance 1 to the entity for 999 days
+		apply speed 5 to the entity for 999 days
+		apply resistance 5 to the entity for 999 days
 		if entity is any horse:
 			make the entity wear a saddle
-		set the entity's max health to the entity's max health * 2
+		set the entity's max health to the entity's maximum health * 3
 		wait a tick
-		heal the entity by 20
+		heal the entity by entity's maximum health
 
-on tool break:
-	#Hammerne
-	add 1 to {toolbreaktally.%player%}
-	if {toolbreaktally.%player%} is more than 9:
-		if {Hammerne.%player%} is not set:
-			make player execute command "/grantskill 0 Hammerne"
-	set {_sklcheck.%player%} to checkSlots(player,"Hammerne")
-	set {_cashded.%player%} to the damage value of the event-item / 5
-	if {_sklcheck.%player%} is 1:
-		if {_cashded.%player%} is less than player's money:
-			drop event-item at the player
-			send formatted "The Hammerne skill prevented your tool from breaking." to the player
-			send formatted "Deducted $%{_cashded.%player%}% to prevent tool destruction."
+#Precision on-equip penalties
+on tool change:
+	if checkSlots(player,"Precision") is 1:
+		set {t_precisionTimeout.%player%} to 0.5
+		#Pistols have no speed penalty so nothing is defined for them
+		#Shotguns/Rifles inflict Slowness 1
+		#Heavy Weapons inflict Slowness 2 (things like Launchers, Snipers, and the Minigun)
+		#Iron Musket
+		if nbt of the player's tool contains "FirearmType:1":
+			apply slowness 1 to the player for 1 day
+			set {t_hasPrecisionDebuff.%player%} to true
+		#Redstone Repeater
+		else if nbt of the player's tool contains "FirearmType:3":
+			apply slowness 1 to the player for 1 day
+			set {t_hasPrecisionDebuff.%player%} to true
+		#Redgrave Coyote-Alpha
+		else if nbt of the player's tool contains "FirearmType:5":
+			apply slowness 1 to the player for 1 day
+			set {t_hasPrecisionDebuff.%player%} to true
+			set {t_precisionTimeout.%player%} to 1
+		#Teufort Two-Timer
+		else if nbt of the player's tool contains "FirearmType:6":
+			apply slowness 1 to the player for 1 day
+			set {t_hasPrecisionDebuff.%player%} to true
+		#Rocket Launcher
+		else if nbt of the player's tool contains "FirearmType:7":
+			apply slowness 2 to the player for 1 day
+			set {t_hasPrecisionDebuff.%player%} to true
+			set {t_precisionTimeout.%player%} to 1.5
+		#Home-Made Heater (treated as rifle for balancing)
+		else if nbt of the player's tool contains "FirearmType:8":
+			apply slowness 1 to the player for 1 day
+			set {t_hasPrecisionDebuff.%player%} to true
+			set {t_precisionTimeout.%player%} to 1.25
+		#Minigun
+		else if nbt of the player's tool contains "FirearmType:9":
+			apply slowness 2 to the player for 1 day
+			set {t_hasPrecisionDebuff.%player%} to true
+			set {t_precisionTimeout.%player%} to 2
+		#Grenade Launcher
+		else if nbt of the player's tool contains "FirearmType:10":
+			apply slowness 2 to the player for 1 day
+			set {t_hasPrecisionDebuff.%player%} to true
+			set {t_precisionTimeout.%player%} to 1
+		#Vettik S-25
+		else if nbt of the player's tool contains "FirearmType:11":
+			apply slowness 1 to the player for 1 day
+			set {t_hasPrecisionDebuff.%player%} to true
+			set {t_precisionTimeout.%player%} to 1.25
+		#Vettik B-30AS
+		else if nbt of the player's tool contains "FirearmType:12":
+			apply slowness 1 to the player for 1 day
+			set {t_hasPrecisionDebuff.%player%} to true
+			set {t_precisionTimeout.%player%} to 1
+		#Vettik A-10 Enforcer
+		else if nbt of the player's tool contains "FirearmType:13":
+			apply slowness 2 to the player for 1 day
+			set {t_hasPrecisionDebuff.%player%} to true
+			set {t_precisionTimeout.%player%} to 1.5
+		#Redgrave Kalina
+		else if nbt of the player's tool contains "FirearmType:14":
+			apply slowness 2 to the player for 1 day
+			set {t_hasPrecisionDebuff.%player%} to true
+			set {t_precisionTimeout.%player%} to 1.25
 		else:
-			send formatted "<red>You lacked the required funds to prevent this tool from breaking."
-
+			clear {t_hasPrecisionDebuff.%player%}
+			remove slowness from the player
+			
 #Acrobatics Wall Kick
 on block damage:
 	if the 4th line of the lore of the player's tool is "<light green><bold>Assist - Acrobatics":
@@ -1317,49 +1270,22 @@ on block damage:
 	else:
 		set {_isStylish} to checkSlots(player,"Acrobatics")
 	if {_isStylish} is 1:
-		if player is not on ground:	
+		if player is not on ground:
 			if player is sneaking:
+				set {_canJump} to true
+			else if isEntityToolAir(player) is true:
+				set {_canJump} to true
+			if {_canJump} is true:
 				if {WallKickReady.%player%} is not set:
-					set {AirHikeReady.%player%} to true
-					push the player backwards at speed 0.5
-					if {combograde.%player%} is more than 0:
-						add (1.15 * (7 - {combograde.%player%})) to {comboscore.%player%}
-					push the player upwards at speed 0.6
-					remove resistance from the player
-					apply resistance 5 to the player for 2 seconds
-					#send formatted "<light red>Air hike!" to the player
-					set {WallKickReady.%player%} to 1
-					wait 0.35 seconds
-					clear {WallKickReady.%player%}
-			
-#Acrobatics Wall Cling
-on right click:
-	if clicked block is set:
-		if the 4th line of the lore of the player's tool is "<light green><bold>Assist - Acrobatics":
-			set {_isStylish} to 1
-		else:
-			set {_isStylish} to checkSlots(player,"Acrobatics")
-		if {_isStylish} is 1:
-			if player is not on ground:
-				if player is sneaking:
-					if {WallClingActive.%player%} is not set:
-						play 20 (stone block break with speed 1) at the target
-						play sound "block.stone.break" with volume 1 and pitch 1 at the player
-						#Halt vertical momentum
-						set y of player's velocity to 0
-						set {WallKickReady.%player%} to true
-						set {WallClingActive.%player%} to true
-						while player is sneaking:
-							apply levitation 256 to the player for 1 second
-							wait 1 tick
-							if distance between player and event-block is more than or equal to 3.75:
-								set player's velocity to vector(0,0,0)
-								exit 1 loop
-							if player is on ground:
-								exit 1 loop
-							if y of player's velocity is more than 0:
-								set y of player's velocity to 0
-						remove levitation from the player
-						set player's velocity to vector(0,0,0)
+					if event-block is not coal block:
+						set {AirHikeReady.%player%} to true
+						push the player backwards at speed 0.5
+						if {combograde.%player%} is more than 0:
+							add (1.15 * (7 - {combograde.%player%})) to {comboscore.%player%}
+						push the player upwards at speed 0.6
+						remove resistance from the player
+						apply resistance 5 to the player for 2 seconds
+						#send formatted "<light red>Air hike!" to the player
+						set {WallKickReady.%player%} to 1
+						wait 0.35 seconds
 						clear {WallKickReady.%player%}
-						clear {WallClingActive.%player%}

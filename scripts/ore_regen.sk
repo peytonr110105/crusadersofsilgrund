@@ -6,31 +6,107 @@
 on mine of any ore:
 	if player's game mode is survival:
 		if {OreRegenToggle.%player%} is not set:
+			#send "%event-block%" to the player
 			set {OreRegenLocation::%location of event-block%} to location of event-block
+			loop all blocks in radius 3 of event-block:
+				#send "%loop-block's type% , %event-block's type%"
+				#send "%{OreRegen::%location of loop-block%}%" to the player
+				if "%loop-block's type%" is "%event-block's type%":
+					add 0.2 to {_oreRegenPenalty}
+				else if {OreRegen::%location of loop-block%} contains "%event-block%":
+					add 0.2 to {_oreRegenPenalty}
+				else if loop-block is event-block:
+					add 0.2 to {_oreRegenPenalty}
+			if {_oreRegenPenalty} is more than 4:
+				set {_oreRegenPenalty} to 4
+			if {oreRegenPenaltyNotice.%player%} is true:
+				send formatted "<italics>Stacked ore penalty: %{_oreRegenPenalty}%x" to the player
 			if event-block is coal ore:
-				set {OreRegenTimer::%location of event-block%} to 300
+				set {OreRegenTimer::%location of event-block%} to ceil((300 / ((checkSlots(player,"Scavenger")) + 1)) * {_oreRegenPenalty})
 				set {OreRegen::%location of event-block%} to "coal ore"
+				addClassXP(player,1 + ({lvl.%player%} * 0.5))
+				send formatted "<light yellow>[Mining] +%1 + ({lvl.%player%} * 0.5)% EXP" to the player
 			else if event-block is quartz ore:
-				set {OreRegenTimer::%location of event-block%} to 360
+				set {OreRegenTimer::%location of event-block%} to ceil((360 / ((checkSlots(player,"Scavenger")) + 1)) * {_oreRegenPenalty})
 				set {OreRegen::%location of event-block%} to "quartz ore"
+				addClassXP(player,3 + ({lvl.%player%} * 0.5))
+				send formatted "<light yellow>[Mining] +%3 + ({lvl.%player%} * 0.5)% EXP" to the player
 			else if event-block is iron ore:
-				set {OreRegenTimer::%location of event-block%} to 600
+				set {OreRegenTimer::%location of event-block%} to ceil((600 / ((checkSlots(player,"Scavenger")) + 1)) * {_oreRegenPenalty})
 				set {OreRegen::%location of event-block%} to "iron ore"
+				addClassXP(player,2 + ({lvl.%player%} * 0.5))
+				send formatted "<light yellow>[Mining] +%1 + ({lvl.%player%} * 0.5)% EXP" to the player
 			else if event-block is gold ore:
-				set {OreRegenTimer::%location of event-block%} to 690
+				set {OreRegenTimer::%location of event-block%} to ceil((690 / ((checkSlots(player,"Scavenger")) + 1)) * {_oreRegenPenalty})
 				set {OreRegen::%location of event-block%} to "gold ore"
+				addClassXP(player,2 + ({lvl.%player%} * 0.5))
+				send formatted "<light yellow>[Mining] +%1 + ({lvl.%player%} * 0.5)% EXP" to the player
 			else if event-block is redstone ore:
-				set {OreRegenTimer::%location of event-block%} to 690
+				set {OreRegenTimer::%location of event-block%} to ceil((690 / ((checkSlots(player,"Scavenger")) + 1)) * {_oreRegenPenalty})
 				set {OreRegen::%location of event-block%} to "redstone ore"
+				addClassXP(player,2 + ({lvl.%player%} * 0.5))
+				send formatted "<light yellow>[Mining] +%1 + ({lvl.%player%} * 0.5)% EXP" to the player
 			else if event-block is lapis ore:
-				set {OreRegenTimer::%location of event-block%} to 690
+				set {OreRegenTimer::%location of event-block%} to ceil((690 / ((checkSlots(player,"Scavenger")) + 1)) * {_oreRegenPenalty})
 				set {OreRegen::%location of event-block%} to "lapis ore"
+				addClassXP(player,2 + ({lvl.%player%} * 0.5))
+				send formatted "<light yellow>[Mining] +%1 + ({lvl.%player%} * 0.5)% EXP" to the player
 			else if event-block is diamond ore:
-				set {OreRegenTimer::%location of event-block%} to 1800
+				set {OreRegenTimer::%location of event-block%} to ceil((1800 / ((checkSlots(player,"Scavenger")) + 1)) * {_oreRegenPenalty})
 				set {OreRegen::%location of event-block%} to "diamond ore"
+				addClassXP(player,10 + ({lvl.%player%} * 1))
+				send formatted "<light yellow>[Mining] +%10 + ({lvl.%player%} * 0.5)% EXP" to the player
 			else if event-block is emerald ore:
-				set {OreRegenTimer::%location of event-block%} to 1200
+				set {OreRegenTimer::%location of event-block%} to ceil((1800 / ((checkSlots(player,"Scavenger")) + 1)) * {_oreRegenPenalty})
 				set {OreRegen::%location of event-block%} to "emerald ore"
+				addClassXP(player,6 + ({lvl.%player%} * 1))
+				send formatted "<light yellow>[Mining] +%6 + ({lvl.%player%} * 0.5)% EXP" to the player
+			#1.18+ ores
+			else if event-block is copper ore:
+				set {OreRegenTimer::%location of event-block%} to ceil((300 / ((checkSlots(player,"Scavenger")) + 1)) * {_oreRegenPenalty})
+				set {OreRegen::%location of event-block%} to "copper ore"
+				addClassXP(player,1 + ({lvl.%player%} * 0.5))
+				send formatted "<light yellow>[Mining] +%1 + ({lvl.%player%} * 0.5)% EXP" to the player
+			else if event-block is nether gold ore:
+				set {OreRegenTimer::%location of event-block%} to ceil((400 / ((checkSlots(player,"Scavenger")) + 1)) * {_oreRegenPenalty})
+				set {OreRegen::%location of event-block%} to "nether gold ore"
+				addClassXP(player,2 + ({lvl.%player%} * 0.5))
+				send formatted "<light yellow>[Mining] +%2 + ({lvl.%player%} * 0.5)% EXP" to the player
+			else if event-block is ancient debris:
+				set {OreRegenTimer::%location of event-block%} to ceil((4000 / ((checkSlots(player,"Scavenger")) + 1)) * {_oreRegenPenalty})
+				set {OreRegen::%location of event-block%} to "ancient debris"
+				addClassXP(player,24 + ({lvl.%player%} * 1))
+				send formatted "<light yellow>[Mining] +%24 + ({lvl.%player%} * 1)% EXP" to the player
+			else if event-block is deepslate iron ore:
+				set {OreRegenTimer::%location of event-block%} to ceil((600 / ((checkSlots(player,"Scavenger")) + 1)) * {_oreRegenPenalty})
+				set {OreRegen::%location of event-block%} to "deepslate iron ore"
+				addClassXP(player,4 + ({lvl.%player%} * 0.7))
+				send formatted "<light yellow>[Mining] +%4 + ({lvl.%player%} * 0.7)% EXP" to the player
+			else if event-block is deepslate gold ore:
+				set {OreRegenTimer::%location of event-block%} to ceil((690 / ((checkSlots(player,"Scavenger")) + 1)) * {_oreRegenPenalty})
+				set {OreRegen::%location of event-block%} to "deepslate gold ore"
+				addClassXP(player,4 + ({lvl.%player%} * 0.7))
+				send formatted "<light yellow>[Mining] +%4 + ({lvl.%player%} * 0.7)% EXP" to the player
+			else if event-block is deepslate redstone ore:
+				set {OreRegenTimer::%location of event-block%} to ceil((690 / ((checkSlots(player,"Scavenger")) + 1)) * {_oreRegenPenalty})
+				set {OreRegen::%location of event-block%} to "deepslate redstone ore"
+				addClassXP(player,3 + ({lvl.%player%} * 0.7))
+				send formatted "<light yellow>[Mining] +%3 + ({lvl.%player%} * 0.7)% EXP" to the player
+			else if event-block is deepslate lapis ore:
+				set {OreRegenTimer::%location of event-block%} to ceil((690 / ((checkSlots(player,"Scavenger")) + 1)) * {_oreRegenPenalty})
+				set {OreRegen::%location of event-block%} to "deepslate lapis ore"
+				addClassXP(player,3 + ({lvl.%player%} * 0.7))
+				send formatted "<light yellow>[Mining] +%3 + ({lvl.%player%} * 0.7)% EXP" to the player
+			else if event-block is deepslate diamond ore:
+				set {OreRegenTimer::%location of event-block%} to ceil((1800 / ((checkSlots(player,"Scavenger")) + 1)) * {_oreRegenPenalty})
+				set {OreRegen::%location of event-block%} to "deepslate diamond ore"
+				addClassXP(player,14 + ({lvl.%player%} * 0.7))
+				send formatted "<light yellow>[Mining] +%14 + ({lvl.%player%} * 0.7)% EXP" to the player
+			else if event-block is deepslate emerald ore:
+				set {OreRegenTimer::%location of event-block%} to ceil((1800 / ((checkSlots(player,"Scavenger")) + 1)) * {_oreRegenPenalty})
+				set {OreRegen::%location of event-block%} to "deepslate emerald ore"
+				addClassXP(player,9 + ({lvl.%player%} * 0.7))
+				send formatted "<light yellow>[Mining] +%9 + ({lvl.%player%} * 0.7)% EXP" to the player
 			wait 1 tick
 			set the block at location of event-block to cobblestone
 		
@@ -42,6 +118,7 @@ command /or [<text="help">]:
 			send formatted "<gold>Help:<reset> Displays this window."
 			send formatted "<gold>Toggle:<reset> Toggles Ore Regeneration on and off. Useful for removing accidentally placed ores."
 			send formatted "<gold>Suppress:<reset> Enables/disables the warning given when attempting to mine regenerating ore."
+			send formatted "<gold>Modifiers:<reset> Toggles displaying additional modifiers on mined ore."
 			send formatted "<gold>Info:<reset> Shows details on the ore regeneration mechanic."
 		else if arg 1 is "suppress":
 			if {BreakRegenOres.%player%} is not "BYPASS":
@@ -57,9 +134,16 @@ command /or [<text="help">]:
 			else:
 				clear {OreRegenToggle.%player%}
 				send formatted "<light blue>Enabled ore regeneration. Any ores you mine will regenerate over time."
+		else if arg 1 is "modifiers":
+			if {oreRegenPenaltyNotice.%player%} is not set:
+				set {oreRegenPenaltyNotice.%player%} to true
+				send formatted "<light blue>Now displaying ore modifiers when mined."
+			else:
+				clear {oreRegenPenaltyNotice.%player%}
+				send formatted "<light blue>No longer displaying ore modifiers when mined."
 		else if arg 1 is "info":
 			send formatted "<light blue>-=Ore Regeneration=-"
-			send formatted "When ores are mined, the block they occupied is turned into a cobblestone block. After enough time has passed, that cobblestone block will ""regenerate"" the ore that it replaced."
+			send formatted "When ores are mined, the block they occupied is turned into a cobblestone block. After enough time has passed, that cobblestone block will ""regenerate"" into the ore that it replaced."
 			send formatted "For example, if a piece of coal ore is mined, that ore will become cobblestone and begin regenerating. After a few minutes, that cobblestone will turn back into coal ore."
 			send formatted "<light yellow>The amount of time it takes for an ore to regenerate is based on the rarity of the ore. Coal will regenerate the fastest, and diamonds will regenerate the slowest."
 			send formatted "<bold>Ore Regeneration occurs for all ores, even ones that you place. If you misplace a piece of ore, you can use the ""/or toggle"" command to prevent any mined ores from regenerating."
@@ -85,10 +169,46 @@ on mine of cobblestone:
 			set the event-block to air
 			send formatted "<light blue>HINT: You can disable the ore regeneration warning by using /or suppress." to the player
 
+on mine of fully grown wheat plant:
+	addClassXP(player,1 + ({lvl.%player%} * 0.5))
+	send formatted "<light yellow>[Farming] +%1 + ({lvl.%player%} * 0.5)% EXP" to the player
+	
+on mine of fully grown beetroot plant:
+	addClassXP(player,1 + ({lvl.%player%} * 0.5))
+	send formatted "<light yellow>[Farming] +%1 + ({lvl.%player%} * 0.5)% EXP" to the player
+
+on mine of fully grown potato plant:
+	addClassXP(player,1 + ({lvl.%player%} * 0.5))
+	send formatted "<light yellow>[Farming] +%1 + ({lvl.%player%} * 0.5)% EXP" to the player
+
+on mine of fully grown carrot plant:
+	addClassXP(player,1 + ({lvl.%player%} * 0.5))
+	send formatted "<light yellow>[Farming] +%1 + ({lvl.%player%} * 0.5)% EXP" to the player
+
+on mine of melon block:
+	addClassXP(player,1 + ({lvl.%player%} * 0.5))
+	send formatted "<light yellow>[Farming] +%1 + ({lvl.%player%} * 0.5)% EXP" to the player
+
+on right click on fully grown wheat plant:
+	addClassXP(player,1 + ({lvl.%player%} * 0.5))
+	send formatted "<light yellow>[Farming] +%1 + ({lvl.%player%} * 0.5)% EXP" to the player
+	
+on right click on fully grown beetroot plant:
+	addClassXP(player,1 + ({lvl.%player%} * 0.5))
+	send formatted "<light yellow>[Farming] +%1 + ({lvl.%player%} * 0.5)% EXP" to the player
+
+on right click on fully grown potato plant:
+	addClassXP(player,1 + ({lvl.%player%} * 0.5))
+	send formatted "<light yellow>[Farming] +%1 + ({lvl.%player%} * 0.5)% EXP" to the player
+
+on right click on fully grown carrot plant:
+	addClassXP(player,1 + ({lvl.%player%} * 0.5))
+	send formatted "<light yellow>[Farming] +%1 + ({lvl.%player%} * 0.5)% EXP" to the player
+
 on right click on cobblestone:
 	loop {OreRegen::*}:
 		if location of the event-block is {OreRegenLocation::%loop-index%}:
-			send formatted "<white><italics>This %{OreRegen::%loop-index%}% will regenerate in %{OreRegenTimer::%{OreRegenLocation::%loop-index%}%}% seconds." to the player
+			send formatted "<white><italics>This %{OreRegen::%loop-index%}% will regenerate in %{OreRegenTimer::%{OreRegenLocation::%loop-index%}%} / 60% minutes [%{OreRegenTimer::%{OreRegenLocation::%loop-index%}%}% seconds]." to the player
 			
 every 1 second:
 	loop {OreRegenTimer::*}:
