@@ -1,0 +1,237 @@
+#Returns an "Ultra-Rare" item, typical stat boosters
+function getUltraRareLoot() :: item:
+	set {_rng} to random integer from 0 to 19
+	if {_rng} is 0:
+		return 1 sugar named "<orange>Energy Drop" with lore "<white>use to increase your STR by 5 points."
+	else if {_rng} is 1:
+		return 1 sugar named "<orange>Dragonshield" with lore "<white>Use to increase your DEF by 5 points."
+	else if {_rng} is 2:
+		return 1 sugar named "<orange>Speedwing" with lore "<white>Use to increase your SPD by 5 points."
+	else if {_rng} is 3:
+		return 1 sugar named "<orange>Spirit Dust" with lore "<white>Use to increase your MAG by 5 points."
+	else if {_rng} is 4:
+		return 1 sugar named "<orange>Focus Drop" with lore "<white>Use to increase your LCK by 5 points."
+	else if {_rng} is 5:
+		return 1 sugar named "<orange>Holy Robe" with lore "<white>Use to increase your HP by 5 points."
+	else if {_rng} is 6:
+		return 1 sugar named "<orange>Seraph Robe" with lore "<white>Use to increase your RES by 5 points."
+	else if {_rng} is 7:
+		return 1 sugar named "<orange>Charm Bracelet" with lore "<white>Use to increase your CHR by 5 points."
+	else if {_rng} is 8:
+		return 1 nether star named "<orange>Untouchable" with lore "<white>A divine blessing that renders you invulnerable.", "<white>Right-click to become invincible for several seconds."
+	else if {_rng} is 9:
+		return 1 sugar named "<orange>Quintessence" with lore "<white>Use to increase your HP cap by 5 points."
+	else if {_rng} is 10:
+		return 3 sugar named "<orange>Ability Powder" with lore "<white>Instantly grants 9 ability points when used."
+	else if {_rng} is 11:
+		return 1 music disc far named "<light green><bold>Life Ring" with lore "<white>While in your inventory:", "<light green>Recover 10%% of your max HP every 15 seconds."
+	else if {_rng} is 12:
+		return 1 music disc wait named "<light blue><bold>Elite Ring" with lore "<white>While in your inventory:", "<light blue>Gain bonus experience for slaying monsters."
+	else if {_rng} is 13:
+		return 1 music disc 13 named "<light yellow><bold>Thief Ring" with lore "<white>While in your inventory:", "<light green>Slain monsters have a chance to drop extra money."
+	else if {_rng} is 14:
+		return 1 music disc mall named "<light purple><bold>Return Ring" with lore "<white>While held in hand:", "<light purple>Teleport to a custom location.", "<light purple>Hold Sneak and Right-click to set the warp destination.", "<light purple>Right-click without sneaking to warp."
+	else if {_rng} is 15:
+		return 1 music disc wait named "<light blue><bold>Speed Ring" with lore "<white>While in your inventory:", "<light cyan>Grants Swiftness 2."
+	else if {_rng} is 16:
+		return 1 music disc chirp named "<light red><bold>Power Ring" with lore "<white>While in your inventory:", "<light red>Grants Strength 2."
+	else if {_rng} is 17:
+		return 1 music disc chirp named "<white><bold>Shield Ring" with lore "<white>While in your inventory:", "<white>Grants Resistance 2."
+	else if {_rng} is 18:
+		return 1 music disc 13 named "<orange><bold>Prayer Ring" with lore "<white>While in your inventory:", "<orange>Attacks while below 50%% HP will always be critical hits."
+	else if {_rng} is 19:
+		return 1 music disc cat named "<green><bold>Pursuit Ring" with lore "<white>While in your inventory:", "<green>Boosts damage by 40%% if initiating combat with HP >= 70%%."
+		
+#Returns a common loot item, typically crafting materials but may occasionally have tool frames
+#Pass the player as an argument so that they can't get Devil Hearts without a DT Meter
+function getCommonLoot(PLR: player) :: item:
+	set {_rng} to random integer from 0 to 40
+	if {_rng} is 0:
+		return 8 coal
+	else if {_rng} is 1:
+		return 16 coal
+	else if {_rng} is 2:
+		return 4 iron ingot
+	else if {_rng} is 3:
+		return 8 iron ingot
+	else if {_rng} is 4:
+		return 4 gold ingot
+	else if {_rng} is 5:
+		return 8 gold ingot
+	else if {_rng} is 6:
+		return 5 emerald
+	else if {_rng} is 7:
+		return 2 redstone block
+	else if {_rng} is 8:
+		return 4 redstone block
+	else if {_rng} is 9:
+		return 2 lapis block
+	else if {_rng} is 10:
+		return 4 lapis block
+	else if {_rng} is 11:
+		return 12 lapis item
+	else if {_rng} is 12:
+		return 12 redstone dust
+	else if {_rng} is 13:
+		return 12 leather
+	else if {_rng} is 14:
+		return 2 oak fence named "<cyan>Rappel Post" with lore "<white>Right click this block to rappel down.", "<white>Rappelling lets you quickly descend without taking fall damage."
+	else if {_rng} is 15:
+		return 2 ladder named "<cyan>Rope" with lore "<white>A rope good for 25 blocks.", "<white>Place it on a cliff's edge to autobuild a ladder down."
+	else if {_rng} is 16:
+		if getBaseClass({_PLR}) is "Devil Hunter":
+			return 1 eye of ender named "<orange>Devil Heart" with lore "<white>Right-click to completely fill the Devil Trigger gauge."
+		else:
+			return 1 golden sword named "<orange>Special Blade" with lore "<white>Right-click to guarantee the activation of your Special skill."
+	else if {_rng} is 17:
+		return 1 golden carrot named "<orange>War Horn" with lore "<white>An enchanted horn that raises morale.", "<white>Right-click to grant <white><bold>[Adrenaline]<reset><white> to nearby party members.", "<white><bold>[Adrenaline]:<reset><white> Grants Swiftness/Strength 5 and grants +10%% Special Skill activation chance."
+	else if {_rng} is 18:
+		return 1 splash potion of slowness named "<orange>Bottled Blizzard" with lore "<white>Bottled-up frost magic, itching to be released.", "<white>Right-click to immobilize nearby foes."
+	else if {_rng} is 19:
+		return 1 splash potion of healing named "<orange>Sparkling Water" with lore "<white>Contains a mystical brew that cures a party's wounds.", "<white>Right-click to heal yourself and nearby party members."
+	else if {_rng} is 20:
+		return 1 potion of healing named "<orange>Elixir of Life" with lore "<white>Drink to restore all health."
+	else if {_rng} is 21:
+		return 1 green dye named "<light green><bold>Sacred Herb" with lore "<white>A medicinal herb used to heal wounds.","<white>Right-click to restore 6 hearts.","<white>Can also be picked up off the ground to restore 3 hearts if wounded."
+	else if {_rng} is 22:
+		return 2 green dye named "<light green><bold>Sacred Herb" with lore "<white>A medicinal herb used to heal wounds.","<white>Right-click to restore 6 hearts.","<white>Can also be picked up off the ground to restore 3 hearts if wounded."
+	else if {_rng} is 23:
+		return 4 green dye named "<light green><bold>Sacred Herb" with lore "<white>A medicinal herb used to heal wounds.","<white>Right-click to restore 6 hearts.","<white>Can also be picked up off the ground to restore 3 hearts if wounded."
+	else if {_rng} is 24:
+		return 1 yellow dye named "<light yellow><bold>Golden Herb" with lore "<white>Powerful medicinal herb with extreme healing power.","<white>Right-click to restore 12 hearts.","<white>Can also be picked up off the ground to restore 6 hearts if wounded."
+	else if {_rng} is 25:
+		return 4 diamond
+	else if {_rng} is 26:
+		return 4 obsidian
+	else if {_rng} is 27:
+		return 32 oak log
+	else if {_rng} is 28:
+		return 64 oak log
+	else if {_rng} is 29:
+		return 64 experience bottle
+	else if {_rng} is 30:
+		return 8 bread
+	else if {_rng} is 31:
+		return 4 steak
+	else if {_rng} is 32:
+		return 2 golden apple
+	else if {_rng} is 33:
+		return 2 iron block
+	else if {_rng} is 34:
+		return 2 gold block
+	else if {_rng} is 35:
+		return 2 emerald block
+	else if {_rng} is 36:
+		return 1 splash potion of harming named "<light gray>Fragmentation Grenade" with nbt "{GrenadeType:0}" with lore "<italics>Standard explosive ordinance.", "<italics>Right-click to throw. Detonates on impact with any surface."
+	else if {_rng} is 37:
+		return 1 splash potion of harming named "<light gray>Concussion Grenade" with nbt "{GrenadeType:1}" with lore "<italics>Special grenade that stuns foes.", "<italics>Right-click to throw. Detonates on impact with any surface."
+	else if {_rng} is 38:
+		return 1 splash potion of harming named "<light gray>Smoke Grenade" with nbt "{GrenadeType:2}" with lore "<italics>Creates a lasting cloud of smoke, disorienting foes.", "<italics>Right-click to throw. Detonates on impact with any surface."
+	else if {_rng} is 39:
+		return 1 paper named "<orange>Arms Scroll" with lore "<white>Raises a Weapon Rank of your choice to the next highest level."
+	else if {_rng} is 40:
+		return 1 poppy named "<gold>Dragonflower" with lore "<white>An arcane rose that only grows under a dragon's care.", "<white>When consumed, allows the user to modify their essence."
+#Returns a rare loot item
+function getRareLoot() :: item:
+	set {_rng} to random integer from 0 to 13
+	if {_rng} is 1:
+		return 16 iron ingot
+	else if {_rng} is 2:
+		return 16 gold ingot
+	else if {_rng} is 3:
+		return 6 lapis block
+	else if {_rng} is 4:
+		return 8 diamond
+	else if {_rng} is 5:
+		return 16 obsidian
+	else if {_rng} is 6:
+		return 1 red dye named "<light red><bold>Red Herb" with lore "<white>Extremely rare herb said to have been created by the gods.","<white>Automatically consumed on death or entering bleedout.","<white>Immediately revives you from death when used."
+	else if {_rng} is 7:
+		return 4 yellow dye named "<light yellow><bold>Golden Herb" with lore "<white>Powerful medicinal herb with extreme healing power.","<white>Right-click to restore 12 hearts.","<white>Can also be picked up off the ground to restore 6 hearts if wounded."
+	else if {_rng} is 8:
+		return 2 splash potion of healing named "<orange>Holy Water" with lore "<white>Contains a special reagent that drives away darkness.", "<white>Right-click to heavily damage nearby monsters."
+	else if {_rng} is 9:
+		return 1 sugar named "<orange>Wind Boots" with lore "<white>Use to grant Swiftness/Haste 4 to nearby allies."
+	else if {_rng} is 10:
+		return 1 sugar named "<orange>Ability Powder" with lore "<white>Instantly grants 9 ability points when used."
+	else if {_rng} is 11:
+		return 3 splash potion of harming named "<light gray>Fragmentation Grenade" with nbt "{GrenadeType:0}" with lore "<italics>Standard explosive ordinance.", "<italics>Right-click to throw. Detonates on impact with any surface."
+	else if {_rng} is 12:
+		return 3 splash potion of harming named "<light gray>Concussion Grenade" with nbt "{GrenadeType:1}" with lore "<italics>Special grenade that stuns foes.", "<italics>Right-click to throw. Detonates on impact with any surface."
+	else if {_rng} is 13:
+		return 3 splash potion of harming named "<light gray>Smoke Grenade" with nbt "{GrenadeType:2}" with lore "<italics>Creates a lasting cloud of smoke, disorienting foes.", "<italics>Right-click to throw. Detonates on impact with any surface."
+	else if {_rng} is 14:
+		return 1 paper named "<orange>Arms Scroll" with lore "<white>Raises a Weapon Rank of your choice to the next highest level."
+
+#Returns a random Perk Manual. If the player already unlocked the perk rolled,
+#The function will return an iron pickaxe named "No Valid Perk!".
+function getPerkManual(PLR: player) :: item:
+	set {_rng} to random integer from 0 to 14
+	while {_breakLoop} is not set:
+		set {_rng} to random integer from 0 to 14
+		if {_rng} is 0:
+			if {perks.%{_PLR}%::Expert Negotiator} is not set:
+				set {_breakLoop} to 1
+				return 1 book named "<gold>Perk Manual: Expert Negotiator" with nbt "{perkManualType:""Expert_Negotiator""}" with lore "<white>Use to unlock the Expert Negotiator perk."
+		else if {_rng} is 1:
+			if {perks.%{_PLR}%::Paragon} is not set:
+				set {_breakLoop} to 1
+				return 1 book named "<gold>Perk Manual: Paragon" with nbt "{perkManualType:""Paragon""}" with lore "<white>Use to unlock the Paragon perk."
+		else if {_rng} is 2:
+			if {perks.%{_PLR}%::Air Hike} is not set:
+				set {_breakLoop} to 1
+				return 1 book named "<gold>Perk Manual: Air Hike" with nbt "{perkManualType:""Air_Hike""}" with lore "<white>Use to unlock the Air Hike perk."
+		else if {_rng} is 3:
+			if {perks.%{_PLR}%::Optimism} is not set:
+				set {_breakLoop} to 1
+				return 1 book named "<gold>Perk Manual: Optimism" with nbt "{perkManualType:""Optimism""}" with lore "<white>Use to unlock the Optimism perk."
+		else if {_rng} is 4:
+			if {perks.%{_PLR}%::Pessimism} is not set:
+				set {_breakLoop} to 1
+				return 1 book named "<gold>Perk Manual: Pessimism" with nbt "{perkManualType:""Pessimism""}" with lore "<white>Use to unlock the Pessimism perk."
+		else if {_rng} is 5:
+			if {perks.%{_PLR}%::Underdog} is not set:
+				set {_breakLoop} to 1
+				return 1 book named "<gold>Perk Manual: Underdog" with nbt "{perkManualType:""Underdog""}" with lore "<white>Use to unlock the Underdog perk."
+		else if {_rng} is 6:
+			if {perks.%{_PLR}%::Stamina Drink} is not set:
+				set {_breakLoop} to 1
+				return 1 book named "<gold>Forma Perk Manual: Stamina Drink" with nbt "{perkManualType:""Stamina_Drink""}" with lore "<white>Use to unlock Leif's Stamina Drink Forma perk."
+		else if {_rng} is 7:
+			if {perks.%{_PLR}%::Brave Impact} is not set:
+				set {_breakLoop} to 1
+				return 1 book named "<gold>Forma Perk Manual: Brave Impact" with nbt "{perkManualType:""Brave_Impact""}" with lore "<white>Use to unlock Gordin's Brave Impact Forma perk."
+		else if {_rng} is 8:
+			if {perks.%{_PLR}%::Blazing Light} is not set:
+				set {_breakLoop} to 1
+				return 1 book named "<gold>Forma Perk Manual: Blazing Light" with nbt "{perkManualType:""Blazing_Light""}" with lore "<white>Use to unlock Linde's Blazing Light Forma perk."
+		else if {_rng} is 9:
+			if {perks.%{_PLR}%::Armoured Stride} is not set:
+				set {_breakLoop} to 1
+				return 1 book named "<gold>Forma Perk Manual: Armoured Stride" with nbt "{perkManualType:""Armoured_Stride""}" with lore "<white>Use to unlock Arden's Armoured Stride Forma perk."
+		else if {_rng} is 10:
+			if {perks.%{_PLR}%::Misfortune} is not set:
+				set {_breakLoop} to 1
+				return 1 book named "<gold>Forma Perk Manual: Misfortune" with nbt "{perkManualType:""Misfortune""}" with lore "<white>Use to unlock Arthur's Misfortune Forma perk."
+		else if {_rng} is 11:
+			if {perks.%{_PLR}%::Wise Healing} is not set:
+				set {_breakLoop} to 1
+				return 1 book named "<gold>Forma Perk Manual: Wise Healing" with nbt "{perkManualType:""Wise_Healing""}" with lore "<white>Use to unlock Wrys's Wise Healing Forma perk."
+		else if {_rng} is 12:
+			if {perks.%{_PLR}%::Crusader's Blood} is not set:
+				set {_breakLoop} to 1
+				return 1 book named "<gold>Forma Perk Manual: Crusader's Blood" with nbt "{perkManualType:""Crusader's Blood""}" with lore "<white>Use to unlock Sigurd's Crusader's Blood Forma perk."
+		else if {_rng} is 13:
+			if {perks.%{_PLR}%::Miracle Dodge} is not set:
+				set {_breakLoop} to 1
+				return 1 book named "<gold>Forma Perk Manual: Miracle Dodge" with nbt "{perkManualType:""Miracle_Dodge""}" with lore "<white>Use to unlock Eyvel's Miracle Dodge Forma perk."
+		else if {_rng} is 14:
+			if {perks.%{_PLR}%::Flight} is not set:
+				set {_breakLoop} to 1
+				return 1 book named "<gold>Forma Perk Manual: Flight" with nbt "{perkManualType:""Flight""}" with lore "<white>Use to unlock the Flight perk."
+		add 1 to {_loopCycles}
+		if {_loopCycles} is more than 10:
+			set {_breakLoop} to 776
+			exit 1 loop
+	if {_breakLoop} is 776:
+		return 4 diamond

@@ -1,0 +1,132 @@
+on item damage:
+	#Base damage override
+	cancel event
+	if event-item is player's tool:
+		set {_itemType} to 0
+	if nbt of event-item contains "SacredTreasureID:":
+		set {_itemType} to 776
+	else if "%event-item%" contains "helmet":
+		set {_itemType} to 1
+	#Leather needs specific overrides
+	else if "%event-item%" contains "cap":
+		set {_itemType} to 1
+	else if "%event-item%" contains "chestplate":
+		set {_itemType} to 2
+	else if "%event-item%" contains "chest":
+		set {_itemType} to 2
+	else if "%event-item%" contains "tunic":
+		set {_itemType} to 2
+	else if "%event-item%" contains "leggings":
+		set {_itemType} to 3
+	else if "%event-item%" contains "pants":
+		set {_itemType} to 3
+	else if "%event-item%" contains "boots":
+		set {_itemType} to 4
+	else if "%event-item%" contains "shoes":
+		set {_itemType} to 4
+	set {_toolDamage} to 1
+	if lore of event-item contains "Hammerne":
+		set {_toolDamage} to 776
+	if {_itemType} is not 776:
+		#Hammerne
+		add 1 to {toolbreaktally.%player%}
+		if {toolbreaktally.%player%} is more than 1000:
+			if {perks.%player%::Hammerne} is not set:
+				make player execute command "/grantskill 0 Hammerne"
+		set {_LCKcheck.%player%} to checkSlots(player,"Hammerne")
+		if {_LCKcheck.%player%} is 1:
+			chance of 50%:
+				make player execute command "/toolDamageOverride -1 %{_itemType}%"
+				#play sound "entity.experience_orb.pickup" with volume 0.1 and pitch 1
+		#Built to Destroy
+		if {traits.%player%::Built to Destroy} is set:
+			chance of 25%:
+				make player execute command "/toolDamageOverride 1 %{_itemType}%"
+				#play sound "entity.experience_orb.pickup" with volume 0.1 and pitch 0.5
+				#if the durability of the player's tool is less than or equal to 0:
+				#	set the player's tool to air
+				#	play sound "entity.item.break" with volume 1 and pitch 1 at the player			
+				#
+		#The standard durability change happens at the end of the stack so effects that extend durability like Hammerne take priority in cases where a tool would break and repair at the same time
+		make player execute command "/toolDamageOverride %{_toolDamage}% %{_itemType}%"
+			
+command /setToolDamage <number>:
+	trigger:
+		add arg 1 to player's held item's durability
+		
+#arg 1 determines durability change
+#arg 2 is the item to apply to:
+#0 - player's held item
+#1 - helmet
+#2 - chestplate
+#3 - leggings
+#4 - boots
+command /toolDamageOverride <number> <number>:
+	trigger:
+		#Normal tool durability loss
+		if arg 1 is more than 0:
+			set {_armorRNG} to random integer from 1 to 11
+			if arg 1 is 776:
+				set {_armorRNG} to 1
+			if arg 2 is 0:
+				if level of unbreaking of the player's held item is set:
+					set {_unbLevel} to level of unbreaking of the player's held item
+					chance of floor(100 / ({_unbLevel} + 1))%:
+						add arg 1 to player's held item's durability
+				else:
+					add arg 1 to player's held item's durability
+				if player's held item's durability is more than or equal to player's held item's maximum durability:
+					set player's held item to air
+					play sound "entity.item.break" with volume 1 and pitch 1 at the player
+			else if arg 2 is 1:
+				if level of unbreaking of the player's helmet is set:
+					set {_unbLevel} to level of unbreaking of the player's helmet
+					chance of floor(100 / ({_unbLevel} + 1))%:
+						add {_armorRNG} to player's helmet's durability
+				else:
+					add {_armorRNG} to player's helmet's durability
+				if player's helmet's durability is more than or equal to player's helmet's maximum durability:
+					set player's helmet to air
+					play sound "entity.item.break" with volume 1 and pitch 1 at the player
+			else if arg 2 is 2:
+				if level of unbreaking of the player's chestplate is set:
+					set {_unbLevel} to level of unbreaking of the player's chestplate
+					chance of floor(100 / ({_unbLevel} + 1))%:
+						add {_armorRNG} to player's chestplate's durability
+				else:
+					add {_armorRNG} to player's chestplate's durability
+				if player's chestplate's durability is more than or equal to player's chestplate's maximum durability:
+					set player's chestplate to air
+					play sound "entity.item.break" with volume 1 and pitch 1 at the player
+			else if arg 2 is 3:
+				if level of unbreaking of the player's leggings is set:
+					set {_unbLevel} to level of unbreaking of the player's leggings
+					chance of floor(100 / ({_unbLevel} + 1))%:
+						add {_armorRNG} to player's leggings's durability
+				else:
+					add {_armorRNG} to player's leggings's durability
+				if player's leggings's durability is more than or equal to player's leggings's maximum durability:
+					set player's leggings to air
+					play sound "entity.item.break" with volume 1 and pitch 1 at the player
+			else if arg 2 is 4:
+				if level of unbreaking of the player's boots is set:
+					set {_unbLevel} to level of unbreaking of the player's boots
+					chance of floor(100 / ({_unbLevel} + 1))%:
+						add {_armorRNG} to player's boots's durability
+				else:
+					add {_armorRNG} to player's boots's durability
+				if player's boots's durability is more than or equal to player's boots's maximum durability:
+					set player's boots to air
+					play sound "entity.item.break" with volume 1 and pitch 1 at the player
+		#Increase tool durability by passing a negative number
+		else:
+			if arg 2 is 0:
+				add arg 1 to player's held item's durability
+			else if arg 2 is 1:
+				add arg 1 to player's helmet's durability
+			else if arg 2 is 2:
+				add arg 1 to player's chestplate's durability
+			else if arg 2 is 3:
+				add arg 1 to player's leggings's durability
+			else if arg 2 is 4:
+				add arg 1 to player's boots's durability

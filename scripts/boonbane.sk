@@ -1,0 +1,1014 @@
+#Returns the change in stats a boon/bane should apply.
+#Takes an entity (usually a player), 1/0 to check for a boon VS bane, and the stat to change as arguments.
+#Superboons/Superbanes are worth 5 points, while standard boons/banes are worth 3.
+#Classes rarely, if ever, have a superboon/superbane in their strongest stats.
+function getClassBoonBaneAmount(ENT: entity,STAT: text,BOON: number) :: number:
+	#Mercenary Boons
+	if getBaseClass({_ENT}) is "Mercenary":
+		#Mercenary needs the specialization, so every stat is a superboon. No superbanes.
+		if {_BOON} is 1:
+			if {_STAT} is "HP":
+				return 5
+			else if {_STAT} is "STR":
+				return 5
+			else if {_STAT} is "DEF":
+				return 5
+			else if {_STAT} is "CHR":
+				return 5
+			else if {_STAT} is "LCK":
+				return 5
+			else if {_STAT} is "SPD":
+				return 5
+			else if {_STAT} is "MAG":
+				return 5
+			else if {_STAT} is "RES":
+				return 5
+		else:
+			if {_STAT} is "HP":
+				return -3
+			else if {_STAT} is "STR":
+				return -3
+			else if {_STAT} is "DEF":
+				return -3
+			else if {_STAT} is "CHR":
+				return -3
+			else if {_STAT} is "LCK":
+				return -3
+			else if {_STAT} is "SPD":
+				return -3
+			else if {_STAT} is "MAG":
+				return -3
+			else if {_STAT} is "RES":
+				return -3			
+	#Knight Boons
+	else if getBaseClass({_ENT}) is "Knight":
+		#Knight gets superassets in SPD, RES and superflaws in HP, CHR, LCK
+		if {_BOON} is 1:
+			if {_STAT} is "HP":
+				return 3
+			else if {_STAT} is "STR":
+				return 3
+			else if {_STAT} is "DEF":
+				return 3
+			else if {_STAT} is "CHR":
+				return 3
+			else if {_STAT} is "LCK":
+				return 3
+			else if {_STAT} is "SPD":
+				return 5
+			else if {_STAT} is "MAG":
+				return 3
+			else if {_STAT} is "RES":
+				return 5
+		else:
+			if {_STAT} is "HP":
+				return -5
+			else if {_STAT} is "STR":
+				return -3
+			else if {_STAT} is "DEF":
+				return -3
+			else if {_STAT} is "CHR":
+				return -5
+			else if {_STAT} is "LCK":
+				return -5
+			else if {_STAT} is "SPD":
+				return -3
+			else if {_STAT} is "MAG":
+				return -3
+			else if {_STAT} is "RES":
+				return -3
+	#Bladesman Boons
+	else if getBaseClass({_ENT}) is "Bladesman":
+		#Superasset in HP and CHR. Superflaw in SPD, LCK, STR
+		if {_BOON} is 1:
+			if {_STAT} is "HP":
+				return 5
+			else if {_STAT} is "STR":
+				return 3
+			else if {_STAT} is "DEF":
+				return 3
+			else if {_STAT} is "CHR":
+				return 5
+			else if {_STAT} is "LCK":
+				return 3
+			else if {_STAT} is "SPD":
+				return 5
+			else if {_STAT} is "MAG":
+				return 3
+			else if {_STAT} is "RES":
+				return 5
+		else:
+			if {_STAT} is "HP":
+				return -3
+			else if {_STAT} is "STR":
+				return -5
+			else if {_STAT} is "DEF":
+				return -3
+			else if {_STAT} is "CHR":
+				return -3
+			else if {_STAT} is "LCK":
+				return -5
+			else if {_STAT} is "SPD":
+				return -5
+			else if {_STAT} is "MAG":
+				return -3
+			else if {_STAT} is "RES":
+				return -3
+	#Fighter Boons
+	else if getBaseClass({_ENT}) is "Fighter":
+		#Superassets in SPD and LCK, Superflaw in HP, RES
+		if {_BOON} is 1:
+			if {_STAT} is "HP":
+				return 3
+			else if {_STAT} is "STR":
+				return 3
+			else if {_STAT} is "DEF":
+				return 3
+			else if {_STAT} is "CHR":
+				return 3
+			else if {_STAT} is "LCK":
+				return 5
+			else if {_STAT} is "SPD":
+				return 5
+			else if {_STAT} is "MAG":
+				return 3
+			else if {_STAT} is "RES":
+				return 3
+		else:
+			if {_STAT} is "HP":
+				return -5
+			else if {_STAT} is "STR":
+				return -3
+			else if {_STAT} is "DEF":
+				return -3
+			else if {_STAT} is "CHR":
+				return -3
+			else if {_STAT} is "LCK":
+				return -3
+			else if {_STAT} is "SPD":
+				return -3
+			else if {_STAT} is "MAG":
+				return -3
+			else if {_STAT} is "RES":
+				return -5
+	#Archer Boons
+	else if getBaseClass({_ENT}) is "Archer":
+		#Superassets in RES and MAG, Superflaws in HP, SPD, CHR
+		if {_BOON} is 1:
+			if {_STAT} is "HP":
+				return 3
+			else if {_STAT} is "STR":
+				return 3
+			else if {_STAT} is "DEF":
+				return 3
+			else if {_STAT} is "CHR":
+				return 3
+			else if {_STAT} is "LCK":
+				return 3
+			else if {_STAT} is "SPD":
+				return 3
+			else if {_STAT} is "MAG":
+				return 5
+			else if {_STAT} is "RES":
+				return 5
+		else:
+			if {_STAT} is "HP":
+				return -5
+			else if {_STAT} is "STR":
+				return -3
+			else if {_STAT} is "DEF":
+				return -3
+			else if {_STAT} is "CHR":
+				return -5
+			else if {_STAT} is "LCK":
+				return -3
+			else if {_STAT} is "SPD":
+				return -5
+			else if {_STAT} is "MAG":
+				return -3
+			else if {_STAT} is "RES":
+				return -3
+	#Cavalier Boons
+	else if getBaseClass({_ENT}) is "Cavalier":
+		#Superassets in RES, CHR. Superflaws in SPD, HP
+		if {_BOON} is 1:
+			if {_STAT} is "HP":
+				return 3
+			else if {_STAT} is "STR":
+				return 3
+			else if {_STAT} is "DEF":
+				return 3
+			else if {_STAT} is "CHR":
+				return 5
+			else if {_STAT} is "LCK":
+				return 3
+			else if {_STAT} is "SPD":
+				return 3
+			else if {_STAT} is "MAG":
+				return 3
+			else if {_STAT} is "RES":
+				return 5
+		else:
+			if {_STAT} is "HP":
+				return -5
+			else if {_STAT} is "STR":
+				return -3
+			else if {_STAT} is "DEF":
+				return -3
+			else if {_STAT} is "CHR":
+				return -3
+			else if {_STAT} is "LCK":
+				return -3
+			else if {_STAT} is "SPD":
+				return -5
+			else if {_STAT} is "MAG":
+				return -3
+			else if {_STAT} is "RES":
+				return -3
+	#Survivor Boons
+	else if getBaseClass({_ENT}) is "Survivor":
+		#Superassets in HP, MAG, STR. Superflaws in SPD, DEF, RES
+		if {_BOON} is 1:
+			if {_STAT} is "HP":
+				return 5
+			else if {_STAT} is "STR":
+				return 5
+			else if {_STAT} is "DEF":
+				return 3
+			else if {_STAT} is "CHR":
+				return 3
+			else if {_STAT} is "LCK":
+				return 3
+			else if {_STAT} is "SPD":
+				return 3
+			else if {_STAT} is "MAG":
+				return 5
+			else if {_STAT} is "RES":
+				return 3
+		else:
+			if {_STAT} is "HP":
+				return -3
+			else if {_STAT} is "STR":
+				return -3
+			else if {_STAT} is "DEF":
+				return -5
+			else if {_STAT} is "CHR":
+				return -3
+			else if {_STAT} is "LCK":
+				return -3
+			else if {_STAT} is "SPD":
+				return -5
+			else if {_STAT} is "MAG":
+				return -3
+			else if {_STAT} is "RES":
+				return -5
+	#Gunslinger
+	else if getBaseClass({_ENT}) is "Gunslinger":
+		#Superassets: HP, CHR | Superflaws: SPD, STR
+		if {_BOON} is 1:
+			if {_STAT} is "HP":
+				return 5
+			else if {_STAT} is "STR":
+				return 3
+			else if {_STAT} is "DEF":
+				return 3
+			else if {_STAT} is "CHR":
+				return 5
+			else if {_STAT} is "LCK":
+				return 3
+			else if {_STAT} is "SPD":
+				return 3
+			else if {_STAT} is "MAG":
+				return 3
+			else if {_STAT} is "RES":
+				return 3
+		else:
+			if {_STAT} is "HP":
+				return -3
+			else if {_STAT} is "STR":
+				return -5
+			else if {_STAT} is "DEF":
+				return -3
+			else if {_STAT} is "CHR":
+				return -3
+			else if {_STAT} is "LCK":
+				return -3
+			else if {_STAT} is "SPD":
+				return -5
+			else if {_STAT} is "MAG":
+				return -3
+			else if {_STAT} is "RES":
+				return -3
+	#Devil Hunter
+	else if getBaseClass({_ENT}) is "Devil Hunter":
+		#Superassets: HP, MAG | Superflaws: HP, SPD
+		if {_BOON} is 1:
+			if {_STAT} is "HP":
+				return 5
+			else if {_STAT} is "STR":
+				return 3
+			else if {_STAT} is "DEF":
+				return 3
+			else if {_STAT} is "CHR":
+				return 3
+			else if {_STAT} is "LCK":
+				return 3
+			else if {_STAT} is "SPD":
+				return 3
+			else if {_STAT} is "MAG":
+				return 5
+			else if {_STAT} is "RES":
+				return 3
+		else:
+			if {_STAT} is "HP":
+				return -5
+			else if {_STAT} is "STR":
+				return -3
+			else if {_STAT} is "DEF":
+				return -3
+			else if {_STAT} is "CHR":
+				return -3
+			else if {_STAT} is "LCK":
+				return -3
+			else if {_STAT} is "SPD":
+				return -5
+			else if {_STAT} is "MAG":
+				return -3
+			else if {_STAT} is "RES":
+				return -3
+	#Strategist
+	else if getBaseClass({_ENT}) is "Strategist":
+		#Superassets: SPD, RES, LCK | Superflaws: MAG, STR, HP
+		if {_BOON} is 1:
+			if {_STAT} is "HP":
+				return 3
+			else if {_STAT} is "STR":
+				return 3
+			else if {_STAT} is "DEF":
+				return 3
+			else if {_STAT} is "CHR":
+				return 3
+			else if {_STAT} is "LCK":
+				return 5
+			else if {_STAT} is "SPD":
+				return 5
+			else if {_STAT} is "MAG":
+				return 3
+			else if {_STAT} is "RES":
+				return 5
+		else:
+			if {_STAT} is "HP":
+				return -5
+			else if {_STAT} is "STR":
+				return -5
+			else if {_STAT} is "DEF":
+				return -3
+			else if {_STAT} is "CHR":
+				return -3
+			else if {_STAT} is "LCK":
+				return -3
+			else if {_STAT} is "SPD":
+				return -3
+			else if {_STAT} is "MAG":
+				return -5
+			else if {_STAT} is "RES":
+				return -3
+	#Mage
+	else if getBaseClass({_ENT}) is "Mage":
+		#Superassets: LCK, DEF, SPD | Superflaws: SPD, RES, CHR
+		if {_BOON} is 1:
+			if {_STAT} is "HP":
+				return 3
+			else if {_STAT} is "STR":
+				return 3
+			else if {_STAT} is "DEF":
+				return 5
+			else if {_STAT} is "CHR":
+				return 3
+			else if {_STAT} is "LCK":
+				return 5
+			else if {_STAT} is "SPD":
+				return 5
+			else if {_STAT} is "MAG":
+				return 3
+			else if {_STAT} is "RES":
+				return 3
+		else:
+			if {_STAT} is "HP":
+				return -3
+			else if {_STAT} is "STR":
+				return -3
+			else if {_STAT} is "DEF":
+				return -3
+			else if {_STAT} is "CHR":
+				return -5
+			else if {_STAT} is "LCK":
+				return -3
+			else if {_STAT} is "SPD":
+				return -5
+			else if {_STAT} is "MAG":
+				return -3
+			else if {_STAT} is "RES":
+				return -5
+	#Trickster
+	else if getBaseClass({_ENT}) is "Trickster":
+		#Superassets: STR, LCK | Superflaws: CHR, SPD
+		if {_BOON} is 1:
+			if {_STAT} is "HP":
+				return 3
+			else if {_STAT} is "STR":
+				return 5
+			else if {_STAT} is "DEF":
+				return 3
+			else if {_STAT} is "CHR":
+				return 3
+			else if {_STAT} is "LCK":
+				return 5
+			else if {_STAT} is "SPD":
+				return 3
+			else if {_STAT} is "MAG":
+				return 3
+			else if {_STAT} is "RES":
+				return 3
+		else:
+			if {_STAT} is "HP":
+				return -3
+			else if {_STAT} is "STR":
+				return -3
+			else if {_STAT} is "DEF":
+				return -3
+			else if {_STAT} is "CHR":
+				return -5
+			else if {_STAT} is "LCK":
+				return -3
+			else if {_STAT} is "SPD":
+				return -5
+			else if {_STAT} is "MAG":
+				return -3
+			else if {_STAT} is "RES":
+				return -3	
+	#Summoner
+	else if getBaseClass({_ENT}) is "Summoner":
+		#Superassets: HP, MAG | Superflaws: SPD, LCK
+		if {_BOON} is 1:
+			if {_STAT} is "HP":
+				return 5
+			else if {_STAT} is "STR":
+				return 3
+			else if {_STAT} is "DEF":
+				return 3
+			else if {_STAT} is "CHR":
+				return 3
+			else if {_STAT} is "LCK":
+				return 3
+			else if {_STAT} is "SPD":
+				return 3
+			else if {_STAT} is "MAG":
+				return 5
+			else if {_STAT} is "RES":
+				return 3
+		else:
+			if {_STAT} is "HP":
+				return -3
+			else if {_STAT} is "STR":
+				return -3
+			else if {_STAT} is "DEF":
+				return -3
+			else if {_STAT} is "CHR":
+				return -3
+			else if {_STAT} is "LCK":
+				return -5
+			else if {_STAT} is "SPD":
+				return -5
+			else if {_STAT} is "MAG":
+				return -3
+			else if {_STAT} is "RES":
+				return -3
+	#Cleric
+	else if getBaseClass({_ENT}) is "Cleric":
+		#Superassets: HP, STR, SPD | Superflaws: RES, LCK
+		if {_BOON} is 1:
+			if {_STAT} is "HP":
+				return 5
+			else if {_STAT} is "STR":
+				return 5
+			else if {_STAT} is "DEF":
+				return 3
+			else if {_STAT} is "CHR":
+				return 3
+			else if {_STAT} is "LCK":
+				return 3
+			else if {_STAT} is "SPD":
+				return 5
+			else if {_STAT} is "MAG":
+				return 3
+			else if {_STAT} is "RES":
+				return 3
+		else:
+			if {_STAT} is "HP":
+				return -3
+			else if {_STAT} is "STR":
+				return -3
+			else if {_STAT} is "DEF":
+				return -3
+			else if {_STAT} is "CHR":
+				return -3
+			else if {_STAT} is "LCK":
+				return -5
+			else if {_STAT} is "SPD":
+				return -3
+			else if {_STAT} is "MAG":
+				return -3
+			else if {_STAT} is "RES":
+				return -5
+	#Keeper
+	else if getBaseClass({_ENT}) is "Keeper":
+		#Superassets: STR, SPD | Superflaws: HP, RES
+		if {_BOON} is 1:
+			if {_STAT} is "HP":
+				return 3
+			else if {_STAT} is "STR":
+				return 5
+			else if {_STAT} is "DEF":
+				return 3
+			else if {_STAT} is "CHR":
+				return 3
+			else if {_STAT} is "LCK":
+				return 3
+			else if {_STAT} is "SPD":
+				return 5
+			else if {_STAT} is "MAG":
+				return 3
+			else if {_STAT} is "RES":
+				return 3
+		else:
+			if {_STAT} is "HP":
+				return -5
+			else if {_STAT} is "STR":
+				return -3
+			else if {_STAT} is "DEF":
+				return -3
+			else if {_STAT} is "CHR":
+				return -3
+			else if {_STAT} is "LCK":
+				return -3
+			else if {_STAT} is "SPD":
+				return -3
+			else if {_STAT} is "MAG":
+				return -3
+			else if {_STAT} is "RES":
+				return -5
+	#Charlatan
+	else if getBaseClass({_ENT}) is "Charlatan":
+		#Superassets: STR, HP, LCK | Superflaws: RES, CHR, MAG
+		if {_BOON} is 1:
+			if {_STAT} is "HP":
+				return 5
+			else if {_STAT} is "STR":
+				return 5
+			else if {_STAT} is "DEF":
+				return 3
+			else if {_STAT} is "CHR":
+				return 3
+			else if {_STAT} is "LCK":
+				return 5
+			else if {_STAT} is "SPD":
+				return 3
+			else if {_STAT} is "MAG":
+				return 3
+			else if {_STAT} is "RES":
+				return 3
+		else:
+			if {_STAT} is "HP":
+				return -3
+			else if {_STAT} is "STR":
+				return -3
+			else if {_STAT} is "DEF":
+				return -3
+			else if {_STAT} is "CHR":
+				return -5
+			else if {_STAT} is "LCK":
+				return -3
+			else if {_STAT} is "SPD":
+				return -3
+			else if {_STAT} is "MAG":
+				return -5
+			else if {_STAT} is "RES":
+				return -5
+	#Poet
+	else if getBaseClass({_ENT}) is "Poet":
+		#Superassets: STR, HP | Superflaws: CHR, MAG
+		if {_BOON} is 1:
+			if {_STAT} is "HP":
+				return 5
+			else if {_STAT} is "STR":
+				return 5
+			else if {_STAT} is "DEF":
+				return 3
+			else if {_STAT} is "CHR":
+				return 3
+			else if {_STAT} is "LCK":
+				return 3
+			else if {_STAT} is "SPD":
+				return 3
+			else if {_STAT} is "MAG":
+				return 3
+			else if {_STAT} is "RES":
+				return 3
+		else:
+			if {_STAT} is "HP":
+				return -3
+			else if {_STAT} is "STR":
+				return -3
+			else if {_STAT} is "DEF":
+				return -3
+			else if {_STAT} is "CHR":
+				return -5
+			else if {_STAT} is "LCK":
+				return -3
+			else if {_STAT} is "SPD":
+				return -3
+			else if {_STAT} is "MAG":
+				return -5
+			else if {_STAT} is "RES":
+				return -3
+	#Outlaw
+	else if getBaseClass({_ENT}) is "Outlaw":
+		#Superassets: CHR, HP | Superflaws: STR, SPD
+		if {_BOON} is 1:
+			if {_STAT} is "HP":
+				return 5
+			else if {_STAT} is "STR":
+				return 3
+			else if {_STAT} is "DEF":
+				return 3
+			else if {_STAT} is "CHR":
+				return 5
+			else if {_STAT} is "LCK":
+				return 3
+			else if {_STAT} is "SPD":
+				return 3
+			else if {_STAT} is "MAG":
+				return 3
+			else if {_STAT} is "RES":
+				return 3
+		else:
+			if {_STAT} is "HP":
+				return -3
+			else if {_STAT} is "STR":
+				return -5
+			else if {_STAT} is "DEF":
+				return -3
+			else if {_STAT} is "CHR":
+				return -3
+			else if {_STAT} is "LCK":
+				return -3
+			else if {_STAT} is "SPD":
+				return -5
+			else if {_STAT} is "MAG":
+				return -3
+			else if {_STAT} is "RES":
+				return -3
+	#Conjurer
+	else if getBaseClass({_ENT}) is "Conjurer":
+		#Superassets: SPD, STR, DEF | Superflaws: HP, MAG, RES
+		if {_BOON} is 1:
+			if {_STAT} is "HP":
+				return 3
+			else if {_STAT} is "STR":
+				return 5
+			else if {_STAT} is "DEF":
+				return 5
+			else if {_STAT} is "CHR":
+				return 3
+			else if {_STAT} is "LCK":
+				return 3
+			else if {_STAT} is "SPD":
+				return 5
+			else if {_STAT} is "MAG":
+				return 3
+			else if {_STAT} is "RES":
+				return 3
+		else:
+			if {_STAT} is "HP":
+				return -5
+			else if {_STAT} is "STR":
+				return -3
+			else if {_STAT} is "DEF":
+				return -3
+			else if {_STAT} is "CHR":
+				return -3
+			else if {_STAT} is "LCK":
+				return -3
+			else if {_STAT} is "SPD":
+				return -3
+			else if {_STAT} is "MAG":
+				return -5
+			else if {_STAT} is "RES":
+				return -5					
+	#Troubador
+	else if getBaseClass({_ENT}) is "Troubador":
+		#Superassets: STR, MAG | Superflaws: CHR, LCK
+		if {_BOON} is 1:
+			if {_STAT} is "HP":
+				return 3
+			else if {_STAT} is "STR":
+				return 5
+			else if {_STAT} is "DEF":
+				return 3
+			else if {_STAT} is "CHR":
+				return 3
+			else if {_STAT} is "LCK":
+				return 3
+			else if {_STAT} is "SPD":
+				return 3
+			else if {_STAT} is "MAG":
+				return 5
+			else if {_STAT} is "RES":
+				return 3
+		else:
+			if {_STAT} is "HP":
+				return -3
+			else if {_STAT} is "STR":
+				return -3
+			else if {_STAT} is "DEF":
+				return -3
+			else if {_STAT} is "CHR":
+				return -5
+			else if {_STAT} is "LCK":
+				return -5
+			else if {_STAT} is "SPD":
+				return -3
+			else if {_STAT} is "MAG":
+				return -3
+			else if {_STAT} is "RES":
+				return -3
+
+#Small function to return if an entity's class has an even split between STR and MAG.
+#This is so classes Mercenary and Survivor can have STR flaws despite learning magic.
+function classDamageTypeSplit(ENT: entity) :: boolean:
+	if getBaseClass({_ENT}) is "Mercenary":
+		return true
+	else if getBaseClass({_ENT}) is "Survivor":
+		return true
+	else if getBaseClass({_ENT}) is "Troubador":
+		return true
+	else if getBaseClass({_ENT}) is "Strategist":
+		return true
+	else if getBaseClass({_ENT}) is "Conjurer":
+		return true
+	else if getBaseClass({_ENT}) is "Chemist":
+		return true
+	else:
+		return false
+
+#Dragonflower recipe (Set Asset/Flaw item)
+on load:
+	register new shaped recipe for 1 poppy named "<gold>Dragonflower" with lore "<white>An arcane rose that only grows under a dragon's care.", "<white>When consumed, allows the user to modify their essence." using gold nugget, gold nugget, gold nugget, gold nugget, poppy, gold nugget, gold nugget, gold nugget, gold nugget with id "dragonflower" in group "class_items"
+
+#Apply Boon/Bane Menu
+command /setBoonBane:
+	trigger:
+		open chest inventory with 2 row named "<gold>Select Asset/Flaw" for the player
+		set {_hpBoon} to {hp.%player%} + ((getClassBoonBaneAmount(player,"HP",1)) * {promoted.%player%})
+		set {_hpBoonCap} to {hp.%player%} + ((getClassBoonBaneAmount(player,"HP",1)) * {promoted.%player%} * 2)
+		set {_strBoon} to {str.%player%} + ((getClassBoonBaneAmount(player,"str",1)) * {promoted.%player%})
+		set {_strBoonCap} to {str.%player%} + ((getClassBoonBaneAmount(player,"str",1)) * {promoted.%player%} * 2)
+		set {_defBoon} to {def.%player%} + ((getClassBoonBaneAmount(player,"def",1)) * {promoted.%player%})
+		set {_defBoonCap} to {def.%player%} + ((getClassBoonBaneAmount(player,"def",1)) * {promoted.%player%} * 2)
+		set {_chrBoon} to {chr.%player%} + ((getClassBoonBaneAmount(player,"chr",1)) * {promoted.%player%})
+		set {_chrBoonCap} to {chr.%player%} + ((getClassBoonBaneAmount(player,"chr",1)) * {promoted.%player%} * 2)
+		set {_lckBoon} to {lck.%player%} + ((getClassBoonBaneAmount(player,"lck",1)) * {promoted.%player%})
+		set {_lckBoonCap} to {lck.%player%} + ((getClassBoonBaneAmount(player,"lck",1)) * {promoted.%player%} * 2)
+		set {_spdBoon} to {spd.%player%} + ((getClassBoonBaneAmount(player,"spd",1)) * {promoted.%player%})
+		set {_spdBoonCap} to {spd.%player%} + ((getClassBoonBaneAmount(player,"spd",1)) * {promoted.%player%} * 2)
+		set {_magBoon} to {mag.%player%} + ((getClassBoonBaneAmount(player,"mag",1)) * {promoted.%player%})
+		set {_magBoonCap} to {mag.%player%} + ((getClassBoonBaneAmount(player,"mag",1)) * {promoted.%player%} * 2)
+		set {_resBoon} to {res.%player%} + ((getClassBoonBaneAmount(player,"res",1)) * {promoted.%player%})
+		set {_resBoonCap} to {res.%player%} + ((getClassBoonBaneAmount(player,"res",1)) * {promoted.%player%} * 2)
+		set {_hpBane} to {hp.%player%} + ((getClassBoonBaneAmount(player,"HP",0)) * {promoted.%player%})
+		set {_hpBaneCap} to {hp.%player%} + ((getClassBoonBaneAmount(player,"HP",0)) * {promoted.%player%} * 2)
+		set {_strBane} to {str.%player%} + ((getClassBoonBaneAmount(player,"str",0)) * {promoted.%player%})
+		set {_strBaneCap} to {str.%player%} + ((getClassBoonBaneAmount(player,"str",0)) * {promoted.%player%} * 2)
+		set {_defBane} to {def.%player%} + ((getClassBoonBaneAmount(player,"def",0)) * {promoted.%player%})
+		set {_defBaneCap} to {def.%player%} + ((getClassBoonBaneAmount(player,"def",0)) * {promoted.%player%} * 2)
+		set {_chrBane} to {chr.%player%} + ((getClassBoonBaneAmount(player,"chr",0)) * {promoted.%player%})
+		set {_chrBaneCap} to {chr.%player%} + ((getClassBoonBaneAmount(player,"chr",0)) * {promoted.%player%} * 2)
+		set {_lckBane} to {lck.%player%} + ((getClassBoonBaneAmount(player,"lck",0)) * {promoted.%player%})
+		set {_lckBaneCap} to {lck.%player%} + ((getClassBoonBaneAmount(player,"lck",0)) * {promoted.%player%} * 2)
+		set {_spdBane} to {spd.%player%} + ((getClassBoonBaneAmount(player,"spd",0)) * {promoted.%player%})
+		set {_spdBaneCap} to {spd.%player%} + ((getClassBoonBaneAmount(player,"spd",0)) * {promoted.%player%} * 2)
+		set {_magBane} to {mag.%player%} + ((getClassBoonBaneAmount(player,"mag",0)) * {promoted.%player%})
+		set {_magBaneCap} to {mag.%player%} + ((getClassBoonBaneAmount(player,"mag",0)) * {promoted.%player%} * 2)
+		set {_resBane} to {res.%player%} + ((getClassBoonBaneAmount(player,"res",0)) * {promoted.%player%})
+		set {_resBaneCap} to {res.%player%} + ((getClassBoonBaneAmount(player,"res",0)) * {promoted.%player%} * 2)
+		if {bane.%player%} is not "HP":
+			if {boon.%player%} is not "HP":
+				set slot 0 of the player's current inventory to 1 green wool named "<green><bold>Set Vitality Asset" with lore "<white>HP values if set as Asset:", "<white>Base: %{_hpBoon}%", "<white>Cap: %{_hpBoonCap}%"
+			else:
+				set slot 0 of the player's current inventory to 1 emerald block named "<green><bold>Set Vitality Asset" with lore "<white>HP values if set as Asset:", "<white>Base: %{_hpBoon}%", "<white>Cap: %{_hpBoonCap}%"
+		else:
+			set slot 0 of the player's current inventory to 1 barrier named "<green><bold>Set Vitality Asset" with lore "<white>HP is currently set as a Flaw."
+		if {bane.%player%} is not "STR":
+			if {boon.%player%} is not "STR":
+				set slot 1 of the player's current inventory to green wool named "<green><bold>Set Strength Asset" with lore "<white>STR values if set as Asset:", "<white>Base: %{_strBoon}%", "<white>Cap: %{_strBoonCap}%"
+			else:
+				set slot 1 of the player's current inventory to 1 emerald block named "<green><bold>Set Strength Asset" with lore "<white>STR values if set as Asset:", "<white>Base: %{_strBoon}%", "<white>Cap: %{_strBoonCap}%"
+		else:
+			set slot 1 of the player's current inventory to 1 barrier named "<green><bold>Set Strength Asset" with lore "<white>STR is currently set as a Flaw."
+		if {bane.%player%} is not "DEF":
+			if {boon.%player%} is not "DEF":
+				set slot 2 of the player's current inventory to green wool named "<green><bold>Set Defense Asset" with lore "<white>DEF values if set as Asset:", "<white>Base: %{_defBoon}%", "<white>Cap: %{_defBoonCap}%"
+			else:
+				set slot 2 of the player's current inventory to 1 emerald block named "<green><bold>Set Defense Asset" with lore "<white>DEF values if set as Asset:", "<white>Base: %{_defBoon}%", "<white>Cap: %{_defBoonCap}%"
+		else:
+			set slot 2 of the player's current inventory to 1 barrier named "<green><bold>Set Defense Asset" with lore "<white>DEF is currently set as a Flaw."
+		if {bane.%player%} is not "CHR":
+			if {boon.%player%} is not "CHR":
+				set slot 3 of the player's current inventory to green wool named "<green><bold>Set Charisma Asset" with lore "<white>CHR values if set as Asset:", "<white>Base: %{_chrBoon}%", "<white>Cap: %{_chrBoonCap}%"
+			else:
+				set slot 3 of the player's current inventory to emerald block named "<green><bold>Set Charisma Asset" with lore "<white>CHR values if set as Asset:", "<white>Base: %{_chrBoon}%", "<white>Cap: %{_chrBoonCap}%"
+		else:
+			set slot 3 of the player's current inventory to 1 barrier named "<green><bold>Set Charisma Asset" with lore "<white>CHR is currently set as a Flaw."
+		if {bane.%player%} is not "LCK":
+			if {boon.%player%} is not "LCK":
+				set slot 4 of the player's current inventory to green wool named "<green><bold>Set Luck Asset" with lore "<white>LCK values if set as Asset:", "<white>Base: %{_lckBoon}%", "<white>Cap: %{_lckBoonCap}%"
+			else:
+				set slot 4 of the player's current inventory to emerald block named "<green><bold>Set Luck Asset" with lore "<white>LCK values if set as Asset:", "<white>Base: %{_lckBoon}%", "<white>Cap: %{_lckBoonCap}%"
+		else:
+			set slot 4 of the player's current inventory to 1 barrier named "<green><bold>Set Luck Asset" with lore "<white>LCK is currently set as a Flaw."
+		if {bane.%player%} is not "SPD":
+			if {boon.%player%} is not "SPD":
+				set slot 5 of the player's current inventory to green wool named "<green><bold>Set Speed Asset" with lore "<white>SPD values if set as Asset:", "<white>Base: %{_spdBoon}%", "<white>Cap: %{_spdBoonCap}%"
+			else:
+				set slot 5 of the player's current inventory to emerald block named "<green><bold>Set Speed Asset" with lore "<white>SPD values if set as Asset:", "<white>Base: %{_spdBoon}%", "<white>Cap: %{_spdBoonCap}%"
+		else:
+			set slot 5 of the player's current inventory to 1 barrier named "<green><bold>Set Speed Asset" with lore "<white>SPD is currently set as a Flaw."
+		if {bane.%player%} is not "MAG":
+			if {boon.%player%} is not "MAG":
+				set slot 6 of the player's current inventory to green wool named "<green><bold>Set Magic Asset" with lore "<white>MAG values if set as Asset:", "<white>Base: %{_magBoon}%", "<white>Cap: %{_magBoonCap}%"
+			else:
+				set slot 6 of the player's current inventory to emerald block named "<green><bold>Set Magic Asset" with lore "<white>MAG values if set as Asset:", "<white>Base: %{_magBoon}%", "<white>Cap: %{_magBoonCap}%"
+		else:
+			set slot 6 of the player's current inventory to 1 barrier named "<green><bold>Set Magic Asset" with lore "<white>MAG is currently set as a Flaw."
+		if {bane.%player%} is not "RES":
+			if {boon.%player%} is not "RES":
+				set slot 7 of the player's current inventory to green wool named "<green><bold>Set Resistance Asset" with lore "<white>RES values if set as Asset:", "<white>Base: %{_resBoon}%", "<white>Cap: %{_resBoonCap}%"
+			else:
+				set slot 7 of the player's current inventory to emerald block named "<green><bold>Set Resistance Asset" with lore "<white>RES values if set as Asset:", "<white>Base: %{_resBoon}%", "<white>Cap: %{_resBoonCap}%"
+		else:
+			set slot 7 of the player's current inventory to 1 barrier named "<green><bold>Set Resistance Asset" with lore "<white>RES is currently set as a Flaw."
+		set slot 8 of the player's current inventory to 1 hopper named "<white><bold>Reset Asset/Flaw" with lore "<white>Removes the Asset and Flaw from your character."
+		if {boon.%player%} is not "HP":
+			if {bane.%player%} is not "HP":
+				set slot 9 of the player's current inventory to red wool named "<red><bold>Set Vitality Flaw" with lore "<white>HP values if set as Flaw:", "<white>Base: %{_hpBane}%", "<white>Cap: %{_hpBaneCap}%"
+			else:
+				set slot 9 of the player's current inventory to redstone block named "<red><bold>Set Vitality Flaw" with lore "<white>HP values if set as Flaw:", "<white>Base: %{_hpBane}%", "<white>Cap: %{_hpBaneCap}%"
+		else:
+			set slot 9 of the player's current inventory to 1 barrier named "<red><bold>Set Vitality Flaw" with lore "<white>HP is currently set as an Asset."
+		if {boon.%player%} is not "MAG":
+			if {boon.%player%} is not "STR":
+				if canUseMagic(player) is false:
+					set slot 10 of the player's current inventory to red wool named "<red><bold>Set Strength Flaw" with lore "<white>STR values if set as Flaw:", "<white>Base: %{_strBane}%", "<white>Cap: %{_strBaneCap}%"
+				else if classDamageTypeSplit(player) is false:
+					set slot 10 of the player's current inventory to 1 barrier named "<red><bold>Set Strength Flaw" with lore "<white>Non-physical characters cannot set STR as their flaw."
+				else:
+					set slot 10 of the player's current inventory to red wool named "<red><bold>Set Strength Flaw" with lore "<white>STR values if set as Flaw:", "<white>Base: %{_strBane}%", "<white>Cap: %{_strBaneCap}%"
+			else:
+				set slot 10 of the player's current inventory to 1 barrier named "<red><bold>Set Strength Flaw" with lore "<white>STR is currently set as an Asset."
+		else:
+			set slot 10 of the player's current inventory to 1 barrier named "<red><bold>Set Strength Flaw" with lore "<white>Characters with MAG assets cannot set STR as their flaw."
+		if {boon.%player%} is not "DEF":
+			if {bane.%player%} is not "DEF":
+				set slot 11 of the player's current inventory to red wool named "<red><bold>Set Defense Flaw" with lore "<white>DEF values if set as Flaw:", "<white>Base: %{_defBane}%", "<white>Cap: %{_defBaneCap}%"
+			else:
+				set slot 11 of the player's current inventory to redstone block named "<red><bold>Set Defense Flaw" with lore "<white>DEF values if set as Flaw:", "<white>Base: %{_defBane}%", "<white>Cap: %{_defBaneCap}%"
+		else:
+			set slot 11 of the player's current inventory to 1 barrier named "<red><bold>Set Defense Flaw" with lore "<white>DEF is currently set as an Asset."
+		if {boon.%player%} is not "CHR":
+			if {bane.%player%} is not "CHR":
+				set slot 12 of the player's current inventory to red wool named "<red><bold>Set Charisma Flaw" with lore "<white>CHR values if set as Flaw:", "<white>Base: %{_chrBane}%", "<white>Cap: %{_chrBaneCap}%"
+			else:
+				set slot 12 of the player's current inventory to redstone block named "<red><bold>Set Charisma Flaw" with lore "<white>CHR values if set as Flaw:", "<white>Base: %{_chrBane}%", "<white>Cap: %{_chrBaneCap}%"
+		else:
+			set slot 12 of the player's current inventory to 1 barrier named "<red><bold>Set Charisma Flaw" with lore "<white>CHR is currently set as an Asset."
+		if {boon.%player%} is not "LCK":
+			if {bane.%player%} is not "LCK":
+				set slot 13 of the player's current inventory to red wool named "<red><bold>Set Luck Flaw" with lore "<white>LCK values if set as Flaw:", "<white>Base: %{_lckBane}%", "<white>Cap: %{_lckBaneCap}%"
+			else:
+				set slot 13 of the player's current inventory to redstone block named "<red><bold>Set Luck Flaw" with lore "<white>LCK values if set as Flaw:", "<white>Base: %{_lckBane}%", "<white>Cap: %{_lckBaneCap}%"
+		else:
+			set slot 13 of the player's current inventory to 1 barrier named "<red><bold>Set Luck Flaw" with lore "<white>LCK is currently set as an Asset."
+		if {boon.%player%} is not "SPD":
+			if {bane.%player%} is not "SPD":
+				set slot 14 of the player's current inventory to red wool named "<red><bold>Set Speed Flaw" with lore "<white>SPD values if set as Flaw:", "<white>Base: %{_spdBane}%", "<white>Cap: %{_spdBaneCap}%"
+			else:
+				set slot 14 of the player's current inventory to redstone block named "<red><bold>Set Speed Flaw" with lore "<white>SPD values if set as Flaw:", "<white>Base: %{_spdBane}%", "<white>Cap: %{_spdBaneCap}%"
+		else:
+			set slot 14 of the player's current inventory to 1 barrier named "<red><bold>Set Speed Flaw" with lore "<white>SPD is currently set as an Asset."
+		if {boon.%player%} is not "STR":
+			if {boon.%player%} is not "MAG":
+				if canUseMagic(player) is true:
+					set slot 15 of the player's current inventory to red wool named "<red><bold>Set Magic Flaw" with lore "<white>MAG values if set as Flaw:", "<white>Base: %{_magBane}%", "<white>Cap: %{_magBaneCap}%"
+				else if classDamageTypeSplit(player) is false:
+					set slot 15 of the player's current inventory to 1 barrier named "<red><bold>Set Magic Flaw" with lore "<white>Non-magical characters cannot set MAG as their flaw."
+				else:
+					set slot 15 of the player's current inventory to red wool named "<red><bold>Set Magic Flaw" with lore "<white>MAG values if set as Flaw:", "<white>Base: %{_magBane}%", "<white>Cap: %{_magBaneCap}%"
+			else:
+				set slot 15 of the player's current inventory to 1 barrier named "<red><bold>Set Magic Flaw" with lore "<white>MAG is currently set as an Asset."
+		else:
+			set slot 15 of the player's current inventory to 1 barrier named "<red><bold>Set Magic Flaw" with lore "<white>Characters with STR assets cannot set MAG as their flaw."
+		if {boon.%player%} is not "RES":
+			if {bane.%player%} is not "RES":
+				set slot 16 of the player's current inventory to red wool named "<red><bold>Set Resistance Flaw" with lore "<white>RES values if set as Flaw:", "<white>Base: %{_resBane}%", "<white>Cap: %{_resBaneCap}%"
+			else:
+				set slot 16 of the player's current inventory to redstone block named "<red><bold>Set Resistance Flaw" with lore "<white>RES values if set as Flaw:", "<white>Base: %{_resbane}%", "<white>Cap: %{_resBaneCap}%"
+		else:
+			set slot 16 of the player's current inventory to 1 barrier named "<red><bold>Set Resistance Flaw" with lore "<white>RES is currently set as an Asset."
+		if {boon.%player%} is not set:
+			if {bane.%player%} is not set:
+				set slot 17 of the player's current inventory to paper named "<gold><bold>Confirm Asset/Flaw Change" with lore "<white>Click to update your character's Asset and Flaw."
+			else:
+				set slot 17 of the player's current inventory to 1 barrier named "<red>Confirm Asset/Flaw Change" with lore "<white>Taking an Asset requires you also take a Flaw."
+		else if {bane.%player%} is set:
+			set slot 17 of the player's current inventory to paper named "<gold><bold>Confirm Asset/Flaw Change" with lore "<white>Click to update your character's Asset and Flaw."
+		else:
+			set slot 17 of the player's current inventory to 1 barrier named "<red>Confirm Asset/Flaw Change" with lore "<white>Taking an Asset requires you also take a Flaw."
+		
+on right click:
+	if the name of the player's tool is "<gold>Dragonflower":
+		cancel event
+		remove 1 of tool from tool
+		#Silently remove the player's Asset and Flaw so things don't get messy
+		if {boon.%player%} is set:
+			send formatted "modified: %{boon.%player%}% | - %((getClassBoonBaneAmount(player,{boon.%player%},1)) * {promoted.%player%})%" to the player
+			subtract ((getClassBoonBaneAmount(player,{boon.%player%},1)) * {promoted.%player%}) from {%{boon.%player%}%.%player%}
+			subtract ((getClassBoonBaneAmount(player,{boon.%player%},1)) * {promoted.%player%} * 2) from {%{boon.%player%}%cap.%player%}
+			subtract 20 from {%{boon.%player%}%growth.%player%}
+			subtract ((getClassBoonBaneAmount(player,{bane.%player%},0)) * {promoted.%player%}) from {%{bane.%player%}%.%player%}
+			subtract ((getClassBoonBaneAmount(player,{bane.%player%},0)) * {promoted.%player%} * 2) from {%{bane.%player%}%cap.%player%}
+		make player execute command "/setBoonBane"
+		
+on inventory click:
+	if the name of the player's current inventory is "<gold>Select Asset/Flaw":
+		cancel event
+		#Set Boon
+		if clicked item is green wool:
+			if the name of the clicked item contains "Vitality":
+				set {boon.%player%} to "HP"
+			else if the name of the clicked item contains "Strength":
+				set {boon.%player%} to "STR"
+			else if the name of the clicked item contains "Defense":
+				set {boon.%player%} to "DEF"
+			else if the name of the clicked item contains "Charisma":
+				set {boon.%player%} to "CHR"
+			else if the name of the clicked item contains "Luck":
+				set {boon.%player%} to "LCK"
+			else if the name of the clicked item contains "Speed":
+				set {boon.%player%} to "SPD"
+			else if the name of the clicked item contains "Magic":
+				set {boon.%player%} to "MAG"
+			else if the name of the clicked item contains "Resistance":
+				set {boon.%player%} to "RES"
+			play sound "button.ui.click" with volume 1 and pitch 1 at the player for the player
+			make player execute command "/setBoonBane"
+		#Set Bane
+		else if clicked item is red wool:
+			if the name of the clicked item contains "Vitality":
+				set {bane.%player%} to "HP"
+			else if the name of the clicked item contains "Strength":
+				set {bane.%player%} to "STR"
+			else if the name of the clicked item contains "Defense":
+				set {bane.%player%} to "DEF"
+			else if the name of the clicked item contains "Charisma":
+				set {bane.%player%} to "CHR"
+			else if the name of the clicked item contains "Luck":
+				set {bane.%player%} to "LCK"
+			else if the name of the clicked item contains "Speed":
+				set {bane.%player%} to "SPD"
+			else if the name of the clicked item contains "Magic":
+				set {bane.%player%} to "MAG"
+			else if the name of the clicked item contains "Resistance":
+				set {bane.%player%} to "RES"
+			play sound "button.ui.click" with volume 1 and pitch 1 at the player for the player
+			make player execute command "/setBoonBane"
+		else if the name of the clicked item is "<white><bold>Reset Asset/Flaw":
+			clear {boon.%player%}
+			clear {bane.%player%}
+			play sound "button.ui.click" with volume 1 and pitch 1 at the player for the player
+			make player execute command "/setBoonBane"
+		else if the name of the clicked item is "<gold><bold>Confirm Asset/Flaw Change":
+			if {boon.%player%} is set:
+				if {bane.%player%} is set:
+					add ((getClassBoonBaneAmount(player,{boon.%player%},1)) * {promoted.%player%}) to {%{boon.%player%}%.%player%}
+					add ((getClassBoonBaneAmount(player,{boon.%player%},1)) * {promoted.%player%} * 2) to {%{boon.%player%}%cap.%player%}
+					add 20 to {%{boon.%player%}%growth.%player%}
+					add ((getClassBoonBaneAmount(player,{bane.%player%},0)) * {promoted.%player%}) to {%{bane.%player%}%.%player%}
+					add ((getClassBoonBaneAmount(player,{bane.%player%},0)) * {promoted.%player%} * 2) to {%{bane.%player%}%cap.%player%}
+					close the player's inventory
+					play sound "button.ui.click" with volume 1 and pitch 1 at the player for the player
+					send formatted "<gold>Asset/Flaw updated." to the player
+			else:
+				close the player's inventory
+				play sound "button.ui.click" with volume 1 and pitch 1 at the player for the player
+				send formatted "<gold>Asset/Flaw updated." to the player			

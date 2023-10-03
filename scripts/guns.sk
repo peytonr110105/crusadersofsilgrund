@@ -1,0 +1,2134 @@
+on right click:
+	if checkSlots(player,"D.B.N.O") is 1:
+		if {bleedoutState.%player%} is 1:
+			set {_blockClipLoss} to true
+	set {_resourceful} to checkSlots(player,"Resourceful")
+	#Disable firing guns if Precision's swap-to time is still active
+	if {t_precisionTimeout.%player%} is not set:
+		set {_spread} to checkSlots(player,"Controlled Shot")
+		#Firearm shoot behavior
+		#Super Shotgun
+		if the name of the player's tool contains "<red><bold>Super Shotgun | Clip: 2/2":
+			play sound "entity.blaze.shoot" with volume 4 and pitch 0.5 at the player
+			play sound "block.dispenser.fire" with volume 2 and pitch 0.5 at the player
+			#Electro Heart infinite ammo
+			if checkSlots(player,"Electro Heart") is 1:
+				if {dtActive.%player%} is true:
+					set {_allowInfAmmo} to true
+			if {_allowInfAmmo} is not true:
+				if checkSlots(player,"Belt Feed") is 1:
+					set {_nuggetAmt} to (12/((checkSlots(player,"Resourceful")) + 1))
+					if player does not have "%{_nuggetAmt}% gold nuggets" parsed as item:
+						set the name of the player's tool to "<red><bold>Super Shotgun | Clip: 1/2"
+					else:
+						remove 12 gold nuggets from the player
+			push the player backwards at speed 0.5
+			shoot an arrow from the player with speed 6
+			play 10 (lava pop with speed 0) at the player
+			play 10 (void fog with speed 0) at the player
+			set metadata value "SUPERSHOTGUN" of the last shot projectile to 1
+			set {_spread} to checkSlots(player,"Controlled Shot")
+			loop 7 times:
+				if {_spread} is 1:
+					set {_ShotSpreadX} to random number between (-1 / ((checkSlots(player,"Trained Professional")) + 1)) and (1 / (checkSlots((player,"Trained Professional")) + 1))
+					set {_ShotSpreadY} to random number between (-0.5 / ((checkSlots(player,"Trained Professional")) + 1)) and (0.5 / ((checkSlots(player,"Trained Professional")) + 1))
+				else:
+					set {_ShotSpreadX} to random number between (-2 / ((checkSlots(player,"Trained Professional")) + 1)) and (2 / ((checkSlots(player,"Trained Professional")) + 1))
+					set {_ShotSpreadY} to random number between (-1 / ((checkSlots(player,"Trained Professional")) + 1)) and (1 / ((checkSlots(player,"Trained Professional")) + 1))
+				shoot an arrow from the player with speed 6
+				push the last shot projectile right at speed {_ShotSpreadX}
+				push the last shot projectile up at speed {_ShotSpreadY}
+				set metadata value "SUPERSHOTGUN" of the last shot projectile to 1
+			wait 8 ticks
+		else if the name of the player's tool contains "<red><bold>Super Shotgun | Clip: 1/2":
+			play sound "entity.blaze.shoot" with volume 4 and pitch 0.5 at the player
+			play sound "block.dispenser.fire" with volume 2 and pitch 0.5 at the player
+			if checkSlots(player,"Electro Heart") is 1:
+				if {dtActive.%player%} is true:
+					set {_allowInfAmmo} to true
+			if {_allowInfAmmo} is not true:
+				if checkSlots(player,"Belt Feed") is 1:
+					set {_nuggetAmt} to (12/((checkSlots(player,"Resourceful")) + 1))
+					if player does not have "%{_nuggetAmt}% gold nuggets" parsed as item:
+						set the name of the player's tool to "<red><bold>Super Shotgun | Clip: 0/2"
+					else:
+						remove 12 gold nuggets from the player
+			play 10 (lava pop with speed 0) at the player
+			play 10 (void fog with speed 0) at the player
+			push the player backwards at speed 0.5
+			shoot an arrow from the player with speed 6
+			set {_spread} to checkSlots(player,"Controlled Shot")
+			set metadata value "SUPERSHOTGUN" of the last shot projectile to 1
+			loop 7 times:
+				if {_spread} is 1:
+					set {_ShotSpreadX} to random number between (-1 / ((checkSlots(player,"Trained Professional")) + 1)) and (1 / (checkSlots((player,"Trained Professional")) + 1))
+					set {_ShotSpreadY} to random number between (-0.5 / ((checkSlots(player,"Trained Professional")) + 1)) and (0.5 / ((checkSlots(player,"Trained Professional")) + 1))
+				else:
+					set {_ShotSpreadX} to random number between (-2 / ((checkSlots(player,"Trained Professional")) + 1)) and (2 / ((checkSlots(player,"Trained Professional")) + 1))
+					set {_ShotSpreadY} to random number between (-1 / ((checkSlots(player,"Trained Professional")) + 1)) and (1 / ((checkSlots(player,"Trained Professional")) + 1))
+				shoot an arrow from the player with speed 6
+				push the last shot projectile right at speed {_ShotSpreadX}
+				push the last shot projectile up at speed {_ShotSpreadY}
+				set metadata value "SUPERSHOTGUN" of the last shot projectile to 1
+			wait 8 ticks
+		else if the name of the player's tool contains "<red><bold>Super Shotgun | Clip: 0/2":
+			play sound "block.dispenser.dispense" with volume 4 and pitch 0.5 at the player
+			play smoke at the player
+		#Flintlock Pistol
+		if the name of the player's tool contains "<light gray>Flintlock Pistol":
+			if the 8th line of the lore of the player's tool is "1":
+				if {_spread} is 1:
+					set {_ShotSpreadX} to random number between (-0.15 / ((checkSlots(player,"Trained Professional")) + 1)) and (0.15 / ((checkSlots(player,"Trained Professional")) + 1))
+					set {_ShotSpreadY} to random number between (-0.15 / ((checkSlots(player,"Trained Professional")) + 1)) and (0.15 / ((checkSlots(player,"Trained Professional")) + 1))
+				else:
+					set {_ShotSpreadX} to random number between (-0.25 / ((checkSlots(player,"Trained Professional")) + 1)) and (0.25 / ((checkSlots(player,"Trained Professional")) + 1))
+					set {_ShotSpreadY} to random number between (-0.25 / ((checkSlots(player,"Trained Professional")) + 1)) and (0.25 / ((checkSlots(player,"Trained Professional")) + 1))
+				make the player shoot an arrow
+				set {_bullet} to the last shot projectile
+				set metadata value "gunType" of the last shot projectile to "1"
+				play sound "block.dispenser.launch" with volume 1 and pitch 1.5 at the player
+				play sound "entity.generic.explode" with volume 0.5 and pitch 1.5 at the player
+				set {_clip} to the 8th line of the lore of the player's tool parsed as integer
+				if checkSlots(player,"Electro Heart") is 1:
+					if {dtActive.%player%} is true:
+						set {_allowInfAmmo} to true
+				if {_allowInfAmmo} is not true:
+					if {_resourceful} is not 1:
+						if checkSlots(player,"Belt Feed") is 1:
+							if player does not have 2 cobblestone:
+								if player does not have 1 gunpowder:
+									subtract 1 from {_clip}
+									set the 8th line of the lore of the player's tool to "%{_clip}%"
+							if player has 2 cobblestone:
+								if player has 1 gunpowder:
+									remove 2 cobblestone from the player
+									remove 1 gunpowder from the player
+						else:
+							if {_blockClipLoss} is not true:
+								subtract 1 from {_clip}
+								set the 8th line of the lore of the player's tool to "%{_clip}%"					
+					else:
+						chance of 50%:
+							if checkSlots(player,"Belt Feed") is 1:
+								if player does not have 1 cobblestone:
+									if player does not have 1 gunpowder:
+										subtract 1 from {_clip}
+										set the 8th line of the lore of the player's tool to "%{_clip}%"
+								if player has 1 cobblestone:
+									if player has 1 gunpowder:
+										remove 1 cobblestone from the player
+										remove 1 gunpowder from the player
+							else:
+								subtract 1 from {_clip}
+								set the 8th line of the lore of the player's tool to "%{_clip}%"
+				wait 3 ticks
+				push {_bullet} right at speed {_ShotSpreadX}
+				push {_bullet} up at speed {_ShotSpreadY}	
+			else:
+				play sound "block.stone_button.click_off" with volume 1 and pitch 1 at the player
+		#Iron Musket
+		else if the name of the player's tool contains "<light gray>Iron Musket":
+			if the 8th line of the lore of the player's tool is "1":
+				if {_spread} is 1:
+					set {_ShotSpreadX} to random number between (-0.1 / ((checkSlots(player,"Trained Professional")) + 1)) and (0.1 / ((checkSlots(player,"Trained Professional")) + 1))
+					set {_ShotSpreadY} to random number between (-0.1 / ((checkSlots(player,"Trained Professional")) + 1)) and (0.1 / ((checkSlots(player,"Trained Professional")) + 1))
+				else:
+					set {_ShotSpreadX} to random number between (-0.2 / ((checkSlots(player,"Trained Professional")) + 1)) and (0.2 / ((checkSlots(player,"Trained Professional")) + 1))
+					set {_ShotSpreadY} to random number between (-0.2 / ((checkSlots(player,"Trained Professional")) + 1)) and (0.2 / ((checkSlots(player,"Trained Professional")) + 1))
+				make the player shoot an arrow
+				set {_bullet} to the last shot projectile
+				set metadata value "gunType" of the last shot projectile to "2"
+				play sound "block.dispenser.launch" with volume 1 and pitch 1 at the player
+				play sound "entity.generic.explode" with volume 0.5 and pitch 1.25 at the player
+				set {_clip} to the 8th line of the lore of the player's tool parsed as integer
+				if checkSlots(player,"Electro Heart") is 1:
+					if {dtActive.%player%} is true:
+						set {_allowInfAmmo} to true
+				if {_allowInfAmmo} is not true:
+					if {_resourceful} is not 1:
+						if checkSlots(player,"Belt Feed") is 1:
+							if player does not have 2 cobblestone:
+								if player does not have 1 gunpowder:
+									subtract 1 from {_clip}
+									set the 8th line of the lore of the player's tool to "%{_clip}%"
+							if player has 2 cobblestone:
+								if player has 1 gunpowder:
+									remove 2 cobblestone from the player
+									remove 1 gunpowder from the player
+								else:
+									subtract 1 from {_clip}
+									set the 8th line of the lore of the player's tool to "%{_clip}%"
+							else:
+								subtract 1 from {_clip}
+								set the 8th line of the lore of the player's tool to "%{_clip}%"
+						else:
+							subtract 1 from {_clip}
+							set the 8th line of the lore of the player's tool to "%{_clip}%"					
+					else:
+						chance of 50%:
+							if checkSlots(player,"Belt Feed") is 1:
+								if player does not have 1 cobblestone:
+									if player does not have 1 gunpowder:
+										subtract 1 from {_clip}
+										set the 8th line of the lore of the player's tool to "%{_clip}%"
+								if player has 1 cobblestone:
+									if player has 1 gunpowder:
+										remove 1 cobblestone from the player
+										remove 1 gunpowder from the player
+							else:
+								subtract 1 from {_clip}
+								set the 8th line of the lore of the player's tool to "%{_clip}%"
+				wait 3 ticks
+				push {_bullet} right at speed {_ShotSpreadX}
+				push {_bullet} up at speed {_ShotSpreadY}			
+			else:
+				play sound "block.stone_button.click_off" with volume 1 and pitch 1 at the player
+		#Iron Pistol
+		else if the name of the player's tool contains "<light gray>Iron Pistol":
+			if the 8th line of the lore of the player's tool is not "0":
+				if {t_FirearmsCooldown.%player%::Iron Pistol} is not true:
+					if {_spread} is 1:
+						set {_ShotSpreadX} to random number between (-0.15 / ((checkSlots(player,"Trained Professional")) + 1)) and (0.15 / ((checkSlots(player,"Trained Professional")) + 1))
+						set {_ShotSpreadY} to random number between (-0.15 / ((checkSlots(player,"Trained Professional")) + 1)) and (0.15 / ((checkSlots(player,"Trained Professional")) + 1))
+					else:
+						set {_ShotSpreadX} to random number between (-0.25 / ((checkSlots(player,"Trained Professional")) + 1)) and (0.25 / ((checkSlots(player,"Trained Professional")) + 1))
+						set {_ShotSpreadY} to random number between (-0.25 / ((checkSlots(player,"Trained Professional")) + 1)) and (0.25 / ((checkSlots(player,"Trained Professional")) + 1))
+					make the player shoot an arrow
+					push the last shot projectile right at speed {_ShotSpreadX}
+					push the last shot projectile up at speed {_ShotSpreadY}
+					set metadata value "gunType" of the last shot projectile to "3"
+					play sound "block.dispenser.launch" with volume 1 and pitch 1.5 at the player
+					play sound "entity.generic.explode" with volume 0.5 and pitch 1.5 at the player
+					set {_clip} to the 8th line of the lore of the player's tool parsed as integer
+					if checkSlots(player,"Electro Heart") is 1:
+						if {dtActive.%player%} is true:
+							set {_allowInfAmmo} to true
+					if {_allowInfAmmo} is not true:
+						if {_resourceful} is 1:
+							chance of 66%:
+								if checkSlots(player,"Belt Feed") is 1:
+									if player does not have 1 iron nugget:
+										if player does not have 1 gunpowder:
+											add 1 to {_clip}
+											play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player
+									if player has 1 iron nugget:
+										if player has 1 gunpowder:
+											add 1 to {_clip}
+											remove 1 iron nugget from the player
+											remove 1 gunpowder from the player
+								else:
+									add 1 to {_clip}
+									play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player								
+						if checkSlots(player,"Belt Feed") is 1:
+							if player does not have 2 iron nugget:
+								if player does not have 2 gunpowder:
+									subtract 1 from {_clip}
+							if player has 2 iron nugget:
+								if player has 2 gunpowder:
+									remove 2 iron nugget from the player
+									remove 2 gunpowder from the player
+						else:
+							if {_blockClipLoss} is not true:
+								subtract 1 from {_clip}
+					set the 8th line of the lore of the player's tool to "%{_clip}%"
+					set {t_FirearmsCooldown.%player%::Iron Pistol} to true
+					wait 0.25 seconds
+					clear {t_FirearmsCooldown.%player%::Iron Pistol}
+			else:
+				play sound "block.stone_button.click_on" with volume 1 and pitch 1.6 at the player
+		#Redstone Rifle
+		else if the name of the player's tool contains "<light gray>Redstone Repeater":
+			if the 8th line of the lore of the player's tool is not "0":
+				if {t_FirearmsCooldown.%player%::Redstone Rifle} is not true:
+					if {_spread} is 1:
+						set {_ShotSpreadX} to random number between (({firearmRecoilDynamic.%player%::Redstone Repeater} * -0.15)) and (({firearmRecoilDynamic.%player%::Redstone Repeater} * 0.15))
+						set {_ShotSpreadY} to random number between (({firearmRecoilDynamic.%player%::Redstone Repeater} * -0.15)) and (({firearmRecoilDynamic.%player%::Redstone Repeater} * 0.15))
+					else:
+						set {_ShotSpreadX} to random number between (({firearmRecoilDynamic.%player%::Redstone Repeater} * -0.35)) and (({firearmRecoilDynamic.%player%::Redstone Repeater} * 0.35))
+						set {_ShotSpreadY} to random number between (({firearmRecoilDynamic.%player%::Redstone Repeater} * -0.35)) and (({firearmRecoilDynamic.%player%::Redstone Repeater} * 0.35))
+					make the player shoot an arrow
+					if player is not sneaking:
+						add (0.02 + ({firearmRecoilDynamic.%player%::Redstone Repeater} / ((checkSlots(player,"Trained Professional")) + 0.5 * {firearmRecoilDynamic.%player%::Redstone Repeater}))) to {firearmRecoilDynamic.%player%::Redstone Repeater}
+					else:
+						add (0.01 + ({firearmRecoilDynamic.%player%::Redstone Repeater} / ((checkSlots(player,"Trained Professional")) + 0.5 * {firearmRecoilDynamic.%player%::Redstone Repeater} * 0.5))) to {firearmRecoilDynamic.%player%::Redstone Repeater}
+					push the last shot projectile right at speed {_ShotSpreadX}
+					push the last shot projectile up at speed {_ShotSpreadY}
+					set metadata value "gunType" of the last shot projectile to "4"
+					play sound "block.dispenser.launch" with volume 1 and pitch 1.5 at the player
+					play sound "entity.generic.explode" with volume 0.5 and pitch 1.5 at the player
+					set {_clip} to the 8th line of the lore of the player's tool parsed as integer
+					if checkSlots(player,"Electro Heart") is 1:
+						if {dtActive.%player%} is true:
+							set {_allowInfAmmo} to true
+					if {_allowInfAmmo} is not true:
+						if checkSlots(player,"Belt Feed") is 1:
+							if player does not have 2 iron nugget:
+								if player does not have 2 gunpowder:
+									subtract 1 from {_clip}
+							if player has 2 iron nugget:
+								if player has 2 gunpowder:
+									remove 2 iron nugget from the player
+									remove 2 gunpowder from the player
+						if {_resourceful} is 1:
+							chance of 50%:
+								if checkSlots(player,"Belt Feed") is 1:
+									if player does not have 1 iron nugget:
+										if player does not have 1 gunpowder:
+											add 1 to {_clip}
+											play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player
+									if player has 1 iron nugget:
+										if player has 1 gunpowder:
+											add 1 to {_clip}
+											remove 1 iron nugget from the player
+											remove 1 gunpowder from the player
+								else:
+									add 1 to {_clip}
+									play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player								
+						else:
+							subtract 1 from {_clip}
+					set the 8th line of the lore of the player's tool to "%{_clip}%"
+					set {t_FirearmsCooldown.%player%::Redstone Rifle} to true
+					wait 0.1 seconds
+					clear {t_FirearmsCooldown.%player%::Redstone Rifle}
+			else:
+				play sound "block.stone_button.click_on" with volume 1 and pitch 1.6 at the player
+		#Redgrave E-45 Express
+		else if the name of the player's tool contains "<light gray>Redgrave E-45 Express":
+			if the 8th line of the lore of the player's tool is not "0":
+				if {_spread} is 1:
+					set {_ShotSpreadX} to random number between (-0.1 / ((checkSlots(player,"Trained Professional")) + 1)) and (0.1 / ((checkSlots(player,"Trained Professional")) + 1))
+					set {_ShotSpreadY} to random number between (-0.1 / ((checkSlots(player,"Trained Professional")) + 1)) and (0.1 / ((checkSlots(player,"Trained Professional")) + 1))
+				else:
+					set {_ShotSpreadX} to random number between (-0.25 / ((checkSlots(player,"Trained Professional")) + 1)) and (0.25 / ((checkSlots(player,"Trained Professional")) + 1))
+					set {_ShotSpreadY} to random number between (-0.25 / ((checkSlots(player,"Trained Professional")) + 1)) and (0.25 / ((checkSlots(player,"Trained Professional")) + 1))
+				make the player shoot an arrow
+				push the last shot projectile right at speed {_ShotSpreadX}
+				push the last shot projectile up at speed {_ShotSpreadY}
+				set metadata value "gunType" of the last shot projectile to "5"
+				play sound "block.anvil.place" with volume 0.5 and pitch 2 at the player
+				play sound "entity.generic.explode" with volume 0.7 and pitch 1.5 at the player
+				set {_clip} to the 8th line of the lore of the player's tool parsed as integer
+				if checkSlots(player,"Electro Heart") is 1:
+					if {dtActive.%player%} is true:
+						set {_allowInfAmmo} to true
+					if {_allowInfAmmo} is not true:
+						if {_resourceful} is 1:
+							chance of 35%:
+								if checkSlots(player,"Belt Feed") is 1:
+									if player does not have 1 iron nugget:
+										if player does not have 1 gunpowder:
+											add 1 to {_clip}
+											play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player
+									if player has 1 iron nugget:
+										if player has 1 gunpowder:
+											add 1 to {_clip}
+											remove 1 iron nugget from the player
+											remove 1 gunpowder from the player
+								else:
+									add 1 to {_clip}
+									play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player								
+						if checkSlots(player,"Belt Feed") is 1:
+							if player does not have 2 iron nugget:
+								if player does not have 2 gunpowder:
+									subtract 1 from {_clip}
+							if player has 2 iron nugget:
+								if player has 2 gunpowder:
+									remove 2 iron nugget from the player
+									remove 2 gunpowder from the player
+						else:
+							if {_blockClipLoss} is not true:
+								subtract 1 from {_clip}
+				set the 8th line of the lore of the player's tool to "%{_clip}%"
+			else:
+				play sound "block.stone_button.click_on" with volume 1 and pitch 1.6 at the player
+		#Redgrave Ifrit
+		else if the name of the player's tool contains "<light gray>Redgrave Ifrit":
+			if {t_FirearmsCooldown.%player%::Redgrave Ifrit} is not set:
+				if the 8th line of the lore of the player's tool is not "0":
+					set {t_FirearmsCooldown.%player%::Redgrave Ifrit} to 1
+					if {_spread} is 1:
+						set {_ShotSpreadX} to random number between (-0.075 + ({firearmRecoilDynamic.%player%::Redgrave Ifrit} * -0.2)) and (0.075 + ({firearmRecoilDynamic.%player%::Redgrave Ifrit} * 0.2))
+						set {_ShotSpreadY} to (-0.1 + ({firearmRecoilDynamic.%player%::Redgrave Ifrit} * 1))
+					else:
+						set {_ShotSpreadX} to random number between (-0.15 + ({firearmRecoilDynamic.%player%::Redgrave Ifrit} * -0.2)) and (0.15 + ({firearmRecoilDynamic.%player%::Redgrave Ifrit} * 0.2))
+						set {_ShotSpreadY} to (-0.1 + ({firearmRecoilDynamic.%player%::Redgrave Ifrit} * 1.25))
+					make the player shoot an arrow with speed 6
+					push the last shot projectile right at speed {_ShotSpreadX}
+					push the last shot projectile up at speed {_ShotSpreadY}
+					if player is not sneaking:
+						add (0.2 + ({firearmRecoilDynamic.%player%::Redgrave Ifrit} / ((checkSlots(player,"Trained Professional")) * {firearmRecoilDynamic.%player%::Redgrave Ifrit}))) to {firearmRecoilDynamic.%player%::Redgrave Ifrit}
+					else:
+						add (0.1 + ({firearmRecoilDynamic.%player%::Redgrave Ifrit} / ((checkSlots(player,"Trained Professional")) * {firearmRecoilDynamic.%player%::Redgrave Ifrit} * 0.5))) to {firearmRecoilDynamic.%player%::Redgrave Ifrit}
+					set metadata value "gunType" of the last shot projectile to "17"
+					play sound "block.wood.break" with volume 0.5 and pitch 0.7 at the player
+					play sound "entity.generic.explode" with volume 0.8 and pitch 0.8 at the player
+					set {_clip} to the 8th line of the lore of the player's tool parsed as integer
+					if checkSlots(player,"Electro Heart") is 1:
+						if {dtActive.%player%} is true:
+							set {_allowInfAmmo} to true
+					if {_allowInfAmmo} is not true:
+						if {_resourceful} is 1:
+							chance of 66%:
+								if checkSlots(player,"Belt Feed") is 1:
+									if player does not have 1 iron ingot:
+										if player does not have 1 gunpowder:
+											add 1 to {_clip}
+											play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player
+									if player has 1 iron ingot:
+										if player has 1 gunpowder:
+											add 1 to {_clip}
+											remove 1 iron ingot from the player
+											remove 1 gunpowder from the player
+								else:
+									add 1 to {_clip}
+									play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player								
+						if checkSlots(player,"Belt Feed") is 1:
+							if player does not have 2 iron ingot:
+								if player does not have 2 gunpowder:
+									subtract 1 from {_clip}
+							if player has 2 iron ingot:
+								if player has 2 gunpowder:
+									remove 2 iron ingot from the player
+									remove 2 gunpowder from the player
+						else:
+							if {_blockClipLoss} is not true:
+								subtract 1 from {_clip}
+					set the 8th line of the lore of the player's tool to "%{_clip}%"
+					wait 0.15 seconds
+					clear {t_FirearmsCooldown.%player%::Redgrave Ifrit}
+				else:
+					play sound "block.stone_button.click_on" with volume 1 and pitch 1.6 at the player
+		#Big Iron
+		else if the name of the player's tool contains "<light gray>Big Iron":
+			if the 8th line of the lore of the player's tool is not "0":
+				if {_spread} is 1:
+					set {_ShotSpreadX} to random number between (-0.2 / ((checkSlots(player,"Trained Professional")) + 1)) and (0.2 / ((checkSlots(player,"Trained Professional")) + 1))
+					set {_ShotSpreadY} to random number between (-0.2 / ((checkSlots(player,"Trained Professional")) + 1)) and (0.2 / ((checkSlots(player,"Trained Professional")) + 1))
+				else:
+					set {_ShotSpreadX} to random number between (-0.5 / ((checkSlots(player,"Trained Professional")) + 1)) and (0.5 / ((checkSlots(player,"Trained Professional")) + 1))
+					set {_ShotSpreadY} to random number between (-0.5 / ((checkSlots(player,"Trained Professional")) + 1)) and (0.5 / ((checkSlots(player,"Trained Professional")) + 1))
+				make the player shoot an arrow with speed 6
+				push the last shot projectile right at speed {_ShotSpreadX}
+				push the last shot projectile up at speed {_ShotSpreadY}
+				set metadata value "gunType" of the last shot projectile to "18"
+				play sound "block.dispenser.launch" with volume 0.5 and pitch 0.7 at the player
+				play sound "entity.generic.explode" with volume 0.8 and pitch 0.9 at the player
+				set {_clip} to the 8th line of the lore of the player's tool parsed as integer
+				if checkSlots(player,"Electro Heart") is 1:
+					if {dtActive.%player%} is true:
+						set {_allowInfAmmo} to true
+				if {_allowInfAmmo} is not true:
+					if {_resourceful} is 1:
+						chance of 56%:
+							if checkSlots(player,"Belt Feed") is 1:
+								if player does not have 1 iron nugget:
+									if player does not have 1 gunpowder:
+										add 1 to {_clip}
+										play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player
+								if player has 1 iron nugget:
+									if player has 1 gunpowder:
+										add 1 to {_clip}
+										remove 1 iron nugget from the player
+										remove 1 gunpowder from the player
+							else:
+								add 1 to {_clip}
+								play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player								
+					if checkSlots(player,"Belt Feed") is 1:
+						if player does not have 2 iron nugget:
+							if player does not have 2 gunpowder:
+								subtract 1 from {_clip}
+						if player has 2 iron nugget:
+							if player has 2 gunpowder:
+								remove 2 iron nugget from the player
+								remove 2 gunpowder from the player
+					else:
+						if {_blockClipLoss} is not true:
+							subtract 1 from {_clip}
+				set the 8th line of the lore of the player's tool to "%{_clip}%"
+			else:
+				play sound "block.stone_button.click_on" with volume 1 and pitch 1.6 at the player
+		#Redgrave Coyote-Alpha
+		else if the name of the player's tool contains "<light gray>Redgrave Coyote-Alpha":
+			if the 8th line of the lore of the player's tool is not "0":
+				if {t_FirearmsCooldown.%player%::Redgrave Coyote-Alpha} is not true:
+					play sound "entity.blaze.shoot" with volume 1 and pitch 0.5 at the player
+					play sound "entity.generic.explode" with volume 2 and pitch 0.7 at the player
+					play sound "block.dispenser.fire" with volume 2 and pitch 0.5 at the player
+					make the player shoot an arrow with speed 6
+					set {_spread} to checkSlots(player,"Controlled Shot")
+					set metadata value "gunType" of the last shot projectile to "6"
+					loop 8 times:
+						if {_spread} is 1:
+							set {_ShotSpreadX} to random number between (-0.5 / ((checkSlots(player,"Trained Professional")) + 1)) and (0.5 / ((checkSlots(player,"Trained Professional")) + 1))
+							set {_ShotSpreadY} to random number between (-0.35 / ((checkSlots(player,"Trained Professional")) + 1)) and (0.35 / ((checkSlots(player,"Trained Professional")) + 1))
+						else:
+							set {_ShotSpreadX} to random number between (-1 / ((checkSlots(player,"Trained Professional")) + 1)) and (1 / ((checkSlots(player,"Trained Professional")) + 1))
+							set {_ShotSpreadY} to random number between (-0.7 / ((checkSlots(player,"Trained Professional")) + 1)) and (0.7 / ((checkSlots(player,"Trained Professional")) + 1))
+						make the player shoot an arrow with speed 6
+						push the last shot projectile right at speed {_ShotSpreadX}
+						push the last shot projectile up at speed {_ShotSpreadY}
+						set {t_shotType.%last shot projectile%} to "RSO"
+						set metadata value "gunType" of the last shot projectile to "6"
+					set {t_FirearmsCooldown.%player%::Redgrave Coyote-Alpha} to true
+					set {_clip} to the 8th line of the lore of the player's tool parsed as integer
+					if checkSlots(player,"Electro Heart") is 1:
+						if {dtActive.%player%} is true:
+							set {_allowInfAmmo} to true
+					if {_allowInfAmmo} is not true:
+						if {_resourceful} is 1:
+							chance of 40%:
+								if checkSlots(player,"Belt Feed") is 1:
+									if player does not have 1 gold nugget:
+										if player does not have 1 gunpowder:
+											add 1 to {_clip}
+											play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player
+									if player has 1 gold nugget:
+										if player has 1 gunpowder:
+											add 1 to {_clip}
+											remove 1 gold nugget from the player
+											remove 1 gunpowder from the player
+								else:
+									add 1 to {_clip}
+									play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player								
+						if checkSlots(player,"Belt Feed") is 1:
+							if player does not have 2 gold nugget:
+								if player does not have 2 gunpowder:
+									subtract 1 from {_clip}
+							if player has 2 gold nugget:
+								if player has 2 gunpowder:
+									remove 2 gold nugget from the player
+									remove 2 gunpowder from the player
+						else:
+							subtract 1 from {_clip}
+					set the 8th line of the lore of the player's tool to "%{_clip}%"
+					wait 0.35 seconds
+					play sound "block.dispenser.dispense" with volume 2 and pitch 0.8 at the player
+					wait 0.35 seconds
+					clear {t_FirearmsCooldown.%player%::Redgrave Coyote-Alpha}
+					play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+			else:
+				play sound "block.stone_button.click_off" with volume 1 and pitch 0.6 at the player
+		#Redgrave Kalina
+		else if the name of the player's tool contains "<light gray>Redgrave Kalina":
+			if the 8th line of the lore of the player's tool is not "0":
+				if {t_FirearmsCooldown.%player%::Redgrave Kalina} is not set:
+					clear {t_reloading.%player%}
+					play sound "entity.blaze.shoot" with volume 1 and pitch 0.7 at the player
+					play sound "entity.generic.explode" with volume 0.7 and pitch 0.7 at the player
+					play sound "entity.lightning.thunder" with volume 0.3 and pitch 1 at the player
+					make the player shoot an arrow with speed 6
+					set metadata value "gunType" of the last shot projectile to "16"
+					set {t_FirearmsCooldown.%player%::Redgrave Kalina} to true
+					set {_clip} to the 8th line of the lore of the player's tool parsed as integer
+					if checkSlots(player,"Electro Heart") is 1:
+						if {dtActive.%player%} is true:
+							set {_allowInfAmmo} to true
+					if {_allowInfAmmo} is not true:
+						if {_resourceful} is 1:
+							chance of 15%:
+								if checkSlots(player,"Belt Feed") is 1:
+									if player does not have 1 firework:
+										if player does not have 1 gunpowder:
+											add 1 to {_clip}
+											play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player
+									if player has 1 firework:
+										if player has 1 gunpowder:
+											add 1 to {_clip}
+											remove 1 firework from the player
+											remove 1 gunpowder from the player
+								else:
+									add 1 to {_clip}
+									play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player								
+						if checkSlots(player,"Belt Feed") is 1:
+							if player does not have 2 firework:
+								if player does not have 2 gunpowder:
+									subtract 1 from {_clip}
+							if player has 2 firework:
+								if player has 2 gunpowder:
+									remove 2 firework from the player
+									remove 2 gunpowder from the player
+						else:
+							subtract 1 from {_clip}
+					set the 8th line of the lore of the player's tool to "%{_clip}%"
+					play sound "block.fire.extinguish" with volume 0.7 and pitch 0.7 at the player
+					wait 1.7 seconds
+					play sound "ui.button.click" with volume 2 and pitch 1.2 at the player
+					wait 0.2 seconds
+					play sound "block.piston.extend" with volume 1 and pitch 1.3 at the player
+					wait 0.1 seconds
+					play sound "block.piston.contract" with volume 1 and pitch 1.3 at the player
+					wait 0.6 seconds
+					play sound "ui.button.click" with volume 2 and pitch 1 at the player
+					clear {t_FirearmsCooldown.%player%::Redgrave Kalina}
+			else:
+				play sound "block.stone_button.click_off" with volume 1 and pitch 0.6 at the player
+		#Vettik S-25
+		else if the name of the player's tool contains "<light gray>Vettik S-25":
+			if the 8th line of the lore of the player's tool is not "0":
+				if {t_FirearmsCooldown.%player%::Vettik S-25} is not true:
+					set {t_FirearmsCooldown.%player%::Vettik S-25} to true
+					if {firearmRecoilDynamic.%player%::Vettik A-10 Enforcer} is less than 0.6:
+						if checkSlots(player,"Trained Professional") is not 1:
+							add 0.22 to {firearmRecoilDynamic.%player%::Vettik S-25}
+					else if checkSlots(player,"Trained Professional") is 1:
+						add 0.44 to {firearmRecoilDynamic.%player%::Vettik S-25}
+					play sound "entity.blaze.shoot" with volume 1 and pitch 0.5 at the player
+					play sound "entity.generic.explode" with volume 2 and pitch 0.7 at the player
+					play sound "block.dispenser.fire" with volume 2 and pitch 0.5 at the player
+					make the player shoot an arrow with speed 6
+					set {_spread} to checkSlots(player,"Controlled Shot")
+					set metadata value "gunType" of the last shot projectile to "6"
+					loop 8 times:
+						if {_spread} is 1:
+							set {_ShotSpreadX} to random number between (({firearmRecoilDynamic.%player%::Vettik S-25} * -0.9)) and (({firearmRecoilDynamic.%player%::Vettik S-25} * 0.9))
+							set {_ShotSpreadY} to random number between (({firearmRecoilDynamic.%player%::Vettik S-25} * -0.9)) and (({firearmRecoilDynamic.%player%::Vettik S-25} * 0.9))
+						else:
+							set {_ShotSpreadX} to random number between (({firearmRecoilDynamic.%player%::Vettik S-25} * -1.1)) and (({firearmRecoilDynamic.%player%::Vettik S-25} * 1.1))
+							set {_ShotSpreadY} to random number between (({firearmRecoilDynamic.%player%::Vettik S-25} * -1.1)) and (({firearmRecoilDynamic.%player%::Vettik S-25} * 1.1))
+						make the player shoot an arrow with speed 6
+						push the last shot projectile right at speed {_ShotSpreadX}
+						push the last shot projectile up at speed {_ShotSpreadY}
+						set {t_shotType.%last shot projectile%} to "RSO"
+						set metadata value "gunType" of the last shot projectile to "13"
+					if player is not sneaking:
+						add (0.15 + ({firearmRecoilDynamic.%player%::Vettik S-25} / ((checkSlots(player,"Trained Professional")) + 0.99 * {firearmRecoilDynamic.%player%::Vettik S-25}))) to {firearmRecoilDynamic.%player%::Vettik S-25}
+					else:
+						add (0.075 + ({firearmRecoilDynamic.%player%::Vettik S-25} / ((checkSlots(player,"Trained Professional")) + 0.99 * {firearmRecoilDynamic.%player%::Vettik S-25} * 0.5))) to {firearmRecoilDynamic.%player%::Vettik S-25}
+					set {_clip} to the 8th line of the lore of the player's tool parsed as integer
+					if checkSlots(player,"Electro Heart") is 1:
+						if {dtActive.%player%} is true:
+							set {_allowInfAmmo} to true
+					if {_allowInfAmmo} is not true:
+						if {_resourceful} is 1:
+							chance of 66%:
+								if checkSlots(player,"Belt Feed") is 1:
+									if player does not have 1 iron nugget:
+										if player does not have 1 gunpowder:
+											add 1 to {_clip}
+											play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player
+									if player has 1 iron nugget:
+										if player has 1 gunpowder:
+											add 1 to {_clip}
+											remove 1 iron nugget from the player
+											remove 1 gunpowder from the player
+								else:
+									add 1 to {_clip}
+									play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player								
+						if checkSlots(player,"Belt Feed") is 1:
+							if player does not have 2 iron nugget:
+								if player does not have 2 gunpowder:
+									subtract 1 from {_clip}
+							if player has 2 iron nugget:
+								if player has 2 gunpowder:
+									remove 2 iron nugget from the player
+									remove 2 gunpowder from the player
+						else:
+							subtract 1 from {_clip}
+					set the 8th line of the lore of the player's tool to "%{_clip}%"
+					wait 0.25 seconds
+					play sound "block.piston.extend" with volume 2 and pitch 0.8 at the player
+					wait 0.25 seconds
+					clear {t_FirearmsCooldown.%player%::Vettik S-25}
+					play sound "block.piston.contract" with volume 2 and pitch 0.8 at the player
+			else:
+				play sound "block.stone_button.click_off" with volume 1 and pitch 0.6 at the player
+		#Vettik A-10 Enforcer
+		else if the name of the player's tool contains "<light gray>Vettik A-10 Enforcer":
+			if {t_FirearmsCooldown.%player%::Vettik A-10 Enforcer} is not set:
+				if the 8th line of the lore of the player's tool is not "0":
+					set {t_FirearmsCooldown.%player%::Vettik A-10 Enforcer} to 1
+					if {firearmRecoilDynamic.%player%::Vettik A-10 Enforcer} is less than 0.6:
+						if checkSlots(player,"Trained Professional") is not 1:
+							add 0.22 to {firearmRecoilDynamic.%player%::Vettik A-10 Enforcer}
+					else if checkSlots(player,"Trained Professional") is 1:
+						add 0.44 to {firearmRecoilDynamic.%player%::Vettik A-10 Enforcer}
+					if {_spread} is 1:
+						set {_ShotSpreadX} to random number between (({firearmRecoilDynamic.%player%::Vettik A-10 Enforcer} * -0.8)) and (({firearmRecoilDynamic.%player%::Vettik A-10 Enforcer} * 0.8))
+						set {_ShotSpreadY} to random number between (({firearmRecoilDynamic.%player%::Vettik A-10 Enforcer} * -0.8)) and (({firearmRecoilDynamic.%player%::Vettik A-10 Enforcer} * 0.8))
+					else:
+						set {_ShotSpreadX} to random number between (({firearmRecoilDynamic.%player%::Vettik A-10 Enforcer} * -1.2)) and (({firearmRecoilDynamic.%player%::Vettik A-10 Enforcer} * 1.2))
+						set {_ShotSpreadY} to random number between (({firearmRecoilDynamic.%player%::Vettik A-10 Enforcer} * -1.2)) and (({firearmRecoilDynamic.%player%::Vettik A-10 Enforcer} * 1.2))
+					make the player shoot an arrow with speed 6
+					push the last shot projectile right at speed {_ShotSpreadX}
+					push the last shot projectile up at speed {_ShotSpreadY}
+					if player is not sneaking:
+						add (0.135 + ({firearmRecoilDynamic.%player%::Vettik A-10 Enforcer} / ((checkSlots(player,"Trained Professional")) + 0.99 * {firearmRecoilDynamic.%player%::Vettik A-10 Enforcer}))) to {firearmRecoilDynamic.%player%::Vettik A-10 Enforcer}
+					else:
+						add (0.085 + ({firearmRecoilDynamic.%player%::Vettik A-10 Enforcer} / ((checkSlots(player,"Trained Professional")) + 0.99 * {firearmRecoilDynamic.%player%::Vettik A-10 Enforcer} * 0.5))) to {firearmRecoilDynamic.%player%::Vettik A-10 Enforcer}
+					set metadata value "gunType" of the last shot projectile to "15"
+					play sound "block.wood.break" with volume 0.5 and pitch 0.7 at the player
+					play sound "entity.generic.explode" with volume 0.8 and pitch 0.8 at the player
+					set {_clip} to the 8th line of the lore of the player's tool parsed as integer
+					if checkSlots(player,"Electro Heart") is 1:
+						if {dtActive.%player%} is true:
+							set {_allowInfAmmo} to true
+					if {_allowInfAmmo} is not true:
+						if {_resourceful} is 1:
+							chance of 10%:
+								if checkSlots(player,"Belt Feed") is 1:
+									if player does not have 1 gold nugget:
+										if player does not have 1 gunpowder:
+											add 1 to {_clip}
+											play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player
+									if player has 1 gold nugget:
+										if player has 1 gunpowder:
+											add 1 to {_clip}
+											remove 1 gold nugget from the player
+											remove 1 gunpowder from the player
+								else:
+									add 1 to {_clip}
+									play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player								
+						if checkSlots(player,"Belt Feed") is 1:
+							if player does not have 2 gold nugget:
+								if player does not have 2 gunpowder:
+									subtract 1 from {_clip}
+							if player has 2 gold nugget:
+								if player has 2 gunpowder:
+									remove 2 gold nugget from the player
+									remove 2 gunpowder from the player
+						else:
+							subtract 1 from {_clip}
+					set the 8th line of the lore of the player's tool to "%{_clip}%"
+					wait 0.225 seconds
+					clear {t_FirearmsCooldown.%player%::Vettik A-10 Enforcer}
+				else:
+					play sound "block.stone_button.click_on" with volume 1 and pitch 1.6 at the player
+		#Vettik B-30AS
+		else if the name of the player's tool contains "<light gray>Vettik B-30AS":
+			if {t_FirearmsCooldown.%player%::Vettik B-30AS} is not set:
+				if the 8th line of the lore of the player's tool is not "0":
+					if {_spread} is 1:
+						set {_firearmRecoilMultiplier} to 0.75
+					else:
+						set {_firearmRecoilMultiplier} to 1
+					set {t_FirearmsCooldown.%player%::Vettik B-30AS} to 1
+					loop 3 times:
+						if {firearmRecoilDynamic.%player%::Vettik B-30AS} is not set:
+							set {firearmRecoilDynamic.%player%::Vettik B-30AS} to 0.01
+						if {firearmRecoilDynamic.%player%::Vettik B-30AS} is less than 0.5:
+							if checkSlots(player,"Trained Professional") is not 1:
+								add 0.11 to {firearmRecoilDynamic.%player%::Vettik B-30AS}
+						else if checkSlots(player,"Trained Professional") is 1:
+							add 0.22 to {firearmRecoilDynamic.%player%::Vettik B-30AS}
+						#send "spreadX (hasTrainedProfessional?): %{_ShotSpreadX}%" to the player
+						if player is not sneaking:
+							set {firearmRecoilDynamic.%player%::Vettik B-30AS} to ((0.22 + ({firearmRecoilDynamic.%player%::Vettik B-30AS} / ((checkSlots(player,"Trained Professional")) + 0.99))) * 0.9)
+						else:
+							set {firearmRecoilDynamic.%player%::Vettik B-30AS} to ((0.22 + ({firearmRecoilDynamic.%player%::Vettik B-30AS} / ((checkSlots(player,"Trained Professional")) + 0.99))) * 0.75)
+						#send "spreadX (isSneaking?): %{_ShotSpreadX}%" to the player
+						#First Recoil Checkpoint (Up and to the right)
+						if {firearmRecoilDynamic.%player%::Vettik B-30AS} is less than 0.9:
+							set {_ShotSpreadX} to random number between (-0.05 + ({firearmRecoilDynamic.%player%::Vettik B-30AS} * {_firearmRecoilMultiplier})) and (0.05 + ({firearmRecoilDynamic.%player%::Vettik B-30AS} * {_firearmRecoilMultiplier}))
+							set {_ShotSpreadY} to random number between (-0.05 + ({firearmRecoilDynamic.%player%::Vettik B-30AS} * {_firearmRecoilMultiplier})) and (0.05 + ({firearmRecoilDynamic.%player%::Vettik B-30AS} * {_firearmRecoilMultiplier}))
+						#Second Recoil Checkpoint (Straight across with mild vertical variation)
+						else:
+							set {_ShotSpreadX} to random number between (-0.05 + ({firearmRecoilDynamic.%player%::Vettik B-30AS} * {_firearmRecoilMultiplier})) and ((0.05 + ({firearmRecoilDynamic.%player%::Vettik B-30AS} * {_firearmRecoilMultiplier}) * -0.25))
+							set {_ShotSpreadY} to random number between (1 * {_firearmRecoilMultiplier}) and (1.1 * {_firearmRecoilMultiplier})
+						make the player shoot an arrow with speed 6
+						push the last shot projectile up at speed {_ShotSpreadY}
+						set metadata value "gunType" of the last shot projectile to "14"
+						play sound "block.stone.break" with volume 0.5 and pitch 0.8 at the player
+						play sound "entity.generic.explode" with volume 0.8 and pitch 1.3 at the player
+						set {_clip} to the 8th line of the lore of the player's tool parsed as integer
+						if checkSlots(player,"Electro Heart") is 1:
+							if {dtActive.%player%} is true:
+								set {_allowInfAmmo} to true
+						if {_allowInfAmmo} is not true:
+							if {_resourceful} is 1:
+								chance of 10%:
+									if checkSlots(player,"Belt Feed") is 1:
+										if player does not have 1 gold nugget:
+											if player does not have 1 gunpowder:
+												add 1 to {_clip}
+												play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player
+										if player has 1 gold nugget:
+											if player has 1 gunpowder:
+												add 1 to {_clip}
+												remove 1 gold nugget from the player
+												remove 1 gunpowder from the player
+									else:
+										add 1 to {_clip}
+										play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player								
+							if checkSlots(player,"Belt Feed") is 1:
+								if player does not have 2 gold nugget:
+									if player does not have 2 gunpowder:
+										subtract 1 from {_clip}
+								if player has 2 gold nugget:
+									if player has 2 gunpowder:
+										remove 2 gold nugget from the player
+										remove 2 gunpowder from the player
+							else:
+								subtract 1 from {_clip}
+						set the 8th line of the lore of the player's tool to "%{_clip}%"
+						wait 1 ticks
+						#send "spreadX (SprayPattern): %{_ShotSpreadX}%" to the player
+						#send "firearmRecoilDynamic: %{firearmRecoilDynamic.%player%::Vettik B-30AS}%"
+						#send "spreadY: %{_shotSpreadY}%" to the player
+						if player's facing is east:
+							set {_mirrorSpread} to true
+						else if player's facing is west:
+							set {_mirrorSpread} to true
+						if {_mirrorSpread} is true:
+							push the last shot projectile left at speed {_ShotSpreadX}
+						else:
+							push the last shot projectile right at speed {_ShotSpreadX}
+						wait 1 tick
+					clear {t_FirearmsCooldown.%player%::Vettik B-30AS}
+				else:
+					play sound "block.stone_button.click_on" with volume 1 and pitch 1.6 at the player
+		#Teufort Two-Timer
+		else if the name of the player's tool contains "<light gray>Teufort Two-Timer":
+			if the 8th line of the lore of the player's tool is not "0":
+				if {t_FirearmsCooldown.%player%::Teufort Two-Timer} is not true:
+					play sound "entity.blaze.shoot" with volume 1 and pitch 0.5 at the player
+					play sound "entity.generic.explode" with volume 2 and pitch 0.7 at the player
+					play sound "block.dispenser.fire" with volume 2 and pitch 0.5 at the player
+					make the player shoot an arrow with speed 6
+					push the player backwards at speed 0.9
+					set {_spread} to checkSlots(player,"Controlled Shot")
+					set metadata value "gunType" of the last shot projectile to "6"
+					loop 5 times:
+						if {_spread} is 1:
+							set {_ShotSpreadX} to random number between (-0.3 / ((checkSlots(player,"Trained Professional")) + 1)) and (0.3 / ((checkSlots(player,"Trained Professional")) + 1))
+							set {_ShotSpreadY} to random number between (-0.3 / ((checkSlots(player,"Trained Professional")) + 1)) and (0.3 / ((checkSlots(player,"Trained Professional")) + 1))
+						else:
+							set {_ShotSpreadX} to random number between (-0.6 / ((checkSlots(player,"Trained Professional")) + 1)) and (0.6 / ((checkSlots(player,"Trained Professional")) + 1))
+							set {_ShotSpreadY} to random number between (-0.6 / ((checkSlots(player,"Trained Professional")) + 1)) and (0.6 / ((checkSlots(player,"Trained Professional")) + 1))
+						make the player shoot an arrow with speed 6
+						push the last shot projectile right at speed {_ShotSpreadX}
+						push the last shot projectile up at speed {_ShotSpreadY}
+						set {t_shotType.%last shot projectile%} to "TTT"
+						set metadata value "gunType" of the last shot projectile to "7"
+					set {t_FirearmsCooldown.%player%::Teufort Two-Timer} to true
+					set {_clip} to the 8th line of the lore of the player's tool parsed as integer
+					if checkSlots(player,"Electro Heart") is 1:
+						if {dtActive.%player%} is true:
+							set {_allowInfAmmo} to true
+					if {_allowInfAmmo} is not true:
+						if {_resourceful} is 1:
+							chance of 40%:
+								if checkSlots(player,"Belt Feed") is 1:
+									if player does not have 1 gold nugget:
+										if player does not have 1 gunpowder:
+											add 1 to {_clip}
+											play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player
+									if player has 1 gold nugget:
+										if player has 1 gunpowder:
+											add 1 to {_clip}
+											remove 1 gold nugget from the player
+											remove 1 gunpowder from the player
+								else:
+									add 1 to {_clip}
+									play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player								
+						if checkSlots(player,"Belt Feed") is 1:
+							if player does not have 2 gold nugget:
+								if player does not have 2 gunpowder:
+									subtract 1 from {_clip}
+							if player has 2 gold nugget:
+								if player has 2 gunpowder:
+									remove 2 gold nugget from the player
+									remove 2 gunpowder from the player
+						else:
+							subtract 1 from {_clip}
+					set the 8th line of the lore of the player's tool to "%{_clip}%"
+					wait 0.15 seconds
+					clear {t_FirearmsCooldown.%player%::Teufort Two-Timer}
+			else:
+				play sound "block.stone_button.click_off" with volume 1 and pitch 0.6 at the player
+		#Rocket Launcher
+		else if the name of the player's tool contains "<light gray>Rocket Launcher":
+			if the 8th line of the lore of the player's tool is not "0":
+				if {t_FirearmsCooldown.%player%::Rocket Launcher} is not set:
+					clear {t_reloading.%player%}
+					play sound "entity.blaze.shoot" with volume 1 and pitch 0.7 at the player
+					play sound "entity.generic.explode" with volume 2 and pitch 1 at the player
+					make the player shoot an arrow with speed 3
+					set metadata value "gunType" of the last shot projectile to "8"
+					set {t_FirearmsCooldown.%player%::Rocket Launcher} to true
+					set {_clip} to the 8th line of the lore of the player's tool parsed as integer
+					if checkSlots(player,"Electro Heart") is 1:
+						if {dtActive.%player%} is true:
+							set {_allowInfAmmo} to true
+					if {_allowInfAmmo} is not true:
+						if {_resourceful} is 1:
+							chance of 25%:
+								if checkSlots(player,"Belt Feed") is 1:
+									if player does not have 1 firework:
+										if player does not have 1 gunpowder:
+											add 1 to {_clip}
+											play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player
+									if player has 1 firework:
+										if player has 1 gunpowder:
+											add 1 to {_clip}
+											remove 1 firework from the player
+											remove 1 gunpowder from the player
+								else:
+									add 1 to {_clip}
+									play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player								
+						if checkSlots(player,"Belt Feed") is 1:
+							if player does not have 2 firework:
+								if player does not have 2 gunpowder:
+									subtract 1 from {_clip}
+							if player has 2 firework:
+								if player has 2 gunpowder:
+									remove 2 firework from the player
+									remove 2 gunpowder from the player
+						else:
+							subtract 1 from {_clip}
+					set the 8th line of the lore of the player's tool to "%{_clip}%"
+					wait 0.8 seconds
+					play sound "block.dispenser.fire" with volume 2 and pitch 0.5 at the player
+					clear {t_FirearmsCooldown.%player%::Rocket Launcher}
+			else:
+				play sound "block.stone_button.click_off" with volume 1 and pitch 0.6 at the player
+		#Home-Made Heater
+		else if the name of the player's tool contains "<light gray>Home-Made Heater":
+			if the 8th line of the lore of the player's tool is not "0":
+				if {t_FirearmsCooldown.%player%::Home-Made Heater} is not set:
+					clear {t_reloading.%player%}
+					play sound "entity.blaze.shoot" with volume 1 and pitch 1.3 at the player
+					play sound "entity.generic.explode" with volume 0.7 and pitch 1.3 at the player
+					make the player shoot an arrow with speed 5
+					set metadata value "gunType" of the last shot projectile to "10"
+					set {t_FirearmsCooldown.%player%::Home-Made Heater} to true
+					set {_clip} to the 8th line of the lore of the player's tool parsed as integer
+					if checkSlots(player,"Electro Heart") is 1:
+						if {dtActive.%player%} is true:
+							set {_allowInfAmmo} to true
+					if {_allowInfAmmo} is not true:
+						if {_resourceful} is 1:
+							chance of 30%:
+								if checkSlots(player,"Belt Feed") is 1:
+									if player does not have 1 firework:
+										if player does not have 1 gunpowder:
+											add 1 to {_clip}
+											play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player
+									if player has 1 firework:
+										if player has 1 gunpowder:
+											add 1 to {_clip}
+											remove 1 firework from the player
+											remove 1 gunpowder from the player
+								else:
+									add 1 to {_clip}
+									play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player								
+						if checkSlots(player,"Belt Feed") is 1:
+							if player does not have 2 firework:
+								if player does not have 2 gunpowder:
+									subtract 1 from {_clip}
+							if player has 2 firework:
+								if player has 2 gunpowder:
+									remove 2 firework from the player
+									remove 2 gunpowder from the player
+						else:
+							subtract 1 from {_clip}
+					set the 8th line of the lore of the player's tool to "%{_clip}%"
+					wait 1.1 seconds
+					play sound "ui.button.click" with volume 2 and pitch 0.8 at the player
+					wait 0.4 seconds
+					play sound "ui.button.click" with volume 2 and pitch 1 at the player
+					clear {t_FirearmsCooldown.%player%::Home-Made Heater}
+			else:
+				play sound "block.stone_button.click_off" with volume 1 and pitch 0.6 at the player
+		#Grenade Launcher
+		else if the name of the player's tool contains "<light gray>Grenade Launcher":
+			if the 8th line of the lore of the player's tool is not "0":
+				if {t_FirearmsCooldown.%player%::Grenade Launcher} is not set:
+					clear {t_reloading.%player%}
+					play sound "entity.blaze.shoot" with volume 1 and pitch 0.5 at the player
+					play sound "entity.generic.explode" with volume 2 and pitch 1 at the player
+					play sound "block.dispenser.fire" with volume 1.5 and pitch 0.8 at the player
+					make the player shoot an arrow with speed 1.5
+					set metadata value "gunType" of the last shot projectile to "11"
+					set {t_FirearmsCooldown.%player%::Grenade Launcher} to true
+					set {_clip} to the 8th line of the lore of the player's tool parsed as integer
+					if checkSlots(player,"Electro Heart") is 1:
+						if {dtActive.%player%} is true:
+							set {_allowInfAmmo} to true
+					if {_allowInfAmmo} is not true:
+						if {_resourceful} is 1:
+							chance of 25%:
+								if checkSlots(player,"Belt Feed") is 1:
+									if player does not have 1 firework:
+										if player does not have 1 gunpowder:
+											add 1 to {_clip}
+											play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player
+									if player has 1 firework:
+										if player has 1 gunpowder:
+											add 1 to {_clip}
+											remove 1 firework from the player
+											remove 1 gunpowder from the player
+								else:
+									add 1 to {_clip}
+									play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player								
+						if checkSlots(player,"Belt Feed") is 1:
+							if player does not have 2 firework:
+								if player does not have 2 gunpowder:
+									subtract 1 from {_clip}
+							if player has 2 firework:
+								if player has 2 gunpowder:
+									remove 2 firework from the player
+									remove 2 gunpowder from the player
+						else:
+							subtract 1 from {_clip}
+					set the 8th line of the lore of the player's tool to "%{_clip}%"
+					wait 0.55 seconds
+					play sound "block.dispenser.fire" with volume 2 and pitch 1 at the player
+					clear {t_FirearmsCooldown.%player%::Grenade Launcher}
+			else:
+				play sound "block.stone_button.click_off" with volume 1 and pitch 0.6 at the player
+		#Hell's Spiral
+		else if the name of the player's tool contains "<gold><bold>Hell's Spiral":
+			if the 8th line of the lore of the player's tool is not "0":
+				if {t_FirearmsCooldown.%player%::Hell's Spiral} is not set:
+					clear {t_reloading.%player%}
+					play sound "entity.blaze.shoot" with volume 1 and pitch 1.3 at the player
+					play sound "entity.generic.explode" with volume 0.7 and pitch 1 at the player
+					make the player shoot an arrow with speed 11
+					set metadata value "gunType" of the last shot projectile to "12"
+					set {t_FirearmsCooldown.%player%::Hell's Spiral} to true
+					set {_clip} to the 8th line of the lore of the player's tool parsed as integer
+					if checkSlots(player,"Electro Heart") is 1:
+						if {dtActive.%player%} is true:
+							set {_allowInfAmmo} to true
+					if {_allowInfAmmo} is not true:
+						if {_resourceful} is 1:
+							chance of 33%:
+								if checkSlots(player,"Belt Feed") is 1:
+									if player does not have 1 gold nugget:
+										if player does not have 1 gunpowder:
+											add 1 to {_clip}
+											play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player
+									if player has 1 gold nugget:
+										if player has 1 gunpowder:
+											add 1 to {_clip}
+											remove 1 gold nugget from the player
+											remove 1 gunpowder from the player
+								else:
+									add 1 to {_clip}
+									play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player								
+						if checkSlots(player,"Belt Feed") is 1:
+							if player does not have 2 gold nugget:
+								if player does not have 2 gunpowder:
+									subtract 1 from {_clip}
+							if player has 2 gold nugget:
+								if player has 2 gunpowder:
+									remove 2 gold nugget from the player
+									remove 2 gunpowder from the player
+						else:
+							subtract 1 from {_clip}
+					set the 8th line of the lore of the player's tool to "%{_clip}%"
+					wait 0.9 seconds
+					clear {t_FirearmsCooldown.%player%::Hell's Spiral}
+			else:
+				play sound "block.stone_button.click_off" with volume 1 and pitch 0.6 at the player
+		#Minigun
+		else if the name of the player's tool contains "<light gray>Minigun":
+			if the 8th line of the lore of the player's tool is not "0":
+				if {t_FirearmsCooldown.%player%::Minigun} is not set:
+					clear {t_reloading.%player%}
+					set {_clip} to the 8th line of the lore of the player's tool parsed as integer
+					apply slowness 4 to the player for 1 second
+					if checkSlots(player,"Electro Heart") is 1:
+						if {dtActive.%player%} is true:
+							set {_allowInfAmmo} to true
+					if {_allowInfAmmo} is not true:
+						loop 6 times:
+							if {_clip} is more than 0:
+								if {_spread} is 1:
+									set {_ShotSpreadX} to random number between (({firearmRecoilDynamic.%player%::Minigun} * -1.1)) and (({firearmRecoilDynamic.%player%::Minigun} * 1.1))
+									set {_ShotSpreadY} to random number between (({firearmRecoilDynamic.%player%::Minigun} * -1.1)) and (({firearmRecoilDynamic.%player%::Minigun} * 1.1))
+								else:
+									set {_ShotSpreadX} to random number between (({firearmRecoilDynamic.%player%::Minigun} * -1.1)) and (({firearmRecoilDynamic.%player%::Minigun} * 1.1))
+									set {_ShotSpreadY} to random number between (({firearmRecoilDynamic.%player%::Minigun} * -1.1)) and (({firearmRecoilDynamic.%player%::Minigun} * 1.1))
+								if {firearmRecoilDynamic.%player%::Minigun} is less than 1.99:
+									if player is not sneaking:
+										add (0.06 + ({firearmRecoilDynamic.%player%::Minigun} / ((checkSlots(player,"Trained Professional")) + 0.99 * {firearmRecoilDynamic.%player%::Minigun}))) to {firearmRecoilDynamic.%player%::Minigun}
+									else:
+										add (0.03 + ({firearmRecoilDynamic.%player%::Minigun} / ((checkSlots(player,"Trained Professional")) + 0.99 * {firearmRecoilDynamic.%player%::Minigun} * 0.5))) to {firearmRecoilDynamic.%player%::Minigun}
+								make the player shoot an arrow with speed 3
+								push the last shot projectile right at speed {_ShotSpreadX}
+								push the last shot projectile up at speed {_ShotSpreadY}
+								set metadata value "gunType" of the last shot projectile to "9"
+								play sound "entity.blaze.shoot" with volume 0.6 and pitch 1.5 at the player
+								play sound "block.dispenser.fire" with volume 0.6 and pitch 1.5 at the player
+								if {_subtractClipOnInterval} is not 1:
+									add 1 to {_subtractClipOnInterval}
+								else:
+									clear {_subtractClipOnInterval}
+									subtract 1 from {_clip}
+									if {_resourceful} is 1:
+										chance of 5%:
+											add 1 to {_clip}
+								wait 2 ticks
+							else:
+								exit 1 loop
+						set the 8th line of the lore of the player's tool to "%{_clip}%"
+					remove slowness from the player
+			else:
+				play sound "block.stone_button.click_off" with volume 1 and pitch 0.5
+			
+#TF2-Style Rocket Jumping Behavior
+on damage of a player:
+	if damage cause is block explosion:
+		if {t_AllowRocketJump.%victim%} is true:
+			send "<light yellow>Rocket Jump!" to the victim
+			#Main momentum behavior
+			loop all entities in radius 3 of the victim:
+				if metadata value "gunType" of the loop-entity is "8":
+					set {_BonusMag} to 0.9/(distance between victim and loop-entity + 0.01)
+					send "%{_BonusMag}%" to the victim
+					set {_playerY} to victim's Y-Coordinate + 1
+					set {_playerX} to victim's x-coordinate
+					set {_playerZ} to victim's z-coordinate
+					set {_rocketY} to loop-entity's Y-Coordinate
+					set {_rocketX} to loop-entity's X-Coordinate
+					set {_rocketZ} to loop-entity's Z-Coordinate
+					set {_PlayerToRocketX} to {_playerX} - {_rocketX}
+					set {_playerToRocketZ} to {_playerZ} - {_rocketZ}
+					set {_verticalGain} to getAbsoluteValue({_playerY} - {_rocketY})
+					send "%{_verticalGain}%" to the victim
+					set {_rocketDirection} to "%direction from victim to loop-entity%"
+					set {_splitDirections::*} to {_rocketDirection} split at " and "
+					#broadcast "%{_rocketDirection}%"
+					#push the victim {_splitDirections::1} at speed ({_verticalGain} + {_bonusMag})
+					#push the victim {_splitDirections::3} at speed ({_verticalGain} + {_bonusMag})
+					#push the victim in z direction at speed ({_playerToRocketZ} + {_bonusMag})
+					push the victim upwards at speed ({_verticalGain} + {_BonusMag})
+				else if metadata value "SPELL" of the loop-entity is "1":
+					set {_BonusMag} to 1/(distance between victim and loop-entity)
+					send "%{_BonusMag}%" to the victim
+					set {_playerY} to victim's Y-Coordinate + 1
+					set {_playerX} to victim's x-coordinate
+					set {_playerZ} to victim's z-coordinate
+					set {_rocketY} to loop-entity's Y-Coordinate
+					set {_rocketX} to loop-entity's X-Coordinate
+					set {_rocketZ} to loop-entity's Z-Coordinate
+					set {_PlayerToRocketX} to {_playerX} - {_rocketX}
+					set {_playerToRocketZ} to {_playerZ} - {_rocketZ}
+					set {_verticalGain} to getAbsoluteValue({_playerY} - {_rocketY})
+					send "%{_verticalGain}%" to the victim
+					set {_rocketDirection} to "%direction from victim to loop-entity%"
+					set {_splitDirections::*} to {_rocketDirection} split at " and "
+					#broadcast "%{_rocketDirection}%"
+					push the victim {_splitDirections::1} at speed ({_verticalGain} + {_bonusMag})
+					push the victim {_splitDirections::3} at speed ({_verticalGain} + {_bonusMag})
+					#push the victim in z direction at speed ({_playerToRocketZ} + {_bonusMag})
+					push the victim upwards at speed ({_verticalGain} + {_BonusMag})
+			#Reduce damage of Rocket Jumps.
+			set damage to (damage + {_verticalGain}) / 2
+			#Make the reduced spread perk (Controlled Shot) grant an even larger reduction to self-damage from rocket jumping as an easter egg.
+			set {_gunboats} to checkSlots(victim,"Controlled Shot")
+			if {_gunboats} is 1:
+				#"Gunboats" effect reduces self-damage by 66%
+				set damage to damage * 0.33
+			set {_magnitude} to ({_playerToRocketZ} + {_playerToRocketX})
+			send "%{_magnitude}%" to victim
+			if victim's facing is west:
+				set {_flip} to true
+			else if victim's facing is north:
+				set {_flip} to true
+			if {_flip} is true:
+				push the victim in horizontal direction of the victim at speed {_magnitude} * -1
+			else:
+				push the victim in horizontal direction of the victim at speed {_magnitude}
+			#while {_magnitude} is more than 0.05:
+			#	add 0.05 to {_decay}
+			#	set {_magnitude} to {_magnitude} / (1 + {_decay})
+			#	#send formatted "%{_magnitude}%"
+			#	if victim is on ground:
+			#		push the victim backwards at speed {_magnitude}
+			#		exit 1 loop
+			#	wait 1 tick
+			
+on left click:
+	#Firearms Reload Behavior
+	set {_quick} to checkSlots(player,"Sleight of Hand")
+	set {_gunslinger} to checkSlots(player,"Resourceful")
+	if the name of the player's tool contains "<red><bold>Super Shotgun | Clip: 1/2":
+		if {_gunslinger} is 1:
+			set {_reload} to 3
+		else:
+			set {_reload} to 6
+		if the player has 12 gold nuggets:
+			set {reloading.%player%} to 1
+			set {_quick} to checkSlots(player,"Sleight of Hand")
+			if {_quick} is 1:
+				play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+				wait 0.5 seconds
+				play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+				wait 0.5 seconds
+				play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+			else:
+				play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+				wait a second
+				play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+				wait a second
+				play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+			set {_nugs} to "%{_reload}% gold nuggets" parsed as item
+			remove {_nugs} from the player
+			set the name of the player's tool to "<red><bold>Super Shotgun | Clip: 2/2"
+			send formatted "<red><bold>Locked and loaded! Find some meat!"
+			set {reloading.%player%} to 0
+		else:
+			send formatted "<red><bold>Not enough ammo!"
+	else if the name of the player's tool contains "<red><bold>Super Shotgun | Clip: 0/2":
+		if {_gunslinger} is 1:
+			set {_reload} to 6
+		else:
+			set {_reload} to 12
+		if the player has 12 gold nuggets:
+			set {reloading.%player%} to 1
+			set {_quick} to checkSlots(player,"Sleight of Hand")
+			if {_quick} is 1:
+				play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+				wait 0.5 seconds
+				play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+				wait 0.5 seconds
+				play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+			else:
+				play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+				wait a second
+				play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+				wait a second
+				play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+			set {_nugs} to "%{_reload}% gold nuggets" parsed as item
+			remove {_nugs} from the player
+			set the name of the player's tool to "<red><bold>Super Shotgun | Clip: 2/2"
+			send formatted "<red><bold>Locked and loaded! Find some meat!"
+			set {reloading.%player%} to 0
+		else if the player has 6 gold nuggets:
+			set {reloading.%player%} to 1
+			set {_quick} to checkSlots(player,"Sleight of Hand")
+			if {_quick} is 1:
+				play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+				wait 0.5 seconds
+				play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+				wait 0.5 seconds
+				play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+			else:
+				play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+				wait a second
+				play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+				wait a second
+				play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+			set {_reload} to {_reload} / 2
+			set {_nugs} to "%{_reload}% gold nuggets" parsed as item
+			remove {_nugs} from the player
+			set the name of the player's tool to "<red><bold>Super Shotgun | Clip: 1/2"
+			send formatted "<red><bold>Could only load one barrel!"
+			set {reloading.%player%} to 0
+		else:
+			send formatted "<red><bold>Not enough ammo!"
+	else if the name of the player's tool contains "<red><bold>Super Shotgun | Clip: 2/2":
+		set {_clipFull} to true
+		send formatted "<red><bold>Already loaded! Find some meat!"
+	#Flintlock Pistol
+	if the name of the player's tool contains "<light gray>Flintlock Pistol":
+		if the 8th line of the lore of the player's tool is "0":
+			if {reloading.%player%} is not set:
+				if the player has 2 cobblestone:
+					if the player has 1 gunpowder:
+						set {reloading.%player%} to 1
+						if {_quick} is 1:
+							play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+							wait 0.25 seconds
+							play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+							wait 0.25 seconds
+							play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+						else:
+							play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+							wait 0.5 second
+							play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+							wait 0.5 second
+							play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+						set the 8th line of the lore of the player's tool to "1"
+						if {_gunslinger} is 1:
+							remove 1 cobblestone from the player
+						else:
+							remove 2 cobblestone from the player
+						remove 1 gunpowder from the player
+						send formatted "<light green>Locked and loaded!"
+						clear {reloading.%player%}
+					else:
+						send formatted "<light red>You need gunpowder to reload!"
+				else:
+					send formatted "<light red>You need at least 2 cobblestone to reload!"
+			else:
+				send formatted "<light red>Already reloading!"
+		else:
+			set {_clipFull} to true
+			send formatted "<light red>Already loaded!"
+	#Iron Musket
+	if the name of the player's tool contains "<light gray>Iron Musket":
+		if the 8th line of the lore of the player's tool is "0":
+			if {reloading.%player%} is not set:
+				if the player has 1 cobblestone:
+					if the player has 1 gunpowder:
+						set {reloading.%player%} to 1
+						if {_quick} is 1:
+							play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+							wait 0.35 seconds
+							play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+							wait 0.35 seconds
+							play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+						else:
+							play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+							wait 0.65 second
+							play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+							wait 0.65 second
+							play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+						set the 8th line of the lore of the player's tool to "1"
+						if {_gunslinger} is 1:
+							chance of 50%:
+								remove 1 cobblestone from the player
+						else:
+							remove 1 cobblestone from the player
+						remove 1 gunpowder from the player
+						send formatted "<light green>Locked and loaded!"
+						clear {reloading.%player%}
+					else:
+						send formatted "<light red>You need gunpowder to reload!"
+				else:
+					send formatted "<light red>You need an iron nugget to reload!"
+			else:
+				send formatted "<light red>Already reloading!"
+		else:
+			set {_clipFull} to true
+			send formatted "<light red>Already loaded!"
+	#Iron Pistol
+	if the name of the player's tool contains "<light gray>Iron Pistol":
+		if the 8th line of the lore of the player's tool is not "8":
+			if {reloading.%player%} is not set:
+				set {_clip} to the 8th line of the lore of the player's tool parsed as integer
+				set {_cost} to ceil((({_clip} - 8) * -1) / 2)
+				set {_item} to "%{_cost}% iron nugget" parsed as item
+				if the amount of iron nugget in the player's inventory is more than or equal to {_cost}:
+					if the player has 1 gunpowder:
+						set {reloading.%player%} to 1
+						if {_quick} is 1:
+							play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+							wait 0.325 seconds
+							play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+							wait 0.325 seconds
+							play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+						else:
+							play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+							wait 0.625 second
+							play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+							wait 0.625 second
+							play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+						set the 8th line of the lore of the player's tool to "8"
+						if {_gunslinger} is 1:
+							loop ceil({_cost} / 2) times:
+								remove 1 iron nugget from the player
+						else:
+							loop {_cost} times:
+								remove 1 iron nugget from the player
+						remove 1 gunpowder from the player
+						send formatted "<light green>Locked and loaded!"
+						clear {reloading.%player%}
+					else:
+						send formatted "<light red>You need gunpowder to reload!"
+				else:
+					send formatted "<light red>You need %{_cost}% iron nuggets to reload!"
+			else:
+				send formatted "<light red>Already reloading!"
+		else:
+			set {_clipFull} to true
+			send formatted "<light red>Already at max clip size!"
+	#Redstone Rifle
+	if the name of the player's tool contains "<light gray>Redstone Repeater":
+		if the 8th line of the lore of the player's tool is not "30":
+			if {reloading.%player%} is not set:
+				set {_clip} to the 8th line of the lore of the player's tool parsed as integer
+				set {_cost} to ceil((({_clip} - 30) * -1) / 2)
+				set {_item} to "%{_cost}% iron nugget" parsed as item
+				if the amount of iron nugget in the player's inventory is more than or equal to {_cost}:
+					if the player has 1 gunpowder:
+						set {reloading.%player%} to 1
+						if {_quick} is 1:
+							play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+							wait 0.325 seconds
+							play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+							wait 0.325 seconds
+							play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+						else:
+							play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+							wait 0.625 second
+							play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+							wait 0.625 second
+							play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+						set the 8th line of the lore of the player's tool to "30"
+						if {_gunslinger} is 1:
+							loop ceil({_cost} / 2) times:
+								remove 1 iron nugget from the player
+						else:
+							loop {_cost} times:
+								remove 1 iron nugget from the player
+						remove 1 gunpowder from the player
+						send formatted "<light green>Locked and loaded!"
+						clear {reloading.%player%}
+					else:
+						send formatted "<light red>You need gunpowder to reload!"
+				else:
+					send formatted "<light red>You need %{_cost}% iron nuggets to reload!"
+			else:
+				send formatted "<light red>Already reloading!"
+		else:
+			set {_clipFull} to true
+			send formatted "<light red>Already at max clip size!"
+	#Redgrave E-45 Express
+	if the name of the player's tool contains "<light gray>Redgrave E-45 Express":
+		if the 8th line of the lore of the player's tool is not "18":
+			if {reloading.%player%} is not set:
+				set {_clip} to the 8th line of the lore of the player's tool parsed as integer
+				set {_cost} to ceil((({_clip} - 18) * -1))
+				set {_item} to "%{_cost}% iron nugget" parsed as item
+				if the amount of iron nugget in the player's inventory is more than or equal to {_cost}:
+					if the player has 1 gunpowder:
+						set {reloading.%player%} to 1
+						if {_quick} is 1:
+							play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+							wait 0.2 seconds
+							play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+							wait 0.2 seconds
+							play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+						else:
+							play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+							wait 0.35 second
+							play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+							wait 0.35 second
+							play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+						set the 8th line of the lore of the player's tool to "18"
+						if {_gunslinger} is 1:
+							loop ceil({_cost} / 2) times:
+								remove 1 iron nugget from the player
+						else:
+							loop {_cost} times:
+								remove 1 iron nugget from the player
+						remove 1 gunpowder from the player
+						send formatted "<light green>Locked and loaded!"
+						clear {reloading.%player%}
+					else:
+						send formatted "<light red>You need gunpowder to reload!"
+				else:
+					send formatted "<light red>You need %{_cost}% iron nuggets to reload!"
+			else:
+				send formatted "<light red>Already reloading!"
+		else:
+			set {_clipFull} to true
+			send formatted "<light red>Already at max clip size!"
+	#Minigun
+	if the name of the player's tool contains "<light gray>Minigun":
+		if the 8th line of the lore of the player's tool is not "200":
+			if {reloading.%player%} is not set:
+				set {_clip} to the 8th line of the lore of the player's tool parsed as integer
+				set {_cost} to ceil((({_clip} - 200) * -1))
+				set {_item} to "%{_cost}% gold nugget" parsed as item
+				if the amount of gold nugget in the player's inventory is more than or equal to {_cost}:
+					if the player has 10 gunpowder:
+						set {reloading.%player%} to 1
+						if {_quick} is 1:
+							play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+							wait 1.5 seconds
+							play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+							wait 0.1 seconds
+							loop 14 times:
+								play sound "entity.experience_orb.pickup" with volume 1 and pitch 0.8 at the player
+								wait 0.1 seconds
+							wait 1 seconds
+							play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+						else:
+							play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+							wait 2.2 seconds
+							play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+							wait 0.1 seconds
+							loop 14 times:
+								play sound "entity.experience_orb.pickup" with volume 1 and pitch 0.8 at the player
+								wait 0.1 seconds
+							wait 1.7 seconds
+							play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+						set the 8th line of the lore of the player's tool to "200"
+						if {_gunslinger} is 1:
+							loop ceil({_cost} / 2) times:
+								remove 1 gold nugget from the player
+						else:
+							loop {_cost} times:
+								remove 1 gold nugget from the player
+						remove 10 gunpowder from the player
+						send formatted "<light green>Locked and loaded!"
+						clear {reloading.%player%}
+					else:
+						send formatted "<light red>You need 10 gunpowder to reload!"
+				else:
+					send formatted "<light red>You need %{_cost}% gold nuggets to reload!"
+			else:
+				send formatted "<light red>Already reloading!"
+		else:
+			set {_clipFull} to true
+			send formatted "<light red>Already at max clip size!"
+	#Redgrave Coyote-Alpha
+	if the name of the player's tool contains "<light gray>Redgrave Coyote-Alpha":
+		if the 8th line of the lore of the player's tool is not "5":
+			if {reloading.%player%} is not set:
+				set {_clip} to the 8th line of the lore of the player's tool parsed as integer
+				set {_cost} to ceil((({_clip} - 5) * -1) * 2)
+				set {_item} to "%{_cost}% gold nugget" parsed as item
+				if the amount of gold nugget in the player's inventory is more than or equal to {_cost}:
+					if the player has 1 gunpowder:
+						set {reloading.%player%} to 1
+						if {_quick} is 1:
+							play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+							wait 0.3 seconds
+							loop ({_cost} / 2) times:
+								play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+								wait 0.3 second
+							wait 0.3 seconds
+							play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+						else:
+							play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+							wait 0.44 second
+							loop ({_cost} / 2) times:
+								play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+								wait 0.44 second
+							#wait 0.44 second
+							play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+						set the 8th line of the lore of the player's tool to "5"
+						if {_gunslinger} is 1:
+							loop ceil({_cost} / 2) times:
+								remove 1 gold nugget from the player
+						else:
+							loop {_cost} times:
+								remove 1 gold nugget from the player
+						remove 1 gunpowder from the player
+						send formatted "<light green>Locked and loaded!"
+						clear {reloading.%player%}
+					else:
+						send formatted "<light red>You need gunpowder to reload!"
+				else:
+					send formatted "<light red>You need %{_cost}% gold nuggets to reload!"
+			else:
+				send formatted "<light red>Already reloading!"
+		else:
+			set {_clipFull} to true
+			send formatted "<light red>Already at max clip size!"
+	#Vettik S-25
+	if the name of the player's tool contains "<light gray>Vettik S-25":
+		if the 8th line of the lore of the player's tool is not "25":
+			if {reloading.%player%} is not set:
+				set {_clip} to the 8th line of the lore of the player's tool parsed as integer
+				set {_cost} to ceil((({_clip} - 25) * -1))
+				set {_item} to "%{_cost}% gold nugget" parsed as item
+				if the amount of gold nugget in the player's inventory is more than or equal to {_cost}:
+					if the player has 1 gunpowder:
+						set {reloading.%player%} to 1
+						if {_quick} is 1:
+							play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+							wait 0.15 seconds
+							loop ({_cost}) times:
+								play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+								wait 0.15 second
+							wait 0.15 seconds
+							play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+						else:
+							play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+							wait 0.3 second
+							loop ({_cost}) times:
+								play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+								wait 0.3 second
+							#wait 0.44 second
+							play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+						set the 8th line of the lore of the player's tool to "25"
+						if {_gunslinger} is 1:
+							loop ceil({_cost} / 2) times:
+								remove 1 gold nugget from the player
+						else:
+							loop {_cost} times:
+								remove 1 gold nugget from the player
+						remove 1 gunpowder from the player
+						send formatted "<light green>Locked and loaded!"
+						clear {reloading.%player%}
+					else:
+						send formatted "<light red>You need gunpowder to reload!"
+				else:
+					send formatted "<light red>You need %{_cost}% gold nuggets to reload!"
+			else:
+				send formatted "<light red>Already reloading!"
+		else:
+			set {_clipFull} to true
+			send formatted "<light red>Already at max clip size!"
+	#Vettik B-30AS
+	if the name of the player's tool contains "<light gray>Vettik B-30AS":
+		if the 8th line of the lore of the player's tool is not "30":
+			clear {firearmRecoilDynamic.%player%::Vettik B-30AS}
+			if {reloading.%player%} is not set:
+				set {_clip} to the 8th line of the lore of the player's tool parsed as integer
+				set {_cost} to ceil((({_clip} - 30) * -1))
+				set {_item} to "%{_cost}% gold nugget" parsed as item
+				if the amount of gold nugget in the player's inventory is more than or equal to {_cost}:
+					if the player has 1 gunpowder:
+						set {reloading.%player%} to 1
+						if {_quick} is not 1:
+							play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+							wait 0.1 seconds
+							play sound "block.dispenser.launch" with volume 2 and pitch 1 at the player
+							loop 3 times:
+								wait 0.25 seconds
+								play sound "block.wood.hit" with volume 2 and pitch 1 at the player
+							wait 0.1 seconds
+							play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+							wait 0.1 seconds
+							play sound "block.wood.break" with volume 2 and pitch 1 at the player
+							wait 0.2 seconds
+							play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+						else:
+							play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+							wait 0.05 seconds
+							play sound "block.dispenser.launch" with volume 2 and pitch 1 at the player
+							wait 0.15 seconds
+							play sound "block.wood.hit" with volume 2 and pitch 1 at the player
+							wait 0.1 seconds
+							play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+							wait 0.1 seconds
+							play sound "block.wood.break" with volume 2 and pitch 1 at the player
+							wait 0.1 seconds
+							play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+						set the 8th line of the lore of the player's tool to "30"
+						if {_gunslinger} is 1:
+							loop ceil({_cost} / 2) times:
+								remove 1 iron nugget from the player
+						else:
+							loop {_cost} times:
+								remove 1 iron nugget from the player
+						remove 1 gunpowder from the player
+						send formatted "<light green>Locked and loaded!"
+						clear {reloading.%player%}
+					else:
+						send formatted "<light red>You need gunpowder to reload!"
+				else:
+					send formatted "<light red>You need %{_cost}% gold nuggets to reload!"
+			else:
+				send formatted "<light red>Already reloading!"
+		else:
+			set {_clipFull} to true
+			send formatted "<light red>Already at max clip size!"
+	#Vettik A-10 Enforcer
+	if the name of the player's tool contains "<light gray>Vettik A-10 Enforcer":
+		if the 8th line of the lore of the player's tool is not "10":
+			if {reloading.%player%} is not set:
+				clear {firearmRecoilDynamic.%player%::Vettik A-10 Enforcer}
+				set {_clip} to the 8th line of the lore of the player's tool parsed as integer
+				set {_cost} to ceil((({_clip} - 10) * -1))
+				set {_item} to "%{_cost}% gold nugget" parsed as item
+				if checkSlots(player,"Extra Attachments") is 1:
+					set {_quick} to 1
+				if the amount of gold nugget in the player's inventory is more than or equal to {_cost}:
+					if the player has 1 gunpowder:
+						set {reloading.%player%} to 1
+						if {_quick} is not 1:
+							play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+							wait 0.1 seconds
+							play sound "block.dispenser.launch" with volume 2 and pitch 1 at the player
+							loop 6 times:
+								wait 0.15 seconds
+								play sound "block.wood.hit" with volume 2 and pitch 1 at the player
+							wait 0.1 seconds
+							play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+							wait 0.1 seconds
+							play sound "block.dispenser.dispense" with volume 2 and pitch 0.8 at the player
+							wait 0.1 seconds
+							play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+						else:
+							play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+							wait 0.05 seconds
+							play sound "block.dispenser.launch" with volume 2 and pitch 1 at the player
+							loop 3 times:
+								wait 0.15 seconds
+								play sound "block.wood.hit" with volume 2 and pitch 1 at the player
+							wait 0.1 seconds
+							play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+							wait 0.1 seconds
+							play sound "block.wood.break" with volume 2 and pitch 1 at the player
+							wait 0.1 seconds
+							play sound "block.dispenser.dispense" with volume 2 and pitch 0.8 at the player
+							wait 0.05 seconds
+							play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+						set the 8th line of the lore of the player's tool to "10"
+						if {_gunslinger} is 1:
+							loop ceil({_cost} / 2) times:
+								remove 1 iron nugget from the player
+						else:
+							loop {_cost} times:
+								remove 1 iron nugget from the player
+						remove 1 gunpowder from the player
+						send formatted "<light green>Locked and loaded!"
+						clear {reloading.%player%}
+					else:
+						send formatted "<light red>You need gunpowder to reload!"
+				else:
+					send formatted "<light red>You need %{_cost}% gold nuggets to reload!"
+			else:
+				send formatted "<light red>Already reloading!"
+		else:
+			set {_clipFull} to true
+			send formatted "<light red>Already at max clip size!"
+	#Teufort Two-Timer
+	if the name of the player's tool contains "<light gray>Teufort Two-Timer":
+		if the 8th line of the lore of the player's tool is not "2":
+			if {reloading.%player%} is not set:
+				clear {t_FirearmsCooldown.%player%::Teufort Two-Timer}
+				set {_clip} to the 8th line of the lore of the player's tool parsed as integer
+				set {_cost} to ceil((({_clip} - 2) * -1) * 2)
+				set {_item} to "%{_cost}% gold nugget" parsed as item
+				if the amount of gold nugget in the player's inventory is more than or equal to {_cost}:
+					if the player has 1 gunpowder:
+						set {reloading.%player%} to 1
+						if {_quick} is 1:
+							play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+							wait 0.3 seconds
+							play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+							wait 0.3 seconds
+							play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+						else:
+							play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+							wait 0.44 second
+							play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+							wait 0.44 second
+							play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+						set the 8th line of the lore of the player's tool to "2"
+						if {_gunslinger} is 1:
+							loop ceil({_cost} / 2) times:
+								remove 1 gold nugget from the player
+						else:
+							loop {_cost} times:
+								remove 1 gold nugget from the player
+						remove 1 gunpowder from the player
+						send formatted "<light green>Locked and loaded!"
+						clear {reloading.%player%}
+					else:
+						send formatted "<light red>You need gunpowder to reload!"
+				else:
+					send formatted "<light red>You need %{_cost}% gold nuggets to reload!"
+			else:
+				send formatted "<light red>Already reloading!"
+		else:
+			set {_clipFull} to true
+			send formatted "<light red>Already at max clip size!"
+	#Rocket Launcher
+	if the name of the player's tool contains "<light gray>Rocket Launcher":
+		if the 8th line of the lore of the player's tool is not "4":
+			if {reloading.%player%} is not set:
+				set {_clip} to the 8th line of the lore of the player's tool parsed as integer
+				set {_cost} to (({_clip} - 4) * -1)
+				set {t_reloading.%Player%} to true
+				#A while loop for reloading allows the player to cancel the reload process by firing.
+				while {t_reloading.%player%} is true:
+					set {_gunpowder} to false
+					set {_firework} to false
+					if player has 1 gunpowder:
+						set {_gunpowder} to true
+					loop all items in the player's inventory:
+						if "%type of loop-item%" contains "firework":
+							set {_firework} to true
+					#Only continue the reloading process if the player has enough ammo. Remember that the Resourceful perk does not remove ammo from the player's inventory when reloading.
+					if {_gunpowder} is true:
+						if {_firework} is true:
+							#Sleight of Hand perk
+							if {_quick} is 1:
+								wait 0.4 second
+								add 1 to {_clip}
+								set the 8th line of the lore of the player's tool to "%{_clip}%"
+								play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+							#Normal Reload
+							else:
+								wait 0.8 second
+								add 1 to {_clip}
+								set the 8th line of the lore of the player's tool to "%{_clip}%"
+								play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+							remove 1 gunpowder from the player
+							remove 1 firework item from the player
+							subtract 1 from {_cost}
+							if {_cost} is less than 1:
+								exit 1 loop
+								play sound "ui.button.click" with volume 1 and pitch 1 at the player
+						else:
+							send "<light red>No fireworks left to reload with!"
+							exit 1 loop
+							play sound "ui.button.click" with volume 1 and pitch 1 at the player
+					else:
+						send "<light red>No gunpowder left to reload with!"
+						exit 1 loop
+						play sound "ui.button.click" with volume 1 and pitch 1 at the player
+				wait 0.4 seconds
+				play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+				send formatted "<light green>Locked and loaded!"
+				clear {t_reloading.%player%}
+			else:
+				send formatted "<light red>Already reloading!"
+		else:
+			set {_clipFull} to true
+			send formatted "<light red>Already at max clip size!"
+	#Grenade Launcher
+	if the name of the player's tool contains "<light gray>Grenade Launcher":
+		if the 8th line of the lore of the player's tool is not "4":
+			if {reloading.%player%} is not set:
+				set {_clip} to the 8th line of the lore of the player's tool parsed as integer
+				set {_cost} to (({_clip} - 4) * -1)
+				set {t_reloading.%Player%} to true
+				#A while loop for reloading allows the player to cancel the reload process by firing.
+				while {t_reloading.%player%} is true:
+					set {_gunpowder} to false
+					set {_firework} to false
+					if player has 1 gunpowder:
+						set {_gunpowder} to true
+					loop all items in the player's inventory:
+						if "%type of loop-item%" contains "firework":
+							set {_firework} to true
+					#Only continue the reloading process if the player has enough ammo. Remember that the Resourceful perk does not remove ammo from the player's inventory when reloading.
+					if {_gunpowder} is true:
+						if {_firework} is true:
+							#Sleight of Hand perk
+							if {_quick} is 1:
+								wait 0.4 second
+								add 1 to {_clip}
+								set the 8th line of the lore of the player's tool to "%{_clip}%"
+								play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+							#Normal Reload
+							else:
+								wait 0.8 second
+								add 1 to {_clip}
+								set the 8th line of the lore of the player's tool to "%{_clip}%"
+								play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+							remove 1 gunpowder from the player
+							remove 1 firework item from the player
+							subtract 1 from {_cost}
+							if {_cost} is less than 1:
+								exit 1 loop
+								play sound "ui.button.click" with volume 1 and pitch 1 at the player
+						else:
+							send "<light red>No fireworks left to reload with!"
+							exit 1 loop
+							play sound "ui.button.click" with volume 1 and pitch 1 at the player
+					else:
+						send "<light red>No gunpowder left to reload with!"
+						exit 1 loop
+						play sound "ui.button.click" with volume 1 and pitch 1 at the player
+				wait 0.4 seconds
+				play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+				send formatted "<light green>Locked and loaded!"
+				clear {t_reloading.%player%}
+			else:
+				send formatted "<light red>Already reloading!"
+		else:
+			set {_clipFull} to true
+			send formatted "<light red>Already at max clip size!"
+	#Home-Made Heater
+	if the name of the player's tool contains "<light gray>Home-Made Heater":
+		if the 8th line of the lore of the player's tool is not "5":
+			if {reloading.%player%} is not set:
+				set {_clip} to the 8th line of the lore of the player's tool parsed as integer
+				set {_cost} to (({_clip} - 5) * -1)
+				if checkSlots(player,"Extra Attachments") is 1:
+					set {_quick} to 1
+				set {t_reloading.%Player%} to true
+				#A while loop for reloading allows the player to cancel the reload process by firing.
+				while {t_reloading.%player%} is true:
+					set {_gunpowder} to false
+					set {_firework} to false
+					if player has 1 gunpowder:
+						set {_gunpowder} to true
+					if the amount of gold nugget in the player's inventory is more than or equal to {_cost}:
+						set {_firework} to true
+					#Only continue the reloading process if the player has enough ammo. Remember that the Resourceful perk does not remove ammo from the player's inventory when reloading.
+					if {_gunpowder} is true:
+						if {_firework} is true:
+							#Sleight of Hand perk
+							if {_quick} is 1:
+								wait 0.55 second
+								add 1 to {_clip}
+								set the 8th line of the lore of the player's tool to "%{_clip}%"
+								play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+							#Normal Reload
+							else:
+								wait 1.1 second
+								add 1 to {_clip}
+								set the 8th line of the lore of the player's tool to "%{_clip}%"
+								play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+							remove 1 gunpowder from the player
+							remove 1 gold nugget from the player
+							subtract 1 from {_cost}
+							if {_cost} is less than 1:
+								exit 1 loop
+								play sound "ui.button.click" with volume 1 and pitch 1 at the player
+						else:
+							send "<light red>No gold nuggets left to reload with!"
+							exit 1 loop
+							play sound "ui.button.click" with volume 1 and pitch 1 at the player
+					else:
+						send "<light red>No gunpowder left to reload with!"
+						exit 1 loop
+						play sound "ui.button.click" with volume 1 and pitch 1 at the player
+				wait 0.2 seconds
+				play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+				send formatted "<light green>Locked and loaded!"
+				clear {t_reloading.%player%}
+			else:
+				send formatted "<light red>Already reloading!"
+		else:
+			set {_clipFull} to true
+			send formatted "<light red>Already at max clip size!"
+	#Hell's Spiral
+	if the name of the player's tool contains "<light gray>Hell's Spiral":
+		if the 8th line of the lore of the player's tool is not "25":
+			if {reloading.%player%} is not set:
+				set {_clip} to the 8th line of the lore of the player's tool parsed as integer
+				set {_cost} to (({_clip} - 25) * -1)
+				set {t_reloading.%Player%} to true
+				if checkSlots(player,"Extra Attachments") is 1:
+					set {_quick} to 1
+				#A while loop for reloading allows the player to cancel the reload process by firing.
+				while {t_reloading.%player%} is true:
+					set {_gunpowder} to false
+					set {_firework} to false
+					if player has 1 gunpowder:
+						set {_gunpowder} to true
+					if the amount of gold nugget in the player's inventory is more than or equal to {_cost}:
+						set {_firework} to true
+					#Only continue the reloading process if the player has enough ammo. Remember that the Resourceful perk does not remove ammo from the player's inventory when reloading.
+					if {_gunpowder} is true:
+						if {_firework} is true:
+							#Sleight of Hand perk
+							if {_quick} is 1:
+								wait 0.15 second
+								add 1 to {_clip}
+								set the 8th line of the lore of the player's tool to "%{_clip}%"
+								play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+							#Normal Reload
+							else:
+								wait 0.3 second
+								add 1 to {_clip}
+								set the 8th line of the lore of the player's tool to "%{_clip}%"
+								play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+							remove 1 gunpowder from the player
+							remove 1 gold nugget from the player
+							subtract 1 from {_cost}
+							if {_cost} is less than 1:
+								exit 1 loop
+								play sound "ui.button.click" with volume 1 and pitch 1 at the player
+						else:
+							send "<light red>No gold nuggets left to reload with!"
+							exit 1 loop
+							play sound "ui.button.click" with volume 1 and pitch 1 at the player
+					else:
+						send "<light red>No gunpowder left to reload with!"
+						exit 1 loop
+						play sound "ui.button.click" with volume 1 and pitch 1 at the player
+				wait 0.2 seconds
+				play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+				send formatted "<light green>Locked and loaded!"
+				clear {t_reloading.%player%}
+			else:
+				send formatted "<light red>Already reloading!"
+		else:
+			set {_clipFull} to true
+			send formatted "<light red>Already at max clip size!"
+	#Redgrave Kalina
+	if the name of the player's tool contains "<light gray>Redgrave Kalina":
+		if the 8th line of the lore of the player's tool is not "10":
+			if {reloading.%player%} is not set:
+				set {_clip} to the 8th line of the lore of the player's tool parsed as integer
+				set {_cost} to (({_clip} - 10) * -1)
+				set {t_reloading.%Player%} to true
+				if checkSlots(player,"Extra Attachments") is 1:
+					set {_quick} to 1
+				#A while loop for reloading allows the player to cancel the reload process by firing.
+				while {t_reloading.%player%} is true:
+					set {_gunpowder} to false
+					set {_firework} to false
+					if player has 1 gunpowder:
+						set {_gunpowder} to true
+					if the amount of iron ingot in the player's inventory is more than or equal to {_cost}:
+						set {_firework} to true
+					#Only continue the reloading process if the player has enough ammo. Remember that the Resourceful perk does not remove ammo from the player's inventory when reloading.
+					if {_gunpowder} is true:
+						if {_firework} is true:
+							#Sleight of Hand perk
+							if {_quick} is 1:
+								wait 0.4 second
+								add 1 to {_clip}
+								set the 8th line of the lore of the player's tool to "%{_clip}%"
+								play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+							#Normal Reload
+							else:
+								wait 0.8 second
+								add 1 to {_clip}
+								set the 8th line of the lore of the player's tool to "%{_clip}%"
+								play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+							remove 1 gunpowder from the player
+							remove 1 iron ingot from the player
+							subtract 1 from {_cost}
+							if {_cost} is less than 1:
+								exit 1 loop
+								play sound "ui.button.click" with volume 1 and pitch 1 at the player
+						else:
+							send "<light red>No iron ingots left to reload with!"
+							exit 1 loop
+							play sound "ui.button.click" with volume 1 and pitch 1 at the player
+					else:
+						send "<light red>No gunpowder left to reload with!"
+						exit 1 loop
+						play sound "ui.button.click" with volume 1 and pitch 1 at the player
+				wait 0.2 seconds
+				play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+				send formatted "<light green>Locked and loaded!"
+				clear {t_reloading.%player%}
+			else:
+				send formatted "<light red>Already reloading!"
+		else:
+			set {_clipFull} to true
+			send formatted "<light red>Already at max clip size!"
+	#Redgrave Ifrit
+	if the name of the player's tool contains "<light gray>Redgrave Ifrit":
+		if the 8th line of the lore of the player's tool is not "7":
+			if {reloading.%player%} is not set:
+				clear {firearmRecoilDynamic.%player%::Redgrave Ifrit}
+				set {_clip} to the 8th line of the lore of the player's tool parsed as integer
+				set {_cost} to ceil((({_clip} - 7) * -1))
+				set {_item} to "%{_cost}% iron ingot" parsed as item
+				if the amount of iron ingot in the player's inventory is more than or equal to {_cost}:
+					if the player has 1 gunpowder:
+						set {reloading.%player%} to 1
+						if {_quick} is 1:
+							play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+							wait 0.1 seconds
+							loop 6 times:
+								play sound "entity.experience_orb.pickup" with volume 0.8 and pitch 0.6 at the player
+								wait 0.1 seconds
+							wait 0.6 seconds
+							play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+							wait 0.4 seconds
+							play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+						else:
+							play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+							wait 0.1 seconds
+							loop 6 times:
+								play sound "entity.experience_orb.pickup" with volume 0.8 and pitch 0.6 at the player
+								wait 0.15 seconds
+							wait 0.8 seconds
+							play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+							wait 0.6 seconds
+							play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+						set the 8th line of the lore of the player's tool to "7"
+						if {_gunslinger} is 1:
+							loop ceil({_cost} / 2) times:
+								remove 1 iron ingot from the player
+						else:
+							loop {_cost} times:
+								remove 1 iron ingot from the player
+						remove 1 gunpowder from the player
+						send formatted "<light green>Locked and loaded!"
+						clear {reloading.%player%}
+					else:
+						send formatted "<light red>You need gunpowder to reload!"
+				else:
+					send formatted "<light red>You need %{_cost}% iron ingots to reload!"
+			else:
+				send formatted "<light red>Already reloading!"
+		else:
+			set {_clipFull} to true
+			send formatted "<light red>Already at max clip size!"
+	#Big Iron
+	if the name of the player's tool contains "<light gray>Big Iron":
+		if the 8th line of the lore of the player's tool is not "6":
+			if {reloading.%player%} is not set:
+				set {_clip} to the 8th line of the lore of the player's tool parsed as integer
+				set {_cost} to ceil((({_clip} - 6) * -1))
+				set {_item} to "%{_cost}% iron nugget" parsed as item
+				if the amount of iron nugget in the player's inventory is more than or equal to {_cost}:
+					if the player has 1 gunpowder:
+						set {reloading.%player%} to 1
+						if {_quick} is 1:
+							play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+							wait 0.2 seconds
+							play sound "block.dispenser.launch" with volume 2 and pitch 0.8 at the player
+							wait 0.2 seconds
+							play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+							wait 0.2 seconds
+							play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+						else:
+							play sound "block.dispenser.dispense" with volume 2 and pitch 2 at the player
+							wait 0.35 seconds
+							play sound "block.dispenser.launch" with volume 2 and pitch 0.8 at the player
+							loop 3 times:
+								wait 0.1 seconds
+								play sound "block.wood.hit" with volume 2 and pitch 1 at the player
+							wait 0.35 seconds
+							play sound "block.dispenser.launch" with volume 2 and pitch 0.5 at the player
+							wait 0.35 seconds
+							play sound "block.dispenser.dispense" with volume 2 and pitch 1 at the player
+						set the 8th line of the lore of the player's tool to "7"
+						if {_gunslinger} is 1:
+							loop ceil({_cost} / 2) times:
+								remove 1 iron nugget from the player
+						else:
+							loop {_cost} times:
+								remove 1 iron nugget from the player
+						remove 1 gunpowder from the player
+						send formatted "<light green>Locked and loaded!"
+						clear {reloading.%player%}
+					else:
+						send formatted "<light red>You need gunpowder to reload!"
+				else:
+					send formatted "<light red>You need %{_cost}% iron ingots to reload!"
+			else:
+				send formatted "<light red>Already reloading!"
+		else:
+			set {_clipFull} to true
+			send formatted "<light red>Already at max clip size!"
+	if checkSlots(player,"Utility Belt") is 1:
+		if {_clipFull} is true:
+			loop all items in the player's current inventory:
+				if the name of loop-item contains "Grenade":
+					make the player shoot thrown potion of healing
+					if the name of the loop-item contains "Frag":
+						set metadata "GrenadeType" of the last spawned projectile to 0
+						set {_thrownGrenade} to true
+						exit 1 loop
+					else if the name of the loop-item contains "Conc":
+						set metadata "GrenadeType" of the last spawned projectile to 1
+						set {_thrownGrenade} to true
+						exit 1 loop
+					else if the name of the loop-item contains "Smoke":
+						set metadata "GrenadeType" of the last spawned projectile to 2
+						set {_thrownGrenade} to true
+						exit 1 loop
+			if {_thrownGrenade} is not set:
+				make player shoot an arrow at speed 0.7
+			
+#Firearm recoil cooldown
+every tick:
+	loop all players:
+		if {firearmRecoilDynamic.%loop-player%::Redgrave Ifrit} is set:
+			subtract 0.025 from {firearmRecoilDynamic.%loop-player%::Redgrave Ifrit}
+			if {firearmRecoilDynamic.%loop-player%::Redgrave Ifrit} is less than or equal to 0:
+				clear {firearmRecoilDynamic.%loop-player%::Redgrave Ifrit}
+		else if {firearmRecoilDynamic.%loop-player%::Vettik A-10 Enforcer} is set:
+			subtract 0.011 from {firearmRecoilDynamic.%loop-player%::Vettik A-10 Enforcer}
+			if {firearmRecoilDynamic.%loop-player%::Vettik A-10 Enforcer} is less than or equal to 0:
+				clear {firearmRecoilDynamic.%loop-player%::Vettik A-10 Enforcer}
+		else if {firearmRecoilDynamic.%loop-player%::Vettik B-30AS} is set:
+			subtract 0.017 from {firearmRecoilDynamic.%loop-player%::Vettik B-30AS}
+			if {firearmRecoilDynamic.%loop-player%::Vettik B-30AS} is less than or equal to 0:
+				clear {firearmRecoilDynamic.%loop-player%::Vettik B-30AS}
+		else if {firearmRecoilDynamic.%loop-player%::Vettik S-25} is set:
+			subtract 0.013 from {firearmRecoilDynamic.%loop-player%::Vettik S-25}
+			if {firearmRecoilDynamic.%loop-player%::Vettik S-25} is less than or equal to 0:
+				clear {firearmRecoilDynamic.%loop-player%::Vettik S-25}
+		else if {firearmRecoilDynamic.%loop-player%::Minigun} is set:
+			subtract 0.015 from {firearmRecoilDynamic.%loop-player%::Minigun}
+			if {firearmRecoilDynamic.%loop-player%::Minigun} is less than or equal to 0:
+				clear {firearmRecoilDynamic.%loop-player%::Minigun}
+		else if {firearmRecoilDynamic.%loop-player%::Redstone Repeater} is set:
+			subtract 0.03 from {firearmRecoilDynamic.%loop-player%::Redstone Repeater}
+			if {firearmRecoilDynamic.%loop-player%::Redstone Repeater} is less than or equal to 0:
+				clear {firearmRecoilDynamic.%loop-player%::Redstone Repeater}

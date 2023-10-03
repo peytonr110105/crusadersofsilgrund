@@ -1,0 +1,1242 @@
+on right click:
+	if the name of the player's tool is "<gold><bold>Trainee's Enrollment":
+		remove 1 of tool from tool
+		open chest inventory with 5 rows named "<gold>Choose a New Class" for the player
+		#physical/magical divider
+		set slot 4 of the player's current inventory to 1 blaze rod named "<white>Physical/Magical" with lore "<white>Classes to the left of this divider use physical damage,", "<white>while classes to the right use magical damage.", "<while>While it is possible to use either damage type on any class,", "<white>it is ideal to use the damage type that a class is best at."
+		#set slot 13 of the player's current inventory to 1 blaze rod
+		set slot 22 of the player's current inventory to 1 blaze rod
+		#set slot 31 of the player's current inventory to 1 blaze rod
+		#set slot 40 of the player's current inventory to 1 blaze rod
+		#Classes
+		set slot 13 of the player's current inventory to 1 iron sword named "<white>Basic Classes" with lore "<white>Simple and easy to pick up and play.", "<white>These classes have straightforward statlines and easy-to-activate perk conditions.", "<white>Great for learning the ins and outs of effective character building."
+		#Basic Classes
+		#physical
+		set slot 9 of the player's current inventory to 1 nether star named "<gold>Mercenary" with lore "<white>Strong warriors with a balanced stat spread.", "<cyan>Strengths: None", "<light red>Weaknesses: None", "<cyan>This class naturally learns spells."
+		set slot 10 of the player's current inventory to 1 nether star named "<gold>Knight" with lore "<white>Slow but sturdy fighters with extreme physical defense.", "<cyan>Strengths: HP, DEF", "<light red>Weaknesses: SPD, RES, MAG"
+		set slot 11 of the player's current inventory to 1 nether star named "<gold>Fighter" with lore "<white>Focused on physical damage and defense, they have devastating blows.", "<cyan>Strengths: HP, STR", "<light red>Weaknesses: LCK, SPD"
+		set slot 12 of the player's current inventory to 1 nether star named "<gold>Archer" with lore "<white>Average fighters with a focus on ranged, single-target elimination.", "<cyan>Strengths: STR, DEF", "<light red>Weaknesses: HP, LCK"
+		set slot 18 of the player's current inventory to 1 nether star named "<gold>Cavalier" with lore "<white>A well-balanced class that specializes in mounted combat.", "<cyan>Strengths: LCK", "<light red>Weaknesses: HP"
+		set slot 19 of the player's current inventory to 1 nether star named "<gold>Trickster" with lore "<white>Slippery thieves that can pick locks and sabotage foes.", "<cyan>Strengths: SPD, LCK", "<light red>Weaknesses: HP, STR"
+		#magical
+		set slot 14 of the player's current inventory to 1 nether star named "<gold>Mage" with lore "<white>Magic wielders utilizing various wands and tomes for combat.", "<cyan>Strengths: MAG, SPD", "<light red>Weaknesses: STR, DEF", "<cyan>This class naturally learns spells."
+		set slot 15 of the player's current inventory to 1 nether star named "<gold>Conjurer" with lore "<white>Dark mages who use their own health for stronger attacks.", "<cyan>Strengths: MAG, RES, HP", "<light red>Weaknesses: SPD, CHR, LCK", "<cyan>This class naturally learns spells."
+		set slot 16 of the player's current inventory to 1 nether star named "<gold>Keeper" with lore "<white>Armored mage with strong defences but poor physical strength.", "<cyan>Strengths: DEF, RES, MAG", "<light red>Weaknesses: SPD, STR, CHR", "<cyan>This class naturally learns spells."
+		#Advanced Classes
+		set slot 31 of the player's current inventory to 1 diamond sword named "<white>Advanced Classes" with lore "<white>More specialized classes with harder to use perks and stat lines.", "<white>While they are more difficult to build effectively,", "<white>Advanced Classes can utilize more unique abilities."
+		#phys
+		set slot 27 of the player's current inventory to 1 nether star named "<gold>Bladesman" with lore "<white>Quick-footed warriors that prioritize speed above all else.", "<cyan>Strengths: SPD, LCK", "<light red>Weaknesses: DEF, RES, HP"
+		set slot 28 of the player's current inventory to 1 nether star named "<gold>Gunslinger" with lore "<white>Foreigners who make the best use of firearms for combat.", "<cyan>Strengths: SPD, LCK", "<light red>Weaknesses: HP, DEF"
+		set slot 29 of the player's current inventory to 1 nether star named "<gold>Outlaw" with lore "<white>Lone wolves that sow chaos throughout the land.", "<cyan>Strengths: STR, SPD, LCK", "<light red>Weaknesses: HP, DEF, RES"
+		#magic
+		set slot 32 of the player's current inventory to 1 nether star named "<gold>Cleric" with lore "<white>Ill-suited for combat, but are the best at party-wide healing.", "<cyan>Strengths: HP, RES", "<light red>Weaknesses: DEF, SPD", "<cyan>This class naturally learns spells."
+		set slot 33 of the player's current inventory to 1 nether star named "<gold>Strategist" with lore "<white>Clever magicians that support allies in whatever role is needed.", "<cyan>Strengths: MAG, DEF", "<light red>Weaknesses: SPD", "<cyan>This class naturally learns spells."
+		set slot 34 of the player's current inventory to 1 nether star named "<gold>Troubador" with lore "<white>Mounted healers with multi-weapon utility.", "<cyan>Strengths: SPD, LCK", "<light red>Weaknesses: HP, DEF, RES", "<cyan>This class naturally learns spells."
+		set slot 35 of the player's current inventory to 1 nether star named "<gold>Poet" with lore "<white>Speedy performers that grant bonuses to allies.", "<cyan>Strengths: SPD, LCK, MAG, CHR", "<light red>Weaknesses: STR, HP, DEF", "<cyan>This class naturally learns spells."
+		#Specialist Classes
+		set slot 40 of the player's current inventory to 1 golden sword named "<white>Specialist Classes" with lore "<white>These classes radically change the way you play.", "<white>They each have unique abilities that no other class can replicate,", "<white>but they can be extremely tricky to play effectively."
+		#phys
+		set slot 36 of the player's current inventory to 1 nether star named "<gold>Devil Hunter" with lore "<white>Utilizes a unique Stylish system to combo foes.", "<cyan>Strengths: SPD, LCK", "<light red>Weaknesses: DEF, RES, HP"
+		set slot 37 of the player's current inventory to 1 nether star named "<gold>Survivor" with lore "<white>Sacrifices combat ability in favor of traditional Minecraft gameplay.", "<cyan>Strengths: HP, MAG", "<light red>Weaknesses: STR, SPD, DEF, LCK, RES", "<cyan>This class naturally learns spells."
+		#magic
+		set slot 41 of the player's current inventory to 1 nether star named "<gold>Summoner" with lore "<white>Fragile magicians that create familiars to aid in combat.", "<cyan>Strengths: MAG, HP", "<light red>Weaknesses: STR, DEF", "<cyan>This class naturally learns spells."
+		set slot 42 of the player's current inventory to 1 nether star named "<gold>Charlatan" with lore "<white>Crazed alchemist who sacrifices their health for more power.", "<cyan>Strengths: RES, MAG", "<light red>Weaknesses: STR, DEF", "<cyan>This class naturally learns spells."
+		
+#Reclass behavior		
+on inventory click:
+	if the name of the player's current inventory is "<gold>Choose a New Class":
+		if the clicked item is not nether star:
+			cancel event
+		else if the name of the clicked item contains "<gold>":
+			set {_oldstr.%player%} to {str.%player%}
+			set {_olddef.%player%} to {def.%player%}
+			set {_oldhp.%player%} to {hp.%player%}
+			set {_oldLCK.%player%} to {LCK.%player%}
+			set {_oldspd.%player%} to {spd.%player%}
+			set {_oldmag.%player%} to {mag.%player%}
+			set {_oldres} to {res.%player%}
+			set {_oldchr} to {chr.%player%}
+			set {_oldlck} to {lck.%player%}
+			#Remove Boon/Bane
+			if {boon.%player%} is set:
+				if {bane.%player%} is set:
+					add ((getClassBoonBaneAmount(player,{boon.%player%},1)) * {promoted.%player%}) to {%{boon.%player%}%.%player%}
+					add ((getClassBoonBaneAmount(player,{boon.%player%},1)) * {promoted.%player%} * 2) to {%{boon.%player%}%cap.%player%}
+					add 20 to {%{boon.%player%}%growth.%player%}
+					add ((getClassBoonBaneAmount(player,{bane.%player%},0)) * {promoted.%player%}) to {%{bane.%player%}%.%player%}
+					add ((getClassBoonBaneAmount(player,{bane.%player%},0)) * {promoted.%player%} * 2) to {%{bane.%player%}%cap.%player%}
+					clear {boon.%player%}
+					clear {bane.%player%}
+			#Remove previous class bases and caps
+			if getBaseClass(player) is "Mercenary":
+				subtract 13 from {hpcap.%player%}
+				subtract 12 from {strcap.%player%}
+				subtract 12 from {defcap.%player%}
+				subtract 12 from {chrcap.%player%}
+				subtract 12 from {lckcap.%player%}
+				subtract 12 from {spdcap.%player%}
+				subtract 12 from {magcap.%player%}
+				subtract 12 from {rescap.%player%}
+				subtract 5 from {str.%player%}
+				subtract 5 from {def.%player%}
+				subtract 5 from {spd.%player%}
+				subtract 5 from {mag.%player%}
+				subtract 5 from {res.%player%}
+				subtract 5 from {hp.%player%}
+				subtract 5 from {chr.%player%}
+				subtract 5 from {lck.%player%}
+			else if getBaseClass(player) is "Knight":
+				subtract 16 from {hpcap.%player%}
+				subtract 14 from {strcap.%player%}
+				subtract 16 from {defcap.%player%}
+				subtract 13 from {chrcap.%player%}
+				subtract 11 from {lckcap.%player%}
+				subtract 9 from {spdcap.%player%}
+				subtract 8 from {magcap.%player%}
+				subtract 9 from {rescap.%player%}
+				subtract 9 from {hp.%player%}
+				subtract 4 from {str.%player%}
+				subtract 9 from {def.%player%}
+				subtract 6 from {chr.%player%}
+				subtract 5 from {lck.%player%}
+				subtract 3 from {spd.%player%}
+				subtract 2 from {mag.%player%}
+				subtract 3 from {res.%player%}
+			else if getBaseClass(player) is "Bladesman":
+				add -10 to {hpcap.%player%}
+				add -18 to {strcap.%player%}
+				add -6 to {defcap.%player%}
+				add -10 to {chrcap.%player%}
+				add -20 to {lckcap.%player%}
+				add -21 to {spdcap.%player%}
+				add -6 to {magcap.%player%}
+				add -6 to {rescap.%player%}
+				add -5 to {hp.%player%}
+				add -8 to {str.%player%}
+				add -2 to {def.%player%}
+				add -2 to {chr.%player%}
+				add -9 to {lck.%player%}
+				add -10 to {spd.%player%}
+				add -2 to {mag.%player%}
+				add -2 to {res.%player%}
+			else if getBaseClass(player) is "Fighter":
+				add -15 to {hpcap.%player%}
+				add -16 to {strcap.%player%}
+				add -16 to {defcap.%player%}
+				add -12 to {chrcap.%player%}
+				add -10 to {lckcap.%player%}
+				add -12 to {spdcap.%player%}
+				add -6 to {magcap.%player%}
+				add -10 to {rescap.%player%}
+				add -8 to {hp.%player%}
+				add -9 to {str.%player%}
+				add -7 to {def.%player%}
+				add -2 to {chr.%player%}
+				add -2 to {lck.%player%}
+				add -5 to {spd.%player%}
+				add -1 to {mag.%player%}
+				add -6 to {res.%player%}
+			else if getBaseClass(player) is "Archer":
+				add -14 to {hpcap.%player%}
+				add -15 to {strcap.%player%}
+				add -14 to {defcap.%player%}
+				add -12 to {chrcap.%player%}
+				add -12 to {lckcap.%player%}
+				add -12 to {spdcap.%player%}
+				add -9 to {magcap.%player%}
+				add -9 to {rescap.%player%}
+				add -6 to {hp.%player%}
+				add -7 to {str.%player%}
+				add -6 to {def.%player%}
+				add -5 to {chr.%player%}
+				add -5 to {lck.%player%}
+				add -5 to {spd.%player%}
+				add -3 to {mag.%player%}
+				add -3 to {res.%player%}	
+			else if getBaseClass(player) is "Cavalier":
+				add -11 to {hpcap.%player%}
+				add -14 to {strcap.%player%}
+				add -10 to {defcap.%player%}
+				add -14 to {chrcap.%player%}
+				add -14 to {lckcap.%player%}
+				add -14 to {spdcap.%player%}
+				add -6 to {magcap.%player%}
+				add -14 to {rescap.%player%}
+				add -4 to {hp.%player%}
+				add -6 to {str.%player%}
+				add -3 to {def.%player%}
+				add -6 to {chr.%player%}
+				add -7 to {lck.%player%}
+				add -8 to {spd.%player%}
+				add -2 to {mag.%player%}
+				add -4 to {res.%player%}
+			else if getBaseClass(player) is "Survivor":
+				add -20 to {hpcap.%player%}
+				add -13 to {strcap.%player%}
+				add -13 to {defcap.%player%}
+				add -6 to {chrcap.%player%}
+				add -6 to {lckcap.%player%}
+				add -12 to {spdcap.%player%}
+				add -14 to {magcap.%player%}
+				add -13 to {rescap.%player%}
+				add -10 to {hp.%player%}
+				add -4 to {str.%player%}
+				add -4 to {def.%player%}
+				add -1 to {chr.%player%}
+				add -2 to {lck.%player%}
+				add -6 to {spd.%player%}
+				add -6 to {mag.%player%}
+				add -7 to {res.%player%}
+			else if getBaseClass(player) is "Gunslinger":
+				add -12 to {hpcap.%player%}
+				add -14 to {strcap.%player%}
+				add -11 to {defcap.%player%}
+				add -14 to {chrcap.%player%}
+				add -15 to {lckcap.%player%}
+				add -14 to {spdcap.%player%}
+				add -6 to {magcap.%player%}
+				add -11 to {rescap.%player%}
+				add -4 to {hp.%player%}
+				add -7 to {str.%player%}
+				add -3 to {def.%player%}
+				add -8 to {chr.%player%}
+				add -7 to {lck.%player%}
+				add -7 to {spd.%player%}
+				add -1 to {mag.%player%}
+				add -6 to {res.%player%}
+			else if getBaseClass(player) is "Devil Hunter":
+				set {combosenabled.%player%} to true
+				add -8 to {hpcap.%player%}
+				add -14 to {strcap.%player%}
+				add -8 to {defcap.%player%}
+				add -16 to {chrcap.%player%}
+				add -15 to {lckcap.%player%}
+				add -14 to {spdcap.%player%}
+				add -14 to {magcap.%player%}
+				add -8 to {rescap.%player%}
+				add -3 to {hp.%player%}
+				add -6 to {str.%player%}
+				add -2 to {def.%player%}
+				add -8 to {chr.%player%}
+				add -7 to {lck.%player%}
+				add -6 to {spd.%player%}
+				add -6 to {mag.%player%}
+				add -2 to {res.%player%}
+			else if getBaseClass(player) is "Strategist":
+				add -11 to {hpcap.%player%}
+				add -13 to {strcap.%player%}
+				add -14 to {defcap.%player%}
+				add -14 to {chrcap.%player%}
+				add -10 to {lckcap.%player%}
+				add -10 to {spdcap.%player%}
+				add -15 to {magcap.%player%}
+				add -10 to {rescap.%player%}
+				add -4 to {hp.%player%}
+				add -5 to {str.%player%}
+				add -6 to {def.%player%}
+				add -7 to {chr.%player%}
+				add -4 to {lck.%player%}
+				add -4 to {spd.%player%}
+				add -6 to {mag.%player%}
+				add -4 to {res.%player%}
+			else if getBaseClass(player) is "Mage":
+				add -10 to {hpcap.%player%}
+				add -8 to {strcap.%player%}
+				add -10 to {defcap.%player%}
+				add -12 to {chrcap.%player%}
+				add -12 to {lckcap.%player%}
+				add -12 to {spdcap.%player%}
+				add -19 to {magcap.%player%}
+				add -14 to {rescap.%player%}
+				add -3 to {hp.%player%}
+				add -3 to {str.%player%}
+				add -3 to {def.%player%}
+				add -5 to {chr.%player%}
+				add -5 to {lck.%player%}
+				add -5 to {spd.%player%}
+				add -10 to {mag.%player%}
+				add -6 to {res.%player%}
+			else if getBaseClass(player) is "Trickster":
+				add -13 to {hpcap.%player%}
+				add -10 to {strcap.%player%}
+				add -9 to {defcap.%player%}
+				add -18 to {chrcap.%player%}
+				add -15 to {lckcap.%player%}
+				add -15 to {spdcap.%player%}
+				add -8 to {magcap.%player%}
+				add -9 to {rescap.%player%}
+				add -4 to {hp.%player%}
+				add -3 to {str.%player%}
+				add -3 to {def.%player%}
+				add -11 to {chr.%player%}
+				add -7 to {lck.%player%}
+				add -7 to {spd.%player%}
+				add -2 to {mag.%player%}
+				add -3 to {res.%player%}
+			else if getBaseClass(player) is "Summoner":
+				add -18 to {hpcap.%player%}
+				add -6 to {strcap.%player%}
+				add -6 to {defcap.%player%}
+				add -10 to {chrcap.%player%}
+				add -12 to {lckcap.%player%}
+				add -16 to {spdcap.%player%}
+				add -17 to {magcap.%player%}
+				add -12 to {rescap.%player%}
+				add -7 to {hp.%player%}
+				add -2 to {str.%player%}
+				add -2 to {def.%player%}
+				add -4 to {chr.%player%}
+				add -5 to {lck.%player%}
+				add -7 to {spd.%player%}
+				add -9 to {mag.%player%}
+				add -4 to {res.%player%}
+			else if getBaseClass(player) is "Cleric":
+				add -15 to {hpcap.%player%}
+				add -6 to {strcap.%player%}
+				add -10 to {defcap.%player%}
+				add -12 to {chrcap.%player%}
+				add -15 to {lckcap.%player%}
+				add -9 to {spdcap.%player%}
+				add -12 to {magcap.%player%}
+				add -18 to {rescap.%player%}
+				add -6 to {hp.%player%}
+				add -2 to {str.%player%}
+				add -3 to {def.%player%}
+				add -5 to {chr.%player%}
+				add -7 to {lck.%player%}
+				add -3 to {spd.%player%}
+				add -7 to {mag.%player%}
+				add -7 to {res.%player%}
+			#ARMORMAGE
+			else if getBaseClass(player) is "Keeper":
+				add -12 to {hpcap.%player%}
+				add -8 to {strcap.%player%}
+				add -16 to {defcap.%player%}
+				add -11 to {chrcap.%player%}
+				add -11 to {lckcap.%player%}
+				add -9 to {spdcap.%player%}
+				add -16 to {magcap.%player%}
+				add -13 to {rescap.%player%}
+				add -8 to {hp.%player%}
+				add -2 to {str.%player%}
+				add -7 to {def.%player%}
+				add -3 to {chr.%player%}
+				add -5 to {lck.%player%}
+				add -3 to {spd.%player%}
+				add -6 to {mag.%player%}
+				add -7 to {res.%player%}
+			#CHEMIST
+			else if getBaseClass(player) is "Charlatan":
+				add -12 to {hpcap.%player%}
+				add -10 to {strcap.%player%}
+				add -13 to {defcap.%player%}
+				add -10 to {chrcap.%player%}
+				add -8 to {lckcap.%player%}
+				add -12 to {spdcap.%player%}
+				add -15 to {magcap.%player%}
+				add -17 to {rescap.%player%}
+				add -5 to {hp.%player%}
+				add -4 to {str.%player%}
+				add -3 to {def.%player%}
+				add -4 to {chr.%player%}
+				add -4 to {lck.%player%}
+				add -5 to {spd.%player%}
+				add -7 to {mag.%player%}
+				add -8 to {res.%player%}
+			#BARD
+			else if getBaseClass(player) is "Poet":
+				add -10 to {hpcap.%player%}
+				add -10 to {strcap.%player%}
+				add -9 to {defcap.%player%}
+				add -17 to {chrcap.%player%}
+				add -14 to {lckcap.%player%}
+				add -15 to {spdcap.%player%}
+				add -13 to {magcap.%player%}
+				add -9 to {rescap.%player%}
+				add -3 to {str.%player%}
+				add -2 to {def.%player%}
+				add -7 to {spd.%player%}
+				add -6 to {mag.%player%}
+				add -2 to {res.%player%}
+				add -4 to {hp.%player%}
+				add -7 to {chr.%player%}
+				add -7 to {lck.%player%}
+			#ASSASSIN
+			else if getBaseClass(player) is "Outlaw":
+				add -16 to {hpcap.%player%}
+				add -14 to {strcap.%player%}
+				add -9 to {defcap.%player%}
+				add -9 to {chrcap.%player%}
+				add -16 to {lckcap.%player%}
+				add -16 to {spdcap.%player%}
+				add -8 to {magcap.%player%}
+				add -9 to {rescap.%player%}
+				add -4 to {hp.%player%}
+				add -10 to {str.%player%}
+				add -3 to {def.%player%}
+				add -4 to {chr.%player%}
+				add -9 to {lck.%player%}
+				add -7 to {spd.%player%}
+				add -2 to {mag.%player%}
+				add -3 to {res.%player%}
+			#DARKMAGE
+			else if getBaseClass(player) is "Conjurer":
+				add -18 to {hpcap.%player%}
+				add -9 to {strcap.%player%}
+				add -11 to {defcap.%player%}
+				add -8 to {chrcap.%player%}
+				add -10 to {lckcap.%player%}
+				add -9 to {spdcap.%player%}
+				add -19 to {magcap.%player%}
+				add -13 to {rescap.%player%}
+				add -9 to {hp.%player%}
+				add -4 to {str.%player%}
+				add -4 to {def.%player%}
+				add -2 to {chr.%player%}
+				add -4 to {lck.%player%}
+				add -3 to {spd.%player%}
+				add -9 to {mag.%player%}
+				add -6 to {res.%player%}
+			#TROUBADOR
+			else if getBaseClass(player) is "Troubador":
+				add -11 to {hpcap.%player%}
+				add -11 to {strcap.%player%}
+				add -9 to {defcap.%player%}
+				add -11 to {chrcap.%player%}
+				add -16 to {lckcap.%player%}
+				add -17 to {spdcap.%player%}
+				add -13 to {magcap.%player%}
+				add -9 to {rescap.%player%}
+				add -4 to {str.%player%}
+				add -3 to {def.%player%}
+				add -8 to {spd.%player%}
+				add -6 to {mag.%player%}
+				add -3 to {res.%player%}
+				add -4 to {hp.%player%}
+				add -4 to {chr.%player%}
+				add -8 to {lck.%player%}
+			#Change player's class
+			#Select Class
+			if the name of the clicked item is "<gold>Mercenary":
+				if {promoted.%player%} is 1:
+					set {class.%player%} to "Mercenary"
+				else if {promoted.%player%} is 2:
+					set {class.%player%} to "Hero"
+				else if {promoted.%player%} is 3:
+					set {class.%player%} to "Prince"
+				else:
+					set {class.%player%} to "Lord"
+			else if the name of the clicked item is "<gold>Knight":
+				if {promoted.%player%} is 1:
+					set {class.%player%} to "Knight"
+				else if {promoted.%player%} is 2:
+					set {class.%player%} to "General"
+				else:
+					set {class.%player%} to "Chieftain"
+			else if the name of the clicked item is "<gold>Bladesman":
+				if {promoted.%player%} is 1:
+					set {class.%player%} to "Bladesman"
+				else if {promoted.%player%} is 2:
+					set {class.%player%} to "Myrmidon"
+				else:
+					set {class.%player%} to "Swordmaster"
+			else if the name of the clicked item is "<gold>Fighter":
+				if {promoted.%player%} is 1:
+					set {class.%player%} to "Fighter"
+				else if {promoted.%player%} is 2:
+					set {class.%player%} to "Berserker"
+				else:
+					set {class.%player%} to "Warrior"
+			else if the name of the clicked item is "<gold>Mage":
+				if {promoted.%player%} is 1:
+					set {class.%player%} to "Mage"
+				else if {promoted.%player%} is 2:
+					set {class.%player%} to "Sorcerer"
+				else:
+					set {class.%player%} to "Archwizard"
+			else if the name of the clicked item is "<gold>Cleric":
+				if {promoted.%player%} is 1:
+					set {class.%player%} to "Cleric"
+				else if {promoted.%player%} is 2:
+					set {class.%player%} to "Bishop"
+				else:
+					set {class.%player%} to "Sage"
+			else if the name of the clicked item is "<gold>Archer":
+				if {promoted.%player%} is 1:
+					set {class.%player%} to "Archer"
+				else if {promoted.%player%} is 2:
+					set {class.%player%} to "Ranger"
+				else:
+					set {class.%player%} to "Sniper"
+			else if the name of the clicked item is "<gold>Cavalier":
+				if {promoted.%player%} is 1:
+					set {class.%player%} to "Cavalier"
+				else if {promoted.%player%} is 2:
+					set {class.%player%} to "Paladin"
+				else:
+					set {class.%player%} to "Crusader"
+			else if the name of the clicked item is "<gold>Survivor":
+				if {promoted.%player%} is 1:
+					set {class.%player%} to "Survivor"
+				else if {promoted.%player%} is 2:
+					set {class.%player%} to "Builder"
+				else:
+					set {class.%player%} to "Craftsman"
+			else if the name of the clicked item is "<gold>Gunslinger":
+				if {promoted.%player%} is 1:
+					set {class.%player%} to "Gunslinger"
+				else if {promoted.%player%} is 2:
+					set {class.%player%} to "Rifleman"
+				else:
+					set {class.%player%} to "Doom Slayer"
+			else if the name of the clicked item is "<gold>Strategist":
+				if {promoted.%player%} is 1:
+					set {class.%player%} to "Strategist"
+				else if {promoted.%player%} is 2:
+					set {class.%player%} to "Tactician"
+				else:
+					set {class.%player%} to "Grandmaster"
+			else if the name of the clicked item is "<gold>Devil Hunter":
+				if {promoted.%player%} is 1:
+					set {class.%player%} to "Devil Hunter"
+				else if {promoted.%player%} is 2:
+					set {class.%player%} to "Angel Slayer"
+				else:
+					set {class.%player%} to "Platinum Star"
+			else if the name of the clicked item is "<gold>Summoner":
+				if {promoted.%player%} is 1:
+					set {class.%player%} to "Summoner"
+				else if {promoted.%player%} is 2:
+					set {class.%player%} to "Fell Commander"
+				else:
+					set {class.%player%} to "Requisitioner"
+			else if the name of the clicked item is "<gold>Trickster":
+				if {promoted.%player%} is 1:
+					set {class.%player%} to "Trickster"
+				else if {promoted.%player%} is 2:
+					set {class.%player%} to "Rogue"
+				else:
+					set {class.%player%} to "Freeblade"
+			else if the name of the clicked item is "<gold>Keeper":
+				if {promoted.%player%} is 1:
+					set {class.%player%} to "Keeper"
+				else if {promoted.%player%} is 2:
+					set {class.%player%} to "Warden"
+				else:
+					set {class.%player%} to "Guardian"
+			else if the name of the clicked item is "<gold>Charlatan":
+				if {promoted.%player%} is 1:
+					set {class.%player%} to "Charlatan"
+				else if {promoted.%player%} is 2:
+					set {class.%player%} to "Occultist"
+				else:
+					set {class.%player%} to "Augur"
+			else if the name of the clicked item is "<gold>Poet":
+				if {promoted.%player%} is 1:
+					set {class.%player%} to "Poet"
+				else if {promoted.%player%} is 2:
+					set {class.%player%} to "Bard"
+				else:
+					set {class.%player%} to "Minstrel"
+			else if the name of the clicked item is "<gold>Outlaw":
+				if {promoted.%player%} is 1:
+					set {class.%player%} to "Outlaw"
+				else if {promoted.%player%} is 2:
+					set {class.%player%} to "Cleaner"
+				else:
+					set {class.%player%} to "Assassin"
+			else if the name of the clicked item is "<gold>Conjurer":
+				if {promoted.%player%} is 1:
+					set {class.%player%} to "Conjurer"
+				else if {promoted.%player%} is 2:
+					set {class.%player%} to "Thaumaturge"
+				else:
+					set {class.%player%} to "Warlock"
+			else if the name of the clicked item is "<gold>Troubador":
+				if {promoted.%player%} is 1:
+					set {class.%player%} to "Troubador"
+				else if {promoted.%player%} is 2:
+					set {class.%player%} to "Valkyrie"
+				else:
+					set {class.%player%} to "Master Knight"
+			if getBaseClass(player) is "Mercenary":
+				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 25
+				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 25
+				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 25
+				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 25
+				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 25
+				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 25
+				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 25
+				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 25
+				add 13 to {hpcap.%player%}
+				add 12 to {strcap.%player%}
+				add 12 to {defcap.%player%}
+				add 12 to {chrcap.%player%}
+				add 12 to {lckcap.%player%}
+				add 12 to {spdcap.%player%}
+				add 12 to {magcap.%player%}
+				add 12 to {rescap.%player%}
+				add 5 to {str.%player%}
+				add 5 to {def.%player%}
+				add 5 to {spd.%player%}
+				add 5 to {mag.%player%}
+				add 5 to {res.%player%}
+				add 5 to {hp.%player%}
+				add 5 to {chr.%player%}
+				add 5 to {lck.%player%}
+			else if getBaseClass(player) is "Knight":
+				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 45
+				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 25
+				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 45
+				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 25
+				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 20
+				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 20
+				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 10
+				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 10
+				add 16 to {hpcap.%player%}
+				add 14 to {strcap.%player%}
+				add 16 to {defcap.%player%}
+				add 13 to {chrcap.%player%}
+				add 11 to {lckcap.%player%}
+				add 9 to {spdcap.%player%}
+				add 8 to {magcap.%player%}
+				add 9 to {rescap.%player%}
+				add 9 to {hp.%player%}
+				add 4 to {str.%player%}
+				add 9 to {def.%player%}
+				add 6 to {chr.%player%}
+				add 5 to {lck.%player%}
+				add 3 to {spd.%player%}
+				add 2 to {mag.%player%}
+				add 3 to {res.%player%}
+			else if getBaseClass(player) is "Bladesman":
+				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 20
+				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 45
+				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 10
+				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 25
+				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 40
+				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 50
+				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 5
+				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 5
+				add 10 to {hpcap.%player%}
+				add 18 to {strcap.%player%}
+				add 6 to {defcap.%player%}
+				add 10 to {chrcap.%player%}
+				add 20 to {lckcap.%player%}
+				add 21 to {spdcap.%player%}
+				add 6 to {magcap.%player%}
+				add 6 to {rescap.%player%}
+				add 5 to {hp.%player%}
+				add 8 to {str.%player%}
+				add 2 to {def.%player%}
+				add 2 to {chr.%player%}
+				add 9 to {lck.%player%}
+				add 10 to {spd.%player%}
+				add 2 to {mag.%player%}
+				add 2 to {res.%player%}
+			else if getBaseClass(player) is "Fighter":
+				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 40
+				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 45
+				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 35
+				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 20
+				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 10
+				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 25
+				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 10
+				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 15
+				add 15 to {hpcap.%player%}
+				add 16 to {strcap.%player%}
+				add 16 to {defcap.%player%}
+				add 12 to {chrcap.%player%}
+				add 10 to {lckcap.%player%}
+				add 12 to {spdcap.%player%}
+				add 6 to {magcap.%player%}
+				add 10 to {rescap.%player%}
+				add 8 to {hp.%player%}
+				add 9 to {str.%player%}
+				add 7 to {def.%player%}
+				add 2 to {chr.%player%}
+				add 2 to {lck.%player%}
+				add 5 to {spd.%player%}
+				add 1 to {mag.%player%}
+				add 6 to {res.%player%}
+			else if getBaseClass(player) is "Archer":
+				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 20
+				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 30
+				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 35
+				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 25
+				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 25
+				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 25
+				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 15
+				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 20
+				add 14 to {hpcap.%player%}
+				add 15 to {strcap.%player%}
+				add 14 to {defcap.%player%}
+				add 12 to {chrcap.%player%}
+				add 12 to {lckcap.%player%}
+				add 12 to {spdcap.%player%}
+				add 9 to {magcap.%player%}
+				add 9 to {rescap.%player%}
+				add 6 to {hp.%player%}
+				add 7 to {str.%player%}
+				add 6 to {def.%player%}
+				add 5 to {chr.%player%}
+				add 5 to {lck.%player%}
+				add 5 to {spd.%player%}
+				add 3 to {mag.%player%}
+				add 3 to {res.%player%}	
+			else if getBaseClass(player) is "Cavalier":
+				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 20
+				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 35
+				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 15
+				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 25
+				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 30
+				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 35
+				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 10
+				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 30
+				add 11 to {hpcap.%player%}
+				add 14 to {strcap.%player%}
+				add 10 to {defcap.%player%}
+				add 14 to {chrcap.%player%}
+				add 14 to {lckcap.%player%}
+				add 14 to {spdcap.%player%}
+				add 6 to {magcap.%player%}
+				add 14 to {rescap.%player%}
+				add 4 to {hp.%player%}
+				add 6 to {str.%player%}
+				add 3 to {def.%player%}
+				add 6 to {chr.%player%}
+				add 7 to {lck.%player%}
+				add 8 to {spd.%player%}
+				add 2 to {mag.%player%}
+				add 4 to {res.%player%}
+			else if getBaseClass(player) is "Survivor":
+				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 60
+				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 20
+				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 40
+				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 10
+				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 10
+				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 20
+				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 35
+				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 25
+				add 20 to {hpcap.%player%}
+				add 13 to {strcap.%player%}
+				add 13 to {defcap.%player%}
+				add 6 to {chrcap.%player%}
+				add 6 to {lckcap.%player%}
+				add 12 to {spdcap.%player%}
+				add 14 to {magcap.%player%}
+				add 13 to {rescap.%player%}
+				add 10 to {hp.%player%}
+				add 4 to {str.%player%}
+				add 4 to {def.%player%}
+				add 1 to {chr.%player%}
+				add 2 to {lck.%player%}
+				add 6 to {spd.%player%}
+				add 6 to {mag.%player%}
+				add 7 to {res.%player%}
+			else if getBaseClass(player) is "Gunslinger":
+				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 20
+				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 35
+				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 20
+				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 30
+				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 30
+				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 35
+				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 10
+				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 20
+				add 12 to {hpcap.%player%}
+				add 14 to {strcap.%player%}
+				add 11 to {defcap.%player%}
+				add 14 to {chrcap.%player%}
+				add 15 to {lckcap.%player%}
+				add 14 to {spdcap.%player%}
+				add 6 to {magcap.%player%}
+				add 11 to {rescap.%player%}
+				add 4 to {hp.%player%}
+				add 7 to {str.%player%}
+				add 3 to {def.%player%}
+				add 8 to {chr.%player%}
+				add 7 to {lck.%player%}
+				add 7 to {spd.%player%}
+				add 1 to {mag.%player%}
+				add 6 to {res.%player%}
+			else if getBaseClass(player) is "Devil Hunter":
+				set {combosenabled.%player%} to true
+				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 15
+				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 30
+				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 15
+				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 30
+				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 35
+				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 30
+				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 30
+				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 15
+				add 8 to {hpcap.%player%}
+				add 14 to {strcap.%player%}
+				add 8 to {defcap.%player%}
+				add 16 to {chrcap.%player%}
+				add 15 to {lckcap.%player%}
+				add 14 to {spdcap.%player%}
+				add 14 to {magcap.%player%}
+				add 8 to {rescap.%player%}
+				add 3 to {hp.%player%}
+				add 6 to {str.%player%}
+				add 2 to {def.%player%}
+				add 8 to {chr.%player%}
+				add 7 to {lck.%player%}
+				add 6 to {spd.%player%}
+				add 6 to {mag.%player%}
+				add 2 to {res.%player%}
+			else if getBaseClass(player) is "Strategist":
+				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 20
+				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 30
+				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 25
+				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 30
+				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 20
+				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 20
+				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 35
+				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 20
+				add 11 to {hpcap.%player%}
+				add 13 to {strcap.%player%}
+				add 14 to {defcap.%player%}
+				add 14 to {chrcap.%player%}
+				add 10 to {lckcap.%player%}
+				add 10 to {spdcap.%player%}
+				add 15 to {magcap.%player%}
+				add 10 to {rescap.%player%}
+				add 4 to {hp.%player%}
+				add 5 to {str.%player%}
+				add 6 to {def.%player%}
+				add 7 to {chr.%player%}
+				add 4 to {lck.%player%}
+				add 4 to {spd.%player%}
+				add 6 to {mag.%player%}
+				add 4 to {res.%player%}
+			else if getBaseClass(player) is "Mage":
+				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 20
+				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 15
+				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 15
+				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 25
+				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 30
+				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 25
+				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 35
+				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 35
+				add 10 to {hpcap.%player%}
+				add 8 to {strcap.%player%}
+				add 10 to {defcap.%player%}
+				add 12 to {chrcap.%player%}
+				add 12 to {lckcap.%player%}
+				add 12 to {spdcap.%player%}
+				add 19 to {magcap.%player%}
+				add 14 to {rescap.%player%}
+				add 3 to {hp.%player%}
+				add 3 to {str.%player%}
+				add 3 to {def.%player%}
+				add 5 to {chr.%player%}
+				add 5 to {lck.%player%}
+				add 5 to {spd.%player%}
+				add 10 to {mag.%player%}
+				add 6 to {res.%player%}
+			else if getBaseClass(player) is "Trickster":
+				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 20
+				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 20
+				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 20
+				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 45
+				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 40
+				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 35
+				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 10
+				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 10
+				add 13 to {hpcap.%player%}
+				add 10 to {strcap.%player%}
+				add 9 to {defcap.%player%}
+				add 18 to {chrcap.%player%}
+				add 15 to {lckcap.%player%}
+				add 15 to {spdcap.%player%}
+				add 8 to {magcap.%player%}
+				add 9 to {rescap.%player%}
+				add 4 to {hp.%player%}
+				add 3 to {str.%player%}
+				add 3 to {def.%player%}
+				add 11 to {chr.%player%}
+				add 7 to {lck.%player%}
+				add 7 to {spd.%player%}
+				add 2 to {mag.%player%}
+				add 3 to {res.%player%}
+			else if getBaseClass(player) is "Summoner":
+				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 35
+				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 10
+				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 10
+				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 20
+				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 30
+				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 35
+				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 40
+				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 20
+				add 18 to {hpcap.%player%}
+				add 6 to {strcap.%player%}
+				add 6 to {defcap.%player%}
+				add 10 to {chrcap.%player%}
+				add 12 to {lckcap.%player%}
+				add 16 to {spdcap.%player%}
+				add 17 to {magcap.%player%}
+				add 12 to {rescap.%player%}
+				add 7 to {hp.%player%}
+				add 2 to {str.%player%}
+				add 2 to {def.%player%}
+				add 4 to {chr.%player%}
+				add 5 to {lck.%player%}
+				add 7 to {spd.%player%}
+				add 9 to {mag.%player%}
+				add 4 to {res.%player%}
+			else if getBaseClass(player) is "Cleric":
+				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 25
+				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 5
+				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 10
+				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 25
+				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 30
+				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 10
+				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 45
+				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 50
+				add 15 to {hpcap.%player%}
+				add 6 to {strcap.%player%}
+				add 10 to {defcap.%player%}
+				add 12 to {chrcap.%player%}
+				add 15 to {lckcap.%player%}
+				add 9 to {spdcap.%player%}
+				add 12 to {magcap.%player%}
+				add 18 to {rescap.%player%}
+				add 6 to {hp.%player%}
+				add 2 to {str.%player%}
+				add 3 to {def.%player%}
+				add 5 to {chr.%player%}
+				add 7 to {lck.%player%}
+				add 3 to {spd.%player%}
+				add 7 to {mag.%player%}
+				add 7 to {res.%player%}
+			#ARMORMAGE
+			else if getBaseClass(player) is "Keeper":
+				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 25
+				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 10
+				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 35
+				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 10
+				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 25
+				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 20
+				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 40
+				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 35
+				add 12 to {hpcap.%player%}
+				add 8 to {strcap.%player%}
+				add 16 to {defcap.%player%}
+				add 11 to {chrcap.%player%}
+				add 11 to {lckcap.%player%}
+				add 9 to {spdcap.%player%}
+				add 16 to {magcap.%player%}
+				add 13 to {rescap.%player%}
+				add 8 to {hp.%player%}
+				add 2 to {str.%player%}
+				add 7 to {def.%player%}
+				add 3 to {chr.%player%}
+				add 5 to {lck.%player%}
+				add 3 to {spd.%player%}
+				add 6 to {mag.%player%}
+				add 7 to {res.%player%}
+			#CHEMIST
+			else if getBaseClass(player) is "Charlatan":
+				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 30
+				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 15
+				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 20
+				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 20
+				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 20
+				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 25
+				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 35
+				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 35
+				add 12 to {hpcap.%player%}
+				add 10 to {strcap.%player%}
+				add 13 to {defcap.%player%}
+				add 10 to {chrcap.%player%}
+				add 8 to {lckcap.%player%}
+				add 12 to {spdcap.%player%}
+				add 15 to {magcap.%player%}
+				add 17 to {rescap.%player%}
+				add 5 to {hp.%player%}
+				add 4 to {str.%player%}
+				add 3 to {def.%player%}
+				add 4 to {chr.%player%}
+				add 4 to {lck.%player%}
+				add 5 to {spd.%player%}
+				add 7 to {mag.%player%}
+				add 8 to {res.%player%}
+			#BARD
+			else if getBaseClass(player) is "Poet":
+				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 15
+				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 10
+				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 20
+				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 40
+				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 40
+				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 40
+				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 20
+				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 20
+				add 10 to {hpcap.%player%}
+				add 10 to {strcap.%player%}
+				add 9 to {defcap.%player%}
+				add 17 to {chrcap.%player%}
+				add 14 to {lckcap.%player%}
+				add 15 to {spdcap.%player%}
+				add 13 to {magcap.%player%}
+				add 9 to {rescap.%player%}
+				add 3 to {str.%player%}
+				add 2 to {def.%player%}
+				add 7 to {spd.%player%}
+				add 6 to {mag.%player%}
+				add 2 to {res.%player%}
+				add 4 to {hp.%player%}
+				add 7 to {chr.%player%}
+				add 7 to {lck.%player%}
+			#ASSASSIN
+			else if getBaseClass(player) is "Outlaw":
+				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 20
+				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 40
+				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 15
+				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 15
+				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 45
+				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 35
+				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 10
+				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 15
+				add 16 to {hpcap.%player%}
+				add 14 to {strcap.%player%}
+				add 9 to {defcap.%player%}
+				add 9 to {chrcap.%player%}
+				add 16 to {lckcap.%player%}
+				add 16 to {spdcap.%player%}
+				add 8 to {magcap.%player%}
+				add 9 to {rescap.%player%}
+				add 4 to {hp.%player%}
+				add 10 to {str.%player%}
+				add 3 to {def.%player%}
+				add 4 to {chr.%player%}
+				add 9 to {lck.%player%}
+				add 7 to {spd.%player%}
+				add 2 to {mag.%player%}
+				add 3 to {res.%player%}
+			#DARKMAGE
+			else if getBaseClass(player) is "Conjurer":
+				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 45
+				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 20
+				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 20
+				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 5
+				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 20
+				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 15
+				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 45
+				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 30
+				add 18 to {hpcap.%player%}
+				add 9 to {strcap.%player%}
+				add 11 to {defcap.%player%}
+				add 8 to {chrcap.%player%}
+				add 10 to {lckcap.%player%}
+				add 9 to {spdcap.%player%}
+				add 19 to {magcap.%player%}
+				add 13 to {rescap.%player%}
+				add 9 to {hp.%player%}
+				add 4 to {str.%player%}
+				add 4 to {def.%player%}
+				add 2 to {chr.%player%}
+				add 4 to {lck.%player%}
+				add 3 to {spd.%player%}
+				add 9 to {mag.%player%}
+				add 6 to {res.%player%}
+			#TROUBADOR
+			else if getBaseClass(player) is "Troubador":
+				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 20
+				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 20
+				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 15
+				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 20
+				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 45
+				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 40
+				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 25
+				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 15
+				add 11 to {hpcap.%player%}
+				add 11 to {strcap.%player%}
+				add 9 to {defcap.%player%}
+				add 11 to {chrcap.%player%}
+				add 16 to {lckcap.%player%}
+				add 17 to {spdcap.%player%}
+				add 13 to {magcap.%player%}
+				add 9 to {rescap.%player%}
+				add 4 to {str.%player%}
+				add 3 to {def.%player%}
+				add 8 to {spd.%player%}
+				add 6 to {mag.%player%}
+				add 3 to {res.%player%}
+				add 4 to {hp.%player%}
+				add 4 to {chr.%player%}
+				add 8 to {lck.%player%}
+			#Backgrounds
+			if {background.%player%} is "Commoner":
+				add 5 to {hpgrowth.%player%}
+				add 5 to {strgrowth.%player%}
+				add 5 to {defgrowth.%player%}
+				add 5 to {spdgrowth.%player%}
+				add 5 to {maggrowth.%player%}
+				add 5 to {resgrowth.%player%}
+				add 5 to {lckgrowth.%player%}
+				add 5 to {chrgrowth.%player%}
+			else if {background.%player%} is "Nobility":
+				add 15 to {hpgrowth.%player%}
+				add 5 to {strgrowth.%player%}
+				add 5 to {maggrowth.%player%}
+				add 15 to {lckgrowth.%player%}
+				add 15 to {chrgrowth.%player%}
+			else if {background.%player%} is "Chemist":
+				add 15 to {hpgrowth.%player%}
+				add 5 to {spdgrowth.%player%}
+				add 15 to {maggrowth.%player%}
+				add 15 to {resgrowth.%player%}
+				add 5 to {chrgrowth.%player%}
+			else if {background.%player%} is "Enchanter":
+				add 15 to {hpgrowth.%player%}
+				add 15 to {spdgrowth.%player%}
+				add 15 to {maggrowth.%player%}
+				add 5 to {resgrowth.%player%}
+				add 5 to {lckgrowth.%player%}
+			else if {background.%player%} is "Sellsword":
+				add 15 to {hpgrowth.%player%}
+				add 15 to {strgrowth.%player%}
+				add 15 to {defgrowth.%player%}
+				add 5 to {spdgrowth.%player%}
+				add 5 to {resgrowth.%player%}
+			else if {background.%player%} is "Thief":
+				add 5 to {hpgrowth.%player%}
+				add 15 to {strgrowth.%player%}
+				add 5 to {defgrowth.%player%}
+				add 15 to {spdgrowth.%player%}
+				add 5 to {resgrowth.%player%}
+				add 15 to {lckgrowth.%player%}
+			else if {background.%player%} is "Smith":
+				add 5 to {hpgrowth.%player%}
+				add 15 to {strgrowth.%player%}
+				add 15 to {defgrowth.%player%}
+				add 5 to {lckgrowth.%player%}
+				add 15 to {chrgrowth.%player%}
+			else if {background.%player%} is "Forager":
+				add 15 to {hpgrowth.%player%}
+				add 5 to {strgrowth.%player%}
+				add 15 to {defgrowth.%player%}
+				add 5 to {maggrowth.%player%}
+				add 15 to {resgrowth.%player%}
+			else if {background.%player%} is "Inventor":
+				add 15 to {maggrowth.%player%}
+				add 5 to {spdgrowth.%player%}
+				add 15 to {strgrowth.%player%}
+				add 5 to {maggrowth.%player%}
+				add 15 to {chrgrowth.%player%}
+			else if {background.%player%} is "Immigrant":
+				add 15 to {strgrowth.%player%}
+				add 5 to {defgrowth.%player%}
+				add 15 to {spdgrowth.%player%}
+				add 5 to {chrgrowth.%player%}
+				add 15 to {lckgrowth.%player%}
+			else if {background.%player%} is "Farmer":
+				add 15 to {strgrowth.%player%}
+				add 5 to {hpgrowth.%player%}
+				add 15 to {defgrowth.%player%}
+				add 5 to {maggrowth.%player%}
+				add 15 to {resgrowth.%player%}
+			else if {background.%player%} is "Researcher":
+				add 15 to {maggrowth.%player%}
+				add 5 to {chrgrowth.%player%}
+				add 15 to {lckgrowth.%player%}
+				add 5 to {hpgrowth.%player%}
+				add 15 to {resgrowth.%player%}
+			else if {background.%player%} is "Weaponmaster":
+				add 15 to {strgrowth.%player%}
+				add 5 to {defgrowth.%player%}
+				add 15 to {maggrowth.%player%}
+				add 5 to {resgrowth.%player%}
+				add 15 to {lckgrowth.%player%}
+			#Dragonborn Backgrounds
+			else if {background.%player%} is "Windcaller":
+				add 20 to {hpgrowth.%player%}
+				add 20 to {spdgrowth.%player%}
+				add 10 to {strgrowth.%player%}
+				add 10 to {maggrowth.%player%}
+			else if {background.%player%} is "Firestorm":
+				add 20 to {strgrowth.%player%}
+				add 20 to {maggrowth.%player%}
+				add 10 to {spdgrowth.%player%}
+				add 10 to {lckgrowth.%player%}
+			else if {background.%player%} is "Waterflow":
+				add 20 to {hpgrowth.%player%}
+				add 20 to {defgrowth.%player%}
+				add 10 to {resgrowth.%player%}
+				add 10 to {lckgrowth.%player%}
+			if {traits.%player%::Veteran} is true:
+				subtract 30 from {hpgrowth.%player%}
+				subtract 30 from {strgrowth.%player%}
+				subtract 30 from {defgrowth.%player%}
+				subtract 30 from {maggrowth.%player%}
+				subtract 30 from {resgrowth.%player%}
+				subtract 30 from {spdgrowth.%player%}
+				subtract 30 from {lckgrowth.%player%}
+				subtract 30 from {chrgrowth.%player%}
+			if {traits.%player%::Trainee} is true:
+				add 30 to {hpgrowth.%player%}
+				add 30 to {strgrowth.%player%}
+				add 30 to {defgrowth.%player%}
+				add 30 to {maggrowth.%player%}
+				add 30 to {resgrowth.%player%}
+				add 30 to {spdgrowth.%player%}
+				add 30 to {lckgrowth.%player%}
+				add 30 to {chrgrowth.%player%}
+			#LCK growth rate bonus
+			add floor({lck.%player%} * 1.5) to {hpgrowth.%player%}
+			add floor({lck.%player%} * 1.5) to {strgrowth.%player%}
+			add floor({lck.%player%} * 1.5) to {defgrowth.%player%}
+			add floor({lck.%player%} * 1.5) to {chrgrowth.%player%}
+			add floor({lck.%player%} * 1.5) to {lckgrowth.%player%}
+			add floor({lck.%player%} * 1.5) to {spdgrowth.%player%}
+			add floor({lck.%player%} * 1.5) to {maggrowth.%player%}
+			add floor({lck.%player%} * 1.5) to {resgrowth.%player%}
+			close the player's inventory
+			send title "<gold><bold>--==CLASS CHANGE!==--" with subtitle "<gold>%{class.%player%}%" to player for 3 seconds with fade in 0.5 second and fade out 1 seconds
+			play sound "entity.player.levelup" with volume 2 and pitch 1 at player for player
+			play 10 (mob spawner flames with speed 1) at the player
+			play 50 (magical critical hit with speed 0) at the player
+			play 50 (smoke with speed 0) at the player
+			wait 2 seconds
+			play sound "entity.experience_orb.pickup" with volume 2 and pitch 0.8 at player for player
+			send formatted "Strength: %{_oldstr.%player%}% --> %{str.%player%}%"
+			wait 0.2 seconds
+			play sound "entity.experience_orb.pickup" with volume 2 and pitch 0.8 at player for player
+			send formatted "Defense: %{_olddef.%player%}% --> %{def.%player%}%"
+			wait 0.2 seconds
+			play sound "entity.experience_orb.pickup" with volume 2 and pitch 0.8 at player for player
+			send formatted "Luck: %{_oldlck}% --> %{lck.%player%}%"
+			wait 0.2 seconds
+			play sound "entity.experience_orb.pickup" with volume 2 and pitch 0.8 at player for player
+			send formatted "Charisma: %{_oldchr}% --> %{chr.%player%}%"
+			wait 0.2 seconds
+			play sound "entity.experience_orb.pickup" with volume 2 and pitch 0.8 at player for player
+			send formatted "Speed: %{_oldspd.%player%}% --> %{spd.%player%}%"
+			wait 0.2 seconds
+			play sound "entity.experience_orb.pickup" with volume 2 and pitch 0.8 at player for player
+			send formatted "Magic: %{_oldmag.%player%}% --> %{mag.%player%}%"
+			wait 0.2 seconds
+			play sound "entity.experience_orb.pickup" with volume 2 and pitch 0.8 at player for player
+			send formatted "Resistance: %{_oldres}% --> %{res.%player%}%"
+			wait 0.2 seconds
+			play sound "entity.experience_orb.pickup" with volume 2 and pitch 0.8 at player for player
+			send formatted "Health: %{_oldhp.%player%}% --> %{hp.%player%}%"
+			set the player's maximum health to ({hp.%player%} / 2) + ({hpbuff.%player%} / 2)
+			if {quotesToggle.%player%} is true:
+				make player say {playerQuotes.%player%::Promotion}
+			if {useBranchingPromotion.%player%} is true:
+				clear {useBranchingPromotion.%player%}
+				if {promoted.%player%} is 1:
+					set {promotionready.%player%} to 1
+					make player execute command "/class promote %{class.%player%}%1"
+				else if {promoted.%player%} is 2:
+					set {promotionready.%player%} to 1
+					make player execute command "/class promote %{class.%player%}%"
+				else if {promoted.%player%} is more than 2:
+					set {promotionready.%player%} to 1
+					if {class.%player%} is "Prince":
+						make player execute command "/class promote Prince"
+					else:
+						make player execute command "/class promote Overclass"
+								

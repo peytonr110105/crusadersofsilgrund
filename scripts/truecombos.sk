@@ -1,16 +1,133 @@
 #Combo System that hooks into Skills.sk and Classes.sk to provide a Devil May Cry / Bayonetta style combo meter.
+#Toggle Combos command
 command /combo [<text="toggle">]:
 	description: Toggle combo system.
 	usage: /combo
 	executable by: players
 	trigger:
-		if {combosenabled.%player%} is set:
+		if arg 1 is not "enable":
+			if {combosenabled.%player%} is set:
+				hide bossbar "dt.%player's uuid%"
+				destroy bossbar "dt.%player's uuid%"
+				clear {combosenabled.%player%}
+				send "<gold><bold>[Combo System]<reset> Disabled combo system."
+			else:
+				set {dtMeter.%player%} to 0
+				set {dtMeterCap.%player%} to ({lvl.%player%} * 10) + 20
+				create bossbar titled "<light red>Devil Trigger" and id "dt.%player's uuid%" for player with progress 0 with colors red
+				display bossbar "dt.%player's uuid%"
+				set bossbar "dt.%player's uuid%" progress to {dtMeter.%player%} / {dtMeterCap.%player%} * 100
+				set {combosenabled.%player%} to 1
+				send formatted "<run command:/dhtutorial 0><gold>View Devil Hunter tutorial? [Click here]"
+		else if arg 1 is "enable":
+			clear {comboscore.%player%}
+			set {combograde.%player%} to 0
+			set {combomult.%player%} to 1
+			clear {t_comboDowntime.%player%}
+			clear {t_comboDowntimePenalty.%player%}
+			clear {combodecay.%player%}
+			clear {comboscale.%player%}
+			set {combobank.%player%} to 0
+			set {comboscalar.%player%} to 0
+			set {dtMeter.%player%} to 0
+			set {dtMeterCap.%player%} to ({lvl.%player%} * 10) + 20
+			create bossbar titled "<light red>Devil Trigger" and id "dt.%player's uuid%" for player with progress 0 with colors red
+			display bossbar "dt.%player's uuid%"
+			set bossbar "dt.%player's uuid%" progress to {dtMeter.%player%} / {dtMeterCap.%player%} * 100
+			set {combosenabled.%player%} to 1
+			send formatted "<run command:/dhtutorial 0><gold>View Devil Hunter tutorial? [Click here]"
+		else:
+			hide bossbar "dt.%player's uuid%"
+			destroy bossbar "dt.%player's uuid%"
 			clear {combosenabled.%player%}
 			send "<gold><bold>[Combo System]<reset> Disabled combo system."
-		else:
-			set {combosenabled.%player%} to 1
-			send "<gold><bold>[Combo System]<reset> Enabled combo system. Consecutive hits and stylish actions like dodge rolls increase your combo score. Raise your score to earn a damage multiplier!"
 
+#Devil Hunter tutorial
+command /dhtutorial [<number=0>]:
+	trigger:
+		if arg 1 is 0:
+			send formatted "<gold>--==Devil Hunter tutorial==--"
+			send formatted "<white>The Devil Hunter class gives you a unique way to fight enemies, rewarding you with extra gold and increased damage for stylish play."
+			send formatted "<run command:/dhtutorial 1><gold>Next"
+		else if arg 1 is 1:
+			send formatted "<gold>--==Devil Hunter tutorial==--"
+			send formatted "<white>After landing enough hits on an enemy, you will start a Combo. The more damage you deal and the faster you can do so, the more Style Points you will earn."
+			send formatted "<white>"
+			send formatted "<white>Earning enough Style Points will increase your Stylish Rank, boosting your damage dealt. Keep up the action to hit the SSS rank!"
+			send formatted "<white>"
+			send formatted "<white>Attacking an enemy that is airbone will earn extra Style Points, with the bonus increasing for every hit before the enemy lands."
+			send formatted "<white>"
+			send formatted "<white>Some weapon skills also make it easier to earn Style Points. Equip the new Stylish refine at a Blacksmith to earn double Style Points if you have trouble maintaining Combos."
+			send formatted "<run command:/dhtutorial 0><gold>Back"
+			send formatted "<run command:/dhtutorial 2><gold>Next"
+		else if arg 1 is 2:
+			send formatted "<gold>--==Devil Hunter tutorial==--"
+			send formatted "<white>The amount of Style Points you need for the next Stylish Rank is displayed above your hotbar. Because of this, you won't be able to see enemy health once you start a combo."
+			send formatted "<white>"
+			send formatted "<white>Your Style Points slowly decay over time. Keep hitting enemies to maintain your Stylish Rank, or else you will start to lose your bonuses."
+			send formatted "<white>"
+			send formatted "<white>The Style Points needed to maintain your current Stylish Rank, as well as your current number of Style Points, is displayed above your hotbar."
+			send formatted "<white>"
+			send formatted "<white>Whenever your Stylish Rank changes, your Style Points will not decrease for a few seconds. When this happens, your Style Points will appear blue."
+			send formatted "<white>"
+			send formatted "<white>Taking damage heavily reduces your Style Points."
+			send formatted "<run command:/dhtutorial 1><gold>Back"
+			send formatted "<run command:/dhtutorial 3><gold>Next"
+		else if arg 1 is 3:
+			send formatted "<gold>--==Devil Hunter tutorial==--"
+			send formatted "<white>Your combo ends when you can no longer maintain a D rank combo."
+			send formatted "<white>"
+			send formatted "<white>Once your combo ends, you will be awarded extra gold based on the total number of Style Points you earned during the combo."
+			send formatted "<white>"
+			send formatted "<white>However, if you enter Bleedout or are killed during your combo, your combo immediately ends and you forfeit all of your Style Points."
+			send formatted "<run command:/dhtutorial 2><gold>Back"
+			send formatted "<run command:/dhtutorial 4><gold>Next"
+		else if arg 1 is 4:
+			send formatted "<gold>--==Devil Hunter tutorial==--"
+			send formatted "<white>As a Devil Hunter, you have access to the extremely powerful Devil Trigger technique."
+			send formatted "<white>"
+			send formatted "<white>Attack enemies with stylish combos to fill the Devil Trigger gague at the top of your screen."
+			send formatted "<white>"
+			send formatted "<white>Once you have at least partially filled the gague, right-click while sneaking with an empty hand to activate your Devil Trigger."
+			send formatted "<white>"
+			send formatted "<white>While in your Devil Trigger state, your offensive stats are increased and you rapidly regenerate health."
+			send formatted "<white>"
+			send formatted "<white>The Devil Trigger gague will slowly deplete while in Devil Trigger state. When it empties, you will exit Devil Trigger."
+			send formatted "<run command:/dhtutorial 3><gold>Back"
+			send formatted "<run command:/dhtutorial 5><gold>Next"
+		else if arg 1 is 5:
+			send formatted "<gold>--==Devil Hunter tutorial==--"
+			send formatted "<white>You can end Devil Trigger early by sneaking and right-clicking with an empty hand."
+			send formatted "<white>"
+			send formatted "<white>Deactivate Devil Trigger when needed, as the gague cannot be refilled while Devil Trigger is active."
+			send formatted "<white>"
+			send formatted "<white>Use the Devil Heart item to immediately refill the Devil Trigger gague. It can be crafted or found as loot."
+			send formatted "<white>"
+			send formatted "<white>Your Devil Trigger gague can hold more Devil Trigger time as your character's level increases."
+			send formatted "<run command:/dhtutorial 4><gold>Back"
+			send formatted "<run command:/dhtutorial 6><gold>Next"
+		else if arg 1 is 6:
+			send formatted "<gold>--==Devil Hunter tutorial==--"
+			send formatted "<white>This concludes the Devil Hunter tutorial. You can view this tutorial again with /dhtutorial."
+			send formatted "<white>"
+			send formatted "<white>You can adjust the names of the Stylish Ranks with the command /setStyleRankMessages."
+			send formatted "<white>"
+			send formatted "<white>Use /setStyleRankMessages custom (0-6) (message) to specify a custom Stylish Rank name for that ranking. (D = 0, SSS = 6)"
+			give 1 eye of ender named "<orange>Devil Heart" with lore "<white>Right-click to completely fill the Devil Trigger gauge." to the player
+			send formatted "<run command:/setStyleRankMessages><gold>Change Stylish Rank titles"
+
+#Returns 1 if player's class should be able to use Devil Trigger
+function canUseDevilTrigger(PLR: player) :: number:
+	if {class.%{_PLR}%} is "Devil Hunter":
+		return 1
+	else if {class.%{_PLR}%} is "Angel Slayer":
+		return 1
+	else if {class.%{_PLR}%} is "Platinum Star":
+		return 1
+	else:
+		return 0
+
+#Configure combo vars
 on join:
 	clear {comboscore.%player%}
 	set {combograde.%player%} to 0
@@ -19,56 +136,159 @@ on join:
 	clear {comboscale.%player%}
 	clear {comboscalar.%player%}
 
+#Configure style rating messages command
+command /setStyleRankMessages [<text="help">] [<number=0>] [<text="null">]:
+	trigger:
+		if arg 1 is "help":
+			send "<light yellow>Stylish rank title options (click option or type Custom as an argument to set manually):"
+			send "<tooltip: Dull/Cool!/Bravo!/Absolute!/Stylish!><run command:/setStyleRankMessages DMC1><light blue>Devil May Cry"
+			send "<tooltip: Don't Worry/Come On!/Bingo!/Are You Ready?/Show Time!!><run command:/setStyleRankMessages DMC2><light blue>Devil May Cry 2"
+			send "<tooltip: Dope!/Crazy!/Blast!/Alright!/Sweet!/SShowtime!!/SSStylish!!!><run command:/setStyleRankMessages DMC3><light blue>Devil May Cry 3"
+			send "<tooltip: Deadly!/Carnage!/Brutal!/Atomic!/Smokin'!/Smokin' Style!!/Smokin' Sick Style!!!><run command:/setStyleRankMessages DMC4><light blue>Devil May Cry 4"
+			send "<tooltip: Dirty!/Cruel!/Brutal!/Anarchic!/Savage!/SSadistic!!/SSSensational!!!><run command:/setStyleRankMessages Reboot><light blue>DmC: Devil May Cry"
+			send "<tooltip: Dismal/Crazy/Badass/Apocalyptic!/Savage!/Sick Skills!/Smokin' Sexy Style!><run command:/setStyleRankMessages DMC5><light blue>Devil May Cry 5"
+			send "<tooltip: Dope!/Cool!/Bangin'!/Ace!/Showtime!!/Sensational Style!!/Smokin' Sick Style!!!><run command:/setStyleRankMessages CoS><light blue>Crusaders of Silgrund"
+			send "<tooltip: Dialed In?/Crank It Up!/Bring It!/All In!/Steppin' Up!/SShow 'Em!!/SSSlay It!!!><run command:/setStyleRankMessages Slang><light blue>CoS Slang"
+		else if arg 1 is "custom":
+			set {styleRankTitles.%player%::%arg 2%} to arg 3
+			send formatted "<light yellow>Updated Stylish Rank %arg 2%'s title to <reset>%arg 3%."
+		else if arg 1 is "DMC1":
+			set {styleRankTitles.%player%::0} to "<yellow>Dull"
+			set {styleRankTitles.%player%::1} to "<light yellow>Cool!"
+			set {styleRankTitles.%player%::2} to "<green>Bravo!"
+			set {styleRankTitles.%player%::3} to "<light blue>Absolute!"
+			set {styleRankTitles.%player%::4} to "<light red>Stylish!"
+			set {styleRankTitles.%player%::5} to "<red>SStylish!!"
+			set {styleRankTitles.%player%::6} to "<red><bold>SSStylish!!!"
+			send formatted "<light yellow>Now using the DMC1 Stylish Rank titles."
+		else if arg 1 is "DMC2":
+			set {styleRankTitles.%player%::0} to "<light green>Don't Worry"
+			set {styleRankTitles.%player%::1} to "<light yellow>Come On!"
+			set {styleRankTitles.%player%::2} to "<orange>Bingo!"
+			set {styleRankTitles.%player%::3} to "<orange>Are You Ready?"
+			set {styleRankTitles.%player%::4} to "<light red>Show Time!"
+			set {styleRankTitles.%player%::5} to "<red>SShow Time!!"
+			set {styleRankTitles.%player%::6} to "<red><bold>SSShow Time!!!"
+			send formatted "<light yellow>Now using the DMC2 Stylish Rank titles."
+		else if arg 1 is "DMC3":
+			set {styleRankTitles.%player%::0} to "<light red>Dope!"
+			set {styleRankTitles.%player%::1} to "<light red>Crazy!"
+			set {styleRankTitles.%player%::2} to "<light red>Blast!"
+			set {styleRankTitles.%player%::3} to "<light red>Alright!"
+			set {styleRankTitles.%player%::4} to "<light red>Sweet!"
+			set {styleRankTitles.%player%::5} to "<red>SShowtime!!"
+			set {styleRankTitles.%player%::6} to "<red><bold>SSStylish!!!"
+			send formatted "<light yellow>Now using the DMC3 Stylish Rank titles."
+		else if arg 1 is "DMC4":
+			set {styleRankTitles.%player%::0} to "<light red>Deadly!"
+			set {styleRankTitles.%player%::1} to "<light red>Carnage!"
+			set {styleRankTitles.%player%::2} to "<light red>Brutal!"
+			set {styleRankTitles.%player%::3} to "<light red>Atomic!"
+			set {styleRankTitles.%player%::4} to "<light red>Smokin'!"
+			set {styleRankTitles.%player%::5} to "<red>Smokin' Style!!"
+			set {styleRankTitles.%player%::6} to "<red><bold>Smokin' Sick Style!!!"
+			send formatted "<light yellow>Now using the DMC4 Stylish Rank titles."
+		else if arg 1 is "Reboot":
+			set {styleRankTitles.%player%::0} to "<bold>Dirty!"
+			set {styleRankTitles.%player%::1} to "<bold>Cruel!"
+			set {styleRankTitles.%player%::2} to "<bold>Brutal!"
+			set {styleRankTitles.%player%::3} to "<bold>Anarchic!"
+			set {styleRankTitles.%player%::4} to "<light red>Savage!"
+			set {styleRankTitles.%player%::5} to "<red>SSadistic!!"
+			set {styleRankTitles.%player%::6} to "<red><bold>SSSensational!!!"
+			send formatted "<light yellow>Now using the DmC: Devil May Cry Stylish Rank titles."
+		else if arg 1 is "DMC5":
+			set {styleRankTitles.%player%::0} to "<brown>Dismal"
+			set {styleRankTitles.%player%::1} to "<cyan>Crazy"
+			set {styleRankTitles.%player%::2} to "<cyan>Badass"
+			set {styleRankTitles.%player%::3} to "<light blue>Apocalyptic"
+			set {styleRankTitles.%player%::4} to "<light yellow>Savage!"
+			set {styleRankTitles.%player%::5} to "<gold>Sick Skills!!"
+			set {styleRankTitles.%player%::6} to "<gold><bold>Smokin' Sexy Style!!!"
+			send formatted "<light yellow>Now using the DMC5 Stylish Rank titles."
+		else if arg 1 is "CoS":
+			set {styleRankTitles.%player%::0} to "<light gray>Dope!"
+			set {styleRankTitles.%player%::1} to "<bold>Cool!"
+			set {styleRankTitles.%player%::2} to "<light yellow>Bangin'!"
+			set {styleRankTitles.%player%::3} to "<gold>Ace!"
+			set {styleRankTitles.%player%::4} to "<light red>Showtime!"
+			set {styleRankTitles.%player%::5} to "<red>Sensational Style!!"
+			set {styleRankTitles.%player%::6} to "<red><bold>Smokin' Sick Style!!!"	
+			send formatted "<light yellow>Now using the Crusader of Silgrund Stylish Rank titles."
+		else if arg 1 is "Slang":
+			set {styleRankTitles.%player%::0} to "<light gray>Dialed In?"
+			set {styleRankTitles.%player%::1} to "<bold>Crank It Up!"
+			set {styleRankTitles.%player%::2} to "<light yellow>Bring It!"
+			set {styleRankTitles.%player%::3} to "<gold>All In!"
+			set {styleRankTitles.%player%::4} to "<light red>Steppin' Up!"
+			set {styleRankTitles.%player%::5} to "<red>SShow 'Em!!"
+			set {styleRankTitles.%player%::6} to "<red><bold>SSSlay It!!!"
+			send formatted "<light yellow>Now using the CoS Slang Stylish Rank titles."			
+			
+
 every 0.25 seconds:
 	loop all players:
 		if {combosenabled.%loop-player%} is 1:
 			if {comboscore.%loop-player%} is more than 0:
 				if {combograde.%loop-player%} is 0:
-					if {comboscalar.%loop-player%} is more than 3:
-						set {comboscale.%loop-player%} to floor({comboscore.%loop-player%} / 4)
+					if {comboscalar.%loop-player%} is more than 2:
+						set {comboscale.%loop-player%} to floor({comboscore.%loop-player%} / 3)
 						set {combograde.%loop-player%} to 1
 						set {comboscalar.%loop-player%} to 0
 						set {combobank.%loop-player%} to 0
 				else:
-					add 0.25 to {t_comboDowntime.%loop-player%}
-					set {t_comboDowntimePenalty.%loop-player%} to (((({t_comboDowntime.%loop-player%} * {t_comboDowntime.%loop-player%}) + 0.1) / (100 / ({t_comboDowntime.%loop-player%} + 0.1))) / (7 - {combograde.%loop-player%}))
-					subtract (({comboscore.%loop-player%} / ({comboscale.%loop-player%} + {combograde.%loop-player%}) + ({combograde.%loop-player%} ^ 2)) / 6) + {t_comboDowntimePenalty.%loop-player%} from {comboscore.%loop-player%}
-					if {comboscore.%loop-player%} is less than (({combograde.%loop-player%} * 2.5) + ({combograde.%loop-player%} ^ 2) * {comboscale.%loop-player%}):
-						subtract 1 from {combograde.%loop-player%}
-						if {combograde.%loop-player%} is 7:
-							send title "<red><bold>Smokin' Sick Style!!!" with subtitle "<gold><bold>[3x Damage Multiplier!]" to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-							set {combomult.%loop-player%} to 3
-						else if {combograde.%loop-player%} is 6:
-							send title "<light red><bold>Sensational Style!!" with subtitle "<bold>[2.5x Damage Multiplier!]" to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-							set {combomult.%loop-player%} to 2.5
-						else if {combograde.%loop-player%} is 5:
-							send title "<light red>Showtime!!" with subtitle "<white>[2x Damage Multiplier!]" to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-							set {combomult.%loop-player%} to 2
-						else if {combograde.%loop-player%} is 4:
-							set {combomult.%loop-player%} to 1.75
-							send title "<gold>Ace!" with subtitle "<bold>[1.75x Damage Multiplier!]" to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-						else if {combograde.%loop-player%} is 3:
-							set {combomult.%loop-player%} to 1.5
-							send title "<light yellow>Bangin'!" with subtitle "<bold>[1.5x Damage Multiplier!]" to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-						else if {combograde.%loop-player%} is 2:
-							set {combomult.%loop-player%} to 1.25
-							send title "<bold>Cool!" with subtitle "<bold>[1.25x Damage Multiplier!]" to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-						else if {combograde.%loop-player%} is 1:
-							set {combomult.%loop-player%} to 1
-							send title "<light gray>Dope!" with subtitle "" to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-						else if {combograde.%loop-player%} is set:
-							send title "<light red>Combo Dropped..." with subtitle "" to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-							clear {comboscore.%loop-player%}
-							set {comboscalar.%loop-player%} to 0
-							clear {comboscale.%loop-player%}
-							set {combograde.%loop-player%} to 0
-							clear {t_comboDowntime.%loop-player%}
-							clear {t_comboDowntimePenalty.%loop-player%}
-							wait 3.5 seconds
-							send title "<yellow>Total Style Points: %ceil({combobank.%loop-player%})%" with subtitle "+$%ceil({combobank.%loop-player%} ^ 0.825)% earned." to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-							add ceil({combobank.%loop-player%} ^ 0.825) to loop-player's balance
-							set {combobank.%loop-player%} to 0
-					send action bar "<bold>Style Points: <reset><gold>%{comboscore.%loop-player%}%<reset><bold> | Points for next Stylish Rank:<reset><gold> %((({combograde.%loop-player%} + 1) * 3.5) + (({combograde.%loop-player%} + 1) ^ 2) * {comboscale.%loop-player%})%<reset><bold> | Points To Maintain: <reset><gold>%(({combograde.%loop-player%} * 2.5) + ({combograde.%loop-player%} ^ 2) * {comboscale.%loop-player%})%" to loop-player
+					if {t_comboGracePeriod.%loop-player%} is not set:
+						add 0.25 to {t_comboDowntime.%loop-player%}
+						set {t_comboDowntimePenalty.%loop-player%} to (((({t_comboDowntime.%loop-player%} * {t_comboDowntime.%loop-player%}) + 0.1) / (100 / ({t_comboDowntime.%loop-player%} + 0.1))) / (8 - {combograde.%loop-player%}))
+						subtract (({comboscore.%loop-player%} / ({comboscale.%loop-player%} + {combograde.%loop-player%}) + ({combograde.%loop-player%} ^ 2)) / 6) + {t_comboDowntimePenalty.%loop-player%} from {comboscore.%loop-player%}
+						if {comboscore.%loop-player%} is less than (({combograde.%loop-player%} * 2.5) + ({combograde.%loop-player%} ^ 2) * {comboscale.%loop-player%}):
+							subtract 1 from {combograde.%loop-player%}
+							if {combograde.%loop-player%} is 7:
+								send title "%{styleRankTitles.%loop-player%::6}%" with subtitle "<gold><bold>[3x Damage Multiplier!]" to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+								set {combomult.%loop-player%} to 3
+								set {t_comboGracePeriod.%loop-player%} to 12
+							else if {combograde.%loop-player%} is 6:
+								send title "%{styleRankTitles.%loop-player%::5}%" with subtitle "<bold>[2.5x Damage Multiplier!]" to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+								set {combomult.%loop-player%} to 2.5
+								set {t_comboGracePeriod.%loop-player%} to 12
+							else if {combograde.%loop-player%} is 5:
+								send title "%{styleRankTitles.%loop-player%::4}%" with subtitle "<white>[2x Damage Multiplier!]" to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+								set {combomult.%loop-player%} to 2
+								set {t_comboGracePeriod.%loop-player%} to 12
+							else if {combograde.%loop-player%} is 4:
+								set {combomult.%loop-player%} to 1.75
+								set {t_comboGracePeriod.%loop-player%} to 12
+								send title "%{styleRankTitles.%loop-player%::3}%" with subtitle "<bold>[1.75x Damage Multiplier!]" to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+							else if {combograde.%loop-player%} is 3:
+								set {combomult.%loop-player%} to 1.5
+								set {t_comboGracePeriod.%loop-player%} to 12
+								send title "%{styleRankTitles.%loop-player%::2}%" with subtitle "<bold>[1.5x Damage Multiplier!]" to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+							else if {combograde.%loop-player%} is 2:
+								set {combomult.%loop-player%} to 1.25
+								set {t_comboGracePeriod.%loop-player%} to 12
+								send title "%{styleRankTitles.%loop-player%::1}%" with subtitle "<bold>[1.25x Damage Multiplier!]" to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+							else if {combograde.%loop-player%} is 1:
+								set {combomult.%loop-player%} to 1
+								set {t_comboGracePeriod.%loop-player%} to 12
+								send title "%{styleRankTitles.%loop-player%::0}%" with subtitle "" to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+							else if {combograde.%loop-player%} is set:
+								send title "<light red>Combo Dropped..." with subtitle "" to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+								clear {comboscore.%loop-player%}
+								set {comboscalar.%loop-player%} to 0
+								clear {comboscale.%loop-player%}
+								set {combograde.%loop-player%} to 0
+								clear {t_comboDowntime.%loop-player%}
+								clear {t_comboDowntimePenalty.%loop-player%}
+								wait 3.5 seconds
+								send title "<yellow>Total Style Points: %ceil({combobank.%loop-player%} * 4)%" with subtitle "+$%ceil({combobank.%loop-player%} ^ 1.05)% earned." to loop-player for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+								add ceil({combobank.%loop-player%} ^ 1.05) to loop-player's balance
+								set {combobank.%loop-player%} to 0
+						send action bar "<bold>Style Points: <reset><gold>%{comboscore.%loop-player%}%<reset><bold> | Points for next Stylish Rank:<reset><gold> %((({combograde.%loop-player%} + 1) * 3.5) + (({combograde.%loop-player%} + 1) ^ 2) * {comboscale.%loop-player%})%<reset><bold> | Points To Maintain: <reset><gold>%(({combograde.%loop-player%} * 2.5) + ({combograde.%loop-player%} ^ 2) * {comboscale.%loop-player%})%" to loop-player
+					else:
+						subtract 1 from {t_comboGracePeriod.%loop-player%}
+						if {t_comboGracePeriod.%loop-player%} is less than or equal to 0:
+							clear {t_comboGracePeriod.%loop-player%}
+						send action bar "<bold>Style Points: <reset><cyan>%{comboscore.%loop-player%}%<reset><bold> | Points for next Stylish Rank:<reset><cyan> %((({combograde.%loop-player%} + 1) * 3.5) + (({combograde.%loop-player%} + 1) ^ 2) * {comboscale.%loop-player%})%<reset><bold> | Points To Maintain: <reset><cyan>%(({combograde.%loop-player%} * 2.5) + ({combograde.%loop-player%} ^ 2) * {comboscale.%loop-player%})%" to loop-player
 			else:
 				clear {comboscore.%loop-player%}
 				set {comboscalar.%loop-player%} to 0
@@ -76,43 +296,59 @@ every 0.25 seconds:
 				set {combograde.%loop-player%} to 0
 				
 on death of a player:
-	if {combosenabled.%victim%} is 1:
-		set {combo.%victim%} to 0
-		set {combograde.%victim%} to 0
-		set {combomult.%victim%} to 0
-		set {comboscore.%victim%} to 0
-		clear {dtMeter.%victim%}
-		set bossbar "dt.%victim's uuid%" progress to 0
+	if event is not cancelled:
+		if {combosenabled.%victim%} is 1:
+			set {combo.%victim%} to 0
+			set {combograde.%victim%} to 0
+			set {combomult.%victim%} to 1
+			clear {comboscore.%victim%}
+			clear {dtMeter.%victim%}
+			set bossbar "dt.%victim's uuid%" progress to 0
 	
 #Devil Trigger activation
 on right click:
 	if player is sneaking:
-		if player's tool is air:
-			set {_dtCheck} to checkSlots(player,"Devil Trigger")
+		if isEntityToolAir(player) is true:
+			set {_dtCheck} to canUseDevilTrigger(player)
 			if {_dtCheck} is 1:
 				if {dtActive.%player%} is not set:
-					if {dtMeter.%player%} is more than 10:
+					if {dtMeter.%player%} is more than or equal to 30:
 						set {dtActive.%player%} to true
 						play sound "entity.generic.explode" with volume 1 and pitch 1 at the player
+						clear {t_blockMeterAnnoyance.%player%}
 						play large explosion at the player
 						play mob spawner flames at the player
 						play 20 (redstone block break with speed 1) at the player
+						set {_triggerHeart} to checkSlots(player,"Trigger Heart")
 						while {dtMeter.%player%} is more than 0:
-							add 30 to {strbuff.%player%}
-							add 30 to {spdbuff.%player%}
-							add 30 to {sklbuff.%player%}
-							heal the player by 0.5 heart
+							if {_triggerHeart} is 1:
+								set {_debug} to changeEntityStatBuff(player,"STR",6,"Trigger Heart",0)
+								set {_debug} to changeEntityStatBuff(player,"MAG",6,"Trigger Heart",0)
+								set {_debug} to changeEntityStatBuff(player,"SPD",6,"Trigger Heart",0)
+								set {_debug} to changeEntityStatBuff(player,"LCK",6,"Trigger Heart",0)
+								apply strength 3 to the player for 1 seconds
+								apply swiftness 3 to the player for 1 second
+							set {_debug} to changeEntityStatBuff(player,"STR",9,"Devil Trigger",0)
+							set {_debug} to changeEntityStatBuff(player,"MAG",9,"Devil Trigger",0)
+							set {_debug} to changeEntityStatBuff(player,"SPD",9,"Devil Trigger",0)
+							set {_debug} to changeEntityStatBuff(player,"LCK",9,"Devil Trigger",0)
+							heal the player by 1 heart
 							play 10 (redstone block break with speed 1) at the player
 							play mob spawner flames at the player
 							wait 0.5 seconds
-							subtract 30 from {strbuff.%player%}
-							subtract 30 from {spdbuff.%player%}
-							subtract 30 from {sklbuff.%player%}
-							set {_triggerHeart} to checkSlots(player,"Trigger Heart")
+							heal the player by 0.5 hearts
 							if {_triggerHeart} is 1:
+								set {_debug} to changeEntityStatBuff(player,"STR",-6,"Trigger Heart",0)
+								set {_debug} to changeEntityStatBuff(player,"MAG",-6,"Trigger Heart",0)
+								set {_debug} to changeEntityStatBuff(player,"SPD",-6,"Trigger Heart",0)
+								set {_debug} to changeEntityStatBuff(player,"LCK",-6,"Trigger Heart",0)
 								subtract 5 from {dtMeter.%player%}
 							else:
 								subtract 10 from {dtMeter.%player%}
+							set {_debug} to changeEntityStatBuff(player,"STR",-9,"Devil Trigger",0)
+							set {_debug} to changeEntityStatBuff(player,"MAG",-9,"Devil Trigger",0)
+							set {_debug} to changeEntityStatBuff(player,"SPD",-9,"Devil Trigger",0)
+							set {_debug} to changeEntityStatBuff(player,"LCK",-9,"Devil Trigger",0)
 							set {_dtMeterDisplay} to {dtMeter.%player%} / {dtMeterCap.%player%} * 100
 							set bossbar "dt.%player's uuid%" progress to {_dtMeterDisplay}
 							if {dtActive.%player%} is not set:
@@ -121,6 +357,8 @@ on right click:
 						play large explosion at the player
 						play 20 (redstone block break with speed 1) at the player
 						clear {dtActive.%player%}
+						if checkSlots(player,"Air Raid") is 1:
+							set player's flight state to false
 						send "<light red>Devil Trigger wore off!"
 				else:
 					clear {dtActive.%player%}
@@ -131,8 +369,6 @@ on damage:
 	if {combosenabled.%victim%} is 1:
 		if damage cause is attack:
 			if {dtMeter.%victim%} is more than 0:
-				subtract (damage / 4) from {dtMeter.%victim%}
-				set {_dtMeterDisplay} to {dtMeter.%attacker%} / {dtMeterCap.%attacker%} * 100
 				set bossbar "dt.%victim's uuid%" progress to {_dtMeterDisplay}
 			else:
 				set {dtMeter.%victim%} to 0
@@ -142,8 +378,6 @@ on damage:
 			if {combograde.%victim%} is more than 0:
 				subtract (damage / 2) from {comboscore.%victim%}
 			if {dtMeter.%victim%} is more than 0:
-				subtract (damage / 4) from {dtMeter.%victim%}
-				set {_dtMeterDisplay} to {dtMeter.%attacker%} / {dtMeterCap.%attacker%} * 100
 				set bossbar "dt.%victim's uuid%" progress to {_dtMeterDisplay}
 			else:
 				set {dtMeter.%victim%} to 0
@@ -153,19 +387,21 @@ on damage:
 			add damage to {comboscore.%attacker%}
 			add 1 to {comboscalar.%attacker%}
 		else:
+			#Grant bonus stylish points for combo attacks that lift the enemy off the ground.
 			if {t_airComboBonus.%victim%} is not set:
 				set {t_airComboBonus.%victim%} to 1
 			if victim is not on ground:
 				if projectile exists:
-					add 1.88 to {t_airComboBonus.%victim%}
+					add 2.5 to {t_airComboBonus.%victim%}
 				else:
-					add 1.2 to {t_airComboBonus.%victim%}
-				send "<red>Air Combo Bonus: %{t_airComboBonus.%victim%}%" to the attacker
+					add 1.88 to {t_airComboBonus.%victim%}
+				send "<yellow>Aerial Rave Bonus: %{t_airComboBonus.%victim%}%" to the attacker
 			else:
 				set {t_airComboBonus.%victim%} to 1
+			#Reset combo downtime penalty
 			clear {t_comboDowntime.%attacker%}
-			add (damage * {t_airComboBonus.%victim%}) to {comboscore.%attacker%}
-			add (damage / 2) to {combobank.%attacker%}
+			add ((damage + 7) * {t_airComboBonus.%victim%}) to {comboscore.%attacker%}
+			add (damage / {comboScale.%attacker%}) to {combobank.%attacker%}
 			if the 6th line of the lore of the attacker's tool contains "Stylish":
 				add damage / 2 to {comboscore.%attacker%}
 			#subtract ({comboscale.%attacker%} / 2) from {comboscore.%attacker%}
@@ -175,56 +411,60 @@ on damage:
 			if {comboscore.%attacker%} is more than ((({combograde.%attacker%} + 1) * 3.5) + (({combograde.%attacker%} + 1) ^ 2) * {comboscale.%attacker%}):
 				if {combograde.%attacker%} is less than 7:
 					add 1 to {combograde.%attacker%}
+					set {t_comboGracePeriod.%attacker%} to 8
 					if {combograde.%attacker%} is 7:
-						send title "<red><bold>Smokin' Sick Style!!!" with subtitle "<gold><bold>[3x Damage Multiplier!]" to attacker for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+						send title "%{styleRankTitles.%attacker%::6}%" with subtitle "<gold><bold>[3x Damage Multiplier!]" to attacker for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
 						set {combomult.%attacker%} to 3
 						spawn 2 fireworks at the attacker
 						play sound "entity.enderdragon.growl" with volume 0.5 and pitch 1 at attacker for attacker
 						apply strength 3 to the attacker for 3 seconds
 					if {combograde.%attacker%} is 6:
-						send title "<light red><bold>Sensational Style!!" with subtitle "<bold>[2.5x Damage Multiplier!]" to attacker for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+						send title "%{styleRankTitles.%attacker%::5}%" with subtitle "<bold>[2.5x Damage Multiplier!]" to attacker for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
 						set {combomult.%attacker%} to 2.5
 						spawn 1 firework at the attacker
 						play sound "entity.player.levelup" with volume 1 and pitch 0.7 at attacker for attacker
 					else if {combograde.%attacker%} is 5:
-						send title "<light red>Showtime!!" with subtitle "<white>[2x Damage Multiplier!]" to attacker for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+						send title "%{styleRankTitles.%attacker%::4}%" with subtitle "<white>[2x Damage Multiplier!]" to attacker for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
 						set {combomult.%attacker%} to 2
 						spawn 1 firework at the attacker
 						play sound "entity.experience_orb.pickup" with volume 1 and pitch 1.35 at attacker for attacker
 					else if {combograde.%attacker%} is 4:
 						set {combomult.%attacker%} to 1.75
-						send title "<gold>Ace!" with subtitle "<bold>[1.75x Damage Multiplier!]" to attacker for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+						send title "%{styleRankTitles.%attacker%::3}%" with subtitle "<bold>[1.75x Damage Multiplier!]" to attacker for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
 						spawn 1 firework at the attacker
 						play sound "entity.generic.explode" with volume 1 and pitch 1 at attacker for attacker
 						play sound "entity.experience_orb.pickup" with volume 1 and pitch 1 at attacker for attacker
 					else if {combograde.%attacker%} is 3:
 						set {combomult.%attacker%} to 1.5
-						send title "<light yellow>Bangin'!" with subtitle "<bold>[1.5x Damage Multiplier!]" to attacker for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+						send title "%{styleRankTitles.%attacker%::2}%" with subtitle "<bold>[1.5x Damage Multiplier!]" to attacker for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
 						spawn 1 firework at the attacker
 						play sound "block.anvil.place" with volume 1 and pitch 0.75 at attacker for attacker
 					else if {combograde.%attacker%} is 2:
 						set {combomult.%attacker%} to 1.25
-						send title "<bold>Cool!" with subtitle "<bold>[1.25x Damage Multiplier!]" to attacker for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+						send title "%{styleRankTitles.%attacker%::1}%" with subtitle "<bold>[1.25x Damage Multiplier!]" to attacker for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
 						spawn 1 firework at the attacker
 						play sound "entity.experience_orb.pickup" with volume 1 and pitch 0.65 at attacker for attacker
 					else if {combograde.%attacker%} is 1:
 						set {combomult.%attacker%} to 1
-						send title "<light gray>Dope!" with subtitle "" to attacker for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
+						send title "%{styleRankTitles.%attacker%::0}%" with subtitle "" to attacker for 3 seconds with fade in 0.25 seconds and fade out 0.25 seconds
 						play sound "entity.experience_orb.pickup" with volume 1 and pitch 0.5 at attacker for attacker
 					set {_bonus} to ((({combograde.%attacker%} + 1) * 3.5) + ({combograde.%attacker%} ^ 2) / {comboscale.%attacker%})
 					send "<light yellow>BONUS: %{_bonus}%" to the attacker
 					add {_bonus} to {comboscore.%attacker%}
 			send action bar "<bold>Style Points: <reset><gold>%{comboscore.%attacker%}%<reset><bold> | Points for next Stylish Rank:<reset><gold> %((({combograde.%attacker%} + 1) * 3.5) + (({combograde.%attacker%} + 1) ^ 2) * {comboscale.%attacker%})%<reset><bold> | Points To Maintain: <reset><gold>%(({combograde.%attacker%} * 2.5) + ({combograde.%attacker%} ^ 2) * {comboscale.%attacker%})%" to attacker
-			set {_dtCheck} to checkSlots(attacker,"Devil Trigger")
+			set {_dtCheck} to canUseDevilTrigger(attacker)
 			if {_dtCheck} is 1:
-				set {dtMeterCap.%attacker%} to ({lvl.%attacker%} * 10)
-				add (final damage / 4) to {dtMeter.%attacker%}
-				if {dtMeter.%attacker%} is more than {dtMeterCap.%attacker%}:
-					set {dtMeter.%attacker%} to {dtMeterCap.%attacker%}
-				set {_dtMeterDisplay} to {dtMeter.%attacker%} / {dtMeterCap.%attacker%} * 100
-				if {_dtMeterDisplay} is more than 100:
-					set {_dtMeterDisplay} to 100
-					play sound "block.end_portal.spawn" with volume 1 and pitch 1 at the attacker
-					send "<red>Trigger Meter full! Sneak + Right click with an empty hand to activate." to the attacker
-				set bossbar "dt.%attacker's uuid%" progress to {_dtMeterDisplay}
-				send "<red>Trigger Meter: %{dtMeter.%attacker%}% | Max Meter: %{dtMeterCap.%attacker%}%" to the attacker
+				if {dtActive.%attacker%} is not set:
+					if final damage is more than 0:
+						set {dtMeterCap.%attacker%} to ({lvl.%attacker%} * 10) + 20
+						add (final damage / 2) to {dtMeter.%attacker%}
+						if {dtMeter.%attacker%} is more than {dtMeterCap.%attacker%}:
+							set {dtMeter.%attacker%} to {dtMeterCap.%attacker%}
+						set {_dtMeterDisplay} to ceil(({dtMeter.%attacker%} / {dtMeterCap.%attacker%}) * 100)
+						if {_dtMeterDisplay} is more than 100:
+							if {t_blockMeterAnnoyance.%attacker%} is not set:
+								set {_dtMeterDisplay} to 100
+								play sound "block.end_portal.spawn" with volume 1 and pitch 1 at the attacker
+								send "<red>Trigger Meter full! Sneak + Right click with an empty hand to activate." to the attacker
+						set bossbar "dt.%attacker's uuid%" progress to {_dtMeterDisplay}
+						send "<red>Trigger Meter: %{dtMeter.%attacker%}% | Max Meter: %{dtMeterCap.%attacker%}%" to the attacker

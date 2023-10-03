@@ -1,0 +1,36 @@
+on load:
+	register new shaped recipe for 1 elytra of power 1 named "<gold>Atmospheric Penetration System" with lore "<white>Right-click while above Y-200 to pierce the heavens." using emerald block, redstone block, emerald block, redstone block, firework, redstone block, emerald block, redstone block, emerald block with id "space_warper" in group "space_stuff"
+	register new shaped recipe for 1 diamond chestplate of unbreaking 10 named "<gold>Personal Gravitation Harness" with lore "<white>Nullifies the low-gravity effect of space." using emerald, emerald, emerald, emerald, diamond chestplate, emerald, emerald, emerald, emerald with id "gravity_harness" in group "space_stuff"
+
+every minecraft hour:
+	set time in world "FinalFrontier" to night
+	
+every tick:
+	loop all players in world "FinalFrontier":
+		if loop-player is not on ground:
+			if loop-player's gamemode is survival:
+				if the name of the loop-player's chestplate does not contain "Personal Gravitation Harness":
+					push the loop-player upwards at speed 0.05
+					push the loop-player in horizontal direction of loop-player at speed 0.01
+		
+on weather change:
+	if world is "FinalFrontier":
+		cancel event
+		
+on damage of player:
+	if damage cause is void:
+		if victim's world is "FinalFrontier":
+			teleport the victim to the location at victim's x-coordinate, 256, victim's z-coordinate in world "adventure"
+			
+on right click:
+	if the name of the player's tool is "<gold>Atmospheric Penetration System":
+		if player's y-coordinate is more than or equal to 200:
+			teleport the player to the location at player's x-coordinate, 10, player's z-coordinate in world "FinalFrontier"
+			wait 1 tick
+			set the block at location at player's x-coordinate, 9, player's z-coordinate in world "FinalFrontier" to 1 iron block
+			set the block at location at player's x-coordinate + 1, 9, player's z-coordinate in world "FinalFrontier" to 1 iron block
+			set the block at location at player's x-coordinate, 9, player's z-coordinate + 1 in world "FinalFrontier" to 1 iron block
+			set the block at location at player's x-coordinate + 1, 9, player's z-coordinate + 1 in world "FinalFrontier" to 1 iron block
+			set the block at location at player's x-coordinate - 1, 9, player's z-coordinate in world "FinalFrontier" to 1 iron block
+			set the block at location at player's x-coordinate, 9, player's z-coordinate - 1 in world "FinalFrontier" to 1 iron block
+			set the block at location at player's x-coordinate - 1, 9, player's z-coordinate - 1 in world "FinalFrontier" to 1 iron block

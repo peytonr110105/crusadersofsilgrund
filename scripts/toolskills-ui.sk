@@ -1,0 +1,1450 @@
+#Weapon Merging helper function
+function canMergeWithFrame(TGT: item, FRAME: item) :: boolean:
+	#Test if the frame is actually a tool frame
+	if nbt of {_FRAME} contains "frameType:":
+		#Test if target weapon is Evolved, and therefore needs a Forged/Purified frame
+		if nbt of {_TGT} contains "bakedRefine:776":
+			if nbt of {_FRAME} contains "upgradeTier:2":
+				set {_frameTierMatches} to true
+		else if nbt of {_TGT} contains "bakedRefine:":
+			if nbt of {_FRAME} contains "upgradeTier:1":
+				set {_frameTierMatches} to true
+		else if nbt of {_FRAME} contains "upgradeTier:0":
+			set {_frameTierMatches} to true
+		if {_frameTierMatches} is true:
+			#Ore Type matches item?
+			#Iron weapons
+			if tag "oreType" of {_FRAME}'s nbt is 0:
+				if {_TGT} is iron sword:
+					if tag "frameType" of {_FRAME}'s nbt is 0:
+						return true
+				else if {_TGT} is iron axe:
+					if tag "frameType" of {_FRAME}'s nbt is 1:
+						return true
+				else if {_TGT}'s nbt contains "LanceType:2":
+					if tag "frameType" of {_FRAME}'s nbt is 2:
+						return true
+				else if {_TGT} is bow:
+					if tag "frameType" of {_FRAME}'s nbt is 3:
+						return true
+				else if {_TGT}'s nbt contains "GauntletType:2":
+					if tag "frameType" of {_FRAME}'s nbt is 4:
+						return true
+				else if {_TGT}'s nbt contains "DaggerType:2":
+					if tag "frameType" of {_FRAME}'s nbt is 5:
+						return true
+				else if {_TGT}'s nbt contains "TomeType:":
+					if tag "frameType" of {_FRAME}'s nbt is 6:
+						return true
+				else if {_TGT}'s nbt contains "FirearmType:":
+					if tag "frameType" of {_FRAME}'s nbt is 7:
+						return true
+				else if {_TGT}'s nbt contains "isWand:":
+					if tag "frameType" of {_FRAME}'s nbt is 8:
+						return true
+			#Gold weapons
+			else if tag "oreType" of {_FRAME}'s nbt is 1:
+				if {_TGT} is golden sword:
+					if tag "frameType" of {_FRAME}'s nbt is 0:
+						return true
+				else if {_TGT} is golden axe:
+					if tag "frameType" of {_FRAME}'s nbt is 1:
+						return true
+				else if {_TGT}'s nbt contains "LanceType:3":
+					if tag "frameType" of {_FRAME}'s nbt is 2:
+						return true
+				else if {_TGT}'s nbt contains "GauntletType:3":
+					if tag "frameType" of {_FRAME}'s nbt is 4:
+						return true
+				else if {_TGT}'s nbt contains "DaggerType:3":
+					if tag "frameType" of {_FRAME}'s nbt is 5:
+						return true
+			#Diamond weapons
+			else if tag "oreType" of {_FRAME}'s nbt is 2:
+				if {_TGT} is diamond sword:
+					if tag "frameType" of {_FRAME}'s nbt is 0:
+						return true
+				else if {_TGT} is diamond axe:
+					if tag "frameType" of {_FRAME}'s nbt is 1:
+						return true
+				else if {_TGT}'s nbt contains "LanceType:4":
+					if tag "frameType" of {_FRAME}'s nbt is 2:
+						return true
+				else if {_TGT}'s nbt contains "GauntletType:4":
+					if tag "frameType" of {_FRAME}'s nbt is 4:
+						return true
+				else if {_TGT}'s nbt contains "DaggerType:4":
+					if tag "frameType" of {_FRAME}'s nbt is 5:
+						return true
+			#Netherite weapons
+			else if tag "oreType" of {_FRAME}'s nbt is 3:
+				if {_TGT} is netherite sword:
+					if tag "frameType" of {_FRAME}'s nbt is 0:
+						return true
+				else if {_TGT} is netherite axe:
+					if tag "frameType" of {_FRAME}'s nbt is 1:
+						return true
+				else if {_TGT}'s nbt contains "LanceType:5":
+					if tag "frameType" of {_FRAME}'s nbt is 2:
+						return true
+				else if {_TGT}'s nbt contains "GauntletType:5":
+					if tag "frameType" of {_FRAME}'s nbt is 4:
+						return true
+				else if {_TGT}'s nbt contains "DaggerType:5":
+					if tag "frameType" of {_FRAME}'s nbt is 5:
+						return true
+	#This only fires if a check fails
+	return false
+
+
+#Main skill buy menu
+#Arg 1 = Page
+#Arg 2 = Set to 1 if player is accessing this through a Smithy npc (otherwise the option to buy items is hidden).
+command /buyToolSkills <number> <number>:
+	trigger:
+		#allows us to remember how the player opened this menu
+		set {t_smithyAccessMethod.%player%} to arg 2
+		if arg 1 is 0:
+			#clean up some variables JUST IN CASE, these should get overwritten when buying other skills, but it's better safe than sorry.
+			clear {t_skillFabricationRequirement.%player%}
+			clear {t_skillToBuy.%player%}
+			clear {t_skillSlot.%player%}
+			set {t_slotToClean.%player%} to "A"
+			open chest inventory with 2 rows named "<gold>Smithy" for the player
+			set slot 0 of the player's current inventory to 1 red dye named "<light red><bold>A-Slot Skills" with lore "<white>Powerful skills with fair conditions for activation."
+			set slot 1 of the player's current inventory to 1 lapis item named "<light blue><bold>B-Slot Skills" with lore "<white>Situational skills with a variety of effects."
+			set slot 2 of the player's current inventory to 1 yellow dye named "<light yellow><bold>C-Slot Skills" with lore "<white>Position-dependent skills that typically aid allies."
+			set slot 3 of the player's current inventory to 1 lime dye named "<light green><bold>Assist Skills" with lore "<white>Skills that activate on a right-click, typically providing movement."
+			set slot 4 of the player's current inventory to 1 purple dye named "<light purple><bold>Special Skills" with lore "<white>Chance activation skills that drastically change damage during combat."
+			set slot 5 of the player's current inventory to 1 cyan dye named "<cyan><bold>Armour Skills" with lore "<white>Utility skills for armour."
+			#set slot 6 of the player's current inventory to 1 orange dye named "<orange><bold>Shield Skills" with lore "<white>Skills exclusive to shields."
+			set slot 6 of the player's current inventory to 1 barrier named "<orange><bold>Shield Skills" with lore "<white>Coming soon!"
+			set slot 7 of the player's current inventory to 1 storage minecart named "<purple><bold>Inherit & Upgrade Tools" with lore "<white>Pass down skills from one tool to another.", "<white>The tool losing skills will be destroyed.", "<white>If inheriting onto a diamond weapon,", "<white>a 50 gold fee is required for each inherited skill.", "<white>You can also upgrade tools using Frames here."
+			set slot 8 of the player's current inventory to 1 anvil named "<green><bold>Weapon Refinery" with lore "<white>Improve your weapon even further."
+			set slot 9 of the player's current inventory to 1 stone sword named "<white><bold>Repair Tools" with lore "<white>Repair your broken tools for a fee.", "<white>The cost is based on durability restored and your Repair ability."
+			set slot 10 of the player's current inventory to 1 lava bucket named "<red><bold>Create Combat Manuals" with lore "<white>Converts tools into Combat Manuals,", "<white>which can be used in Inherit Skills.", "<white>Improve your Repair skill to create more Combat Manuals from a single tool."
+			set slot 11 of the player's current inventory to 1 sponge named "<white><bold>Clean Skill Slots" with lore "<white>Delete a skill off of a tool.", "<white>No refunds!"
+			if {t_smithyAccessMethod.%player%} is 1:
+				set slot 12 of the player's current inventory to 1 chest named "<yellow><bold>Purchase Items" with lore "<white>Purchase items from the blacksmith."
+			set slot 17 of the player's current inventory to 1 red glass pane named "<white><bold>Exit" with lore "<white>Closes the smithy."
+		#A-Slot Skills
+		else if arg 1 is 1:
+			if arg 2 is 0:
+				#arg 2 = 0, show activation condition type
+				set {_chestSize} to 1
+				open chest inventory with {_chestSize} rows named "<gold>Smithy: Select A-Slot Condition Type" for the player
+				set slot 0 of the player's current inventory to 1 iron sword named "<light red>Player Phase" with lore "<white>Show A-Slot skills that trigger their effects primarily", "<white>by the player attacking a foe directly."
+				set slot 1 of the player's current inventory to 1 iron chestplate named "<light red>Enemy Phase" with lore "<white>Show A-Slot skills that trigger their effects primarily", "<white>by a foe attacking the player directly."
+				set slot 2 of the player's current inventory to 1 totem of undying named "<light red>Dual Phase" with lore "<white>Show A-Slot skills that are either passive boosts", "<white>or that use stat comparisons to grant bonuses."			
+				set slot (({_chestSize} * 9) - 1) of the player's current inventory to 1 red glass pane named "<white><bold>Go Back" with lore "<white>Returns to the previous menu."
+			#Player-Phase A-Slots
+			if arg 2 is 1:
+				set {_chestSize} to 6
+				open chest inventory with {_chestSize} rows named "<gold>Smithy: PP A-Slot Skills" for the player
+				set slot 0 of the player's current inventory to 1 fire charge named "<light red><bold>Death Blow" with lore "<white>If player initiates combat:", "<white>Grants STR +6 for that combat.", "<white>Fabrication requirement: 30", "<white>Weapon Ability: +7"
+				set slot 1 of the player's current inventory to 1 fire charge named "<light red><bold>Hexing Blow" with lore "<white>If player initiates combat:", "<white>Grants MAG +6 for that combat.", "<white>Fabrication requirement: 30", "<white>Weapon Ability: +7"
+				set slot 2 of the player's current inventory to 1 fire charge named "<light red><bold>Darting Blow" with lore "<white>If player initiates combat:", "<white>Grants SPD +6 for that combat.", "<white>Fabrication requirement: 30", "<white>Weapon Ability: +7"
+				set slot 3 of the player's current inventory to 1 fire charge named "<light red><bold>Armoured Blow" with lore "<white>If player initiates combat:", "<white>Grants DEF +6 for that combat,", "<white>and grants DEF +6 through player's next action.", "<white>Fabrication requirement: 30", "<white>Weapon Ability: +7"
+				set slot 4 of the player's current inventory to 1 fire charge named "<light red><bold>Warding Blow" with lore "<white>If player initiates combat:", "<white>Grants RES +6 for that combat,", "<white>and grants RES +6 through player's next action.", "<white>Fabrication requirement: 30", "<white>Weapon Ability: +7"
+				set slot 5 of the player's current inventory to 1 iron chestplate named "<light red><bold>Armour Slayer" with lore "<white>Reduces damage reduction from foe's armour by 50%%.", "<white>Fabrication requirement: 55", "<white>Weapon Ability: +11"
+				set slot 6 of the player's current inventory to 1 iron sword named "<light red><bold>Heavy Blade" with lore "<white>If player initiates combat, and has STR > foe's STR:", "<white>Grants LCK +X, where X = (player's STR - foe's STR),", "<white>and boosts damage dealt by (X / 2).", "<white>Maximum value of X: 20", "<white>Fabrication requirement: 50", "<white>Weapon Ability: +13"
+				set slot 7 of the player's current inventory to 1 iron sword named "<light red><bold>Flashing Blade" with lore "<white>If player initiates combat, and has SPD > foe's SPD:", "<white>Grants LCK +X, where X = (player's SPD - foe's SPD),", "<white>and boosts damage dealt by (X / 2).", "<white>Maximum value of X: 20", "<white>Fabrication requirement: 65", "<white>Weapon Ability: +19"
+				set slot 8 of the player's current inventory to 1 bow named "<light red><bold>Broad Shot" with lore "<white>Bows fire up to four extra arrows in a wide spread.", "<white>Fabrication requirement: 50", "<white>Weapon Ability: +13"
+				set slot 9 of the player's current inventory to 1 book named "<light red><bold>Sorcery Aura" with lore "<white>Grants <gold>[Adaptive]<white> to this weapon during combat.", "<gold>[Adaptive]: <white>If the defensive stat being targeted during combat", "<white>is higher than the opponent's other defensive stat,", "<white>inverts damage calculation method.", "<white>EG: If using physical damage, and foe has DEF > their RES,", "<white>calculates damage as though the hit were magical (targeting RES).", "<white>Fabrication requirement: 40", "<white>Weapon Ability: +13"
+				set slot 10 of the player's current inventory to 1 diamond sword named "<light red><bold>Sturdy Impact" with lore "<white>If player initiates combat,", "<white>and if foe is not combat tagged:", "<white>Grants STR +8, DEF +10 during combat.", "<white>Fabrication requirement: 55", "<white>Weapon Ability: +15"
+				set slot 11 of the player's current inventory to 1 diamond sword named "<light red><bold>Warding Impact" with lore "<white>If player initiates combat,", "<white>and if foe is not combat tagged:", "<white>Grants MAG +8, RES +10 during combat.", "<white>Fabrication requirement: 55", "<white>Weapon Ability: +15"
+				set slot 12 of the player's current inventory to 1 diamond sword named "<light red><bold>Critical Impact" with lore "<white>If player initiates combat,", "<white>and if foe is not combat tagged:", "<white>Grants SPD +8, LCK +10 during combat.", "<white>Fabrication requirement: 60", "<white>Weapon Ability: +15"
+				set slot 13 of the player's current inventory to 1 golden sword named "<light red><bold>Critical Surge" with lore "<white>If player initiates combat with HP >= 25%%:", "<white>Grants SPD/LCK +7 and restores health = 10%% of player's SPD after combat.", "<white>Fabrication requirement: 60", "<white>Weapon Ability: +15"
+				set slot 14 of the player's current inventory to 1 golden sword named "<light red><bold>Sturdy Surge" with lore "<white>If player initiates combat with HP >= 25%%:", "<white>Grants STR/DEF +7 and restores health = 10%% of player's DEF after combat.", "<white>Fabrication requirement: 60", "<white>Weapon Ability: +15"
+				set slot 15 of the player's current inventory to 1 golden sword named "<light red><bold>Warding Surge" with lore "<white>If player initiates combat with HP >= 25%%:", "<white>Grants MAG/RES +7 and restores health = 10%% of player's RES after combat.", "<white>Fabrication requirement: 60", "<white>Weapon Ability: +15"
+				set slot 16 of the player's current inventory to 1 golden sword named "<light red><bold>Surge Sparrow" with lore "<white>If player initiates combat with HP >= 25%%:", "<white>Grants STR/MAG/SPD +7 and restores health = 10%% of player's SPD after combat.", "<white>Fabrication requirement: 75", "<white>Weapon Ability: +19"
+				set slot 17 of the player's current inventory to 1 rotten flesh named "<light red><bold>Dominator" with lore "<white>Grants bonus damage = 50%% of total debuffs active on foe.", "<white>EX: Foe has -5 STR during combat from Lull STR/DEF.", "<white>Dominator grants +2.5 damage.", "<white>Fabrication requirement: 85", "<white>Weapon Ability: +19"
+				set slot 18 of the player's current inventory to 1 blaze rod named "<light red><bold>Overcharge" with lore "<white>Duplicates the effect of the spell in Spell Slot 1.", "<white>Fabrication requirement: 80", "<white>Weapon Ability: +24"
+				set slot (({_chestSize} * 9) - 2) of the player's current inventory to 1 book named "<white><bold>Funds & More" with lore "<white>Your Fabrication: %{abilities.%player%::Fabrication}%", "<white>Current Funds: %player's money%", "<white>Trad. Weapons: %{abilities.%player%::Traditional Weapons}%", "<white>Mag. Weapons: %{abilities.%player%::Magical Weapons}%", "<white>Guns: %{abilities.%player%::Guns}%"
+				set slot (({_chestSize} * 9) - 1) of the player's current inventory to 1 red glass pane named "<white><bold>Go Back" with lore "<white>Returns to the previous menu."
+			#Enemy-Phase A-Slots
+			else if arg 2 is 2:
+				set {_chestSize} to 6
+				open chest inventory with {_chestSize} rows named "<gold>Smithy: EP A-Slot Skills" for the player
+				set slot 0 of the player's current inventory to 1 iron chestplate named "<light red><bold>Steady Stance" with lore "<white>If foe initiates combat,", "<white>grants DEF/LCK +6 during combat and through next action.", "<white>Fabrication requirement: 25", "<white>Weapon Ability: +9"
+				set slot 1 of the player's current inventory to 1 iron chestplate named "<light red><bold>Warding Stance" with lore "<white>If foe initiates combat,", "<white>grants RES/LCK +6 during combat and through next action.", "<white>Fabrication requirement: 25", "<white>Weapon Ability: +9"
+				set slot 2 of the player's current inventory to 1 iron chestplate named "<light red><bold>Fierce Stance" with lore "<white>If foe initiates combat,", "<white>grants STR/LCK +6 during combat and through next action.", "<white>Fabrication requirement: 25", "<white>Weapon Ability: +9"
+				set slot 3 of the player's current inventory to 1 iron chestplate named "<light red><bold>Hexing Stance" with lore "<white>If foe initiates combat,", "<white>grants MAG/LCK +6 during combat and through next action.", "<white>Fabrication requirement: 25", "<white>Weapon Ability: +9"
+				set slot 4 of the player's current inventory to 1 iron chestplate named "<light red><bold>Kestrel Stance" with lore "<white>If foe initiates combat,", "<white>grants STR/MAG/SPD +5 during combat and through next action.", "<white>Fabrication requirement: 35", "<white>Weapon Ability: +13"
+				set slot 5 of the player's current inventory to 1 iron chestplate named "<light red><bold>Bracing Stance" with lore "<white>If foe initiates combat,", "<white>grants DEF/RES +6 during combat and through next action.", "<white>Fabrication requirement: 35", "<white>Weapon Ability: +13"
+				set slot 6 of the player's current inventory to 1 totem of undying named "<light red><bold>DEF/RES Form" with lore "<white>If foe initiates combat and there is any ally within 20 blocks:", "<white>Grants DEF/RES +X during combat, where X = (number of allies within 20 blocks * 3).", "<white>Fabrication requirement: 55", "<white>Weapon Ability: +13"
+				set slot 7 of the player's current inventory to 1 totem of undying named "<light red><bold>ATK/DEF Form" with lore "<white>If foe initiates combat and there is any ally within 20 blocks:", "<white>Grants STR/MAG/DEF +X during combat, where X = (number of allies within 20 blocks * 3).", "<white>Fabrication requirement: 55", "<white>Weapon Ability: +13"
+				set slot 8 of the player's current inventory to 1 totem of undying named "<light red><bold>ATK/RES Form" with lore "<white>If foe initiates combat and there is any ally within 20 blocks:", "<white>Grants STR/MAG/RES +X during combat, where X = (number of allies within 20 blocks * 3).", "<white>Fabrication requirement: 55", "<white>Weapon Ability: +13"
+				set slot 9 of the player's current inventory to 1 totem of undying named "<light red><bold>ATK/SPD Form" with lore "<white>If foe initiates combat and there is any ally within 20 blocks:", "<white>Grants STR/MAG/SPD +X during combat, where X = (number of allies within 20 blocks * 3).", "<white>Fabrication requirement: 55", "<white>Weapon Ability: +13"
+				set slot 10 of the player's current inventory to 1 shield named "<light red><bold>Short Shield" with lore "<white>If foe initiates combat with any melee weapon:", "<white>Grants DEF/RES +9 and Accelerates Special skill activation (+10%% activation chance).", "<white>Fabrication requirement: 60", "<white>Weapon Ability: +15"
+				set slot 11 of the player's current inventory to 1 shield named "<light red><bold>Tower Shield" with lore "<white>If foe initiates combat with any ranged weapon:", "<white>Grants DEF/RES +9 and Accelerates Special skill activation (+10%% activation chance).", "<white>Fabrication requirement: 60", "<white>Weapon Ability: +15"
+				set slot 12 of the player's current inventory to 1 clock named "<light red><bold>Shield Session" with lore "<white>If foe initiates combat and player is combat tagged:", "<white>Grants DEF/RES/LCK +8 during combat.", "<white>Fabrication requirement: 70", "<white>Weapon Ability: +18"
+				set slot 13 of the player's current inventory to 1 diamond chestplate named "<light red><bold>Steady Breath" with lore "<white>If foe initiates combat and player's HP >= 25%%:", "<white>Grants DEF +6 and Accelerates Special skill activation (+30%% activation chance).", "<white>Fabrication requirement: 70", "<white>Weapon Ability: +18"
+				set slot 14 of the player's current inventory to 1 diamond chestplate named "<light red><bold>Warding Breath" with lore "<white>If foe initiates combat and player's HP >= 25%%:", "<white>Grants RES +6 and Accelerates Special skill activation (+30%% activation chance).", "<white>Fabrication requirement: 70", "<white>Weapon Ability: +18"
+				set slot 15 of the player's current inventory to 1 diamond chestplate named "<light red><bold>Darting Breath" with lore "<white>If foe initiates combat and player's HP >= 25%%:", "<white>Grants SPD +6 and Accelerates Special skill activation (+30%% activation chance).", "<white>Fabrication requirement: 70", "<white>Weapon Ability: +18"
+				set slot 16 of the player's current inventory to 1 diamond chestplate named "<light red><bold>Fierce Breath" with lore "<white>If foe initiates combat and player's HP >= 25%%:", "<white>Grants STR/MAG +6 and Accelerates Special skill activation (+30%% activation chance).", "<white>Fabrication requirement: 70", "<white>Weapon Ability: +18"
+				set slot 17 of the player's current inventory to 1 diamond chestplate named "<light red><bold>Hold the Line" with lore "<white>If foe initiates combat and player's HP <= 70%%:", "<white>Reduces damage suffered by 50%%.", "<white>Fabrication requirement: 85", "<white>Weapon Ability: +24"
+				set slot (({_chestSize} * 9) - 2) of the player's current inventory to 1 book named "<white><bold>Funds & More" with lore "<white>Your Fabrication: %{abilities.%player%::Fabrication}%", "<white>Current Funds: %player's money%", "<white>Trad. Weapons: %{abilities.%player%::Traditional Weapons}%", "<white>Mag. Weapons: %{abilities.%player%::Magical Weapons}%", "<white>Guns: %{abilities.%player%::Guns}%"
+				set slot (({_chestSize} * 9) - 1) of the player's current inventory to 1 red glass pane named "<white><bold>Go Back" with lore "<white>Returns to the previous menu."
+			#Dual-Phase A-Slots
+			else if arg 2 is 3:
+				set {_chestSize} to 6
+				open chest inventory with {_chestSize} rows named "<gold>Smithy: DP A-Slot Skills" for the player
+				set slot 0 of the player's current inventory to 1 poppy named "<light red><bold>STR +3" with lore "<white>Grants STR +3 while this tool is equipped.", "<white>Fabrication requirement: 15", "<white>Weapon Ability: +3"
+				set slot 1 of the player's current inventory to 1 poppy named "<light red><bold>MAG +3" with lore "<white>Grants MAG +3 while this tool is equipped.", "<white>Fabrication requirement: 15", "<white>Weapon Ability: +3"
+				set slot 2 of the player's current inventory to 1 poppy named "<light red><bold>SPD +3" with lore "<white>Grants SPD +3 while this tool is equipped.", "<white>Fabrication requirement: 15", "<white>Weapon Ability: +3"
+				set slot 3 of the player's current inventory to 1 poppy named "<light red><bold>DEF +3" with lore "<white>Grants DEF +3 while this tool is equipped.", "<white>Fabrication requirement: 15", "<white>Weapon Ability: +3"
+				set slot 4 of the player's current inventory to 1 poppy named "<light red><bold>RES +3" with lore "<white>Grants RES +3 while this tool is equipped.", "<white>Fabrication requirement: 15", "<white>Weapon Ability: +3"
+				set slot 5 of the player's current inventory to 1 golden apple named "<light red><bold>Defiant STR" with lore "<white>If player's HP <= 70%%:", "<white>Grants STR +7 during combat.", "<white>Fabrication requirement: 25", "<white>Weapon Ability: +5"
+				set slot 6 of the player's current inventory to 1 golden apple named "<light red><bold>Defiant MAG" with lore "<white>If player's HP <= 70%%:", "<white>Grants MAG +7 during combat.", "<white>Fabrication requirement: 25", "<white>Weapon Ability: +5"
+				set slot 7 of the player's current inventory to 1 golden apple named "<light red><bold>Defiant SPD" with lore "<white>If player's HP <= 70%%:", "<white>Grants SPD +7 during combat.", "<white>Fabrication requirement: 25", "<white>Weapon Ability: +5"
+				set slot 8 of the player's current inventory to 1 golden apple named "<light red><bold>Defiant DEF" with lore "<white>If player's HP <= 70%%:", "<white>Grants DEF +7 during combat.", "<white>Fabrication requirement: 25", "<white>Weapon Ability: +5"
+				set slot 9 of the player's current inventory to 1 golden apple named "<light red><bold>Defiant RES" with lore "<white>If player's HP <= 70%%:", "<white>Grants RES +7 during combat.", "<white>Fabrication requirement: 25", "<white>Weapon Ability: +5"
+				set slot 10 of the player's current inventory to 1 potion of healing named "<light red><bold>Earth Boost" with lore "<white>At start of combat, if player's HP >= foe's HP -3:", "<white>Grants DEF/RES +5 and restores 4 HP.", "<white>Fabrication requirement: 30", "<white>Weapon Ability: +7"
+				set slot 11 of the player's current inventory to 1 potion of healing named "<light red><bold>Flame Boost" with lore "<white>At start of combat, if player's HP >= foe's HP -3:", "<white>Grants STR/MAG/SPD +5 and restores 2 HP.", "<white>Fabrication requirement: 35", "<white>Weapon Ability: +9"
+				set slot 12 of the player's current inventory to 1 blaze powder named "<light red><bold>Fury" with lore "<white>While this tool is equipped:", "<white>Grants STR/MAG/SPD/LCK/DEF/RES +4, but,", "<white>after combat, inflicts 2 hearts of non-lethal recoil damage.", "<white>Fabrication requirement: 35", "<white>Weapon Ability: +9"
+				set slot 13 of the player's current inventory to 1 diamond chestplate named "<light red><bold>DEF/RES Bond" with lore "<white>At start of combat, if player is within 30 blocks of any ally:", "<white>Grants DEF/RES/LCK +7 during combat.", "<white>Fabrication requirement: 35", "<white>Weapon Ability: +9"
+				set slot 14 of the player's current inventory to 1 diamond chestplate named "<light red><bold>ATK/SPD Bond" with lore "<white>At start of combat, if player is within 30 blocks of any ally:", "<white>Grants STR/MAG/SPD +7 during combat.", "<white>Fabrication requirement: 50", "<white>Weapon Ability: +12"
+				set slot 15 of the player's current inventory to 1 diamond chestplate named "<light red><bold>ATK/DEF Bond" with lore "<white>At start of combat, if player is within 30 blocks of any ally:", "<white>Grants STR/MAG/DEF +7 during combat.", "<white>Fabrication requirement: 50", "<white>Weapon Ability: +12"
+				set slot 16 of the player's current inventory to 1 diamond chestplate named "<light red><bold>ATK/RES Bond" with lore "<white>At start of combat, if player is within 30 blocks of any ally:", "<white>Grants STR/MAG/RES +7 during combat.", "<white>Fabrication requirement: 50", "<white>Weapon Ability: +12"
+				set slot 17 of the player's current inventory to 1 golden sword named "<light red><bold>Life and Death" with lore "<white>While this tool is equipped:", "<white>Grants STR/MAG/SPD +5.", "<white>Inflicts DEF/RES -5.", "<white>Fabrication requirement: 40", "<white>Weapon Ability: +11"
+				set slot 18 of the player's current inventory to 1 totem of undying named "<light red><bold>Power Within" with lore "<white>While equipped, grants STR/MAG/SPD/LCK/DEF/RES +7, but", "<white>drains 1 HP/s while active.", "<white>Fabrication requirement: 50", "<white>Weapon Ability: +13"
+				set slot 19 of the player's current inventory to 1 diamond chestplate named "<light red><bold>Fortress DEF/RES" with lore "<white>While this tool is equipped:", "<white>Grants DEF/RES +7, and inflicts STR/MAG -2.", "<white>Fabrication requirement: 50", "<white>Weapon Ability: +14"
+				set slot 20 of the player's current inventory to 1 totem of undying named "<light red><bold>Mayhem" with lore "<white>Grants bonus to STR/MAG/SPD/LCK/DEF/RES = total debuff on foe's respective stat.", "<white>Each stat bonus calculated independently.", "<white>EX: Foe is suffering DEF -5 from Lull STR/DEF.", "<white>Player recieves DEF +5 from Mayhem.", "<white>Fabrication requirement: 70", "<white>Weapon Ability: +14"
+				set slot 21 of the player's current inventory to 1 flint and steel named "<light red><bold>ATK/DEF Push" with lore "<white>If player's HP >= 80%%:", "<white>Grants STR/MAG/DEF +7 during combat.", "<white>If player initiates combat, inflicts 2 hearts of recoil damage after combat.", "<white>Fabrication requirement: 60", "<white>Weapon Ability: +15"
+				set slot 22 of the player's current inventory to 1 flint and steel named "<light red><bold>ATK/RES Push" with lore "<white>If player's HP >= 80%%:", "<white>Grants STR/MAG/RES +7 during combat.", "<white>If player initiates combat, inflicts 2 hearts of recoil damage after combat.", "<white>Fabrication requirement: 60", "<white>Weapon Ability: +15"
+				set slot 23 of the player's current inventory to 1 flint and steel named "<light red><bold>ATK/SPD Push" with lore "<white>If player's HP >= 80%%:", "<white>Grants STR/MAG/SPD +7 during combat.", "<white>If player initiates combat, inflicts 2 hearts of recoil damage after combat.", "<white>Fabrication requirement: 65", "<white>Weapon Ability: +19"
+				set slot 24 of the player's current inventory to 1 flint and steel named "<light red><bold>DEF/RES Push" with lore "<white>If player's HP >= 80%%:", "<white>Grants DEF/RES/LCK +7 during combat.", "<white>If player initiates combat, inflicts 2 hearts of recoil damage after combat.", "<white>Fabrication requirement: 55", "<white>Weapon Ability: +19"
+				set slot 25 of the player's current inventory to 1 blaze powder named "<light red><bold>Rage" with lore "<white>Grants STR/MAG/SPD/DEF/RES +9 during combat,", "<white>but after combat, inflicts non-lethal recoil damage", "<white>equal to 20%% of player's maximum health.", "<white>Fabrication requirement: 70", "<white>Weapon Ability: +19"
+				set slot 26 of the player's current inventory to 1 totem of undying named "<light red><bold>Blazing Storm" with lore "<white>If player's HP <= 80%% and player is combat tagged:", "<white>Grants STR/MAG/SPD/LCK +5,", "<white>and has a 50%% chance to inflict [Dazed 2] on the foe.", "<bold>[Dazed X]: <reset><white>Inflicts Slowness/Weakness 4 for X seconds.", "<white>Fabrication requirement: 70", "<white>Weapon Ability: +19"
+				set slot 27 of the player's current inventory to 1 totem of undying named "<light red><bold>ATK/SPD Ideal" with lore "<white>If player's HP = 100%% at start of combat,", "<white>or if a stat is buffed via a skill like Drive STR,", "<white>grants STR/MAG/SPD +7 during combat.", "<white>Additionally, if both conditions are met,", "<white>grants an additional STR/SPD +3 during combat.", "<white>Fabrication requirement: 70", "<white>Weapon Ability: +19"
+				set slot 28 of the player's current inventory to 1 totem of undying named "<light red><bold>DEF/RES Ideal" with lore "<white>If player's HP = 100%% at start of combat,", "<white>or if a stat is buffed via a skill like Drive STR,", "<white>grants DEF/RES +7 during combat.", "<white>Additionally, if both conditions are met,", "<white>grants an additional DEF/RES +3 during combat.", "<white>Fabrication requirement: 70", "<white>Weapon Ability: +19"
+				set slot 29 of the player's current inventory to 1 chest named "<light red><bold>ATK/SPD Catch" with lore "<white>At start of combat, if foe's HP = 100%%, or", "<white>if player's HP = 100%%,", "<white>grants STR/MAG/SPD +7 during combat.", "<white>Additionally, if both conditions are met,", "<white>grants an additional STR/MAG/SPD +3 during combat.", "<white>Fabrication requirement: 70", "<white>Weapon Ability: +19"
+				set slot 30 of the player's current inventory to 1 chest named "<light red><bold>DEF/RES Catch" with lore "<white>At start of combat, if foe's HP = 100%%, or", "<white>if player's HP = 100%%,", "<white>grants DEF/RES/LCK +7 during combat.", "<white>Additionally, if both conditions are met,", "<white>grants an additional DEF/RES/LCK +3 during combat.", "<white>Fabrication requirement: 70", "<white>Weapon Ability: +19"
+				set slot 31 of the player's current inventory to 1 feather named "<light red><bold>Sacae's Grace" with lore "<white>At start of combat, if player's HP >= foe's HP -3,", "<white>or if there is any ally within 15 blocks:", "<white>Grants STR/MAG/SPD +7 and boosts Critical Dodge & Accuracy by 25%%.", "<white>Fabrication requirement: 85", "<white>Weapon Ability: +28"
+				set slot (({_chestSize} * 9) - 2) of the player's current inventory to 1 book named "<white><bold>Funds & More" with lore "<white>Your Fabrication: %{abilities.%player%::Fabrication}%", "<white>Current Funds: %player's money%", "<white>Trad. Weapons: %{abilities.%player%::Traditional Weapons}%", "<white>Mag. Weapons: %{abilities.%player%::Magical Weapons}%", "<white>Guns: %{abilities.%player%::Guns}%"
+				set slot (({_chestSize} * 9) - 1) of the player's current inventory to 1 red glass pane named "<white><bold>Go Back" with lore "<white>Returns to the previous menu."
+		#B-Slot Skills
+		else if arg 1 is 2:
+			#Setting this to a temp variable lets us automatically correct the position of the Go Back button.
+			set {_chestSize} to 5
+			open chest inventory with {_chestSize} rows named "<gold>Smithy: B-Slot Skills" for the player
+			set slot 0 of the player's current inventory to 1 fishing rod named "<light blue><bold>Vantage" with lore "<white>If foe initiates combat, and player's HP <= 75%%,", "<white>Player attacks first.", "<white>This effect will only activate if a counter-attack is possible.", "<white>EX: A sword-wielding player needs Counter to activate Vantage against a bow.", "<white>Fabrication Requirement: 40", "<white>Weapon Ability: +13"
+			set slot 1 of the player's current inventory to 1 fishing rod named "<light blue><bold>Desperation" with lore "<white>If player initiates combat with HP <= 75%%,", "<white>Reduces SPD advantage needed to double to 1,", "<white>and if player doubles via SPD, nullifies foe's effects", "<white>that guarantee a counter-attack.", "<white>EG: Player is only required to have 1 more SPD than the foe when Desperation is active.", "<white>Fabrication requirement: 20", "<white>Weapon Ability: +5"
+			set slot 2 of the player's current inventory to 1 fishing rod named "<light blue><bold>Brash Assault" with lore "<white>If player's HP <= 50%% and foe can counter-attack:", "<white>Player makes a guaranteed double-attack via SPD.", "<white>Fabrication requirement: 35", "<white>Weapon Ability: +7"
+			set slot 3 of the player's current inventory to 1 spider eye named "<light blue><bold>Seal STR" with lore "<white>After combat:", "<white>Inflicts STR -7 on foe until after their next attack.", "<white>Fabrication requirement: 25", "<white>Weapon Ability: +7"
+			set slot 4 of the player's current inventory to 1 spider eye named "<light blue><bold>Seal MAG" with lore "<white>After combat:", "<white>Inflicts MAG -7 on foe until after their next attack.", "<white>Fabrication requirement: 25", "<white>Weapon Ability: +7"
+			set slot 5 of the player's current inventory to 1 spider eye named "<light blue><bold>Seal SPD" with lore "<white>After combat:", "<white>Inflicts SPD -7 on foe until after their next attack.", "<white>Fabrication requirement: 35", "<white>Weapon Ability: +11"
+			set slot 6 of the player's current inventory to 1 spider eye named "<light blue><bold>Seal DEF" with lore "<white>After combat:", "<white>Inflicts DEF -7 on foe until after their next attack.", "<white>Fabrication requirement: 30", "<white>Weapon Ability: +9"
+			set slot 7 of the player's current inventory to 1 spider eye named "<light blue><bold>Seal RES" with lore "<white>After combat:", "<white>Inflicts RES -7 on foe until after their next attack.", "<white>Fabrication requirement: 30", "<white>Weapon Ability: +9"
+			set slot 8 of the player's current inventory to 1 wooden sword named "<light blue><bold>Close Breaker" with lore "<white>If foe is wielding any melee weapon and player's HP >= 50%%:", "<white>Player automatically makes a follow-up attack and foe cannot.", "<white>Fabrication requirement: 45", "<white>Weapon Ability: +13", "<gold>Weapon types affected by this skill:", "<gold>Swords, Lances, Axes, Gauntlets, Claws"
+			set slot 9 of the player's current inventory to 1 bow named "<light blue><bold>Ranged Breaker" with lore "<white>If foe is wielding any ranged weapon and player's HP >= 50%%:", "<white>Player automatically makes a follow-up attack and foe cannot.", "<white>Fabrication requirement: 45", "<white>Weapon Ability: +13", "<gold>Weapon types affected by this skill:", "<gold>Bows, Tomes, Wands, Staves, Breaths, Pistols, Shotguns, Rifles"
+			set slot 10 of the player's current inventory to 1 spider eye named "<light blue><bold>Poison Strike" with lore "<white>If player initiates combat:", "<white>Inflicts <gold>[Poison 5]<white> after combat.", "<white>Fabrication requirement: 30", "<white>Weapon Ability: +9", "<gold>[Poison 5]: Damages the afflicted by 1 heart every second.", "<gold>Effect lasts for 5 seconds, or until foe's death."
+			set slot 11 of the player's current inventory to 1 milk bucket named "<light blue><bold>Renewal" with lore "<white>While this tool is equipped:", "<white>Every 2 seconds, restores 1 heart and 1/2 hunger point.", "<white>Fabrication requirement: 35", "<white>Weapon Ability: +11"
+			set slot 12 of the player's current inventory to 1 fishing rod named "<light blue><bold>Riposte" with lore "<white>If foe initiates combat, and player's HP >= 80%%:", "<white>Player makes an automatic counter-attack.", "<white>This effect will only activate if a counter-attack is possible.", "<white>EX: A sword-wielding player needs Counter to activate Quick Riposte against a bow.", "<white>Fabrication Requirement: 40", "<white>Weapon Ability: +13"
+			set slot 13 of the player's current inventory to 1 gold sword named "<light blue><bold>Brave Blade" with lore "<white>Inflicts SPD -5, reduces weapon might by 2.", "<white>If player initiates combat, weapon attacks twice.", "<white>Fabrication requirement: 60", "<white>Weapon Ability: +16"
+			set slot 14 of the player's current inventory to 1 experience bottle named "<light blue><bold>Experience Sapper" with lore "<white>Boosts XP earned from combat by 50%%.", "<white>Fabrication requirement: 50", "<white>Weapon Ability: +6"
+			set slot 15 of the player's current inventory to 1 gold sword named "<light blue><bold>Wrath" with lore "<white>If player's HP <= 50%% and their Special skill deals damage:", "<white>Accelerates Special skill activation (+10%% activation chance),", "<white>and boosts damage dealt by Special skills by 5 hearts.", "<white>Fabrication requirement: 60", "<white>Weapon Ability: +16"
+			set slot 16 of the player's current inventory to 1 gold sword named "<light blue><bold>Despoil" with lore "<white>Foes slain by this weapon have a chance to drop Bullion and provisions based on player's MAG.", "<white>Bullion (S): MAG%%, Max: 90%%", "<white>Bullion (M): (MAG / 2)%%, Max: 50%%", "<white>Bullion (L): (MAG / 4)%%, Max: 25%%", "<white>Bullion (XL): (MAG / 8)%%, Max: 10%%", "<white>Bread: (MAG * 2)%%, Max: 100%%", "<white>Steak: (MAG / 2)%%, Max: 50%%", "<white>Cake: (MAG / 4)%%, Max: 20%%", "<white>Fabrication Requirement: 50", "<white>Weapon Ability: +13"
+			set slot 17 of the player's current inventory to 1 iron chestplate named "<light blue><bold>Shield Pulse" with lore "<white>If this weapon's Special skill activates on foe's attack:", "<white>Accelerates Special skill activation (+20%% activation chance),", "<white>and reduces damage suffered by 2.5 hearts when Special skill activates.", "<white>Fabrication requirement: 40", "<white>Weapon Ability: +9"
+			set slot 18 of the player's current inventory to 1 totem of undying named "<light blue><bold>Bonus Doubler" with lore "<white>During combat, grants bonus to STR/MAG/SPD/LCK/DEF/RES = current bonus on each stat.", "<white>Calculates stat bonus independently for each stat.", "<white>In-combat bonuses from skills like Death Blow are NOT included.", "<white>EX: Player has STR +7, SPD +3 when entering combat. Bonus Blade grants STR +7, SPD +3 during combat,", "<white>for a total bonus of STR +14, SPD +6.", "<white>Fabrication Requirement: 90", "<white>Weapon Ability: +24"
+			set slot 19 of the player's current inventory to 1 golden chestplate named "<light blue><bold>Solar Brace" with lore "<white>If player's Special skill activates and deals damage:", "<white>restores health = 20%% of damage dealt.", "<white>Fabrication requirement: 55", "<white>Weapon Ability: +13"
+			set slot 20 of the player's current inventory to 1 diamond chestplate named "<light blue><bold>Lunar Brace" with lore "<white>If player's Special skill activates and deals damage:", "<white>reduces foe's DEF/RES by 30%% for that attack.", "<white>Fabrication requirement: 80", "<white>Weapon Ability: +24"
+			set slot 21 of the player's current inventory to 1 totem of undying named "<light blue><bold>Mystic Boost" with lore "<white>After combat, restores 6 HP to the player.", "<white>Fabrication requirement: 60", "<white>Weapon Ability: +18"
+			set slot 22 of the player's current inventory to 1 barrier named "<light blue><bold>Lull STR/DEF" with lore "<white>At start of combat, inflicts STR/DEF -5 on foe and nullifies pre-combat bonuses to those stats.", "<white>Bonuses from Traits are unaffected.", "<white>Fabrication requirement: 70", "<white>Weapon Ability: +19"
+			set slot 23 of the player's current inventory to 1 barrier named "<light blue><bold>Lull MAG/RES" with lore "<white>At start of combat, inflicts MAG/RES -5 on foe and nullifies pre-combat bonuses to those stats.", "<white>Bonuses from Traits are unaffected.", "<white>Fabrication requirement: 70", "<white>Weapon Ability: +19"
+			set slot 24 of the player's current inventory to 1 barrier named "<light blue><bold>Lull SPD/DEF" with lore "<white>At start of combat, inflicts SPD/DEF -5 on foe and nullifies pre-combat bonuses to those stats.", "<white>Bonuses from Traits are unaffected.", "<white>Fabrication requirement: 70", "<white>Weapon Ability: +19"
+			set slot 25 of the player's current inventory to 1 barrier named "<light blue><bold>Lull SPD/RES" with lore "<white>At start of combat, inflicts SPD/RES -5 on foe and nullifies pre-combat bonuses to those stats.", "<white>Bonuses from Traits are unaffected.", "<white>Fabrication requirement: 70", "<white>Weapon Ability: +19"
+			set slot 26 of the player's current inventory to 1 barrier named "<light blue><bold>Lull ATK/SPD" with lore "<white>At start of combat, inflicts STR/MAG/SPD -5 on foe and nullifies pre-combat bonuses to those stats.", "<white>Bonuses from Traits are unaffected.", "<white>Fabrication requirement: 70", "<white>Weapon Ability: +24"
+			set slot 27 of the player's current inventory to 1 feather named "<light blue><bold>Close Call" with lore "<white>During combat, if player's SPD > foe's SPD:", "<white>Reduces damage taken from foe by X%%,", "<white>where X = ((player's SPD - foe's SPD) * 4)", "<white>Maximum value of X: 40", "<white>Fabrication requirement: 70", "<white>Weapon Ability: +19"
+			set slot 28 of the player's current inventory to 1 feather named "<light blue><bold>Dragon Wall" with lore "<white>During combat, if player's RES > foe's RES:", "<white>Reduces damage taken from foe by X%%,", "<white>where X = ((player's RES - foe's RES) * 4)", "<white>Maximum value of X: 40", "<white>Fabrication requirement: 70", "<white>Weapon Ability: +19"
+			set slot 29 of the player's current inventory to 1 diamond chestplate named "<light blue><bold>Arcane Ward" with lore "<white>At start of combat, if player's RES > foe's RES:", "<white>Inflicts STR/MAG/DEF/RES -X on foe,", "<white>where X = ((player's RES - foe's RES) * 2)", "<white>Maximum value of X: 14", "<white>Fabrication requirement: 70", "<white>Weapon Ability: +19"
+			set slot 30 of the player's current inventory to 1 blaze powder named "<light blue><bold>Deadly Balance" with lore "<white>During combat, if player's HP < foe's HP:", "<white>Boosts damage dealt by X%%,", "<white>where X = ((foe's HP - player's HP) * 2.5)", "<white>Maximum value of X: 50%%.", "<white>Fabrication requirement: 70", "<white>Weapon Ability: +19"
+			set slot 31 of the player's current inventory to 1 blaze powder named "<light blue><bold>Windsweep" with lore "<white>During combat, if player's SPD >= foe's SPD +5:", "<white>Nullifies effects that guarantee foe's counter-attack,", "<white>and inflicts Weakness 4 on foe for 4 seconds.", "<white>Fabrication requirement: 50", "<white>Weapon Ability: +13"
+			set slot 32 of the player's current inventory to 1 purple wool named "<light blue><bold>Special Spiral" with lore "<white>During combat, if player's Special skill activates and deals damage:", "<white>Grants +20%% Special activation chance through next action.", "<white>Fabrication requirement: 70", "<white>Weapon Ability: +19"
+			set slot 33 of the player's current inventory to 1 feather named "<light blue><bold>Pass" with lore "<white>If an enemy is within 6 blocks:", "<white>Grants Swiftness 2 and SPD +5 during combat.", "<white>Fabrication requirement: 25", "<white>Weapon Ability: +9"
+			set slot 34 of the player's current inventory to 1 feather named "<light blue><bold>Obstruct" with lore "<white>If an enemy is within 6 blocks:", "<white>Inflicts Slowness 2 and STR/MAG -5 on foe during combat.", "<white>Fabrication requirement: 60", "<white>Weapon Ability: +15"
+			set slot (({_chestSize} * 9) - 2) of the player's current inventory to 1 book named "<white><bold>Funds & More" with lore "<white>Your Fabrication: %{abilities.%player%::Fabrication}%", "<white>Current Funds: %player's money%", "<white>Trad. Weapons: %{abilities.%player%::Traditional Weapons}%", "<white>Mag. Weapons: %{abilities.%player%::Magical Weapons}%", "<white>Guns: %{abilities.%player%::Guns}%"
+			set slot (({_chestSize} * 9) - 1) of the player's current inventory to 1 red glass pane named "<white><bold>Go Back" with lore "<white>Returns to the previous menu."
+		#C-Slot Skills
+		else if arg 1 is 3:
+			if arg 2 is 0:
+				#arg 2 = 0, show activation condition type
+				set {_chestSize} to 1
+				open chest inventory with {_chestSize} rows named "<gold>Smithy: Select C-Slot Target" for the player
+				set slot 0 of the player's current inventory to 1 totem of undying named "<light yellow>Target Self" with lore "<white>Show C-Slot skills that target yourself."
+				set slot 1 of the player's current inventory to 1 iron chestplate named "<light yellow>Target Allies" with lore "<white>Show A-Slot skills that target your allies."
+				set slot 2 of the player's current inventory to 1 rotten flesh named "<light yellow>Target Enemies" with lore "<white>Show A-Slot skills that target your foes."			
+				set slot (({_chestSize} * 9) - 1) of the player's current inventory to 1 red glass pane named "<white><bold>Go Back" with lore "<white>Returns to the previous menu."
+			else if arg 2 is 1:
+				set {_chestSize} to 6
+				open chest inventory with {_chestSize} rows named "<gold>Smithy: TS C-Slot Skills" for the player
+				set slot 0 of the player's current inventory to 1 totem of undying named "<light yellow><bold>Defence Blaze" with lore "<white>If player initiates combat:", "<white>Grants DEF/RES +7 to player through their next action.", "<white>Fabrication requirement: 90", "<white>Weapon Ability: +20" 
+				set slot 1 of the player's current inventory to 1 totem of undying named "<light yellow><bold>Critical Blaze" with lore "<white>If player initiates combat:", "<white>Grants SPD/LCK +7 to player through their next action.", "<white>Fabrication requirement: 90", "<white>Weapon Ability: +20"
+				set slot 2 of the player's current inventory to 1 diamond sword named "<light yellow><bold>Quickened Pulse" with lore "<white>If player is not combat tagged:", "<white>Accelerates Special skill activation (+10%% activation chance).", "<white>Fabrication requirement: 100", "<white>Weapon Ability: +32"
+				set slot 3 of the player's current inventory to 1 diamond sword named "<light yellow><bold>Time's Pulse" with lore "<white>If player is combat tagged:", "<white>Boosts damage dealt when a Special skill activates by +7.5 hearts.", "<white>Fabrication requirement: 100", "<white>Weapon Ability: +32"
+				set slot 4 of the player's current inventory to 1 totem of undying named "<light yellow><bold>Offence Blaze" with lore "<white>If player initiates combat:", "<white>Grants STR/MAG +7 to player through their next action.", "<white>Fabrication requirement: 90", "<white>Weapon Ability: +24" 
+				set slot (({_chestSize} * 9) - 2) of the player's current inventory to 1 book named "<white><bold>Funds & More" with lore "<white>Your Fabrication: %{abilities.%player%::Fabrication}%", "<white>Current Funds: %player's money%", "<white>Trad. Weapons: %{abilities.%player%::Traditional Weapons}%", "<white>Mag. Weapons: %{abilities.%player%::Magical Weapons}%", "<white>Guns: %{abilities.%player%::Guns}%"
+				set slot (({_chestSize} * 9) - 1) of the player's current inventory to 1 red glass pane named "<white><bold>Go Back" with lore "<white>Returns to the previous menu."
+			else if arg 2 is 2:
+				set {_chestSize} to 6
+				open chest inventory with {_chestSize} rows named "<gold>Smithy: TA C-Slot Skills" for the player
+				set slot 0 of the player's current inventory to 1 rail named "<light yellow><bold>Spur STR" with lore "<white>Grants STR +5 to allies within 30 blocks during combat.", "<white>Fabrication requirement: 20", "<white>Weapon Ability: +5"
+				set slot 1 of the player's current inventory to 1 rail named "<light yellow><bold>Spur MAG" with lore "<white>Grants MAG +5 to allies within 30 blocks during combat.", "<white>Fabrication requirement: 20", "<white>Weapon Ability: +5"
+				set slot 2 of the player's current inventory to 1 rail named "<light yellow><bold>Spur SPD" with lore "<white>Grants SPD +5 to allies within 30 blocks during combat.", "<white>Fabrication requirement: 20", "<white>Weapon Ability: +5"
+				set slot 3 of the player's current inventory to 1 rail named "<light yellow><bold>Spur DEF" with lore "<white>Grants DEF +5 to allies within 30 blocks during combat.", "<white>Fabrication requirement: 20", "<white>Weapon Ability: +5"
+				set slot 4 of the player's current inventory to 1 rail named "<light yellow><bold>Spur RES" with lore "<white>Grants RES +5 to allies within 30 blocks during combat.", "<white>Fabrication requirement: 20", "<white>Weapon Ability: +5"
+				set slot 5 of the player's current inventory to 1 milk bucket named "<light yellow><bold>Breath of Life" with lore "<white>If player initiates combat:", "<white>Restores 4.5 hearts to allies within 30 blocks of the player.", "<white>Fabrication requirement: 20", "<white>Weapon Ability: +5"
+				set slot 6 of the player's current inventory to 1 totem of undying named "<light yellow><bold>Rouse STR" with lore "<white>After combat, if player initiated:", "<white>Grants STR +7 to allies within 30 blocks through their next action.", "<white>Fabrication requirement: 40", "<white>Weapon Ability: +9"
+				set slot 7 of the player's current inventory to 1 totem of undying named "<light yellow><bold>Rouse MAG" with lore "<white>After combat, if player initiated:", "<white>Grants MAG +7 to allies within 30 blocks through their next action.", "<white>Fabrication requirement: 40", "<white>Weapon Ability: +9"
+				set slot 8 of the player's current inventory to 1 totem of undying named "<light yellow><bold>Rouse SPD" with lore "<white>After combat, if player initiated:", "<white>Grants SPD +7 to allies within 30 blocks through their next action.", "<white>Fabrication requirement: 40", "<white>Weapon Ability: +9"
+				set slot 9 of the player's current inventory to 1 totem of undying named "<light yellow><bold>Rouse DEF" with lore "<white>After combat, if player initiated:", "<white>Grants DEF +7 to allies within 30 blocks through their next action.", "<white>Fabrication requirement: 40", "<white>Weapon Ability: +9"
+				set slot 10 of the player's current inventory to 1 totem of undying named "<light yellow><bold>Rouse RES" with lore "<white>After combat, if player initiated:", "<white>Grants RES +7 to allies within 30 blocks through their next action.", "<white>Fabrication requirement: 40", "<white>Weapon Ability: +9"
+				set slot 11 of the player's current inventory to 1 powered rail named "<light yellow><bold>Drive STR" with lore "<white>Grants STR +9 to allies within 30 blocks during combat.", "<white>Fabrication requirement: 45", "<white>Weapon Ability: +11"
+				set slot 12 of the player's current inventory to 1 powered rail named "<light yellow><bold>Drive SPD" with lore "<white>Grants SPD +9 to allies within 30 blocks during combat.", "<white>Fabrication requirement: 45", "<white>Weapon Ability: +11"
+				set slot 13 of the player's current inventory to 1 powered rail named "<light yellow><bold>Drive MAG" with lore "<white>Grants MAG +9 to allies within 30 blocks during combat.", "<white>Fabrication requirement: 45", "<white>Weapon Ability: +11"
+				set slot 14 of the player's current inventory to 1 powered rail named "<light yellow><bold>Drive DEF" with lore "<white>Grants DEF +9 to allies within 30 blocks during combat.", "<white>Fabrication requirement: 45", "<white>Weapon Ability: +11"
+				set slot 15 of the player's current inventory to 1 powered rail named "<light yellow><bold>Drive RES" with lore "<white>Grants RES +9 to allies within 30 blocks during combat.", "<white>Fabrication requirement: 45", "<white>Weapon Ability: +11"
+				set slot 16 of the player's current inventory to 1 iron sword named "<light yellow><bold>Heavy Rush" with lore "<white>At start of an ally's combat, if player's HP >= 50%%:", "<white>Grants <light red>[Heavy Blade]<reset><white> to that ally.", "<light red>[Heavy Blade]:<reset><white> If player's STR > foe's STR, grants LCK +X,", "<white>where X = difference between (player's STR - foe's STR),", "<white>and also boosts damage dealt by (X / 2).", "<white>Fabrication requirement: 50", "<white>Weapon Ability: +14"
+				set slot 17 of the player's current inventory to 1 purple dye named "<light yellow><bold>Slaying Pulse" with lore "<white>At start of an ally's combat, if player's HP >= that ally's HP - 6:", "<white>Accelerates that ally's Special skill activation (+10%% activation chance).", "<white>Fabrication requirement: 50", "<white>Weapon Ability: +15"
+				set slot 18 of the player's current inventory to 1 iron sword named "<light yellow><bold>Flashing Rush" with lore "<white>At start of an ally's combat, if player's HP >= 50%%:", "<white>Grants <light red>[Flashing Blade]<reset><white> to that ally.", "<light red>[Flashing Blade]:<reset><white> If player's SPD > foe's SPD, grants LCK +X,", "<white>where X = difference between (player's SPD - foe's SPD),", "<white>and also boosts damage dealt by (X / 2).", "<white>Fabrication requirement: 60", "<white>Weapon Ability: +18"
+				set slot (({_chestSize} * 9) - 2) of the player's current inventory to 1 book named "<white><bold>Funds & More" with lore "<white>Your Fabrication: %{abilities.%player%::Fabrication}%", "<white>Current Funds: %player's money%", "<white>Trad. Weapons: %{abilities.%player%::Traditional Weapons}%", "<white>Mag. Weapons: %{abilities.%player%::Magical Weapons}%", "<white>Guns: %{abilities.%player%::Guns}%"
+				set slot (({_chestSize} * 9) - 1) of the player's current inventory to 1 red glass pane named "<white><bold>Go Back" with lore "<white>Returns to the previous menu."
+			else if arg 2 is 3:
+				set {_chestSize} to 6
+				open chest inventory with {_chestSize} rows named "<gold>Smithy: TE C-Slot Skills" for the player
+				set slot 0 of the player's current inventory to 1 lava bucket named "<light yellow><bold>Savage Blow" with lore "<white>If player initiates combat:", "<white>Deals 4.5 hearts of damage to foes within 5 blocks of the victim.", "<white>Fabrication requirement: 40", "<white>Weapon Ability: +11"
+				set slot 1 of the player's current inventory to 1 gunpowder named "<light yellow><bold>STR Smoke" with lore "<white>After combat, if player initiated:", "<white>Inflicts STR -7 on foes within 10 blocks of the victim.", "<white>Debuff is removed after the foe attacks.", "<white>Fabrication requirement: 35", "<white>Weapon Ability: +9"
+				set slot 2 of the player's current inventory to 1 gunpowder named "<light yellow><bold>MAG Smoke" with lore "<white>After combat, if player initiated:", "<white>Inflicts MAG -7 on foes within 10 blocks of the victim.", "<white>Debuff is removed after the foe attacks.", "<white>Fabrication requirement: 35", "<white>Weapon Ability: +9"
+				set slot 3 of the player's current inventory to 1 gunpowder named "<light yellow><bold>SPD Smoke" with lore "<white>After combat, if player initiated:", "<white>Inflicts SPD -7 on foes within 10 blocks of the victim.", "<white>Debuff is removed after the foe attacks.", "<white>Fabrication requirement: 35", "<white>Weapon Ability: +11"
+				set slot 4 of the player's current inventory to 1 gunpowder named "<light yellow><bold>DEF Smoke" with lore "<white>After combat, if player initiated:", "<white>Inflicts DEF -7 on foes within 10 blocks of the victim.", "<white>Debuff is removed after the foe attacks.", "<white>Fabrication requirement: 35", "<white>Weapon Ability: +9"
+				set slot 5 of the player's current inventory to 1 gunpowder named "<light yellow><bold>RES Smoke" with lore "<white>After combat, if player initiated:", "<white>Inflicts RES -7 on foes within 10 blocks of the victim.", "<white>Debuff is removed after the foe attacks.", "<white>Fabrication requirement: 35", "<white>Weapon Ability: +9"
+				set slot 6 of the player's current inventory to 1 feather named "<light yellow><bold>Antigravity" with lore "<white>After combat, if player initiated:", "<white>Inflicts Levitation 1 on foes within 7 blocks of the victim for 3 seconds,", "<white>and launches the victim upwards slightly.", "<white>Fabrication requirement: 50", "<white>Weapon Ability: +13"
+				set slot 7 of the player's current inventory to 1 egg named "<light yellow><bold>Fear" with lore "<white>After combat, if player initiated:", "<white>Inflicts Weakness 2 on foes within 7 blocks of the victim for 3 seconds.", "<white>Fabrication requirement: 60", "<white>Weapon Ability: +16"
+				set slot 8 of the player's current inventory to 1 cobweb named "<light yellow><bold>Lethargy" with lore "<white>After combat, if player initiated:", "<white>Inflicts Slowness 2 on foes within 7 blocks of the victim for 3 seconds.", "<white>Fabrication requirement: 50", "<white>Weapon Ability: +11"
+				set slot 9 of the player's current inventory to 1 lead named "<light yellow><bold>STR/DEF Rein" with lore "<white>Inflicts STR/DEF -5 on foe during combat.", "<white>Fabrication requirement: 70", "<white>Weapon Ability: +24"
+				set slot 10 of the player's current inventory to 1 lead named "<light yellow><bold>MAG/RES Rein" with lore "<white>Inflicts MAG/RES -5 on foe during combat.", "<white>Fabrication requirement: 70", "<white>Weapon Ability: +24"
+				set slot 11 of the player's current inventory to 1 lead named "<light yellow><bold>DEF/RES Rein" with lore "<white>Inflicts DEF/RES -5 on foe during combat.", "<white>Fabrication requirement: 65", "<white>Weapon Ability: +21"
+				set slot 12 of the player's current inventory to 1 lead named "<light yellow><bold>SPD/DEF Rein" with lore "<white>Inflicts SPD/DEF -5 on foe during combat.", "<white>Fabrication requirement: 75", "<white>Weapon Ability: +28"
+				set slot 13 of the player's current inventory to 1 lead named "<light yellow><bold>SPD/RES Rein" with lore "<white>Inflicts SPD/RES -5 on foe during combat.", "<white>Fabrication requirement: 75", "<white>Weapon Ability: +28"
+				set slot 14 of the player's current inventory to 1 lead named "<light yellow><bold>STR/MAG Ploy" with lore "<white>During combat, if player's RES >= foe's RES + 5:", "<white>Inflicts STR/MAG -6 on foe during combat.", "<white>Fabrication requirement: 50", "<white>Weapon Ability: +15"
+				set slot 15 of the player's current inventory to 1 lead named "<light yellow><bold>STR/DEF Ploy" with lore "<white>At start of combat, if player's RES >= foe's RES + 5:", "<white>Inflicts STR/DEF -6 on foe during combat.", "<white>Fabrication requirement: 50", "<white>Weapon Ability: +18"
+				set slot 16 of the player's current inventory to 1 lead named "<light yellow><bold>MAG/RES Ploy" with lore "<white>At start of combat, if player's RES >= foe's RES + 5:", "<white>Inflicts MAG/RES -6 on foe during combat.", "<white>Fabrication requirement: 50", "<white>Weapon Ability: +18"
+				set slot 17 of the player's current inventory to 1 lead named "<light yellow><bold>SPD/DEF Ploy" with lore "<white>At start of combat, if player's RES >= foe's RES + 5:", "<white>Inflicts SPD/DEF -6 on foe during combat.", "<white>Fabrication requirement: 50", "<white>Weapon Ability: +21"
+				set slot 18 of the player's current inventory to 1 lead named "<light yellow><bold>SPD/RES Ploy" with lore "<white>At start of combat, if player's RES >= foe's RES + 5:", "<white>Inflicts SPD/RES -6 on foe during combat.", "<white>Fabrication requirement: 50", "<white>Weapon Ability: +21"
+				set slot 19 of the player's current inventory to 1 lead named "<light yellow><bold>ATK/SPD Ploy" with lore "<white>At start of combat, if player's RES >= foe's RES + 5:", "<white>Inflicts STR/MAG/SPD -6 on foe during combat.", "<white>Fabrication requirement: 50", "<white>Weapon Ability: +24"
+				set slot (({_chestSize} * 9) - 2) of the player's current inventory to 1 book named "<white><bold>Funds & More" with lore "<white>Your Fabrication: %{abilities.%player%::Fabrication}%", "<white>Current Funds: %player's money%", "<white>Trad. Weapons: %{abilities.%player%::Traditional Weapons}%", "<white>Mag. Weapons: %{abilities.%player%::Magical Weapons}%", "<white>Guns: %{abilities.%player%::Guns}%"
+				set slot (({_chestSize} * 9) - 1) of the player's current inventory to 1 red glass pane named "<white><bold>Go Back" with lore "<white>Returns to the previous menu."				
+		#Assist Skills
+		else if arg 1 is 4:
+			set {_chestSize} to 4
+			open chest inventory with {_chestSize} rows named "<gold>Smithy: Assist Skills" for the player
+			set slot 0 of the player's current inventory to 1 fishing rod named "<light green><bold>Swap" with lore "<white>Player and target swap positions.", "<white>Fabrication requirement: 20", "<white>Weapon Ability: +3"
+			set slot 1 of the player's current inventory to 1 fishing rod named "<light green><bold>Shove" with lore "<white>Pushes target into the air diagonally.", "<white>Fabrication requirement: 20", "<white>Weapon Ability: +3"
+			set slot 2 of the player's current inventory to 1 fishing rod named "<light green><bold>Smite" with lore "<white>Pushes target away from the player horizontally.", "<white>Fabrication requirement: 20", "<white>Weapon Ability: +3"
+			set slot 3 of the player's current inventory to 1 fishing rod named "<light green><bold>Draw Back" with lore "<white>Moves player and target backwards a short distance.", "<white>Fabrication requirement: 20", "<white>Weapon Ability: +3"
+			set slot 4 of the player's current inventory to 1 fishing rod named "<light green><bold>Pivot" with lore "<white>Player moves a short distance in front of the target.", "<white>Fabrication requirement: 20", "<white>Weapon Ability: +3"
+			set slot 5 of the player's current inventory to 1 fishing rod named "<light green><bold>Reposition" with lore "<white>Target moves a short distance behind the player.", "<white>Fabrication requirement: 20", "<white>Weapon Ability: +3"
+			set slot 6 of the player's current inventory to 1 minecart named "<light green><bold>Hit and Run" with lore "<white>If player initiates combat:", "<white>Player bounces away from the foe.", "<white>Fabrication requirement: 20", "<white>Weapon Ability: +3"
+			set slot 7 of the player's current inventory to 1 water bucket named "<light green><bold>Rally Attack" with lore "<white>Grants Strength 3 to the target for 60 seconds.", "<white>Fabrication requirement: 30", "<white>Weapon Ability: +9"
+			set slot 8 of the player's current inventory to 1 water bucket named "<light green><bold>Rally Swiftness" with lore "<white>Grants Swiftness 3 to the target for 60 seconds.", "<white>Fabrication requirement: 30", "<white>Weapon Ability: +5"
+			set slot 9 of the player's current inventory to 1 water bucket named "<light green><bold>Rally Resistance" with lore "<white>Grants Resistance 3 to the target for 60 seconds.", "<white>Fabrication requirement: 30", "<white>Weapon Ability: +13"
+			set slot 10 of the player's current inventory to 1 water bucket named "<light green><bold>Fortify Health" with lore "<white>Grants Absorption 3 to the target for 60 seconds.", "<white>Fabrication requirement: 50", "<white>Weapon Ability: +19"
+			set slot 11 of the player's current inventory to 1 milk bucket named "<light green><bold>Ardent Sacrifice" with lore "<white>Heals the target by 3 hearts.", "<white>Damages the user by 3 hearts.", "<white>Skill cannot be used if user's HP <= 3 hearts.", "<white>Fabrication requirement: 30", "<white>Weapon Ability: +9"
+			set slot 12 of the player's current inventory to 1 fishing rod named "<light green><bold>Stinger" with lore "<white>Dash forwards a great distance.", "<white>Fabrication requirement: 60", "<white>Weapon Ability: +16"
+			set slot 13 of the player's current inventory to 1 totem of undying named "<light green><bold>Counter" with lore "<white>Enables this weapon to counter-attack regardless of distance.", "<white>Fabrication requirement: 60", "<white>Weapon Ability: +13"
+			set slot 14 of the player's current inventory to 1 fishing rod named "<light green><bold>Liftoff" with lore "<white>Pushes target straight up into the air.", "<white>Fabrication requirement: 30", "<white>Weapon Ability: +6"
+			set slot 15 of the player's current inventory to 1 feather named "<light green><bold>Fist Override" with lore "<white>If a skill or perk input requires an empty hand,", "<white>treats this tool as though it were unequipped.", "<white>Fabrication requirement: 30", "<white>Weapon Ability: +6"
+			set slot 16 of the player's current inventory to 1 experience bottle named "<light green><bold>EXP Share" with lore "<white>Doubles the XP and Gold earned from assisting with an ally's kill.", "<white>Fabrication requirement: 40", "<white>Weapon Ability: +9"
+			set slot 17 of the player's current inventory to 1 diamond axe named "<light green><bold>Power Bash" with lore "<white>Strike a foe with great force, flinging them away for massive damage.", "<white>However, after Power Bash is used, inflicts Weakness 4 for 3 seconds.", "<white>Fabrication requirement: 60", "<white>Weapon Ability: +16"
+			set slot 18 of the player's current inventory to 1 diamond sword named "<light green><bold>Finisher Plus" with lore "<white>Right-click a foe to immediately trigger a Finishing Blow on your next attack.", "<white>Fabrication requirement: 60", "<white>Weapon Ability: +19"
+			set slot 19 of the player's current inventory to 1 diamond shovel named "<light green><bold>Combo Plus" with lore "<white>Halves the amount a weapon contributes to triggering a Finishing Blow,", "<white>allowing for more strikes before triggering one.", "<white>Fabrication requirement: 40", "<white>Weapon Ability: +11"
+			set slot 20 of the player's current inventory to 1 shield named "<light green><bold>Magic Wall" with lore "<white>Right-click to deploy a magical barrier,", "<white>reducing damage suffered during combat by 50%% of your MAG + RES stat.", "<white>Maximum damage resistance: 50%%", "<white>Effect duration: 10 seconds", "<white>Cooldown: 20 seconds (after effect fades)", "<white>Fabrication requirement: 60", "<white>Weapon Ability: +18"
+			set slot 21 of the player's current inventory to 1 lead named "<light green><bold>Bind ATK" with lore "<white>If player's RES >= foe's RES - 3:", "<white>Inflicts STR/MAG -8 on foe through their next action.", "<white>Effect Radius: 20 blocks", "<white>Right-click to activate.", "<white>Cooldown: 5 seconds", "<white>Fabrication requirement: 50", "<white>Weapon Ability: +11"
+			set slot 22 of the player's current inventory to 1 lead named "<light green><bold>Bind DEF/RES" with lore "<white>If player's RES >= foe's RES - 3:", "<white>Inflicts DEF/RES -8 on foe through their next action.", "<white>Effect Radius: 20 blocks", "<white>Right-click to activate.", "<white>Cooldown: 5 seconds", "<white>Fabrication requirement: 50", "<white>Weapon Ability: +11"
+			set slot 23 of the player's current inventory to 1 lead named "<light green><bold>Bind SPD" with lore "<white>If player's RES >= foe's RES - 3:", "<white>Inflicts SPD -12 on foe through their next action, and inflicts Slowness 2 on foe for 5 seconds.", "<white>Effect Radius: 20 blocks", "<white>Right-click to activate.", "<white>Cooldown: 5 seconds", "<white>Fabrication requirement: 50", "<white>Weapon Ability: +11"
+			set slot 24 of the player's current inventory to 1 barrier named "<light green><bold>Chained Magic" with lore "<white>Nullifies environmental effects of any spells equipped.", "<white>Fabrication requirement: 20", "<white>Weapon Ability: +0"
+			set slot 25 of the player's current inventory to 1 milk bucket named "<light green><bold>Fast Healing" with lore "<white>Restores health equal to 10%% of your MAG + RES.", "<white>Maximum health restored: 20HP", "<white>Fabrication requirement: 45", "<white>Weapon Ability: +14"
+			set slot 26 of the player's current inventory to 1 milk bucket named "<light green><bold>Healing Hands" with lore "<white>Restores the target's health equal to 15%% of your MAG + RES.", "<white>Maximum health restored: 20HP", "<white>Fabrication requirement: 45", "<white>Weapon Ability: +14"
+			set slot 27 of the player's current inventory to 1 milk bucket named "<light green><bold>Bolster ATK/SPD" with lore "<white>Grants player and all allies within 30 blocks a", "<white>bonus to STR/MAG/SPD = 20%% of your MAG + RES.", "<white>Bonus lasts for 30 seconds.", "<white>Maximum bonus: +15", "<white>Cooldown: 40 seconds", "<white>Fabrication requirement: 50", "<white>Weapon Ability: +18"
+			set slot 28 of the player's current inventory to 1 milk bucket named "<light green><bold>Bolster DEF/RES" with lore "<white>Grants player and all allies within 30 blocks a", "<white>bonus to DEF/RES/LCK = 20%% of your MAG + RES.", "<white>Bonus lasts for 30 seconds.", "<white>Maximum bonus: +15", "<white>Cooldown: 40 seconds", "<white>Fabrication requirement: 50", "<white>Weapon Ability: +12"
+			set slot (({_chestSize} * 9) - 2) of the player's current inventory to 1 book named "<white><bold>Funds & More" with lore "<white>Your Fabrication: %{abilities.%player%::Fabrication}%", "<white>Current Funds: %player's money%", "<white>Trad. Weapons: %{abilities.%player%::Traditional Weapons}%", "<white>Mag. Weapons: %{abilities.%player%::Magical Weapons}%", "<white>Guns: %{abilities.%player%::Guns}%"
+			set slot (({_chestSize} * 9) - 1) of the player's current inventory to 1 red glass pane named "<white><bold>Go Back" with lore "<white>Returns to the previous menu."
+		#Special Skills
+		else if arg 1 is 5:
+			set {_chestSize} to 3
+			open chest inventory with {_chestSize} rows named "<gold>Smithy: Special Skills" for the player
+			set slot 0 of the player's current inventory to 1 golden apple named "<light purple><bold>Sol" with lore "<white>Restores health = 50%% of damage dealt.", "<white>Activation chance = 100%% of player's LCK (Maximum of 75%%)", "<white>Fabrication requirement: 45", "<white>Weapon Ability: +9"
+			set slot 1 of the player's current inventory to 1 arrow named "<light purple><bold>Luna" with lore "<white>Treats foe's DEF/RES as if it were reduced by 50%%.", "<white>Activation chance = 80%% of player's LCK (Maximum of 70%%)", "<white>Fabrication requirement: 55", "<white>Weapon Ability: +11"
+			set slot 2 of the player's current inventory to 1 arrow named "<light purple><bold>Moonbow" with lore "<white>Treats foe's DEF/RES as if it were reduced by 30%%.", "<white>Activation chance = 100%% of player's LCK (Maximum of 90%%)", "<white>Fabrication requirement: 45", "<white>Weapon Ability: +9"
+			set slot 3 of the player's current inventory to 1 spectral arrow named "<light purple><bold>Aether" with lore "<white>Activates the effects of Luna and Sol simultaneously.", "<white>Activation chance = 50%% of player's LCK (Maximum of 50%%)", "<white>Fabrication requirement: 75", "<white>Weapon Ability: +19"
+			set slot 4 of the player's current inventory to 1 lava bucket named "<light purple><bold>Retribution" with lore "<white>Boosts damage by 50%% of damage suffered.", "<white>Activation chance = 100%% of player's LCK (Maximum of 75%%)", "<white>Fabrication requirement: 45", "<white>Weapon Ability: +9"
+			set slot 5 of the player's current inventory to 1 torch named "<light purple><bold>Glimmer" with lore "<white>Boosts damage dealt by 50%%.", "<white>Activation chance = 75%% of player's LCK (Maximum of 60%%)", "<white>Fabrication requirement: 45", "<white>Weapon Ability: +11"
+			set slot 6 of the player's current inventory to 1 redstone torch named "<light purple><bold>Astra" with lore "<white>Boosts damage dealt by 2.5x.", "<white>Activation chance = 50%% of player's LCK (Maximum of 50%%)", "<white>Fabrication requirement: 75", "<white>Weapon Ability: +16"
+			set slot 7 of the player's current inventory to 1 redstone dust named "<light purple><bold>Dragon Fang" with lore "<white>Boosts damage by 25%% of player's STR + MAG.", "<white>Activation chance = 60%% of player's LCK (Maximum of 60%%)", "<white>Fabrication requirement: 60", "<white>Weapon Ability: +13"
+			set slot 8 of the player's current inventory to 1 redstone dust named "<light purple><bold>Bonfire" with lore "<white>Boosts damage by 50%% of player's DEF.", "<white>Activation chance = 60%% of player's LCK (Maximum of 60%%)", "<white>Fabrication requirement: 60", "<white>Weapon Ability: +13"
+			set slot 9 of the player's current inventory to 1 redstone dust named "<light purple><bold>Iceberg" with lore "<white>Boosts damage by 50%% of player's RES.", "<white>Activation chance = 60%% of player's LCK (Maximum of 60%%)", "<white>Fabrication requirement: 60", "<white>Weapon Ability: +13"
+			#Hurricane is busted, force SPD stack builds to use Dragon Fang instead
+			#set slot 10 of the player's current inventory to 1 redstone dust named "<light purple><bold>Hurricane" with lore "<white>Boosts damage by 80%% of player's SPD.", "<white>Activation chance = 80%% of player's LCK (Maximum of 60%%)", "<white>Fabrication requirement: 60", "<white>Weapon Ability: +13"
+			set slot 10 of the player's current inventory to 1 beetroot seeds named "<light purple><bold>Rising Thunder" with lore "<white>Deals damage to foes within 10 blocks of the victim equal to 50%% of damage dealt.", "<white>Activation chance = 50%% of player's LCK (Maximum of 75%%)", "<white>Fabrication requirement: 68", "<white>Weapon Ability: +16"
+			set slot 11 of the player's current inventory to 1 beetroot seeds named "<light purple><bold>Blazing Thunder" with lore "<white>Boosts damage by 25%% and damages foes within 5 blocks of the victim equal to 50%% of damage dealt.", "<white>Activation chance = 50%% of player's LCK (Maximum of 75%%)", "<white>Fabrication requirement: 68", "<white>Weapon Ability: +16"
+			set slot 12 of the player's current inventory to 1 iron chestplate named "<light purple><bold>Pavise" with lore "<white>Reduces damage suffered from melee opponents by 50%%.", "<white>Activation chance = 200%% of player's LCK (Maximum of 100%%)", "<white>Fabrication requirement: 50", "<white>Weapon Ability: +9"
+			set slot 13 of the player's current inventory to 1 iron helmet named "<light purple><bold>Aegis" with lore "<white>Reduces damage suffered from ranged opponents by 50%%.", "<white>Activation chance = 200%% of player's LCK (Maximum of 100%%)", "<white>Fabrication requirement: 50", "<white>Weapon Ability: +9"
+			set slot 14 of the player's current inventory to 1 golden chestplate named "<light purple><bold>Buckler" with lore "<white>Reduces damage suffered during combat by 25%%.", "<white>Activation chance = 150%% of player's LCK (Maximum of 90%%)", "<white>Fabrication requirement: 65", "<white>Weapon Ability: +13"
+			set slot 15 of the player's current inventory to 1 diamond chestplate named "<light purple><bold>Miracle" with lore "<white>If foe's attack would kill the player, and if player's HP > 1:", "<white>Player survives the attack with 1 HP.", "<white>Activation chance = 100%% of player's LCK (Maximum of 100%%)", "<white>Fabrication requirement: 65", "<white>Weapon Ability: +13"
+			set slot 16 of the player's current inventory to 1 totem of undying named "<light purple><bold>Galeforce" with lore "<white>Inflicts [Dazed] on foes within 15 blocks for 10 seconds.", "<white>Foes with the [Dazed] condition take 25%% more damage from weapons equipped with [Galeforce].", "<white>Activation chance = 100%% of player's LCK (Maximum of 50%%)", "<white>Fabrication requirement: 65", "<white>Weapon Ability: +13"
+			set slot 17 of the player's current inventory to 1 bow named "<light purple><bold>Deadeye" with lore "<white>Nullifies foe's damage resistance from armour,", "<white>and boosts damage dealt by 50%%.", "<italics>Skill only equippable by Bows.", "<white>Activation chance = 65%% of player's LCK (Maximum of 60%%)", "<white>Fabrication requirement: 70", "<white>Weapon Ability: +17"
+			set slot 18 of the player's current inventory to 1 dragon egg named "<light purple><bold>Ruptured Sky" with lore "<white>Boosts damage dealt by 50%% of foe's STR + MAG,", "<white>and if foe is an end-creature OR dragon/dragonborn, boosts damage dealt by 40%%.", "<white>Activation chance = 65%% of player's LCK (Maximum of 60%%)", "<white>Fabrication requirement: 70", "<white>Weapon Ability: +19"
+			set slot 19 of the player's current inventory to 1 shield named "<light purple><bold>Holy Vestments" with lore "<white>Reduces damage suffered during combat by 50%%.", "<white>If foe can make a follow-up attack, reduces damage suffered by an additional 30%%.", "<white>Activation chance = 130%% of player's LCK (Maximum of 70%%)", "<white>Fabrication requirement: 70", "<white>Weapon Ability: +19"
+			set slot (({_chestSize} * 9) - 2) of the player's current inventory to 1 book named "<white><bold>Funds & More" with lore "<white>Your Fabrication: %{abilities.%player%::Fabrication}%", "<white>Current Funds: %player's money%", "<white>Trad. Weapons: %{abilities.%player%::Traditional Weapons}%", "<white>Mag. Weapons: %{abilities.%player%::Magical Weapons}%", "<white>Guns: %{abilities.%player%::Guns}%"
+			set slot (({_chestSize} * 9) - 1) of the player's current inventory to 1 red glass pane named "<white><bold>Go Back" with lore "<white>Returns to the previous menu."
+		#Armor Skills
+		else if arg 1 is 6:
+			open chest inventory with 2 rows named "<gold>Smithy: Armour Skills" for the player
+			set {_chestSize} to 2
+			set slot 0 of the player's current inventory to 1 diamond chestplate named "<cyan><bold>HP +10" with lore "<white>While equipped, grants HP +10.", "<white>Fabrication requirement: 130", "<white>Weapon Ability: +0"
+			set slot 1 of the player's current inventory to 1 diamond chestplate named "<cyan><bold>STR +5" with lore "<white>While equipped, grants STR +5 during combat.", "<white>Fabrication requirement: 130", "<white>Weapon Ability: +0"
+			set slot 2 of the player's current inventory to 1 diamond chestplate named "<cyan><bold>MAG +5" with lore "<white>While equipped, grants MAG +5 during combat.", "<white>Fabrication requirement: 130", "<white>Weapon Ability: +0"
+			set slot 3 of the player's current inventory to 1 diamond chestplate named "<cyan><bold>SPD +5" with lore "<white>While equipped, grants SPD +5 during combat.", "<white>Fabrication requirement: 130", "<white>Weapon Ability: +0"
+			set slot 4 of the player's current inventory to 1 diamond chestplate named "<cyan><bold>CHR +7" with lore "<white>While equipped, grants CHR +7 during combat.", "<white>Fabrication requirement: 130", "<white>Weapon Ability: +0"
+			set slot 5 of the player's current inventory to 1 diamond chestplate named "<cyan><bold>DEF +5" with lore "<white>While equipped, grants DEF +7 during combat.", "<white>Fabrication requirement: 130", "<white>Weapon Ability: +0"
+			set slot 6 of the player's current inventory to 1 diamond chestplate named "<cyan><bold>RES +5" with lore "<white>While equipped, grants RES +7 during combat.", "<white>Fabrication requirement: 130", "<white>Weapon Ability: +0"
+			set slot 7 of the player's current inventory to 1 diamond leggings named "<cyan><bold>Strength" with lore "<white>While equipped, grants Strength 2.", "<white>Fabrication requirement: 150", "<white>Weapon Ability: +0"
+			set slot 8 of the player's current inventory to 1 diamond leggings named "<cyan><bold>Swiftness" with lore "<white>While equipped, grants Swiftness 2.", "<white>Fabrication requirement: 150", "<white>Weapon Ability: +0"
+			set slot 9 of the player's current inventory to 1 diamond leggings named "<cyan><bold>Resistance" with lore "<white>While equipped, grants Resistance 2.", "<white>Fabrication requirement: 150", "<white>Weapon Ability: +0"
+			set slot 10 of the player's current inventory to 1 diamond leggings named "<cyan><bold>Regeneration" with lore "<white>While equipped, grants Regeneration 2.", "<white>Fabrication requirement: 150", "<white>Weapon Ability: +0"
+			set slot 11 of the player's current inventory to 1 diamond boots named "<cyan><bold>Lunge" with lore "<white>Dodge Rolls send you forward instead of backwards.", "<white>Fabrication requirement: 80", "<white>Weapon Ability: +0"
+			set slot 12 of the player's current inventory to 1 diamond boots named "<cyan><bold>Guard Fly" with lore "<white>The direction of Dodge Rolls is determined by your camera's angle.", "<white>Fabrication requirement: 200", "<white>Weapon Ability: +0"
+			set slot 13 of the player's current inventory to 1 diamond boots named "<cyan><bold>Boost Jump" with lore "<white>Dodge Rolls are replaced with a super jump.", "<white>Fabrication requirement: 80", "<white>Weapon Ability: +0"
+			set slot 14 of the player's current inventory to 1 anvil named "<cyan><bold>Hammerne" with lore "<white>When equipped to any piece of armour,", "<white>that armour only loses 1 durability point after combat.", "<white>Fabrication requirement: 110", "<white>Weapon Ability: +0"
+			set slot (({_chestSize} * 9) - 2) of the player's current inventory to 1 book named "<white><bold>Funds & More" with lore "<white>Your Fabrication: %{abilities.%player%::Fabrication}%", "<white>Current Funds: %player's money%", "<white>Trad. Weapons: %{abilities.%player%::Traditional Weapons}%", "<white>Mag. Weapons: %{abilities.%player%::Magical Weapons}%", "<white>Guns: %{abilities.%player%::Guns}%"
+			set slot (({_chestSize} * 9) - 1) of the player's current inventory to 1 red glass pane named "<white><bold>Go Back" with lore "<white>Returns to the previous menu."
+		#Shield Skills
+		else if arg 1 is 7:
+			set {_chestSize} to 1
+			set slot (({_chestSize} * 9) - 2) of the player's current inventory to 1 book named "<white><bold>Funds & Fabrication" with lore "<white>Your Fabrication: %{abilities.%player%::Fabrication}%", "<white>Current Funds: %player's money%"
+			set slot (({_chestSize} * 9) - 1) of the player's current inventory to 1 red glass pane named "<white><bold>Go Back" with lore "<white>Returns to the previous menu."			
+		#Inherit Skills
+		else if arg 1 is 8:
+			open chest inventory with 1 row named "<gold>Smithy: Inherit & Upgrade Tools" for the player
+			set slot 0 of the player's current inventory to 1 red glass pane named "<white><bold>Go Back"
+			set slot 1 of the player's current inventory to 1 barrier
+			set slot 2 of the player's current inventory to 1 book named "<purple><bold>Inheritor ->"
+			set slot 4 of the player's current inventory to 1 magenta glazed terracotta named "<purple><bold>Gains skills and enchantments from..."
+			set slot 6 of the player's current inventory to 1 book named "<purple><bold><- Inheritee (item will be lost)"
+			set slot 7 of the player's current inventory to 1 barrier
+			set slot 8 of the player's current inventory to 1 green stained glass named "<purple><bold>Confirm Inheritance"
+		#Refinery
+		else if arg 1 is 9:
+			open chest inventory with 2 row named "<gold>Smithy: Weapon Refinery" for the player
+			set slot 0 of the player's current inventory to 1 iron sword named "<green><bold>Slaying" with lore "<white>Adds +10%% chance to Special skill activations.", "<white>Fabrication requirement: 100", "<white>Weapon Ability: +23"
+			set slot 1 of the player's current inventory to 1 iron sword named "<green><bold>Reinforced" with lore "<white>Raises base weapon might by 3 (+1.5 hearts damage), and", "<white>boosts total damage dealt during combat by 10%%.", "<white>Fabrication requirement: 75", "<white>Weapon Ability: +18"
+			set slot 2 of the player's current inventory to 1 iron sword named "<green><bold>Warding" with lore "<white>Reduces base damage suffered during combat by 1.5 hearts, and", "<white>reduces total damage suffered during combat by 10%%.", "<white>Fabrication requirement: 75", "<white>Weapon Ability: +18"
+			set slot 3 of the player's current inventory to 1 iron sword named "<green><bold>Piercing" with lore "<white>Attacks pierce all resistances.", "<white>Fabrication requirement: 75", "<white>Weapon Ability: +18"
+			set slot 4 of the player's current inventory to 1 iron sword named "<green><bold>Koenig" with lore "<white>When a Special skill is activated:", "<white>Boosts damage dealt/reduced by 7.5 hearts.", "<white>EG: Offensive specials gain increased damage,", "<white>while defensive specials reduce damage further.", "<white>Fabrication requirement: 60", "<white>Weapon Ability: +13"
+			set slot 5 of the player's current inventory to 1 iron sword named "<green><bold>Crushing" with lore "<white>If damage dealt > 7:", "Increases Special activation chance by 33%% of damage dealt.", "Stacks, and is lost on Special activation.", "<white>Fabrication requirement: 75", "<white>Weapon Ability: +18"
+			if isStylish(player) is 1:
+				set slot 6 of the player's current inventory to 1 iron sword named "<green><bold>Stylish" with lore "<white>If Devil Hunter is your current class:", "<white>Increases the amount of Style Points this weapon earns.", "<white>Fabrication requirement: 30", "<white>Weapon Ability: +0"
+			set slot 7 of the player's current inventory to 1 diamond sword named "<green><bold>Unique" with lore "<white>Apply a unique refine to a Sacred Treasure.", "<white>Fabrication requirement: 100", "<white>Weapon Ability: +23"
+			set slot 8 of the player's current inventory to 1 book named "<white><bold>Funds & More" with lore "<white>Your Fabrication: %{abilities.%player%::Fabrication}%", "<white>Current Funds: %player's money%", "<white>Trad. Weapons: %{abilities.%player%::Traditional Weapons}%", "<white>Mag. Weapons: %{abilities.%player%::Magical Weapons}%", "<white>Guns: %{abilities.%player%::Guns}%"
+			set slot 17 of the player's current inventory to 1 red glass pane named "<white><bold>Go Back"
+		#Repair
+		else if arg 1 is 10:
+			open chest inventory with 1 row named "<gold>Smithy: Repair Tools" for the player
+			set slot 0 of the player's current inventory to 1 red glass pane named "<white><bold>Go Back"
+			set slot 1 of the player's current inventory to 1 barrier
+			set slot 2 of the player's current inventory to 1 barrier
+			set slot 3 of the player's current inventory to 1 book named "<bold>Place item here -->"
+			set slot 5 of the player's current inventory to 1 book named "<bold><-- Place item here"
+			set slot 6 of the player's current inventory to 1 barrier
+			set slot 7 of the player's current inventory to 1 book named "<white><bold>Funds & More" with lore "<white>Repair: %{abilities.%player%::Repair}%", "<white>Current Funds: %player's money%"
+			set slot 8 of the player's current inventory to 1 green glass pane named "<green><bold>Repair Tool"
+		#Create Combat Manuals
+		else if arg 1 is 11:
+			open chest inventory with 1 row named "<gold>Smithy: Create Manuals" for the player
+			set slot 1 of the player's current inventory to 1 barrier
+			set slot 2 of the player's current inventory to 1 barrier
+			set slot 3 of the player's current inventory to 1 book named "<bold>Place item here -->"
+			set slot 5 of the player's current inventory to 1 book named "<bold><-- Place item here"
+			set slot 6 of the player's current inventory to 1 barrier
+			set slot 7 of the player's current inventory to 1 barrier
+			set slot 8 of the player's current inventory to 1 green glass pane named "<green><bold>Deconstruct Tool (tool will be lost)"
+			set slot 0 of the player's current inventory to 1 red glass pane named "<white><bold>Go Back"
+		#Clean Skill Slot
+		else if arg 1 is 98:
+			open chest inventory with 1 row named "<gold>Smithy: Clean Skill Slots" for the player
+			set slot 1 of the player's current inventory to 1 lever named "<white>Slot to Clean: %{t_slotToClean.%player%}%" with lore "<white>Click this icon to change which", "<white>skill slot will be cleaned."
+			set slot 2 of the player's current inventory to 1 barrier
+			set slot 3 of the player's current inventory to 1 book named "<bold>Place item here -->"
+			set slot 5 of the player's current inventory to 1 book named "<bold><-- Place item here"
+			set slot 6 of the player's current inventory to 1 barrier
+			set slot 7 of the player's current inventory to 1 barrier
+			set slot 8 of the player's current inventory to 1 green glass pane named "<green><bold>Clean %{t_slotToClean.%player%}% Slot Skill"
+			set slot 0 of the player's current inventory to 1 red glass pane named "<white><bold>Go Back"
+		#Checkout
+		#Update the menu index later please
+		else if arg 1 is 99:
+			open chest inventory with 1 row named "<gold>Smithy: Shopping Cart" for the player
+			set slot 0 of the player's current inventory to 1 red glass pane named "<white><bold>Go Back"
+			set slot 1 of the player's current inventory to 1 book named "<gold><bold>Help:" with lore "<white>If you meet the Fabrication Requirement for this skill,", "<white>it can be equipped at no cost.", "<white>Otherwise, you need 2x the Fabrication requirement in Gold to purchase it.", "<white>Skill to purchase: %{t_skillToBuy.%player%}%", "<white>Fabrication Requirement: %{t_skillFabricationRequirement.%player%}%"
+			set slot 2 of the player's current inventory to 1 book named "<white><bold>Funds & Fabrication" with lore "<white>Your Fabrication: <gold>%{abilities.%player%::Fabrication}%", "<white>Skill to purchase: %{t_skillToBuy.%player%}%", "<white>Skill's Fabrication Requirement: <gold>%{t_skillFabricationRequirement.%player%}%", "<white>Current Funds: %player's money%"
+			set slot 3 of the player's current inventory to 1 magenta glazed terracotta named "<gold><bold>Item to apply this skill to ->"
+			set slot 5 of the player's current inventory to 1 magenta glazed terracotta named "<gold><bold><- Item to apply this skill to"
+			set slot 6 of the player's current inventory to 1 barrier
+			set slot 7 of the player's current inventory to 1 barrier
+			set slot 8 of the player's current inventory to 1 green glass pane named "<green><bold>Purchase Skill"
+		#Create Combat Manuals - Pick Manuals
+		else if arg 1 is 100:
+			set {_chestSize} to 3
+			open chest inventory with {_chestSize} rows named "<gold>Smithy: Pick Manuals" for the player
+			set slot (({_chestSize} * 9) - 1) of the player's current inventory to 1 red glass pane named "<white><bold>Go Back" with lore "<white>Returns to the previous menu."
+			set slot (({_chestSize} * 9) - 2) of the player's current inventory to 1 book named "<gold>Help" with lore "<white>Click on a Combat Manual to add it to your inventory.", "<white>The Enchanting Table and Anvil icons show how many more Combat Manuals you can take.", "<white>Increase your Enchanting and Repair to take more Combat Manuals."
+			set slot (({_chestSize} * 9) - 3) of the player's current inventory to 1 anvil named "<gold>Combat Manuals Left: %{t_combatManualsAllowed.%player%}%"
+			set slot (({_chestSize} * 9) - 4) of the player's current inventory to 1 enchanting table named "<gold>Enchanting Manuals Left: %{t_enchantManualsAllowed.%player%}%"
+			set {_invSlot} to 0
+			loop {t_combatManualsToDisplay.%player%::*}:
+				if {_invSlot} is 0:
+					set slot {_invSlot} of the player's current inventory to 1 book named "<gold>Combat Manual" with lore "%loop-value%"
+				else if {_invSlot} is 1:
+					set slot {_invSlot} of the player's current inventory to 1 book named "<gold>Combat Manual" with lore "No Skill", "%loop-value%"
+				else if {_invSlot} is 2:
+					set slot {_invSlot} of the player's current inventory to 1 book named "<gold>Combat Manual" with lore "No Skill", "No Skill", "%loop-value%"
+				else if {_invSlot} is 3:
+					set slot {_invSlot} of the player's current inventory to 1 book named "<gold>Combat Manual" with lore "No Skill", "No Skill", "No Skill", "%loop-value%"
+				else if {_invSlot} is 4:
+					set slot {_invSlot} of the player's current inventory to 1 book named "<gold>Combat Manual" with lore "No Skill", "No Skill", "No Skill", "No Skill", "%loop-value%"
+				else if {_invSlot} is 5:
+					set slot {_invSlot} of the player's current inventory to 1 book named "<gold>Combat Manual" with lore "No Skill", "No Skill", "No Skill", "No Skill", "No Skill", "%loop-value%"					
+				else if {_invSlot} is 6:
+					set slot {_invSlot} of the player's current inventory to 1 book named "<gold>Combat Manual" with lore "No Skill", "No Skill", "No Skill", "No Skill", "No Skill", "No Skill", "%loop-value%"
+				add 1 to {_invSlot}
+			set {_invSlot} to 9
+			loop {t_enchantManualsToDisplay.%player%::*}:
+				set slot {_invSlot} of the player's current inventory to loop-value named "<light purple>Enchanting Manual"
+				add 1 to {_invSlot}
+			
+#Menu navigation logic
+on inventory click:
+	#Main smithy menu
+	if the name of the player's current inventory is "<gold>Smithy":
+		cancel event
+		#Moving to different pages from main
+		if the name of the clicked item is "<light red><bold>A-Slot Skills":
+			make player execute command "/buyToolSkills 1 0"
+		else if the name of the clicked item is "<light blue><bold>B-Slot Skills":
+			make player execute command "/buyToolSkills 2 0"
+		else if the name of the clicked item is "<light yellow><bold>C-Slot Skills":
+			make player execute command "/buyToolSkills 3 0"
+		else if the name of the clicked item is "<light green><bold>Assist Skills":
+			make player execute command "/buyToolSkills 4 0"
+		else if the name of the clicked item is "<light purple><bold>Special Skills":
+			make player execute command "/buyToolSkills 5 0"
+		else if the name of the clicked item is "<cyan><bold>Armour Skills":
+			make player execute command "/buyToolSkills 6 0"
+		else if the name of the clicked item is "<orange><bold>Shield Skills":
+			make player execute command "/buyToolSkills 7 0"
+		else if the name of the clicked item is "<purple><bold>Inherit & Upgrade Tools":
+			make player execute command "/buyToolSkills 8 0"
+		else if the name of the clicked item is "<green><bold>Weapon Refinery":
+			make player execute command "/buyToolSkills 9 0"
+		else if the name of the clicked item is "<white><bold>Repair Tools":
+			make player execute command "/buyToolSkills 10 0"
+		else if the name of the clicked item is "<red><bold>Create Combat Manuals":
+			make player execute command "/buyToolSkills 11 0"
+		else if the name of the clicked item is "<yellow><bold>Purchase Items":
+			make player execute command "/bs-shop"
+		else if the name of the clicked item is "<white><bold>Clean Skill Slots":
+			make player execute command "/buyToolSkills 98 %{t_smithyAccessMethod.%player%}%"
+		else if the name of the clicked item is "<white><bold>Exit":
+			close the player's inventory
+	#Checking if the inventory's name CONTAINS "Smithy" lets us cover all skill menus with one check
+	else if the name of the player's current inventory contains "<gold>Smithy":
+		#This is shared with all menu layers, so we can check for this first to save a few lines.
+		if the name of the clicked item is "<white><bold>Go Back":
+			cancel event
+			make player execute command "/buyToolSkills 0 %{t_smithyAccessMethod.%player%}%"
+		#Define special behavior if the player is in the shopping cart, so that they can choose what weapon to upgrade
+		else if the name of the player's current inventory is "<gold>Smithy: Shopping Cart":
+			#Move the clicked item into slot 4 automatically
+			#Define what items can't be moved (menu elements)
+			if the name of the clicked item is "<gold><bold>Help:":
+				cancel event
+			else if the clicked item is slot 4 of the player's current inventory:
+				#Moves the item added to the purchase window back into the player's inventory
+				give slot 4 of the player's current inventory to the player
+				clear {t_preventShoppingCartToolDestruction.%player%}
+				#Clears the purchase window
+				set slot 4 of the player's current inventory to air
+			#Smithy purchase behavior
+			else if the name of the clicked item is "<green><bold>Purchase Skill":
+				cancel event
+				if slot 4 of the player's current inventory is not air:
+					make player execute command "/purchaseSkill %{t_skillFabricationRequirement.%player%}% %{t_skillSlot.%player%}% %{t_skillToBuy.%player%}%"
+			else if the clicked item is a block:
+				cancel event
+			else if the name of the clicked item is "<gold><bold>Help:":
+				cancel event
+			else if the name of the clicked item is not "<green><bold>Purchase Skill":
+				cancel event
+				#Moves the clicked item into the purchase window
+				if slot 4 of the player's current inventory is air:
+					set slot 4 of the player's current inventory to the clicked item
+					set {t_preventShoppingCartToolDestruction.%player%} to the clicked item
+					#Removes the item from the player's inventory
+					set the clicked item to air
+				#If something is already in the purchase window, swap the items out
+				else:
+					give slot 4 of the player's current inventory to the player
+					set slot 4 of the player's current inventory to the clicked item
+					set {t_preventShoppingCartToolDestruction.%player%} to the clicked item
+					set the clicked item to air
+		#Clean Skills menu logic
+		else if the name of the player's current inventory is "<gold>Smithy: Clean Skill Slots":
+			if the name of the clicked item contains "Slot to Clean:":
+				cancel event
+				if {t_slotToClean.%player%} is "A":
+					set {t_slotToClean.%player%} to "B"
+				else if {t_slotToClean.%player%} is "B":
+					set {t_slotToClean.%player%} to "C"
+				else if {t_slotToClean.%player%} is "C":
+					set {t_slotToClean.%player%} to "Assist"
+				else if {t_slotToClean.%player%} is "Assist":
+					set {t_slotToClean.%player%} to "Special"
+				else if {t_slotToClean.%player%} is "Special":
+					set {t_slotToClean.%player%} to "Refine"
+				else if {t_slotToClean.%player%} is "Refine":
+					set {t_slotToClean.%player%} to "A"
+				set slot 1 of the player's current inventory to 1 lever named "<white>Slot to Clean: %{t_slotToClean.%player%}%" with lore "<white>Click this icon to change which", "<white>skill slot will be cleaned."
+				set slot 8 of the player's current inventory to 1 green glass pane named "<green><bold>Clean %{t_slotToClean.%player%}% Slot Skill"
+			else if the name of the clicked item is "<green><bold>Clean %{t_slotToClean.%player%}% Slot Skill":
+				cancel event
+				make player execute command "/cleanSlot %{t_slotToClean.%player%}%"
+			else if the clicked item is a block:
+				cancel event
+			else if the name of the clicked item is "<gold><bold>Help:":
+				cancel event
+			else:
+				cancel event
+				#Moves the clicked item into the purchase window
+				if slot 4 of the player's current inventory is air:
+					set slot 4 of the player's current inventory to the clicked item
+					set {t_preventShoppingCartToolDestruction.%player%} to the clicked item
+					#Removes the item from the player's inventory
+					set the clicked item to air
+				#If something is already in the purchase window, swap the items out
+				else:
+					give slot 4 of the player's current inventory to the player
+					set slot 4 of the player's current inventory to the clicked item
+					set {t_preventShoppingCartToolDestruction.%player%} to the clicked item
+					set the clicked item to air
+		#Create manuals screen logic
+		else if the name of the player's current inventory is "<gold>Smithy: Create Manuals":
+			if the name of the clicked item is "<bold>Go Back":
+				make player execute command "/skills"
+				cancel event
+			else:
+				if the name of the clicked item is "<green><bold>Deconstruct Tool (tool will be lost)":
+					cancel event
+					if slot 4 of the player's current inventory is not empty:
+						clear {t_combatManualsToDisplay.%player%::*}
+						clear {t_enchantManualsToDisplay.%player%::*}
+						set {t_combatManualsAllowed.%player%} to floor({abilities.%player%::Repair} / 15)
+						set {t_enchantManualsAllowed.%player%} to floor({abilities.%player%::Enchanting} / 15)
+						if {t_combatManualsAllowed.%player%} is 0:
+							add 1 to {t_combatManualsAllowed.%player%}
+						if {t_enchantManualsAllowed.%player%} is 0:
+							add 1 to {t_enchantManualsAllowed.%player%}
+						if line 1 of slot 4 of the player's current inventory's lore is set:
+							add line 1 of slot 4 of the player's current inventory's lore to {t_combatManualsToDisplay.%player%::*}
+						if line 2 of slot 4 of the player's current inventory's lore is set:
+							add line 2 of slot 4 of the player's current inventory's lore to {t_combatManualsToDisplay.%player%::*}
+						if line 3 of slot 4 of the player's current inventory's lore is set:
+							add line 3 of slot 4 of the player's current inventory's lore to {t_combatManualsToDisplay.%player%::*}
+						if line 4 of slot 4 of the player's current inventory's lore is set:
+							add line 4 of slot 4 of the player's current inventory's lore to {t_combatManualsToDisplay.%player%::*}
+						if line 5 of slot 4 of the player's current inventory's lore is set:
+							add line 5 of slot 4 of the player's current inventory's lore to {t_combatManualsToDisplay.%player%::*}
+						if line 6 of slot 4 of the player's current inventory's lore is set:
+							add line 6 of slot 4 of the player's current inventory's lore to {t_combatManualsToDisplay.%player%::*}
+						loop enchantments of slot 4 of the player's current inventory:
+							add loop-value to {_enchants::*}
+							set {_enc} to loop-value
+							add 1 to {_tmp}
+							set {_enchantslevel::%{_tmp}%} to enchantment level of {_enc} of slot 4 of the player's current inventory
+							send formatted "%loop-value%" to the player
+							send formatted "%{_enchants::*}%" to the player
+						loop {_enchants::*}:
+							add 1 to {_tmp2}
+							#set {_buildEnchant} to "%loop-value% %{_enchantsLevel::%{_tmp2}%}%" parsed as enchantment type
+							set {_item} to "1 book of %loop-value%" parsed as item
+							set the name of {_item} to "<light purple>Enchanting Manual"
+							add {_item} to {t_enchantManualsToDisplay.%player%::*}
+						make player execute command "/buyToolSkills 100 %{t_smithyAccessMethod.%player%}%"
+		#Pick combat manuals screen logic
+		else if the name of the player's current inventory is "<gold>Smithy: Pick Manuals":
+			set {_chestSize} to 3
+			if the name of the clicked item contains "Combat Manual":
+				cancel event
+				set {_allowTake} to false
+				loop all items in the player's current inventory:
+					if the loop-item is the clicked item:
+						set {_allowTake} to true
+				if {_allowTake} is true:
+					add the clicked item to the player's inventory
+					set clicked item to air
+					cancel event
+					subtract 1 from {t_combatManualsAllowed.%player%}
+					if {t_combatManualsAllowed.%player%} is less than or equal to 0:
+						loop 9 times:
+							set slot (loop-value - 1) of the player's current inventory to 1 barrier named "<light red>No Manuals Left!" with lore "<white>Upgrade your Repair skill to take more Combat Manuals!"
+			else if the name of the clicked item contains "Enchanting Manual":
+				set {_allowTake} to false
+				loop all items in the player's current inventory:
+					if the loop-item is the clicked item:
+						set {_allowTake} to true
+				if {_allowTake} is true:
+					add the clicked item to the player's inventory
+					set clicked item to air
+					cancel event
+					subtract 1 from {t_enchantManualsAllowed.%player%}
+					if {t_enchantManualsAllowed.%player%} is less than or equal to 0:
+						loop 9 times:
+							set slot ((loop-value + 9) - 1) of the player's current inventory to 1 barrier named "<light red>No Manuals Left!" with lore "<white>Upgrade your Enchanting skill to take more Combat Manuals!"
+			set slot (({_chestSize} * 9) - 3) of the player's current inventory to 1 anvil named "<gold>Combat Manuals Left: %{t_combatManualsAllowed.%player%}%"
+			set slot (({_chestSize} * 9) - 4) of the player's current inventory to 1 enchanting table named "<gold>Enchanting Manuals Left: %{t_enchantManualsAllowed.%player%}%"
+		#Inherit skills screen logic
+		else if the name of the player's current inventory is "<gold>Smithy: Inherit & Upgrade Tools":
+			if the name of the clicked item is "<purple><bold>Confirm Inheritance":
+				if slot 3 of the player's current inventory is not empty:
+					if slot 5 of the player's current inventory is not empty:
+						set {_upgradedItem} to slot 3 of the player's current inventory
+						set {_scapegoatItem} to slot 5 of the player's current inventory
+						set {_mergeCount} to "%tag "mergeCount" of {_upgradedItem}'s nbt%" parsed as integer
+						send "%canMergeWithFrame({_upgradedItem},{_scapegoatItem})%" to the player
+						#Weapon Merging
+						if canMergeWithFrame({_upgradedItem},{_scapegoatItem}) is true:
+							#send "%{_mergeCount}%" to the player
+							if {_mergeCount} is less than 10:
+								set {_allowMerging} to true
+							else if nbt of slot 4 of the player's current inventory does not contain "mergeCount:":
+								set {_allowMerging} to true
+							else:
+								set {_allowMerging} to false
+							if {_allowMerging} is true:
+								if {_mergeCount} is not set:
+									set {_mergeCount} to 0
+								add 1 to {_mergeCount}
+								#Last-second fix to ensure we don't go over +10
+								if {_mergeCount} is less than or equal to 10:
+									add "{mergeCount:%{_mergeCount}%}" to nbt of slot 3 of the player's current inventory
+									if the name of slot 3 of the player's current inventory is not set:
+										set {_itemName} to "Unnamed Weapon"
+									else:
+										set {_itemName::*} to decolorize(name of slot 3 of the player's current inventory) split at " ["
+									set {_itemName} to "%{_itemName::1}% <gold>[+%{_mergeCount}%]"
+									#send "%{_itemName}%" to the player
+									set the name of slot 3 of the player's current inventory to {_itemName}
+									set slot 5 of the player's current inventory to air
+								else:
+									set {_mergeCount} to 10
+									add "{mergeCount:%{_mergeCount}%}" to nbt of slot 3 of the player's current inventory
+									if the name of slot 3 of the player's current inventory is not set:
+										set {_itemName} to "Unnamed Weapon"
+									else:
+										set {_itemName::*} to decolorize(name of slot 3 of the player's current inventory) split at " ["
+									set {_itemName} to "%{_itemName::1}% <gold>[+%{_mergeCount}%]"
+									#send "%{_itemName}%" to the player
+									set the name of slot 3 of the player's current inventory to {_itemName}
+									play sound "entity.villager.no" with volume 1 and pitch 1 at the player for the player
+									send "<light red>This weapon is at +10! It can't be merged further!" to the player
+							else:
+								play sound "entity.villager.no" with volume 1 and pitch 1 at the player for the player
+								send "<light red>This weapon is at +10! It can't be merged further!" to the player										
+						#Weapon Evolution
+						else if {_mergeCount} is 10:
+							if nbt of {_upgradedItem} does not contain "bakedRefine:":
+								#Slaying
+								if nbt of {_scapegoatItem} contains "castType:0":
+									add "{bakedRefine:0}" to nbt of slot 3 of the player's current inventory
+									#Update Weapon Name
+									if slot 3 of the player's current inventory is iron sword:
+										set the name of slot 3 of the player's current inventory to "<light blue>Iron Slaying Edge [+0]"
+									else if slot 3 of the player's current inventory is iron axe:
+										set the name of slot 3 of the player's current inventory to "<light blue>Iron Slaying Axe [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "LanceType:2":
+										set the name of slot 3 of the player's current inventory to "<light blue>Iron Slaying Lance [+0]"
+									else if slot 3 of the player's current inventory is bow:
+										set the name of slot 3 of the player's current inventory to "<light blue>Slaying Bow [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "GauntletType:2":
+										set the name of slot 3 of the player's current inventory to "<light blue>Iron Slaying Gauntlets [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "DaggerType:2":
+										set the name of slot 3 of the player's current inventory to "<light blue>Iron Slaying Dagger [+0]"
+									else if slot 3 of the player's current inventory is golden sword:
+										set the name of slot 3 of the player's current inventory to "<light blue>Golden Slaying Edge [+0]"
+									else if slot 3 of the player's current inventory is golden axe:
+										set the name of slot 3 of the player's current inventory to "<light blue>Golden Slaying Axe [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "LanceType:3":
+										set the name of slot 3 of the player's current inventory to "<light blue>Golden Slaying Lance [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "GauntletType:3":
+										set the name of slot 3 of the player's current inventory to "<light blue>Golden Slaying Gauntlets [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "DaggerType:3":
+										set the name of slot 3 of the player's current inventory to "<light blue>Golden Slaying Dagger [+0]"
+									else if slot 3 of the player's current inventory is diamond sword:
+										set the name of slot 3 of the player's current inventory to "<light blue>Diamond Slaying Edge [+0]"
+									else if slot 3 of the player's current inventory is diamond axe:
+										set the name of slot 3 of the player's current inventory to "<light blue>Diamond Slaying Axe [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "LanceType:4":
+										set the name of slot 3 of the player's current inventory to "<light blue>Diamond Slaying Lance [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "GauntletType:4":
+										set the name of slot 3 of the player's current inventory to "<light blue>Diamond Slaying Gauntlets [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "DaggerType:4":
+										set the name of slot 3 of the player's current inventory to "<light blue>Diamond Slaying Dagger [+0]"
+									else if slot 3 of the player's current inventory is netherite sword:
+										set the name of slot 3 of the player's current inventory to "<light blue>netherite Slaying Edge [+0]"
+									else if slot 3 of the player's current inventory is netherite axe:
+										set the name of slot 3 of the player's current inventory to "<light blue>netherite Slaying Axe [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "LanceType:5":
+										set the name of slot 3 of the player's current inventory to "<light blue>netherite Slaying Lance [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "GauntletType:5":
+										set the name of slot 3 of the player's current inventory to "<light blue>netherite Slaying Gauntlets [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "DaggerType:5":
+										set the name of slot 3 of the player's current inventory to "<light blue>netherite Slaying Dagger [+0]"
+								#Reinforced
+								else if nbt of {_scapegoatItem} contains "castType:1":
+									add "{bakedRefine:1}" to nbt of slot 3 of the player's current inventory
+									#Update Weapon Name
+									if slot 3 of the player's current inventory is iron sword:
+										set the name of slot 3 of the player's current inventory to "<light blue>Iron Reforged Blade [+0]"
+									else if slot 3 of the player's current inventory is iron axe:
+										set the name of slot 3 of the player's current inventory to "<light blue>Iron Reforged Axe [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "LanceType:2":
+										set the name of slot 3 of the player's current inventory to "<light blue>Iron Reforged Lance [+0]"
+									else if slot 3 of the player's current inventory is bow:
+										set the name of slot 3 of the player's current inventory to "<light blue>Reforged Bow [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "GauntletType:2":
+										set the name of slot 3 of the player's current inventory to "<light blue>Iron Reforged Gauntlets [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "DaggerType:2":
+										set the name of slot 3 of the player's current inventory to "<light blue>Iron Reforged Dagger [+0]"
+									else if slot 3 of the player's current inventory is golden sword:
+										set the name of slot 3 of the player's current inventory to "<light blue>Golden Reforged Blade [+0]"
+									else if slot 3 of the player's current inventory is golden axe:
+										set the name of slot 3 of the player's current inventory to "<light blue>Golden Reforged Axe [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "LanceType:3":
+										set the name of slot 3 of the player's current inventory to "<light blue>Golden Reforged Lance [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "GauntletType:3":
+										set the name of slot 3 of the player's current inventory to "<light blue>Golden Reforged Gauntlets [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "DaggerType:3":
+										set the name of slot 3 of the player's current inventory to "<light blue>Golden Reforged Dagger [+0]"
+									else if slot 3 of the player's current inventory is diamond sword:
+										set the name of slot 3 of the player's current inventory to "<light blue>Diamond Reforged Blade [+0]"
+									else if slot 3 of the player's current inventory is diamond axe:
+										set the name of slot 3 of the player's current inventory to "<light blue>Diamond Reforged Axe [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "LanceType:4":
+										set the name of slot 3 of the player's current inventory to "<light blue>Diamond Reforged Lance [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "GauntletType:4":
+										set the name of slot 3 of the player's current inventory to "<light blue>Diamond Reforged Gauntlets [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "DaggerType:4":
+										set the name of slot 3 of the player's current inventory to "<light blue>Diamond Reforged Dagger [+0]"
+									else if slot 3 of the player's current inventory is netherite sword:
+										set the name of slot 3 of the player's current inventory to "<light blue>netherite Reforged Blade [+0]"
+									else if slot 3 of the player's current inventory is netherite axe:
+										set the name of slot 3 of the player's current inventory to "<light blue>netherite Reforged Axe [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "LanceType:5":
+										set the name of slot 3 of the player's current inventory to "<light blue>netherite Reforged Lance [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "GauntletType:5":
+										set the name of slot 3 of the player's current inventory to "<light blue>netherite Reforged Gauntlets [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "DaggerType:5":
+										set the name of slot 3 of the player's current inventory to "<light blue>netherite Reforged Dagger [+0]"
+								#Warding
+								else if nbt of {_scapegoatItem} contains "castType:2":
+									add "{bakedRefine:2}" to nbt of slot 3 of the player's current inventory
+									#Update Weapon Name
+									if slot 3 of the player's current inventory is iron sword:
+										set the name of slot 3 of the player's current inventory to "<light blue>Iron Barrier Blade [+0]"
+									else if slot 3 of the player's current inventory is iron axe:
+										set the name of slot 3 of the player's current inventory to "<light blue>Iron Barrier Axe [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "LanceType:2":
+										set the name of slot 3 of the player's current inventory to "<light blue>Iron Barrier Lance [+0]"
+									else if slot 3 of the player's current inventory is bow:
+										set the name of slot 3 of the player's current inventory to "<light blue>Barrier Bow [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "GauntletType:2":
+										set the name of slot 3 of the player's current inventory to "<light blue>Iron Barrier Gauntlets [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "DaggerType:2":
+										set the name of slot 3 of the player's current inventory to "<light blue>Iron Barrier Dagger [+0]"
+									else if slot 3 of the player's current inventory is golden sword:
+										set the name of slot 3 of the player's current inventory to "<light blue>Golden Barrier Blade [+0]"
+									else if slot 3 of the player's current inventory is golden axe:
+										set the name of slot 3 of the player's current inventory to "<light blue>Golden Barrier Axe [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "LanceType:3":
+										set the name of slot 3 of the player's current inventory to "<light blue>Golden Barrier Lance [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "GauntletType:3":
+										set the name of slot 3 of the player's current inventory to "<light blue>Golden Barrier Gauntlets [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "DaggerType:3":
+										set the name of slot 3 of the player's current inventory to "<light blue>Golden Barrier Dagger [+0]"
+									else if slot 3 of the player's current inventory is diamond sword:
+										set the name of slot 3 of the player's current inventory to "<light blue>Diamond Barrier Blade [+0]"
+									else if slot 3 of the player's current inventory is diamond axe:
+										set the name of slot 3 of the player's current inventory to "<light blue>Diamond Barrier Axe [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "LanceType:4":
+										set the name of slot 3 of the player's current inventory to "<light blue>Diamond Barrier Lance [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "GauntletType:4":
+										set the name of slot 3 of the player's current inventory to "<light blue>Diamond Barrier Gauntlets [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "DaggerType:4":
+										set the name of slot 3 of the player's current inventory to "<light blue>Diamond Barrier Dagger [+0]"
+									else if slot 3 of the player's current inventory is netherite sword:
+										set the name of slot 3 of the player's current inventory to "<light blue>Netherite Barrier Blade [+0]"
+									else if slot 3 of the player's current inventory is netherite axe:
+										set the name of slot 3 of the player's current inventory to "<light blue>Netherite Barrier Axe [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "LanceType:5":
+										set the name of slot 3 of the player's current inventory to "<light blue>Netherite Barrier Lance [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "GauntletType:5":
+										set the name of slot 3 of the player's current inventory to "<light blue>Netherite Barrier Gauntlets [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "DaggerType:5":
+										set the name of slot 3 of the player's current inventory to "<light blue>Netherite Barrier Dagger [+0]"
+								#Piercing
+								else if nbt of {_scapegoatItem} contains "castType:3":
+									add "{bakedRefine:3}" to nbt of slot 3 of the player's current inventory
+									#Update Weapon Name
+									if slot 3 of the player's current inventory is iron sword:
+										set the name of slot 3 of the player's current inventory to "<light blue>Iron Estoc [+0]"
+									else if slot 3 of the player's current inventory is iron axe:
+										set the name of slot 3 of the player's current inventory to "<light blue>Iron Halberd [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "LanceType:2":
+										set the name of slot 3 of the player's current inventory to "<light blue>Iron Shieldreaver [+0]"
+									else if slot 3 of the player's current inventory is bow:
+										set the name of slot 3 of the player's current inventory to "<light blue>Lunar Arc [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "GauntletType:2":
+										set the name of slot 3 of the player's current inventory to "<light blue>Iron Mailcrusher [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "DaggerType:2":
+										set the name of slot 3 of the player's current inventory to "<light blue>Iron Armourslayer [+0]"
+									else if slot 3 of the player's current inventory is golden sword:
+										set the name of slot 3 of the player's current inventory to "<light blue>Golden Estoc [+0]"
+									else if slot 3 of the player's current inventory is golden axe:
+										set the name of slot 3 of the player's current inventory to "<light blue>Golden Halberd [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "LanceType:3":
+										set the name of slot 3 of the player's current inventory to "<light blue>Golden Shieldreaver [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "GauntletType:3":
+										set the name of slot 3 of the player's current inventory to "<light blue>Golden Mailcrusher [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "DaggerType:3":
+										set the name of slot 3 of the player's current inventory to "<light blue>Golden Armourslayer [+0]"
+									else if slot 3 of the player's current inventory is diamond sword:
+										set the name of slot 3 of the player's current inventory to "<light blue>Diamond Estoc [+0]"
+									else if slot 3 of the player's current inventory is diamond axe:
+										set the name of slot 3 of the player's current inventory to "<light blue>Diamond Halberd [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "LanceType:4":
+										set the name of slot 3 of the player's current inventory to "<light blue>Diamond Shieldreaver [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "GauntletType:4":
+										set the name of slot 3 of the player's current inventory to "<light blue>Diamond Mailcrusher [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "DaggerType:4":
+										set the name of slot 3 of the player's current inventory to "<light blue>Diamond Armourslayer [+0]"
+									else if slot 3 of the player's current inventory is netherite sword:
+										set the name of slot 3 of the player's current inventory to "<light blue>netherite Estoc [+0]"
+									else if slot 3 of the player's current inventory is netherite axe:
+										set the name of slot 3 of the player's current inventory to "<light blue>netherite Halberd [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "LanceType:5":
+										set the name of slot 3 of the player's current inventory to "<light blue>netherite Shieldreaver [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "GauntletType:5":
+										set the name of slot 3 of the player's current inventory to "<light blue>netherite Mailcrusher [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "DaggerType:5":
+										set the name of slot 3 of the player's current inventory to "<light blue>netherite Armourslayer [+0]"
+								#Koenig
+								else if nbt of {_scapegoatItem} contains "castType:4":
+									add "{bakedRefine:4}" to nbt of slot 3 of the player's current inventory
+									#Update Weapon Name
+									if slot 3 of the player's current inventory is iron sword:
+										set the name of slot 3 of the player's current inventory to "<light blue>Iron King Sword [+0]"
+									else if slot 3 of the player's current inventory is iron axe:
+										set the name of slot 3 of the player's current inventory to "<light blue>Iron King Axe [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "LanceType:2":
+										set the name of slot 3 of the player's current inventory to "<light blue>Iron King Lance [+0]"
+									else if slot 3 of the player's current inventory is bow:
+										set the name of slot 3 of the player's current inventory to "<light blue>King Bow [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "GauntletType:2":
+										set the name of slot 3 of the player's current inventory to "<light blue>Iron King Gauntlets [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "DaggerType:2":
+										set the name of slot 3 of the player's current inventory to "<light blue>Iron King Dagger [+0]"
+									else if slot 3 of the player's current inventory is golden sword:
+										set the name of slot 3 of the player's current inventory to "<light blue>Golden King Sword [+0]"
+									else if slot 3 of the player's current inventory is golden axe:
+										set the name of slot 3 of the player's current inventory to "<light blue>Golden King Axe [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "LanceType:3":
+										set the name of slot 3 of the player's current inventory to "<light blue>Golden King Lance [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "GauntletType:3":
+										set the name of slot 3 of the player's current inventory to "<light blue>Golden King Gauntlets [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "DaggerType:3":
+										set the name of slot 3 of the player's current inventory to "<light blue>Golden King Dagger [+0]"
+									else if slot 3 of the player's current inventory is diamond sword:
+										set the name of slot 3 of the player's current inventory to "<light blue>Diamond King Sword [+0]"
+									else if slot 3 of the player's current inventory is diamond axe:
+										set the name of slot 3 of the player's current inventory to "<light blue>Diamond King Axe [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "LanceType:4":
+										set the name of slot 3 of the player's current inventory to "<light blue>Diamond King Lance [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "GauntletType:4":
+										set the name of slot 3 of the player's current inventory to "<light blue>Diamond King Gauntlets [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "DaggerType:4":
+										set the name of slot 3 of the player's current inventory to "<light blue>Diamond King Dagger [+0]"
+									else if slot 3 of the player's current inventory is netherite sword:
+										set the name of slot 3 of the player's current inventory to "<light blue>netherite King Sword [+0]"
+									else if slot 3 of the player's current inventory is netherite axe:
+										set the name of slot 3 of the player's current inventory to "<light blue>netherite King Axe [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "LanceType:5":
+										set the name of slot 3 of the player's current inventory to "<light blue>netherite King Lance [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "GauntletType:5":
+										set the name of slot 3 of the player's current inventory to "<light blue>netherite King Gauntlets [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "DaggerType:5":
+										set the name of slot 3 of the player's current inventory to "<light blue>netherite King Dagger [+0]"	
+								#Crushing
+								else if nbt of {_scapegoatItem} contains "castType:5":
+									add "{bakedRefine:5}" to nbt of slot 3 of the player's current inventory
+									#Update Weapon Name
+									if slot 3 of the player's current inventory is iron sword:
+										set the name of slot 3 of the player's current inventory to "<light blue>Iron Broadsword [+0]"
+									else if slot 3 of the player's current inventory is iron axe:
+										set the name of slot 3 of the player's current inventory to "<light blue>Iron Hammer [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "LanceType:2":
+										set the name of slot 3 of the player's current inventory to "<light blue>Iron Heavy Spear [+0]"
+									else if slot 3 of the player's current inventory is bow:
+										set the name of slot 3 of the player's current inventory to "<light blue>Micro-Ballista [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "GauntletType:2":
+										set the name of slot 3 of the player's current inventory to "<light blue>Iron Crushing Gauntlets [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "DaggerType:2":
+										set the name of slot 3 of the player's current inventory to "<light blue>Iron Crushing Dagger [+0]"
+									else if slot 3 of the player's current inventory is golden sword:
+										set the name of slot 3 of the player's current inventory to "<light blue>Golden Broadsword [+0]"
+									else if slot 3 of the player's current inventory is golden axe:
+										set the name of slot 3 of the player's current inventory to "<light blue>Golden Hammer [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "LanceType:3":
+										set the name of slot 3 of the player's current inventory to "<light blue>Golden Heavy Spear [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "GauntletType:3":
+										set the name of slot 3 of the player's current inventory to "<light blue>Golden Crushing Gauntlets [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "DaggerType:3":
+										set the name of slot 3 of the player's current inventory to "<light blue>Golden Crushing Dagger [+0]"
+									else if slot 3 of the player's current inventory is diamond sword:
+										set the name of slot 3 of the player's current inventory to "<light blue>Diamond Broadsword [+0]"
+									else if slot 3 of the player's current inventory is diamond axe:
+										set the name of slot 3 of the player's current inventory to "<light blue>Diamond Hammer [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "LanceType:4":
+										set the name of slot 3 of the player's current inventory to "<light blue>Diamond Heavy Spear [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "GauntletType:4":
+										set the name of slot 3 of the player's current inventory to "<light blue>Diamond Crushing Gauntlets [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "DaggerType:4":
+										set the name of slot 3 of the player's current inventory to "<light blue>Diamond Crushing Dagger [+0]"
+									else if slot 3 of the player's current inventory is netherite sword:
+										set the name of slot 3 of the player's current inventory to "<light blue>netherite Broadsword [+0]"
+									else if slot 3 of the player's current inventory is netherite axe:
+										set the name of slot 3 of the player's current inventory to "<light blue>netherite Hammer [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "LanceType:4":
+										set the name of slot 3 of the player's current inventory to "<light blue>netherite Heavy Spear [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "GauntletType:4":
+										set the name of slot 3 of the player's current inventory to "<light blue>netherite Crushing Gauntlets [+0]"
+									else if slot 3 of the player's current inventory's nbt contains "DaggerType:4":
+										set the name of slot 3 of the player's current inventory to "<light blue>netherite Crushing Dagger [+0]"
+								if nbt of slot 3 of the player's current inventory contains "bakedRefine:":
+									add "{mergeCount:0}" to nbt of slot 3 of the player's current inventory
+									set slot 5 of the player's current inventory to air
+							#Sacred Treasure Evolution
+							else if nbt of {_scapegoatItem} contains "oreType:776":
+								if slot 3 of the player's current inventory is diamond sword:
+									make player execute command "/evolveToSacredTreasure 0"
+								else if slot 3 of the player's current inventory is diamond axe:
+									make player execute command "/evolveToSacredTreasure 1"
+								else if nbt of slot 3 of the player's current inventory contains "LanceType:":
+									make player execute command "/evolveToSacredTreasure 2"
+								else if slot 3 of the player's current inventory is bow:
+									make player execute command "/evolveToSacredTreasure 3"
+								else if nbt of slot 3 of the player's current inventory contains "GauntletType:":
+									make player execute command "/evolveToSacredTreasure 4"
+								else if nbt of slot 3 of the player's current inventory contains "DaggerType:":
+									make player execute command "/evolveToSacredTreasure 5"
+								else if nbt of slot 3 of the player's current inventory contains "TomeType:":
+									make player execute command "/evolveToSacredTreasure 6"
+								else if nbt of slot 3 of the player's current inventory contains "FirearmType:":
+									make player execute command "/evolveToSacredTreasure 7"
+								else:
+									send "<light red>Weapon must be Diamond (if possible), +10, and Evolved to create a Sacred Treasure." to the player
+									play sound "entity.villager.no" with volume 1 and pitch 1 at the player for the player
+							#Standard Inheritance
+							else:
+								if slot 3 of the player's current inventory is diamond axe:
+									set {_transferToDiamond} to true
+								else if slot 3 of the player's current inventory is diamond sword:
+									set {_transferToDiamond} to true
+								else if nbt of slot 3 of the player's current inventory contains "LanceType:4":
+									set {_transferToDiamond} to true
+								else if nbt of slot 3 of the player's current inventory contains "GauntletType:4":
+									set {_transferToDiamond} to true
+								else if nbt of slot 3 of the player's current inventory contains "DaggerType:4":
+									set {_transferToDiamond} to true
+								else if slot 3 of the player's current inventory is netherite axe:
+									set {_transferToDiamond} to true
+								else if slot 3 of the player's current inventory is netherite sword:
+									set {_transferToDiamond} to true
+								else if nbt of slot 3 of the player's current inventory contains "LanceType:5":
+									set {_transferToDiamond} to true
+								else if nbt of slot 3 of the player's current inventory contains "GauntletType:5":
+									set {_transferToDiamond} to true
+								else if nbt of slot 3 of the player's current inventory contains "DaggerType:5":
+									set {_transferToDiamond} to true
+								if line 1 of slot 5 of the player's current inventory's lore is not "":
+									if line 1 of slot 5 of the player's current inventory's lore is not "No Skill":
+										set {_inheritanceA-Skill} to line 1 of slot 5 of the player's current inventory's lore
+										add 1 to {_skillsTransferred}
+								if line 2 of slot 5 of the player's current inventory's lore is not "":
+									if line 2 of slot 5 of the player's current inventory's lore is not "No Skill":
+										set {_inheritanceB-Skill} to line 2 of slot 5 of the player's current inventory's lore
+										add 1 to {_skillsTransferred}
+								if line 3 of slot 5 of the player's current inventory's lore is not "":
+									if line 3 of slot 5 of the player's current inventory's lore is not "No Skill":
+										set {_inheritanceC-Skill} to line 3 of slot 5 of the player's current inventory's lore
+										add 1 to {_skillsTransferred}
+								if line 4 of slot 5 of the player's current inventory's lore is not "":
+									if line 4 of slot 5 of the player's current inventory's lore is not "No Skill":
+										set {_inheritanceAssist} to line 4 of slot 5 of the player's current inventory's lore
+										add 1 to {_skillsTransferred}
+								if line 5 of slot 5 of the player's current inventory's lore is not "":
+									if line 5 of slot 5 of the player's current inventory's lore is not "No Skill":
+										set {_inheritanceSpecial} to line 5 of slot 5 of the player's current inventory's lore
+										add 1 to {_skillsTransferred}
+								if line 6 of slot 5 of the player's current inventory's lore is not "":
+									if line 6 of slot 5 of the player's current inventory's lore is not "No Skill":
+										set {_inheritanceRefine} to line 6 of slot 5 of the player's current inventory's lore
+										add 1 to {_skillsTransferred}
+								loop enchantments of slot 5 of the player's current inventory:
+									add loop-value to {_enchants::*}
+									add 1 to {_tmp}
+									#set {_enchantslevel::%{_tmp}%} to level of loop-value of slot 5 of the player's current inventory
+								if {_transferToDiamond} is true:
+									if player's money is more than ({_skillsTransferred} * 50) + ({_enchantsTransferred} * 25):
+										set {_inheritOK} to true
+										subtract ({_skillsTransferred} * 50) + ({_enchantsTransferred} * 25) from player's money
+										send formatted "<light green>Skills & Enchantments inherited for %({_skillsTransferred} * 50) + ({_enchantsTransferred} * 25)%G. New balance: %player's money%" to the player
+								else:
+									set {_inheritOK} to true
+								if {_inheritOK} is true:
+									if {_inheritanceA-Skill} is set:
+										set line 1 of slot 3 of the player's current inventory's lore to {_inheritanceA-Skill}
+									if {_inheritanceB-Skill} is set:
+										set line 2 of slot 3 of the player's current inventory's lore to {_inheritanceB-Skill}
+									if {_inheritanceC-Skill} is set:
+										set line 3 of slot 3 of the player's current inventory's lore to {_inheritanceC-Skill}
+									if {_inheritanceRefine} is set:
+										set line 6 of slot 3 of the player's current inventory's lore to {_inheritanceRefine}
+									if {_inheritanceSpecial} is set:
+										set line 5 of slot 3 of the player's current inventory's lore to {_inheritanceSpecial}
+									if {_inheritanceAssist} is set:
+										set line 4 of slot 3 of the player's current inventory's lore to {_inheritanceAssist}
+									loop {_enchants::*}:
+										add 1 to {_enchantsTransferred}
+										#add 1 to {_tmp2}
+										#set {_buildEnchant} to "%loop-value% %{_enchantsLevel::%{_tmp2}%}%" parsed as enchantment type
+										enchant slot 3 of the player's current inventory with loop-value
+									set slot 5 of the player's current inventory to air
+						else:
+							if slot 3 of the player's current inventory is diamond axe:
+								set {_transferToDiamond} to true
+							else if slot 3 of the player's current inventory is diamond sword:
+								set {_transferToDiamond} to true
+							else if nbt of slot 3 of the player's current inventory contains "LanceType:4":
+								set {_transferToDiamond} to true
+							else if nbt of slot 3 of the player's current inventory contains "GauntletType:4":
+								set {_transferToDiamond} to true
+							else if nbt of slot 3 of the player's current inventory contains "DaggerType:4":
+								set {_transferToDiamond} to true
+							else if slot 3 of the player's current inventory is netherite axe:
+								set {_transferToDiamond} to true
+							else if slot 3 of the player's current inventory is netherite sword:
+								set {_transferToDiamond} to true
+							else if nbt of slot 3 of the player's current inventory contains "LanceType:5":
+								set {_transferToDiamond} to true
+							else if nbt of slot 3 of the player's current inventory contains "GauntletType:5":
+								set {_transferToDiamond} to true
+							else if nbt of slot 3 of the player's current inventory contains "DaggerType:5":
+								set {_transferToDiamond} to true
+							if line 1 of slot 5 of the player's current inventory's lore is not "":
+								if line 1 of slot 5 of the player's current inventory's lore is not "No Skill":
+									set {_inheritanceA-Skill} to line 1 of slot 5 of the player's current inventory's lore
+									add 1 to {_skillsTransferred}
+							if line 2 of slot 5 of the player's current inventory's lore is not "":
+								if line 2 of slot 5 of the player's current inventory's lore is not "No Skill":
+									set {_inheritanceB-Skill} to line 2 of slot 5 of the player's current inventory's lore
+									add 1 to {_skillsTransferred}
+							if line 3 of slot 5 of the player's current inventory's lore is not "":
+								if line 3 of slot 5 of the player's current inventory's lore is not "No Skill":
+									set {_inheritanceC-Skill} to line 3 of slot 5 of the player's current inventory's lore
+									add 1 to {_skillsTransferred}
+							if line 4 of slot 5 of the player's current inventory's lore is not "":
+								if line 4 of slot 5 of the player's current inventory's lore is not "No Skill":
+									set {_inheritanceAssist} to line 4 of slot 5 of the player's current inventory's lore
+									add 1 to {_skillsTransferred}
+							if line 5 of slot 5 of the player's current inventory's lore is not "":
+								if line 5 of slot 5 of the player's current inventory's lore is not "No Skill":
+									set {_inheritanceSpecial} to line 5 of slot 5 of the player's current inventory's lore
+									add 1 to {_skillsTransferred}
+							if line 6 of slot 5 of the player's current inventory's lore is not "":
+								if line 6 of slot 5 of the player's current inventory's lore is not "No Skill":
+									set {_inheritanceRefine} to line 6 of slot 5 of the player's current inventory's lore
+									add 1 to {_skillsTransferred}
+							loop enchantments of slot 5 of the player's current inventory:
+								add loop-value to {_enchants::*}
+								#add 1 to {_tmp}
+								#add 1 to {_enchantsTransferred}
+								#set {_enchantslevel::%{_tmp}%} to enchantment level of loop-value of slot 5 of the player's current inventory
+							if {_transferToDiamond} is true:
+								if player's money is more than ({_skillsTransferred} * 50) + ({_enchantsTransferred} * 25):
+									set {_inheritOK} to true
+									subtract ({_skillsTransferred} * 50) + ({_enchantsTransferred} * 25) from player's money
+									send formatted "<light green>Skills & Enchantments inherited for %({_skillsTransferred} * 50) + ({_enchantsTransferred} * 25)%G. New balance: %player's money%" to the player
+							else:
+								set {_inheritOK} to true
+							if {_inheritOK} is true:
+								if {_inheritanceA-Skill} is set:
+									set line 1 of slot 3 of the player's current inventory's lore to {_inheritanceA-Skill}
+								if {_inheritanceB-Skill} is set:
+									set line 2 of slot 3 of the player's current inventory's lore to {_inheritanceB-Skill}
+								if {_inheritanceC-Skill} is set:
+									set line 3 of slot 3 of the player's current inventory's lore to {_inheritanceC-Skill}
+								if {_inheritanceRefine} is set:
+									set line 6 of slot 3 of the player's current inventory's lore to {_inheritanceRefine}
+								if {_inheritanceSpecial} is set:
+									set line 5 of slot 3 of the player's current inventory's lore to {_inheritanceSpecial}
+								if {_inheritanceAssist} is set:
+									set line 4 of slot 3 of the player's current inventory's lore to {_inheritanceAssist}
+								loop {_enchants::*}:
+									#add 1 to {_tmp2}
+									#set {_buildEnchant} to "%loop-value% %{_enchantsLevel::%{_tmp2}%}%" parsed as enchantment type
+									enchant slot 3 of the player's current inventory with loop-value
+								set slot 5 of the player's current inventory to air
+			if the name of the clicked item contains "<purple><bold>":
+				cancel event
+		#Repair Tools screen logic
+		else if the name of the player's current inventory is "<gold>Smithy: Repair Tools":
+			#Move the clicked item into slot 4 automatically
+			#Define what items can't be moved (menu elements)
+			if the name of the clicked item is "<gold><bold>Help:":
+				cancel event
+			else if the clicked item is slot 4 of the player's current inventory:
+				#Moves the item added to the purchase window back into the player's inventory
+				give slot 4 of the player's current inventory to the player
+				clear {t_preventShoppingCartToolDestruction.%player%}
+				#Clears the purchase window
+				set slot 4 of the player's current inventory to air
+			#Repair Tool behavior
+			else if the name of the clicked item is "<green><bold>Repair Tool":
+				if player's money is more than or equal to {t_repairCashNeeded.%player%}:
+					repair slot 4 of the player's current inventory
+					set the player's money to (player's money  - {t_repairCashNeeded.%player%})
+					send formatted "<light green>Tool repaired for %{t_repairCashNeeded.%player%}%G!"
+					#Repair override for daggers and tomes since they don't have proper durability
+					if nbt of slot 4 of the player's current inventory contains "daggerType:":
+						give "%(64 - item amount of slot 4 of the player's current inventory)% %slot 4 of the player's current inventory%" parsed as item to the player
+					else if nbt of slot 4 of the player's current inventory contains "TomeType:":
+						set {_dur} to the 9th line of the lore of slot 4 of the player's current inventory parsed as integer
+						add 50 to {_dur}
+						set the 9th line of the lore of slot 4 of the player's current inventory to "%{_dur}%"
+					cancel event
+				else:
+					cancel event
+					play sound "entity.villager.no" with volume 1 and pitch 1 at the player for the player
+					send formatted "<light red>You don't have enough gold to repair this tool. You need %{t_repairCashNeeded.%player%}%G, but only have %player's money%G." to the player
+			else if the clicked item is a block:
+				cancel event
+			else if the name of the clicked item is "<gold><bold>Help:":
+				cancel event
+			else if the name of the clicked item is not "<green><bold>Purchase Skill":
+				cancel event
+				#Moves the clicked item into the purchase window
+				if slot 4 of the player's current inventory is air:
+					set slot 4 of the player's current inventory to the clicked item
+					set {t_preventShoppingCartToolDestruction.%player%} to the clicked item
+					#Removes the item from the player's inventory
+					set the clicked item to air
+					#Daggers special case
+					if nbt of slot 4 of the player's current inventory contains "daggerType:":
+						if nbt of slot 4 of the player's current inventory contains "daggerType:0":
+							set {t_repairCashNeeded.%player%} to (64 - item amount of slot 4 of the player's current inventory) * 4
+						else if nbt of slot 4 of the player's current inventory contains "daggerType:1":
+							set {t_repairCashNeeded.%player%} to (64 - item amount of slot 4 of the player's current inventory) * 6
+						else if nbt of slot 4 of the player's current inventory contains "daggerType:2":
+							set {t_repairCashNeeded.%player%} to (64 - item amount of slot 4 of the player's current inventory) * 10
+						else if nbt of slot 4 of the player's current inventory contains "daggerType:3":
+							set {t_repairCashNeeded.%player%} to (64 - item amount of slot 4 of the player's current inventory) * 4
+						else if nbt of slot 4 of the player's current inventory contains "daggerType:4":
+							set {t_repairCashNeeded.%player%} to (64 - item amount of slot 4 of the player's current inventory) * 13
+						else if nbt of slot 4 of the player's current inventory contains "daggerType:5":
+							set {t_repairCashNeeded.%player%} to (64 - item amount of slot 4 of the player's current inventory) * 18
+					#Tomes special case
+					else if nbt of slot 4 of the player's current inventory contains "TomeType:":
+						set {t_repairCashNeeded.%player%} to 250
+					else:
+						set {t_repairCashNeeded.%player%} to the damage value of slot 4 of the player's current inventory
+					set {t_repairCashNeeded.%player%} to floor({t_repairCashNeeded.%player%} / ({abilities.%player%::Repair} / 5)) * 4
+					set the lore of slot 8 of the player's current inventory to "<white>Gold needed to repair this tool:", "<white>%{t_repairCashNeeded.%player%}%"
+				#If something is already in the purchase window, swap the items out
+				else:
+					give slot 4 of the player's current inventory to the player
+					set slot 4 of the player's current inventory to the clicked item
+					set {t_preventShoppingCartToolDestruction.%player%} to the clicked item
+					set the clicked item to air
+					#Daggers special case
+					if nbt of slot 4 of the player's current inventory contains "daggerType:":
+						if nbt of slot 4 of the player's current inventory contains "daggerType:0":
+							set {t_repairCashNeeded.%player%} to (64 - item amount of slot 4 of the player's current inventory) * 4
+						else if nbt of slot 4 of the player's current inventory contains "daggerType:1":
+							set {t_repairCashNeeded.%player%} to (64 - item amount of slot 4 of the player's current inventory) * 6
+						else if nbt of slot 4 of the player's current inventory contains "daggerType:2":
+							set {t_repairCashNeeded.%player%} to (64 - item amount of slot 4 of the player's current inventory) * 10
+						else if nbt of slot 4 of the player's current inventory contains "daggerType:3":
+							set {t_repairCashNeeded.%player%} to (64 - item amount of slot 4 of the player's current inventory) * 4
+						else if nbt of slot 4 of the player's current inventory contains "daggerType:4":
+							set {t_repairCashNeeded.%player%} to (64 - item amount of slot 4 of the player's current inventory) * 13
+						else if nbt of slot 4 of the player's current inventory contains "daggerType:4":
+							set {t_repairCashNeeded.%player%} to (64 - item amount of slot 4 of the player's current inventory) * 18
+					#Tomes special case
+					else if nbt of slot 4 of the player's current inventory contains "TomeType:":
+						set {t_repairCashNeeded.%player%} to 250
+					else:
+						set {t_repairCashNeeded.%player%} to the damage value of slot 4 of the player's current inventory
+					set {t_repairCashNeeded.%player%} to floor({t_repairCashNeeded.%player%} / ({abilities.%player%::Repair} / 5)) * 4
+					set the lore of slot 8 of the player's current inventory to "<white>Gold needed to repair this tool:", "<white>%{t_repairCashNeeded.%player%}%"
+		else:
+			cancel event
+			if the name of the player's current inventory is "<gold>Smithy: Select A-Slot Condition Type":
+				if the name of the clicked item contains "Player Phase":
+					make player execute command "/buyToolSkills 1 1"
+				else if the name of the clicked item contains "Enemy Phase":
+					make player execute command "/buyToolSkills 1 2"
+				else if the name of the clicked item contains "Dual Phase":
+					make player execute command "/buyToolSkills 1 3"
+			else if the name of the player's current inventory is "<gold>Smithy: Select C-Slot Target":
+				if the name of the clicked item contains "Target Self":
+					make player execute command "/buyToolSkills 3 1"
+				else if the name of the clicked item contains "Target Allies":
+					make player execute command "/buyToolSkills 3 2"
+				else if the name of the clicked item contains "Target Enemies":
+					make player execute command "/buyToolSkills 3 3"
+			else:
+				if the name of the clicked item contains "<light red><bold>":
+					#Corresponds to arg 2 of /purchaseSkill helper command
+					set {t_skillSlot.%player%} to 1
+					set {_buyOK} to true
+				else if the name of the clicked item contains "<light blue><bold>":
+					set {t_skillSlot.%player%} to 2
+					set {_buyOK} to true
+				else if the name of the clicked item contains "<light yellow><bold>":
+					set {t_skillSlot.%player%} to 3
+					set {_buyOK} to true
+				else if the name of the clicked item contains "<light green><bold>":
+					set {t_skillSlot.%player%} to 4
+					set {_buyOK} to true
+				else if the name of the clicked item contains "<light purple><bold>":
+					set {t_skillSlot.%player%} to 5
+					set {_buyOK} to true
+				else if the name of the clicked item contains "<green><bold>":
+					set {t_skillSlot.%player%} to 6
+					set {_buyOK} to true
+				else if the name of the clicked item contains "<cyan><bold>":
+					set {t_skillSlot.%player%} to 7
+					set {_buyOK} to true
+				else if the name of the clicked item contains "<orange><bold>":
+					set {t_skillSlot.%player%} to 8
+					set {_buyOK} to true
+				#Only continue getting skill data if the clicked item is a valid skill (has the proper color formatting, potential vulnerability if anvil colors are enabled but w/e.)
+				if {_buyOK} is true:
+					#Write the appropriate skill information to some temp player variables, so we can feed them to the /purchaseSkill helper command during checkout.
+					set {t_skillToBuy.%player%} to the name of the clicked item
+					set {t_skillToBuy.%player%} to decolorize({t_skillToBuy.%player%})
+					#Get the skill's Fabrication requirement from the item description
+					#Uses a loop to check all lines of the item lore
+					set {_skillDescLineCount} to 0
+					loop 10 times:
+						add 1 to {_skillDescLineCount}
+						if line {_skillDescLineCount} of the clicked item's lore contains "<white>Fabrication requirement:":
+							set {_fabReq::*} to line {_skillDescLineCount} of the clicked item's lore split at ": "
+							exit 1 loop
+					if {_fabReq::*} is set:
+						set {t_skillFabricationRequirement.%player%} to "%{_fabReq::2}%" parsed as integer
+						#Adds the weapon ability requirement to the global database if the entry does not exist (these can be adjusted/added/removed manually by editing the apropriate field in the database.
+						if {wpndata_abilityrequirements::%{t_skillToBuy.%player%}%} is not set:
+							#broadcast "%{t_skillToBuy.%player%}% was added to the database."
+							add 1 to {_skillDescLineCount}
+							set {_weaponAbilityReq::*} to line {_skillDescLineCount} of the lore of the clicked item split at "+"
+							#send {_weaponAbilityReq::2} to the player
+							set {wpndata_abilityrequirements::%{t_skillToBuy.%player%}%} to "%{_weaponAbilityReq::2}%" parsed as integer
+					else:
+						send "<light red>Something went wrong. Please contact a developer." to the player
+					make player execute command "/buyToolSkills 99 %{t_smithyAccessMethod.%player%}%"
+				
+#Returns the player's tool to their inventory if they close the shopping cart with the tool still in the purchase window
+on inventory close:
+	if {t_preventShoppingCartToolDestruction.%player%} is set:
+		give {t_preventShoppingCartToolDestruction.%player%} to the player
+		clear {t_preventShoppingCartToolDestruction.%player%}
+
+#Helper command for purchasing skills
+#Arg 1 = skill's Fabrication requirement, if player doesn't have the required Fabrication then the cost is (skill's requirement * 2).
+#Arg 2 = skill's slot (1-5 for A/B/C/Assist/Special, 6 = armour, 7 = shield)
+#Arg 3 = skill's name
+command /purchaseSkill <number> <number> <text>:
+	trigger:
+		#Check if player has high enough Fabrication to equip the skill for free
+		if {abilities.%player%::Fabrication} is less than arg 1:
+			#If player doesn't have high enough Fabrication, check their money
+			if player's money is more than or equal to (arg 1 * 2):
+				send formatted "<light green>Paid %arg 1 * 2%G to purchase this skill."
+				set {_purchaseOK} to true
+				remove (arg 1 * 2) from the player's money
+			else:
+				play sound "entity.villager.no" with volume 1 and pitch 1 at the player for the player
+				send formatted "<light red>You don't have enough gold to purchase this skill. You need %arg 1 * 2%G, but only have %player's money%G." to the player
+		else:
+			send "<light yellow>Equipped skill for free due to your Fabrication ability."
+			set {_purchaseOK} to true
+		if {_purchaseOK} is true:
+			#Skill lore application goes here
+			if arg 2 is 1:
+				set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - %arg 3%"
+			else if arg 2 is 2:
+				set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - %arg 3%"
+			else if arg 2 is 3:
+				set line 3 of slot 4 of the player's current inventory's lore to "<light yellow><bold>Slot C - %arg 3%"
+			else if arg 2 is 4:
+				set line 4 of slot 4 of the player's current inventory's lore to "<light green><bold>Assist - %arg 3%"
+			else if arg 2 is 5:
+				set line 5 of slot 4 of the player's current inventory's lore to "<light purple><bold>Special - %arg 3%"
+			else if arg 2 is 6:
+				set line 6 of slot 4 of the player's current inventory's lore to "<gold><italics>Refined - %arg 3%"
+			else if arg 2 is 7:
+				set line 1 of slot 4 of the player's current inventory's lore to "<cyan><bold>Armour - %arg 3%"
+			else if arg 2 is 8:
+				set line 1 of slot 4 of the player's current inventory's lore to "<gold><bold>Shield - %arg 3%"
+			play sound "block.anvil.use" with volume 0.8 and pitch 1 at the player for the player
+			#Avoid printing "<none>" as the item's name
+			if the name of slot 4 of the player's current inventory is not set:
+				send formatted "<light green>Equipped %arg 3% to your %slot 4 of the player's current inventory%." to the player
+			else:
+				send formatted "<light green>Equipped %arg 3% to your %name of slot 4 of the player's current inventory%." to the player
+			set {_weaponAbility} to getEntityWeaponAbilityRequirement(slot 4 of the player's current inventory,player)
+			set line 9 of slot 4 of the player's current inventory's lore to "<italics>Weapon Ability Rating: %{_weaponAbility}%"
+			
+command /cleanSlot <text>:
+	trigger:
+		if arg 1 is "A":
+			set line 1 of slot 4 of the player's current inventory's lore to "<light red><bold>Slot A - None"
+		else if arg 1 is "B":
+			set line 2 of slot 4 of the player's current inventory's lore to "<light blue><bold>Slot B - None"
+		else if arg 1 is "C":
+			set line 3 of slot 4 of the player's current inventory's lore to "<light yellow><bold>Slot C - None"
+		else if arg 1 is "Assist":
+			set line 4 of slot 4 of the player's current inventory's lore to "<light green><bold>Assist - None"
+		else if arg 1 is "Special":
+			set line 5 of slot 4 of the player's current inventory's lore to "<light purple><bold>Special - None"
+		else if arg 1 is "Refine":
+			set line 6 of slot 4 of the player's current inventory's lore to "<gold><italics>Unrefined"
+		else if arg 1 is "Armour":
+			set line 1 of slot 4 of the player's current inventory's lore to "<cyan><bold>Armour - None"
+		else if arg 1 is "Shield":
+			set line 1 of slot 4 of the player's current inventory's lore to "<gold><bold>Shield - None"
+		play sound "entity.generic.splash" with volume 1 and pitch 1.2 at the player for the player
+		send formatted "<light green>Cleared the %arg 1% slot of your tool."
+		set {_weaponAbility} to getEntityWeaponAbilityRequirement(slot 4 of the player's current inventory,player)
+		set line 9 of slot 4 of the player's current inventory's lore to "<italics>Weapon Ability Rating: %{_weaponAbility}%"			

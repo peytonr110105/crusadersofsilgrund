@@ -1,0 +1,81 @@
+#Add NPC followers to the game that can guard areas and accompany players on their adventures.
+
+#Guildmaster NPC's are used to recruit new generic followers
+#If enchanting is over 80 or speech is over 60, you can recruit a copy of yourself.
+#You can recruit copies of friends on your friends list, but these copies cannot level up or change equipment.
+#You can recruit copies of other characters you have saved.
+on right click:
+	if the name of the target contains "Guildmaster":
+		
+		
+command /guildmasterRecruitment [<text="main">]:
+	if arg 1 is "main":
+		open chest inventory with 1 row named "<gold>Guildmaster - Recruits" for the player
+		set slot 3 of the player's current inventory to 1 leather helmet named "<gold>Generic Recruits" with lore "<white>Nameless soldiers who work for gold.", "<white>Competent, but not skilled."
+		set slot 4 of the player's current inventory to 1 poppy named "<gold>Phantom Friend" with lore "<white>Recruit a phantom of a player on your friends list.", "<white>Cannot level up or have their equipment changed."
+		set slot 5 of the player's current inventory to 1 chest named "<gold>Hero Search" with lore "<white>Recruit one of your previous saves as a follower.", "<white>Behaves like a generic recruit.", "<white>Changes to a follower are not reflected in their save."
+		if {Abilities.%player%::Speech} is more than or equal to 60:
+			set {_showPlayerCopy} to true
+		else if {Abilities.%player%::Enchanting} is more than or equal to 80:
+			set {_showPlayerCopy} to true
+		if {_showPlayerCopy} is true:
+			set slot 8 of the player's current inventory to 1 enchanting table named "<gold>Phantom Self" with lore "<white>Recruit a phantom of yourself.", "<white>The phantom copies your player data only when it is recruited."
+	else if arg 1 is "generic":
+		open chest inventory with 3 rows named "<gold>Guildmaster - Generic Recruits" for the player
+		set slot 0 of the player's current inventory to 1 book named "<white>Help:" with lore "<white>Select the class your recruit should use.", "<white>Recruits start at level 1 with a randomized character."
+		set slot 9 of the player's current inventory to 1 nether star named "<gold>Mercenary" with lore "<white>Warriors with no strong preference for any particular attribute.", "<cyan>Strengths: None", "<light red>Weaknesses: None", "<cyan>This class naturally learns spells."
+		set slot 10 of the player's current inventory to 1 nether star named "<gold>Knight" with lore "<white>Defensive fighters with high damage resistance.", "<cyan>Strengths: HP, DEF", "<light red>Weaknesses: SPD, RES, MAG"
+		set slot 11 of the player's current inventory to 1 nether star named "<gold>Bladesman" with lore "<white>Quick-footed warriors that prioritize speed above all else.", "<cyan>Strengths: SPD, LCK", "<light red>Weaknesses: DEF, RES, HP"
+		set slot 12 of the player's current inventory to 1 nether star named "<gold>Fighter" with lore "<white>Strong-armed warriors with devastating blows.", "<cyan>Strengths: HP, STR", "<light red>Weaknesses: LCK, SPD"
+		set slot 13 of the player's current inventory to 1 nether star named "<gold>Mage" with lore "<white>Magic wielders utilizing wands and tomes for combat.", "<cyan>Strengths: MAG, SPD", "<light red>Weaknesses: STR, DEF", "<cyan>This class naturally learns spells."
+		set slot 14 of the player's current inventory to 1 nether star named "<gold>Cleric" with lore "<white>Helpful healers that use staves to heal the injured.", "<cyan>Strengths: HP, RES", "<light red>Weaknesses: DEF, SPD", "<cyan>This class naturally learns spells."
+		set slot 15 of the player's current inventory to 1 nether star named "<gold>Archer" with lore "<white>Sturdy fighters with a focus on ranged dominance.", "<cyan>Strengths: STR, DEF", "<light red>Weaknesses: HP, LCK"
+		set slot 16 of the player's current inventory to 1 nether star named "<gold>Cavalier" with lore "<white>A well-balanced horse-riding warrior.", "<cyan>Strengths: LCK", "<light red>Weaknesses: HP"
+		if {unlockedClasses.%player%::Survivor} is true:
+			set slot 17 of the player's current inventory to 1 nether star named "<gold>Survivor" with lore "<white>A frail class that prioritizes survival above all else.", "<cyan>Strengths: HP, MAG", "<light red>Weaknesses: STR, SPD, DEF, LCK, RES", "<cyan>This class naturally learns spells."
+		else:
+			set slot 17 of the player's current inventory to 1 obsidian named "<red>Locked" with lore "<white>Break over 2,000 blocks on CoS to unlock this class."
+		if {unlockedClasses.%player%::Gunslinger} is true:
+			set slot 18 of the player's current inventory to 1 nether star named "<gold>Gunslinger" with lore "<white>Skilled masters of new-age firearms.", "<cyan>Strengths: SPD, LCK", "<light red>Weaknesses: HP, DEF"
+		else:
+			set slot 18 of the player's current inventory to 1 obsidian named "<red>Locked" with lore "<white>Complete "New Age of Warfare" to unlock this class."
+		if {unlockedClasses.%player%::Strategist} is true:
+			set slot 19 of the player's current inventory to 1 nether star named "<gold>Strategist" with lore "<white>Clever tacticians able to fit into any role needed.", "<cyan>Strengths: MAG, DEF", "<light red>Weaknesses: SPD", "<cyan>This class naturally learns spells."
+		else:
+			set slot 19 of the player's current inventory to 1 obsidian named "<red>Locked" with lore "<white>Complete the quest "Destiny Ablaze" to unlock this class."
+		if {unlockedClasses.%player%::Devil Hunter} is true:
+			set slot 20 of the player's current inventory to 1 nether star named "<gold>Devil Hunter" with lore "<white>Confident masters of combat that perform stylish combo attacks.", "<cyan>Strengths: SPD, LCK", "<light red>Weaknesses: DEF, RES, HP"
+		else:
+			set slot 20 of the player's current inventory to 1 obsidian named "<red>Locked" with lore "<white>Complete the quest "In the Name of My Father" to unlock this class."
+		if {unlockedClasses.%player%::Summoner} is true:
+			set slot 21 of the player's current inventory to 1 nether star named "<gold>Summoner" with lore "<white>Fragile magic wielders that can create familiars.", "<cyan>Strengths: MAG, HP", "<light red>Weaknesses: STR, DEF", "<cyan>This class naturally learns spells."
+		else:
+			set slot 21 of the player's current inventory to 1 obsidian named "<red>Locked" with lore "<white>Complete the quest "Can You Keep a Secret?" to unlock this class."
+		if {unlockedClasses.%player%::Trickster} is true:
+			set slot 22 of the player's current inventory to 1 nether star named "<gold>Trickster" with lore "<white>Slippery thieves that specialize in sabotaging foes.", "<cyan>Strengths: SPD, LCK", "<light red>Weaknesses: HP, STR"
+		else:
+			set slot 22 of the player's current inventory to 1 obsidian named "<red>Locked" with lore "<white>Complete the quest "Training Wheels" to unlock this class."
+		if {unlockedClasses.%player%::Keeper} is true:
+			set slot 23 of the player's current inventory to 1 nether star named "<gold>Keeper" with lore "<white>Armored mage with strong defences.", "<cyan>Strengths: DEF, RES, MAG", "<light red>Weaknesses: SPD, STR, CHR", "<cyan>This class naturally learns spells."
+		else:
+			set slot 23 of the player's current inventory to 1 obsidian named "<red>Locked" with lore "<white>Complete the quest "Facing the Future" to unlock this class."
+		if {unlockedClasses.%player%::Charlatan} is true:
+			set slot 24 of the player's current inventory to 1 nether star named "<gold>Charlatan" with lore "<white>Crazed alchemist obsessed with the divine.", "<cyan>Strengths: RES, MAG", "<light red>Weaknesses: STR, DEF", "<cyan>This class naturally learns spells."
+		else:
+			set slot 24 of the player's current inventory to 1 obsidian named "<red>Locked" with lore "<white>Complete the quest "Reach Towards the Heavens" to unlock this class."
+		if {unlockedClasses.%player%::Poet} is true:
+			set slot 25 of the player's current inventory to 1 nether star named "<gold>Poet" with lore "<white>Speedy performers that grant bonuses to allies.", "<cyan>Strengths: SPD, LCK, MAG, CHR", "<light red>Weaknesses: STR, HP, DEF", "<cyan>This class naturally learns spells."
+		else:
+			set slot 25 of the player's current inventory to 1 obsidian named "<red>Locked" with lore "<white>Complete the quest "A Song for the Ages" to unlock this class."
+		if {unlockedClasses.%player%::Outlaw} is true:
+			set slot 26 of the player's current inventory to 1 nether star named "<gold>Outlaw" with lore "<white>Lone wolves that sow chaos throughout the land.", "<cyan>Strengths: STR, SPD, LCK", "<light red>Weaknesses: HP, DEF, RES"
+		else:
+			set slot 26 of the player's current inventory to 1 obsidian named "<red>Locked" with lore "<white>Complete the quest "Reclaiming Alister" to unlock this class."
+		if {unlockedClasses.%player%::Troubador} is true:
+			set slot 27 of the player's current inventory to 1 nether star named "<gold>Troubador" with lore "<white>Mounted healers with multi-weapon utility.", "<cyan>Strengths: SPD, LCK", "<light red>Weaknesses: HP, DEF, RES", "<cyan>This class naturally learns spells."
+		else:
+			set slot 27 of the player's current inventory to 1 obsidian named "<red>Locked" with lore "<white>Complete the quest "Facing the Future" to unlock this class."
+		if {unlockedClasses.%player%::Conjurer} is true:
+			set slot 28 of the player's current inventory to 1 nether star named "<gold>Conjurer" with lore "<white>Dark mages. Masters of blood-magic.", "<cyan>Strengths: MAG, RES, HP", "<light red>Weaknesses: SPD, CHR, LCK", "<cyan>This class naturally learns spells."
+		else:
+			set slot 28 of the player's current inventory to 1 obsidian named "<red>Locked" with lore "<white>Complete the quest "Rain and Thunder" to unlock this class."

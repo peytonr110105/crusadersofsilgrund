@@ -1,0 +1,133 @@
+#Dialouge trees for interactable NPC's.
+
+#NPC ID's:
+#Kris - 162
+
+#Brave New World - Kris
+command /quests-BraveNewWorld <number>:
+	trigger:
+		if arg 1 is 0:
+			set {inCutscene.%player%} to true
+			clear {interruptNPCWizardry.%player%}
+			clear {recruitNPCAsFollower.%player%}
+			make console execute command "/npc sel 162"
+			make console execute command "/npc copy"
+			hide {NPCsFor.%player%::Kris} from the player
+			while {NPCsFor.%player%::C_Kris} is not set:
+				wait 1 tick
+			loop all players:
+				if loop-player is not the player:
+					hide {NPCsFor.%player%::C_Kris} from loop-player
+			set {_playerLoc} to the player's location
+			subtract 2 from x of {_playerLoc}
+			subtract 2 from z of {_playerLoc}
+			make {NPCsFor.%player%::C_Kris} move to {_playerLoc}
+			wait 5 ticks
+			send formatted "<cyan>Kris: <white>Ah, morning %player's tablist name%. <reset><white>How are you doing?" to the player
+			wait 1.2 seconds
+			send formatted "<light yellow>Options in gold during conversations indicates a dialouge option you can choose from. Click what you want your character to say to advance the conversation."
+			wait 3 seconds
+			send formatted "<run command:/quests-BraveNewWorld 10><gold>1 - Same old, same old." to the player
+			send formatted "<run command:/quests-BraveNewWorld 20><gold>2 - Awful. Think I had too many drinks at the pub last night." to the player
+			send formatted "<run command:/quests-BraveNewWorld 30><gold>3 - Pretty well, actually. I slept well last night." to the player
+		else if arg 1 is 10:
+			send formatted "<cyan>Kris: <white>That's what I thought I'd hear. Always just the status quo in Fiana." to the player
+			wait 1.3 seconds
+		else if arg 1 is 20:
+			send formatted "<cyan>Kris: <white>Ha! I told you to slow down after the third one." to the player
+			wait 1.3 seconds
+		else if arg 1 is 30:
+			send formatted "<cyan>Kris: <white>Yes, I slept nicely last night too. The weather was nice and mild overnight, nothing better for a nice rest." to the player
+			wait 1.7 seconds
+		else if arg 1 is 40:
+			send formatted "<cyan>Kris: <white>Got any plans for today?" to the player
+			wait 1 second
+			send formatted "<run command:/quests-BraveNewWorld 41><gold>1 - I'm leaving the village." to the player
+		else if arg 1 is 41:
+			send formatted "<cyan>Kris: <white>Wait, seriously? What for?" to the player
+			wait 1 second
+			send formatted "<run command:/quests-BraveNewWorld 50><gold>1 - Just been living in one spot for too long. I need a change of scenery." to the player
+			send formatted "<run command:/quests-BraveNewWorld 60><gold>2 - Fiana's too boring. I need a little more action in my life." to the player
+			send formatted "<run command:/quests-BraveNewWorld 70><gold>3 - You really don't want to know." to the player
+		else if arg 1 is 50:
+			send formatted "<cyan>Kris: <white>Well, I can't really say anything about that. I suppose it's just human nature to always look for greener pastures." to the player
+			wait 2 seconds
+			make player execute command "/quests-BraveNewWorld 51"
+		else if arg 1 is 60:
+			send formatted "<cyan>Kris: <white>You do have a point, almost nothing exciting happens out here. The quiet life isn't for everyone." to the player
+			wait 2 seconds
+			make player execute command "/quests-BraveNewWorld 51"
+		else if arg 1 is 70:
+			send formatted "<cyan>Kris: <white>Oh boy. I know better than to keep asking after you say that. I just hope it's not over something stupid." to the player
+			wait 2.4 seconds
+			make player execute command "/quests-BraveNewWorld 51"
+		else if arg 1 is 51:
+			send formatted "<cyan>Kris: <white>If you're leaving Fiana, then it would probably be a good idea to stop by the local shops and get some supplies." to the player
+			wait 3 seconds
+			send formatted "<cyan>Kris: <white>How much gold do you have? I could give you some ideas on what to buy." to the player
+			wait 1 seconds
+			send formatted "<light yellow>Your various Abilities can have an effect on the outcome of dialouge trees. The Ability being checked is noted in [brackets]. The Max Bonus indicates the maximum Ability level you need to fully pass the check." to the player
+			wait 3 seconds
+			if {abilities.%player%::Barter} is more than 40:
+				send formatted "<run command:/quests-BraveNewWorld 80><gold>1 - 200 gold. [Barter: 40+, Max Bonus: 40+]" to the player
+			else if {abilities.%player%::Barter} is more than 19:
+				send formatted "<run command:/quests-BraveNewWorld 81><gold>1 - 120 gold. [Barter: 19+, Max Bonus: 40+]" to the player
+			else:
+				send formatted "<run command:/quests-BraveNewWorld 82><gold>1 - 60 gold. [Barter: FAILED, Max Bonus: 40+]" to the player
+		else if arg 1 is 80:
+			send formatted "<cyan>Kris: <white>That's a pretty good sum of money. I would start with the Blacksmith and work your way through the rest of the shops." to the player
+			set the player's money to 200
+			wait 2.3 seconds
+			make player execute command "/quests-BraveNewWorld 83"
+		else if arg 1 is 81:
+			send formatted "<cyan>Kris: <white>Well, that's not a lot, but you can get some basic supplies at the trader and still have a little left over." to the player
+			set the player's money to 120
+			wait 2 seconds
+			make player execute command "/quests-BraveNewWorld 83"
+		else if arg 1 is 82:
+			send formatted "<cyan>Kris: <white>That's... not much at all. I think you would be better off saving up some more money. The questmaster a few houses over could help." to the player
+			set the player's money to 60
+			wait 2.3 seconds
+			make player execute command "/quests-BraveNewWorld 83"
+		else if arg 1 is 83:
+			send formatted "<cyan>Kris: <white>If you think you have the skill for it, you could try fabricating some upgrades for your weapon at the blacksmith. I don't have any experience with them, but from what I've heard they're essential to staying alive in the wild." to the player
+			wait 3 seconds
+			send formatted "<cyan>Kris: <white>Well, that's about everything I can think of. Uh... just promise you'll come back and visit every now and then, okay?" to the player
+			wait 2 seconds
+			send formatted "<run command:/quests-BraveNewWorld 84><gold>1 - I'll try." to the player
+			if {abilities.%player%::Speech} is more than 30:
+				send formatted "<run command:/quests-BraveNewWorld 90><light green>[SPECIAL] - Actually, I was wondering if you wanted to come with me. [Speech: 30]" to the player
+			else:
+				send formatted "<light red>[SPECIAL] - Actually, I was wondering if you wanted to come with me. [Speech: 30, FAILED]" to the player
+		else if arg 1 is 84:
+			send formatted "<cyan>Kris: <white>Alright, thank you. Good luck on your adventures, %player's tablist name%<reset><white>. Hope to see you again soon." to the player
+			wait 3 seconds
+			send formatted "<cyan>Kris: <white>Oh, I almost forgot. That path that leads out of the village should take you to Silgrid Castle Town. If you're looking for work, head there straight away." to the player
+			wait 3 seconds
+			send formatted "<run command:/quests-BraveNewWorld 85><gold>1 - Is that everything?" to the player
+		else if arg 1 is 85:
+			send formatted "<cyan>Kris: <white>Yeah, it is. I'll see you later, then." to the player
+			wait 1.5 seconds
+			send formatted "<run command:/quests-BraveNewWorld 86><gold>1 - Goodbye." to the player
+		else if arg 1 is 86:
+			send formatted "<light yellow>Completing a dialouge tree with an NPC will permanently raise your Speech ability by 1 point. Talk with as many unique NPCs as you can to help boost your Speech."
+			send formatted "<gold>Speech increased by +1."
+			wait 3 seconds
+			finishQuest(player,"Brave New World","Follow the path out of town, or just explore the world.")
+		else if arg 1 is 90:
+			send formatted "<cyan>Kris: <white>What? A-are you crazy? You know I'm not the fighting type! I can barely swing a sword!" to the player
+			wait 2 seconds
+			send formatted "<cyan>Kris: <white>...you're serious, aren't you. Oh boy." to the player
+			wait 1.3 seconds
+			send formatted "<light yellow>Some dialouge options may be more ambiguous in regards to what is the best option to proceed." to the player
+			wait 3 seconds
+			send formatted "<run command:/quests-BraveNewWorld 91><gold>1 - Just thought I would ask, since you said you're going to miss me." to the player
+			send formatted "<run command:/quests-BraveNewWorld 92><gold>2 - You've said before that you always wanted to see Castle Silgrid. Now's your chance." to the player
+		else if arg 1 is 91:
+			send formatted "<cyan>Kris: <white>That's true, but I'm just not cut out for adventuring. I appreciate your thoughts, but I'll be okay." to the player
+			wait 2 seconds
+			send formatted "<cyan>Kris: <white>Just make sure you come back and visit occasionally, and that'll be enough for me." to the player
+			wait 2 seconds
+			send formatted "<run command:/quests-BraveNewWorld 84><gold>1 - I'll try." to the player
+		#else if arg 1 is 92:
+			#send formatted "<cyan>Kris: <white>

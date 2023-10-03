@@ -1,81 +1,104 @@
 #Quotes
+
+command /quotesToggle:
+	trigger:
+		if {quotesToggle.%player%} is not set:
+			send "<light yellow>Character Quotes enabled!"
+			set {quotesToggle.%player%} to true
+		else:
+			clear {quotesToggle.%player%}
+			send "<light yellow>Character Quotes disabled!"
+
 #Add friendly fire quote!
 on death of a monster:
 	if citizen id of the attacker is not set:
 		if {isBoss.%victim%} is not set:
-			chance of 25%:
-				set {_rng} to a random integer between 0 and 1
-				if {_rng} is 1:
-					make attacker say "%{enemyDefeated1.%attacker%}%"
-				else:
-					make attacker say "%{enemyDefeated2.%attacker%}%"
-			chance of 25%:
-				loop all players in radius 8 of the attacker:
-					if loop-player is not attacker:
-						if {party.%loop-player%} is {party.%attacker%}:
-							chance of 25%:
-								set {_rng} to a random integer between 1 and 3
-								if {_rng} is 1:
-									make loop-player say "%{allyEnemyDefeated1.%loop-player%}%"
-								else if {_rng} is 2:
-									make loop-player say "%{allyEnemyDefeated2.%loop-player%}%"
-								else if {_rng} is 3:
-									make loop-player say "%{allyEnemyDefeated3.%loop-player%}%"
-		else:
+			if {quotesToggle.%attacker%} is true:
+				chance of 25%:
+					set {_rng} to a random integer between 0 and 1
+					if {_rng} is 1:
+						make attacker say {playerQuotes.%attacker%::EnemyDefeated01}
+					else:
+						make attacker say {playerQuotes.%attacker%::EnemyDefeated02}
+				chance of 25%:
+					loop all players in radius 8 of the attacker:
+						if loop-player is not attacker:
+							if {party.%loop-player%} is {party.%attacker%}:
+								if {quotesToggle.%loop-player%} is true:
+									chance of 25%:
+										set {_rng} to a random integer between 1 and 2
+										if {_rng} is 1:
+											make loop-player say {playerQuotes.%loop-player%::AllyEnemyDefeated01}
+										else if {_rng} is 2:
+											make loop-player say {playerQuotes.%loop-player%::AllyEnemyDefeated02}
+		else if {quotesToggle.%attacker%} is true:
 			set {_rng} to a random integer between 0 and 1
 			if {_rng} is 1:
-				make attacker say "%{bossDefeated1.%attacker%}%"
+				make attacker say {playerQuotes.%attacker%::BossDefeated01}
 			else:
-				make attacker say "%{bossDefeated2.%attacker%}%"
+				make attacker say {playerQuotes.%attacker%::BossDefeated01}
 			loop all players in radius 30 of the victim:
 				if loop-player is not attacker:
 					if {party.%loop-player%} is {party.%attacker%}:
-						set {_rng} to a random integer between 0 and 1
-						if {_rng} is 1:
-							make loop-player say "%{bossDefeated1.%loop-player%}%"
-						else:
-							make loop-player say "%{bossDefeated2.%loop-player%}%"
+						if {quotesToggle.%loop-player%} is true:
+							set {_rng} to a random integer between 0 and 1
+							if {_rng} is 1:
+								make loop-player say {playerQuotes.%loop-player%::BossDefeated01}
+							else:
+								make loop-player say {playerQuotes.%loop-player%::BossDefeated02}
 
 						
 on death of a player:
 	if citizen id of the victim is not set:
-		make victim say "%{deathQuote.%victim%}%"
-		loop all players in radius 20 of the victim:
-			if loop-player is not victim:
-				if {party.%loop-player%} is {party.%victim%}:
-					make loop-player say "%{allyDeathQuote.%loop-player%}%"
+		if {quotesToggle.%victim%} is true:
+			make victim say {playerQuotes.%victim%::Defeated}
+			loop all players in radius 20 of the victim:
+				if loop-player is not victim:
+					if {party.%loop-player%} is {party.%victim%}:
+						if {quotesToggle.%loop-player%} is true:
+							make loop-player say {playerQuotes.%loop-player%::AllyDefeated}
 				
 on damage of a player:
 	if citizen id of the victim is not set:
-		if final damage is more than (victim's maximum health * 0.25):
-			loop all players in radius 20 of the victim:
-				if loop-player is not the victim:
-					if {party.%loop-player%} is {party.%victim%}:
-						set {_rng} to random integer between 1 and 2
-						if {_rng} is 1:
-							make loop-player say "%{allyHurtLarge1.%loop-player%}%"
-						else:
-							make loop-player say "%{allyHurtLarge2.%loop-player%}%"
+		if {quotesToggle.%victim%} is true:
+			if {party.%attacker%} is {party.%victim%}:
+				if attacker is a player:
+					chance of 25%:
+						make victim say {playerQuotes.%victim%::FriendlyFire}
+			if final damage is more than (victim's maximum health * 0.75):
+				loop all players in radius 20 of the victim:
+					if loop-player is not the victim:
+						if {party.%loop-player%} is {party.%victim%}:
+							if {quotesToggle.%loop-player%} is true:
+								chance of 80%:
+									set {_rng} to random integer between 1 and 2
+									if {_rng} is 1:
+										make loop-player say {playerQuotes.%loop-player%::AllyHurtLarge01}
+									else:
+										make loop-player say {playerQuotes.%loop-player%::AllyHurtLarge02}
 
 on heal:
-	if citizen id of the player is not set:
-		if player's health is less than (player's maximum health * 0.33):
-			if {lowHPQuoteCooldown.%player%} is not set:
-				make player say "%{lowHPQuote.%player%}%"
-				set {lowHPQuoteCooldown.%player%} to 1
-				loop all players in radius 8 of the player:
-					if {party.%loop-player%} is {party.%player%}:
-						if loop-player is not player:
-							make loop-player say "%{allyNeedHealing.%loop-player%}%"
-		else if player's health is less than (player's maximum health * 0.66):
-			clear {lowHPQuoteCooldown.%player%}
-			if {healQuoteCooldown.%player%} is not set:
-				make player say "%{mediumHPQuote.%player%}%"
-				set {healQuoteCooldown.%player%} to 1
-				loop all players in radius 8 of the player:
-					if {party.%loop-player%} is {party.%player%}:
-						if loop-player is not player:
-							make loop-player say "%{allyNeedHealing.%loop-player%}%"
-		else:
-			clear {lowHPQuoteCooldown.%player%}
-			clear {healQuoteCooldown.%player%}
+	if {quotesToggle.%player%} is true:
+		if citizen id of the player is not set:
+			if player's health is less than (player's maximum health * 0.33):
+				if {lowHPQuoteCooldown.%player%} is not set:
+					make player say {playerQuotes.%player%::LowHealth}
+					set {lowHPQuoteCooldown.%player%} to 1
+					loop all players in radius 8 of the player:
+						if {party.%loop-player%} is {party.%player%}:
+							if loop-player is not player:
+								if {quotesToggle.%loop-player%} is true:
+									make loop-player say {playerQuotes.%loop-player%::AllyNeedsHealing01}
+			else if player's health is less than (player's maximum health * 0.66):
+				clear {lowHPQuoteCooldown.%player%}
+				if {healQuoteCooldown.%player%} is not set:
+					make player say {playerQuotes.%player%::MediumHealth}
+					set {healQuoteCooldown.%player%} to 1
+					loop all players in radius 8 of the player:
+						if {party.%loop-player%} is {party.%player%}:
+							if loop-player is not player:
+								if {quotesToggle.%loop-player%} is true:
+									make loop-player say {playerQuotes.%player%::AllyNeedsHealing01}
+			else:
+				clear {lowHPQuoteCooldown.%player%}
+				clear {healQuoteCooldown.%player%}

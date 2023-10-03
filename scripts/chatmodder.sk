@@ -1,0 +1,200 @@
+on chat:
+	if {editName.%player%} is true:
+		set the player's display name to the chat message
+		set the player's tablist name to the chat message
+		cancel event
+		send formatted "<yellow>Changed your character's name to %chat message%!"
+		clear {editName.%player%}
+		send formatted "<run command:/cosmetics><light blue>Click here to return to the main set-up menu."
+	else if {editplayerQuotes.%player%::SpecialProc1} is true:
+		set {playerQuotes.%player%::SpecialProc1} to the chat message
+		cancel event
+		send formatted "<yellow>Changed slot 1 to %chat message%!"
+		clear {editplayerQuotes.%player%::SpecialProc1}
+		send formatted "<run command:/cosmetics><light blue>Click here to return to the main set-up menu."
+	else if {editplayerQuotes.%player%::SpecialProc2} is true:
+		set {playerQuotes.%player%::SpecialProc2} to the chat message
+		cancel event
+		send formatted "<yellow>Changed slot 2 to %chat message%!"
+		clear {editplayerQuotes.%player%::SpecialProc2}
+		send formatted "<run command:/cosmetics><light blue>Click here to return to the main set-up menu."
+	else if {editplayerQuotes.%player%::SpecialProc3} is true:
+		set {playerQuotes.%player%::SpecialProc3} to the chat message
+		cancel event
+		send formatted "<yellow>Changed slot 3 to %chat message%!"
+		clear {editplayerQuotes.%player%::SpecialProc3}
+		send formatted "<run command:/cosmetics><light blue>Click here to return to the main set-up menu."
+	else if {editplayerQuotes.%player%::SpecialProc4} is true:
+		set {playerQuotes.%player%::SpecialProc4} to the chat message
+		cancel event
+		send formatted "<yellow>Changed slot 4 to %chat message%!"
+		clear {editplayerQuotes.%player%::SpecialProc4}
+		send formatted "<run command:/cosmetics><light blue>Click here to return to the main set-up menu."
+	else if {editLevelQuote1.%player%} is true:
+		set {playerQuotes.%player%::BadLevelUp} to the chat message
+		cancel event
+		send formatted "<light green>Changed your poor level-up quote to %chat message%!"
+		clear {editLevelQuote1.%player%}
+		send formatted "<run command:/cosmetics><light blue>Click here to return to the main set-up menu."
+	else if {editLevelQuote2.%player%} is true:
+		set {playerQuotes.%player%::AverageLevelUp} to the chat message
+		cancel event
+		send formatted "<light green>Changed your average level-up quote to %chat message%!"
+		clear {editLevelQuote2.%player%}
+		send formatted "<run command:/cosmetics><light blue>Click here to return to the main set-up menu."
+	else if {editLevelQuote3.%player%} is true:
+		set {playerQuotes.%player%::GoodLevelUp} to the chat message
+		cancel event
+		send formatted "<light green>Changed your good level-up quote to %chat message%!"
+		clear {editLevelQuote3.%player%}
+		send formatted "<run command:/cosmetics><light blue>Click here to return to the main set-up menu."
+	else if {editLevelQuote4.%player%} is true:
+		set {playerQuotes.%player%::MaxLevel} to the chat message
+		cancel event
+		send formatted "<light green>Changed your max potential quote to %chat message%!"
+		clear {editLevelQuote4.%player%}
+		send formatted "<run command:/cosmetics><light blue>Click here to return to the main set-up menu."
+	else if {editLevelQuote5.%player%} is true:
+		set {playerQuotes.%player%::Promotion} to the chat message
+		cancel event
+		send formatted "<light green>Changed your promotion quote to %chat message%!"
+		clear {editLevelQuote5.%player%}
+		send formatted "<run command:/cosmetics><light blue>Click here to return to the main set-up menu."
+	else if {editCSQuote1.%player%} is true:
+		set {playerQuotes.%player%::LowHealth} to the chat message
+		cancel event
+		send formatted "<light blue>Changed your low HP quote to %chat message%!"
+		clear {editCSQuote1.%player%}
+		send formatted "<run command:/cosmetics><light blue>Click here to return to the main set-up menu."
+	else if {editCSQuote2.%player%} is true:
+		set {playerQuotes.%player%::MediumHealth} to the chat message
+		cancel event
+		send formatted "<light blue>Changed your medium HP quote to %chat message%!"
+		clear {editCSQuote2.%player%}
+		send formatted "<run command:/cosmetics><light blue>Click here to return to the main set-up menu."
+	else if {editCSQuote3.%player%} is true:
+		set {playerQuotes.%player%::Downed} to the chat message
+		cancel event
+		send formatted "<light blue>Changed your downed quote to %chat message%!"
+		clear {editCSQuote3.%player%}
+		send formatted "<run command:/cosmetics><light blue>Click here to return to the main set-up menu."
+	else if {editCSQuote4.%player%} is true:
+		set {playerQuotes.%player%::Death} to the chat message
+		cancel event
+		send formatted "<light blue>Changed your death quote to %chat message%!"
+		clear {editCSQuote4.%player%}
+		send formatted "<run command:/cosmetics><light blue>Click here to return to the main set-up menu."
+	else if {editCSQuote5.%player%} is true:
+		set {playerQuotes.%player%::ThanksForHeals1} to the chat message
+		cancel event
+		send formatted "<light blue>Changed your healed by ally quote to %chat message%!"
+		clear {editCSQuote5.%player%}
+		send formatted "<run command:/cosmetics><light blue>Click here to return to the main set-up menu."
+	else if {editCSQuote6.%player%} is true:
+		set {playerQuotes.%player%::AllyHurtLarge01} to the chat message
+		cancel event
+		send formatted "<light blue>Changed your Ally hurt response to %chat message%!"
+		clear {editCSQuote6.%player%}
+		send formatted "<run command:/cosmetics><light blue>Click here to return to the main set-up menu."
+	else if {editCSQuote7.%player%} is true:
+		set {playerQuotes.%player%::AllyHurtLarge02} to the chat message
+		cancel event
+		send formatted "<light blue>Changed your Ally hurt response to %chat message%!"
+		clear {editCSQuote7.%player%}
+		send formatted "<run command:/cosmetics><light blue>Click here to return to the main set-up menu."
+	else if {editCSQuote8.%player%} is true:
+		set {playerQuotes.%player%::AllyNeedsHealing01} to the chat message
+		cancel event
+		send formatted "<light blue>Changed your Ally needs healing response to %chat message%!"
+		clear {editCSQuote8.%player%}
+		send formatted "<run command:/cosmetics><light blue>Click here to return to the main set-up menu."
+	else if {editCSQuote9.%player%} is true:
+		set {playerQuotes.%player%::AllyDeath} to the chat message
+		cancel event
+		send formatted "<light blue>Changed your Ally death response to %chat message%!"
+		clear {editCSQuote9.%player%}
+		send formatted "<run command:/cosmetics><light blue>Click here to return to the main set-up menu."
+	else if {editCSQuote10.%player%} is true:
+		set {playerQuotes.%player%::AllyHardcoreDeath} to the chat message
+		cancel event
+		send formatted "<light blue>Changed your Ally death (hardcore) response to %chat message%!"
+		clear {editCSQuote10.%player%}
+		send formatted "<run command:/cosmetics><light blue>Click here to return to the main set-up menu."
+	else if {editCSQuote11.%player%} is true:
+		set {playerQuotes.%player%::AllyDowned} to the chat message
+		cancel event
+		send formatted "<light blue>Changed your Ally revival response to %chat message%!"
+		clear {editCSQuote11.%player%}
+		send formatted "<run command:/cosmetics><light blue>Click here to return to the main set-up menu."
+	else if {editCSQuote12.%player%} is true:
+		set {playerQuotes.%player%::EnemyDefeated01} to the chat message
+		cancel event
+		send formatted "<light blue>Changed your enemy defeated quote to %chat message%!"
+		clear {editCSQuote12.%player%}
+		send formatted "<run command:/cosmetics><light blue>Click here to return to the main set-up menu."
+	else if {editCSQuote13.%player%} is true:
+		set {playerQuotes.%player%::EnemyDefeated02} to the chat message
+		cancel event
+		send formatted "<light blue>Changed your enemy defeated quote to %chat message%!"
+		clear {editCSQuote13.%player%}
+		send formatted "<run command:/cosmetics><light blue>Click here to return to the main set-up menu."
+	else if {editCSQuote14.%player%} is true:
+		set {playerQuotes.%player%::BossDefeated01} to the chat message
+		cancel event
+		send formatted "<light blue>Changed your boss defeated quote to %chat message%!"
+		clear {editCSQuote14.%player%}
+		send formatted "<run command:/cosmetics><light blue>Click here to return to the main set-up menu."
+	else if {editCSQuote15.%player%} is true:
+		set {playerQuotes.%player%::BossDefeated02} to the chat message
+		cancel event
+		send formatted "<light blue>Changed your boss defeated quote to %chat message%!"
+		clear {editCSQuote15.%player%}
+		send formatted "<run command:/cosmetics><light blue>Click here to return to the main set-up menu."
+	else if {editCSQuote16.%player%} is true:
+		set {playerQuotes.%player%::AllyEnemyDefeated01} to the chat message
+		cancel event
+		send formatted "<light blue>Changed your ally victory response to %chat message%!"
+		clear {editCSQuote16.%player%}
+		send formatted "<run command:/cosmetics><light blue>Click here to return to the main set-up menu."
+	else if {editCSQuote17.%player%} is true:
+		set {playerQuotes.%player%::AllyEnemyDefeated02} to the chat message
+		cancel event
+		send formatted "<light blue>Changed your ally victory response to %chat message%!"
+		clear {editCSQuote17.%player%}
+		send formatted "<run command:/cosmetics><light blue>Click here to return to the main set-up menu."
+	else if {editCSQuote18.%player%} is true:
+		set {playerQuotes.%player%::HardcoreDeath} to the chat message
+		cancel event
+		send formatted "<light blue>Changed your hardcore death quote to %chat message%!"
+		clear {editCSQuote18.%player%}
+		send formatted "<run command:/cosmetics><light blue>Click here to return to the main set-up menu."
+	else if {PTPWhisperToggle.%player%} is true:
+		cancel event
+		make player execute command "/cos_whisper %{PTPWhisperTarget.%player%}% %chat message%"
+		clear {PTPWhisperTarget.%player%}
+		clear {PTPWhisperToggle.%player%}
+	else if {t_setDestination.%player%} is set:
+		cancel event
+		set {carriageDestinations.%player%::%chat message%} to {t_setDestination.%player%}
+		add the player to {playersWithDestinations::*}
+		send formatted "<gold>Carriage Destination [%chat message%] saved to location at %{t_setDestination.%player%}%" to the player
+		clear {t_setDestination.%player%}
+	else if {withdrawBEX.%player%} is true:
+		clear {withdrawBEX.%player%}
+		cancel event
+		set {_amt} to "%chat message%" parsed as number
+		if {_amt} is not set:
+			send formatted "<light red>Amount not recognized. Try again." to the player
+		else if {_amt} is 0:
+			send formatted "<light red>Withdraw cancelled." to the player
+		else:
+			make player execute command "/party useBEX %{_amt}%"
+	else:
+		if event is not cancelled:
+			cancel event
+			if {useGlobalChat.%player%} is not true:
+				loop all players in radius 200 of the player:
+					send formatted "<tooltip:%player%><gold>[%player's tablist name%]:<reset> %chat message%" to loop-player
+			else:
+				loop all players:
+					send formatted "<tooltip:%player%><gold>[%player's tablist name%]:<reset> %chat message%" to loop-player				

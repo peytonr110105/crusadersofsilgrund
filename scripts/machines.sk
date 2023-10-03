@@ -1,0 +1,183 @@
+#Adds various new gadets to the game
+#
+on block place:
+	#Basic Rope
+	if the name of the player's tool is "<cyan>Rope":
+		cancel event
+		remove 1 of tool from tool
+		set {_loc} to event-block's location
+		wait 1 tick
+		loop 25 times:
+			if block at {_loc} is air:
+				set block at {_loc} to north facing ladder
+				if block behind {_loc} is air:
+					set block behind {_loc} to oak planks
+				set {_loc} to location of block below {_loc}
+				play 20 (oak plank break with speed 1) at {_loc}
+				play sound "block.wood.place" with volume 1 and pitch 1 at {_loc}
+				wait 2 ticks
+			else:
+				exit 1 loop
+	#Longrope
+	else if the name of the player's tool is "<cyan>Longrope":
+		cancel event
+		remove 1 of tool from tool
+		set {_loc} to event-block's location
+		wait 1 tick
+		loop 50 times:
+			if block at {_loc} is air:
+				set block at {_loc} to north facing ladder
+				if block behind {_loc} is air:
+					set block behind {_loc} to oak planks
+				set {_loc} to location of block below {_loc}
+				play 20 (oak plank break with speed 1) at {_loc}
+				play sound "block.wood.place" with volume 1 and pitch 1 at {_loc}
+				wait 2 ticks
+			else:
+				exit 1 loop
+	#Pit Rope
+	else if the name of the player's tool is "<cyan>Pit Rope":
+		cancel event
+		remove 1 of tool from tool
+		set {_loc} to event-block's location
+		wait 1 tick
+		loop 255 times:
+			if block at {_loc} is air:
+				set block at {_loc} to north facing ladder
+				if block behind {_loc} is air:
+					set block behind {_loc} to oak planks
+				set {_loc} to location of block below {_loc}
+				play 20 (oak plank break with speed 1) at {_loc}
+				play sound "block.wood.place" with volume 1 and pitch 1 at {_loc}
+				wait 2 ticks
+			else:
+				exit 1 loop
+	#Rappel Post
+	else if the name of the player's tool is "<cyan>Rappel Post":
+		cancel event
+		wait 1 tick
+		set {_loc} to event-block's location
+		if block below {_loc} is air:
+			send "<light red>Rappel Posts must be placed on top of solid ground." to the player
+		else:
+			#Stops pistons from destroying rappel posts
+			if block at {_loc} is air:
+				if block above {_loc} is air:
+					set block at {_loc} to oak fence
+					wait 1 tick
+					add {_loc} to {rappelLocations::*}
+					remove 1 of tool from tool
+					send "<light green>Rappel Post built. Right-click to begin rappeling." to the player
+				else:
+					send "<light red>Rappel Posts need 1 block of clearance above them." to the player
+			else:
+				send "<light red>Can't place a Rappel Post here!" to the player
+	#Deployable Ladder
+	else if the name of the player's tool is "<cyan>Deployable Ladder":
+		cancel event
+		remove 1 of tool from tool
+		set {_loc} to event-block's location
+		wait 1 tick
+		loop 25 times:
+			if block at {_loc} is air:
+				set block at {_loc} to north facing ladder
+				if block behind {_loc} is air:
+					set block behind {_loc} to oak planks
+				set {_loc} to location of block above {_loc}
+				play 20 (oak plank break with speed 1) at {_loc}
+				play sound "block.wood.place" with volume 1 and pitch 1 at {_loc}
+				wait 2 ticks
+			else:
+				exit 1 loop
+
+on mine:
+	if event-block is oak fence:
+		loop {rappelLocations::*}:
+			if event-block's location is loop-value:
+				clear {rappelLocations::%loop-index%}
+				cancel event
+				set event-block to air
+				send "<light purple>Rappel location removed." to the player
+				drop 1 oak fence named "<cyan>Rappel Post" with lore "<white>Right-click this block to rappel.", "<white>Rappeling lets you quickly descend without taking fall damage."
+				exit 1 loop
+
+#Start Rappeling
+on right click on any fence:
+	loop {rappelLocations::*}:
+		if location of event-block is loop-value:
+			set {t_isRappeling.%player%} to "RappelOK"
+			set {t_rappelFacing.%player%} to event-block's location
+			send "<light green>Now rappelling." to the player
+			send "<light blue>- JUMP off the ground to begin rappeling." to the player
+			send "<light blue>- SNEAK to slow your descent. Hold to climb back up the rope." to the player
+			send "<light blue>- LEFT-CLICK a wall to kick off of it." to the player
+			send "<light blue>- You will automatically stop rappeling when you reach the ground." to the player
+			play 20 (stone block break with speed 1) at the event-block
+			leash the player to the event-block
+			exit 1 loop
+		
+#Rappel wall-kick
+on block damage:
+	if {t_isRappeling.%player%} is "Rappeling":
+		if {t_rappelWallKickDelay.%player%} is not set:
+			set {t_rappelWallKickDelay.%player%} to true
+			push the player in horizontal direction of the player at speed -1
+			push the player upwards at speed 0.3
+			if player is not sneaking:
+				loop 5 times:
+					push the player upwards at speed 0.15
+					wait 1 tick
+				loop 10 times:
+					push the player downwards at speed 0.01
+					wait 1 tick
+			clear {t_rappelWallKickDelay.%player%}
+		
+#Clear rappeling variable if player dies
+on death of a player:
+	clear {t_isRappeling.%victim%}
+		
+#Cancel fall damage while rappeling
+on damage:
+	#Smooth Landing
+	if victim is player:
+		if damage cause is fall:
+			if {t_isRappeling.%victim%} is "Rappeling":
+				cancel event
+		
+#Main rappelling behavior
+on jump:
+	if {t_isRappeling.%player%} is "RappelOK":
+		set {t_isRappeling.%player%} to "Rappeling"
+		set {_maxY} to y-coordinate of {t_rappelFacing.%player%}
+		wait 10 ticks
+		while player is not on ground:
+			if player is not sneaking:
+				if player does not have resistance:
+					apply resistance 2 to the player for 1 second
+				remove levitation from the player
+				push the player downwards at speed 0.05
+			else:
+				if player's y-coordinate is less than {_maxY}:
+					remove resistance from the player
+					push the player upwards at speed 0.05
+					apply levitation 1 to the player for 1 seconds
+				else:
+					remove levitation from the player
+					push the player downwards at speed 0.05					
+			#Push towards the rappel post
+			#if player's facing is {_dir}:
+			#	push the player forwards at speed 0.05
+			#else:
+			#	push the player backwards at speed 0.05
+			push player (direction from {t_rappelFacing.%player%} to player) at speed -0.1
+			play sound "entity.fishing_bobber.retrieve" with volume 1 and pitch 0.8 at the player
+			if player is on ground:
+				exit 1 loop
+			else if block at player is water:
+				exit 1 loop
+			wait 2 ticks
+		play sound "block.gravel.break" with volume 1.5 and pitch 0.7 at the player
+		play 25 (stone block break with speed 1) at the player
+		wait 2 ticks
+		clear {t_rappelFacing.%player%}
+		clear {t_isRappeling.%player%}

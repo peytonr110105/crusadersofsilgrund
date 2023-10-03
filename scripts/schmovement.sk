@@ -1,0 +1,53 @@
+every tick:
+	loop all players:
+		if {slidingToggle.%loop-player%} is true:
+			if {t_isSliding.%loop-player%} is not set:
+				if loop-player is on ground:
+					#Allow player to slide on the ground to pass under 1 block gaps
+					set {_magnitude} to sqrt(((x of loop-player's velocity ^ 2) + (z of loop-player's velocity ^ 2)))
+					#send "%{_magnitude}%" to loop-player
+					if {_magnitude} is more than 0.08:
+						if loop-player is sneaking:
+							push the loop-player in horizontal direction of loop-player at speed {_magnitude} * 2
+							set gliding of loop-player to on
+							set {t_isSliding.%loop-player%} to true
+							while gliding of loop-player is on:
+								set {_magnitude} to sqrt(((x of loop-player's velocity ^ 2) + (z of loop-player's velocity ^ 2)))
+								push loop-player in horizontal direction of loop-player at speed ((-0.08 * {_magnitude}) + 0.025)
+								if loop-player is not on ground:
+									clear {t_isSliding.%loop-player%}
+									set gliding of loop-player to off
+									push loop-player upwards at speed 0.15
+									push loop-player in horizontal direction of loop-player at speed (0.2 * {_magnitude})
+									exit 1 loop
+								#if {_magnitude} is less than 0.08:
+								#	exit 1 loop
+								if loop-player is not sneaking:
+									exit 1 loop
+								wait 1 tick
+							clear {t_isSliding.%loop-player%}
+							set gliding of loop-player to off
+						
+#Prevent sliding players from incurring elytra ram damage & suffocation damage
+on damage of a player:
+	if {t_isSliding.%victim%} is set:
+		if damage cause is suffocation:
+			cancel event
+		else if damage cause is hitting wall while flying:
+			cancel event
+		else if damage cause is fall:
+			cancel event
+						
+on glide toggle:
+	if {t_isSliding.%player%} is set:
+		cancel event
+		set gliding of player to on
+		
+command /glideToggle:
+	trigger:
+		if {t_isSliding.%player%} is set:
+			clear {t_isSliding.%player%}
+			set gliding of player to off
+		else:
+			set {t_isSliding.%player%} to true
+			set gliding of player to true

@@ -1,0 +1,69 @@
+on dispense:
+	if {t_fireCooldown.%event-block%} is not set:
+		if the name of the event-item is "<light yellow>Photon Torpedo":
+			cancel event
+			set {_loc} to location of block above event-block
+			shoot an arrow from {_loc} at speed 7 in direction of event-block
+			push the last shot projectile up at speed 0.1
+			set metadata value "cannonAmmoType" of last shot projectile to "PTorpedo"
+			remove 1 of event-item from event-block's inventory
+			set {t_fireCooldown.%event-block%} to true
+			wait 5 seconds
+			clear {t_fireCooldown.%event-block%}
+			play sound "block.dispenser.dispense" with volume 1 and pitch 1 at event-block
+		else if the name of the event-item is "<light yellow>Phaser Battery":
+			cancel event
+			set {_loc} to location of block above event-block
+			shoot an arrow from {_loc} at speed 7 in direction of event-block
+			push the last shot projectile up at speed 0.1
+			set metadata value "cannonAmmoType" of the last shot projectile to "Phaser"
+			remove 1 of event-item from event-block's inventory
+			set {t_fireCooldown.%event-block%} to true
+			wait 0.5 seconds
+			clear {t_fireCooldown.%event-block%}
+			play sound "block.dispenser.dispense" with volume 1 and pitch 1 at event-block
+		else if the name of the event-item is "<light yellow>Anti-Crew Missile":
+			cancel event
+			set {_loc} to location of block above event-block
+			shoot an arrow from {_loc} at speed 7 in direction of event-block
+			push the last shot projectile up at speed 0.1
+			set metadata value "cannonAmmoType" of the last shot projectile to "ACMissile"
+			remove 1 of event-item from event-block's inventory
+			set {t_fireCooldown.%event-block%} to true
+			wait 3 seconds
+			clear {t_fireCooldown.%event-block%}
+			play sound "block.dispenser.dispense" with volume 1 and pitch 1 at event-block
+		else if the name of the event-item is "<light yellow>Devastator Missile":
+			cancel event
+			set {_loc} to location of block above event-block
+			shoot an arrow from {_loc} at speed 7 in direction of event-block
+			push the last shot projectile up at speed 0.1
+			set metadata value "cannonAmmoType" of the last shot projectile to "Devastator"
+			remove 1 of event-item from event-block's inventory
+			set {t_fireCooldown.%event-block%} to true
+			wait 10 seconds
+			clear {t_fireCooldown.%event-block%}
+			play sound "block.dispenser.dispense" with volume 1 and pitch 1 at event-block
+			
+on projectile hit:
+	if metadata value "cannonAmmoType" of the projectile is "PTorpedo":
+		create explosion of force 8 at the projectile
+		play 20 (critical hit with speed 1) at the projectile
+		play 20 (orange wool break with speed 1) at the projectile
+		delete the projectile
+	else if metadata value "cannonAmmoType" of the projectile is "Phaser":
+		set {_loc} to projectile's location
+		loop all blocks in radius 1.5 of {_loc}:
+			set block at loop-block's location to air
+			play 10 (redstone block break with speed 1) at the loop-block
+		wait 1 tick
+		create explosion of force 2 at the projectile
+		delete the projectile
+	else if metadata value "cannonAmmoType" of the projectile is "ACMissile":
+		create safe explosion of force 5 at the projectile
+		delete the projectile
+	else if metadata value "cannonAmmoType" of the projectile is "Devastator":
+		create explosion of force 12 at the projectile
+		play 20 (critical hit with speed 1) at the projectile
+		play 20 (orange wool break with speed 1) at the projectile
+		delete the projectile

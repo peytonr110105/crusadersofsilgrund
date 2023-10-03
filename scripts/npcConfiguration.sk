@@ -1,0 +1,46 @@
+#hotpatch Guardsmen NPCS so they don't fucking suck
+on damage:
+	if citizen id of attacker is set:
+		set {_cid} to citizen id of attacker
+		if the name of the attacker contains "City Guard":
+			if {npc_str.%{_CID}%} is not set:
+				cancel event
+				set {npc_str.%{_CID}%} to 7 * floor({npc_lvl.%{_CID}%} / 2)
+				set {npc_spd.%{_CID}%} to 7 * floor({npc_lvl.%{_CID}%} / 2)
+				set {npc_lck.%{_CID}%} to 2 * floor({npc_lvl.%{_CID}%} / 2)
+				set {npc_def.%{_CID}%} to 5 * floor({npc_lvl.%{_CID}%} / 2)
+				set {npc_res.%{_CID}%} to 5 * floor({npc_lvl.%{_CID}%} / 2)
+				set {npc_mag.%{_CID}%} to 2 * floor({npc_lvl.%{_CID}%} / 2)
+	if citizen id of victim is set:
+		set {_cid} to citizen id of victim
+		if the name of the victim contains "Guard":
+			if {npc_str.%{_CID}%} is not set:
+				cancel event
+				set {npc_str.%{_CID}%} to 7 * floor({npc_lvl.%{_CID}%} / 2)
+				set {npc_spd.%{_CID}%} to 7 * floor({npc_lvl.%{_CID}%} / 2)
+				set {npc_lck.%{_CID}%} to 2 * floor({npc_lvl.%{_CID}%} / 2)
+				set {npc_def.%{_CID}%} to 5 * floor({npc_lvl.%{_CID}%} / 2)
+				set {npc_res.%{_CID}%} to 5 * floor({npc_lvl.%{_CID}%} / 2)
+				set {npc_mag.%{_CID}%} to 2 * floor({npc_lvl.%{_CID}%} / 2)
+				
+command /setNPCVariable <text> <number>:
+	trigger:
+		set {npc_%arg 1%.%{t_npcSelected.%player%}%} to arg 2
+		send "Set %arg 1% to %arg 2%."
+		
+command /selectNPC:
+	trigger:
+		if {t_allowNPCSelection.%player%} is not set:
+			set {t_allowNPCSelection.%player%} to true
+			send "<light green>Right-click the NPC to edit."
+		else:
+			clear {t_allowNPCSelection.%player%}
+			send "<light red>Cancelled NPC Selection."
+			
+on right click on an entity:
+	if citizen id of the target is set:
+		if {t_allowNPCSelection.%player%} is true:
+			set {_CID} to citizen id of the target
+			send formatted "<light green>Selected <reset>%target's name% <light green>(CID: <reset>%{_CID}%<light green>)" to the player
+			set {t_npcSelected.%player%} to {_CID}
+			clear {t_allowNPCSelection.%player%}

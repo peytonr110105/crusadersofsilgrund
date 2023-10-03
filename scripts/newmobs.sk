@@ -1,5 +1,122 @@
 #Behaviors for new monsters
 
+on damage of monster:
+	#Generic DR Behavior
+	if victim is monster:
+		if victim is alive:
+			clear {_damageTacticChosen}
+			if {t_lvl.%victim%} is more than 30:
+				set {_mobLVLScalar} to 30
+			else:
+				set {_mobLVLScalar} to {t_lvl.%victim%}
+			set {_drOdds} to floor(({t_spd.%victim%} / 2))
+			if {_drOdds} is more than 60:
+				set {_drOdds} to 60
+			set {_drOdds} to floor(({_drOdds} - 10) + ({_mobLVLScalar} / 2))
+			if ({_drOdds} - 10) is more than 0:
+				#All mobs can occasionally dodge roll away from the player
+				chance of (({_drOdds} - 20) + (10 * getEntityWeaponType(victim)))%:
+					if {t_foeDRTimeout.%victim%} is not set:
+						chance of 50%:
+							wait 0.1 seconds
+						set {_damageTacticChosen} to true
+						push the victim in horizontal direction of the victim at speed -1.35
+						push the victim up at speed 0.3
+						set {t_foeDRTimeout.%victim%} to true
+						set {t_tangibilityState.%victim%} to "DRInvulnerable"
+						loop 9 times:
+							play 5 (smoke with speed 0) at the victim
+							play 5 (cloud with speed 0) at the victim
+							wait 1 tick
+						clear {t_tangibilityState.%victim%}
+						play sound "block.gravel.break" with volume 0.7 and pitch 0.5 at the victim
+						play sound "block.fire.extinguish" with volume 0.4 and pitch 0.7 at the victim
+						wait 3 seconds
+						clear {t_foeDRTimeout.%victim%}
+				if nbt of victim's tool contains "LanceType":
+					chance of floor({_drOdds} + 15)%:
+						if victim is not on fire:
+							chance of 50%:
+								set {_damageTacticChosen} to true
+								play 20 (emerald block break with speed 1) at the victim
+								wait 0.6 seconds
+								make the victim shoot an arrow at speed 2
+								if victim is not on fire:
+									chance of 30%:
+										play 20 (emerald block break with speed 1) at the victim
+										wait 8 ticks
+										make the victim shoot an arrow at speed 2
+										wait 4 ticks
+										make the victim shoot an arrow at speed 2
+				#Dagger mobs will rarely fire a hail of daggers at their foe
+				else if nbt of victim's tool contains "DaggerType":
+					chance of ({_drOdds} + 15)%:
+						if victim is not on fire:
+							chance of 50%:
+								set {_damageTacticChosen} to true
+								play 20 (gold block break with speed 1) at the victim
+								wait 0.6 seconds
+								if victim is alive:
+									loop 2 times:
+										if victim is alive:
+											make the victim shoot an arrow at speed 2.5
+											wait 1 ticks
+											make the victim shoot an arrow at speed 2.5
+											push the last shot projectile left at speed 1
+											make the victim shoot an arrow at speed 2.5
+											push the last shot projectile right at speed 1
+											wait 3 ticks
+											push the victim in horizontal direction of the victim at speed -0.25
+											push the victim up at speed 0.2
+											loop 3 times:
+												play 3 (smoke with speed 0) at the victim
+												play 3 (cloud with speed 0) at the victim
+												wait 1 tick
+											play sound "block.gravel.break" with volume 0.4 and pitch 0.5 at the victim
+											play sound "block.fire.extinguish" with volume 0.2 and pitch 0.7 at the victim
+											wait 10 ticks
+				#Only pick these tactics if the previous defensive tactics haven't been chosen
+				if {_damageTacticChosen} is not set:
+					#Melee mobs will occasionally stinger to close the gap
+					if getEntityRange(victim) is 1:
+						chance of floor({_drOdds} + 50)%:
+							play 20 lapis block break with speed 1 at the victim
+							wait 0.6 seconds
+							if victim is alive:
+								push the victim upwards at speed 0.1
+								push the victim in direction of the attacker at speed 1.4
+								play 20 (white wool break with speed 1) at the victim
+					#Bow/Magic mobs will occasionally side-strafe and fire more rapidly
+					else if getEntityRange(victim) is 2:
+						chance of floor({_drOdds} + 50)%:
+							play 20 (diamond block break with speed 1) at the victim
+							wait 0.5 seconds
+							if victim is alive:
+								play 9 (smoke with speed 0) at the victim
+								play 9 (cloud with speed 0) at the victim
+								chance of 50%:
+									push the victim upwards at speed 0.1
+									push the victim left at speed 0.5
+								else:
+									push the victim upwards at speed 0.1
+									push the victim right at speed 0.5									
+								wait 0.2 seconds
+								make the victim shoot the attacker at speed 1.35
+								wait 0.2 seconds
+								play 9 (smoke with speed 0) at the victim
+								play 9 (cloud with speed 0) at the victim
+								if victim is alive:					
+									chance of 50%:
+										push the victim upwards at speed 0.1
+										push the victim right at speed 1
+										wait 0.3 seconds
+										make the victim shoot the attacker at speed 1.35
+									else:
+										push the victim upwards at speed 1.2
+										push the victim backwards at speed 0.4
+										wait 0.2 seconds
+										make the victim shoot the attacker at speed 1.35
+						
 on damage:
 	if metadata value "isSPurgia" of the attacker is 1:
 		set {_bonusdamage} to getHelmetDamageResistance(victim)
@@ -32,13 +149,15 @@ on damage:
 			set the victim's leggings to the attacker's leggings
 			set the victim's boots to the attacker's boots
 			set the victim's tool to the attacker's tool
-			set {t_str.%victim%} to floor({str.%attacker%} * 0.85)
-			set {t_def.%victim%} to floor({def.%attacker%} * 0.85)
-			set {t_skl.%victim%} to floor({skl.%attacker%} * 0.85)
-			set {t_spd.%victim%} to floor({spd.%attacker%} * 0.85)
-			set {t_res.%victim%} to floor({res.%attacker%} * 0.85)
+			set {t_str.%victim%} to floor({str.%attacker%} * 1)
+			set {t_def.%victim%} to floor({def.%attacker%} * 1)
+			set {t_skl.%victim%} to floor({skl.%attacker%} * 1)
+			set {t_spd.%victim%} to floor({spd.%attacker%} * 1)
+			set {t_res.%victim%} to floor({res.%attacker%} * 1)
+			set {t_mag.%victim%} to floor({mag.%attacker%} * 1)
 	if metadata value "isVenomSpider" of the attacker is 1:
-		apply wither 2 to the victim for 5 seconds
+		set {_rng} to random integer from 3 to 9
+		applyOOCStatusEffect(victim,"Poison",{_rng})
 	if metadata value "isMalediction" of the victim is 1:
 		if victim's health is less than (victim's maximum health * 0.5):
 			set {_mob} to the victim
@@ -55,6 +174,10 @@ on damage:
 		play 60 (obsidian break with speed 1) at the attacker
 		remove swiftness from the attacker
 		remove strength from the attacker
+		wait 1 second
+		apply invisibility 1 to the victim for 7 seconds
+		apply swiftness 4 to the victim for 7 seconds
+		apply strength 4 to the victim for 7 seconds
 	if metadata value "isRegret" of the victim is 1:
 		if {t_RegretSpawner.%victim%} is not 1:
 			add 1 to {t_RegretSpawner.%victim%}
@@ -78,7 +201,7 @@ on damage:
 				spawn 1 blaze at the victim
 				set the last spawned entity's health to (last spawned entity's maximum health * 0.25)
 				play 10 (mob spawner flames with speed 1) at the victim
-				wait 20 seconds
+				wait 10 seconds
 				if victim is not alive:
 					exit 1 loop
 				if {t_RegretSpawner.%victim%} is more than 4:
@@ -157,15 +280,21 @@ on explode:
 				kill the entity
 
 on death:
-	if victim is player:
-		if victim's world is "Salindrum":
-			if {t_playingBP.%victim%} is not set:
-				cancel event
-				heal the victim by victim's maximum health
-				teleport the victim to {sd.%{sdroom.%victim%}%}
-				loop all monsters in radius 50 of the victim:
-					kill loop-monster
-	else if metadata value "isFury" of the victim is 1:
+	#if victim is player:
+	#	if victim's world is "Salindrum":
+	#		if {t_playingBP.%victim%} is not set:
+	#			cancel event
+	#			heal the victim by victim's maximum health
+	#			teleport the victim to {sd.%{sdroom.%victim%}%}
+	#			loop all monsters in radius 50 of the victim:
+	#				kill loop-monster
+	#		if {t_playingQA.%victim%} is not set:
+	#			cancel event
+	#			heal the victim by victim's maximum health
+	#			teleport the victim to {sd.%{sdroom.%victim%}%}
+	#			loop all monsters in radius 50 of the victim:
+	#				kill loop-monster
+	if metadata value "isFury" of the victim is 1:
 		create safe explosion of force 1.5 at the victim
 		play 60 (smoke with speed 1) at the victim
 		play 2 (explosion with speed 1) at the victim

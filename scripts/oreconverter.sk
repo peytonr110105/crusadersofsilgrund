@@ -1,0 +1,365 @@
+command /oreconverter <number>:
+	trigger:
+		if arg 1 is 0:
+			open chest inventory with 1 row named "<gold>Ore Conversion" for the player
+			set slot 3 of the player's current inventory to 1 anvil named "<gold>Fabricate Tool Frames" with lore "<white>Spend blocks of ore to create upgrades for your weapons."
+			set slot 5 of the player's current inventory to 1 unlit furnace named "<gold>Transmute Ore" with lore "<white>Convert excess ores into more valuable ores."
+		else if arg 1 is 1:
+			open chest inventory with 6 rows named "<gold>Select item to craft..." for the player
+			#Tempered frames
+			if player has 2 iron block:
+				if player has 1 blaze rod:
+					set slot 0 of the player's current inventory to 1 wooden sword named "<light blue>Tempered Iron Sword Frame" with nbt "{frameType:0,upgradeTier:0,oreType:0}" with lore "<white>Requirement: 2x Iron Block, 1x Blaze Rod", "<white>Adds +1 merge to any basic Iron Sword."
+				else:
+					set slot 0 of the player's current inventory to 1 barrier named "<light red>Tempered Iron Sword Frame" with nbt "{frameType:0,upgradeTier:0,oreType:0}" with lore "<white>Requirement: 2x Iron Block, 1x Blaze Rod", "<white>Adds +1 merge to any basic Iron Sword.", "<light red>Not enough materials to craft."
+			else:
+				set slot 0 of the player's current inventory to 1 barrier named "<light red>Tempered Iron Sword Frame" with nbt "{frameType:0,upgradeTier:0,oreType:0}" with lore "<white>Requirement: 2x Iron Block, 1x Blaze Rod", "<white>Adds +1 merge to any basic Iron Sword.", "<light red>Not enough materials to craft."
+			if player has 3 iron block:
+				if player has 2 blaze rod:
+					set slot 1 of the player's current inventory to 1 wooden axe named "<light blue>Tempered Iron Axe Frame" with nbt "{frameType:1,upgradeTier:0,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 2x Blaze Rod", "<white>Adds +1 merge to any basic Iron Axe."
+					set slot 2 of the player's current inventory to 1 wooden shovel named "<light blue>Tempered Iron Lance Frame" with nbt "{frameType:2,upgradeTier:0,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 2x Blaze Rod", "<white>Adds +1 merge to any basic Iron Lance."
+				else:
+					set slot 1 of the player's current inventory to 1 barrier named "<light red>Tempered Iron Axe Frame" with nbt "{frameType:1,upgradeTier:0,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 2x Blaze Rod", "<white>Adds +1 merge to any basic Iron Axe.", "<light red>Not enough materials to craft."
+					set slot 2 of the player's current inventory to 1 barrier named "<light red>Tempered Iron Lance Frame" with nbt "{frameType:2,upgradeTier:0,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 2x Blaze Rod", "<white>Adds +1 merge to any basic Iron Lance.", "<light red>Not enough materials to craft."				
+			else:
+				set slot 1 of the player's current inventory to 1 barrier named "<light red>Tempered Iron Axe Frame" with nbt "{frameType:1,upgradeTier:0,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 2x Blaze Rod", "<white>Adds +1 merge to any basic Iron Axe.", "<light red>Not enough materials to craft."
+				set slot 2 of the player's current inventory to 1 barrier named "<light red>Tempered Iron Lance Frame" with nbt "{frameType:2,upgradeTier:0,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 2x Blaze Rod", "<white>Adds +1 merge to any basic Iron Lance.", "<light red>Not enough materials to craft."
+			if player has 3 Iron Block:
+				if player has 3 blaze rod:
+					set slot 3 of the player's current inventory to 1 bow named "<light blue>Tempered Bow Frame" with nbt "{frameType:3,upgradeTier:0,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 3x Blaze Rod", "<white>Adds +1 merge to any basic Bow."
+					#Tomes / Wands
+					if player has 3 lapis block:
+						set slot 6 of the player's current inventory to 1 blaze rod named "<light blue>Tempered Wand Frame" with nbt "{frameType:8,upgradeTier:0,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 3x Blaze Rod, 3x Lapis Block", "<white>Adds +1 merge to any basic Magic Wand."
+						set slot 7 of the player's current inventory to 1 book named "<light blue>Tempered Tome Frame" with nbt "{frameType:6,upgradeTier:0,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 3x Blaze Rod, 3x Lapis Block", "<white>Adds +1 merge to any basic Tome."
+					else:
+						set slot 6 of the player's current inventory to 1 barrier named "<light red>Tempered Wand Frame" with nbt "{frameType:8,upgradeTier:0,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 3x Blaze Rod, 3x Lapis Block", "<light red>Not enough materials to craft."
+						set slot 7 of the player's current inventory to 1 barrier named "<light red>Tempered Tome Frame" with nbt "{frameType:6,upgradeTier:0,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 3x Blaze Rod, 3x Lapis Block","<light red>Not enough materials to craft."
+					#Firearms
+					if player has 3 redstone block:
+						set slot 8 of the player's current inventory to 1 iron horse armor named "<light blue>Tempered Firearm Frame" with nbt "{frameType:7,upgradeTier:0,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 3x Blaze Rod, 3x Redstone Block", "<white>Adds +1 merge to any basic Firearm."
+					else:
+						set slot 8 of the player's current inventory to 1 barrier named "<light red>Tempered Firearm Frame" with nbt "{frameType:7,upgradeTier:0,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 3x Blaze Rod, 3x Redstone Block", "<light red>Not enough materials to craft."
+				else:
+					set slot 3 of the player's current inventory to 1 barrier named "<light red>Tempered Bow Frame" with nbt "{frameType:3,upgradeTier:0,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 3x Blaze Rod", "<white>Adds +1 merge to any basic Bow.", "<light red>Not enough materials to craft."
+					set slot 6 of the player's current inventory to 1 barrier named "<light red>Tempered Wand Frame" with nbt "{frameType:8,upgradeTier:0,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 3x Blaze Rod, 3x Lapis Block", "<light red>Not enough materials to craft."
+					set slot 7 of the player's current inventory to 1 barrier named "<light red>Tempered Tome Frame" with nbt "{frameType:6,upgradeTier:0,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 3x Blaze Rod, 3x Lapis Block","<light red>Not enough materials to craft."
+					set slot 8 of the player's current inventory to 1 barrier named "<light red>Tempered Firearm Frame" with nbt "{frameType:7,upgradeTier:0,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 3x Blaze Rod, 3x Redstone Block", "<light red>Not enough materials to craft."
+			else:
+				set slot 3 of the player's current inventory to 1 barrier named "<light red>Tempered Bow Frame" with nbt "{frameType:3,upgradeTier:0,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 3x Blaze Rod", "<white>Adds +1 merge to any basic Bow.", "<light red>Not enough materials to craft."
+				set slot 6 of the player's current inventory to 1 barrier named "<light red>Tempered Wand Frame" with nbt "{frameType:8,upgradeTier:0,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 3x Blaze Rod, 3x Lapis Block", "<light red>Not enough materials to craft."
+				set slot 7 of the player's current inventory to 1 barrier named "<light red>Tempered Tome Frame" with nbt "{frameType:6,upgradeTier:0,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 3x Blaze Rod, 3x Lapis Block","<light red>Not enough materials to craft."
+				set slot 8 of the player's current inventory to 1 barrier named "<light red>Tempered Firearm Frame" with nbt "{frameType:7,upgradeTier:0,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 3x Blaze Rod, 3x Redstone Block", "<light red>Not enough materials to craft."
+			if player has 3 iron block:
+				if player has 1 blaze rod:
+					set slot 4 of the player's current inventory to 1 wooden hoe named "<light blue>Tempered Iron Gauntlets Frame" with nbt "{frameType:4,upgradeTier:0,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 1x Blaze Rod", "<white>Adds +1 merge to any basic Iron Gauntlets."
+				else:
+					set slot 4 of the player's current inventory to 1 barrier named "<light red>Tempered Iron Gauntlets Frame" with nbt "{frameType:4,upgradeTier:0,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 1x Blaze Rod", "<white>Adds +1 merge to any basic Iron Gauntlets.", "<light red>Not enough materials to craft."
+			else:
+				set slot 4 of the player's current inventory to 1 barrier named "<light red>Tempered Iron Gauntlets Frame" with nbt "{frameType:4,upgradeTier:0,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 1x Blaze Rod", "<white>Adds +1 merge to any basic Iron Gauntlets.", "<light red>Not enough materials to craft."
+			if player has 1 iron block:
+				if player has 1 blaze rod:
+					set slot 5 of the player's current inventory to 1 arrow named "<light blue>Tempered Iron Dagger Frame" with nbt "{frameType:5,upgradeTier:0,oreType:0}" with lore "<white>Requirement: 1x Iron Block, 1x Blaze Rod", "<white>Adds +1 merge to any basic Iron Dagger(s)."
+				else:
+					set slot 5 of the player's current inventory to 1 barrier named "<light red>Tempered Iron Dagger Frame" with nbt "{frameType:5,upgradeTier:0,oreType:0}" with lore "<white>Requirement: 1x Iron Block, 1x Blaze Rod", "<white>Adds +1 merge to any basic Iron Dagger(s).", "<light red>Not enough materials to craft."
+			else:
+				set slot 5 of the player's current inventory to 1 barrier named "<light red>Tempered Iron Dagger Frame" with nbt "{frameType:5,upgradeTier:0,oreType:0}" with lore "<white>Requirement: 1x Iron Block, 1x Blaze Rod", "<white>Adds +1 merge to any basic Iron Dagger(s).", "<light red>Not enough materials to craft."
+			#Diamond Tempered
+			if player has 2 diamond block:
+				if player has 1 blaze rod:
+					set slot 9 of the player's current inventory to 1 wooden sword named "<light blue>Tempered Diamond Sword Frame" with nbt "{frameType:0,upgradeTier:0,oreType:2}" with lore "<white>Requirement: 2x Diamond Block, 1x Blaze Rod", "<white>Adds +1 merge to any basic Diamond Sword."
+				else:
+					set slot 9 of the player's current inventory to 1 barrier named "<light red>Tempered Diamond Sword Frame" with nbt "{frameType:0,upgradeTier:0,oreType:2}" with lore "<white>Requirement: 2x Diamond Block, 1x Blaze Rod", "<white>Adds +1 merge to any basic Diamond Sword.", "<light red>Not enough materials to craft."
+			else:
+				set slot 9 of the player's current inventory to 1 barrier named "<light red>Tempered Diamond Sword Frame" with nbt "{frameType:0,upgradeTier:0,oreType:2}" with lore "<white>Requirement: 2x Diamond Block, 1x Blaze Rod", "<white>Adds +1 merge to any basic Diamond Sword.", "<light red>Not enough materials to craft."
+			if player has 3 diamond block:
+				if player has 2 blaze rod:
+					set slot 10 of the player's current inventory to 1 wooden axe named "<light blue>Tempered Diamond Axe Frame" with nbt "{frameType:1,upgradeTier:0,oreType:2}" with lore "<white>Requirement: 3x Diamond Block, 2x Blaze Rod", "<white>Adds +1 merge to any basic Diamond Axe."
+					set slot 11 of the player's current inventory to 1 wooden shovel named "<light blue>Tempered Diamond Lance Frame" with nbt "{frameType:2,upgradeTier:0,oreType:2}" with lore "<white>Requirement: 3x Diamond Block, 2x Blaze Rod", "<white>Adds +1 merge to any basic Diamond Lance."
+				else:
+					set slot 10 of the player's current inventory to 1 barrier named "<light red>Tempered Diamond Axe Frame" with nbt "{frameType:1,upgradeTier:0,oreType:2}" with lore "<white>Requirement: 3x Diamond Block, 2x Blaze Rod", "<white>Adds +1 merge to any basic Diamond Axe.", "<light red>Not enough materials to craft."
+					set slot 11 of the player's current inventory to 1 barrier named "<light red>Tempered Diamond Lance Frame" with nbt "{frameType:2,upgradeTier:0,oreType:2}" with lore "<white>Requirement: 3x Diamond Block, 2x Blaze Rod", "<white>Adds +1 merge to any basic Diamond Lance.", "<light red>Not enough materials to craft."
+			else:
+				set slot 10 of the player's current inventory to 1 barrier named "<light red>Tempered Diamond Axe Frame" with nbt "{frameType:1,upgradeTier:0,oreType:2}" with lore "<white>Requirement: 3x Diamond Block, 2x Blaze Rod", "<white>Adds +1 merge to any basic Diamond Axe.", "<light red>Not enough materials to craft."
+				set slot 11 of the player's current inventory to 1 barrier named "<light red>Tempered Diamond Lance Frame" with nbt "{frameType:2,upgradeTier:0,oreType:2}" with lore "<white>Requirement: 3x Diamond Block, 2x Blaze Rod", "<white>Adds +1 merge to any basic Diamond Lance.", "<light red>Not enough materials to craft."
+			if player has 3 diamond block:
+				if player has 1 blaze rod:
+					set slot 12 of the player's current inventory to 1 wooden hoe named "<light blue>Tempered Diamond Gauntlets Frame" with nbt "{frameType:4,upgradeTier:0,oreType:2}" with lore "<white>Requirement: 3x Diamond Block, 1x Blaze Rod", "<white>Adds +1 merge to any basic Diamond Gauntlets."
+				else:
+					set slot 12 of the player's current inventory to 1 barrier named "<light red>Tempered Diamond Gauntlets Frame" with nbt "{frameType:4,upgradeTier:0,oreType:2}" with lore "<white>Requirement: 3x Diamond Block, 1x Blaze Rod", "<white>Adds +1 merge to any basic Diamond Gauntlets.", "<light red>Not enough materials to craft."
+			else:
+				set slot 12 of the player's current inventory to 1 barrier named "<light red>Tempered Diamond Gauntlets Frame" with nbt "{frameType:4,upgradeTier:0,oreType:2}" with lore "<white>Requirement: 3x Diamond Block, 1x Blaze Rod", "<white>Adds +1 merge to any basic Diamond Gauntlets.", "<light red>Not enough materials to craft."
+			if player has 1 diamond block:
+				if player has 1 blaze rod:
+					set slot 13 of the player's current inventory to 1 arrow named "<light blue>Tempered Diamond Dagger Frame" with nbt "{frameType:5,upgradeTier:0,oreType:2}" with lore "<white>Requirement: 1x Diamond Block, 1x Blaze Rod", "<white>Adds +1 merge to any basic Diamond Dagger(s)."
+				else:
+					set slot 13 of the player's current inventory to 1 barrier named "<light red>Tempered Diamond Dagger Frame" with nbt "{frameType:5,upgradeTier:0,oreType:2}" with lore "<white>Requirement: 1x Diamond Block, 1x Blaze Rod", "<white>Adds +1 merge to any basic Diamond Dagger(s).", "<light red>Not enough materials to craft."
+			else:
+				set slot 13 of the player's current inventory to 1 barrier named "<light red>Tempered Diamond Dagger Frame" with nbt "{frameType:5,upgradeTier:0,oreType:2}" with lore "<white>Requirement: 1x Diamond Block, 1x Blaze Rod", "<white>Adds +1 merge to any basic Diamond Dagger(s).", "<light red>Not enough materials to craft."
+			#Weapon Casts
+			if player has 8 iron ingot:
+				if player has 1 gold ingot:
+					set slot 18 of the player's current inventory to 1 bucket named "<light blue>Slaying-Weapon Cast" with nbt "{castType:0}" with lore "<white>Requirement: 8x Iron Ingot, 1x Gold Ingot", "<white>Upgrades a +10 basic weapon to a Slaying weapon."
+					set slot 19 of the player's current inventory to 1 bucket named "<light blue>Reinforced-Weapon Cast" with nbt "{castType:1}" with lore "<white>Requirement: 8x Iron Ingot, 1x Gold Ingot", "<white>Upgrades a +10 basic weapon to a Reinforced weapon."
+					set slot 20 of the player's current inventory to 1 bucket named "<light blue>Warding-Weapon Cast" with nbt "{castType:2}" with lore "<white>Requirement: 8x Iron Ingot, 1x Gold Ingot", "<white>Upgrades a +10 basic weapon to a Warding weapon."
+					set slot 21 of the player's current inventory to 1 bucket named "<light blue>Piercing-Weapon Cast" with nbt "{castType:3}" with lore "<white>Requirement: 8x Iron Ingot, 1x Gold Ingot", "<white>Upgrades a +10 basic weapon to a Piercing weapon."
+					set slot 22 of the player's current inventory to 1 bucket named "<light blue>Koenig-Weapon Cast" with nbt "{castType:4}" with lore "<white>Requirement: 8x Iron Ingot, 1x Gold Ingot", "<white>Upgrades a +10 basic weapon to a Koenig weapon."
+					set slot 23 of the player's current inventory to 1 bucket named "<light blue>Crushing-Weapon Cast" with nbt "{castType:5}" with lore "<white>Requirement: 8x Iron Ingot, 1x Gold Ingot", "<white>Upgrades a +10 basic weapon to a Crushing weapon."
+				else:
+					set slot 18 of the player's current inventory to 1 barrier named "<light red>Slaying-Weapon Cast" with nbt "{castType:0}" with lore "<white>Requirement: 8x Iron Ingot, 1x Gold Ingot", "<white>Upgrades a +10 basic weapon to a Slaying weapon.", "<light red>Not enough materials to craft."
+					set slot 19 of the player's current inventory to 1 barrier named "<light red>Reinforced-Weapon Cast" with nbt "{castType:1}" with lore "<white>Requirement: 8x Iron Ingot, 1x Gold Ingot", "<white>Upgrades a +10 basic weapon to a Reinforced weapon.", "<light red>Not enough materials to craft."
+					set slot 20 of the player's current inventory to 1 barrier named "<light red>Warding-Weapon Cast" with nbt "{castType:2}" with lore "<white>Requirement: 8x Iron Ingot, 1x Gold Ingot", "<white>Upgrades a +10 basic weapon to a Warding weapon.", "<light red>Not enough materials to craft."
+					set slot 21 of the player's current inventory to 1 barrier named "<light red>Piercing-Weapon Cast" with nbt "{castType:3}" with lore "<white>Requirement: 8x Iron Ingot, 1x Gold Ingot", "<white>Upgrades a +10 basic weapon to a Piercing weapon.", "<light red>Not enough materials to craft."
+					set slot 22 of the player's current inventory to 1 barrier named "<light red>Koenig-Weapon Cast" with nbt "{castType:4}" with lore "<white>Requirement: 8x Iron Ingot, 1x Gold Ingot", "<white>Upgrades a +10 basic weapon to a Koenig weapon.", "<light red>Not enough materials to craft."
+					set slot 23 of the player's current inventory to 1 barrier named "<light red>Crushing-Weapon Cast" with nbt "{castType:5}" with lore "<white>Requirement: 8x Iron Ingot, 1x Gold Ingot", "<white>Upgrades a +10 basic weapon to a Crushing weapon.", "<light red>Not enough materials to craft."
+			else:
+				set slot 18 of the player's current inventory to 1 barrier named "<light red>Slaying-Weapon Cast" with nbt "{castType:0}" with lore "<white>Requirement: 8x Iron Ingot, 1x Gold Ingot", "<white>Upgrades a +10 basic weapon to a Slaying weapon.", "<light red>Not enough materials to craft."
+				set slot 19 of the player's current inventory to 1 barrier named "<light red>Reinforced-Weapon Cast" with nbt "{castType:1}" with lore "<white>Requirement: 8x Iron Ingot, 1x Gold Ingot", "<white>Upgrades a +10 basic weapon to a Reinforced weapon.", "<light red>Not enough materials to craft."
+				set slot 20 of the player's current inventory to 1 barrier named "<light red>Warding-Weapon Cast" with nbt "{castType:2}" with lore "<white>Requirement: 8x Iron Ingot, 1x Gold Ingot", "<white>Upgrades a +10 basic weapon to a Warding weapon.", "<light red>Not enough materials to craft."
+				set slot 21 of the player's current inventory to 1 barrier named "<light red>Piercing-Weapon Cast" with nbt "{castType:3}" with lore "<white>Requirement: 8x Iron Ingot, 1x Gold Ingot", "<white>Upgrades a +10 basic weapon to a Piercing weapon.", "<light red>Not enough materials to craft."
+				set slot 22 of the player's current inventory to 1 barrier named "<light red>Koenig-Weapon Cast" with nbt "{castType:4}" with lore "<white>Requirement: 8x Iron Ingot, 1x Gold Ingot", "<white>Upgrades a +10 basic weapon to a Koenig weapon.", "<light red>Not enough materials to craft."
+				set slot 23 of the player's current inventory to 1 barrier named "<light red>Crushing-Weapon Cast" with nbt "{castType:5}" with lore "<white>Requirement: 8x Iron Ingot, 1x Gold Ingot", "<white>Upgrades a +10 basic weapon to a Crushing weapon.", "<light red>Not enough materials to craft."
+			#Forged frames
+			if player has 2 iron block:
+				if player has 1 blaze rod:
+					set slot 27 of the player's current inventory to 1 wooden sword named "<light blue>Forged Iron Sword Frame" with nbt "{frameType:0,upgradeTier:1,oreType:0}" with lore "<white>Requirement: 2x Iron Block, 1x Blaze Rod", "<white>Adds +1 merge to any Upgraded (baked refine) Iron Sword."
+				else:
+					set slot 27 of the player's current inventory to 1 barrier named "<light red>Forged Iron Sword Frame" with nbt "{frameType:0,upgradeTier:1,oreType:0}" with lore "<white>Requirement: 2x Iron Block, 1x Blaze Rod", "<white>Adds +1 merge to any Upgraded (baked refine) Iron Sword.", "<light red>Not enough materials to craft."
+			else:
+				set slot 27 of the player's current inventory to 1 barrier named "<light red>Forged Iron Sword Frame" with nbt "{frameType:0,upgradeTier:1,oreType:0}" with lore "<white>Requirement: 2x Iron Block, 1x Blaze Rod", "<white>Adds +1 merge to any Upgraded (baked refine) Iron Sword.", "<light red>Not enough materials to craft."
+			if player has 3 iron block:
+				if player has 2 blaze rod:
+					set slot 28 of the player's current inventory to 1 wooden axe named "<light blue>Forged Iron Axe Frame" with nbt "{frameType:1,upgradeTier:1,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 2x Blaze Rod", "<white>Adds +1 merge to any Upgraded (baked refine) Iron Axe."
+					set slot 29 of the player's current inventory to 1 wooden shovel named "<light blue>Forged Iron Lance Frame" with nbt "{frameType:2,upgradeTier:1,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 2x Blaze Rod", "<white>Adds +1 merge to any Upgraded (baked refine) Iron Lance."
+				else:
+					set slot 28 of the player's current inventory to 1 barrier named "<light red>Forged Iron Axe Frame" with nbt "{frameType:1,upgradeTier:1,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 2x Blaze Rod", "<white>Adds +1 merge to any Upgraded (baked refine) Iron Axe.", "<light red>Not enough materials to craft."
+					set slot 29 of the player's current inventory to 1 barrier named "<light red>Forged Iron Lance Frame" with nbt "{frameType:2,upgradeTier:1,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 2x Blaze Rod", "<white>Adds +1 merge to any Upgraded (baked refine) Iron Lance.", "<light red>Not enough materials to craft."
+			else:
+				set slot 28 of the player's current inventory to 1 barrier named "<light red>Forged Iron Axe Frame" with nbt "{frameType:1,upgradeTier:1,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 2x Blaze Rod", "<white>Adds +1 merge to any Upgraded (baked refine) Iron Axe.", "<light red>Not enough materials to craft."
+				set slot 29 of the player's current inventory to 1 barrier named "<light red>Forged Iron Lance Frame" with nbt "{frameType:2,upgradeTier:1,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 2x Blaze Rod", "<white>Adds +1 merge to any Upgraded (baked refine) Iron Lance.", "<light red>Not enough materials to craft."
+			if player has 3 iron block:
+				if player has 3 blaze rod:
+					set slot 30 of the player's current inventory to 1 bow named "<light blue>Forged Bow Frame" with nbt "{frameType:3,upgradeTier:1,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 3x Blaze Rod", "<white>Adds +1 merge to any Upgraded (baked refine) Bow."
+					#Tomes / Wands
+					if player has 3 lapis block:
+						set slot 33 of the player's current inventory to 1 blaze rod named "<light blue>Forged Wand Frame" with nbt "{frameType:8,upgradeTier:1,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 3x Blaze Rod, 3x Lapis Block", "<white>Adds +1 merge to any Upgraded (baked refine) Magic Wand."
+						set slot 34 of the player's current inventory to 1 book named "<light blue>Forged Tome Frame" with nbt "{frameType:6,upgradeTier:1,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 3x Blaze Rod, 3x Lapis Block", "<white>Adds +1 merge to any Upgraded (baked refine) Tome."
+					else:
+						set slot 33 of the player's current inventory to 1 barrier named "<light red>Forged Wand Frame" with nbt "{frameType:8,upgradeTier:1,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 3x Blaze Rod, 3x Lapis Block", "<light red>Not enough materials to craft."
+						set slot 34 of the player's current inventory to 1 barrier named "<light red>Forged Tome Frame" with nbt "{frameType:6,upgradeTier:1,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 3x Blaze Rod, 3x Lapis Block","<light red>Not enough materials to craft."
+					#Firearms
+					if player has 3 redstone block:
+						set slot 35 of the player's current inventory to 1 iron horse armor named "<light blue>Tempered Firearm Frame" with nbt "{frameType:7,upgradeTier:1,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 3x Blaze Rod, 3x Redstone Block", "<white>Adds +1 merge to any basic Firearm."
+					else:
+						set slot 35 of the player's current inventory to 1 barrier named "<light red>Forged Firearm Frame" with nbt "{frameType:7,upgradeTier:1,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 3x Blaze Rod, 3x Redstone Block", "<light red>Not enough materials to craft."
+				else:
+					set slot 30 of the player's current inventory to 1 barrier named "<light red>Forged Bow Frame" with nbt "{frameType:3,upgradeTier:1,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 3x Blaze Rod", "<white>Adds +1 merge to any Upgraded (baked refine) Bow.", "<light red>Not enough materials to craft."
+					set slot 33 of the player's current inventory to 1 barrier named "<light red>Forged Wand Frame" with nbt "{frameType:8,upgradeTier:1,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 3x Blaze Rod, 3x Lapis Block", "<light red>Not enough materials to craft."
+					set slot 34 of the player's current inventory to 1 barrier named "<light red>Forged Tome Frame" with nbt "{frameType:6,upgradeTier:1,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 3x Blaze Rod, 3x Lapis Block","<light red>Not enough materials to craft."
+					set slot 35 of the player's current inventory to 1 barrier named "<light red>Forged Firearm Frame" with nbt "{frameType:7,upgradeTier:1,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 3x Blaze Rod, 3x Redstone Block", "<light red>Not enough materials to craft."
+			else:
+				set slot 30 of the player's current inventory to 1 barrier named "<light red>Forged Bow Frame" with nbt "{frameType:3,upgradeTier:1,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 3x Blaze Rod", "<white>Adds +1 merge to any Upgraded (baked refine) Bow.", "<light red>Not enough materials to craft."
+				set slot 33 of the player's current inventory to 1 barrier named "<light red>Forged Wand Frame" with nbt "{frameType:8,upgradeTier:1,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 3x Blaze Rod, 3x Lapis Block", "<light red>Not enough materials to craft."
+				set slot 34 of the player's current inventory to 1 barrier named "<light red>Forged Tome Frame" with nbt "{frameType:6,upgradeTier:1,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 3x Blaze Rod, 3x Lapis Block","<light red>Not enough materials to craft."
+				set slot 35 of the player's current inventory to 1 barrier named "<light red>Forged Firearm Frame" with nbt "{frameType:7,upgradeTier:1,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 3x Blaze Rod, 3x Redstone Block", "<light red>Not enough materials to craft."
+			if player has 3 iron block:
+				if player has 1 blaze rod:
+					set slot 31 of the player's current inventory to 1 wooden hoe named "<light blue>Forged Iron Gauntlets Frame" with nbt "{frameType:4,upgradeTier:1,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 1x Blaze Rod", "<white>Adds +1 merge to any Upgraded (baked refine) Iron Gauntlets."
+				else:
+					set slot 31 of the player's current inventory to 1 barrier named "<light red>Forged Iron Gauntlets Frame" with nbt "{frameType:4,upgradeTier:1,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 1x Blaze Rod", "<white>Adds +1 merge to any Upgraded (baked refine) Gauntlets.", "<light red>Not enough materials to craft."
+			else:
+				set slot 31 of the player's current inventory to 1 barrier named "<light red>Forged Iron Gauntlets Frame" with nbt "{frameType:4,upgradeTier:1,oreType:0}" with lore "<white>Requirement: 3x Iron Block, 1x Blaze Rod", "<white>Adds +1 merge to any Upgraded (baked refine) Gauntlets.", "<light red>Not enough materials to craft."
+			if player has 1 iron block:
+				if player has 1 blaze rod:
+					set slot 32 of the player's current inventory to 1 arrow named "<light blue>Forged Iron Dagger Frame" with nbt "{frameType:5,upgradeTier:1,oreType:0}" with lore "<white>Requirement: 1x Iron Block, 1x Blaze Rod", "<white>Adds +1 merge to any Upgraded (baked refine) Iron Dagger(s)."
+				else:
+					set slot 32 of the player's current inventory to 1 barrier named "<light red>Forged Iron Dagger Frame" with nbt "{frameType:5,upgradeTier:1,oreType:0}" with lore "<white>Requirement: 1x Iron Block, 1x Blaze Rod", "<white>Adds +1 merge to any Upgraded (baked refine) Iron Dagger(s).", "<light red>Not enough materials to craft."
+			else:
+				set slot 32 of the player's current inventory to 1 barrier named "<light red>Forged Iron Dagger Frame" with nbt "{frameType:5,upgradeTier:1,oreType:0}" with lore "<white>Requirement: 1x Iron Block, 1x Blaze Rod", "<white>Adds +1 merge to any Upgraded (baked refine) Iron Dagger(s).", "<light red>Not enough materials to craft."
+			#Diamond Forged
+			if player has 2 diamond block:
+				if player has 1 blaze rod:
+					set slot 36 of the player's current inventory to 1 wooden sword named "<light blue>Forged Diamond Sword Frame" with nbt "{frameType:0,upgradeTier:1,oreType:2}" with lore "<white>Requirement: 2x Diamond Block, 1x Blaze Rod", "<white>Adds +1 merge to any Upgraded (baked refine) Diamond Sword."
+				else:
+					set slot 36 of the player's current inventory to 1 barrier named "<light red>Forged Diamond Sword Frame" with nbt "{frameType:0,upgradeTier:1,oreType:2}" with lore "<white>Requirement: 2x Diamond Block, 1x Blaze Rod", "<white>Adds +1 merge to any Upgraded (baked refine) Diamond Sword.", "<light red>Not enough materials to craft."
+			else:
+				set slot 36 of the player's current inventory to 1 barrier named "<light red>Forged Diamond Sword Frame" with nbt "{frameType:0,upgradeTier:1,oreType:2}" with lore "<white>Requirement: 2x Diamond Block, 1x Blaze Rod", "<white>Adds +1 merge to any Upgraded (baked refine) Diamond Sword.", "<light red>Not enough materials to craft."
+			if player has 3 diamond block:
+				if player has 2 blaze rod:
+					set slot 37 of the player's current inventory to 1 wooden axe named "<light blue>Forged Diamond Axe Frame" with nbt "{frameType:1,upgradeTier:1,oreType:2}" with lore "<white>Requirement: 3x Diamond Block, 2x Blaze Rod", "<white>Adds +1 merge to any Upgraded (baked refine) Diamond Axe."
+					set slot 38 of the player's current inventory to 1 wooden shovel named "<light blue>Forged Diamond Lance Frame" with nbt "{frameType:2,upgradeTier:1,oreType:2}" with lore "<white>Requirement: 3x Diamond Block, 2x Blaze Rod", "<white>Adds +1 merge to any Upgraded (baked refine) Diamond Lance."
+				else:
+					set slot 37 of the player's current inventory to 1 barrier named "<light red>Forged Diamond Axe Frame" with nbt "{frameType:1,upgradeTier:1,oreType:2}" with lore "<white>Requirement: 3x Diamond Block, 2x Blaze Rod", "<white>Adds +1 merge to any Upgraded (baked refine) Diamond Axe.", "<light red>Not enough materials to craft."
+					set slot 38 of the player's current inventory to 1 barrier named "<light red>Forged Diamond Lance Frame" with nbt "{frameType:2,upgradeTier:1,oreType:2}" with lore "<white>Requirement: 3x Diamond Block, 2x Blaze Rod", "<white>Adds +1 merge to any Upgraded (baked refine) Diamond Lance.", "<light red>Not enough materials to craft."
+			else:
+				set slot 37 of the player's current inventory to 1 barrier named "<light red>Forged Diamond Axe Frame" with nbt "{frameType:1,upgradeTier:1,oreType:2}" with lore "<white>Requirement: 3x Diamond Block, 2x Blaze Rod", "<white>Adds +1 merge to any Upgraded (baked refine) Diamond Axe.", "<light red>Not enough materials to craft."
+				set slot 38 of the player's current inventory to 1 barrier named "<light red>Forged Diamond Lance Frame" with nbt "{frameType:2,upgradeTier:1,oreType:2}" with lore "<white>Requirement: 3x Diamond Block, 2x Blaze Rod", "<white>Adds +1 merge to any Upgraded (baked refine) Diamond Lance.", "<light red>Not enough materials to craft."
+			if player has 3 diamond block:
+				if player has 1 blaze rod:
+					set slot 39 of the player's current inventory to 1 wooden hoe named "<light blue>Forged Diamond Gauntlets Frame" with nbt "{frameType:4,upgradeTier:1,oreType:2}" with lore "<white>Requirement: 3x Diamond Block, 1x Blaze Rod", "<white>Adds +1 merge to any Upgraded (baked refine) Diamond Gauntlets."
+				else:
+					set slot 39 of the player's current inventory to 1 barrier named "<light red>Forged Diamond Gauntlets Frame" with nbt "{frameType:4,upgradeTier:1,oreType:2}" with lore "<white>Requirement: 3x Diamond Block, 1x Blaze Rod", "<white>Adds +1 merge to any Upgraded (baked refine) Diamond Gauntlets.", "<light red>Not enough materials to craft."
+			else:
+				set slot 39 of the player's current inventory to 1 barrier named "<light red>Forged Diamond Gauntlets Frame" with nbt "{frameType:4,upgradeTier:1,oreType:2}" with lore "<white>Requirement: 3x Diamond Block, 1x Blaze Rod", "<white>Adds +1 merge to any Upgraded (baked refine) Diamond Gauntlets.", "<light red>Not enough materials to craft."
+			if player has 1 diamond block:
+				if player has 1 blaze rod:
+					set slot 40 of the player's current inventory to 1 arrow named "<light blue>Forged Diamond Dagger Frame" with nbt "{frameType:5,upgradeTier:1,oreType:2}" with lore "<white>Requirement: 1x Diamond Block, 1x Blaze Rod", "<white>Adds +1 merge to any Upgraded (baked refine) Diamond Dagger(s)."
+				else:
+					set slot 40 of the player's current inventory to 1 barrier named "<light red>Forged Diamond Dagger Frame" with nbt "{frameType:5,upgradeTier:1,oreType:2}" with lore "<white>Requirement: 1x Diamond Block, 1x Blaze Rod", "<white>Adds +1 merge to any Upgraded (baked refine) Diamond Dagger(s).", "<light red>Not enough materials to craft."
+			else:
+				set slot 40 of the player's current inventory to 1 barrier named "<light red>Forged Diamond Dagger Frame" with nbt "{frameType:5,upgradeTier:1,oreType:2}" with lore "<white>Requirement: 1x Diamond Block, 1x Blaze Rod", "<white>Adds +1 merge to any Upgraded (baked refine) Diamond Dagger(s).", "<light red>Not enough materials to craft."
+			#Sacred Treasure
+			if player has 8 obsidian:
+				if player has 1 eye of ender:
+					set slot 45 of the player's current inventory to 1 nether star named "<gold>Mythic Cast" with nbt "{frameType:0,upgradeTier:1,oreType:776}" with lore "<white>Requirement: 8x Obsidian, 1x Eye of Ender", "<white>Upgrades a Diamond +10 evolved weapon even further."
+				else:
+					set slot 45 of the player's current inventory to 1 barrier named "<light red>Mythic Cast" with nbt "{frameType:0,upgradeTier:1,oreType:776}" with lore "<white>Requirement: 8x Obsidian, 1x Eye of Ender", "<white>Upgrades a Diamond +10 evolved weapon even further.", "<light red>Not enough materials to craft."
+			else:
+				set slot 45 of the player's current inventory to 1 barrier named "<light red>Mythic Cast" with nbt "{frameType:0,upgradeTier:1,oreType:776}" with lore "<white>Requirement: 8x Obsidian, 1x Eye of Ender", "<white>Upgrades a Diamond +10 evolved weapon even further.", "<light red>Not enough materials to craft."
+			if player has 4 obsidian:
+				if player has 4 diamond block:
+					set slot 46 of the player's current inventory to 1 wooden sword named "<light blue>Purified Diamond Weapon Frame" with nbt "{frameType:0,upgradeTier:2,oreType:2}" with lore "<white>Requirement: 4x Obsidian, 4x Diamond Block", "<white>Adds +1 merge to any Mythic weapon."
+				else:
+					set slot 46 of the player's current inventory to 1 barrier named "<light red>Purified Diamond Weapon Frame" with nbt "{frameType:0,upgradeTier:2,oreType:2}" with lore "<white>Requirement: 4x Obsidian, 4x Diamond Block", "<white>Adds +1 merge to any Mythic weapon.", "<light red>Not enough materials to craft."
+			else:
+				set slot 46 of the player's current inventory to 1 barrier named "<light red>Purified Diamond Weapon Frame" with nbt "{frameType:0,upgradeTier:2,oreType:2}" with lore "<white>Requirement: 4x Obsidian, 4x Diamond Block", "<white>Adds +1 merge to any Mythic weapon.", "<light red>Not enough materials to craft."
+			set slot 53 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
+		else if arg 1 is 2:
+			open chest inventory with 1 rows named "<gold>Select item to craft..." for the player
+			#Upgrade Ore
+			#Coal to iron
+			if player has 16 coal:
+				set slot 0 of the player's current inventory to 1 iron ingot named "<light blue>Transmute Coal to Iron" with lore "<white>Converts 16 coal into 1 iron ingot.", "<light blue>Click to craft."
+			else:
+				set slot 0 of the player's current inventory to 1 barrier named "<light red>Transmute Coal to Iron" with lore "<white>Converts 16 coal into 1 iron ingot.", "<light red>You don't have enough coal."
+			#iron to gold
+			if player has 9 iron ingot:
+				set slot 1 of the player's current inventory to 1 gold ingot named "<light blue>Transmute Iron to Gold" with lore "<white>Converts 9 iron ingots into 1 gold ingot.", "<light blue>Click to craft."
+			else:
+				set slot 1 of the player's current inventory to 1 barrier named "<light red>Transmute Iron to Gold" with lore "<white>Converts 9 iron ingots into 1 gold ingot.", "<light red>You don't have enough iron ingots."
+			#gold to diamond
+			if player has 16 gold ingot:
+				set slot 2 of the player's current inventory to 1 diamond named "<light blue>Transmute Gold to Diamond" with lore "<white>Converts 16 gold ingots into 1 diamond.", "<light blue>Click to craft."
+			else:
+				set slot 2 of the player's current inventory to 1 barrier named "<light red>Transmute Gold to Diamond" with lore "<white>Converts 16 gold ingots into 1 diamond.", "<light red>You don't have enough gold ingots."
+			#fuel to lapis
+			if player has 1 coal:
+				if player has 2 redstone dust:
+					set slot 3 of the player's current inventory to 1 lapis item named "<light blue>Transmute Fuel to Lapis" with lore "<white>Converts 1x coal and 2x redstone dust to 1 lapis lazuli.", "<light blue>Click to craft."
+				else:
+					set slot 3 of the player's current inventory to 1 barrier named "<light red>Transmute Fuel to Lapis" with lore "<white>Converts 1x coal and 2x redstone dust to 1 lapis lazuli.", "<light red>You don't have enough redstone dust."
+			else:
+				set slot 3 of the player's current inventory to 1 barrier named "<light red>Transmute Fuel to Lapis" with lore "<white>Converts 1x coal and 2x redstone dust to 1 lapis lazuli.", "<light red>You don't have enough coal."
+			#misc to blaze rod
+			if player has 4 coal:
+				if player has 16 netherrack:
+					if player has 4 nether quartz item:
+						set slot 4 of the player's current inventory to 1 blaze rod named "<light blue>Transmute Fuel to Blaze Rod" with lore "<white>Converts 4x coal, 16x netherrack, and 4x quartz into 1 blaze rod.", "<light blue>Click to craft."
+					else:
+						set slot 4 of the player's current inventory to 1 barrier named "<light red>Transmute Fuel to Blaze Rod" with lore "<white>Converts 4x coal, 16x netherrack, and 4x quartz into 1 blaze rod.", "<light red>You don't have enough materials to craft this item."
+				else:
+					set slot 4 of the player's current inventory to 1 barrier named "<light red>Transmute Fuel to Blaze Rod" with lore "<white>Converts 4x coal, 16x netherrack, and 4x quartz into 1 blaze rod.", "<light red>You don't have enough materials to craft this item."
+			else:
+				set slot 4 of the player's current inventory to 1 barrier named "<light red>Transmute Fuel to Blaze Rod" with lore "<white>Converts 4x coal, 16x netherrack, and 4x quartz into 1 blaze rod.", "<light red>You don't have enough materials to craft this item."
+			set slot 8 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
+				
+on inventory click:
+	if the name of the player's current inventory is "<gold>Ore Conversion":
+		#main menu buttons
+		if the name of the clicked item is "<gold>Fabricate Tool Frames":
+			make player execute command "/oreconverter 1"
+		else if the name of the clicked item is "<gold>Transmute Ore":
+			make player execute command "/oreconverter 2"
+	else if the name of the player's current inventory is "<gold>Select item to craft...":
+		cancel event
+		#override for the go back button
+		if the name of the clicked item is "<bold>Go Back":
+			make player execute command "/oreconverter 0"
+		#Transmute Ores
+		else if the name of the clicked item contains "Transmute":
+			if the name of the clicked item is "<light blue>Transmute Coal to Iron":
+				remove 16 coal from the player
+				give 1 iron ingot to the player
+				play sound "block.lava.pop" with volume 1 and pitch 1.2 at the player
+			else if the name of the clicked item is "<light blue>Transmute Iron to Gold":
+				remove 9 iron ingot from the player
+				give 1 gold ingot to the player
+				play sound "block.lava.pop" with volume 1 and pitch 1.2 at the player
+			else if the name of the clicked item is "<light blue>Transmute Gold to Diamond":
+				remove 16 gold ingot from the player
+				give 1 diamond to the player
+				play sound "block.lava.pop" with volume 1 and pitch 1.2 at the player
+			else if the name of the clicked item is "<light blue>Transmute Fuel to Lapis":
+				remove 1 coal from the player
+				remove 2 redstone dust from the player
+				give 1 lapis item to the player
+				play sound "block.lava.pop" with volume 1 and pitch 1.2 at the player
+			else if the name of the clicked item is "<light blue>Transmute Fuel to Blaze Rod":
+				remove 4 coal from the player
+				remove 16 netherrack from the player
+				remove 4 nether quartz item from the player
+				give 1 blaze rod to the player
+				play sound "block.lava.pop" with volume 1 and pitch 1.2 at the player
+			make player execute command "/oreconverter 2"
+		#Create Frames	
+		else if the name of the clicked item contains "<light blue>":
+			if the clicked item is not barrier:
+				#autoconfig item requirements because lazy
+				if the name of the clicked item contains "Tempered":
+					set {_qualityMod} to 1
+				else if the name of the clicked item contains "Forged":
+					set {_qualityMod} to 1
+				if the name of the clicked item contains "Sword":
+					set {_oreCount} to 2
+					set {_rodCount} to 1
+				else if the name of the clicked item contains "Axe":
+					set {_oreCount} to 3
+					set {_rodCount} to 2
+				else if the name of the clicked item contains "Lance":
+					set {_oreCount} to 3
+					set {_rodCount} to 2
+				else if the name of the clicked item contains "Bow":
+					set {_oreCount} to 3
+					set {_rodCount} to 3
+				else if the name of the clicked item contains "Gauntlets":
+					set {_oreCount} to 3
+					set {_rodCount} to 1
+				else if the name of the clicked item contains "Dagger":
+					set {_oreCount} to 1
+					set {_rodCount} to 1
+				else if the name of the clicked item contains "Cast":
+					remove 8 iron ingot from the player
+					remove 1 gold ingot from the player
+					give the clicked item to the player
+					play sound "block.anvil.use" with volume 0.8 and pitch 1 at the player
+				if the name of the clicked item is "<gold>Mythic Cast":
+					remove 8 obsidian from the player
+					remove 1 eye of ender from the player
+					give clicked item to the player
+					play sound "block.anvil.use" with volume 0.8 and pitch 1 at the player
+				else if the name of the clicked item is "<light blue>Purified Diamond Weapon Frame":
+					remove 8 obsidian from the player
+					remove 8 diamond block from the player
+					give clicked item to the player
+					play sound "block.anvil.use" with volume 0.8 and pitch 1 at the player
+				else if the name of the clicked item contains "Iron":
+					loop ({_oreCount} * {_qualityMod}) times:
+						remove 1 iron block from the player
+					loop {_rodCount} times:
+						remove 1 blaze rod from the player
+					give clicked item to the player
+					play sound "block.anvil.use" with volume 0.8 and pitch 1 at the player
+				else if the name of the clicked item contains "Diamond":
+					loop ({_oreCount} * {_qualityMod}) times:
+						remove 1 diamond block from the player
+					loop {_rodCount} times:
+						remove 1 blaze rod from the player
+					give clicked item to the player
+					play sound "block.anvil.use" with volume 0.8 and pitch 1 at the player
+				else if the name of the clicked item contains "Bow":
+					loop ({_oreCount} * {_qualityMod}) times:
+						remove 1 iron block from the player
+					loop {_rodCount} times:
+						remove 1 blaze rod from the player
+					give clicked item to the player
+					play sound "block.anvil.use" with volume 0.8 and pitch 1 at the player
+				make player execute command "/oreconverter 1"

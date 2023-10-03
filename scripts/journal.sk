@@ -1,0 +1,666 @@
+#Opens the Journal menu when right-clicking with it
+on right click with book:
+	if the name of the player's tool is "<gold>Journal":
+		make player execute command "/showJournal 0"
+		
+#Main journal menu
+command /showJournal <number>:
+	trigger:
+		#Playing the button click SFX on menu refresh gives a slight reduction in line count versus calling it on each item click
+		play sound "ui.button.click" with volume 0.25 and pitch 1 at the player for the player
+		#Campaign Quests
+		if arg 1 is 0:
+			open chest inventory with 6 rows named "<gold>Journal: Main Quests" for the player
+			#Prolouge
+			if {quests.%player%::BNW_QUEST_00} is 999:
+				set slot 0 of the player's current inventory to 1 gold block named "<gold>Brave New World" with lore "<white>I've made my rounds at the village's shops,", "<white>and now I'm ready to begin my adventure.", "<white>Kris recommended visiting House Silgrid by following the path out of the village."
+			else if {quests.%player%::BNW_QUEST_00} is 2:
+				set slot 0 of the player's current inventory to 1 lapis block named "<light blue>Brave New World" with lore "<white>Kris seems interested in my plans to move out.", "<white>He recommended visiting the Blacksmith and Trader for supplies", "<white>before heading to House Silgrid."
+			else if {quests.%player%::BNW_QUEST_00} is 1:
+				set slot 0 of the player's current inventory to 1 lapis block named "<light blue>Brave New World" with lore "<white>I've lived in this village for a while,", "<white>and I've decided to go out and see the world.", "<white>I should tell Kris, my neighbor, about my plans before heading out."
+			else:
+				set slot 0 of the player's current inventory to 1 redstone block named "<light red>Brave New World" with lore "<white>Your character is outdated!", "<white>Start a new character to begin the Campaign."
+			
+		#Side Quests
+		else if arg 1 is 1:
+			open chest inventory with 6 rows named "<gold>Journal: Side Quests" for the player
+			set {_uiSlot} to 0
+			loop {radiantQuestsOnOffer.%player%} times:
+				if {radiantQuest.%player%.%loop-value%::Completion} is set:
+					if {radiantQuest.%player%.%loop-value%::Completion} is not 999:
+						if {radiantQuest.%player%.%loop-value%::Type} is 0:
+							set slot {_uiSlot} of the player's current inventory to 1 chest named "<light yellow>Retrieve %{radiantQuest.%player%.%loop-value%::Amount}% %{radiantQuest.%player%.%loop-value%::Target}%." with lore "<white>Reward:", "<white>%{radiantQuest.%player%.%loop-value%::GoldReward}% gold", "<white>%{radiantQuest.%player%.%loop-value%::EXPReward}% EXP"
+						else if {radiantQuest.%player%.%loop-value%::Type} is 1:
+							set slot {_uiSlot} of the player's current inventory to 1 rotten flesh named "<light blue>Hunt %{radiantQuest.%player%.%loop-value%::Amount}% %{radiantQuest.%player%.%loop-value%::Target}%." with lore "<white>Rewards:", "<white>%{radiantQuest.%player%.%loop-value%::GoldReward}% gold", "<white>%{radiantQuest.%player%.%loop-value%::EXPReward}% EXP", "<light blue>Progress: %{radiantQuest.%player%.%loop-value%::Completion} - 1% targets slain."
+						add 1 to {_uiSlot}
+		#Party Management
+		else if arg 1 is 2:
+			open chest inventory with 6 rows named "<gold>Journal: Party Management" for the player
+			#Only display the "Join a Party!" button if the player isn't in a party
+			if {party.%player%} is not set:
+				set slot 22 of the player's current inventory to 1 chest named "<light yellow>Join a Party!" with lore "<white>Click here to join a Party.", "<white>Parties allow players to become allies, enabling various skills and providing other benefits.", "<white>Players in a party can even remotely share items and XP with each other!"
+			#Party options
+			else:
+				#Expose admin options to party leaders
+				if {%{party.%player%}%.settings::Owner} is the player:
+					set slot 0 of the player's current inventory to 1 chest named "<light yellow>Toggle XP Share" with lore "<white>While enabled, if a party member gains class XP from combat,", "<white>all online party members gain a percentage of that class XP.", "<white>XP Share Enabled?: %{%{party.%player%}%.settings::allowXPShare}%"
+					set slot 1 of the player's current inventory to 1 paper named "<light yellow>Toggle Public Party" with lore "<white>If disabled, requires players to be sent an invite from a party member to join the party.", "<white>Public Party?: %{%{party.%player%}%.settings::isPublic}%"
+					set slot 2 of the player's current inventory to 1 iron boots named "<light yellow>Kick Member" with lore "<white>Remove a player from your party."
+					set slot 3 of the player's current inventory to 1 nether star named "<light yellow>Set Base Location" with lore "<white>Sets your party's base to your current position.", "<white>Members can teleport to this base at any time, free of charge.", "<white>Current Location: %{%{party.%player%}%.settings::BaseLocation}%"
+					set slot 8 of the player's current inventory to 1 barrier named "<light red>Disband Party" with lore "<white>Disbands the current party, removing all players."
+				set slot 21 of the player's current inventory to 1 book named "<light yellow>Party Members" with lore "<white>View the members of your party.", "<white>You can even send friend requests from here!"
+				set slot 22 of the player's current inventory to 1 chest named "<light yellow>Party Storage" with lore "<white>Opens your party's shared storage chest."
+				set slot 23 of the player's current inventory to 1 nether star named "<light yellow>Withdraw BEX" with lore "<white>Give yourself Class XP by withdrawing from the party's Bonus EXP storage."
+				set slot 24 of the player's current inventory to 1 ender pearl named "<light yellow>Warp to Party Base" with lore "<white>Teleport to your party's set base."
+				set slot 40 of the player's current inventory to 1 barrier named "<light red>Leave Party" with lore "<white>Leaves your current party."
+		#Join a Party screen
+		else if arg 1 is 3:
+			open chest inventory with 6 rows named "<gold>Journal: Party List" for the player
+			set {_guiSlot} to 0
+			loop {masterPartyList::*}:
+				set {_numberOfMembers} to getTotalPartyMembers(loop-value)
+				if {%loop-value%.settings::isPublic} is true:
+					set slot {_guiSlot} of the player's current inventory to 1 chest named "<light yellow>%loop-value%" with lore "<white>Leader: %{%loop-value%.settings::Owner}%", "<white>Members: %{_numberOfMembers}%", "<white>Synergy: %{%loop-value%.settings::Synergy}%"
+				else:
+					set slot {_guiSlot} of the player's current inventory to 1 ender chest named "<orange>%loop-value%" with lore "<white>Leader: %{%loop-value%.settings::Owner}%", "<white>Members: %{_numberOfMembers}%", "<white>Synergy: %{%loop-value%.settings::Synergy}%", "<white>You need an invite to join this party.", "<white>Click this icon to request an invite, or join if you already have one."
+				add 1 to {_slot}
+		#Party members list
+		else if arg 1 is 4:
+			open chest inventory with 6 rows named "<gold>Journal: Party Members" for the player
+			set {_guiSlot} to 0
+			loop {%{party.%player%}%.members::*}:
+				set {_player} to loop-value
+				if {friendsList.%player%::*} contains {_player}:
+					set slot {_guiSlot} of the player's current inventory to 1 diamond named "<light green>%loop-value's tablist name%" with lore "<white>This player is on your friends list!"
+				else if {_player} is the player:
+					set slot {_guiSlot} of the player's current inventory to 1 gold ingot named "<gold>%loop-value's tablist name%" with lore "<white>This is you!"
+				else:
+					set slot {_guiSlot} of the player's current inventory to 1 iron ingot named "<light yellow>%loop-value's tablist name%" with lore "<white>This player is not on your friends list."
+				add 1 to {_guiSlot}
+		#Abilities
+		else if arg 1 is 5:
+			open chest inventory with 6 rows named "<gold>Journal: Abilities" for the player
+			set slot 0 of the player's current inventory to 1 book named "<white>Help:" with lore "<white>This is a list of your character's Abilities.", "<white>Hover your mouse over an Ability's icon for more information on it.", "<white>If you have Ability Points to spend, click on an ability to add a point to it.", "<white>A Proficient Ability will increase by +2 each time your character levels up.", "<white>Proficient Abilities: %{abilityProficiencies.%player%::1}%, %{abilityProficiencies.%player%::2}%"
+			set slot 1 of the player's current inventory to 1 chest named "<gold>Ability Points" with lore "<white>Ability Points to spend: %{abilityPoints.%player%}%"
+			set slot 9 of the player's current inventory to 1 iron sword named "<light yellow>Traditional Weapons" with lore "<white>How well you can wield physical weapons.", "<white>More complicated weapons require a higher Tradtional Weapons value to wield without a penalty.", "<white>This Ability affects your Combat with the following weapon types:", "<white>- Swords", "<white>- Lances", "<white>- Axes", "<white>- Bows", "<white>- Daggers", "<white>- Gauntlets", "<light blue>Current Level: %{abilities.%player%::Traditional Weapons}%"
+			set slot 10 of the player's current inventory to 1 book of power 1 named "<light yellow>Magical Weapons" with lore "<white>How well you can use magical weapons.", "<white>More complicated tomes and spells require a higher Magical Weapons value to cast without a penalty.", "<white>This Ability affects your Combat with the following weapon types:", "<white>- Wands", "<white>- Tomes", "<white>- Staves", "<light blue>Current Level: %{abilities.%player%::Magical Weapons}%"
+			set slot 11 of the player's current inventory to 1 iron horse armor named "<light yellow>Guns" with lore "<white>How well you can use various firearms.", "<white>More powerful firearms require a higher Guns value to wield without a penalty.", "<white>This Ability affects your Combat with the following weapon types:", "<white>- Pistols", "<white>- Shotguns", "<white>- Rifles", "<white>- Grenades", "<light blue>Current Level: %{abilities.%player%::Guns}%"
+			set slot 12 of the player's current inventory to 1 tripwire hook named "<light yellow>Lockpicking" with lore "<white>How well you can open doors and chests without a key.", "<white>A high Lockpicking value can open hard-to-pick doors and chests.", "<light blue>Current Level: %{abilities.%player%::Lockpicking}%"
+			set slot 13 of the player's current inventory to 1 green dye named "<light yellow>Medicine" with lore "<white>How well you can utilize various potions and medicines.", "<white>A high Medicine value increases the healing factor of potions, herbs, and healing staves.", "<white>It also allows you to create stronger potions at a Brewing Stand.", "<light blue>Current Level: %{abilities.%player%::Medicine}%"
+			set slot 14 of the player's current inventory to 1 anvil named "<light yellow>Repair" with lore "<white>How well you can maintain your equipment out in the field.", "<white>A high Repair value makes equipment lose less durability, and makes it easier to repair damaged equipment.", "<light blue>Current Level: %{abilities.%player%::Repair}%"
+			set slot 15 of the player's current inventory to 1 iron axe named "<light yellow>Fabrication" with lore "<white>How well you can apply physical upgrades to equipment.", "<white>A high Fabrication value unlocks more Tool Skills to apply to items.", "<white>It also allows you to forge new tiers of equipment.", "<light blue>Current Level: %{abilities.%player%::Fabrication}%"
+			set slot 16 of the player's current inventory to 1 enchanting table named "<light yellow>Enchanting" with lore "<white>How well you can apply enchantments and other magical upgrades to equipment.", "<white>A high Enchanting value unlocks new Spells to apply to items.", "<white>It also allows you to upgrade enchanted equipment beyond their natural limits.", "<light blue>Current Level: %{abilities.%player%::Enchanting}%"
+			set slot 17 of the player's current inventory to 1 emerald item named "<light yellow>Speech" with lore "<white>How well you can influence others to help you.", "<white>A high Speech skill makes it easier to persuade others and build relationships quickly.", "<light blue>Current Level: %{abilities.%player%::Speech}%"
+			set slot 18 of the player's current inventory to 1 gold ingot named "<light yellow>Barter" with lore "<white>How well you can haggle with merchants and make under-the-table deals.", "<white>A high Barter skill lowers shop prices and allows you to bribe others.", "<light blue>Current Level: %{abilities.%player%::Barter}%"
+			set slot 19 of the player's current inventory to 1 cooked pork named "<light yellow>Survival" with lore "<white>How well you can survive out in the field.", "<white>A high Survival skill makes hunger deplete more slowly, and can occasionally produce extra items when breaking blocks.", "<light blue>Current Level: %{abilities.%player%::Survival}%"			
+			if {lvl.%player%} is {lvlcap.%player%}:
+				set slot 31 of the player's current inventory to 1 nether star named "<gold><bold>Promote Class" with lore "<white>Promote to a new, higher-tiered class of your choosing."
+		#Friends List
+		else if arg 1 is 6:
+			open chest inventory with 6 rows named "<gold>Journal: Friends List" for the player
+			set {_guiSlot} to 0
+			loop {friendsList.%player%::*}:
+				if loop-index is not "TotalFriends":
+					set {_player} to loop-value parsed as player
+					#Don't show an icon if the loop-value is somehow the player character
+					if loop-value is not the player:
+						if loop-value is online:
+							set slot {_guiSlot} of the player's current inventory to 1 diamond named "<light green>%loop-value%" with lore "<light blue>Playing As: %loop-value's tablist name%", "<white>Location: %location of block at loop-value%", "<white>Class Level: %{lvl.%loop-value%}%"
+						else:
+							set slot {_guiSlot} of the player's current inventory to 1 diamond named "<light red>%loop-value%" with lore "<light blue>Playing As Previously: %loop-value's tablist name%", "<white>This player is offline."
+					add 1 to {_guiSlot}
+		#Friends List - Manage Friends
+		else if arg 1 is 7:
+			open chest inventory with 6 rows named "<gold>Journal: Manage Friend" for the player
+			set slot 21 of the player's current inventory to 1 paper named "<light yellow>Send Private Message" with lore "<white>Click to send a private message to this friend."
+			set slot 22 of the player's current inventory to 1 nether star named "<light yellow>Request Teleport" with lore "<white>Asks this friend to teleport you to them."
+			set slot 23 of the player's current inventory to 1 nether star named "<light yellow>Request Teleport Here" with lore "<white>Asks this friend to teleport to you."
+			set slot 8 of the player's current inventory to 1 barrier named "<light red>Remove Friend" with lore "<white>Removes this friend from your friends list."
+		#Settings
+		else if arg 1 is 8:
+			open chest inventory with 6 rows named "<gold>Journal: Settings" for the player
+			set slot 0 of the player's current inventory to 1 book named "<white>Help:" with lore "<white>Adjust various gameplay settings here.", "<white>These settings will be saved to this character."
+			#Dodge Roll
+			if {drEnable.%player%} is true:
+				set slot 1 of the player's current inventory to 1 emerald block named "<light green>Dodge Roll" with lore "<white>Dodge Rolling allows you to evade damage at the cost of hunger.", "<white>Double-tap your Sneak key to perform one.", "<white>It is recommended to enable this setting.", "<white>This setting can be changed during gameplay with /dr.", "<light blue>This setting is currently enabled."
+			else:
+				set slot 1 of the player's current inventory to 1 stone named "<gray>Dodge Roll" with lore "<white>Dodge Rolling allows you to evade damage at the cost of hunger.", "<white>Double-tap your Sneak key to perform one.", "<white>It is recommended to enable this setting.", "<light red>This setting is currently disabled."
+			#Low Performance Modes
+			if {lowPerformanceMode.%player%} is true:
+				set slot 2 of the player's current inventory to 1 emerald block named "<light green>Low Performance Mode" with lore "<white>This setting disables certain graphical effects to", "<white>prevent crashses on slower systems.", "<white>Enable this setting if your system struggles to run the vanilla game.", "<light blue>This setting is currently enabled."
+			else:
+				set slot 2 of the player's current inventory to 1 stone named "<gray>Low Performance Mode" with lore "<white>This setting disables certain graphical effects to", "<white>prevent crashses on slower systems.", "<white>Enable this setting if your system struggles to run the vanilla game.", "<light red>This setting is currently disabled."
+			#Character Quotes
+			if {quotesToggle.%player%} is true:
+				set slot 3 of the player's current inventory to 1 emerald block named "<light green>Character Quotes" with lore "<white>Toggles visibility of character quotes during gameplay.", "<white>If enabled, configure your character's quotes with /quotes.", "<white>This setting can be changed during gameplay with /quotes.", "<light green>This setting is currently enabled."
+			else:
+				set slot 3 of the player's current inventory to 1 stone named "<gray>Character Quotes" with lore "<white>Toggles visibility of character quotes during gameplay.", "<white>If enabled, configure your character's quotes with /quotes.", "<white>This setting can be changed during gameplay with /quotes.", "<light red>This setting is currently disabled."
+			#Autosave
+			if {autosave.%player%} is set:
+				set slot 4 of the player's current inventory to 1 emerald block named "<light green>Autosave" with lore "<white>Toggles automatic saves for this character.", "<white>Configure autosaves using the /autosave command.", "<light green>This setting is currently enabled."
+			else:
+				set slot 4 of the player's current inventory to 1 stone named "<gray>Autosave" with lore "<white>Toggles automatic saves for this character.", "<white>Configure autosaves using the /autosave command.", "<light red>This setting is currently disabled."
+			#Jump Inertia
+			if {jumpInertiaToggle.%player%} is true:
+				set slot 5 of the player's current inventory to 1 emerald block named "<light green>Jump Inertia" with lore "<white>Adjust jumping behavior to more naturally transfer speed.", "<white>Jumps will more effectively transfer momentum to the air, and you can build up speed with well-timed jumps.", "<white>It is recommended to enable this setting.", "<white>This setting can be changed during gameplay with /moveSettings.", "<light green>This setting is currently enabled."
+			else:
+				set slot 5 of the player's current inventory to 1 stone named "<gray>Jump Inertia" with lore "<white>Adjust jumping behavior to more naturally transfer speed.", "<white>Jumps will more effectively transfer momentum to the air, and you can build up speed with well-timed jumps.", "<white>It is recommended to enable this setting.", "<white>This setting can be changed during gameplay with /moveSettings.", "<light red>This setting is currently disabled."
+			#Sliding
+			if {slidingToggle.%player%} is true:
+				set slot 6 of the player's current inventory to 1 emerald block named "<light green>Sliding" with lore "<white>Toggles use of the Slide technique.", "<white>By crouching just before landing on the ground, you can slide to pass under 1 block tall gaps.", "<white>This setting can be changed during gameplay with /moveSettings.", "<light green>This setting is currently enabled."
+			else:
+				set slot 6 of the player's current inventory to 1 stone named "<gray>Sliding" with lore "<white>Toggles use of the Slide technique.", "<white>By crouching just before landing on the ground, you can slide to pass under 1 block tall gaps.", "<white>This setting can be changed during gameplay with /moveSettings.", "<light red>This setting is currently disabled."
+			#Air Hang
+			if {airHangToggle.%player%} is true:
+				set slot 7 of the player's current inventory to 1 emerald block named "<light green>Air Hang" with lore "<white>Toggles use of the Air Hang technique.", "<white>Attack in the air with any weapon to briefly delay your fall.", "<white>This setting can be changed during gameplay with /moveSettings.", "<light green>This setting is currently enabled."
+			else:
+				set slot 7 of the player's current inventory to 1 stone named "<gray>Air Hang" with lore "<white>Toggles use of the Air Hang technique.", "<white>Attack in the air with any weapon to briefly delay your fall.", "<white>This setting can be changed during gameplay with /moveSettings.", "<light red>This setting is currently disabled."
+			#Hints
+			if {hintsToggle.%player%} is true:
+				set slot 8 of the player's current inventory to 1 emerald block named "<light green>Hints" with lore "<white>Toggles periodic hints to aid gameplay.", "<white>This setting can be changed during gameplay with /hints.", "<light green>This setting is currently enabled."
+			else:
+				set slot 8 of the player's current inventory to 1 stone named "<gray>Hints" with lore "<white>Toggles periodic hints to aid gameplay.", "<white>This setting can be changed during gameplay with /hints.", "<light red>This setting is currently disabled."
+			#Damage Assist
+			if {damageAssistToggle.%player%} is true:
+				set slot 9 of the player's current inventory to 1 emerald block named "<light green>Damage Assist" with lore "<white>Toggles on Damage Assist.", "<white>Damage Assist adds two mechanics designed to aid players when they take lethal damage.", "<white>Instant-Kill Prevention enables you to survive any attack as long as you are above 1/2 heart when it connects.", "<white>Bleedout takes effect if you are killed during combat.", "<white>Instead of dying, you may be revived by an ally within 15 seconds of going down.", "<white>It is recommended to enable this setting.", "<light green>This setting is currently enabled."
+			else:
+				set slot 9 of the player's current inventory to 1 stone named "<gray>Damage Assist" with lore "<white>Toggles on Damage Assist.", "<white>Damage Assist adds two mechanics designed to aid players when they take lethal damage.", "<white>Instant-Kill Prevention enables you to survive any attack as long as you are above 1/2 heart when it connects.", "<white>Bleedout takes effect if you are killed during combat.", "<white>Instead of dying, you may be revived by an ally within 15 seconds of going down.", "<white>It is recommended to enable this setting.", "<light red>This setting is currently disabled."
+			#Combat Log
+			if {verboseCombatLogging.%player%} is true:
+				set slot 10 of the player's current inventory to 1 emerald block named "<light green>Verbose Combat Log" with lore "<white>Reports extra combat data to the chat.", "<white>This option will display both attacker and foe's in-combat bonuses and special chances.", "<light green>This setting is currently enabled."
+			else:
+				set slot 10 of the player's current inventory to 1 stone named "<gray>Verbose Combat Log" with lore "<white>Reports extra combat data to the chat.", "<white>This option will display both attacker and foe's in-combat bonuses and special chances.", "<light red>This setting is currently disabled."
+			#Global Chat
+			if {useGlobalChat.%player%} is true:
+				set slot 11 of the player's current inventory to 1 emerald block named "<light green>Global Chat" with lore "<white>Makes chat messages you send appear to everyone connected to the server.", "<white>If disabled, only players within 200 blocks can read messages you send.", "<light green>This setting is currently enabled."
+			else:
+				set slot 11 of the player's current inventory to 1 stone named "<gray>Global Chat" with lore "<white>Makes chat messages you send appear to everyone connected to the server.", "<white>If disabled, only players within 200 blocks can read messages you send.", "<light red>This setting is currently disabled."
+			#Hardcore Mode
+			if {realism.%player%} is 1:
+				set slot 12 of the player's current inventory to 1 emerald block named "<light green>Hardcore Mode" with lore "<white>Introduces several new mechanics to make survival more difficult.", "<white>Thirst, sleep, and extreme temperatures are all now a threat to your survival.", "<light green>This setting is currently enabled."
+			else:
+				set slot 12 of the player's current inventory to 1 stone named "<gray>Hardcore Mode" with lore "<white>Introduces several new mechanics to make survival more difficult.", "<white>Thirst, sleep, and extreme temperatures are all now a threat to your survival.", "<light red>This setting is currently disabled."
+			#Permadeath Mode
+			if {permadeath.%player%} is true:
+				set slot 13 of the player's current inventory to 1 emerald block named "<light green>Permadeath Mode" with lore "<white>Once your character dies, they're gone forever!", "<white>With no second chances, every decision you make counts.", "<light green>This setting is currently enabled."
+			else:
+				set slot 13 of the player's current inventory to 1 stone named "<gray>Permadeath Mode" with lore "<white>Once your character dies, they're gone forever!", "<white>With no second chances, every decision you make counts.", "<light red>This setting is currently disabled."
+			#Item Loss
+			if {playerdifficulty.%player%} is more than or equal to 4:
+				set slot 14 of the player's current inventory to 1 barrier named "<light red>Item Loss" with lore "<white>Lose a random selection of items on death.", "<light red>This setting is forcefully enabled by your difficulty setting."
+			else if {useItemLoss.%player%} is true:
+				set slot 14 of the player's current inventory to 1 emerald block named "<light green>Item Loss" with lore "<white>Lose a random selection of items on death.", "<light green>This setting is currently enabled."
+			else:
+				set slot 14 of the player's current inventory to 1 stone named "<gray>Item Loss" with lore "<white>Lose a random selection of items on death.", "<light red>This setting is currently disabled."
+			#Helm Splitter
+			if {enableHelmSplitter.%player%} is true:
+				set slot 15 of the player's current inventory to 1 emerald block named "<light green>Helm Splitter" with lore "<white>Hold SNEAK and attack an enemy in mid-air", "<white>to deal extra damage and force both parties to the ground.", "<light green>This setting is currently enabled."
+			else:
+				set slot 15 of the player's current inventory to 1 stone named "<gray>Helm Splitter" with lore "<white>Hold SNEAK and attack an enemy in mid-air", "<white>to deal extra damage and force both parties to the ground.", "<light red>This setting is currently disabled."
+			#CoS Legacy Save
+			if {legacy_name.%player%} is set:
+				if {disableLegacyBonus.%player%} is not set:
+					set slot 16 of the player's current inventory to 1 diamond block named "<cyan>CoS Legacy save detected!" with lore "<white>You will recieve a small bonus for having played CoS Legacy.", "<white>If you wish, you can click this icon to disable the bonus."
+				else:
+					set slot 16 of the player's current inventory to 1 obsidian named "<gray>CoS Legacy save detected!" with lore "<white>You have disabled the CoS Legacy bonus.", "<white>If you wish, you can click this icon to enable the bonus."
+			else:
+				set slot 16 of the player's current inventory to 1 redstone block named "<gray>CoS Legacy Bonus" with lore "<white>Those who played CoS Legacy before 11/30/20 will recieve a bonus on all new characters made."			
+			#Difficulty
+			set slot 16 of the player's current inventory to 1 eye of ender named "<light green>Change Difficulty" with lore "<white>Change difficulty modes here.", "<white>Current difficulty: +%{playerDifficulty.%player%}%"
+		#Save/Load options
+		else if arg 1 is 9:
+			open chest inventory with 6 rows named "<gold>Journal: Save/Load" for the player
+			if {permadeath.%player%} is true:
+				set slot 21 of the player's current inventory to 1 barrier named "<light red>Cannot Save Game!" with lore "<white>This character has Permadeath enabled.", "<white>It cannot be saved."
+			else:
+				set slot 21 of the player's current inventory to 1 red bed named "<light yellow>Save Game" with lore "<white>Save your progress."
+			set slot 23 of the player's current inventory to 1 chest named "<light yellow>Load Saved Game" with lore "<white>Resume from a saved game."
+			set slot 8 of the player's current inventory to 1 barrier named "<light red>Delete Saved Game" with lore "<white>Delete a saved game."
+			set slot 6 of the player's current inventory to 1 book named "<light red>Start New Game" with lore "<white>Starts a new game."
+		#Save Slots list
+		else if arg 1 is 10:
+			open chest inventory with 6 rows named "<gold>Journal: Select a Save Slot" for the player
+			set {_guiSlot} to 0
+			loop 45 times:
+				if {sslot%{_guiSlot}%.%player%::name} is not set:
+					set slot {_guiSlot} of the player's current inventory to 1 chest named "<light yellow>Slot %{_guiSlot} +1%: Empty" with lore "<white>This save slot is empty."
+				else:
+					set slot {_guiSlot} of the player's current inventory to 1 ender chest named "<light yellow>Slot %{_guiSlot} + 1%: %{sslot%{_guiSlot}%.%player%::name}%" with lore "<white>%{sslot%{_guiSlot}%.%player%::name}%, the level %{sslot%{_guiSlot}%.%player%::lvl}% %{sslot%{_guiSlot}%.%player%::class}%"
+				add 1 to {_guiSlot}
+		#Destinations list
+		else if arg 1 is 11:
+			open chest inventory with 6 rows named "<gold>Journal: Manage Destinations" for the player
+			set {_invSlots} to 0
+			loop {carriageDestinations.%player%::*}:
+				set slot {_invSlots} of the player's current inventory to 1 ender pearl named "<light green>%loop-index%" with lore "<white>Coordinates:", "%loop-value%", "<white>Click to overwrite this Destination."
+				add 1 to {_invSlots}
+			if {_invSlots} is not 45:
+				set {_loopCount} to 45 - {_invSlots}
+				loop {_loopCount} times:
+					set slot {_invSlots} of the player's current inventory to 1 ender chest named "<light red>Empty Destination" with lore "<white>Click to save your current locaiton as a carriage destination."
+					add 1 to {_invSlots}
+		#Difficulty
+		else if arg 1 is 12:
+			open chest inventory with 6 rows named "<gold>Journal: Change Difficulty" for the player
+			set slot 0 of the player's current inventory to 1 book named "<gold>Difficulty Modes" with lore "<white>Change how difficult your character's journey will be.", "<white>This will tweak damage dealt,", "<white>and how aggressively monsters level-up their stats.", "<light red>NOTE: Difficulties above HARD force the", "<light red>Item Loss setting to ON.", "<white>Difficulty determine how much EXP and Gold you earn from combat."
+			set slot 1 of the player's current inventory to 1 wooden sword named "<light green>Relaxed" with lore "<white>A laid-back mode for casual play.", "<white><bold>Damage dealt increased by 1.5x.", "<white><bold>Damage received reduced by 0.5x."
+			set slot 2 of the player's current inventory to 1 stone sword named "<light gray>Normal" with lore "<white>The default difficulty. Not too challenging, but not a cakewalk either."
+			set slot 3 of the player's current inventory to 1 iron sword named "<gray>Hard" with lore "<white>Recommended for players familiar with CoS.", "<white><bold>Damage received increased by 25%%.", "<gold>Bonus EXP and Gold will be earned!"
+			set slot 4 of the player's current inventory to 1 gold sword named "<red>Lunatic" with lore "<white>Recommended for players who enjoy a challenge.", "<white><bold>Damage dealt decreased by 25%%.", "<white><bold>Damage received increased by 25%%.", "<gold>Bonus EXP and Gold will be earned!"
+			set slot 5 of the player's current inventory to 1 diamond sword named "<purple>Infernal" with lore "<white>Players seeking a strong tactical challenge will enjoy this mode.", "<white><bold>Damage dealt decreased by 50%%.", "<white><bold>Damage received increased by 50%%.", "<gold>Bonus EXP and Gold will be earned!"
+			set slot 6 of the player's current inventory to 1 diamond sword of sharpness 1 named "<blue>Abyssal" with lore "<white>Recommended only for veterans of CoS Legacy.", "<white><bold>Damage dealt decreased by 50%%.", "<white><bold>Damage recieved increased to 2.0x.", "<gold>Bonus EXP and Gold will be earned!"
+			set slot 7 of the player's current inventory to 1 gold sword of fortune 3 named "<light yellow>Critical" with lore "<white>A thrilling mode where friend and foe alike deal increased damage.", "<white><bold>Damage dealt increased by 50%%.", "<white><bold>Damage recieved increased to 2.0x.", "<gold>Bonus EXP and Gold will be earned!"
+			set slot 8 of the player's current inventory to 1 diamond sword of sharpness 5 named "<gold>Legendary" with lore "<white>Only the strongest will survive this life-or-death mode!", "<white><bold>Damage dealt decreased by 50%%.", "<white><bold>Damage recieved increased to 2.25x.", "<gold>Bonus EXP and Gold will be earned!"
+			if {hasClearedCampaign.%player%} is true:
+				set slot 9 of the player's current inventory to 1 gold sword of sharpness 10 named "<gold>%player's tablist name% Must Die" with lore "<white>A true challenge for only the best of the best.", "<white><bold>Damage dealt decreased by 50%%.", "<white><bold>Damage recieved increased to 3.0x.", "<gold>Bonus EXP and Gold will be earned!"
+		#Global Buttons (These are last in the load order since they'll get overwritten when a new chest GUI is opened if they're at the top)
+		set slot 45 of the player's current inventory to 1 book named "<gold>Quest Log - Campaign" with lore "<white>View your campaign progress here."
+		set slot 46 of the player's current inventory to 1 book named "<gold>Quest Log - Side Quests" with lore "<white>View your progress on various side quests here."
+		set slot 47 of the player's current inventory to 1 iron chestplate named "<gold>Party" with lore "<white>Join a Party, or manage the one you're currently in, here."
+		set slot 48 of the player's current inventory to 1 iron axe named "<gold>View/Upgrade Abilities" with lore "<white>View your Abilities and spend any accrued ability points here."
+		set slot 49 of the player's current inventory to 1 chest named "<gold>Change Perk Loadout" with lore "<white>Equip various perks to your character here."
+		set slot 50 of the player's current inventory to 1 ender pearl named "<gold>Manage Destinations" with lore "<white>Manage customized carriage destinations here."
+		set slot 51 of the player's current inventory to 1 poppy named "<gold>Friends" with lore "<white>Manage and interact with the players on your friends list here."
+		set slot 52 of the player's current inventory to 1 iron pickaxe named "<gold>Settings" with lore "<white>Tweak various CoS settings here."
+		set slot 53 of the player's current inventory to 1 red bed named "<gold>Save/Load" with lore "<white>Save your current character or load a different one here."
+		#set slot 53 of the player's current inventory to 1 red glass pane named "<bold>Close Journal" with lore "<white>Close your journal and return to your adventure."		
+
+#Journal GUI Button Logic
+on inventory click:
+	#Check to see if player is in the journal GUI
+	if the name of the player's current inventory contains "<gold>Journal":
+		cancel event
+		#Global Buttons
+		if the name of the clicked item is "<gold>Quest Log - Campaign":
+			make player execute command "/showJournal 0"
+		else if the name of the clicked item is "<gold>Quest Log - Side Quests":
+			make player execute command "/showJournal 1"
+		else if the name of the clicked item is "<gold>Party":
+			make player execute command "/showJournal 2"
+		else if the name of the clicked item is "<gold>View/Upgrade Abilities":
+			make player execute command "/showJournal 5"
+		else if the name of the clicked item is "<gold>Change Perk Loadout":
+			close the player's inventory
+			make player execute command "/perks 1"
+		else if the name of the clicked item is "<gold>Friends":
+			make player execute command "/showJournal 6"
+		else if the name of the clicked item is "<gold>Settings":
+			make player execute command "/showJournal 8"
+		else if the name of the clicked item is "<gold>Save/Load":
+			make player execute command "/showJournal 9"
+		else if the name of the clicked item is "<gold>Manage Destinations":
+			make player execute command "/showJournal 11"
+		else if the name of the clicked item is "<bold>Close Journal":
+			close the player's inventory
+		#Party Management buttons
+		if the name of the player's current inventory is "<gold>Journal: Party Management":
+			if the name of the clicked item is "<light yellow>Join a Party!":
+				make player execute command "/showJournal 3"
+			else if the name of the clicked item is "<light yellow>Toggle XP Share":
+				if {%{party.%player%}%.settings::allowXPShare} is true:
+					set {%{party.%player%}%.settings::allowXPShare} to false
+				else:
+					set {%{party.%player%}%.settings::allowXPShare} to true
+				make player execute command "/showJournal 2"
+			else if the name of the clicked item is "<light yellow>Toggle Public Party":
+				if {%{party.%player%}%.settings::isPublic} is false:
+					set {%{party.%player%}%.settings::isPublic} to true
+				else:
+					set {%{party.%player%}%.settings::isPublic} to false
+				make player execute command "/showJournal 2"
+			else if the name of the clicked item is "<light yellow>Kick Member":
+				set {partyMemberListAction.%player%} to "Kick"
+				make player execute command "/showJournal 4"
+			else if the name of the clicked item is "<light yellow>Set Base Location":
+				set {%{party.%player%}%.settings::BaseLocation} to location of block at the player
+				make player execute command "/showJournal 2"
+			else if the name of the clicked item is "<light red>Disband Party":
+				make player execute command "/party disband %{party.%player%}%"
+				make player execute command "/showJournal 2"
+			else if the name of the clicked item is "<light yellow>Party Members":
+				set {partyMemberListAction.%player%} to "View"
+				make player execute command "/showJournal 4"
+			else if the name of the clicked item is "<light yellow>Party Storage":
+				make player execute command "/party openStorage"
+			else if the name of the clicked item is "<light yellow>Warp to Party Base":
+				teleport the player to {%{party.%player%}%.settings::BaseLocation}
+			else if the name of the clicked item is "<light red>Leave Party":
+				make player execute command "/party leave %{party.%player%}%"
+				make player execute command "/showJournal 2"
+		#Party Member List behavior
+		else if the name of the player's current inventory is "<gold>Journal: Party Members":
+			if the 1st line of the lore of the clicked item contains "This":
+				set {_player} to decolorize(name of the clicked item)
+				set {_player} to {_player} parsed as player
+				#Prevent player from kicking/friending themselves
+				if {_player} is not the player:
+					if {partyMemberListAction.%player%} is "Kick":
+						set {_player} to decolorize(name of the clicked item)
+						make player execute command "/party kick %{_player}%"
+					else if {partyMemberListAction.%player%} is "View":
+						if the clicked item is iron ingot:
+							make player execute command "/friends add %{_player}%"
+		#Abilities point adding behavior
+		else if the name of the player's current inventory is "<gold>Journal: Abilities":
+			if the 1st line of the lore of the clicked item contains "How well":
+				if {abilityPoints.%player%} is more than 0:
+					set {_ability} to decolorize(name of the clicked item)
+					add 1 to {abilities.%player%::%{_ability}%}
+					#Inference perk bonus
+					if checkSlots(player,"Inference") is 1:
+						if {_ability} is "Traditional Weapons":
+							add 1 to {abilities.%player%::Magical Weapons}
+						else if {_ability} is "Magical Weapons":
+							add 1 to {abilities.%player%::Traditional Weapons}
+					subtract 1 from {abilityPoints.%player%}
+					make player execute command "/showJournal 5"
+			else if the name of the clicked item contains "Promote":
+				close the player's inventory
+				if {promoted.%player%} is 1:
+					set {promotionready.%player%} to 1
+					send formatted "<gold>You may now promote your current character. Please select the method:"
+					send formatted "<run command:/class branchpromote tmp><gold>1 - Select New Class, Then Promote"
+					send formatted "<run command:/class promote %{class.%player%}%1><gold>2 - Promote With Current Class"
+				else if {promoted.%player%} is 2:
+					set {promotionready.%player%} to 1
+					send formatted "<gold>You may now promote your current character. Please select the method:"
+					send formatted "<run command:/class branchpromote tmp><gold>1 - Select New Class, Then Promote"
+					send formatted "<run command:/class promote %{class.%player%}%><gold>Promote With Current Class."
+				else if {promoted.%player%} is more than 2:
+					set {promotionready.%player%} to 1
+					if {class.%player%} is "Prince":
+						send formatted "<run command:/class promote Prince><gold>You may now promote into a higher-tier version of your current class. Please click here to confirm promotion."
+					else:
+						send formatted "<gold>You may now Overclass your current character. Please select the method:"
+						send formatted "<run command:/class branchpromote tmp><gold>1 - Select New Class, Then Overclass"
+						send formatted "<run command:/class promote Overclass><gold>Overclass With Current Class."				
+		#Friends List behavior
+		else if the name of the player's current inventory is "<gold>Journal: Friends List":
+			if the 1st line of the lore of the clicked item contains "<light blue>Playing As:":
+				set {_player} to decolorize(name of the clicked item)
+				set {friendsListManageTarget.%player%} to {_player} parsed as player
+				make player execute command "/showJournal 7"
+		#Manage Friend behavior
+		else if the name of the player's current inventory is "<gold>Journal: Manage Friend":
+			if the name of the clicked item is "<light yellow>Send Private Message":
+				close the player's inventory
+				make player execute command "/cos_whisper %{friendsListManageTarget.%player%}% SETVAR"
+			else if the name of the clicked item is "<light yellow>Request Teleport":
+				make player execute command "/tpa %{friendsListManageTarget.%player%}%"
+			else if the name of the clicked item is "<light yellow>Request Teleport Here":
+				make player execute command "/tpahere %{friendsListManageTarget.%player%}%"
+			else if the name of the clicked item is "<light red>Remove Friend":
+				remove {friendsListManageTarget.%player%} from {friendsList.%player%::*}
+				remove the player from {friendsList.%{friendsListManageTarget.%player%}%::*}
+				send formatted "<light red>%player% removed you from their friends list." to {friendsListManageTarget.%player%}
+				send formatted "<light red>Removed %{friendsListManageTarget.%player%}% from your friends list." to the player
+				subtract 1 from {friendsList.%player%::TotalFriends}
+				subtract 1 from {friendsList.%{friendsListManageTarget.%player%}%::TotalFriends}
+				make player execute command "/showJournal 6"
+		#Settings behavior (imported from classes.sk)
+		else if the name of the player's current inventory is "<gold>Journal: Settings":
+			if the name of the clicked item is "<light green>Dodge Roll":
+				clear {drEnable.%player%}
+				make player execute command "/showJournal 8"
+			else if the name of the clicked item is "<gray>Dodge Roll":
+				set {drEnable.%player%} to true
+				make player execute command "/showJournal 8"
+			else if the name of the clicked item is "<light green>Low Performance Mode":
+				clear {lowPerformanceMode.%player%}
+				make player execute command "/showJournal 8"
+			else if the name of the clicked item is "<gray>Low Performance Mode":
+				set {lowPerformanceMode.%player%} to true
+				make player execute command "/showJournal 8"
+			else if the name of the clicked item is "<light green>Character Quotes":
+				clear {quotesToggle.%player%}
+				make player execute command "/showJournal 8"
+			else if the name of the clicked item is "<gray>Character Quotes":
+				set {quotesToggle.%player%} to true
+				make player execute command "/showJournal 8"
+			else if the name of the clicked item is "<light green>Autosave":
+				clear {autosave.%player%}
+				make player execute command "/showJournal 8"
+			else if the name of the clicked item is "<gray>Autosave":
+				set {autosave.%player%} to true
+				make player execute command "/autosave"
+			else if the name of the clicked item is "<light green>Jump Inertia":
+				clear {jumpInertiaToggle.%player%}
+				make player execute command "/showJournal 8"
+			else if the name of the clicked item is "<gray>Jump Inertia":
+				set {jumpInertiaToggle.%player%} to true
+				make player execute command "/showJournal 8"
+			else if the name of the clicked item is "<light green>Sliding":
+				clear {slidingToggle.%player%}
+				make player execute command "/showJournal 8"
+			else if the name of the clicked item is "<gray>Sliding":
+				set {slidingToggle.%player%} to true
+				make player execute command "/showJournal 8"
+			else if the name of the clicked item is "<light green>Air Hang":
+				clear {airHangToggle.%player%}
+				make player execute command "/showJournal 8"
+			else if the name of the clicked item is "<gray>Air Hang":
+				set {airHangToggle.%player%} to true
+				make player execute command "/showJournal 8"
+			else if the name of the clicked item is "<light green>Hints":
+				clear {hintsToggle.%player%}
+				make player execute command "/showJournal 8"
+			else if the name of the clicked item is "<gray>Hints":
+				set {hintsToggle.%player%} to true
+				make player execute command "/showJournal 8"
+			else if the name of the clicked item is "<light green>Damage Assist":
+				clear {damageAssistToggle.%player%}
+				make player execute command "/showJournal 8"
+			else if the name of the clicked item is "<gray>Damage Assist":
+				set {damageAssistToggle.%player%} to true
+				make player execute command "/showJournal 8"
+			else if the name of the clicked item is "<light green>Verbose Combat Log":
+				clear {verboseCombatLogging.%player%}
+				make player execute command "/showJournal 8"
+			else if the name of the clicked item is "<gray>Verbose Combat Log":
+				set {verboseCombatLogging.%player%} to true
+				make player execute command "/showJournal 8"
+			else if the name of the clicked item is "<light green>Item Loss":
+				clear {useItemLoss.%player%}
+				make player execute command "/charsetup 7"
+			else if the name of the clicked item is "<gray>Item Loss":
+				set {useItemLoss.%player%} to true
+				make player execute command "/charsetup 7"
+			else if the name of the clicked item is "<light green>Helm Splitter":
+				clear {enableHelmSplitter.%player%}
+				make player execute command "/charsetup 7"
+			else if the name of the clicked item is "<gray>Helm Splitter":
+				set {enableHelmSplitter.%player%} to true
+				make player execute command "/charsetup 7"
+			else if the name of the clicked item is "<light green>Global Chat":
+				clear {useGlobalChat.%player%}
+				make player execute command "/showJournal 8"
+			else if the name of the clicked item is "<gray>Global Chat":
+				set {useGlobalChat.%player%} to true
+				make player execute command "/showJournal 8"
+			else if the name of the clicked item is "<cyan>CoS Legacy save detected!":
+				set {disableLegacyBonus.%player%} to true
+				make player execute command "/showJournal 8"
+			else if the name of the clicked item is "<gray>CoS Legacy save detected!":
+				clear {disableLegacyBonus.%player%}
+				make player execute command "/showJournal 8"
+			else if the name of the clicked item is "<light green>Change Difficulty":
+				make player execute command "/showJournal 12"
+		#Save/Load Options behavior
+		else if the name of the player's current inventory is "<gold>Journal: Save/Load":
+			if the name of the clicked item is "<light yellow>Save Game":
+				set {saveMenuOperation.%player%} to "Save"
+				make player execute command "/showJournal 10"
+			else if the name of the clicked item is "<light yellow>Load Saved Game":
+				set {saveMenuOperation.%player%} to "Load"
+				make player execute command "/showJournal 10"
+			else if the name of the clicked item is "<light red>Delete Saved Game":
+				set {saveMenuOperation.%player%} to "Delete"
+				make player execute command "/showJournal 10"
+			else if the name of the clicked item is "<light red>Start New Game":
+				close the player's inventory
+				make player execute command "/char new"
+		#Save/Load Slot Selection behavior
+		else if the name of the player's current inventory is "<gold>Journal: Select a Save Slot":
+			if the name of the clicked item contains "<light yellow>Slot":
+				make player execute command "/char %{saveMenuOperation.%player%}% %clicked slot's index%"
+				make player execute command "/showJournal 10"
+		#Destinations behavior
+		else if the name of the player's current inventory is "<gold>Journal: Manage Destinations":
+			if the name of the clicked item contains "<light green>":
+				if the clicked item is a chest:
+					set {_allowDestinationSave} to the clicked slot's index
+				else if the clicked item is an ender pearl:
+					set {_allowDestinationSave} to the clicked slot's index
+					set {_warpname} to decolorize(name of the clicked item)
+					clear {carriageDestinations.%player%::%{_warpname}%}
+			else if the name of the clicked item contains "<light red>":
+				if the clicked item is an ender chest:
+					set {_allowDestinationSave} to the clicked slot
+			if {_allowDestinationSave} is set:
+				close the player's inventory
+				set {t_setDestination.%player%} to the player's location
+				send "<light green>Enter the name of the Destination." to the player
+		#Difficulty buttons
+		else if the name of the player's current inventory is "<gold>Journal: Change Difficulty":
+			if the name of the clicked item is "<light green>Relaxed":
+				set {playerDifficulty.%player%} to 1
+				make player execute command "/showJournal 12"
+			else if the name of the clicked item is "<light gray>Normal":
+				set {playerDifficulty.%player%} to 2
+				make player execute command "/showJournal 12"
+			else if the name of the clicked item is "<gray>Hard":
+				set {playerDifficulty.%player%} to 3
+				make player execute command "/showJournal 12"
+			else if the name of the clicked item is "<red>Lunatic":
+				set {playerDifficulty.%player%} to 4
+				make player execute command "/showJournal 12"
+			else if the name of the clicked item is "<purple>Infernal":
+				set {playerDifficulty.%player%} to 5
+				make player execute command "/showJournal 12"
+			else if the name of the clicked item is "<blue>Abyssal":
+				set {playerDifficulty.%player%} to 6
+				make player execute command "/showJournal 12"
+			else if the name of the clicked item is "<light yellow>Critical":
+				set {playerDifficulty.%player%} to 7
+				make player execute command "/showJournal 12"
+			else if the name of the clicked item is "<gold>Legendary":
+				set {playerDifficulty.%player%} to 8
+				make player execute command "/showJournal 12"
+			else if the name of the clicked item is "<gold>%player's tablist name% Must Die":
+				set {playerDifficulty.%player%} to 9
+				make player execute command "/showJournal 12"			
+			
+			
+#Hidden command to handle whispers.
+command /cos_whisper <player> <text>:
+	trigger:
+		if arg 2 is "SETVAR":
+			send formatted "<bold>Type the message you wish to send to %arg 1%."
+			set {PTPWhisperToggle.%player%} to true
+			set {PTPWhisperTarget.%player%} to arg 1
+		else:
+			send formatted "<bold><italics>%player's tablist name% whispers:<reset> %arg 2%" to the player
+			send formatted "<bold><italics>%player's tablist name% whispers:<reset> %arg 2%" to arg 1
+			if {supportpartner.%player%} is arg 2:
+				add 3 to {PTPSupportPoints.%player%}
+				add 3 to {PTPSupportPoints.%arg 2%}
+		
+#Whisper handler [moved to chatmodder.sk]
+		
+#Player2Player interactions handler.
+on right-click on a player:
+	#exclude npcs from p2p
+	if citizen id of the target is not set:
+		#Player must be unarmed to trigger P2P interactions.
+		if the player's tool is air:
+			#Prevents other players from interrupting NPC dialouge.
+			if {inConvo.%target%} is set:
+				send formatted "<light red>%target% is already in a conversation." to the player
+			else:
+				#Whispers
+				send formatted "<run command:/cos_whisper %target% SETVAR><light yellow>> Whisper to %target%." to the player
+				#Friends List
+				loop {friendsList.%player%::*}:
+					if loop-value is the target:
+						set {_friendFound} to true
+						send formatted "<run command:/friends remove %target%><light red>Remove %target% from your friends list." to the player
+						exit 1 loop
+				if {_friendFound} is not true:
+					#Inform players if they have hit the friends list cap.
+					if {friendsList.%player%::TotalFriends} is less than 55:
+						send formatted "<run command:/friends add %target%><light yellow>Send friend request to %target%." to the player
+					else:
+						send formatted "<run command:/friends add %target%><gray>Send friend request to %target%." to the player
+	
+#Friends command imported from Legacy	
+command /friends [<text="list">] [<player=%player%>] [<number=0>]:
+	trigger:
+		if {friendslist.%player%::TotalFriends} is not set:
+			set {friendslist.%player%::TotalFriends} to 0
+		if {friendslist.%arg 2%::TotalFriends} is not set:
+			set {friendslist.%arg 2%::TotalFriends} to 0
+		if arg 1 is "list":
+			open chest inventory with 6 rows named "<blue>Friends List" for the player
+			set {_FLIcons} to 0
+			#Display players in GUI
+			loop {friendsList.%player%::*}:
+				#Block game from attempting to use the total number of friends as a valid player.
+				if loop-index is not "TotalFriends":
+					#Check if the player in the friend's list is online.
+					if loop-value is online:
+						set slot {_FLIcons} of the player's current inventory to 1 emerald block named "<white>%loop-value%" with lore "<light yellow>Playing as: %loop-value's tablist name%", "<light yellow>Location: %{friendsList.%player%::%loop-index%}'s location%", "<light yellow>Click this icon for more options."
+					else:
+						set slot {_FLIcons} of the player's current inventory to 1 obsidian named "<white>%loop-value%" with lore "<light red>This player is offline."
+					add 1 to {_FLIcons}
+		#Add friends to your friends list
+		else if arg 1 is "add":
+			if {friendsList.%player%::TotalFriends} is less than 45:
+				if {friendsList.%arg 2%::TotalFriends} is less than 45:
+					if arg 2 is not the player:
+						if arg 3 is 0:
+							send formatted "<run command:/friends add %player% 1><light yellow>%player% wants to add you to their friends list. Click here to accept!" to arg 2
+						else:
+							send formatted "<gold>Request accepted! %arg 2% is now on your friends list." to the player
+							send formatted "<gold>Request accepted! %player% is now on your friends list." to arg 2
+							add the player to {friendsList.%arg 2%::*}
+							add arg 2 to {friendsList.%player%::*}
+							add 1 to {friendsList.%arg 2%::TotalFriends}
+							add 1 to {friendsList.%player%::TotalFriends}
+					else:
+						send "<light red>Alas! Try as you might, one cannot be friends with themselves. That is to say, one can never achieve true inner peace with oneself. The human mind is an ever-changing beast that can never truly be conqured. How can one accept that which is ever changing? Rather than attempting to answer these philosophical questions yourself, maybe you could try adding another player as a friend instead of yourself."
+				else:
+					send "<light red>%arg 2%'s friends list is full!"
+			else:
+				send "<light red>Your friends list is full! You need to remove one of your friends before adding any more."
+		#Remove friends from friends list
+		else if arg 1 is "remove":
+			loop {friendsList.%arg 2%::*}:
+				if loop-value is the player:
+					clear {friendsList.%arg 2%::%loop-index%}
+					send formatted "<light red>%player% removed you from their friends list. Your friends list has been updated to match." to arg 2
+					exit 1 loop
+			loop {friendsList.%player%::*}:
+				if loop-value is arg 2:
+					clear {friendsList.%player%::%loop-index%}
+					send formatted "<light red>Removed %arg 2% from your friends list." to the player
+					exit 1 loop
+		#Detailed view when clicking on a friend
+		else if arg 1 is "details":
+			if {flDetails.%player%} is set:
+				open chest inventory with 1 row named "<blue>%{flDetails.%player%}%" for the player
+				set slot 0 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
+				set slot 1 of the player's current inventory to 1 chest named "<light yellow>Send Trade Offer"
+				set slot 2 of the player's current inventory to 1 ender pearl named "<light blue>Request to Warp to Friend"
+				set slot 3 of the player's current inventory to 1 ender pearl named "<light blue>Request Friend to Warp Here"
+				set slot 4 of the player's current inventory to 1 paper named "<light green>Send Whisper"
+				if {party.%player%} is not {party.%{flDetails.%player%}%}:
+					if {party.%player%} is not set:
+						set slot 5 of the player's current inventory to 1 totem of undying named "<light purple>Create & Invite Friend to Group"
+					else:
+						set slot 5 of the player's current inventory to 1 totem of undying named "<light purple>Invite to Group"
+				else:
+					set slot 5 of the player's current inventory to 1 totem of undying named "<light purple>Kick Friend from Group"
+				
+				set slot 8 of the player's current inventory to 1 redstone block named "<light red><bold>Remove from Friends List"
+			else:
+				send "<light red>Something went wrong! If you see this, tell a developer that they broke whatever you just tried to access. ERROR CODE: 155-FL"

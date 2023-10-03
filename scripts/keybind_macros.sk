@@ -1,0 +1,406 @@
+#Isolated code segments to act as optional keybinds for clients
+#Requires a chat macro mod to work:
+#https://www.curseforge.com/minecraft/mc-mods/macrokey-keybinding
+#
+#
+
+#Command to trigger dodge roll instantly - use a chat macro mod 
+command /m_dodgeroll:
+	trigger:
+		if {tangibilityState.%player%} is not "DRInvulnerable":
+			if player's food bar is more than 3:
+				clear {dodgerollstate.%player%}
+				play sound "entity.egg.throw" with volume 1 and pitch 0.4 at the player
+				add 1 to {timesDodgeRolled.%player%}
+				if {timesDodgeRolled.%player%} is more than 14:
+					if {perks.%player%::Light Feet} is not 1:
+						make player execute command "/grantskill 0 Light Feet"
+				#Roll behavior
+				#Roll Overrides
+				set {_flight} to checkSlots(player,"Flight")
+				if the 1st line of the lore of the player's boots contains "Lunge":
+					push the player in horizontal direction of the player at speed 1.35
+					push the player up at speed 0.3
+				else if the 1st line of the lore of the player's boots contains "Guard Fly":
+					push the player backwards at speed 1.35
+					push the player up at speed 0.15
+				else if the 1st line of the lore of the player's boots contains "Boost Jump":
+					push the player up at speed 1.5
+				else if {_flight} is 1:
+					if {flying.%player%} is not set:
+						set {flying.%player%} to 1
+						set {_armour} to the player's chestplate
+						wait 1 tick
+						set the player's chestplate to 1 elytra
+						push the player upwards at speed 5
+						play sound "entity.blaze.shoot" with volume 0.5 and pitch 1.5 at player
+						send formatted "<light blue>You take to the skies!"
+						wait 1 second
+						while player's hunger is more than 3:
+							set {_drCost} to 1
+							if {race.%player%} is "Dragonborn":
+								subtract 0.5 from {_drCost}
+							if player is on ground:
+								exit 1 loop
+							else if player is sneaking:
+								exit 1 loop
+							play 20 (smoke with speed 0) at player
+							play 20 (snowball break with speed 0) at player
+							play sound "entity.enderdragon.flap" with volume 1 and pitch 1 at player
+							push the player forwards at speed 0.5
+							chance of floor({abilities.%player%::Survival} / 2)%:
+								subtract 0.5 from {_drCost}
+								send "<light yellow>Your Survival ability reduced the dodge roll cost."
+							subtract {_drCost} from the player's food level
+							wait 1 second
+						clear {flying.%player%}
+						set the player's chestplate to {_armour}
+						send formatted "<light red>Your wings grow tired..."
+						play sound "entity.enderdragon.flap" with volume 1 and pitch 1 at player
+				else:
+					push the player in horizontal direction of the player at speed -1.35
+					push the player up at speed 0.3
+				set {tangibilityState.%player%} to "DRInvulnerable"
+				#Set DR cost to a variable so that it can be manipulated by skills/perks/abilities
+				set {_drCost} to 1
+				#A high Survival ability gives a random chance to reduce dodge roll cost
+				chance of floor({abilities.%player%::Survival} / 2)%:
+					subtract 0.5 from {_drCost}
+					send "<light yellow>Your Survival ability reduced the dodge roll cost."
+				if checkSlots(player,"Light Feet") is 1:
+					subtract 0.5 from {_drCost}
+				subtract {_drCost} from the player's food level
+				loop 9 times:
+					play 5 (smoke with speed 0) at the player
+					play 5 (cloud with speed 0) at the player
+					wait 1 tick
+				play sound "block.gravel.break" with volume 0.7 and pitch 0.5 at the player
+				play sound "block.fire.extinguish" with volume 0.4 and pitch 0.7 at the player
+				wait 4 ticks
+				clear {tangibilityState.%player%}
+			else:
+				send "<light red>Not enough hunger to dodge roll!" to the player
+		
+#Dodge Roll right sidestep macro		
+command /m_dodgeroll_right:
+	trigger:
+		if {tangibilityState.%player%} is not "DRInvulnerable":
+			if player's food bar is more than 3:
+				clear {dodgerollstate.%player%}
+				play sound "entity.egg.throw" with volume 1 and pitch 0.4 at the player
+				add 1 to {timesDodgeRolled.%player%}
+				if {timesDodgeRolled.%player%} is more than 14:
+					if {perks.%player%::Light Feet} is not 1:
+						make player execute command "/grantskill 0 Light Feet"
+				#Roll behavior, directional roll always takes priority if macro'd
+				push the player right at speed 1.35
+				push the player up at speed 0.3
+				set {tangibilityState.%player%} to "DRInvulnerable"
+				#Set DR cost to a variable so that it can be manipulated by skills/perks/abilities
+				set {_drCost} to 1
+				#A high Survival ability gives a random chance to reduce dodge roll cost
+				chance of floor({abilities.%player%::Survival} / 2)%:
+					subtract 0.5 from {_drCost}
+					send "<light yellow>Your Survival ability reduced the dodge roll cost."
+				if checkSlots(player,"Light Feet") is 1:
+					subtract 0.5 from {_drCost}
+				subtract {_drCost} from the player's food level
+				loop 9 times:
+					play 5 (smoke with speed 0) at the player
+					play 5 (cloud with speed 0) at the player
+					wait 1 tick
+				play sound "block.gravel.break" with volume 0.7 and pitch 0.5 at the player
+				play sound "block.fire.extinguish" with volume 0.4 and pitch 0.7 at the player
+				wait 4 ticks
+				clear {tangibilityState.%player%}
+			else:
+				send "<light red>Not enough hunger to dodge roll!" to the player
+		
+#Dodge Roll left sidestep macro		
+command /m_dodgeroll_left:
+	trigger:
+		if {tangibilityState.%player%} is not "DRInvulnerable":
+			if player's food bar is more than 3:
+				clear {dodgerollstate.%player%}
+				play sound "entity.egg.throw" with volume 1 and pitch 0.4 at the player
+				add 1 to {timesDodgeRolled.%player%}
+				if {timesDodgeRolled.%player%} is more than 14:
+					if {perks.%player%::Light Feet} is not 1:
+						make player execute command "/grantskill 0 Light Feet"
+				#Roll behavior, directional roll always takes priority if macro'd
+				push the player left at speed 1.35
+				push the player up at speed 0.3
+				set {tangibilityState.%player%} to "DRInvulnerable"
+				#Set DR cost to a variable so that it can be manipulated by skills/perks/abilities
+				set {_drCost} to 1
+				#A high Survival ability gives a random chance to reduce dodge roll cost
+				chance of floor({abilities.%player%::Survival} / 2)%:
+					subtract 0.5 from {_drCost}
+					send "<light yellow>Your Survival ability reduced the dodge roll cost."
+				if checkSlots(player,"Light Feet") is 1:
+					subtract 0.5 from {_drCost}
+				subtract {_drCost} from the player's food level
+				loop 9 times:
+					play 5 (smoke with speed 0) at the player
+					play 5 (cloud with speed 0) at the player
+					wait 1 tick
+				play sound "block.gravel.break" with volume 0.7 and pitch 0.5 at the player
+				play sound "block.fire.extinguish" with volume 0.4 and pitch 0.7 at the player
+				wait 4 ticks
+				clear {tangibilityState.%player%}
+			else:
+				send "<light red>Not enough hunger to dodge roll!" to the player	
+			
+#Journal macro
+command /m_journal:
+	trigger:
+		make player execute command "/showjournal 0"
+		
+#Perk menu macro
+command /m_perks:
+	trigger:
+		make player execute command "/perks"
+		
+#Spells menu macro
+command /m_spells:
+	trigger:
+		make player execute command "/spells"
+		
+#Summon Mount command
+command /m_mount:
+	trigger:
+		make player execute command "/mount"
+		
+#Summoned Swords / Snatch macro
+command /m_summonedswords:
+	trigger:
+		#Summoned Swords perk
+		if checkSlots(player,"Summoned Swords") is 1:
+			if player's tool is not air:
+				if {t_summonedSwordsDelay.%player%} is not set:
+					make the player shoot an arrow at speed 2
+					set metadata value "isSummonedSword" of the last shot projectile to 1
+					set {t_summonedSwordsDelay.%player%} to 10
+					wait 10 ticks
+					clear {t_summonedSwordsDelay.%player%}
+		#Snatch Perk
+		else if checkSlots(player,"Snatch") is 1:
+			if player's tool is not air:
+				if {t_snatchDelay.%player%} is not set:
+					make the player shoot an arrow at speed 3
+					set metadata value "isSnatchProjectile" of the last shot projectile to 1
+					set {t_snatchDelay.%player%} to 25
+					wait 25 ticks
+					clear {t_snatchDelay.%player%}
+					
+#Summoned Swords - Trick To macro
+command /m_sstrickto:
+	trigger:
+	#Embedded Swords Perk
+		if checkSlots(player,"Embedded Swords") is 1:
+			if {t_embeddedSwordTarget.%player%} is set:
+				set {tangibilityState.%player%} to "GenericInvulnerable"
+				set {_loc} to player's location
+				push the player in horizontal direction of the player at speed -1
+				teleport {t_embeddedSwordTarget.%player%} to {_loc}
+				clear {tangibilityState.%player%}
+				
+#Summoned Swords - Enemy Pull macro
+command /m_ssenemypull:
+	trigger:
+	#Embedded Swords Perk
+		if checkSlots(player,"Embedded Swords") is 1:
+			if {t_embeddedSwordTarget.%player%} is set:
+				set {tangibilityState.%player%} to "GenericInvulnerable"
+				set {_loc} to {t_embeddedSwordTarget.%player%}'s location
+				push {t_embeddedSwordTarget.%player%} in horizontal direction of {t_embeddedSwordTarget.%player%} at speed -1
+				teleport the player to {_loc}
+				clear {tangibilityState.%player%}
+	
+#Macro for class actions - 	
+command /m_classaction:
+	trigger:
+		#Dragon Soul Perks
+		if {dragonSoulActive.%player%} is not set:
+			if {dragonSoulMeter.%player%} is more than 10:
+				#Gale Soul
+				set {_LCKcheck} to checkSlots(player,"Gale Soul")
+				if {_LCKcheck} is 1:
+					play sound "entity.enderdragon.flap" with volume 0.6 and pitch 0.6 at the player
+					play 20 (emerald block break with speed 1) at the player
+					set {_soulType} to 0
+				else:
+					#Flame Soul
+					set {_LCKcheck} to checkSlots(player,"Flame Soul")
+					if {_LCKcheck} is 1:
+						play sound "block.fire.ambient" with volume 1 and pitch 0.6 at the player
+						play mob spawner flames at the player
+						set {_soulType} to 1
+					else:
+						#Aqua Soul
+						set {_LCKcheck} to checkSlots(player,"Aqua Soul")
+						if {_LCKcheck} is 1:
+							play sound "entity.generic.splash" with volume 1 and pitch 0.6 at the player
+							play 10 (water splash with speed 1) at the player
+							set {_soulType} to 2
+				if {_soulType} is set:
+					set {dragonSoulActive.%player%} to true
+					play sound "entity.enderdragon.growl" with volume 0.5 and pitch 1 at the player
+					clear {t_blockMeterAnnoyance.%player%}
+					play large explosion at the player
+					if {_soulType} is 0:
+						set {_debug} to changeEntityStatBuff(player,"STR",6,"Gale Soul (Perk)",0)
+						set {_debug} to changeEntityStatBuff(player,"MAG",6,"Gale Soul (Perk)",0)
+						set {_debug} to changeEntityStatBuff(player,"SPD",14,"Gale Soul (Perk)",0)
+						set {_debug} to changeEntityStatBuff(player,"LCK",14,"Gale Soul (Perk)",0)
+						send "<light red>You spread your wings and transform into your Wind Dragon form."
+					else if {_soulType} is 1:
+						set {_debug} to changeEntityStatBuff(player,"STR",14,"Flame Soul (Perk)",0)
+						set {_debug} to changeEntityStatBuff(player,"MAG",14,"Flame Soul (Perk)",0)
+						set {_debug} to changeEntityStatBuff(player,"SPD",6,"Flame Soul (Perk)",0)
+						set {_debug} to changeEntityStatBuff(player,"LCK",6,"Flame Soul (Perk)",0)
+						send "<light red>You kindle your flame and transform into your Flame Dragon form."							
+					else if {_soulType} is 2:
+						set {_debug} to changeEntityStatBuff(player,"DEF",14,"Aqua Soul (Perk)",0)
+						set {_debug} to changeEntityStatBuff(player,"RES",14,"Aqua Soul (Perk)",0)
+						set {_debug} to changeEntityStatBuff(player,"SPD",6,"Aqua Soul (Perk)",0)
+						set {_debug} to changeEntityStatBuff(player,"LCK",6,"Aqua Soul (Perk)",0)
+						send "<light red>You calm your heart and transform into your Water Dragon form."
+					#DSoul Meter Depletion
+					while {dragonSoulMeter.%player%} is more than 0:
+						if {_soulType} is 0:
+							play 10 (emerald block break with speed 1) at the player
+						else if {_soulType} is 1:					
+							play mob spawner flames at the player
+						else if {_soulType} is 2:
+							play 10 (water splash with speed 1) at the player
+						heal the player by 0.5
+						set player's flight state to true
+						wait 0.5 seconds
+						subtract 5 from {dragonSoulMeter.%player%}
+						set {_dtMeterDisplay} to {dtMeter.%player%} / {dtMeterCap.%player%} * 100
+						set bossbar "dt.%player's uuid%" progress to {_dtMeterDisplay}
+						if {dragonSoulActive.%player%} is not set:
+							exit 1 loop
+					if {_soulType} is 0:
+						set {_debug} to changeEntityStatBuff(player,"STR",-6,"Gale Soul (Perk)",0)
+						set {_debug} to changeEntityStatBuff(player,"MAG",-6,"Gale Soul (Perk)",0)
+						set {_debug} to changeEntityStatBuff(player,"SPD",-14,"Gale Soul (Perk)",0)
+						set {_debug} to changeEntityStatBuff(player,"LCK",-14,"Gale Soul (Perk)",0)
+						play 20 (emerald block break with speed 1) at the player
+					else if {_soulType} is 1:
+						set {_debug} to changeEntityStatBuff(player,"STR",-14,"Flame Soul (Perk)",0)
+						set {_debug} to changeEntityStatBuff(player,"MAG",-14,"Flame Soul (Perk)",0)
+						set {_debug} to changeEntityStatBuff(player,"SPD",-6,"Flame Soul (Perk)",0)
+						set {_debug} to changeEntityStatBuff(player,"LCK",-6,"Flame Soul (Perk)",0)
+						play mob spawner flames at the player							
+					else if {_soulType} is 2:
+						set {_debug} to changeEntityStatBuff(player,"DEF",-14,"Aqua Soul (Perk)",0)
+						set {_debug} to changeEntityStatBuff(player,"RES",-14,"Aqua Soul (Perk)",0)
+						set {_debug} to changeEntityStatBuff(player,"SPD",-6,"Aqua Soul (Perk)",0)
+						set {_debug} to changeEntityStatBuff(player,"LCK",-6,"Aqua Soul (Perk)",0)
+						play 10 (water splash with speed 1) at the player
+					play sound "entity.generic.explode" with volume 1 and pitch 1 at the player
+					play sound "entity.enderdragon.growl" with volume 0.5 and pitch 0.2 at the player
+					play large explosion at the player
+					clear {dragonSoulActive.%player%}
+					set player's flight state to false
+					send "<light red>You revert back to human form."
+			else:
+				clear {dtActive.%player%}
+				play 20 (redstone block break with speed 1) at the player
+		#Shadow Walker
+		else if checkSlots(player,"Shadow Walker") is 1:
+			apply invisibility 1 to the player for 1 day
+			set {ShadowWalkerArmourStorage.%player%::Helmet} to the player's helmet
+			set {ShadowWalkerArmourStorage.%player%::Chestplate} to the player's chestplate
+			set {ShadowWalkerArmourStorage.%player%::Leggings} to the player's leggings
+			set {ShadowWalkerArmourStorage.%player%::Boots} to the player's boots
+			wait 1 tick
+			set the player's helmet to air
+			set the player's chestplate to air
+			set the player's leggings to air
+			set the player's boots to air
+			play sound "entity.blaze.shoot" with volume 1 and pitch 0.5 at the player for the player
+			play 30 (black wool break with speed 1) at the player
+			send formatted "<purple><italics>Going dark..." to the player
+		#Royal Fork
+		else if checkSlots(player,"Royal Fork") is 1:
+			if player is not on ground:
+				if {t_royalForkCD.%player%} is not set:
+					loop all monsters in radius 10 of the player:
+						set {t_royalForkCD.%player%} to 10
+						make the player shoot an arrow with speed 2
+						push the last shot projectile in direction of the loop-monster at speed 2
+						set metadata value "isMirageBolt" of the last shot projectile to 1
+		#Wings of Mercy (Perk)
+		else if checkSlots(player,"Wings of Mercy") is 1:
+			loop {%{party.%player%}%.members::*}:
+				if loop-value is online:
+					if loop-value's health is less than or equal to (loop-value's maximum health * 0.5):
+						if loop-value is not the player:
+							teleport the player to loop-value
+							send formatted "<light blue>%player% has arrived via Wings of Mercy!" to the loop-value
+							send formatted "<light blue>Warped to %loop-value% via Wings of Mercy!" to the player
+							exit 1 loop
+					else if {bleedoutState.%loop-value%} is 1:
+						if loop-value is not the player:
+							teleport the player to loop-value
+							send formatted "<light blue>%player% has arrived via Wings of Mercy!" to the loop-value
+							send formatted "<light blue>Warped to %loop-value% via Wings of Mercy!" to the player					
+							exit 1 loop
+		#Devil Trigger toggle
+		set {_dtCheck} to canUseDevilTrigger(player)
+		if {_dtCheck} is 1:
+			if {dtActive.%player%} is not set:
+				if {dtMeter.%player%} is more than or equal to 30:
+					set {dtActive.%player%} to true
+					play sound "entity.generic.explode" with volume 1 and pitch 1 at the player
+					clear {t_blockMeterAnnoyance.%player%}
+					play large explosion at the player
+					play mob spawner flames at the player
+					play 20 (redstone block break with speed 1) at the player
+					set {_triggerHeart} to checkSlots(player,"Trigger Heart")
+					while {dtMeter.%player%} is more than 0:
+						if {_triggerHeart} is 1:
+							set {_debug} to changeEntityStatBuff(player,"STR",6,"Trigger Heart",0)
+							set {_debug} to changeEntityStatBuff(player,"MAG",6,"Trigger Heart",0)
+							set {_debug} to changeEntityStatBuff(player,"SPD",6,"Trigger Heart",0)
+							set {_debug} to changeEntityStatBuff(player,"LCK",6,"Trigger Heart",0)
+							apply strength 3 to the player for 1 seconds
+							apply swiftness 3 to the player for 1 second
+						set {_debug} to changeEntityStatBuff(player,"STR",9,"Devil Trigger",0)
+						set {_debug} to changeEntityStatBuff(player,"MAG",9,"Devil Trigger",0)
+						set {_debug} to changeEntityStatBuff(player,"SPD",9,"Devil Trigger",0)
+						set {_debug} to changeEntityStatBuff(player,"LCK",9,"Devil Trigger",0)
+						heal the player by 1 heart
+						play 10 (redstone block break with speed 1) at the player
+						play mob spawner flames at the player
+						wait 0.5 seconds
+						heal the player by 0.5 hearts
+						if {_triggerHeart} is 1:
+							set {_debug} to changeEntityStatBuff(player,"STR",-6,"Trigger Heart",0)
+							set {_debug} to changeEntityStatBuff(player,"MAG",-6,"Trigger Heart",0)
+							set {_debug} to changeEntityStatBuff(player,"SPD",-6,"Trigger Heart",0)
+							set {_debug} to changeEntityStatBuff(player,"LCK",-6,"Trigger Heart",0)
+							subtract 5 from {dtMeter.%player%}
+						else:
+							subtract 10 from {dtMeter.%player%}
+						set {_debug} to changeEntityStatBuff(player,"STR",-9,"Devil Trigger",0)
+						set {_debug} to changeEntityStatBuff(player,"MAG",-9,"Devil Trigger",0)
+						set {_debug} to changeEntityStatBuff(player,"SPD",-9,"Devil Trigger",0)
+						set {_debug} to changeEntityStatBuff(player,"LCK",-9,"Devil Trigger",0)
+						set {_dtMeterDisplay} to {dtMeter.%player%} / {dtMeterCap.%player%} * 100
+						set bossbar "dt.%player's uuid%" progress to {_dtMeterDisplay}
+						if {dtActive.%player%} is not set:
+							exit 1 loop
+					play sound "entity.generic.explode" with volume 1 and pitch 1 at the player
+					play large explosion at the player
+					play 20 (redstone block break with speed 1) at the player
+					clear {dtActive.%player%}
+					if checkSlots(player,"Air Raid") is 1:
+						set player's flight state to false
+					send "<light red>Devil Trigger wore off!"
+			else:
+				clear {dtActive.%player%}
+				play 20 (redstone block break with speed 1) at the player

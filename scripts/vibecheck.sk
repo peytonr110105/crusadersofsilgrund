@@ -1,10 +1,18 @@
 command /vibecheck <player>:
 	trigger:
-		chance of 50%:
+		if getEntityStatTotal(player,"CHR") is more than 60:
+			set {_chrbonus} to 30
+		else:
+			set {_chrbonus} to floor(getEntityStatTotal(player,"CHR") / 2)
+		chance of (25 + {_chrbonus})%:
 			kill arg 1
 			broadcast "<light red>%arg 1% failed the Vibe Check!"
 		else:
 			broadcast "<light blue>%arg 1% passed the Vibe Check!"
-			chance of 50%:
+			if getEntityStatTotal(arg 1,"CHR") is more than 60:
+				set {_chrbonus} to 30
+			else:
+				set {_chrbonus} to floor(getEntityStatTotal(arg 1,"CHR") / 2)
+			chance of 25 + {_chrbonus}%:
 				kill the player
 				broadcast "<light red>%player% failed the counter-check!"

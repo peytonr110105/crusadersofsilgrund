@@ -1,6 +1,6 @@
 #Wand
-on load:
-	register new shapeless recipe for blaze rod named "<yellow><bold>Magic Wand" using blaze powder, stick, air, air, air, air, air, air, air
+#on load:
+	#register new shapeless recipe for blaze rod named "<yellow><bold>Magic Wand" using blaze powder, stick, air, air, air, air, air, air, air
 	
 on join:
 	clear {spellcooldown.%player%}
@@ -11,110 +11,57 @@ command /spells [<number=0>]:
 	executable by: players
 	aliases: /listspells
 	trigger:
-		if arg 1 is 0:
-			open chest with 4 rows named "<light blue>Learned Spells" for the player
-			if {spells.%player%::Ember} is 1:
-				set slot 0 of the player's current inventory to 1 blaze powder named "<orange>Ember" with lore "<white>A basic flame spell. Ignites foes when hit.", "<white>Might: 3"
-			if {spells.%player%::Frost} is 1:
-				set slot 1 of the player's current inventory to 1 snowball named "<cyan>Frost" with lore "<white>A basic ice spell. Slows foes when hit.", "<white>Might: 2"
-			if {spells.%player%::Spark} is 1:
-				set slot 2 of the player's current inventory to 1 firework named "<light yellow>Spark" with lore "<white>A basic electric spell with reliable damage.", "<white>Might:"
-			if {spells.%player%::Gust} is 1:
-				set slot 3 of the player's current inventory to 1 bone meal named "<light green>Gust" with lore "<white>A basic wind spell. Launches foes when hit.", "<white>Might: 2.5"
-			if {spells.%player%::Fire} is 1:
-				set slot 4 of the player's current inventory to 1 blaze powder named "<orange>Fire" with lore "<white>A standard flame spell. Ignites both foes and the surrounding area on contact.", "<white>Might:"
-			if {spells.%player%::Hail} is 1:
-				set slot 5 of the player's current inventory to 1 snowball named "<cyan>Hail" with lore "<white>A standard ice spell. Slows foes for an extended duration.", "<white>Might:"
-			if {spells.%player%::Thunder} is 1:
-				set slot 6 of the player's current inventory to 1 firework named "<light yellow>Thunder" with lore "<white>A standard electric spell.", "<white>Might:"
-			if {spells.%player%::Wind} is 1:
-				set slot 7 of the player's current inventory to 1 bone meal named "<light green>Wind" with lore "<white>A standard wind spell. Launches foes into the sky when hit.", "<white>Might:"
-			if {spells.%player%::Elfire} is 1:
-				set slot 8 of the player's current inventory to 1 blaze powder named "<orange>Elfire" with lore "<white>An advanced flame spell. Ignites foes and the surrounding area on contact.", "<white>Might:"
-			if {spells.%player%::Blizzard} is 1:
-				set slot 9 of the player's current inventory to 1 snowball named "<cyan>Blizzard" with lore "<white>An advanced ice spell. Freezes targets for an even longer duration.", "<white>Might:"
-			if {spells.%player%::Thoron} is 1:
-				set slot 10 of the player's current inventory to 1 firework named "<light yellow>Thoron" with lore "<white>An advanced thunder spell. Highly damaging, but consumes a large amount of energy.", "<white>Might:"
-			if {spells.%player%::Tornado} is 1:
-				set slot 11 of the player's current inventory to 1 bone meal named "<light green>Tornado" with lore "<white>An advanced wind spell. Good luck getting back down after being hit by this spell.", "<white>Might:"
-			if {spells.%player%::Bolganone} is 1:
-				set slot 12 of the player's current inventory to 1 blaze powder named "<orange><bold>Bolganone" with lore "<white>Master level fire spell. Ignites enemies and a large swath of ground in flames on contact.", "<white>Might:"
-			if {spells.%player%::Aurora} is 1:
-				set slot 13 of the player's current inventory to 1 nether star named "<gold><bold>Aurora" with lore "<white>Master level light spell. Tremendous might, but with a long cooldown.", "<white>Might:"
-			if {spells.%player%::Nosferatu} is 1:
-				set slot 14 of the player's current inventory to 1 purple wool named "<purple><bold>Nosferatu" with lore "<white>Advanced dark magic. Restores health equal to 50%% of damage dealt.", "<white>Might:"
-			if {spells.%player%::Stone} is 1:
-				set slot 15 of the player's current inventory to 1 purple wool named "<purple><bold>Stone" with lore "<white>Advanced dark magic. Locks foes in place and prevents counter-attacks temporarily.", "<white>Might:"
-			if {spells.%player%::Light} is 1:
-				set slot 16 of the player's current inventory to 1 glowstone named "<yellow><bold>Light" with lore "<white>Advanced light spell. Effective against monsters.", "<white>Might:"
-			if {spells.%player%::Spellblade} is 1:
-				set slot 17 of the player's current inventory to 1 diamond sword named "<green><bold>Spellblade" with lore "<white>Grandmaster level wind spell. Becomes stronger with allies.", "<white>Might: Variable, based on visible stat bonuses."
-			if {spells.%player%::Forseti} is 1:
-				set slot 18 of the player's current inventory to 1 bone meal named "<light green><bold>Forseti"  with lore "<white>Grandmaster level wind spell. Grants automatic follow-up attacks while at full health.", "<white>Might: x2 (if HP = 100%%)"
-			if {spells.%player%::Naga} is 1:
-				set slot 19 of the player's current inventory to 1 nether star named "<gold><bold>Naga" with lore "<white>Grandmaster level light spell. Effective against dragons and end-type monsters.", "<white>Might: "
-			if {spells.%player%::Loptous} is 1:
-				set slot 20 of the player's current inventory to 1 purple wool named "<purple><bold>Loptous" with lore "<white>Grandmaster level dark spell.", "<white>Inflicts caster with a weakness to weapons effective against dragons.", "<white>Reduces incoming damage by 50%% while equipped.", "<white>Might:"
-			if {spells.%player%::Rescue} is 1:
-				set slot 21 of the player's current inventory to 1 nether star named "<bold>Rescue" with lore "<white>Advanced level magic spell. Warps the target to the caster on-hit.", "<white>Might: N/A (nullifies damage dealt)"
-			if {spells.%player%::Warp} is 1:
-				set slot 22 of the player's current inventory to 1 elytra named "<bold>Slipgate" with lore "<white>Advanced level magic spell. Warps the caster to the target.", "<white>Might: N/A (nullifies damage dealt)"
-			if {spells.%player%::Silence} is 1:
-				set slot 23 of the player's current inventory to 1 wooden sword named "<bold>Silence" with lore "<white>Standard magic spell. Inflicts Weakness 2 on foes.", "<white>Might:"
-			if {spells.%player%::Thief} is 1:
-				set slot 24 of the player's current inventory to 1 golden sword named "<gold>Thief" with lore "<white>Standard magic spell. Occasionally causes foes to drop their equipped weapon on-hit.", "<white>Might:"
-		else if arg 1 is 1:
-			open chest with 4 rows named "<light blue>Select a spell to apply." for the player
-			if {spells.%player%::Ember} is 1:
-				set slot 0 of the player's current inventory to 1 blaze powder named "<orange>Ember" with lore "<white>A basic flame spell. Ignites foes when hit.", "<white>Might: 3"
-			if {spells.%player%::Frost} is 1:
-				set slot 1 of the player's current inventory to 1 snowball named "<cyan>Frost" with lore "<white>A basic ice spell. Slows foes when hit.", "<white>Might: 2"
-			if {spells.%player%::Spark} is 1:
-				set slot 2 of the player's current inventory to 1 firework named "<light yellow>Spark" with lore "<white>A basic electric spell with reliable damage.", "<white>Might:"
-			if {spells.%player%::Gust} is 1:
-				set slot 3 of the player's current inventory to 1 bone meal named "<light green>Gust" with lore "<white>A basic wind spell. Launches foes when hit.", "<white>Might: 2.5"
-			if {spells.%player%::Fire} is 1:
-				set slot 4 of the player's current inventory to 1 blaze powder named "<orange>Fire" with lore "<white>A standard flame spell. Ignites both foes and the surrounding area on contact.", "<white>Might:"
-			if {spells.%player%::Hail} is 1:
-				set slot 5 of the player's current inventory to 1 snowball named "<cyan>Hail" with lore "<white>A standard ice spell. Slows foes for an extended duration.", "<white>Might:"
-			if {spells.%player%::Thunder} is 1:
-				set slot 6 of the player's current inventory to 1 firework named "<light yellow>Thunder" with lore "<white>A standard electric spell.", "<white>Might:"
-			if {spells.%player%::Wind} is 1:
-				set slot 7 of the player's current inventory to 1 bone meal named "<light green>Wind" with lore "<white>A standard wind spell. Launches foes into the sky when hit.", "<white>Might:"
-			if {spells.%player%::Elfire} is 1:
-				set slot 8 of the player's current inventory to 1 blaze powder named "<orange>Elfire" with lore "<white>An advanced flame spell. Ignites foes and the surrounding area on contact.", "<white>Might:"
-			if {spells.%player%::Blizzard} is 1:
-				set slot 9 of the player's current inventory to 1 snowball named "<cyan>Blizzard" with lore "<white>An advanced ice spell. Freezes targets for an even longer duration.", "<white>Might:"
-			if {spells.%player%::Thoron} is 1:
-				set slot 10 of the player's current inventory to 1 firework named "<light yellow>Thoron" with lore "<white>An advanced thunder spell. Highly damaging, but consumes a large amount of energy.", "<white>Might:"
-			if {spells.%player%::Tornado} is 1:
-				set slot 11 of the player's current inventory to 1 bone meal named "<light green>Tornado" with lore "<white>An advanced wind spell. Good luck getting back down after being hit by this spell.", "<white>Might:"
-			if {spells.%player%::Bolganone} is 1:
-				set slot 12 of the player's current inventory to 1 blaze powder named "<orange><bold>Bolganone" with lore "<white>Master level fire spell. Ignites enemies and a large swath of ground in flames on contact.", "<white>Might:"
-			if {spells.%player%::Aurora} is 1:
-				set slot 13 of the player's current inventory to 1 nether star named "<gold><bold>Aurora" with lore "<white>Master level light spell. Tremendous might, but with a long cooldown.", "<white>Might:"
-			if {spells.%player%::Nosferatu} is 1:
-				set slot 14 of the player's current inventory to 1 purple wool named "<purple><bold>Nosferatu" with lore "<white>Advanced dark magic. Restores health equal to 50%% of damage dealt.", "<white>Might:"
-			if {spells.%player%::Stone} is 1:
-				set slot 15 of the player's current inventory to 1 purple wool named "<purple><bold>Stone" with lore "<white>Advanced dark magic. Locks foes in place and prevents counter-attacks temporarily.", "<white>Might:"
-			if {spells.%player%::Light} is 1:
-				set slot 16 of the player's current inventory to 1 glowstone named "<yellow><bold>Light" with lore "<white>Advanced light spell. Effective against monsters.", "<white>Might:"
-			if {spells.%player%::Spellblade} is 1:
-				set slot 17 of the player's current inventory to 1 diamond sword named "<green><bold>Spellblade" with lore "<white>Grandmaster level wind spell. Becomes stronger with allies.", "<white>Might: Variable, based on visible stat bonuses."
-			if {spells.%player%::Forseti} is 1:
-				set slot 18 of the player's current inventory to 1 bone meal named "<light green><bold>Forseti"  with lore "<white>Grandmaster level wind spell. Grants automatic follow-up attacks while at full health.", "<white>Might: x2 (if HP = 100%%)"
-			if {spells.%player%::Naga} is 1:
-				set slot 19 of the player's current inventory to 1 nether star named "<gold><bold>Naga" with lore "<white>Grandmaster level light spell. Effective against dragons and end-type monsters.", "<white>Might: "
-			if {spells.%player%::Loptous} is 1:
-				set slot 20 of the player's current inventory to 1 purple wool named "<purple><bold>Loptous" with lore "<white>Grandmaster level dark spell.", "<white>Inflicts caster with a weakness to weapons effective against dragons.", "<white>Reduces incoming damage by 50%% while equipped.", "<white>Might:"
-			if {spells.%player%::Rescue} is 1:
-				set slot 21 of the player's current inventory to 1 nether star named "<bold>Rescue" with lore "<white>Advanced level magic spell. Warps the target to the caster on-hit.", "<white>Might: N/A (nullifies damage dealt)"
-			if {spells.%player%::Warp} is 1:
-				set slot 22 of the player's current inventory to 1 elytra named "<bold>Slipgate" with lore "<white>Advanced level magic spell. Warps the caster to the target.", "<white>Might: N/A (nullifies damage dealt)"
-			if {spells.%player%::Silence} is 1:
-				set slot 23 of the player's current inventory to 1 wooden sword named "<bold>Silence" with lore "<white>Standard magic spell. Inflicts Weakness 2 on foes.", "<white>Might:"
-			if {spells.%player%::Thief} is 1:
-				set slot 24 of the player's current inventory to 1 golden sword named "<gold>Thief" with lore "<white>Standard magic spell. Occasionally causes foes to drop their equipped weapon on-hit.", "<white>Might:"
+		open chest inventory with 4 rows named "<light blue>Select a spell to apply." for the player
+		if {spells.%player%::Ember} is 1:
+			set slot 0 of the player's current inventory to 1 blaze powder named "<orange>Ember" with lore "<white>A basic flame spell. Ignites foes when hit.", "<white>Might: 3"
+		if {spells.%player%::Frost} is 1:
+			set slot 1 of the player's current inventory to 1 snowball named "<cyan>Frost" with lore "<white>A basic ice spell. Slows foes when hit.", "<white>Might: 2"
+		if {spells.%player%::Spark} is 1:
+			set slot 2 of the player's current inventory to 1 firework named "<light yellow>Spark" with lore "<white>A basic electric spell with reliable damage.", "<white>Might:"
+		if {spells.%player%::Gust} is 1:
+			set slot 3 of the player's current inventory to 1 bone meal named "<light green>Gust" with lore "<white>A basic wind spell. Launches foes when hit.", "<white>Might: 2.5"
+		if {spells.%player%::Fire} is 1:
+			set slot 4 of the player's current inventory to 1 blaze powder named "<orange>Fire" with lore "<white>A standard flame spell. Ignites both foes and the surrounding area on contact.", "<white>Might:"
+		if {spells.%player%::Hail} is 1:
+			set slot 5 of the player's current inventory to 1 snowball named "<cyan>Hail" with lore "<white>A standard ice spell. Slows foes for an extended duration.", "<white>Might:"
+		if {spells.%player%::Thunder} is 1:
+			set slot 6 of the player's current inventory to 1 firework named "<light yellow>Thunder" with lore "<white>A standard electric spell.", "<white>Might:"
+		if {spells.%player%::Wind} is 1:
+			set slot 7 of the player's current inventory to 1 bone meal named "<light green>Wind" with lore "<white>A standard wind spell. Launches foes into the sky when hit.", "<white>Might:"
+		if {spells.%player%::Elfire} is 1:
+			set slot 8 of the player's current inventory to 1 blaze powder named "<orange>Elfire" with lore "<white>An advanced flame spell. Ignites foes and the surrounding area on contact.", "<white>Might:"
+		if {spells.%player%::Blizzard} is 1:
+			set slot 9 of the player's current inventory to 1 snowball named "<cyan>Blizzard" with lore "<white>An advanced ice spell. Freezes targets for an even longer duration.", "<white>Might:"
+		if {spells.%player%::Thoron} is 1:
+			set slot 10 of the player's current inventory to 1 firework named "<light yellow>Thoron" with lore "<white>An advanced thunder spell. Highly damaging, but consumes a large amount of energy.", "<white>Might:"
+		if {spells.%player%::Tornado} is 1:
+			set slot 11 of the player's current inventory to 1 bone meal named "<light green>Tornado" with lore "<white>An advanced wind spell. Good luck getting back down after being hit by this spell.", "<white>Might:"
+		if {spells.%player%::Bolganone} is 1:
+			set slot 12 of the player's current inventory to 1 blaze powder named "<orange><bold>Bolganone" with lore "<white>Master level fire spell. Ignites enemies and a large swath of ground in flames on contact.", "<white>Might:"
+		if {spells.%player%::Aurora} is 1:
+			set slot 13 of the player's current inventory to 1 nether star named "<gold><bold>Aurora" with lore "<white>Master level light spell. Tremendous might, but with a long cooldown.", "<white>Might:"
+		if {spells.%player%::Nosferatu} is 1:
+			set slot 14 of the player's current inventory to 1 purple wool named "<purple><bold>Nosferatu" with lore "<white>Advanced dark magic. Restores health equal to 50%% of damage dealt.", "<white>Might:"
+		if {spells.%player%::Stone} is 1:
+			set slot 15 of the player's current inventory to 1 purple wool named "<purple><bold>Stone" with lore "<white>Advanced dark magic. Locks foes in place and prevents counter-attacks temporarily.", "<white>Might:"
+		if {spells.%player%::Light} is 1:
+			set slot 16 of the player's current inventory to 1 glowstone named "<yellow><bold>Light" with lore "<white>Advanced light spell. Effective against monsters.", "<white>Might:"
+		if {spells.%player%::Spellblade} is 1:
+			set slot 17 of the player's current inventory to 1 diamond sword named "<green><bold>Spellblade" with lore "<white>Grandmaster level wind spell. Becomes stronger with allies.", "<white>Might: Variable, based on visible stat bonuses."
+		if {spells.%player%::Forseti} is 1:
+			set slot 18 of the player's current inventory to 1 bone meal named "<light green><bold>Forseti"  with lore "<white>Grandmaster level wind spell. Grants automatic follow-up attacks while at full health.", "<white>Might: x2 (if HP = 100%%)"
+		if {spells.%player%::Naga} is 1:
+			set slot 19 of the player's current inventory to 1 nether star named "<gold><bold>Naga" with lore "<white>Grandmaster level light spell. Effective against dragons and end-type monsters.", "<white>Might: "
+		if {spells.%player%::Loptous} is 1:
+			set slot 20 of the player's current inventory to 1 purple wool named "<purple><bold>Loptous" with lore "<white>Grandmaster level dark spell.", "<white>Inflicts caster with a weakness to weapons effective against dragons.", "<white>Reduces incoming damage by 50%% while equipped.", "<white>Might:"
+		if {spells.%player%::Rescue} is 1:
+			set slot 21 of the player's current inventory to 1 nether star named "<bold>Rescue" with lore "<white>Advanced level magic spell. Warps the target to the caster on-hit.", "<white>Might: N/A (nullifies any damage dealt)"
+		if {spells.%player%::Slipgate} is 1:
+			set slot 22 of the player's current inventory to 1 elytra named "<bold>Slipgate" with lore "<white>Advanced level magic spell. Warps the caster to where the spell lands.", "<white>Might: N/A (nullifies any damage dealt)"
+		if {spells.%player%::Silence} is 1:
+			set slot 23 of the player's current inventory to 1 wooden sword named "<bold>Silence" with lore "<white>Standard magic spell. Inflicts Weakness 2 on foes.", "<white>Might:"
+		if {spells.%player%::Thief} is 1:
+			set slot 24 of the player's current inventory to 1 golden sword named "<gold>Thief" with lore "<white>Standard magic spell. Occasionally causes foes to drop their equipped weapon on-hit.", "<white>Might:"
 			
 command /clearspellcooldown:
 	trigger:
@@ -132,7 +79,7 @@ command /setspell <text>:
 	executable by: players
 	aliases: /spell
 	trigger:
-		open chest with 1 row named "<light blue>Apply Spell" for the player
+		open chest inventory with 1 row named "<light blue>Apply Spell" for the player
 		set slot 0 of the player's current inventory to 1 red glass pane named "<light red>Return to spell list."
 		set slot 1 of the player's current inventory to 1 book named arg 1
 		set slot 2 of the player's current inventory to 1 dirt
@@ -182,48 +129,56 @@ on inventory click:
 		#	cancel event
 on tool change:
 	if the name of the player's tool is "<yellow><bold>Magic Wand":
-		set {_checkClass} to checkClass(player)
-		if {_checkClass} is 0:
-			send formatted "<red>Only mages may wield wands."
-			cancel event
-		else if {spells.%player%::Ember} is not 1:
+		if {spells.%player%::Ember} is not 1:
 			play sound "entity.player.levelup" with volume 0.5 and pitch 0.5 at player for player
 			play 20 (smoke with speed 0) at the player
-			send title "<bold>---===Weapon Rank Up!===---" with subtitle "<bold>Magic increased to E rank." to player for 2 seconds with fade in 0.25 seconds and fade out 0.25 seconds
-			set {weapongrade.%player%::magic} to "E"
 			make player execute command "/grantspell 0 Ember"
 			make player execute command "/grantspell 0 Frost"
 			make player execute command "/grantspell 0 Spark"
 			make player execute command "/grantspell 0 Gust"
+			send formatted "<light purple><italics>Use the command /spells to equip spells to this Magic Wand."
 			
+#Tome casting logic
 on rightclick with book:
 	set {_checkClass} to checkClass(player)
-	if the 7th line of the lore of the player's tool contains "Casts":
-		if {_checkClass} is 1:
-			make the player shoot an arrow with speed 2
-			if the 7th line of the lore of the player's tool contains "Dire Thunder":
-				set metadata value "SPELL" of the last shot projectile to 1
-				set metadata value "TomeEff" of the last shot projectile to "Dire Thunder"
-			else if the 7th line of the lore of the player's tool contains "Fire":
-				set metadata value "SPELL" of the last shot projectile to 1
-				set metadata value "TomeEff" of the last shot projectile to "Fire"
-			else if the 7th line of the lore of the player's tool contains "Elfire":
-				set metadata value "SPELL" of the last shot projectile to 1
-				set metadata value "TomeEff" of the last shot projectile to "Elfire"
-			else if the 7th line of the lore of the player's tool contains "Elthunder":
-				set metadata value "SPELL" of the last shot projectile to 1
-				set metadata value "TomeEff" of the last shot projectile to "Elthunder"
-			else if the 7th line of the lore of the player's tool contains "Excalibur":
-				set metadata value "SPELL" of the last shot projectile to 1
-				set metadata value "TomeEff" of the last shot projectile to "Excalibur"
-			else if the 7th line of the lore of the player's tool contains "Aura":
-				set metadata value "SPELL" of the last shot projectile to 1
-				set metadata value "TomeEff" of the last shot projectile to "Aura"
-			else if the 7th line of the lore of the player's tool contains "Spark":
-				set metadata value "SPELL" of the last shot projectile to 1
-				set metadata value "TomeEff" of the last shot projectile to "Spark"
-			if the 8th line of the lore of the player's tool contains "Uses":
-				set {_dur} to the 9th line of the lore of the player's tool parsed as integer
+	if the nbt of player's tool contains "TomeType:":
+		if {spellcooldown.%player%} is not set:
+			#Chained Magic environmental block
+			if getEntitySkillsInHand(player,"Chained Magic",0,4) is more than 0:
+				set metadata value "SPELLOVERRIDES" of the last shot projectile to "CANCEL_ENV"
+			make the player shoot an arrow with speed 3
+			#if the 7th line of the lore of the player's tool contains "Dire Thunder":
+			#	set metadata value "SPELL" of the last shot projectile to 1
+			#	set metadata value "TomeEff" of the last shot projectile to "Dire Thunder"
+			#else if the 7th line of the lore of the player's tool contains "Fire":
+			#	set metadata value "SPELL" of the last shot projectile to 1
+			#	set metadata value "TomeEff" of the last shot projectile to "Fire"
+			#else if the 7th line of the lore of the player's tool contains "Elfire":
+			#	set metadata value "SPELL" of the last shot projectile to 1
+			#	set metadata value "TomeEff" of the last shot projectile to "Elfire"
+			#else if the 7th line of the lore of the player's tool contains "Elthunder":
+			#	set metadata value "SPELL" of the last shot projectile to 1
+			#	set metadata value "TomeEff" of the last shot projectile to "Elthunder"
+			#else if the 7th line of the lore of the player's tool contains "Excalibur":
+			#	set metadata value "SPELL" of the last shot projectile to 1
+			#	set metadata value "TomeEff" of the last shot projectile to "Excalibur"
+			#else if the 7th line of the lore of the player's tool contains "Aura":
+			#	set metadata value "SPELL" of the last shot projectile to 1
+			#	set metadata value "TomeEff" of the last shot projectile to "Aura"
+			#else if the 7th line of the lore of the player's tool contains "Spark":
+			#	set metadata value "SPELL" of the last shot projectile to 1
+			#	set metadata value "TomeEff" of the last shot projectile to "Spark"
+			#
+			#Brave New World tomes have ID's identical to the ID of the spell they cast
+			#
+			set {_tomeType} to tag "TomeType" of nbt of player's tool
+			send "tome id: %{_tomeType}%" to the player
+			set metadata value "SPELL" of the last shot projectile to 1
+			set metadata value "SpellEffect1" of the last shot projectile to {_tomeType}
+			#Set spell effect 2 to 776 to mark the projectile as originating from a tome
+			set metadata value "SpellEffect2" of the last shot projectile to 776
+			if the 10th line of the lore of the player's tool contains "Uses":
+				set {_dur} to the 11th line of the lore of the player's tool parsed as integer
 				subtract 1 from {_dur}
 				if {_dur} is less than 1:
 					delete the player's tool
@@ -233,21 +188,26 @@ on rightclick with book:
 					if {_meta} is "Dire Thunder":
 						give 1 book named "<light blue>Broken Tome" with lore "<white>An old, tattered tome sapped of magic.", "<white>The spell Dire Thunder used to be present." to the player
 					else:
-						give 1 book named "<light blue>Broken Tome" with lore "<white>The tattered remains of the %{_meta}% tome." to the player
+						give 1 book named "<light blue>Broken Tome" with lore "<white>The tattered remains of the %name of the player's tool% tome." to the player
 				else:
-					set the 9th line of the lore of the player's tool to "%{_dur}%"
+					set the 11th line of the lore of the player's tool to "%{_dur}%"
+					if {_dur} is less than or equal to 10:
+						send formatted "<light red>WARN: Tome about to break! Uses left: %{_dur}%" to the player
 		else:
-			send formatted "<light red>You need to be a magic user to use tomes!"
+			send formatted "<light red>Tome is still on cooldown!"
 			
 on rightclick with blaze rod:
 	#set {_checkClass} to checkClass(player)
 	set {_checkClass} to 1
-	if the name of the player's tool is "<yellow><bold>Magic Wand":
+	if the name of the player's tool contains "<yellow><bold>Magic Wand":
 		if {_checkClass} is 1:
 			if {spellcooldown.%player%} is not set:
 				set {t_allowRocketJump.%player%} to true
 				make the player shoot an arrow with speed 3
 				set metadata value "SPELL" of the last shot projectile to 1
+				#Chained Magic environmental block
+				if getEntitySkillsInHand(player,"Chained Magic",0,4) is more than 0:
+					set metadata value "SPELLOVERRIDES" of the last shot projectile to "CANCEL_ENV"
 				if 7th line of the lore of the player's tool contains "Ember":
 					if {_spelleffect1} is set:
 						if {_spelleffect2} is not set:
@@ -561,72 +521,75 @@ on rightclick with blaze rod:
 #4 - Wind
 			
 on projectile hit:
-	set {_isSpell} to metadata value "SPELL" of projectile
-	if {_isSpell} is 1:
-		set {_meta1} to metadata value "SpellEffect1" of projectile
-		set {_meta2} to metadata value "SpellEffect2" of projectile
-		set {_element1} to checkElement({_meta1})
-		set {_element2} to checkElement({_meta2})
-		#Explosion from flame and wind spells
-		if {_element1} is 1:
-			if {_element2} is 4:
-				create a safe explosion of force 1 at the projectile
-		else if {_element2} is 1:
-			if {_element1} is 4:
-				create a safe explosion of force 1 at the projectile
-		#Create water from fire and frost spells
-		if {_element1} is 1:
-			if {_element2} is 3:
-				loop blocks in radius 1 of the projectile:
-					loop-block is air
-					set loop-block to water
-		else if {_element2} is 3:
-			if {_element1} is 1:
-				loop blocks in radius 1 of the projectile:
-					loop-block is air
-					set loop-block to water
-		#Double flame spells create fire
-		if {_element1} is 1:
-			if {_element2} is 1:
-				loop blocks in radius 1 of the projectile:
-					loop-block is air
-					set loop-block to fire
-		else if {_element2} is 1:
-			if {_element1} is 1:
-				loop blocks in radius 1 of the projectile:
-					loop-block is air
-					set loop-block to lava
-		#Double frost spells freeze water
-		if {_element1} is 3:
-			if {_element2} is 3:
-				loop blocks in radius 2 of the projectile:
-					loop-block is water
-					set loop-block to ice
-		else if {_element2} is 3:
-			if {_element1} is 3:
-				loop blocks in radius 2 of the projectile:
-					loop-block is water
-					set loop-block to ice
-		#Double wind spells drain liquid
-		if {_element1} is 4:
-			if {_element2} is 4:
-				loop blocks in radius 3 of the projectile:
-					loop-block is water
-					set loop-block to air
-					loop-block is lava
-					set loop-block to air
-		else if {_element2} is 4:
-			if {_element1} is 4:
-				loop blocks in radius 3 of the projectile:
-					loop-block is water
-					set loop-block to air
-					loop-block is lava
-					set loop-block to air
-		#Light creates glowstone
-		if {_meta1} is 16:
-			play 40 (glowstone break with speed 0) at the projectile
-		else if {_meta2} is 16:
-			play 40 (glowstone break with speed 0) at the projectile
-		wait 5 tick
-		delete projectile
+	set {_spellOverride} to metadata value "SPELLOVERRIDES" of projectile
+	if {_spellOverride} is not set:
+		if {_spellOverride} is not "CANCEL_ENV":
+			set {_isSpell} to metadata value "SPELL" of projectile
+			if {_isSpell} is 1:
+				set {_meta1} to metadata value "SpellEffect1" of projectile
+				set {_meta2} to metadata value "SpellEffect2" of projectile
+				set {_element1} to checkElement({_meta1})
+				set {_element2} to checkElement({_meta2})
+				#Explosion from flame and wind spells
+				if {_element1} is 1:
+					if {_element2} is 4:
+						create a safe explosion of force 1 at the projectile
+				else if {_element2} is 1:
+					if {_element1} is 4:
+						create a safe explosion of force 1 at the projectile
+				#Create water from fire and frost spells
+				if {_element1} is 1:
+					if {_element2} is 3:
+						loop blocks in radius 1 of the projectile:
+							loop-block is air
+							set loop-block to water
+				else if {_element2} is 3:
+					if {_element1} is 1:
+						loop blocks in radius 1 of the projectile:
+							loop-block is air
+							set loop-block to water
+				#Double flame spells create fire
+				if {_element1} is 1:
+					if {_element2} is 1:
+						loop blocks in radius 1 of the projectile:
+							loop-block is air
+							set loop-block to fire
+				else if {_element2} is 1:
+					if {_element1} is 1:
+						loop blocks in radius 1 of the projectile:
+							loop-block is air
+							set loop-block to lava
+				#Double frost spells freeze water
+				if {_element1} is 3:
+					if {_element2} is 3:
+						loop blocks in radius 2 of the projectile:
+							loop-block is water
+							set loop-block to ice
+				else if {_element2} is 3:
+					if {_element1} is 3:
+						loop blocks in radius 2 of the projectile:
+							loop-block is water
+							set loop-block to ice
+				#Double wind spells drain liquid
+				if {_element1} is 4:
+					if {_element2} is 4:
+						loop blocks in radius 3 of the projectile:
+							loop-block is water
+							set loop-block to air
+							loop-block is lava
+							set loop-block to air
+				else if {_element2} is 4:
+					if {_element1} is 4:
+						loop blocks in radius 3 of the projectile:
+							loop-block is water
+							set loop-block to air
+							loop-block is lava
+							set loop-block to air
+				#Light creates glowstone
+				if {_meta1} is 16:
+					play 40 (glowstone break with speed 0) at the projectile
+				else if {_meta2} is 16:
+					play 40 (glowstone break with speed 0) at the projectile
+				wait 5 tick
+				delete projectile
 			

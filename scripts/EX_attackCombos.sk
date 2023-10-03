@@ -1,0 +1,58 @@
+#experimental weapon combo system
+
+#combo bar display
+command /toggleComboBar:
+	trigger:
+		if {enableComboBar.%player%} is not set:
+			set {enableComboBar.%player%} to true
+			create bossbar titled "<gold>Combo Bar" and id "combobar.%player's uuid%" for player with progress 0 with colors yellow
+			display bossbar "combobar.%player's uuid%"
+		else:
+			clear {enableComboBar.%player%}
+			hide bossbar "combobar.%player's uuid%"
+			destroy bossbar "combobar.%player's uuid%"
+				
+every 0.1 seconds:
+	loop all players:
+		if {t_weaponComboPenalty.%loop-player%} is set:
+			clear {t_comboBuildup.%loop-player%}
+			subtract 0.1 from {t_weaponComboPenalty.%loop-player%}
+			if {t_weaponComboPenalty.%loop-player%} is less than or equal to 0:
+				hide bossbar "weapondowntime.%loop-player's uuid%"
+				destroy bossbar "weapondowntime.%loop-player's uuid%"
+				clear {t_weaponComboPenalty.%loop-player%}
+				play sound "entity.experience_orb.pickup" with volume 2 and pitch 0.8 at loop-player
+				send "<gold>Melee Ready!" to loop-player
+			else if loop-player's tool is bow:
+				set {_skip} to true
+			else if loop-player's tool is blaze rod:
+				set {_skip} to true
+			else if loop-player's tool is book:
+				set {_skip} to true
+			else if loop-player's tool is any horse armor:
+				set {_skip} to true
+			else:
+				set {_skip} to false
+			if {_skip} is false:
+				apply weakness 9 to loop-player for 2 second
+				apply mining fatigue 9 to loop-player for 2 second
+			else:
+				if loop-player has weakness:
+					remove weakness from loop-player
+					remove mining fatigue from loop-player
+			if {t_weaponComboPenalty.%loop-player%} is set:
+				if {t_weaponComboPenalty.%loop-player%} is less than or equal to 1:
+					set bossbar "weapondowntime.%loop-player's uuid%" progress to {t_weaponComboPenalty.%loop-player%} * 100 
+		else:
+			if {t_weaponComboFreeze.%loop-player%} is set:
+				subtract 0.1 from {t_weaponComboFreeze.%loop-player%}
+				if {t_weaponComboFreeze.%loop-player%} is less than or equal to 0:
+					clear {t_weaponComboFreeze.%loop-player%}
+			else if {t_comboBuildup.%loop-player%} is set:
+				subtract 0.1 from {t_comboBuildup.%loop-player%}
+				if {enableComboBar.%loop-player%} is true:
+					set bossbar "combobar.%loop-player's uuid%" progress to {t_comboBuildup.%loop-player%} * 100
+				if {t_comboBuildup.%loop-player%} is less than or equal to 0:
+					clear {t_comboBuildup.%loop-player%}
+					if {enableComboBar.%loop-player%} is true:
+						set bossbar "combobar.%loop-player's uuid%" progress to 0

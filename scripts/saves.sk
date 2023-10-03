@@ -12,108 +12,110 @@ command /character [<text="list">] [<number=0>]:
 				add 1 to {saves.%player%}
 			set {sslot%arg 2%.%player%::hasPlayedProlouge} to {hasPlayedProlouge.%player%}
 			set {sslot%arg 2%.%player%::SessionType} to {SessionType.%player%}
-			set {sslot%arg 2%.%player%::name} to the display name of the player
+			set {sslot%arg 2%.%player%::name} to the player's tablist name
+			#Base Stats
 			set {sslot%arg 2%.%player%::str} to {str.%player%}
 			set {sslot%arg 2%.%player%::def} to {def.%player%}
 			set {sslot%arg 2%.%player%::res} to {res.%player%}
 			set {sslot%arg 2%.%player%::spd} to {spd.%player%}
-			set {sslot%arg 2%.%player%::skl} to {skl.%player%}
+			set {sslot%arg 2%.%player%::lck} to {lck.%player%}
+			set {sslot%arg 2%.%player%::mag} to {mag.%player%}
+			set {sslot%arg 2%.%player%::chr} to {chr.%player%}
 			set {sslot%arg 2%.%player%::hp} to {hp.%player%}
-			set {sslot%arg 2%.%player%::bst} to ({str.%player%} + {def.%player%} + {res.%player%} + {spd.%player%} + {skl.%player%} + {hp.%player%})
+			set {sslot%arg 2%.%player%::bst} to ({str.%player%} + {def.%player%} + {res.%player%} + {spd.%player%} + {lck.%player%} + {hp.%player%} + {mag.%player%} + {chr.%player%})
 			set {sslot%arg 2%.%player%::elitemode} to {elitemode.%player%}
 			set {sslot%arg 2%.%player%::classxp} to {classXP.%player%}
+			#Growth Rates
 			set {sslot%arg 2%.%player%::hpgrowth} to {hpgrowth.%player%}
 			set {sslot%arg 2%.%player%::strgrowth} to {strgrowth.%player%}
 			set {sslot%arg 2%.%player%::defgrowth} to {defgrowth.%player%}
-			set {sslot%arg 2%.%player%::sklgrowth} to {sklgrowth.%player%}
+			set {sslot%arg 2%.%player%::lckgrowth} to {lckgrowth.%player%}
 			set {sslot%arg 2%.%player%::spdgrowth} to {spdgrowth.%player%}
 			set {sslot%arg 2%.%player%::maggrowth} to {maggrowth.%player%}
-			set {sslot%arg 2%.%player%::swordpts} to {weaponrank.%player%::swords}
-			set {sslot%arg 2%.%player%::lancepts} to {weaponrank.%player%::lances}
-			set {sslot%arg 2%.%player%::axepts} to {weaponrank.%player%::axes}
-			set {sslot%arg 2%.%player%::bowpts} to {weaponrank.%player%::bows}
-			set {sslot%arg 2%.%player%::magicpts} to {weaponrank.%player%::magic}
-			set {sslot%arg 2%.%player%::staffpts} to {weaponrank.%player%::staves}
-			set {sslot%arg 2%.%player%::swords} to {weapongrade.%player%::swords}
-			set {sslot%arg 2%.%player%::lances} to {weapongrade.%player%::lances}
-			set {sslot%arg 2%.%player%::axes} to {weapongrade.%player%::axes}
-			set {sslot%arg 2%.%player%::bows} to {weapongrade.%player%::bows}
-			set {sslot%arg 2%.%player%::magic} to {weapongrade.%player%::magic}
-			set {sslot%arg 2%.%player%::staves} to {weapongrade.%player%::staves}
+			set {sslot%arg 2%.%player%::resgrowth} to {resgrowth.%player%}
+			set {sslot%arg 2%.%player%::chrgrowth} to {chrgrowth.%player%}
+			#Stat Caps
+			set {sslot%arg 2%.%player%::strcap} to {strcap.%player%}
+			set {sslot%arg 2%.%player%::defcap} to {defcap.%player%}
+			set {sslot%arg 2%.%player%::rescap} to {rescap.%player%}
+			set {sslot%arg 2%.%player%::spdcap} to {spdcap.%player%}
+			set {sslot%arg 2%.%player%::lckcap} to {lckcap.%player%}
+			set {sslot%arg 2%.%player%::magcap} to {magcap.%player%}
+			set {sslot%arg 2%.%player%::chrcap} to {chrcap.%player%}
+			set {sslot%arg 2%.%player%::hpcap} to {hpcap.%player%}
+			set {sslot%arg 2%.%player%::lvlcap} to {lvlcap.%player%}
 			set {sslot%arg 2%.%player%::kills} to {kills.%player%}
 			set {sslot%arg 2%.%player%::hoursplayed} to {hoursplayed.%player%}
 			set {sslot%arg 2%.%player%::highestdamage} to {highestdamage.%player%}
 			set {sslot%arg 2%.%player%::highestsuffered} to {highestsuffered.%player%}
 			set {sslot%arg 2%.%player%.npcSupportPoints::*} to {npcSupportPoints.%player%::*}
+			#Brave New World character attributes
+			set {sslot%arg 2%.%player%::race} to {race.%player%}
+			set {sslot%arg 2%.%player%::background} to {background.%player%}
+			loop {traits.%player%::*}:
+				set {sslot%arg 2%.%player%.traits::%loop-index%} to loop-value
+			loop {abilities.%player%::*}:
+				set {sslot%arg 2%.%player%.abilities::%loop-index%} to loop-value
+			#Lockpicking Data
+			loop {unlockedBlocks.%player%::*}:
+				set {sslot %arg 2%.%player%.unlockedBlocks::%loop-index%} to loop-value
+			#Boon/Bane
+			set {sslot%arg 2%.%player%::boon} to {boon.%player%}
+			set {sslot%arg 2%.%player%::bane} to {bane.%player%}
+			#Weapon Ranks
+			loop {weaponranks.%player%::*}:
+				set {sslot%arg 2%.%player%.weaponranks::%loop-index%} to loop-value
+			loop {weapondamagetotals.%player%::*}:
+				set {sslot%arg 2%.%player%.weapondamagetotals::%loop-index%} to loop-value
+			set {sslot%arg 2%.%player%::primaryWeaponType} to {primaryWeaponType.%player%}
+			set {sslot%arg 2%.%player%::secondaryWeaponType} to {secondaryWeaponType.%player%}
+			#Quest progress
 			loop {quests.%player%::*}:
 				set {sslot%arg 2%.%player%.quests::%loop-index%} to loop-value
+			#Character Creator point allocations (dont know if this is even needed anymore)
 			set {sslot%arg 2%.%player%::pts_hp} to {pts_hp.%player%}
 			set {sslot%arg 2%.%player%::pts_str} to {pts_str.%player%}
 			set {sslot%arg 2%.%player%::pts_def} to {pts_def.%player%}
-			set {sslot%arg 2%.%player%::pts_skl} to {pts_skl.%player%}
+			set {sslot%arg 2%.%player%::pts_lck} to {pts_lck.%player%}
 			set {sslot%arg 2%.%player%::pts_spd} to {pts_spd.%player%}
 			set {sslot%arg 2%.%player%::pts_mag} to {pts_mag.%player%}
+			set {sslot%arg 2%.%player%::pts_res} to {pts_res.%player%}
+			set {sslot%arg 2%.%player%::pts_chr} to {pts_chr.%player%}
+			#Current buffs active on character
 			set {sslot%arg 2%.%player%::strbuff} to {strbuff.%player%}
 			set {sslot%arg 2%.%player%::defbuff} to {defbuff.%player%}
 			set {sslot%arg 2%.%player%::resbuff} to {resbuff.%player%}
 			set {sslot%arg 2%.%player%::spdbuff} to {spdbuff.%player%}
-			set {sslot%arg 2%.%player%::sklbuff} to {sklbuff.%player%}
+			set {sslot%arg 2%.%player%::lckbuff} to {lckbuff.%player%}
+			set {sslot%arg 2%.%player%::magbuff} to {magbuff.%player%}
+			set {sslot%arg 2%.%player%::chrbuff} to {chrbuff.%player%}
 			set {sslot%arg 2%.%player%::hpbuff} to {hpbuff.%player%}
+			#Class Type & Level
 			set {sslot%arg 2%.%player%::lvl} to {lvl.%player%}
 			set {sslot%arg 2%.%player%::class} to {class.%player%}
-			set {sslot%arg 2%.%player%::hasCrest} to {hasCrest.%player%}
-			set {sslot%arg 2%.%player%::strcap} to {strcap.%player%}
-			set {sslot%arg 2%.%player%::defcap} to {defcap.%player%}
-			set {sslot%arg 2%.%player%::rescap} to {rescap.%player%}
-			set {sslot%arg 2%.%player%::spdcap} to {spdcap.%player%}
-			set {sslot%arg 2%.%player%::sklcap} to {sklcap.%player%}
-			set {sslot%arg 2%.%player%::hpcap} to {hpcap.%player%}
-			set {sslot%arg 2%.%player%::lvlcap} to {lvlcap.%player%}
+			#set {sslot%arg 2%.%player%::hasCrest} to {hasCrest.%player%}
 			set {sslot%arg 2%.%player%::promoted} to {promoted.%player%}
 			set {sslot%arg 2%.%player%::deaths} to {deaths.%player%}
 			set {sslot%arg 2%.%player%::reclassed} to {reclassed.%player%}
 			set {sslot%arg 2%.%player%::blocksmined} to {blocksmined.%player%}
 			set {sslot%arg 2%.%player%::toolbreaktally} to {toolbreaktally.%player%}
 			set {sslot%arg 2%.%player%::slfalltotal} to {slfalltotal.%player%}
-			set {sslot%arg 2%.%player%::skillstotal} to {skillstotal.%player%}
 			set {sslot%arg 2%.%player%::skillslot1} to {skillslot1.%player%}
 			set {sslot%arg 2%.%player%::skillslot2} to {skillslot2.%player%}
 			set {sslot%arg 2%.%player%::skillslot3} to {skillslot3.%player%}
 			set {sslot%arg 2%.%player%::skillslot4} to {skillslot4.%player%}
 			set {sslot%arg 2%.%player%::skillslot5} to {skillslot5.%player%}
-			set {sslot%arg 2%.%player%::realism} to {realism.%player%}
+			set {sslot%arg 2%.%player%::skillslot6} to {skillslot6.%player%}
+			set {sslot%arg 2%.%player%::skillslot7} to {skillslot7.%player%}
+			set {sslot%arg 2%.%player%::skillslot8} to {skillslot8.%player%}
+			set {sslot%arg 2%.%player%::skillslot9} to {skillslot9.%player%}
+			set {sslot%arg 2%.%player%::skillslot10} to {skillslot10.%player%}
+			#set {sslot%arg 2%.%player%::realism} to {realism.%player%}
 			set {sslot%arg 2%.%player%::perdiff} to {perdiff.%player%}
-			set {sslot%arg 2%.%player%::ctoggle} to {ctoggle.%player%}
 			set {sslot%arg 2%.%player%::charmade} to {charmade.%player%}
 			set {sslot%arg 2%.%player%::playedTutorial} to {playedTutorial.%player%}
 			#Quotes
-			set {sslot%arg 2%.%player%::badLevelQuote} to {badLevelQuote.%player%}
-			set {sslot%arg 2%.%player%::avgLevelQuote} to {avgLevelQuote.%player%}
-			set {sslot%arg 2%.%player%::goodLevelQuote} to {goodLevelQuote.%player%}
-			set {sslot%arg 2%.%player%::maxLevelQuote} to {maxLevelQuote.%player%}
-			set {sslot%arg 2%.%player%::promotionQuote} to {promotionQuote.%player%}
-			set {sslot%arg 2%.%player%::skillquote1} to {skillquote1.%player%}
-			set {sslot%arg 2%.%player%::skillquote2} to {skillquote2.%player%}
-			set {sslot%arg 2%.%player%::skillquote3} to {skillquote3.%player%}
-			set {sslot%arg 2%.%player%::skillquote4} to {skillquote4.%player%}
-			set {sslot%arg 2%.%player%::lowHPQuote} to {lowHPQuote.%player%}
-			set {sslot%arg 2%.%player%::healedQuote} to {healedQuote.%player%}
-			set {sslot%arg 2%.%player%::mediumHPQuote} to {mediumHPQuote.%player%}
-			set {sslot%arg 2%.%player%::downedQuote} to {downedQuote.%player%}
-			set {sslot%arg 2%.%player%::allyDownedQuote} to {allyDownedQuote.%player%}
-			set {sslot%arg 2%.%player%::enemyDefeated1} to {enemyDefeated1.%player%}
-			set {sslot%arg 2%.%player%::enemyDefeated2} to {enemyDefeated2.%player%}
-			set {sslot%arg 2%.%player%::bossDefeated1} to {bossDefeated1.%player%}
-			set {sslot%arg 2%.%player%::bossDefeated2} to {bossDefeated2.%player%}
-			set {sslot%arg 2%.%player%::deathQuote} to {deathQuote.%player%}
-			set {sslot%arg 2%.%player%::allyNeedHealing} to {allyNeedHealing.%player%}
-			set {sslot%arg 2%.%player%::allyDeathQuote} to {allyDeathQuote.%player%}
-			set {sslot%arg 2%.%player%::allyHardcoreDeathQuote} to {allyHardcoreDeathQuote.%player%}
-			set {sslot%arg 2%.%player%::allyEnemyDefeated1} to {allyEnemyDefeated1.%player%}
-			set {sslot%arg 2%.%player%::allyEnemyDefeated2} to {allyEnemyDefeated2.%player%}
-			set {sslot%arg 2%.%player%::allyEnemyDefeated3} to {allyEnemyDefeated3.%player%}
-			set {sslot%arg 2%.%player%::allyHurtLarge1} to {allyHurtLarge1.%player%}
-			set {sslot%arg 2%.%player%::allyHurtLarge2} to {allyHurtLarge2.%player%}
+			set {sslot%arg 2%.%player%.quotes::*} to {playerQuotes.%player%::*}
 			set {sslot%arg 2%.%player%::generation} to {generation.%player%}
 			#Radiant Quests
 			set {sslot%arg 2%.%player%::RadiantQuestsOnOffer} to {radiantQuestsOnOffer.%player%}
@@ -126,19 +128,88 @@ command /character [<text="list">] [<number=0>]:
 				set {sslot%arg 2%.%player%.RQ.%loop-value%::EXPReward} to {radiantQuest.%player%.%loop-value%::EXPReward}
 				set {sslot%arg 2%.%player%.RQ.%loop-value%::Amount} to {radiantQuest.%player%.%loop-value%::Amount}
 			#Supports
-			set {sslot%arg 2%.%player%::PTPSupportBonusActive} to {PTPSupportBonusActive.%player%}
-			set {sslot%arg 2%.%player%::PTPSupportPoints} to {PTPSupportPoints.%player%}
-			set {sslot%arg 2%.%player%::PTPSupportRank} to {PTPSupportRank.%player%}
-			set {sslot%arg 2%.%player%::supportpartner} to {supportpartner.%player%}
+			#set {sslot%arg 2%.%player%::PTPSupportBonusActive} to {PTPSupportBonusActive.%player%}
+			#set {sslot%arg 2%.%player%::PTPSupportPoints} to {PTPSupportPoints.%player%}
+			#set {sslot%arg 2%.%player%::PTPSupportRank} to {PTPSupportRank.%player%}
+			#set {sslot%arg 2%.%player%::supportpartner} to {supportpartner.%player%}
 			#Discovered Carriages
 			loop {carriageLocs.%player%::*}:
 				set {sslot%arg 2%.%player%.carriageLocs::%loop-index%} to {carriageLocs.%player%::%loop-index%}
+			#Unlocked Blocks
+			loop {unlockedBlocks.%player%::*}:
+				set {sslot%arg 2%.%player%.unlockedBlocks::%loop-index%} to {unlockedBlocks.%player%::%loop-index%}
 			#Perks
 			loop {perks.%player%::*}:
 				if {perks.%player%::%loop-index%} is 1:
 					set {sslot%arg 2%.%player%.perks::%loop-index%} to 1
 				else:
 					set {sslot%arg 2%.%player%.perks::%loop-index%} to 0
+			#Active Perk Tree
+			loop {activePerkTree.%player%::*}:
+				set {sslot%arg 2%.%player%.activePerkTree::%loop-index%} to loop-value
+			#Ability Points
+			set {sslot%arg 2%.%player%::abilityPoints} to {abilityPoints.%player%}
+			#Perk Tree Progress
+			set {sslot%arg 2%.%player%.perkTreeXP.mercenary::Fortitude} to {perkTreeXP.mercenary.%player%::Fortitude}
+			set {sslot%arg 2%.%player%.perkTreeXP.mercenary::Camraderie} to {perkTreeXP.mercenary.%player%::Camraderie}
+			set {sslot%arg 2%.%player%.perkTreeXP.mercenary::Courage} to {perkTreeXP.mercenary.%player%::Courage}
+			set {sslot%arg 2%.%player%.perkTreeXP.knight::Perserverance} to {perkTreeXP.knight.%player%::Perserverance}
+			set {sslot%arg 2%.%player%.perkTreeXP.knight::Reliability} to {perkTreeXP.knight.%player%::Reliability}
+			set {sslot%arg 2%.%player%.perkTreeXP.knight::Pessimism} to {perkTreeXP.knight.%player%::Pessimism}
+			set {sslot%arg 2%.%player%.perkTreeXP.bladesman::Intuition} to {perkTreeXP.bladesman.%player%::Intuition}
+			set {sslot%arg 2%.%player%.perkTreeXP.bladesman::Zeal} to {perkTreeXP.bladesman.%player%::Zeal}
+			set {sslot%arg 2%.%player%.perkTreeXP.bladesman::Daring} to {perkTreeXP.bladesman.%player%::Daring}
+			set {sslot%arg 2%.%player%.perkTreeXP.fighter::Heroism} to {perkTreeXP.fighter.%player%::Heroism}
+			set {sslot%arg 2%.%player%.perkTreeXP.fighter::Flexibility} to {perkTreeXP.fighter.%player%::Flexibility}
+			set {sslot%arg 2%.%player%.perkTreeXP.fighter::Confidence} to {perkTreeXP.fighter.%player%::Confidence}
+			set {sslot%arg 2%.%player%.perkTreeXP.mage::Serenity} to {perkTreeXP.mage.%player%::Serenity}
+			set {sslot%arg 2%.%player%.perkTreeXP.mage::Wisdom} to {perkTreeXP.mage.%player%::Wisdom}
+			set {sslot%arg 2%.%player%.perkTreeXP.mage::Diligence} to {perkTreeXP.mage.%player%::Diligence}
+			set {sslot%arg 2%.%player%.perkTreeXP.cleric::Pacifism} to {perkTreeXP.cleric.%player%::Pacifism}
+			set {sslot%arg 2%.%player%.perkTreeXP.cleric::Loyalty} to {perkTreeXP.cleric.%player%::Loyalty}
+			set {sslot%arg 2%.%player%.perkTreeXP.cleric::Hypocrisy} to {perkTreeXP.cleric.%player%::Hypocrisy}
+			set {sslot%arg 2%.%player%.perkTreeXP.archer::Prudence} to {perkTreeXP.archer.%player%::Prudence}
+			set {sslot%arg 2%.%player%.perkTreeXP.archer::Recitence} to {perkTreeXP.archer.%player%::Recitence}
+			set {sslot%arg 2%.%player%.perkTreeXP.archer::Spirit} to {perkTreeXP.archer.%player%::Spirit}
+			set {sslot%arg 2%.%player%.perkTreeXP.cavalier::Adeptness} to {perkTreeXP.cavalier.%player%::Adeptness}
+			set {sslot%arg 2%.%player%.perkTreeXP.cavalier::Enthusiasm} to {perkTreeXP.cavalier.%player%::Enthusiasm}
+			set {sslot%arg 2%.%player%.perkTreeXP.cavalier::Steadfastness} to {perkTreeXP.cavalier.%player%::Steadfastness}
+			set {sslot%arg 2%.%player%.perkTreeXP.devil hunter::Confidence} to {perkTreeXP.devil hunter.%player%::Confidence}
+			set {sslot%arg 2%.%player%.perkTreeXP.devil hunter::Impulsiveness} to {perkTreeXP.devil hunter.%player%::Impulsiveness}
+			set {sslot%arg 2%.%player%.perkTreeXP.devil hunter::Stoicism} to {perkTreeXP.devil hunter.%player%::Stoicism}
+			set {sslot%arg 2%.%player%.perkTreeXP.gunslinger::GUNSLINGER_TREE_01} to {perkTreeXP.gunslinger.%player%::GUNSLINGER_TREE_01}
+			set {sslot%arg 2%.%player%.perkTreeXP.gunslinger::GUNSLINGER_TREE_02} to {perkTreeXP.gunslinger.%player%::GUNSLINGER_TREE_02}
+			set {sslot%arg 2%.%player%.perkTreeXP.gunslinger::GUNSLINGER_TREE_03} to {perkTreeXP.gunslinger.%player%::GUNSLINGER_TREE_03}
+			set {sslot%arg 2%.%player%.perkTreeXP.strategist::STRATEGIST_TREE_01} to {perkTreeXP.strategist.%player%::STRATEGIST_TREE_01}
+			set {sslot%arg 2%.%player%.perkTreeXP.strategist::STRATEGIST_TREE_02} to {perkTreeXP.strategist.%player%::STRATEGIST_TREE_02}
+			set {sslot%arg 2%.%player%.perkTreeXP.strategist::STRATEGIST_TREE_03} to {perkTreeXP.strategist.%player%::STRATEGIST_TREE_03}
+			set {sslot%arg 2%.%player%.perkTreeXP.survivor::SURVIVOR_TREE_01} to {perkTreeXP.survivor.%player%::SURVIVOR_TREE_01}
+			set {sslot%arg 2%.%player%.perkTreeXP.survivor::SURVIVOR_TREE_02} to {perkTreeXP.survivor.%player%::SURVIVOR_TREE_02}
+			set {sslot%arg 2%.%player%.perkTreeXP.survivor::SURVIVOR_TREE_03} to {perkTreeXP.survivor.%player%::SURVIVOR_TREE_03}
+			set {sslot%arg 2%.%player%.perkTreeXP.trickster::TRICKSTER_TREE_01} to {perkTreeXP.trickster.%player%::TRICKSTER_TREE_01}
+			set {sslot%arg 2%.%player%.perkTreeXP.trickster::TRICKSTER_TREE_02} to {perkTreeXP.trickster.%player%::TRICKSTER_TREE_02}
+			set {sslot%arg 2%.%player%.perkTreeXP.trickster::TRICKSTER_TREE_03} to {perkTreeXP.trickster.%player%::TRICKSTER_TREE_03}
+			set {sslot%arg 2%.%player%.perkTreeXP.summoner::SUMMONER_TREE_01} to {perkTreeXP.summoner.%player%::SUMMONER_TREE_01}
+			set {sslot%arg 2%.%player%.perkTreeXP.summoner::SUMMONER_TREE_02} to {perkTreeXP.summoner.%player%::SUMMONER_TREE_02}
+			set {sslot%arg 2%.%player%.perkTreeXP.summoner::SUMMONER_TREE_03} to {perkTreeXP.summoner.%player%::SUMMONER_TREE_03}
+			set {sslot%arg 2%.%player%.perkTreeXP.Charlatan::Illumination} to {perkTreeXP.charlatan.%player%::Illumination}
+			set {sslot%arg 2%.%player%.perkTreeXP.Charlatan::Experimentation} to {perkTreeXP.charlatan.%player%::Experimentation}
+			set {sslot%arg 2%.%player%.perkTreeXP.Charlatan::Condemnation} to {perkTreeXP.charlatan.%player%::Condemnation}
+			set {sslot%arg 2%.%player%.perkTreeXP.troubador::Adeptness} to {perkTreeXP.troubador.%player%::Adeptness}
+			set {sslot%arg 2%.%player%.perkTreeXP.troubador::Faithfulness} to {perkTreeXP.troubador.%player%::Faithfulness}
+			set {sslot%arg 2%.%player%.perkTreeXP.troubador::Versatility} to {perkTreeXP.troubador.%player%::Versatility}
+			set {sslot%arg 2%.%player%.perkTreeXP.outlaw::Secrecy} to {perkTreeXP.outlaw.%player%::Secrecy}
+			set {sslot%arg 2%.%player%.perkTreeXP.outlaw::Lawlessness} to {perkTreeXP.outlaw.%player%::Lawlessness}
+			set {sslot%arg 2%.%player%.perkTreeXP.outlaw::Mercilessness} to {perkTreeXP.outlaw.%player%::Mercilessness}
+			set {sslot%arg 2%.%player%.perkTreeXP.conjurer::Wisdom} to {perkTreeXP.conjurer.%player%::Wisdom}
+			set {sslot%arg 2%.%player%.perkTreeXP.conjurer::Vendetta} to {perkTreeXP.conjurer.%player%::Vendetta}
+			set {sslot%arg 2%.%player%.perkTreeXP.conjurer::Chaos} to {perkTreeXP.conjurer.%player%::Chaos}
+			set {sslot%arg 2%.%player%.perkTreeXP.poet::Rythm} to {perkTreeXP.poet.%player%::Rythm}
+			set {sslot%arg 2%.%player%.perkTreeXP.poet::Tempo} to {perkTreeXP.poet.%player%::Tempo}
+			set {sslot%arg 2%.%player%.perkTreeXP.poet::Melody} to {perkTreeXP.poet.%player%::Melody}
+			set {sslot%arg 2%.%player%.perkTreeXP.keeper::Perserverance} to {perkTreeXP.keeper.%player%::Perserverance}
+			set {sslot%arg 2%.%player%.perkTreeXP.keeper::Deflection} to {perkTreeXP.keeper.%player%::Deflection}
+			set {sslot%arg 2%.%player%.perkTreeXP.keeper::Protection} to {perkTreeXP.keeper.%player%::Protection}
 			#Equipped Perk Bonuses
 			loop {perksEquipped.%player%::*}:
 				if {perksEquipped.%player%::%loop-index%} is 1:
@@ -155,12 +226,22 @@ command /character [<text="list">] [<number=0>]:
 			set {savepos%arg 2%.%player%} to location of block at player
 			clear {inv%arg 2%.%player%::*}
 			set {sslot%arg 2%.charvault.%player%::*} to {db_charvault.%player%::*}
+			#Brave New World settings
+			set {sslot%arg 2%.%player%::drEnable} to {drEnable.%player%}
+			set {sslot%arg 2%.%player%::lowPerformanceMode} to {lowPerformanceMode.%player%}
+			set {sslot%arg 2%.%player%::quotesToggle} to {quotesToggle.%player%}
+			set {sslot%arg 2%.%player%::autosave} to {autosave.%player%}
+			set {sslot%arg 2%.%player%::jumpInertiaToggle} to {jumpInertiaToggle.%player%}
+			set {sslot%arg 2%.%player%::slidingToggle} to {slidingToggle.%player%}
+			set {sslot%arg 2%.%player%::hintsToggle} to {hintsToggle.%player%}
+			set {sslot%arg 2%.%player%::damageAssistToggle} to {damageAssistToggle.%player%}
+			#Back up inventory
 			loop all items in player's inventory:
 				add loop-item to {inv%arg 2%.%player%::*}
 			set {_cash} to the player's money
 			set {sslot%arg 2%.%player%::cash} to {_cash}
 			set {sslot%arg 2%.%player%::bhop} to {bhop.%player%}
-			send "<light blue>[Characters]<light green> Saved current character to slot %arg 2%!"
+			#send "<light blue>[Characters]<light green> Saved current character to slot %arg 2%!"
 		#Load
 		else if arg 1 is "load":
 			if {sslot%arg 2%.%player%::name} is not set:
@@ -231,61 +312,67 @@ command /character [<text="list">] [<number=0>]:
 								reveal player to loop-player
 								reveal loop-player to player
 				set {npcSupportPoints.%player%::*} to {sslot%arg 2%.%player%.npcSupportPoints::*}
+				#Growth Rates
 				set {hpgrowth.%player%} to {sslot%arg 2%.%player%::hpgrowth}
 				set {strgrowth.%player%} to {sslot%arg 2%.%player%::strgrowth}
 				set {defgrowth.%player%} to {sslot%arg 2%.%player%::defgrowth}
-				set {sklgrowth.%player%} to {sslot%arg 2%.%player%::sklgrowth}
+				set {lckgrowth.%player%} to {sslot%arg 2%.%player%::lckgrowth}
 				set {spdgrowth.%player%} to {sslot%arg 2%.%player%::spdgrowth}
 				set {maggrowth.%player%} to {sslot%arg 2%.%player%::maggrowth}
+				set {resrowth.%player%} to {sslot%arg 2%.%player%::resgrowth}
+				set {chrgrowth.%player%} to {sslot%arg 2%.%player%::chrgrowth}
+				#Character Creator point allocations
 				set {pts_hp.%player%} to {sslot%arg 2%.%player%::pts_hp}
 				set {pts_str.%player%} to {sslot%arg 2%.%player%::pts_str}
 				set {pts_def.%player%} to {sslot%arg 2%.%player%::pts_def}
-				set {pts_skl.%player%} to {sslot%arg 2%.%player%::pts_skl}
+				set {pts_lck.%player%} to {sslot%arg 2%.%player%::pts_lck}
 				set {pts_spd.%player%} to {sslot%arg 2%.%player%::pts_spd}
 				set {pts_mag.%player%} to {sslot%arg 2%.%player%::pts_mag}
+				set {pts_res.%player%} to {sslot%arg 2%.%player%::pts_res}
+				set {pts_chr.%player%} to {sslot%arg 2%.%player%::pts_chr}
+				#misc class data
 				set {elitemode.%player%} to {sslot%arg 2%.%player%::elitemode}
 				set {classxp.%player%} to {sslot%arg 2%.%player%::classxp}
-				set {weaponrank.%player%::swords} to {sslot%arg 2%.%player%::swordpts}
-				set {weaponrank.%player%::lances} to {sslot%arg 2%.%player%::lancepts}
-				set {weaponrank.%player%::axes} to {sslot%arg 2%.%player%::axepts}
-				set {weaponrank.%player%::bows} to {sslot%arg 2%.%player%::bowpts}
-				set {weaponrank.%player%::magic} to {sslot%arg 2%.%player%::magicpts}
-				set {weaponrank.%player%::staves} to {sslot%arg 2%.%player%::staffpts}
-				set {weapongrade.%player%::swords} to {sslot%arg 2%.%player%::swords}
-				set {weapongrade.%player%::lances} to {sslot%arg 2%.%player%::lances}
-				set {weapongrade.%player%::axes} to {sslot%arg 2%.%player%::axes}
-				set {weapongrade.%player%::bows} to {sslot%arg 2%.%player%::bows}
-				set {weapongrade.%player%::magic} to {sslot%arg 2%.%player%::magic}
-				set {weapongrade.%player%::staves} to {sslot%arg 2%.%player%::staves}
 				set {kills.%player%} to {sslot%arg 2%.%player%::kills}
 				set {hoursplayed.%player%} to {sslot%arg 2%.%player%::hoursplayed}
 				set {highestdamage.%player%} to {sslot%arg 2%.%player%::highestdamage}
 				set {highestsuffered.%player%} to {sslot%arg 2%.%player%::highestsuffered}
+				#Quest progress
 				loop {sslot%arg 2%.%player%.quests::*}:
 					set {quests.%player%::%loop-index%} to loop-value
+				#base stats
 				set {str.%player%} to {sslot%arg 2%.%player%::str}
 				set {def.%player%} to {sslot%arg 2%.%player%::def}
 				set {res.%player%} to {sslot%arg 2%.%player%::res}
 				set {spd.%player%} to {sslot%arg 2%.%player%::spd}
-				set {skl.%player%} to {sslot%arg 2%.%player%::skl}
+				set {lck.%player%} to {sslot%arg 2%.%player%::lck}
 				set {hp.%player%} to {sslot%arg 2%.%player%::hp}
+				set {chr.%player%} to {sslot%arg 2%.%player%::chr}
 				set {bst.%player%} to {sslot%arg 2%.%player%::bst}
+				#active buffs
 				set {strbuff.%player%} to {sslot%arg 2%.%player%::strbuff}
 				set {defbuff.%player%} to {sslot%arg 2%.%player%::defbuff}
 				set {resbuff.%player%} to {sslot%arg 2%.%player%::resbuff}
 				set {spdbuff.%player%} to {sslot%arg 2%.%player%::spdbuff}
-				set {sklbuff.%player%} to {sslot%arg 2%.%player%::sklbuff}
+				set {lckbuff.%player%} to {sslot%arg 2%.%player%::lckbuff}
+				set {chrbuff.%player%} to {sslot%arg 2%.%player%::chrbuff}
+				set {magbuff.%player%} to {sslot%arg 2%.%player%::magbuff}
 				set {hpbuff.%player%} to {sslot%arg 2%.%player%::hpbuff}
+				#misc class data
 				set {lvl.%player%} to {sslot%arg 2%.%player%::lvl}
 				set {class.%player%} to {sslot%arg 2%.%player%::class}
 				set {hasCrest.%player%} to {sslot%arg 2%.%player%::hasCrest}
+				#stat caps
 				set {strcap.%player%} to {sslot%arg 2%.%player%::strcap}
 				set {defcap.%player%} to {sslot%arg 2%.%player%::defcap}
 				set {rescap.%player%} to {sslot%arg 2%.%player%::rescap}
 				set {spdcap.%player%} to {sslot%arg 2%.%player%::spdcap}
-				set {sklcap.%player%} to {sslot%arg 2%.%player%::sklcap}
+				set {lckcap.%player%} to {sslot%arg 2%.%player%::lckcap}
+				set {chrcap.%player%} to {sslot%arg 2%.%player%::chrcap}
+				set {magcap.%player%} to {sslot%arg 2%.%player%::magcap}
 				set {hpcap.%player%} to {sslot%arg 2%.%player%::hpcap}
 				set {lvlcap.%player%} to {sslot%arg 2%.%player%::lvlcap}
+				#more misc class data
 				set {promoted.%player%} to {sslot%arg 2%.%player%::promoted}
 				set {deaths.%player%} to {sslot%arg 2%.%player%::deaths}
 				set {reclassed.%player%} to {sslot%arg 2%.%player%::reclassed}
@@ -298,12 +385,35 @@ command /character [<text="list">] [<number=0>]:
 				set {skillslot3.%player%} to {sslot%arg 2%.%player%::skillslot3}
 				set {skillslot4.%player%} to {sslot%arg 2%.%player%::skillslot4}
 				set {skillslot5.%player%} to {sslot%arg 2%.%player%::skillslot5}
+				set {skillslot6.%player%} to {sslot%arg 2%.%player%::skillslot6}
+				set {skillslot7.%player%} to {sslot%arg 2%.%player%::skillslot7}
+				set {skillslot8.%player%} to {sslot%arg 2%.%player%::skillslot8}
+				set {skillslot9.%player%} to {sslot%arg 2%.%player%::skillslot9}
+				set {skillslot10.%player%} to {sslot%arg 2%.%player%::skillslot10}
 				set {perdiff.%player%} to {sslot%arg 2%.%player%::perdiff}
 				set {ctoggle.%player%} to {sslot%arg 2%.%player%::ctoggle}
-				set {boon.%player%} to {sslot%arg 2%.%player%::boon}
-				set {bane.%player%} to {sslot%arg 2%.%player%::bane}
 				set {charmade.%player%} to {sslot%arg 2%.%player%::charmade}
 				set {generation.%player%} to {sslot%arg 2%.%player%::generation}
+				#Brave New World character data
+				set {race.%player%} to {sslot%arg 2%.%player%::Race}
+				set {background.%player%} to {sslot%arg 2%.%player%::Background}
+				loop {sslot%arg 2%.%player%.traits::*}:
+					set {traits.%player%::%loop-index%} to loop-value
+				loop {sslot%arg 2%.%player%.abilities::*}:
+					set {abilities.%player%::%loop-index%} to loop-value
+				#Lockpicking Data
+				loop {sslot%arg 2%.%player%.unlockedBlocks::*}:
+					set {unlockedBlocks.%player%::%loop-index%} to loop-value
+				#Boon/Bane
+				set {boon.%player%} to {sslot%arg 2%.%player%::boon}
+				set {bane.%player%} to {sslot%arg 2%.%player%::bane}
+				#Weapon Ranks
+				loop {sslot%arg 2%.%player%.weaponranks::*}:
+					set {weaponranks.%player%::%loop-index%} to loop-value
+				loop {sslot%arg 2%.%player%.weapondamagetotals::*}:
+					set {weapondamagetotals.%player%::%loop-index%} to loop-value
+				set {primaryWeaponType.%player%} to {sslot%arg 2%.%player%::primaryWeaponType}
+				set {secondaryWeaponType.%player%} to {sslot%arg 2%.%player%::secondaryWeaponType}
 				#Radiant Quests
 				set {RadiantQuestsOnOffer.%player%} to {sslot%arg 2%.%player%::RadiantQuestsOnOffer}
 				set {RadiantQuestsRNG.%player%} to true
@@ -315,46 +425,85 @@ command /character [<text="list">] [<number=0>]:
 					set {radiantQuest.%player%.%loop-value%::EXPReward} to {sslot%arg 2%.%player%.RQ.%loop-value%::EXPReward}
 					set {radiantQuest.%player%.%loop-value%::Amount} to {sslot%arg 2%.%player%.RQ.%loop-value%::Amount}
 				#Quotes
-				set {badLevelQuote.%player%} to {sslot%arg 2%.%player%::badLevelQuote}
-				set {avgLevelQuote.%player%} to {sslot%arg 2%.%player%::avgLevelQuote}
-				set {goodLevelQuote.%player%} to {sslot%arg 2%.%player%::goodLevelQuote}
-				set {maxLevelQuote.%player%} to {sslot%arg 2%.%player%::maxLevelQuote}
-				set {promotionQuote.%player%} to {sslot%arg 2%.%player%::promotionQuote}
-				set {skillquote1.%player%} to {sslot%arg 2%.%player%::skillquote1}
-				set {skillquote2.%player%} to {sslot%arg 2%.%player%::skillquote2}
-				set {skillquote3.%player%} to {sslot%arg 2%.%player%::skillquote3}
-				set {skillquote4.%player%} to {sslot%arg 2%.%player%::skillquote4}
-				set {lowHPQuote.%player%} to {sslot%arg 2%.%player%::lowHPQuote}
-				set {healedQuote.%player%} to {sslot%arg 2%.%player%::healedQuote}
-				set {mediumHPQuote.%player%} to {sslot%arg 2%.%player%::mediumHPQuote}
-				set {downedQuote.%player%} to {sslot%arg 2%.%player%::downedQuote}
-				set {allyDownedQuote.%player%} to {sslot%arg 2%.%player%::allyDownedQuote}
-				set {enemyDefeated1.%player%} to {sslot%arg 2%.%player%::enemyDefeated1}
-				set {enemyDefeated2.%player%} to {sslot%arg 2%.%player%::enemyDefeated2}
-				set {bossDefeated1.%player%} to {sslot%arg 2%.%player%::bossDefeated1}
-				set {bossDefeated2.%player%} to {sslot%arg 2%.%player%::bossDefeated2}
-				set {deathQuote.%player%} to {sslot%arg 2%.%player%::deathQuote}
-				set {allyNeedHealing.%player%} to {sslot%arg 2%.%player%::allyNeedHealing}
-				set {allyDeathQuote.%player%} to {sslot%arg 2%.%player%::allyDeathQuote}
-				set {allyHardcoreDeathQuote.%player%} to {sslot%arg 2%.%player%::allyHardcoreDeathQuote}
-				set {allyEnemyDefeated1.%player%} to {sslot%arg 2%.%player%::allyEnemyDefeated1}
-				set {allyEnemyDefeated2.%player%} to {sslot%arg 2%.%player%::allyEnemyDefeated2}
-				set {allyEnemyDefeated3.%player%} to {sslot%arg 2%.%player%::allyEnemyDefeated3}
-				set {allyHurtLarge1.%player%} to {sslot%arg 2%.%player%::allyHurtLarge1}
-				set {allyHurtLarge2.%player%} to {sslot%arg 2%.%player%::allyHurtLarge2}
-				#Supports
-				set {PTPSupportBonusActive.%player%} to {sslot%arg 2%.%player%::PTPSupportBonusActive} 
-				set {PTPSupportPoints.%player%} to {sslot%arg 2%.%player%::PTPSupportPoints}
-				set {PTPSupportRank.%player%} to {sslot%arg 2%.%player%::PTPSupportRank}
-				set {supportpartner.%player%} to {sslot%arg 2%.%player%::supportpartner}
+				set {playerQuotes.%player%::*} to {sslot%arg 2%.%player%.quotes::*}
 				#Discovered Carriages
 				clear {carriageLocs.%player%::*}
 				loop {sslot%arg 2%.%player%.carriageLocs::*}:
 					set {carriageLocs.%player%::%loop-index%} to {sslot%arg 2%.%player%.carriageLocs::%loop-index%}
+				#Unlocked Blocks
+				clear {unlockedBlocks.%player%::*}
+				loop {sslot%arg 2%.%player%.unlockedBlocks::*}:
+					set {unlockedBlocks.%player%::%loop-index%} to {sslot%arg 2%.%player%.unlockedBlocks::%loop-index%}
 				#Perks
 				clear {perks.%player%::*}
 				loop {sslot%arg 2%.%player%.perks::*}:
 					set {perks.%player%::%loop-index%} to {sslot%arg 2%.%player%.perks::%loop-index%}
+				#Active Perk Tree
+				loop {sslot%arg 2%.%player%.activePerkTree::*}:
+					set {activePerkTree.%player%::%loop-index%} to loop-value
+				#Ability Points
+				set {abilityPoints.%player%} to {sslot%arg 2%.%player%::abilityPoints}
+				#Perk Tree Progress
+				set {perkTreeXP.mercenary.%player%::Fortitude} to {sslot%arg 2%.%player%.perkTreeXP.mercenary::Fortitude}
+				set {perkTreeXP.mercenary.%player%::Camraderie} to {sslot%arg 2%.%player%.perkTreeXP.mercenary::Camraderie}
+				set {perkTreeXP.mercenary.%player%::Courage} to {sslot%arg 2%.%player%.perkTreeXP.mercenary::Courage}
+				set {perkTreeXP.knight.%player%::Perserverance} to {sslot%arg 2%.%player%.perkTreeXP.knight::Perserverance}
+				set {perkTreeXP.knight.%player%::Reliability} to {sslot%arg 2%.%player%.perkTreeXP.knight::Reliability}
+				set {perkTreeXP.knight.%player%::Pessimism} to {sslot%arg 2%.%player%.perkTreeXP.knight::Pessimism}
+				set {perkTreeXP.bladesman.%player%::Intuition} to {sslot%arg 2%.%player%.perkTreeXP.bladesman::Intuition}
+				set {perkTreeXP.bladesman.%player%::Zeal} to {sslot%arg 2%.%player%.perkTreeXP.bladesman::Zeal}
+				set {perkTreeXP.bladesman.%player%::Daring} to {sslot%arg 2%.%player%.perkTreeXP.bladesman::Daring}
+				set {perkTreeXP.fighter.%player%::Heroism} to {sslot%arg 2%.%player%.perkTreeXP.fighter::Heroism}
+				set {perkTreeXP.fighter.%player%::Flexibility} to {sslot%arg 2%.%player%.perkTreeXP.fighter::Flexibility}
+				set {perkTreeXP.fighter.%player%::Confidence} to {sslot%arg 2%.%player%.perkTreeXP.fighter::Confidence}
+				set {perkTreeXP.mage.%player%::Serenity} to {sslot%arg 2%.%player%.perkTreeXP.mage::Serenity}
+				set {perkTreeXP.mage.%player%::Wisdom} to {sslot%arg 2%.%player%.perkTreeXP.mage::Wisdom}
+				set {perkTreeXP.mage.%player%::Diligence} to {sslot%arg 2%.%player%.perkTreeXP.mage::Diligence}
+				set {perkTreeXP.cleric.%player%::Pacifism} to {sslot%arg 2%.%player%.perkTreeXP.cleric::Pacifism}
+				set {perkTreeXP.cleric.%player%::Loyalty} to {sslot%arg 2%.%player%.perkTreeXP.cleric::Loyalty}
+				set {perkTreeXP.cleric.%player%::Hypocrisy} to {sslot%arg 2%.%player%.perkTreeXP.cleric::Hypocrisy}
+				set {perkTreeXP.archer.%player%::Prudence} to {sslot%arg 2%.%player%.perkTreeXP.archer::Prudence}
+				set {perkTreeXP.archer.%player%::Recitence} to {sslot%arg 2%.%player%.perkTreeXP.archer::Recitence}
+				set {perkTreeXP.archer.%player%::Spirit} to {sslot%arg 2%.%player%.perkTreeXP.archer::Spirit}
+				set {perkTreeXP.cavalier.%player%::Adeptness} to {sslot%arg 2%.%player%.perkTreeXP.cavalier::Adeptness}
+				set {perkTreeXP.cavalier.%player%::Enthusiasm} to {sslot%arg 2%.%player%.perkTreeXP.cavalier::Enthusiasm}
+				set {perkTreeXP.cavalier.%player%::Steadfastness} to {sslot%arg 2%.%player%.perkTreeXP.cavalier::Steadfastness}
+				set {perkTreeXP.devil hunter.%player%::Confidence} to {sslot%arg 2%.%player%.perkTreeXP.devil hunter::Confidence}
+				set {perkTreeXP.devil hunter.%player%::Impulsiveness} to {sslot%arg 2%.%player%.perkTreeXP.devil hunter::Impulsiveness}
+				set {perkTreeXP.devil hunter.%player%::Stoicism} to {sslot%arg 2%.%player%.perkTreeXP.devil hunter::Stoicism}
+				set {perkTreeXP.gunslinger.%player%::GUNSLINGER_TREE_01} to {sslot%arg 2%.%player%.perkTreeXP.gunslinger::GUNSLINGER_TREE_01}
+				set {perkTreeXP.gunslinger.%player%::GUNSLINGER_TREE_02} to {sslot%arg 2%.%player%.perkTreeXP.gunslinger::GUNSLINGER_TREE_02}
+				set {perkTreeXP.gunslinger.%player%::GUNSLINGER_TREE_03} to {sslot%arg 2%.%player%.perkTreeXP.gunslinger::GUNSLINGER_TREE_03}
+				set {perkTreeXP.strategist.%player%::STRATEGIST_TREE_01} to {sslot%arg 2%.%player%.perkTreeXP.strategist::STRATEGIST_TREE_01}
+				set {perkTreeXP.strategist.%player%::STRATEGIST_TREE_02} to {sslot%arg 2%.%player%.perkTreeXP.strategist::STRATEGIST_TREE_02}
+				set {perkTreeXP.strategist.%player%::STRATEGIST_TREE_03} to {sslot%arg 2%.%player%.perkTreeXP.strategist::STRATEGIST_TREE_03}
+				set {perkTreeXP.survivor.%player%::SURVIVOR_TREE_01} to {sslot%arg 2%.%player%.perkTreeXP.survivor::SURVIVOR_TREE_01}
+				set {perkTreeXP.survivor.%player%::SURVIVOR_TREE_02} to {sslot%arg 2%.%player%.perkTreeXP.survivor::SURVIVOR_TREE_02}
+				set {perkTreeXP.survivor.%player%::SURVIVOR_TREE_03} to {sslot%arg 2%.%player%.perkTreeXP.survivor::SURVIVOR_TREE_03}
+				set {perkTreeXP.trickster.%player%::TRICKSTER_TREE_01} to {sslot%arg 2%.%player%.perkTreeXP.trickster::TRICKSTER_TREE_01}
+				set {perkTreeXP.trickster.%player%::TRICKSTER_TREE_02} to {sslot%arg 2%.%player%.perkTreeXP.trickster::TRICKSTER_TREE_02}
+				set {perkTreeXP.trickster.%player%::TRICKSTER_TREE_03} to {sslot%arg 2%.%player%.perkTreeXP.trickster::TRICKSTER_TREE_03}
+				set {perkTreeXP.summoner.%player%::SUMMONER_TREE_01} to {sslot%arg 2%.%player%.perkTreeXP.summoner::SUMMONER_TREE_01}
+				set {perkTreeXP.summoner.%player%::SUMMONER_TREE_02} to {sslot%arg 2%.%player%.perkTreeXP.summoner::SUMMONER_TREE_02}
+				set {perkTreeXP.summoner.%player%::SUMMONER_TREE_03} to {sslot%arg 2%.%player%.perkTreeXP.summoner::SUMMONER_TREE_03}
+				set {perkTreeXP.charlatan.%player%::Illumination} to {sslot%arg 2%.%player%.perkTreeXP.Charlatan::Illumination}
+				set {perkTreeXP.charlatan.%player%::Experimentation} to {sslot%arg 2%.%player%.perkTreeXP.Charlatan::Experimentation}
+				set {perkTreeXP.charlatan.%player%::Condemnation} to {sslot%arg 2%.%player%.perkTreeXP.Charlatan::Condemnation}
+				set {perkTreeXP.troubador.%player%::Adeptness} to {sslot%arg 2%.%player%.perkTreeXP.troubador::Adeptness}
+				set {perkTreeXP.troubador.%player%::Faithfulness} to {sslot%arg 2%.%player%.perkTreeXP.troubador::Faithfulness}
+				set {perkTreeXP.troubador.%player%::Versatility} to {sslot%arg 2%.%player%.perkTreeXP.troubador::Versatility}
+				set {perkTreeXP.outlaw.%player%::Secrecy} to {sslot%arg 2%.%player%.perkTreeXP.outlaw::Secrecy}
+				set {perkTreeXP.outlaw.%player%::Lawlessness} to {sslot%arg 2%.%player%.perkTreeXP.outlaw::Lawlessness}
+				set {perkTreeXP.outlaw.%player%::Mercilessness} to {sslot%arg 2%.%player%.perkTreeXP.outlaw::Mercilessness}
+				set {perkTreeXP.conjurer.%player%::Wisdom} to {sslot%arg 2%.%player%.perkTreeXP.conjurer::Wisdom} 
+				set {perkTreeXP.conjurer.%player%::Vendetta} to {sslot%arg 2%.%player%.perkTreeXP.conjurer::Vendetta}
+				set {perkTreeXP.conjurer.%player%::Chaos} to {sslot%arg 2%.%player%.perkTreeXP.conjurer::Chaos}
+				set {perkTreeXP.poet.%player%::Rythm} to {sslot%arg 2%.%player%.perkTreeXP.poet::Rythm}
+				set {perkTreeXP.poet.%player%::Tempo} to {sslot%arg 2%.%player%.perkTreeXP.poet::Tempo}
+				set {perkTreeXP.poet.%player%::Melody} to {sslot%arg 2%.%player%.perkTreeXP.poet::Melody}
+				set {perkTreeXP.keeper.%player%::Perserverance} to {sslot%arg 2%.%player%.perkTreeXP.keeper::Perserverance}
+				set {perkTreeXP.keeper.%player%::Deflection} to {sslot%arg 2%.%player%.perkTreeXP.keeper::Deflection}
+				set {perkTreeXP.keeper.%player%::Protection} to {sslot%arg 2%.%player%.perkTreeXP.keeper::Protection}
 				#Active Perk Bonuses
 				clear {perksEquipped.%player%::*}
 				loop {sslot%arg 2%.%player%.perksEquipped::*}:
@@ -363,6 +512,15 @@ command /character [<text="list">] [<number=0>]:
 				clear {spells.%player%::*}
 				loop {sslot%arg 2%.%player%.spells::*}:
 					set {spells.%player%::%loop-index%} to {sslot%arg 2%.%player%.spells::%loop-index%}
+				#Brave New World settings
+				set {drEnable.%player%} to {sslot%arg 2%.%player%::drEnable}
+				set {lowPerformanceMode.%player%} to {sslot%arg 2%.%player%::lowPerformanceMode}
+				set {quotesToggle.%player%} to {sslot%arg 2%.%player%::quotesToggle}
+				set {autosave.%player%} to {sslot%arg 2%.%player%::autosave}
+				set {jumpInertiaToggle.%player%} to {sslot%arg 2%.%player%::jumpInertiaToggle}
+				set {slidingToggle.%player%} to {sslot%arg 2%.%player%::slidingToggle}
+				set {hintsToggle.%player%} to {sslot%arg 2%.%player%::hintsToggle}
+				set {damageAssistToggle.%player%} to {sslot%arg 2%.%player%::damageAssistToggle}
 				#Misc
 				set {realism.%player%} to {sslot%arg 2%.%player%::realism}
 				clear the player's inventory
@@ -376,67 +534,77 @@ command /character [<text="list">] [<number=0>]:
 				set {db_charvault.%player%::*} to {sslot%arg 2%.charvault.%player%::*}
 				make player execute command "/perk 0 LoadSave"
 				wait 1 tick
-				open chest with 6 rows named "%{sslot%arg 2%.%player%::name}%'s Inventory" for the player
+				open chest inventory with 6 rows named "%{sslot%arg 2%.%player%::name}%'s Inventory" for the player
 				wait 1 tick
 				set {_slot} to -1
 				loop {inv%arg 2%.%player%::*}:
 					add 1 to {_slot}
 					set slot {_slot} of player's current inventory to loop-value
-				send "<light blue>[Characters]<light green> Loaded character %{sslot%arg 2%.%player%::name}%!"
+				#send "<light blue>[Characters]<light green> Loaded character %{sslot%arg 2%.%player%::name}%!"
 		else if arg 1 is "new":
+			set the player's gamemode to survival
 			#Classes
 			set the player's display name to the player's name
 			make player execute command "/xp -10000l"
 			clear the player's inventory
 			make player execute command "/heal"
 			set the player's money to 0
-			#make player execute command "/kit tools"
 			clear {hasPlayedProlouge.%player%}
+			#Base Stats
 			clear {str.%player%}
 			clear {def.%player%}
 			clear {res.%player%}
 			clear {spd.%player%}
-			clear {skl.%player%}
+			clear {lck.%player%}
 			clear {hp.%player%}
 			clear {bst.%player%}
+			clear {chr.%player%}
+			#Misc Class Data
 			clear {classxp.%player%}
 			clear {elitemode.%player%}
 			clear {SessionType.%player%}
-			clear {weaponrank.%player%::swords}
-			clear {weaponrank.%player%::lances}
-			clear {weaponrank.%player%::axes}
-			clear {weaponrank.%player%::bows}
-			clear {weaponrank.%player%::magic}
-			clear {weaponrank.%player%::staves}
-			clear {weapongrade.%player%::swords}
-			clear {weapongrade.%player%::lances}
-			clear {weapongrade.%player%::axes}
-			clear {weapongrade.%player%::bows}
-			clear {weapongrade.%player%::magic}
-			clear {weapongrade.%player%::staves}
+			clear {abilityPoints.%player%}
+			#clear {weaponrank.%player%::swords}
+			#clear {weaponrank.%player%::lances}
+			#clear {weaponrank.%player%::axes}
+			#clear {weaponrank.%player%::bows}
+			#clear {weaponrank.%player%::magic}
+			#clear {weaponrank.%player%::staves}
+			#clear {weapongrade.%player%::swords}
+			#clear {weapongrade.%player%::lances}
+			#clear {weapongrade.%player%::axes}
+			#clear {weapongrade.%player%::bows}
+			#clear {weapongrade.%player%::magic}
+			#clear {weapongrade.%player%::staves}
 			clear {npcSupportPoints.%player%::*}
 			clear {questbook.%player%}
 			clear {kills.%player%}
 			clear {hoursplayed.%player%}
 			clear {highestdamage.%player%}
 			clear {highestsuffered.%player%}
+			#Quest Data
 			clear {quests.%player%::*}
+			#Stat Buffs
 			clear {strbuff.%player%}
 			clear {defbuff.%player%}
 			clear {resbuff.%player%}
 			clear {spdbuff.%player%}
-			clear {sklbuff.%player%}
+			clear {lckbuff.%player%}
 			clear {hpbuff.%player%}
+			clear {chrbuff.%player%}
 			clear {lvl.%player%}
 			clear {class.%player%}
 			clear {hasCrest.%player%}
+			#Stat Caps
 			clear {strcap.%player%}
 			clear {defcap.%player%}
 			clear {rescap.%player%}
 			clear {spdcap.%player%}
-			clear {sklcap.%player%}
+			clear {lckcap.%player%}
+			clear {chrcap.%player%}
 			clear {hpcap.%player%}
 			clear {lvlcap.%player%}
+			#Misc Class Data
 			clear {promoted.%player%}
 			clear {deaths.%player%}
 			clear {reclassed.%player%}
@@ -449,14 +617,46 @@ command /character [<text="list">] [<number=0>]:
 			clear {skillslot3.%player%}
 			clear {skillslot4.%player%}
 			clear {skillslot5.%player%}
-			clear {boon.%player%}
-			clear {bane.%player%}
+			clear {skillslot6.%player%}
+			clear {skillslot7.%player%}
+			clear {skillslot8.%player%}
+			clear {skillslot9.%player%}
+			#weapon ranks
+			clear {weaponranks.%player%::*}
+			clear {weapondamagetotals.%player%::*}
 			clear {generation.%player%}
+			#initialize WR
+			set {weaponranks.%player%::swords} to "E"
+			set {weaponranks.%player%::axes} to "E"
+			set {weaponranks.%player%::lances} to "E"
+			set {weaponranks.%player%::bows} to "E"
+			set {weaponranks.%player%::daggers} to "E"
+			set {weaponranks.%player%::gauntlets} to "E"
+			set {weaponranks.%player%::wands} to "E"
+			set {weaponranks.%player%::tomes} to "E"
+			set {weaponranks.%player%::staves} to "E"
+			set {weaponranks.%player%::pistols} to "E"
+			set {weaponranks.%player%::rifles} to "E"
+			set {weaponranks.%player%::shotguns} to "E"
+			set {weapondamagetotals.%player%::swords} to 0
+			set {weapondamagetotals.%player%::axes} to 0
+			set {weapondamagetotals.%player%::lances} to 0
+			set {weapondamagetotals.%player%::bows} to 0
+			set {weapondamagetotals.%player%::daggers} to 0
+			set {weapondamagetotals.%player%::gauntlets} to 0
+			set {weapondamagetotals.%player%::wands} to 0
+			set {weapondamagetotals.%player%::tomes} to 0
+			set {weapondamagetotals.%player%::staves} to 0
+			set {weapondamagetotals.%player%::pistols} to 0
+			set {weapondamagetotals.%player%::rifles} to 0
+			set {weapondamagetotals.%player%::shotguns} to 0
 			#Radiant Quests
 			loop {radiantQuestsOnOffer.%player%} times:
 				clear {radiantQuest.%player%.%loop-value%::*}
 			clear {radiantQuestsOnOffer.%player%}
 			set {radiantQuestsRNG.%player%} to true
+			#Clear unlocked blocks
+			clear {unlockedBlocks.%player%::*}
 			#Supports
 			clear {PTPSupportRank.%player%}
 			clear {supportpartner.%player%}
@@ -475,38 +675,62 @@ command /character [<text="list">] [<number=0>]:
 			clear {ctoggle.%player%}
 			#Quotes
 			clear {playedTutorial.%player%}
-			clear {badLevelQuote.%player%}
-			clear {avgLevelQuote.%player%}
-			clear {goodLevelQuote.%player%}
-			clear {maxLevelQuote.%player%}
-			clear {promotionQuote.%player%}
-			clear {skillquote1.%player%}
-			clear {skillquote2.%player%}
-			clear {skillquote3.%player%}
-			clear {skillquote4.%player%}
-			clear {lowHPQuote.%player%}
-			clear {healedQuote.%player%}
-			clear {mediumHPQuote.%player%}
-			clear {downedQuote.%player%}
-			clear {allyDownedQuote.%player%}
-			clear {enemyDefeated1.%player%}
-			clear {enemyDefeated2.%player%}
-			clear {bossDefeated1.%player%}
-			clear {bossDefeated2.%player%}
-			clear {deathQuote.%player%}
-			clear {allyNeedHealing.%player%}
-			clear {allyDeathQuote.%player%}
-			clear {allyHardcoreDeathQuote.%player%}
-			clear {allyEnemyDefeated1.%player%}
-			clear {allyEnemyDefeated2.%player%}
-			clear {allyEnemyDefeated3.%player%}
-			clear {allyHurtLarge1.%player%}
-			clear {allyHurtLarge2.%player%}
+			clear {playerQuotes.%player%::*}
 			clear {db_charvault.%player%::*}
 			clear {childUnitParent.%player%}
 			clear {carriageLocs.%player%::*}
-			set {bhop.%player%} to 0
-			send "<light blue>[Characters]<light green> New character ready. Please log back into the server to start your new character."
+			#Brave New World Data
+			#Perks
+			clear {perkTreeXP.mercenary.%player%::*}
+			clear {perkTreeXP.knight.%player%::*}
+			clear {perkTreeXP.bladesman.%player%::*}
+			clear {perkTreeXP.fighter.%player%::*}
+			clear {perkTreeXP.mage.%player%::*}
+			clear {perkTreeXP.cleric.%player%::*}
+			clear {perkTreeXP.archer.%player%::*}
+			clear {perkTreeXP.cavalier.%player%::*}
+			clear {perkTreeXP.strategist.%player%::*}
+			clear {perkTreeXP.survivor.%player%::*}
+			clear {perkTreeXP.devil hunter.%player%::*}
+			clear {perkTreeXP.gunslinger.%player%::*}
+			clear {perkTreeXP.summoner.%player%::*}
+			clear {perkTreeXP.trickster.%player%::*}
+			clear {perkTreeXP.keeper.%player%::*}
+			clear {perkTreeXP.charlatan.%player%::*}
+			clear {perkTreeXP.poet.%player%::*}
+			clear {perkTreeXP.troubador.%player%::*}
+			clear {perkTreeXP.outlaw.%player%::*}
+			clear {perkTreeXP.conjurer.%player%::*}
+			clear {activePerkTree.%player%::*}
+			clear {boon.%player%}
+			clear {bane.%player%}
+			#Class Data
+			clear {background.%player%}
+			clear {race.%player%}
+			clear {traits.%player%::*}
+			clear {abilities.%player%::*}
+			#Brave New World Default Settings
+			set {drEnable.%player%} to true
+			set {lowPerformanceMode.%player%} to false
+			set {quotesToggle.%player%} to true
+			set {autosave.%player%} to true
+			set {jumpInertiaToggle.%player%} to true
+			set {slidingToggle.%player%} to true
+			set {hintsToggle.%player%} to true
+			set {damageAssistToggle.%player%} to true
+			set {traitsSelected.%player%} to 0
+			#Other
+			set the player's level to 1
+			set {lvl.%player%} to 1
+			set {ctoggle.%player%} to 1
+			set {generation.%player%} to 1
+			set {class.%player%} to "Freelancer"
+			make player execute command "/name"
+			send "<light blue>[Characters]<light green> New character ready. Starting game in 5 seconds..."
+			wait 5 seconds
+			make player execute command "/spawn"
+			wait 1 second
+			make player execute command "/charsetup 0"
 			if arg 2 is 1:
 				set {hasPlayedProlouge.%player%} to true
 				send "<light blue>Skipping tutorial."
@@ -543,12 +767,23 @@ command /character [<text="list">] [<number=0>]:
 			clear {sslot%arg 2%.%player%::*}
 			clear {sslot%arg 2%.%player%.quests::*}
 			clear {inv%arg 2%.%player%::*}
+			clear {sslot%arg 2%.%player%.quotes::*}
 			clear {sslot%arg 2%.%player%.spells::*}
 			clear {sslot%arg 2%.%player%.perks::*}
 			clear {sslot%arg 2%.%player%.perksEquipped::*}
 			clear {sslot%arg 2%.%player%.carriageLocs::*}
 			clear {sslot%arg 2%.charvault.%player%::*}
 			clear {sslot%arg 2%.%player%.npcSupportPoints::*}
+			clear {sslot%arg 2%.%player%.abilities::*}
+			clear {sslot%arg 2%.%player%.perkTreeXP.mercenary::*}
+			clear {sslot%arg 2%.%player%.perkTreeXP.knight::*}
+			clear {sslot%arg 2%.%player%.perkTreeXP.bladesman::*}
+			clear {sslot%arg 2%.%player%.perkTreeXP.fighter::*}
+			clear {sslot%arg 2%.%player%.perkTreeXP.mage::*}
+			clear {sslot%arg 2%.%player%.perkTreeXP.cleric::*}
+			clear {sslot%arg 2%.%player%.perkTreeXP.archer::*}
+			clear {sslot%arg 2%.%player%.perkTreeXP.cavalier::*}
+			clear {sslot%arg 2%.%player%.activePerkTree::*}
 			send "<light blue>[Characters]<reset> Character deleted."
 		else if arg 1 is "help":
 			send "<light blue>[Characters]<reset> Usage: /character (save, load, list, delete, new, inspect) (Character Slot)"
@@ -557,7 +792,7 @@ command /character [<text="list">] [<number=0>]:
 				send "<light blue>[Characters]<reset> <light red>No data found in that slot."
 			else:
 				send "<gold>%{sslot%arg 2%.%player%::name}% the level %{sslot%arg 2%.%player%::lvl}% %{sslot%arg 2%.%player%::class}%"
-				set {_bstcap.%arg 2%} to ({sslot%arg 2%.%player%::strcap} + {sslot%arg 2%.%player%::defcap} + {sslot%arg 2%.%player%::sklcap} + {sslot%arg 2%.%player%::spdcap} + {sslot%arg 2%.%player%::rescap} + {sslot%arg 2%.%player%::hpcap})
+				set {_bstcap.%arg 2%} to ({sslot%arg 2%.%player%::strcap} + {sslot%arg 2%.%player%::defcap} + {sslot%arg 2%.%player%::lckcap} + {sslot%arg 2%.%player%::spdcap} + {sslot%arg 2%.%player%::rescap} + {sslot%arg 2%.%player%::hpcap})
 				if {sslot%arg 2%.%player%::str} is equal to {sslot%arg 2%.%player%::strcap}:
 					if {sslot%arg 2%.%player%::boon} is 1:
 						send "<light green><bold>+ <yellow><bold>Strength: %{sslot%arg 2%.%player%::str}%"
@@ -586,20 +821,20 @@ command /character [<text="list">] [<number=0>]:
 						send "<light red><bold>- <reset>Defense: %{sslot%arg 2%.%player%::def}%"
 					else:
 						send "Defense: %{sslot%arg 2%.%player%::def}%"
-				if {sslot%arg 2%.%player%::skl} is equal to {sslot%arg 2%.%player%::sklcap}:
+				if {sslot%arg 2%.%player%::lck} is equal to {sslot%arg 2%.%player%::lckcap}:
 					if {sslot%arg 2%.%player%::boon} is 3:
-						send "<light green><bold>+ <yellow><bold>Skill: %{sslot%arg 2%.%player%::skl}%"
+						send "<light green><bold>+ <yellow><bold>Skill: %{sslot%arg 2%.%player%::lck}%"
 					else if {sslot%arg 2%.%player%::bane} is 3:
-						send "<light red><bold>- <yellow><bold>Skill: %{sslot%arg 2%.%player%::skl}%"
+						send "<light red><bold>- <yellow><bold>Skill: %{sslot%arg 2%.%player%::lck}%"
 					else:
-						send "<yellow><bold>Skill: %{sslot%arg 2%.%player%::skl}%"
+						send "<yellow><bold>Skill: %{sslot%arg 2%.%player%::lck}%"
 				else:
 					if {sslot%arg 2%.%player%::boon} is 3:
-						send "<light green><bold>+ <reset>Skill: %{sslot%arg 2%.%player%::skl}%"
+						send "<light green><bold>+ <reset>Skill: %{sslot%arg 2%.%player%::lck}%"
 					else if {sslot%arg 2%.%player%::bane} is 3:
-						send "<light red><bold>- <reset>Skill: %{sslot%arg 2%.%player%::skl}%"
+						send "<light red><bold>- <reset>Skill: %{sslot%arg 2%.%player%::lck}%"
 					else:
-						send "Skill: %{sslot%arg 2%.%player%::skl}%"
+						send "Skill: %{sslot%arg 2%.%player%::lck}%"
 				if {sslot%arg 2%.%player%::spd} is equal to {sslot%arg 2%.%player%::spdcap}:
 					if {sslot%arg 2%.%player%::boon} is 4:
 						send "<light green><bold>+ <yellow><bold>Speed: %{sslot%arg 2%.%player%::spd}%"
@@ -643,4 +878,33 @@ command /character [<text="list">] [<number=0>]:
 					else:
 						send "Max HP: %{sslot%arg 2%.%player%::hp}%"
 				send "BST: %{sslot%arg 2%.%player%::bst}% (Max: %{_bstcap.%arg 2%}%)"
+
+#Autosave config command			
+command /autosave:
+	description: Allows user to select the save slot to use for Autosaving their current character. Is set on a per-character basis.
+	trigger:
+		open chest inventory with 6 rows named "<gold>Please select an Autosave slot:" for the player
+		set {_guiSlot} to 0
+		loop 45 times:
+			if {sslot%{_guiSlot}%.%player%::name} is not set:
+				set slot {_guiSlot} of the player's current inventory to 1 chest named "<light yellow>Slot %{_guiSlot} +1%: Empty" with lore "<white>This save slot is empty."
+			else:
+				set slot {_guiSlot} of the player's current inventory to 1 ender chest named "<light yellow>Slot %{_guiSlot} + 1%: %{sslot%{_guiSlot}%.%player%::name}%" with lore "<white>%{sslot%{_guiSlot}%.%player%::name}%, the level %{sslot%{_guiSlot}%.%player%::lvl}% %{sslot%{_guiSlot}%.%player%::class}%"
+			add 1 to {_guiSlot}
 			
+#Autosave menu behavior
+on inventory click:
+	if the name of the player's current inventory is "<gold>Please select an Autosave slot:":
+		if the name of the clicked item contains "<light yellow>Slot":
+			set {autosave.%player%} to the index of event-slot
+			close the player's inventory
+			play sound "entity.player.levelup" with volume 1 and pitch 1 at the player for the player
+			send "<light green>Autosave now using save slot %index of event-slot + 1%. To change the Autosave slot, use the command /autosave." to the player
+			
+#Autosave trigger
+every 4 minutes:
+	loop all players:
+		if {autosave.%loop-player%} is set:
+			if {permadeath.%loop-player%} is not true:
+				send formatted "<light purple>Autosaving [slot %{autosave.%loop-player%} + 1%]..." to loop-player
+				make loop-player execute command "/char save %{autosave.%loop-player%}%"

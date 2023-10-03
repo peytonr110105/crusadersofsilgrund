@@ -1,6 +1,6 @@
 #Workbench - A World Editing Tool
 
-command /workbench <text>:
+command /workbench [<text="help">]:
 	trigger:
 		if arg 1 is "help":
 			send "<gold>-=Workbench Help=-"
@@ -8,6 +8,7 @@ command /workbench <text>:
 			send "<light green>replaceblock<reset> - Replaces one block for another within a given radius."
 			send "<light green>demoss<reset> - Changes out mossy blocks for their non-moss counterparts."
 			send "<light green>ruinify<reset> - Changes blocks to create ruin-like structures."
+			send formatted "<light green>mkpath<reset> - Creates a 2x2 path underneath you while enabled."
 			send "<light red>cancel<reset> - Aborts any currently running operations."
 		else if arg 1 is "cancel":
 			send "<light red>Aborting all running operations."
@@ -88,12 +89,14 @@ command /ruinify <number>:
 					chance of 50%:
 						set loop-block to cracked stone brick
 					add 1 to {_blocks}
+					play 5 stone break with speed 1 at the loop-block
 					send "<light green>Working.."
 			else if loop-block is any stone:
 				chance of 15%:
 					set loop-block to cobblestone
 					chance of 15%:
 						set loop-block to dirt
+					play 5 stone break with speed 1 at the loop-block
 					add 1 to {_blocks}
 					send "<light green>Working.."
 			else:
@@ -103,6 +106,20 @@ command /ruinify <number>:
 				send "<light red>Operation cancelled."
 				exit 1 loop
 		send "<gold>%{_blocks}% blocks modified."
+		
+command /clearsnow <number>:
+	trigger:
+		set {_rad} to arg 1
+		set {_loc} to player's location
+		send "<light green>Clearing snow..."
+		loop all blocks in radius {_rad} of {_loc}:
+			if loop-block is not snow block:
+				wait 1 tick
+			else:
+				set loop-block to air
+				add 1 to {_blocks}
+			send "<light blue>Working..."
+		send "<gold>%{_blocks}% snow blocks destroyed."
 	
 command /replacedioritewithandesite <number>:
 	trigger:
@@ -116,3 +133,28 @@ command /replacedioritewithandesite <number>:
 				send "<light blue>Working..."
 			wait 1 tick
 		send "<gold>Finished."
+		
+command /mkpath:
+	trigger:
+		if {wb_mkPath.%player%} is set:
+			clear {wb_mkPath.%player%}
+			send "<light red>Path generation cancelled"
+		else:
+			set {wb_mkPath.%player%} to true
+			send "<light green>Generating paths."
+			
+on walking on grass or stone or gravel or dirt:
+	if {wb_mkPath.%player%} is set:
+		set {_underblock} to block below player
+		if block below player is stone or gravel:
+			set block below player to cobblestone
+			set block 1 in front of {_underblock} to cobblestone
+			set block 1 right of {_underblock} to cobblestone
+			set block 1 left of {_underblock} to cobblestone
+			set block 1 behind {_underblock} to cobblestone
+		else if block below player is not cobblestone:
+			set block below player to grass path
+			set block 1 in front of {_underblock} to grass path
+			set block 1 right of {_underblock} to grass path
+			set block 1 left of {_underblock} to grass path
+			set block 1 behind {_underblock} to grass path

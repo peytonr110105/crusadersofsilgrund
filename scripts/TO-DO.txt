@@ -1,0 +1,27 @@
+CRITICAL:
+
+- Verify that all first-wave weapon skills are implemented
+- Add Ability bonus for Enchanting
+- Add Ability bonus for Speech (Can't happen until Quests are implemented)
+
+MEDIUM PRIORITY:
+- Dragonborn race needs exclusive perk tree
+- Add perk trees for unlockable classes (Survivalist, Devil Hunter, etc...)
+- Re-implement mob scaling changes from Lost Legacy
+- Re-tune spell cooldown and damage values
+
+NICE TO HAVE:
+- Re-add QoL changes to Q-Mod
+- Re-write staves?
+
+
+COMPLETED:
+
+- Update Save/Load function to support Brave New World characters
+- Configurable Autosave
+- Recode Bleedout/Last Stand
+- Add Ability bonus for Barter
+- Add Ability bonus for Medicine
+- Add Ability bonus for Repair
+- Add Ability bonus for Enchanting (enchant table bonus)
+- Add Ability bonus for Survival (double drops changed to double ores/logs)
