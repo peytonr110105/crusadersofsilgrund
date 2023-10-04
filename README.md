@@ -5,7 +5,7 @@ MMORPG Conversion for Vanilla Minecraft 1.18.2 clients.
 To Use:
 Insert files into a PaperSpigot or Pufferfish 1.18.2 server.
 
-Dependendencies:
+Dependencies:
 - PaperSpigot / eqivelant
 - Essentials
 - Skript
