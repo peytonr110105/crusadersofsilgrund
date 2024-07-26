@@ -1,0 +1,4 @@
+#Stores tooltip info for various mechanics
+on load:
+	if {EffectGuide::Canto} is not set:
+		set {EffectGuide::Canto} to "<white>On hit: Grants Swiftness/Resistance 5 after combat. If the foe is killed, grants Siftness/Resistance 8 instead. Effect Duration: 5 seconds"

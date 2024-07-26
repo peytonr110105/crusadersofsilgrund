@@ -452,19 +452,3 @@ on damage:
 					send "<light yellow>BONUS: %{_bonus}%" to the attacker
 					add {_bonus} to {comboscore.%attacker%}
 			send action bar "<bold>Style Points: <reset><gold>%{comboscore.%attacker%}%<reset><bold> | Points for next Stylish Rank:<reset><gold> %((({combograde.%attacker%} + 1) * 3.5) + (({combograde.%attacker%} + 1) ^ 2) * {comboscale.%attacker%})%<reset><bold> | Points To Maintain: <reset><gold>%(({combograde.%attacker%} * 2.5) + ({combograde.%attacker%} ^ 2) * {comboscale.%attacker%})%" to attacker
-			set {_dtCheck} to canUseDevilTrigger(attacker)
-			if {_dtCheck} is 1:
-				if {dtActive.%attacker%} is not set:
-					if final damage is more than 0:
-						set {dtMeterCap.%attacker%} to ({lvl.%attacker%} * 10) + 20
-						add (final damage / 2) to {dtMeter.%attacker%}
-						if {dtMeter.%attacker%} is more than {dtMeterCap.%attacker%}:
-							set {dtMeter.%attacker%} to {dtMeterCap.%attacker%}
-						set {_dtMeterDisplay} to ceil(({dtMeter.%attacker%} / {dtMeterCap.%attacker%}) * 100)
-						if {_dtMeterDisplay} is more than 100:
-							if {t_blockMeterAnnoyance.%attacker%} is not set:
-								set {_dtMeterDisplay} to 100
-								play sound "block.end_portal.spawn" with volume 1 and pitch 1 at the attacker
-								send "<red>Trigger Meter full! Sneak + Right click with an empty hand to activate." to the attacker
-						set bossbar "dt.%attacker's uuid%" progress to {_dtMeterDisplay}
-						send "<red>Trigger Meter: %{dtMeter.%attacker%}% | Max Meter: %{dtMeterCap.%attacker%}%" to the attacker

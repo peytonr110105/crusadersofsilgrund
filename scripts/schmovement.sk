@@ -51,3 +51,20 @@ command /glideToggle:
 		else:
 			set {t_isSliding.%player%} to true
 			set gliding of player to true
+			
+#Mario 64 swimming
+on right click:
+	if player is swimming:
+		if isEntityToolAir(player) is true:
+			push player forwards at speed {swimBoostForce.%player%}
+			set {swimBoostForce.%player%} to 0.05
+
+#Swim boost recovery
+#With good timing, you can swim even faster
+every 4 ticks:
+	loop all players:
+		if {swimBoostForce.%loop-player%} is less than 3:
+			set {swimBoostForce.%loop-player%} to ({swimBoostForce.%loop-player%} ^ 2) + 0.15
+			if {swimBoostForce.%loop-player%} is more than 3:
+				set {swimBoostForce.%loop-player%} to 3
+				send "<light blue>Right-click now!" to loop-player

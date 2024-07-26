@@ -71,16 +71,12 @@ command /mount:
 			tame last spawned entity to the player
 			make the last spawned entity wear a saddle
 			wait 1 tick
-			apply speed 3 to the last spawned entity for 999 days
 			make the player ride the last spawned entity
-			#Deep Bond
-			set {_slot} to checkSlots(player,"Deep Bond")
-			if {_slot} is 1:
-				apply speed 5 to the last spawned entity for 999 days
-				apply resistance 5 to the last spawned entity for 999 days
-				set the last spawned entity's max health to the last spawned entity's maximum health * 3
-				wait a tick
-				heal the last spawned entity by last spawned entity's maximum health
+			apply speed 5 to the last spawned entity for 999 days
+			apply resistance 5 to the last spawned entity for 999 days
+			set the last spawned entity's max health to the last spawned entity's maximum health * 3
+			wait a tick
+			heal the last spawned entity by last spawned entity's maximum health
 		
 command /perk [<number=0>] <text>:
 	description: Equip perks.
@@ -91,26 +87,36 @@ command /perk [<number=0>] <text>:
 		if arg 2 is not "DEBUG_POKE_PERKS":
 			set {_slotCheck.%player%} to checkSlots(player,arg 2)
 			if {_slotCheck.%player%} is 0:
-				set {skillslot%arg 1%.%player%} to arg 2
+				#Equipping a class perk
+				if {t_selectedPerkType.%player%} is 1:
+					set {eqClassPerks.%player%::%arg 1%} to arg 2
+				else:
+					set {eqGenericPerks.%player%::%arg 1%} to arg 2
 				send formatted "Equipped %arg 2% in slot %arg 1%."
 			else:
 				send formatted "<red>You cannot equip the same perk in multiple slots."
 		else if arg 2 is "Clear":
 			set {skillslot%arg 1%.%player%} to "Empty"
 			send formatted "Cleared slot %arg 1%."
-		else if arg 1 is 0:
+		if arg 1 is 776:
 			send formatted "<bold>Your equipped perks:"
 			send formatted "Perks Unlocked: %{skillstotal.%player%}%"
-			send formatted "Perk Slot 1: %{skillslot1.%player%}%"
-			send formatted "Perk Slot 2: %{skillslot2.%player%}%"
-			send formatted "Perk Slot 3: %{skillslot3.%player%}%"
-			send formatted "Perk Slot 4: %{skillslot4.%player%}%"
-			send formatted "Perk Slot 5: %{skillslot5.%player%}%"
-			send formatted "Perk Slot 6: %{skillslot6.%player%}%"
-			send formatted "Perk Slot 7: %{skillslot7.%player%}%"
-			send formatted "Perk Slot 8: %{skillslot8.%player%}%"
-			send formatted "Perk Slot 9: %{skillslot9.%player%}%"
-			send formatted "Perk Slot 10: %{skillslot10.%player%}%"
+			send formatted "Class Perk Slot 1: %{eqClassPerks.%player%::0}%"
+			send formatted "Class Perk Slot 2: %{eqClassPerks.%player%::1}%"
+			send formatted "Class Perk Slot 3: %{eqClassPerks.%player%::2}%"
+			send formatted "Class Perk Slot 4: %{eqClassPerks.%player%::3}%"
+			send formatted "Class Perk Slot 5: %{eqClassPerks.%player%::4}%"
+			send formatted "Class Perk Slot 6: %{eqClassPerks.%player%::5}%"
+			send formatted "Class Perk Slot 7: %{eqClassPerks.%player%::6}%"
+			send formatted "Class Perk Slot 8: %{eqClassPerks.%player%::7}%"
+			send formatted "Generic Perk Slot 1: %{eqGenericPerks.%player%::0}%"
+			send formatted "Generic Perk Slot 2: %{eqGenericPerks.%player%::1}%"
+			send formatted "Generic Perk Slot 3: %{eqGenericPerks.%player%::2}%"
+			send formatted "Generic Perk Slot 4: %{eqGenericPerks.%player%::3}%"
+			send formatted "Generic Perk Slot 5: %{eqGenericPerks.%player%::4}%"
+			send formatted "Generic Perk Slot 6: %{eqGenericPerks.%player%::5}%"
+			send formatted "Generic Perk Slot 7: %{eqGenericPerks.%player%::6}%"
+			send formatted "Generic Perk Slot 8: %{eqGenericPerks.%player%::7}%"
 		#Devil Trigger Gauge
 		#set {_LCKcheck} to checkSlots(player,Devil Trigger)
 		#if {_LCKcheck} is 1:
@@ -242,6 +248,12 @@ command /perk [<number=0>] <text>:
 				set {_debug} to changeEntityStatBuff(player,"STR",12,"Gamble (Perk)",0)
 		else if {activeBuffs.str.%player%::Gamble (Perk)} is set:
 			set {_debug} to changeEntityStatBuff(player,"STR",-12,"Gamble (Perk)",0)
+		#Sudden Panic
+		if checkSlots(player,"Sudden Panic") is 1:
+			if {activeBuffs.hp.%player%::Sudden Panic (Perk)} is not set:
+				set {_debug} to changeEntityStatBuff(player,"HP",20,"Sudden Panic (Perk)",0)
+		else if {activeBuffs.str.%player%::Sudden Panic (Perk)} is set:
+			set {_debug} to changeEntityStatBuff(player,"HP",-20,"Sudden Panic (Perk)",0)			
 		#Ascended Magic
 		if checkSlots(player,"Ascended Magic") is 1:
 			if {activeBuffs.mag.%player%::Ascended Magic (Perk)} is not set:
@@ -257,14 +269,20 @@ command /perk [<number=0>] <text>:
 		#Lord's Blood
 		if checkSlots(player,"Lord's Blood") is 1:
 			if {activeBuffs.hp.%player%::Lord's Blood (Perk)} is not set:
-				set {_debug} to changeEntityStatBuff(player,"HP",10,"Lord's Blood (Perk)",0)
-				set {_debug} to changeEntityStatBuff(player,"STR",5,"Lord's Blood (Perk)",0)
-				set {_debug} to changeEntityStatBuff(player,"LCK",5,"Lord's Blood (Perk)",0)
+				set {_debug} to changeEntityStatBuff(player,"HP",15,"Lord's Blood (Perk)",0)
+				set {_debug} to changeEntityStatBuff(player,"STR",6,"Lord's Blood (Perk)",0)
+				set {_debug} to changeEntityStatBuff(player,"SPD",6,"Lord's Blood (Perk)",0)
+				set {_debug} to changeEntityStatBuff(player,"LCK",6,"Lord's Blood (Perk)",0)
+				set {_debug} to changeEntityStatBuff(player,"DEF",6,"Lord's Blood (Perk)",0)
+				set {_debug} to changeEntityStatBuff(player,"RES",6,"Lord's Blood (Perk)",0)
 				add 100 to {abilities.%player%::Traditional Weapons}
 		else if {activeBuffs.hp.%player%::Lord's Blood (Perk)} is set:
-			set {_debug} to changeEntityStatBuff(player,"HP",-10,"Lord's Blood (Perk)",0)
-			set {_debug} to changeEntityStatBuff(player,"STR",-5,"Lord's Blood (Perk)",0)
-			set {_debug} to changeEntityStatBuff(player,"LCK",-5,"Lord's Blood (Perk)",0)
+			set {_debug} to changeEntityStatBuff(player,"HP",-15,"Lord's Blood (Perk)",0)
+			set {_debug} to changeEntityStatBuff(player,"STR",-6,"Lord's Blood (Perk)",0)
+			set {_debug} to changeEntityStatBuff(player,"SPD",-6,"Lord's Blood (Perk)",0)
+			set {_debug} to changeEntityStatBuff(player,"LCK",-6,"Lord's Blood (Perk)",0)
+			set {_debug} to changeEntityStatBuff(player,"DEF",-6,"Lord's Blood (Perk)",0)
+			set {_debug} to changeEntityStatBuff(player,"RES",-6,"Lord's Blood (Perk)",0)
 			subtract 100 from {abilities.%player%::Traditional Weapons}
 		#Skim the Books
 		if checkSlots(player,"Skim the Books") is 1:
@@ -274,14 +292,14 @@ command /perk [<number=0>] <text>:
 		else if {activeBuffs.traditional_weapons.%player%::Skim the Books (Perk)} is set:
 			subtract 20 from {abilities.%player%::Traditional Weapons}
 			clear {activeBuffs.traditional_weapons.%player%::Skim the Books (Perk)}
-		#Locktouch
-		if checkSlots(player,"Locktouch") is 1:
-			if {activeBuffs.lockpicking.%player%::Locktouch (Perk)} is not set:
+		#Deft Hands
+		if checkSlots(player,"Deft Hands") is 1:
+			if {activeBuffs.lockpicking.%player%::Deft Hands (Perk)} is not set:
 				add 35 to {abilities.%player%::Lockpicking}
-				set {activeBuffs.lockpicking.%player%::Locktouch (Perk)} to 35
-		else if {activeBuffs.traditional_weapons.%player%::Locktouch (Perk)} is set:
+				set {activeBuffs.lockpicking.%player%::Deft Hands (Perk)} to 35
+		else if {activeBuffs.traditional_weapons.%player%::Deft Hands (Perk)} is set:
 			subtract 35 from {abilities.%player%::Lockpicking}
-			clear {activeBuffs.lockpicking.%player%::Locktouch (Perk)}
+			clear {activeBuffs.lockpicking.%player%::Deft Hands (Perk)}
 		#Secret Training
 		if checkSlots(player,"Secret Training") is 1:
 			if {activeBuffs.traditional_weapons.%player%::Secret Training (Perk)} is not set:
@@ -339,7 +357,15 @@ command /perk [<number=0>] <text>:
 		else if {activeBuffs.lck.%player%::Pessimism (Perk)} is set:
 			set {_debug} to changeEntityStatBuff(player,"STR",-6,"Pessimism (Perk)",0)
 			set {_debug} to changeEntityStatBuff(player,"MAG",-6,"Pessimism (Perk)",0)
-			set {_debug} to changeEntityStatBuff(player,"LCK",12,"Pessimism (Perk)",0)	
+			set {_debug} to changeEntityStatBuff(player,"LCK",12,"Pessimism (Perk)",0)
+		#Momentum
+		if checkSlots(player,"Override") is 1:
+			create bossbar titled "<light blue>Override" and id "override.%player's uuid%" for player with progress 0 with colors blue
+			display bossbar "override.%player's uuid%"
+		#Belt Feed
+		if checkSlots(player,"Belt Feed") is 1:
+			create bossbar titled "<orange>Firearm Overheat" and id "beltfeed.%player's uuid%" for player with progress 0 with colors red
+			display bossbar "beltfeed.%player's uuid%"			
 		#Combo System - maybe bring this back to let other classes access the combo system?
 		#set {_LCKcheck} to checkSlots(player,"Combo System")
 		#if {_LCKcheck} is 1:
@@ -443,7 +469,7 @@ every 3 seconds:
 		if checkSlots(loop-player,"Live to Serve") is 1:
 			loop all players in radius 30 of the loop-player:
 				if {party.%loop-player-2%} is {party.%loop-player-1%}:
-					heal loop-player-2 by 0.5 hearts
+					heal loop-player-2 by 1.5 hearts
 		if checkSlots(loop-player,"Concentration") is 1:
 			if {t_concentration.%loop-player%} is less than 1.3:
 				add 0.05 to {t_concentration.%loop-player%}
@@ -476,8 +502,12 @@ every 3 seconds:
 #Craftsmanship
 on craft:
 	#Very, VERY tiny XP bonus for crafting
-	addClassXP(player,1 + {lvl.%player%})
-	send formatted "<light yellow>[Crafting] +%1 + {lvl.%player%}% EXP" to the player
+	if {lvl.%player%} is less than or equal to 10:
+		addClassXP(player,1)
+		send formatted "<light yellow>[Crafting] +1 EXP" to the player
+	else:
+		addClassXP(player,1 + (floor({lvl.%player%} * 0.1)))
+		send formatted "<light yellow>[Crafting] +%1 + (floor({lvl.%player%} * 0.1))% EXP" to the player
 	set {_perk} to checkSlots(player,"Craftsmanship")
 	if {_perk} is 1:
 		set {_xp} to ceil(player's level ^ 0.25)
@@ -754,7 +784,7 @@ on right click:
 		if player is sneaking:
 			loop {%{party.%player%}%.members::*}:
 				if loop-value is online:
-					if loop-value's health is less than or equal to (loop-value's maximum health * 0.5):
+					if loop-value's health is less than or equal to (loop-value's maximum health * 0.8):
 						if loop-value is not the player:
 							teleport the player to loop-value
 							send formatted "<light blue>%player% has arrived via Wings of Mercy!" to the loop-value
@@ -829,20 +859,6 @@ on right click:
 				loop all players in radius 10 of the player:
 					if {party.%loop-player%} is {party.%player%}:
 						apply resistance 2 to the loop-player for 10 seconds
-		set {_perk} to checkSlots(player,"Rally Spectrum")
-		if {_perk} is 1:
-			remove resistance from the target
-			remove strength from the target
-			remove swiftness from the target
-			apply resistance 2 to the target for 10 seconds
-			apply strength 2 to the target for 10 seconds
-			apply swiftness 2 to the target for 10 seconds
-			if checkSlots(player,"Rally Up!") is 1:
-				loop all players in radius 10 of the player:
-					if {party.%loop-player%} is {party.%player%}:
-						apply resistance 2 to the loop-player for 10 seconds
-						apply strength 2 to the loop-player for 10 seconds
-						apply swiftness 2 to the loop-player for 10 seconds
 	#Lush Farming
 	if clicked block is soil:
 		if checkSlots(player,"Lush Farming") is 1:
@@ -906,7 +922,7 @@ on inventory open:
 #			clear {qrevivecd.%victim%}
 
 #Renewal/Restock
-every 10 seconds:
+every 5 seconds:
 	loop all players:
 		if loop-player is alive:
 			#Renewal
@@ -917,16 +933,16 @@ every 10 seconds:
 			#Restock:
 			set {_LCKcheck.%loop-player%} to checkSlots(loop-player,"Restock")
 			if {_LCKcheck.%loop-player%} is 1:
-				increase the loop-player's food level by 2
+				increase the loop-player's food level by 0.5
 			
 on damage:
 	#Riccochet
-	if projectile exists:
-		if metadata value "canRiccochet" of the projectile is 1:
-			set {_riccoHorizontal} to random number from -0.75 to 0.75
-			make the victim shoot an arrow at speed -2
-			push the last shot projectile left at speed {_riccoHorizontal}
-			set metadata value "canRiccochet" of the last shot projectile to 1
+	#if projectile exists:
+	#	if metadata value "canRiccochet" of the projectile is 1:
+	#		set {_riccoHorizontal} to random number from -0.75 to 0.75
+	#		make the victim shoot an arrow at speed -2
+	#		push the last shot projectile left at speed {_riccoHorizontal}
+	#		set metadata value "canRiccochet" of the last shot projectile to 1
 	#Smooth Landing
 	if victim is player:
 		if damage cause is fall:
@@ -939,54 +955,6 @@ on damage:
 				cancel event
 			else if {t_isRappeling.%victim%} is "Rappeling":
 				cancel event
-	#Dragon Soul perks
-	#Gale Soul
-	set {_LCKcheck} to checkSlots(attacker,"Gale Soul")
-	if {_LCKcheck} is 1:
-		set {dragonSoulMeterCap.%attacker%} to ({lvl.%attacker%} * 15)
-		add (final damage / 4) to {dragonSoulMeter.%attacker%}
-		if {dragonSoulMeter.%attacker%} is more than {dragonSoulMeterCap.%attacker%}:
-			set {dragonSoulMeter.%attacker%} to {dragonSoulMeterCap.%attacker%}
-		set {_dtMeterDisplay} to ceil(({dragonSoulMeter.%attacker%} / {dragonSoulMeterCap.%attacker%}) * 100)
-		if {_dtMeterDisplay} is more than 100:
-			if {t_blockMeterAnnoyance.%attacker%} is not set:
-				set {_dtMeterDisplay} to 100
-				play sound "block.end_portal.spawn" with volume 1 and pitch 1 at the attacker
-				send "<gold>Gale Soul meter full! Sneak + Right click with an empty hand to transform." to the attacker
-		set bossbar "dsoul.%attacker's uuid%" progress to {_dtMeterDisplay}
-		send "<green>Gale Soul Meter: %{dragonSoulMeter.%attacker%}% | Max Meter: %{dragonSoulMeterCap.%attacker%}%" to the attacker
-	else:
-		#Flame Soul
-		set {_LCKcheck} to checkSlots(attacker,"Flame Soul")
-		if {_LCKcheck} is 1:
-			set {dragonSoulMeterCap.%attacker%} to ({lvl.%attacker%} * 15)
-			add (final damage / 4) to {dragonSoulMeter.%attacker%}
-			if {dragonSoulMeter.%attacker%} is more than {dragonSoulMeterCap.%attacker%}:
-				set {dragonSoulMeter.%attacker%} to {dragonSoulMeterCap.%attacker%}
-			set {_dtMeterDisplay} to ceil(({dragonSoulMeter.%attacker%} / {dragonSoulMeterCap.%attacker%}) * 100)
-			if {_dtMeterDisplay} is more than 100:
-				if {t_blockMeterAnnoyance.%attacker%} is not set:
-					set {_dtMeterDisplay} to 100
-					play sound "block.end_portal.spawn" with volume 1 and pitch 1 at the attacker
-					send "<gold>Flame Soul meter full! Sneak + Right click with an empty hand to transform." to the attacker
-			set bossbar "dsoul.%attacker's uuid%" progress to {_dtMeterDisplay}
-			send "<orange>Flame Soul Meter: %{dragonSoulMeter.%attacker%}% | Max Meter: %{dragonSoulMeterCap.%attacker%}%" to the attacker
-		else:
-			#Aqua Soul
-			set {_LCKcheck} to checkSlots(attacker,"Aqua Soul")
-			if {_LCKcheck} is 1:
-				set {dragonSoulMeterCap.%attacker%} to ({lvl.%attacker%} * 15)
-				add (final damage / 4) to {dragonSoulMeter.%attacker%}
-				if {dragonSoulMeter.%attacker%} is more than {dragonSoulMeterCap.%attacker%}:
-					set {dragonSoulMeter.%attacker%} to {dragonSoulMeterCap.%attacker%}
-				set {_dtMeterDisplay} to ceil(({dragonSoulMeter.%attacker%} / {dragonSoulMeterCap.%attacker%}) * 100)
-				if {_dtMeterDisplay} is more than 100:
-					if {t_blockMeterAnnoyance.%attacker%} is not set:
-						set {_dtMeterDisplay} to 100
-						play sound "block.end_portal.spawn" with volume 1 and pitch 1 at the attacker
-						send "<gold>Aqua Soul meter full! Sneak + Right click with an empty hand to transform." to the attacker
-				set bossbar "dsoul.%attacker's uuid%" progress to {_dtMeterDisplay}
-				send "<blue>Aqua Soul Meter: %{dragonSoulMeter.%attacker%}% | Max Meter: %{dragonSoulMeterCap.%attacker%}%" to the attacker
 				
 #Quick Draw
 on right click with bow:
@@ -1022,10 +990,10 @@ on right click with bow:
 				cancel event
 			
 #Riccochet - apply NBT
-on shoot:
-	if shooter's tool is bow:
-		if checkSlots(shooter,"Riccochet") is 1:
-			set metadata value "canRiccochet" of the last shot projectile to 1
+#on shoot:
+#	if shooter's tool is bow:
+#		if checkSlots(shooter,"Riccochet") is 1:
+#			set metadata value "canRiccochet" of the last shot projectile to 1
 
 #Air Hike/Smooth Landing
 on flight toggle:
@@ -1185,7 +1153,7 @@ on jump:
 
 on tame:
 	#Deep Bond
-	set {_slot} to checkSlots(player,"Deep Bond")
+	set {_slot} to checkSlots(player,"Mount")
 	if {_slot} is 1:
 		apply speed 5 to the entity for 999 days
 		apply resistance 5 to the entity for 999 days

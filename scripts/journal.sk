@@ -254,7 +254,7 @@ command /showJournal <number>:
 			if {hasClearedCampaign.%player%} is true:
 				set slot 9 of the player's current inventory to 1 gold sword of sharpness 10 named "<gold>%player's tablist name% Must Die" with lore "<white>A true challenge for only the best of the best.", "<white><bold>Damage dealt decreased by 50%%.", "<white><bold>Damage recieved increased to 3.0x.", "<gold>Bonus EXP and Gold will be earned!"
 		#Global Buttons (These are last in the load order since they'll get overwritten when a new chest GUI is opened if they're at the top)
-		set slot 45 of the player's current inventory to 1 book named "<gold>Quest Log - Campaign" with lore "<white>View your campaign progress here."
+		set slot 45 of the player's current inventory to 1 anvil named "<gold>Smithy" with lore "<white>Purchase skills and repair weapons here."
 		set slot 46 of the player's current inventory to 1 book named "<gold>Quest Log - Side Quests" with lore "<white>View your progress on various side quests here."
 		set slot 47 of the player's current inventory to 1 iron chestplate named "<gold>Party" with lore "<white>Join a Party, or manage the one you're currently in, here."
 		set slot 48 of the player's current inventory to 1 iron axe named "<gold>View/Upgrade Abilities" with lore "<white>View your Abilities and spend any accrued ability points here."
@@ -271,8 +271,8 @@ on inventory click:
 	if the name of the player's current inventory contains "<gold>Journal":
 		cancel event
 		#Global Buttons
-		if the name of the clicked item is "<gold>Quest Log - Campaign":
-			make player execute command "/showJournal 0"
+		if the name of the clicked item is "<gold>Smithy":
+			make player execute command "/buyToolSkills 0 1"
 		else if the name of the clicked item is "<gold>Quest Log - Side Quests":
 			make player execute command "/showJournal 1"
 		else if the name of the clicked item is "<gold>Party":

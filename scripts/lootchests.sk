@@ -71,20 +71,20 @@ on inventory open:
 				set slot 0 of the player's current inventory to (getCommonLoot(player))
 				set slot 1 of the player's current inventory to (getCommonLoot(player))
 				set slot 2 of the player's current inventory to (getCommonLoot(player))
-				set slot 3 of the player's current inventory to (getCommonLoot(player))
-				set slot 4 of the player's current inventory to (getCommonLoot(player))
+				#set slot 3 of the player's current inventory to (getCommonLoot(player))
+				#set slot 4 of the player's current inventory to (getCommonLoot(player))
 				chance of 20%:
-					set slot 5 of the player's current inventory to (getRareLoot())
+					set slot 3 of the player's current inventory to (getRareLoot())
 					chance of 20%:
-						set slot 6 of the player's current inventory to (getRareLoot())
+						set slot 4 of the player's current inventory to (getRareLoot())
 				else:
 					chance of 10%:
-						set slot 5 of the player's current inventory to (getPerkManual(player))
+						set slot 3 of the player's current inventory to (getPerkManual(player))
 					else:
 						chance of 1%:
-							set slot 5 of the player's current inventory to (getUltraRareLoot())
-				if checkSlots(player,"Locktouch") is 1:
-					set slot 7 of the player's current inventory to (getCommonLoot(player))
+							set slot 4 of the player's current inventory to (getUltraRareLoot())
+				if checkSlots(player,"Deft Hands") is 1:
+					set slot 5 of the player's current inventory to (getCommonLoot(player))
 				clear {t_blockChestDuping.%player%}
 			else if the name of the player's current inventory is "<gold>Rare Lootchest":
 				addClassXP(player,40 + ({lvl.%player%} * 2))
@@ -95,21 +95,21 @@ on inventory open:
 				play 20 (firework spark with speed 0) at the player
 				set slot 0 of the player's current inventory to (getCommonLoot(player))
 				set slot 1 of the player's current inventory to (getCommonLoot(player))
-				set slot 2 of the player's current inventory to (getCommonLoot(player))
+				#set slot 2 of the player's current inventory to (getCommonLoot(player))
+				set slot 2 of the player's current inventory to (getRareLoot())
 				set slot 3 of the player's current inventory to (getRareLoot())
-				set slot 4 of the player's current inventory to (getRareLoot())
 				chance of 40%:
-					set slot 5 of the player's current inventory to (getRareLoot())
+					set slot 4 of the player's current inventory to (getRareLoot())
 					chance of 35%:
-						set slot 6 of the player's current inventory to (getRareLoot())
+						set slot 5 of the player's current inventory to (getRareLoot())
 				else:
 					chance of 25%:
-						set slot 5 of the player's current inventory to (getPerkManual(player))
+						set slot 4 of the player's current inventory to (getPerkManual(player))
 					else:
 						chance of 5%:
 							set slot 5 of the player's current inventory to (getUltraRareLoot())
-				if checkSlots(player,"Locktouch") is 1:
-					set slot 7 of the player's current inventory to (getRareLoot())
+				if checkSlots(player,"Deft Hands") is 1:
+					set slot 6 of the player's current inventory to (getRareLoot())
 				clear {t_blockChestDuping.%player%}
 			else if the name of the player's current inventory is "<gold>Legendary Lootchest":
 				addClassXP(player,80 + ({lvl.%player%} * 2))
@@ -119,22 +119,22 @@ on inventory open:
 				play sound "entity.player.levelup" with volume 1 and pitch 1.2 at the player for the player
 				play 20 (firework spark with speed 0) at the player
 				set slot 0 of the player's current inventory to (getCommonLoot(player))
-				set slot 1 of the player's current inventory to (getCommonLoot(player))
+				#set slot 1 of the player's current inventory to (getCommonLoot(player))
+				set slot 1 of the player's current inventory to (getRareLoot())
 				set slot 2 of the player's current inventory to (getRareLoot())
-				set slot 3 of the player's current inventory to (getRareLoot())
-				set slot 4 of the player's current inventory to (getUltraRareLoot())
+				set slot 3 of the player's current inventory to (getUltraRareLoot())
 				chance of 10%:
-					set slot 5 of the player's current inventory to (getRareLoot())
+					set slot 4 of the player's current inventory to (getRareLoot())
 					chance of 80%:
-						set slot 6 of the player's current inventory to (getRareLoot())
+						set slot 5 of the player's current inventory to (getRareLoot())
 				else:
 					chance of 35%:
-						set slot 5 of the player's current inventory to (getPerkManual(player))
+						set slot 4 of the player's current inventory to (getPerkManual(player))
 					else:
 						chance of 10%:
 							set slot 5 of the player's current inventory to (getUltraRareLoot())
-				if checkSlots(player,"Locktouch") is 1:
-					set slot 7 of the player's current inventory to (getUltraRareLoot())
+				if checkSlots(player,"Deft Hands") is 1:
+					set slot 6 of the player's current inventory to (getUltraRareLoot())
 				clear {t_blockChestDuping.%player%}
 			else if the name of the player's current inventory is "<gold>Combat Lootchest":
 				addClassXP(player,40 + ({lvl.%player%} * 2))
@@ -171,7 +171,7 @@ on inventory open:
 					else:
 						chance of 1%:
 							set slot 16 of the player's current inventory to (getUltraRareLoot())
-				if checkSlots(player,"Locktouch") is 1:
+				if checkSlots(player,"Deft Hands") is 1:
 					set slot 18 of the player's current inventory to (getPerkManual(player))
 				clear {t_blockChestDuping.%player%}
 	else if {t_openSavedChest.%player%} is set:

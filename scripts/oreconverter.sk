@@ -224,7 +224,7 @@ command /oreconverter <number>:
 				set slot 46 of the player's current inventory to 1 barrier named "<light red>Purified Diamond Weapon Frame" with nbt "{frameType:0,upgradeTier:2,oreType:2}" with lore "<white>Requirement: 4x Obsidian, 4x Diamond Block", "<white>Adds +1 merge to any Mythic weapon.", "<light red>Not enough materials to craft."
 			set slot 53 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
 		else if arg 1 is 2:
-			open chest inventory with 1 rows named "<gold>Select item to craft..." for the player
+			open chest inventory with 2 rows named "<gold>Select item to craft..." for the player
 			#Upgrade Ore
 			#Coal to iron
 			if player has 16 coal:
@@ -249,18 +249,50 @@ command /oreconverter <number>:
 					set slot 3 of the player's current inventory to 1 barrier named "<light red>Transmute Fuel to Lapis" with lore "<white>Converts 1x coal and 2x redstone dust to 1 lapis lazuli.", "<light red>You don't have enough redstone dust."
 			else:
 				set slot 3 of the player's current inventory to 1 barrier named "<light red>Transmute Fuel to Lapis" with lore "<white>Converts 1x coal and 2x redstone dust to 1 lapis lazuli.", "<light red>You don't have enough coal."
+			#redstone to netherrack
+			if player has 1 redstone block:
+				if player has 1 lapis item:
+					set slot 4 of the player's current inventory to 1 netherrack named "<light blue>Transmute to Netherrack" with lore "<white>Converts 1x redstone block and 1x lapis lazuli into 8x netherrack.", "<light blue>Click to craft."
+				else:
+					set slot 4 of the player's current inventory to 1 barrier named "<light red>Transmute to Netherrack" with lore "<white>Converts 1x redstone block and 1x lapis lazuli into 8x netherrack.", "<light red>You don't have enough lapis lazuli."
+			else:
+				set slot 4 of the player's current inventory to 1 barrier named "<light red>Transmute to Netherrack" with lore "<white>Converts 1x redstone block and 1x lapis lazuli into 8x netherrack.", "<light red>You don't have a redstone block."
+			#andesite to quartz
+			if player has 4 polished andesite:
+				if player has 1 coal:
+					set slot 5 of the player's current inventory to 1 quartz block named "<light blue>Transmute to Quartz" with lore "<white>Converts 4x polished andesite and 1x coal into 1 quartz.", "<light blue>Click to craft."
+				else:
+					set slot 5 of the player's current inventory to 1 barrier named "<light red>Transmute to Quartz" with lore "<white>Converts 4x polished andesite and 1x coal into 1 quartz.", "<light red>You don't have any coal."
+			else:
+				set slot 5 of the player's current inventory to 1 barrier named "<light red>Transmute to Quartz" with lore "<white>Converts 4x polished andesite and 1x coal into 1 quartz.", "<light red>You don't have enough polished andesite."
+			#diorite to quartz
+			if player has 4 polished diorite:
+				if player has 1 coal:
+					set slot 6 of the player's current inventory to 1 quartz block named "<light blue>Transmute to Quartz" with lore "<white>Converts 4x polished diorite and 1x coal into 1 quartz.", "<light blue>Click to craft."
+				else:
+					set slot 6 of the player's current inventory to 1 barrier named "<light red>Transmute to Quartz" with lore "<white>Converts 4x polished diorite and 1x coal into 1 quartz.", "<light red>You don't have any coal."
+			else:
+				set slot 6 of the player's current inventory to 1 barrier named "<light red>Transmute to Quartz" with lore "<white>Converts 4x polished diorite and 1x coal into 1 quartz.", "<light red>You don't have enough polished andesite."
+			#granite to quartz
+			if player has 4 polished granite:
+				if player has 1 coal:
+					set slot 7 of the player's current inventory to 1 quartz block named "<light blue>Transmute to Quartz" with lore "<white>Converts 4x polished granite and 1x coal into 1 quartz.", "<light blue>Click to craft."
+				else:
+					set slot 7 of the player's current inventory to 1 barrier named "<light red>Transmute to Quartz" with lore "<white>Converts 4x polished granite and 1x coal into 1 quartz.", "<light red>You don't have any coal."
+			else:
+				set slot 7 of the player's current inventory to 1 barrier named "<light red>Transmute to Quartz" with lore "<white>Converts 4x polished granite and 1x coal into 1 quartz.", "<light red>You don't have enough polished andesite."
 			#misc to blaze rod
 			if player has 4 coal:
-				if player has 16 netherrack:
-					if player has 4 nether quartz item:
-						set slot 4 of the player's current inventory to 1 blaze rod named "<light blue>Transmute Fuel to Blaze Rod" with lore "<white>Converts 4x coal, 16x netherrack, and 4x quartz into 1 blaze rod.", "<light blue>Click to craft."
+				if player has 8 netherrack:
+					if player has 2 nether quartz item:
+						set slot 8 of the player's current inventory to 1 blaze rod named "<light blue>Transmute Fuel to Blaze Rod" with lore "<white>Converts 4x coal, 8x netherrack, and 2x quartz into 1 blaze rod.", "<light blue>Click to craft."
 					else:
-						set slot 4 of the player's current inventory to 1 barrier named "<light red>Transmute Fuel to Blaze Rod" with lore "<white>Converts 4x coal, 16x netherrack, and 4x quartz into 1 blaze rod.", "<light red>You don't have enough materials to craft this item."
+						set slot 8 of the player's current inventory to 1 barrier named "<light red>Transmute Fuel to Blaze Rod" with lore "<white>Converts 4x coal, 8x netherrack, and 2x quartz into 1 blaze rod.", "<light red>You don't have enough materials to craft this item."
 				else:
-					set slot 4 of the player's current inventory to 1 barrier named "<light red>Transmute Fuel to Blaze Rod" with lore "<white>Converts 4x coal, 16x netherrack, and 4x quartz into 1 blaze rod.", "<light red>You don't have enough materials to craft this item."
+					set slot 8 of the player's current inventory to 1 barrier named "<light red>Transmute Fuel to Blaze Rod" with lore "<white>Converts 4x coal, 8x netherrack, and 2x quartz into 1 blaze rod.", "<light red>You don't have enough materials to craft this item."
 			else:
-				set slot 4 of the player's current inventory to 1 barrier named "<light red>Transmute Fuel to Blaze Rod" with lore "<white>Converts 4x coal, 16x netherrack, and 4x quartz into 1 blaze rod.", "<light red>You don't have enough materials to craft this item."
-			set slot 8 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
+				set slot 8 of the player's current inventory to 1 barrier named "<light red>Transmute Fuel to Blaze Rod" with lore "<white>Converts 4x coal, 8x netherrack, and 2x quartz into 1 blaze rod.", "<light red>You don't have enough materials to craft this item."
+			set slot 17 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
 				
 on inventory click:
 	if the name of the player's current inventory is "<gold>Ore Conversion":
@@ -295,9 +327,19 @@ on inventory click:
 				play sound "block.lava.pop" with volume 1 and pitch 1.2 at the player
 			else if the name of the clicked item is "<light blue>Transmute Fuel to Blaze Rod":
 				remove 4 coal from the player
-				remove 16 netherrack from the player
-				remove 4 nether quartz item from the player
+				remove 8 netherrack from the player
+				remove 2 nether quartz item from the player
 				give 1 blaze rod to the player
+				play sound "block.lava.pop" with volume 1 and pitch 1.2 at the player
+			else if the name of the clicked item is "<light blue>Transmute to Netherrack":
+				remove 1 redstone block from the player
+				remove 1 lapis item from the player
+				give 8 netherrack to the player
+				play sound "block.lava.pop" with volume 1 and pitch 1.2 at the player
+			else if the name of the clicked item is "<light blue>Transmute to Quartz":
+				remove 4 polished andesite from the player
+				remove 1 coal from the player
+				give 1 nether quartz item to the player
 				play sound "block.lava.pop" with volume 1 and pitch 1.2 at the player
 			make player execute command "/oreconverter 2"
 		#Create Frames	

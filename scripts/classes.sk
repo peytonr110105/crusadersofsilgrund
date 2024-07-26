@@ -168,7 +168,7 @@ command /charsetup <number>:
 		set {mag.%player%} to ({pts_MAG.%player%})
 		set {RES.%player%} to ({pts_RES.%player%})
 		if {class.%player%} is "Mercenary":
-			set {hpgrowth.%player%} to floor(({pts_HP.%player%} - 15) * 7.5) + 25
+			set {hpgrowth.%player%} to floor(({pts_HP.%player%} - 15) * 7.5) + 35
 			set {strgrowth.%player%} to floor(({pts_STR.%player%} - 5) * 7.5) + 25
 			set {defgrowth.%player%} to floor(({pts_DEF.%player%} - 5) * 7.5) + 25
 			set {chrgrowth.%player%} to floor(({pts_CHR.%player%} - 5) * 7.5) + 25
@@ -245,9 +245,9 @@ command /charsetup <number>:
 		else if {class.%player%} is "Fighter":
 			set {hpgrowth.%player%} to floor(({pts_HP.%player%} - 15) * 5) + 40
 			set {strgrowth.%player%} to floor(({pts_STR.%player%} - 5) * 5) + 45
-			set {defgrowth.%player%} to floor(({pts_DEF.%player%} - 5) * 5) + 35
+			set {defgrowth.%player%} to floor(({pts_DEF.%player%} - 5) * 5) + 25
 			set {chrgrowth.%player%} to floor(({pts_CHR.%player%} - 5) * 5) + 20
-			set {lckgrowth.%player%} to floor(({pts_LCK.%player%} - 5) * 5) + 10
+			set {lckgrowth.%player%} to floor(({pts_LCK.%player%} - 5) * 5) + 20
 			set {spdgrowth.%player%} to floor(({pts_SPD.%player%} - 5) * 5) + 25
 			set {maggrowth.%player%} to floor(({pts_MAG.%player%} - 5) * 5) + 10
 			set {resgrowth.%player%} to floor(({pts_RES.%player%} - 5) * 5) + 15
@@ -369,7 +369,7 @@ command /charsetup <number>:
 			add 3 to {res.%player%}
 		else if {class.%player%} is "Devil Hunter":
 			set {combosenabled.%player%} to true
-			set {hpgrowth.%player%} to floor(({pts_HP.%player%} - 15) * 5) + 15
+			set {hpgrowth.%player%} to floor(({pts_HP.%player%} - 15) * 5) + 20
 			set {strgrowth.%player%} to floor(({pts_STR.%player%} - 5) * 5) + 30
 			set {defgrowth.%player%} to floor(({pts_DEF.%player%} - 5) * 5) + 15
 			set {chrgrowth.%player%} to floor(({pts_CHR.%player%} - 5) * 5) + 30
@@ -394,8 +394,8 @@ command /charsetup <number>:
 			add 6 to {mag.%player%}
 			add 2 to {res.%player%}
 		else if {class.%player%} is "Strategist":
-			set {hpgrowth.%player%} to floor(({pts_HP.%player%} - 15) * 5) + 20
-			set {strgrowth.%player%} to floor(({pts_STR.%player%} - 5) * 5) + 30
+			set {hpgrowth.%player%} to floor(({pts_HP.%player%} - 15) * 5) + 25
+			set {strgrowth.%player%} to floor(({pts_STR.%player%} - 5) * 5) + 35
 			set {defgrowth.%player%} to floor(({pts_DEF.%player%} - 5) * 5) + 25
 			set {chrgrowth.%player%} to floor(({pts_CHR.%player%} - 5) * 5) + 30
 			set {lckgrowth.%player%} to floor(({pts_LCK.%player%} - 5) * 5) + 20
@@ -447,13 +447,13 @@ command /charsetup <number>:
 			set {hpgrowth.%player%} to floor(({pts_HP.%player%} - 15) * 5) + 20
 			set {strgrowth.%player%} to floor(({pts_STR.%player%} - 5) * 5) + 20
 			set {defgrowth.%player%} to floor(({pts_DEF.%player%} - 5) * 5) + 20
-			set {chrgrowth.%player%} to floor(({pts_CHR.%player%} - 5) * 5) + 45
-			set {lckgrowth.%player%} to floor(({pts_LCK.%player%} - 5) * 5) + 40
-			set {spdgrowth.%player%} to floor(({pts_SPD.%player%} - 5) * 5) + 35
+			set {chrgrowth.%player%} to floor(({pts_CHR.%player%} - 5) * 5) + 55
+			set {lckgrowth.%player%} to floor(({pts_LCK.%player%} - 5) * 5) + 60
+			set {spdgrowth.%player%} to floor(({pts_SPD.%player%} - 5) * 5) + 45
 			set {maggrowth.%player%} to floor(({pts_MAG.%player%} - 5) * 5) + 10
 			set {resgrowth.%player%} to floor(({pts_RES.%player%} - 5) * 5) + 10
 			add 13 to {hpcap.%player%}
-			add 10 to {strcap.%player%}
+			add 12 to {strcap.%player%}
 			add 9 to {defcap.%player%}
 			add 18 to {chrcap.%player%}
 			add 15 to {lckcap.%player%}
@@ -461,7 +461,7 @@ command /charsetup <number>:
 			add 8 to {magcap.%player%}
 			add 9 to {rescap.%player%}
 			add 4 to {hp.%player%}
-			add 3 to {str.%player%}
+			add 5 to {str.%player%}
 			add 3 to {def.%player%}
 			add 11 to {chr.%player%}
 			add 7 to {lck.%player%}
@@ -497,9 +497,9 @@ command /charsetup <number>:
 			set {hpgrowth.%player%} to floor(({pts_HP.%player%} - 15) * 5) + 25
 			set {strgrowth.%player%} to floor(({pts_STR.%player%} - 5) * 5) + 5
 			set {defgrowth.%player%} to floor(({pts_DEF.%player%} - 5) * 5) + 10
-			set {chrgrowth.%player%} to floor(({pts_CHR.%player%} - 5) * 5) + 15
+			set {chrgrowth.%player%} to floor(({pts_CHR.%player%} - 5) * 5) + 25
 			set {lckgrowth.%player%} to floor(({pts_LCK.%player%} - 5) * 5) + 40
-			set {spdgrowth.%player%} to floor(({pts_SPD.%player%} - 5) * 5) + 10
+			set {spdgrowth.%player%} to floor(({pts_SPD.%player%} - 5) * 5) + 20
 			set {maggrowth.%player%} to floor(({pts_MAG.%player%} - 5) * 5) + 45
 			set {resgrowth.%player%} to floor(({pts_RES.%player%} - 5) * 5) + 50
 			add 15 to {hpcap.%player%}
@@ -546,7 +546,7 @@ command /charsetup <number>:
 			add 5 to {res.%player%}
 		#CHEMIST
 		else if {class.%player%} is "Charlatan":
-			set {hpgrowth.%player%} to floor(({pts_HP.%player%} - 15) * 5) + 30
+			set {hpgrowth.%player%} to floor(({pts_HP.%player%} - 15) * 5) + 45
 			set {strgrowth.%player%} to floor(({pts_STR.%player%} - 5) * 5) + 15
 			set {defgrowth.%player%} to floor(({pts_DEF.%player%} - 5) * 5) + 20
 			set {chrgrowth.%player%} to floor(({pts_CHR.%player%} - 5) * 5) + 20
@@ -573,12 +573,12 @@ command /charsetup <number>:
 		#BARD
 		else if {class.%player%} is "Poet":
 			set {hpgrowth.%player%} to floor(({pts_HP.%player%} - 15) * 5) + 15
-			set {strgrowth.%player%} to floor(({pts_STR.%player%} - 5) * 5) + 10
+			set {strgrowth.%player%} to floor(({pts_STR.%player%} - 5) * 5) + 20
 			set {defgrowth.%player%} to floor(({pts_DEF.%player%} - 5) * 5) + 20
 			set {chrgrowth.%player%} to floor(({pts_CHR.%player%} - 5) * 5) + 40
-			set {lckgrowth.%player%} to floor(({pts_LCK.%player%} - 5) * 5) + 40
+			set {lckgrowth.%player%} to floor(({pts_LCK.%player%} - 5) * 5) + 30
 			set {spdgrowth.%player%} to floor(({pts_SPD.%player%} - 5) * 5) + 40
-			set {maggrowth.%player%} to floor(({pts_MAG.%player%} - 5) * 5) + 20
+			set {maggrowth.%player%} to floor(({pts_MAG.%player%} - 5) * 5) + 25
 			set {resgrowth.%player%} to floor(({pts_RES.%player%} - 5) * 5) + 20
 			add 10 to {hpcap.%player%}
 			add 10 to {strcap.%player%}
@@ -588,7 +588,7 @@ command /charsetup <number>:
 			add 15 to {spdcap.%player%}
 			add 13 to {magcap.%player%}
 			add 9 to {rescap.%player%}
-			add 3 to {str.%player%}
+			add 4 to {str.%player%}
 			add 2 to {def.%player%}
 			add 7 to {spd.%player%}
 			add 6 to {mag.%player%}
@@ -742,11 +742,11 @@ command /charsetup <number>:
 			add 13 to {abilities.%player%::Speech}
 			add 13 to {abilities.%player%::Lockpicking}
 		else if {race.%player%} is "Dwarf":
-			add 5 to {hp.%player%}
+			add 2 to {hp.%player%}
 			add 5 to {hpcap.%player%}
-			add 5 to {str.%player%}
+			add 3 to {str.%player%}
 			add 5 to {strcap.%player%}
-			add 4 to {def.%player%}
+			add 3 to {def.%player%}
 			add 4 to {defcap.%player%}
 			add 0 to {mag.%player%}
 			add 0 to {magcap.%player%}
@@ -764,15 +764,15 @@ command /charsetup <number>:
 			add 13 to {abilities.%player%::Barter}
 			add 13 to {abilities.%player%::Repair}
 		else if {race.%player%} is "Orc":
-			add 6 to {hp.%player%}
+			add 4 to {hp.%player%}
 			add 6 to {hpcap.%player%}
-			add 4 to {str.%player%}
+			add 2 to {str.%player%}
 			add 4 to {strcap.%player%}
-			add 4 to {def.%player%}
+			add 2 to {def.%player%}
 			add 4 to {defcap.%player%}
 			subtract 2 from {mag.%player%}
 			subtract 2 from {magcap.%player%}
-			add 4 to {res.%player%}
+			add 2 to {res.%player%}
 			add 4 to {rescap.%player%}
 			subtract 4 from {spd.%player%}
 			subtract 4 from {spdcap.%player%}
@@ -1143,7 +1143,7 @@ command /charsetup <number>:
 		add -3 to {chr.%player%}
 		add -3 to {def.%player%}
 		add -3 to {res.%player%}
-		#All stats have a base cap of 6
+		#All stats have a base cap of 10
 		add 10 to {strcap.%player%}
 		add 10 to {magcap.%player%}
 		add 10 to {spdcap.%player%}
@@ -1367,26 +1367,26 @@ command /charsetup <number>:
 		add floor({maggrowth.%player%} * 0.1) to {maggrowth.%player%}
 		add floor({resgrowth.%player%} * 0.1) to {resgrowth.%player%}
 		#LCK growth rate bonus
-		add floor({lck.%player%} * 1.5) to {hpgrowth.%player%}
-		add floor({lck.%player%} * 1.5) to {strgrowth.%player%}
-		add floor({lck.%player%} * 1.5) to {defgrowth.%player%}
-		add floor({lck.%player%} * 1.5) to {chrgrowth.%player%}
-		add floor({lck.%player%} * 1.5) to {lckgrowth.%player%}
-		add floor({lck.%player%} * 1.5) to {spdgrowth.%player%}
-		add floor({lck.%player%} * 1.5) to {maggrowth.%player%}
-		add floor({lck.%player%} * 1.5) to {resgrowth.%player%}
+		add floor({lck.%player%} * 1.25) to {hpgrowth.%player%}
+		add floor({lck.%player%} * 1.25) to {strgrowth.%player%}
+		add floor({lck.%player%} * 1.25) to {defgrowth.%player%}
+		add floor({lck.%player%} * 1.25) to {chrgrowth.%player%}
+		add floor({lck.%player%} * 1.25) to {lckgrowth.%player%}
+		add floor({lck.%player%} * 1.25) to {spdgrowth.%player%}
+		add floor({lck.%player%} * 1.25) to {maggrowth.%player%}
+		add floor({lck.%player%} * 1.25) to {resgrowth.%player%}
 		#Abilities bonus from stats
-		add floor({str.%player%} * 0.8) to {abilities.%player%::Traditional Weapons}
-		add floor({mag.%player%} * 0.8) to {abilities.%player%::Magical Weapons}
-		add floor({str.%player%} * 0.8) to {abilities.%player%::Guns}
-		add floor(({lck.%player%} + {spd.%player%}) / 2) to {abilities.%player%::Lockpicking}
-		add floor(({hp.%player%} + {mag.%player%})  / 2) to {abilities.%player%::Medicine}
-		add floor(({str.%player%} + {def.%player%}) / 2) to {abilities.%player%::Repair}
-		add floor(({str.%player%} + {def.%player%}) / 2) to {abilities.%player%::Fabrication}
-		add floor(({mag.%player%} + {res.%player%}) / 2) to {abilities.%player%::Enchanting}
-		add floor(({chr.%player%} + {lck.%player%}) / 1) to {abilities.%player%::Speech}
-		add floor(({chr.%player%} + {mag.%player%} + {str.%player%}) * 0.5) to {abilities.%player%::Barter}
-		add floor(({hp.%player%} + {def.%player%} + {res.%player%}) * 0.33) to {abilities.%player%::Survival}
+		add floor({str.%player%} * 0.33) to {abilities.%player%::Traditional Weapons}
+		add floor({mag.%player%} * 0.33) to {abilities.%player%::Magical Weapons}
+		add floor({str.%player%} * 0.33) to {abilities.%player%::Guns}
+		add floor(({lck.%player%} + {spd.%player%}) / 1.5) to {abilities.%player%::Lockpicking}
+		add floor(({hp.%player%} + {mag.%player%})  / 3.5) to {abilities.%player%::Medicine}
+		add floor(({str.%player%} + {def.%player%}) / 3.5) to {abilities.%player%::Repair}
+		add floor(({str.%player%} + {def.%player%}) / 3.5) to {abilities.%player%::Fabrication}
+		add floor(({mag.%player%} + {res.%player%}) / 3.5) to {abilities.%player%::Enchanting}
+		add floor(({chr.%player%} + {lck.%player%}) / 2) to {abilities.%player%::Speech}
+		add floor(({chr.%player%} / 2) + ({mag.%player%} + {str.%player%} * 0.33)) to {abilities.%player%::Barter}
+		add floor((({hp.%player%} * 0.33) + {def.%player%} + {res.%player%}) * 0.20) to {abilities.%player%::Survival}
 		#Prevent abilities starting at less than 10:
 		loop {abilities.%player%::*}:
 			if loop-value is less than 10:
@@ -2885,7 +2885,8 @@ on inventory click:
 			close the player's inventory
 			#Base class perks
 			if {race.%player%} is "Dragonborn":
-				if {traits.%player%::Half-Breed} is not true:
+				#Half-Breeds FINALLY don't get the soul perks
+				if {holyBlood.%player%::D'al Versain} is not 2:
 					if {background.%player%} is "Windcaller":
 						make player execute command "/grantskill 0 Gale Soul"
 					else if {background.%player%} is "Firestorm":
@@ -2912,7 +2913,7 @@ on inventory click:
 			set {lvlcap.%player%} to 0
 			set {promotionready.%player%} to 1
 			open chest inventory with 2 rows named "<gold><bold>Select a ring." for the player
-			set slot 0 of the player's current inventory to 1 music disc far named "<light green><bold>Life Ring" with lore "<white>While in your inventory:", "<light green>Recover 10%% of your max HP every 15 seconds."
+			set slot 0 of the player's current inventory to 1 music disc far named "<light green><bold>Life Ring" with lore "<white>While in your inventory:", "<light green>Recover 35%% of your max HP every 7 seconds."
 			set slot 1 of the player's current inventory to 1 music disc wait named "<light blue><bold>Elite Ring" with lore "<white>While in your inventory:", "<light blue>Gain bonus experience for slaying monsters."
 			set slot 2 of the player's current inventory to 1 music disc 13 named "<yellow><bold>Thief Ring" with lore "<white>While in your inventory:", "<yellow>Slain monsters have a chance to drop extra money."
 			set slot 3 of the player's current inventory to 1 music disc mall named "<light purple><bold>Return Ring" with lore "<white>While in your inventory:", "<light purple>Teleport to a custom location.", "<light purple>Hold Sneak and Right-click to set the warp destination.", "<light purple>Right-click without sneaking to warp."
@@ -2929,27 +2930,27 @@ on inventory click:
 			give clicked item to the player
 			#Give starter weapons based on primary/secondary preference
 			if {primaryWeaponType.%player%} is "Swords":
-				give 1 iron sword of unbreaking 3 named "<light blue>Silver Sword <gold>[+1]" with nbt "{mergeCount:1}" with lore "<white>A highly refined blade with deadly strikes." to the player
+				give 1 stone sword of unbreaking 1 named "<light blue>Corroded Sword <gold>[+5]" with nbt "{mergeCount:5}" with lore "<white>A weathered blade with some life yet in it." to the player
 			else if {primaryWeaponType.%player%} is "Lances":
-				give 1 iron shovel of unbreaking 3 named "<light blue>Silver Lance <gold>[+1]" with nbt "{mergeCount:1,LanceType:2}" with lore "<white>A highly refined lance with deadly strikes." to the player
+				give 1 stone shovel of unbreaking 1 named "<light blue>Corroded Lance <gold>[+5]" with nbt "{mergeCount:5,LanceType:2}" with lore "<white>A weathered lance with some life yet in it." to the player
 			else if {primaryWeaponType.%player%} is "Axes":
-				give 1 iron axe of unbreaking 3 named "<light blue>Silver Axe <gold>[+1]" with nbt "{mergeCount:1}" with lore "<white>A highly refined axe with deadly strikes." to the player
+				give 1 stone axe of unbreaking 1 named "<light blue>Corroded Axe <gold>[+5]" with nbt "{mergeCount:5}" with lore "<white>A weathered axe with some life yet in it." to the player
 			else if {primaryWeaponType.%player%} is "Bows":
-				give 1 bow of unbreaking 3 named "<light blue>Silver Bow <gold>[+1]" with nbt "{mergeCount:1}" with lore "<white>A highly refined bow with deadly strikes." to the player
+				give 1 bow named "<light blue>Corroded Bow <gold>[+5]" with nbt "{mergeCount:5}" with lore "<white>A weathered bow with some life yet in it." to the player
 				give 32 arrow to the player
 			else if {primaryWeaponType.%player%} is "Gauntlets":
-				give 1 iron hoe of unbreaking 3 named "<light blue>Silver Gauntlets <gold>[+1]" with nbt "{mergeCount:1,GauntletType:2}" with lore "<white>A highly refined pair of gauntlets with deadly strikes." to the player
+				give 1 stone hoe of unbreaking 1 named "<light blue>Corroded Gauntlets <gold>[+5]" with nbt "{mergeCount:5,GauntletType:2}" with lore "<white>A weathered set of gauntlets with some life yet in them." to the player
 			else if {primaryWeaponType.%player%} is "Daggers":
-				give 64 arrow of sharpness 3 named "<light blue>Silver Daggers <gold>[+5]" with nbt "{mergeCount:5,DaggerType:2}" with lore "<white>A highly refined set of daggers with deadly strikes." to the player	
+				give 64 arrow of sharpness 3 named "<light blue>Corroded Daggers <gold>[+5]" with nbt "{mergeCount:5,DaggerType:2}" with lore "<white>A weathered set of daggers with some life yet in them." to the player	
 			else if {primaryWeaponType.%player%} is "Wands":
-				give 1 blaze rod of power 5 named "<light yellow><bold>Magic Wand <reset><gold>[+1]" with nbt "{mergeCount:1,isWand:1}" with lore "<white>A powerful wand able to cast devastating spells." to the player
+				give 1 blaze rod of power 5 named "<light yellow><bold>Magic Wand <reset><gold>[+3]" with nbt "{mergeCount:3,isWand:1}" with lore "<white>A powerful wand able to cast devastating spells." to the player
 			else if {primaryWeaponType.%player%} is "Tomes":
-				give 1 book named "<light yellow>Arcfire <reset><gold>[+1]" with nbt "{mergeCount:1,TomeType:9}" with lore "<white>An advanced tome containing a powered-up Elfire spell.", "<white>It has been enhanced for stronger casting.", "", "", "", "", "", "", "", "Uses Left:", "200" to the player
+				give 1 book named "<light yellow>Arcfire <reset><gold>[+5]" with nbt "{mergeCount:5,TomeType:9}" with lore "<white>An advanced tome containing a powered-up Elfire spell.", "<white>It has been enhanced for stronger casting.", "", "", "", "", "", "", "", "Uses Left:", "200" to the player
 			else if {primaryWeaponType.%player%} is "Staves":
 				give 1 diamond hoe of power 5 named "<yellow><bold>Hammerne" with lore "<white>A unique healing staff that repairs the target's held weapon." to the player
 			else if {primaryWeaponType.%player%} is "Pistols":
 				give 1 iron horse armor named "<light gray>Big Iron <gold>[+5]" with nbt "{mergeCount:5,FirearmType:16}" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 6):", "6", "<white><italics>Nobody'll dare to make a slip." to the player
-				give 18 iron nugget to the player
+				give 36 iron nugget to the player
 				give 6 gunpowder to the player
 			else if {primaryWeaponType.%player%} is "Rifles":
 				give 1 iron horse armor named "<light gray>Redstone Repeater <gold>[+5]" with nbt "{mergeCount:5,FirearmType:3}" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 30):", "30", "<white><italics>A middlingly accurate fully-automatic." to the player
@@ -2957,21 +2958,21 @@ on inventory click:
 				give 2 gunpowder to the player			
 			else if {primaryWeaponType.%player%} is "Shotguns":
 				give 1 golden horse armor named "<light gray>Redgrave Coyote-Alpha <gold>[+5]" with nbt "{mergeCount:5,FirearmType:5}" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 5):", "5", "<white><italics>High-damage pump-action, but with large spread." to the player
-				give 8 gold nugget to the player
+				give 12 gold nugget to the player
 				give 8 gunpowder to the player
 			#Secondary pref
 			if {secondaryWeaponType.%player%} is "Swords":
-				give 1 iron sword of unbreaking 5 named "<light blue>Steel Sword <gold>[+1]" with nbt "{mergeCount:1}" with lore "<white>A strong blade of fair quality." to the player
+				give 1 stone sword of unbreaking 5 named "<light blue>Rusted Sword <gold>[+1]" with nbt "{mergeCount:1}" with lore "<white>Low power, but is enchanted to rarely be damaged." to the player
 			else if {secondaryWeaponType.%player%} is "Lances":
-				give 1 iron shovel of unbreaking 5 named "<light blue>Steel Lance <gold>[+1]" with nbt "{mergeCount:1,LanceType:2}" with lore "<white>A strong axe of fair quality." to the player
+				give 1 stone shovel of unbreaking 5 named "<light blue>Rusted Lance <gold>[+1]" with nbt "{mergeCount:1,LanceType:2}" with lore "<white>Low power, but is enchanted to rarely be damaged." to the player
 			else if {secondaryWeaponType.%player%} is "Axes":
-				give 1 iron axe of unbreaking 5 named "<light blue>Steel Axe <gold>[+1]" with nbt "{mergeCount:1}" with lore "<white>A strong lance of fair quality." to the player
+				give 1 stone axe of unbreaking 5 named "<light blue>Rusted Axe <gold>[+1]" with nbt "{mergeCount:1}" with lore "<white>Low power, but is enchanted to rarely be damaged." to the player
 			else if {secondaryWeaponType.%player%} is "Bows":
-				give 1 bow of unbreaking 5 named "<light blue>Steel Bow <gold>[+1]" with nbt "{mergeCount:1}" with lore "<white>A strong bow of fair quality." to the player
+				give 1 bow of unbreaking 5 named "<light blue>Rusted Bow <gold>[+1]" with nbt "{mergeCount:1}" with lore "<white>Low power, but is enchanted to rarely be damaged." to the player
 			else if {secondaryWeaponType.%player%} is "Gauntlets":
-				give 1 iron hoe of unbreaking 5 named "<light blue>Steel Gauntlets <gold>[+1]" with nbt "{mergeCount:1,GauntletType:2}" with lore "<white>A strong pair of gauntlets of fair quality." to the player
+				give 1 stone hoe of unbreaking 5 named "<light blue>Rusted Gauntlets <gold>[+1]" with nbt "{mergeCount:1,GauntletType:2}" with lore "<white>Low power, but is enchanted to rarely be damaged." to the player
 			else if {secondaryWeaponType.%player%} is "Daggers":
-				give 64 arrow of sharpness 3 named "<light blue>Steel Daggers <gold>[+1]" with nbt "{mergeCount:1,DaggerType:2}" with lore "<white>A strong set of daggers of fair quality." to the player	
+				give 64 arrow of sharpness 3 named "<light blue>Rusted Daggers <gold>[+1]" with nbt "{mergeCount:1,DaggerType:2}" with lore "<white>Low power, but is enchanted to rarely be damaged." to the player	
 			else if {secondaryWeaponType.%player%} is "Wands":
 				give 1 blaze rod of power 5 named "<light yellow><bold>Magic Wand <reset><gold>[+1]" with nbt "{mergeCount:1,isWand:1}" with lore "<white>A refined wand with increased spellcasting ability." to the player
 			else if {secondaryWeaponType.%player%} is "Tomes":
@@ -2990,7 +2991,7 @@ on inventory click:
 				give 1 golden horse armor named "<light gray>Teufort Two-Timer <gold>[+1]" with nbt "{mergeCount:1,FirearmType:6}" with lore "<white>Slot A - Empty", "<white>Slot B - Empty", "<white>Slot C - Empty", "<white>Assist - Empty", "<white>Special - Empty", "<white>Refine - N/A", "<white><bold>Clip (MAX: 2):", "2", "<white><italics>Fires with enough force to push things around." to the player
 				give 4 gold nugget to the player
 				give 2 gunpowder to the player
-			set {weaponranks.%player%::%{primaryWeaponType.%player%}%} to "B"
+			set {weaponranks.%player%::%{primaryWeaponType.%player%}%} to "C"
 			set {weaponranks.%player%::%{secondaryWeaponType.%player%}%} to "D"
 			set {weapondamagetotals.%player%::%{primaryWeaponType.%player%}%} to 144
 			set {weapondamagetotals.%player%::%{secondaryWeaponType.%player%}%} to 64
@@ -2999,6 +3000,7 @@ on inventory click:
 				set {weapondamagetotals.%player%::Swords} to 1337
 			if {traits.%player%::Hoarder} is true:
 				give 1 chest named "<gold>Portable Banker" with lore "<white>Right-click to access your bank vault." to the player
+			give 1 book named "<gold>Journal" with lore "<white>Right-click to open.", "<white>Manage equipped perks, raise Abilities, and more." to the player
 			make player execute command "/class promote %{class.%player%}%"
 	#Quotes - Import Quotes from Save
 	else if the name of the player's current inventory is "<gold>Select save to import quotes from:":
@@ -5749,50 +5751,89 @@ command /adm_lvlup <player>:
 					if {lvl.%arg 1%} is more than 34:
 						if {perks.%arg 1%::Mystic Boost} is not set:
 							make arg 1 execute command "/grantskill 0 Mystic Boost"
+					#Distant Defence at LVL 36
+					if {lvl.%arg 1%} is more than 35:
+						if {perks.%arg 1%::Distant Defence} is not set:
+							make arg 1 execute command "/grantskill 0 Distant Defence"
+					#Close Defence at LVL 37
+					if {lvl.%arg 1%} is more than 36:
+						if {perks.%arg 1%::Close Defence} is not set:
+							make arg 1 execute command "/grantskill 0 Close Defence"
+					#Shield Pulse at LVL 38
+					if {lvl.%arg 1%} is more than 37:
+						if {perks.%arg 1%::Shield Pulse} is not set:
+							make arg 1 execute command "/grantskill 0 Shield Pulse"
 					#Nihl at LVL 41
 					if {lvl.%arg 1%} is more than 40:
 						if {perks.%arg 1%::Nihl} is not set:
 							make arg 1 execute command "/grantskill 0 Nihl"
 					#Spells
-					#Fire spell at LVL 12
+					#Fire spell at LVL 4
 					set {_isMagical} to canUseMagic(arg 1)
 					if {_isMagical} is true:
-						if {lvl.%arg 1%} is more than 11:
+						if {lvl.%arg 1%} is more than 4:
 							if {spells.%arg 1%::Fire} is not set:
 								make arg 1 execute command "/grantspell 0 Fire"
-						if {lvl.%arg 1%} is more than 14:
+						if {lvl.%arg 1%} is more than 7:
 							if {spells.%arg 1%::Hail} is not set:
 								make arg 1 execute command "/grantspell 0 Hail"
-						if {lvl.%arg 1%} is more than 17:
+						if {lvl.%arg 1%} is more than 10:
 							if {spells.%arg 1%::Thunder} is not set:
 								make arg 1 execute command "/grantspell 0 Thunder"
-						if {lvl.%arg 1%} is more than 20:
+						if {lvl.%arg 1%} is more than 11:
+							if {spells.%arg 1%::Rescue} is not set:
+								make arg 1 execute command "/grantspell 0 Rescue"
+						if {lvl.%arg 1%} is more than 12:
+							if {spells.%arg 1%::Slipgate} is not set:
+								make arg 1 execute command "/grantspell 0 Slipgate"
+						if {lvl.%arg 1%} is more than 13:
 							if {spells.%arg 1%::Wind} is not set:
 								make arg 1 execute command "/grantspell 0 Wind"
-						if {lvl.%arg 1%} is more than 23:
+						if {lvl.%arg 1%} is more than 15:
+							if {spells.%arg 1%::Silence} is not set:
+								make arg 1 execute command "/grantspell 0 Silence"
+						if {lvl.%arg 1%} is more than 16:
 							if {spells.%arg 1%::Elfire} is not set:
 								make arg 1 execute command "/grantspell 0 Elfire"
-						if {lvl.%arg 1%} is more than 26:
+						if {lvl.%arg 1%} is more than 17:
 							if {spells.%arg 1%::Blizzard} is not set:
 								make arg 1 execute command "/grantspell 0 Blizzard"
-						if {lvl.%arg 1%} is more than 29:
+						if {lvl.%arg 1%} is more than 18:
 							if {spells.%arg 1%::Thoron} is not set:
 								make arg 1 execute command "/grantspell 0 Thoron"
-						if {lvl.%arg 1%} is more than 32:
+						if {lvl.%arg 1%} is more than 19:
 							if {spells.%arg 1%::Tornado} is not set:
 								make arg 1 execute command "/grantspell 0 Tornado"
-						if {lvl.%arg 1%} is more than 35:
+						if {lvl.%arg 1%} is more than 21:
+							if {spells.%arg 1%::Nosferatu} is not set:
+								make arg 1 execute command "/grantspell 0 Nosferatu"
+						if {lvl.%arg 1%} is more than 24:
 							if {spells.%arg 1%::Bolganone} is not set:
 								make arg 1 execute command "/grantspell 0 Bolganone"
-						if {lvl.%arg 1%} is more than 38:
+						if {lvl.%arg 1%} is more than 26:
+							if {spells.%arg 1%::Stone} is not set:
+								make arg 1 execute command "/grantspell 0 Stone"
+						if {lvl.%arg 1%} is more than 28:
 							if {spells.%arg 1%::Aurora} is not set:
 								make arg 1 execute command "/grantspell 0 Aurora"
-						if {lvl.%arg 1%} is more than 41:
+						if {lvl.%arg 1%} is more than 32:
 							if {spells.%arg 1%::Light} is not set:
 								make arg 1 execute command "/grantspell 0 Light"
-						if {lvl.%arg 1%} is more than 59:
+						if {lvl.%arg 1%} is more than 34:
+							if {spells.%arg 1%::Thief} is not set:
+								make arg 1 execute command "/grantspell 0 Thief"
+						if {lvl.%arg 1%} is more than 39:
 							if {spells.%arg 1%::Spellblade} is not set:
 								make arg 1 execute command "/grantspell 0 Spellblade"
+						if {lvl.%arg 1%} is more than 40:
+							if {spells.%arg 1%::Naga} is not set:
+								make arg 1 execute command "/grantspell 0 Naga"
+						if {lvl.%arg 1%} is more than 41:
+							if {spells.%arg 1%::Loptous} is not set:
+								make arg 1 execute command "/grantspell 0 Loptous"
+						if {lvl.%arg 1%} is more than 42:
+							if {spells.%arg 1%::Forseti} is not set:
+								make arg 1 execute command "/grantspell 0 Forseti"
 					clear {isLevelling.%arg 1%}
 					
 #MARKER - Level-Up Handler
@@ -6232,7 +6273,9 @@ every hour:
 		
 #On server join behavior
 on join:
+	#Unlock all crafting book recipes
 	make server execute command "/minecraft:recipe give %player% *"
+	#Set temp class data
 	if {class.%player%} is not set:
 		set the player's level to 1
 		set {lvl.%player%} to 1
@@ -6240,6 +6283,7 @@ on join:
 		set {generation.%player%} to 1
 		set {class.%player%} to "Freelancer"
 		make player execute command "/name"
+	#Class level progress
 	create bossbar titled "<light green>Class Level Progress" and id "classxpbar.%player's uuid%" for player with progress 0 with colors green
 	display bossbar "classxpbar.%player's uuid%"
 	set {_playerLVL} to getPromotionCompensatedClassLevel({_PLR})
@@ -6283,9 +6327,11 @@ on join:
 	strike lightning effect at the player
 	#Auto-execute a Reset Buffs routine in case character stats somehow get corrupted over a server restart
 	make player execute command "/sdebug resetbuffs"
+	#Swimming var initialization
+	set {swimBoostForce.%player%} to 3
 	wait 1 tick
-	play 40 (wool break with speed 1) at the player
-	play 40 (lapis break with speed 1) at the player
+	play 40 (white wool break with speed 1) at the player
+	play 40 (diamond block break with speed 1) at the player
 
 #debug
 command /cleartraits <player>:
@@ -6347,7 +6393,7 @@ command /class_setup_perkmenu [<text="2">]:
 			set slot 41 of the player's current inventory to 1 nether star named "<gold>Summoner" with lore "<white>Fragile magicians that create familiars to aid in combat.", "<cyan>Strengths: MAG, HP", "<light red>Weaknesses: STR, DEF", "<cyan>This class naturally learns spells."
 			set slot 42 of the player's current inventory to 1 nether star named "<gold>Charlatan" with lore "<white>Crazed alchemist who sacrifices their health for more power.", "<cyan>Strengths: RES, MAG", "<light red>Weaknesses: STR, DEF", "<cyan>This class naturally learns spells."
 			set slot 0 of player's current inventory to 1 book named "<bold>Return to Character Creation"
-		#Mercenary Perks Preview
+		#Mercenary Perk Tree
 		else if arg 1 is "Mercenary":
 			open chest inventory with 6 rows named "<gold>Mercenary Perks Preview" for the player
 			if {activePerkTree.%player%::Mercenary} is not set:
@@ -6383,17 +6429,17 @@ command /class_setup_perkmenu [<text="2">]:
 			#Fortitude
 			if {perkTreeXP.mercenary.%player%::Fortitude} is more than or equal to {perksFirstHonorXPRequirement}:
 				set slot 13 of the player's current inventory to 1 ladder named "<gold>Fortitude: 1st Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 22 of the player's current inventory to 1 emerald block named "<bold>Heavy Blade" with lore "<white>If player initiates combat, and has STR >= foe's STR:", "<white>Grants LCK +X, where X = (player's STR - foe's STR),", "<white>and boosts damage dealt by (X / 2).", "<white>Maximum value of X: 20"
+				set slot 22 of the player's current inventory to 1 emerald block named "<bold>Breakthrough" with lore "<white>If player initiates combat, and has STR >= foe's STR - 10:", "<white>Reduces damage dealt by 20%%, and player makes a follow-up attack."
 			else:
 				set slot 13 of the player's current inventory to 1 barrier named "<light red>Fortitude: 1st Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Fortitude XP needed: %getAbsoluteValue({perkTreeXP.mercenary.%player%::Fortitude} - {perksFirstHonorXPRequirement})%"
-				set slot 22 of the player's current inventory to 1 obsidian named "<light red>Heavy Blade" with lore "<white>If player initiates combat, and has STR >= foe's STR:", "<white>Grants LCK +X, where X = (player's STR - foe's STR),", "<white>and boosts damage dealt by (X / 2).", "<white>Maximum value of X: 20"
+				set slot 22 of the player's current inventory to 1 obsidian named "<light red>Breakthrough" with lore "<white>If player initiates combat, and has STR >= foe's STR - 10:", "<white>Reduces damage dealt by 20%%, and player makes a follow-up attack."
 			#Courage
 			if {perkTreeXP.mercenary.%player%::Courage} is more than or equal to {perksFirstHonorXPRequirement}:
 				set slot 24 of the player's current inventory to 1 ladder named "<gold>Courage: 1st Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 33 of the player's current inventory to 1 emerald block named "<bold>Brazen STR/DEF" with lore "<white>During combat, if player's HP <= 70%%:", "<white>Grants STR/DEF +7 during combat."
+				set slot 33 of the player's current inventory to 1 emerald block named "<bold>Brazen STR/DEF/RES" with lore "<white>During combat, if player's HP <= 70%%:", "<white>Grants STR/DEF/RES +7 during combat."
 			else:
 				set slot 24 of the player's current inventory to 1 barrier named "<light red>Courage: 1st Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Courage XP needed: %getAbsoluteValue({perkTreeXP.mercenary.%player%::Courage} - {perksFirstHonorXPRequirement})%"
-				set slot 33 of the player's current inventory to 1 obsidian named "<light red>Brazen STR/DEF" with lore "<white>During combat, if player's HP <= 70%%:", "<white>Grants STR/DEF +7 during combat."
+				set slot 33 of the player's current inventory to 1 obsidian named "<light red>Brazen STR/DEF/RES" with lore "<white>During combat, if player's HP <= 70%%:", "<white>Grants STR/DEF/RES +7 during combat."
 			#Second perk XP walls
 			#Camraderie
 			if {perkTreeXP.mercenary.%player%::Camraderie} is more than or equal to {perksSecondHonorXPRequirement}:
@@ -6405,10 +6451,10 @@ command /class_setup_perkmenu [<text="2">]:
 			#Fortitude
 			if {perkTreeXP.mercenary.%player%::Fortitude} is more than or equal to {perksSecondHonorXPRequirement}:
 				set slot 31 of the player's current inventory to 1 ladder named "<gold>Fortitude: 2nd Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 40 of the player's current inventory to 1 emerald block named "<bold>Scendscale" with lore "<white>If player initiates combat, and has HP = 100%%:", "<white>Player makes a guaranteed follow-up attack,", "<white>and boosts damage dealt by 20%% of their STR,", "<white>but suffers 2.5 hearts of recoil damage after combat."
+				set slot 40 of the player's current inventory to 1 emerald block named "<bold>Scendscale" with lore "<white>If player initiates combat, and has HP = 100%%:", "<white>Player makes a guaranteed follow-up attack,", "<white>and boosts damage dealt by 20%% of their STR,", "<white>but suffers 4 hearts of recoil damage after combat."
 			else:
 				set slot 31 of the player's current inventory to 1 barrier named "<light red>Fortitude: 2nd Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Fortitude XP needed: %getAbsoluteValue({perkTreeXP.mercenary.%player%::Fortitude} - {perksSecondHonorXPRequirement})%"
-				set slot 40 of the player's current inventory to 1 obsidian named "<light red>Scendscale" with lore "<white>If player initiates combat, and has HP = 100%%:", "<white>Player makes a guaranteed follow-up attack,", "<white>and boosts damage dealt by 20%% of their STR,", "<white>but suffers 2.5 hearts of recoil damage after combat."
+				set slot 40 of the player's current inventory to 1 obsidian named "<light red>Scendscale" with lore "<white>If player initiates combat, and has HP = 100%%:", "<white>Player makes a guaranteed follow-up attack,", "<white>and boosts damage dealt by 20%% of their STR,", "<white>but suffers 4 hearts of recoil damage after combat."
 			#Courage
 			if {perkTreeXP.mercenary.%player%::Courage} is more than or equal to {perksSecondHonorXPRequirement}:
 				set slot 42 of the player's current inventory to 1 ladder named "<gold>Courage: 2nd Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
@@ -6417,14 +6463,14 @@ command /class_setup_perkmenu [<text="2">]:
 				set slot 42 of the player's current inventory to 1 barrier named "<light red>Courage: 2nd Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Courage XP needed: %getAbsoluteValue({perkTreeXP.mercenary.%player%::Courage} - {perksSecondHonorXPRequirement})%"
 				set slot 51 of the player's current inventory to 1 obsidian named "<light red>Shrug It Off" with lore "<white>During combat, if player's HP <= 80%%:", "<white>Reduces damage suffered during combat by 30%%."
 			if {perkTreeXP.mercenary.%player%::Global} is more than or equal to {perksThirdHonorXPRequirement}:
-				set slot 49 of the player's current inventory to 1 emerald block of power 1 named "<bold>Lord's Blood" with lore "<white>Grants HP +10, STR/LCK +5 while equipped.", "<white>Boosts Traditional Weapons by +100 while equipped."
+				set slot 49 of the player's current inventory to 1 emerald block of power 1 named "<bold>Lord's Blood" with lore "<white>Grants HP +15, STR/SPD/LCK/DEF/RES +6 while equipped.", "<white>Boosts Traditional Weapons by +100 while equipped."
 				set slot 48 of the player's current inventory to 1 ladder named "<gold>Mercenary Mastery" with lore "<white>You've reached the XP needed to equip this tree's Mastery perk."
 				set slot 50 of the player's current inventory to 1 ladder named "<gold>Mercenary Mastery" with lore "<white>You've reached the XP needed to equip this tree's Mastery perk."
 			else:
-				set slot 49 of the player's current inventory to 1 obsidian named "<light red>Lord's Blood" with lore "<white>Grants HP +10, STR/LCK +5 while equipped.", "<white>Boosts Traditional Weapons by +100 while equipped."
+				set slot 49 of the player's current inventory to 1 obsidian named "<light red>Lord's Blood" with lore "<white>Grants HP +15, STR/SPD/LCK/DEF/RES +6 while equipped.", "<white>Boosts Traditional Weapons by +100 while equipped."
 				set slot 48 of the player's current inventory to 1 barrier named "<light red>Mercenary Mastery" with lore "<white>You need more XP in the Mercenary class to equip the Mastery perk.", "<white>Mercenary XP needed: %getAbsoluteValue({perkTreeXP.mercenary.%player%::Global} - {perksThirdHonorXPRequirement})%"
 				set slot 50 of the player's current inventory to 1 barrier named "<light red>Mercenary Mastery" with lore "<white>You need more XP in the Mercenary class to equip the Mastery perk.", "<white>Mercenary XP needed: %getAbsoluteValue({perkTreeXP.mercenary.%player%::Global} - {perksThirdHonorXPRequirement})%"
-		#Knight Perks Preview
+		#Knight Perk Tree
 		else if arg 1 is "Knight":
 			open chest inventory with 6 rows named "<gold>Knight Perks Preview" for the player
 			if {activePerkTree.%player%::Knight} is not set:
@@ -6450,10 +6496,10 @@ command /class_setup_perkmenu [<text="2">]:
 			#Perserverance
 			if {perkTreeXP.Knight.%player%::Perserverance} is more than or equal to {perksFirstHonorXPRequirement}:
 				set slot 20 of the player's current inventory to 1 ladder named "<gold>Perserverance: 1st Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 29 of the player's current inventory to 1 emerald block named "<bold>Bracing Stance" with lore "<white>If foe initiates combat, grants DEF/RES +4 during combat."
+				set slot 29 of the player's current inventory to 1 emerald block named "<bold>Bracing Stance" with lore "<white>If foe initiates combat, grants DEF/RES +6 during combat."
 			else:
 				set slot 20 of the player's current inventory to 1 barrier named "<light red>Perserverance: 1st Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Perserverance XP needed: %getAbsoluteValue({perkTreeXP.Knight.%player%::Perserverance} - {perksFirstHonorXPRequirement})%"
-				set slot 29 of the player's current inventory to 1 obsidian named "<light red>Bracing Stance" with lore "<white>If foe initiates combat, grants DEF/RES +4 during combat."
+				set slot 29 of the player's current inventory to 1 obsidian named "<light red>Bracing Stance" with lore "<white>If foe initiates combat, grants DEF/RES +6 during combat."
 			#Reliability
 			if {perkTreeXP.Knight.%player%::Reliability} is more than or equal to {perksFirstHonorXPRequirement}:
 				set slot 13 of the player's current inventory to 1 ladder named "<gold>Reliability: 1st Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
@@ -6491,14 +6537,14 @@ command /class_setup_perkmenu [<text="2">]:
 				set slot 42 of the player's current inventory to 1 barrier named "<light red>Pessimism: 2nd Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Pessimism XP needed: %getAbsoluteValue({perkTreeXP.Knight.%player%::Pessimism} - {perksSecondHonorXPRequirement})%"
 				set slot 51 of the player's current inventory to 1 obsidian named "<light red>Indomitable Will" with lore "<white>If foe's HP >= 80%%:", "<white>Nullifies damage resistance provided by foe's armour."
 			if {perkTreeXP.Knight.%player%::Global} is more than or equal to {perksThirdHonorXPRequirement}:
-				set slot 49 of the player's current inventory to 1 emerald block of power 1 named "<bold>Steady Breath" with lore "<white>If foe initiates combat:", "<white>Grants DEF/RES +2 and accelerates Special activation (+10%% activation chance) through player's next action."
+				set slot 49 of the player's current inventory to 1 emerald block of power 1 named "<bold>Steady Breath" with lore "<white>If foe initiates combat:", "<white>Grants DEF/RES +6 and accelerates Special activation (+25%% activation chance)."
 				set slot 48 of the player's current inventory to 1 ladder named "<gold>Knight Mastery" with lore "<white>You've reached the XP needed to equip this tree's Mastery perk."
 				set slot 50 of the player's current inventory to 1 ladder named "<gold>Knight Mastery" with lore "<white>You've reached the XP needed to equip this tree's Mastery perk."
 			else:
-				set slot 49 of the player's current inventory to 1 obsidian named "<light red>Steady Breath" with lore "<white>If foe initiates combat:", "<white>Grants DEF/RES +2 and accelerates Special activation (+10%% activation chance) through player's next action."
+				set slot 49 of the player's current inventory to 1 obsidian named "<light red>Steady Breath" with lore "<white>If foe initiates combat:", "<white>Grants DEF/RES +6 and accelerates Special activation (+25%% activation chance)."
 				set slot 48 of the player's current inventory to 1 barrier named "<light red>Knight Mastery" with lore "<white>You need more XP in the Knight class to equip the Mastery perk.", "<white>Knight XP needed: %getAbsoluteValue({perkTreeXP.Knight.%player%::Global} - {perksThirdHonorXPRequirement})%"
 				set slot 50 of the player's current inventory to 1 barrier named "<light red>Knight Mastery" with lore "<white>You need more XP in the Knight class to equip the Mastery perk.", "<white>Knight XP needed: %getAbsoluteValue({perkTreeXP.Knight.%player%::Global} - {perksThirdHonorXPRequirement})%"
-		#Bladesman Perks Preview
+		#Bladesman Perk Tree
 		else if arg 1 is "Bladesman":
 			open chest inventory with 6 rows named "<gold>Bladesman Perks Preview" for the player
 			if {activePerkTree.%player%::Bladesman} is not set:
@@ -6572,7 +6618,7 @@ command /class_setup_perkmenu [<text="2">]:
 				set slot 49 of the player's current inventory to 1 obsidian named "<light red>Close Call" with lore "<white>During combat, if player's SPD > foe's SPD:", "<white>Reduces damage suffered during combat by X%%,", "<white>where X = difference between player and foe's SPD stats * 4.", "<white>(Maximum value of X: 40)"
 				set slot 48 of the player's current inventory to 1 barrier named "<light red>Bladesman Mastery" with lore "<white>You need more XP in the Bladesman class to equip the Mastery perk.", "<white>Bladesman XP needed: %getAbsoluteValue({perkTreeXP.Bladesman.%player%::Global} - {perksThirdHonorXPRequirement})%"
 				set slot 50 of the player's current inventory to 1 barrier named "<light red>Bladesman Mastery" with lore "<white>You need more XP in the Bladesman class to equip the Mastery perk.", "<white>Bladesman XP needed: %getAbsoluteValue({perkTreeXP.Bladesman.%player%::Global} - {perksThirdHonorXPRequirement})%"
-		#Fighter Perks Preview
+		#Fighter Perk Tree
 		else if arg 1 is "Fighter":
 			open chest inventory with 6 rows named "<gold>Fighter Perks Preview" for the player
 			if {activePerkTree.%player%::Fighter} is not set:
@@ -6615,7 +6661,7 @@ command /class_setup_perkmenu [<text="2">]:
 				set slot 33 of the player's current inventory to 1 emerald block named "<bold>Flame Boost II" with lore "<white>If player initiates combat, and has HP >= foe's HP +3:", "<white>Grants STR/DEF/RES +6 and accelerates Special skill activation (+10%% activation chance)."
 			else:
 				set slot 24 of the player's current inventory to 1 barrier named "<light red>Confidence: 1st Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Confidence XP needed: %getAbsoluteValue({perkTreeXP.Fighter.%player%::Confidence} - {perksFirstHonorXPRequirement})%"
-				set slot 33 of the player's current inventory to 1 obsidian named "<bold>Flame Boost II" with lore "<white>If player initiates combat, and has HP >= foe's HP +3:", "<white>Grants STR/DEF/RES +6 and accelerates Special skill activation (+10%% activation chance)."
+				set slot 33 of the player's current inventory to 1 obsidian named "<light red>Flame Boost II" with lore "<white>If player initiates combat, and has HP >= foe's HP +3:", "<white>Grants STR/DEF/RES +6 and accelerates Special skill activation (+10%% activation chance)."
 			#Second perk XP walls
 			#Flexibility
 			if {perkTreeXP.Fighter.%player%::Flexibility} is more than or equal to {perksSecondHonorXPRequirement}:
@@ -6646,7 +6692,7 @@ command /class_setup_perkmenu [<text="2">]:
 				set slot 49 of the player's current inventory to 1 obsidian named "<light red>Overwhelm" with lore "<white>If player initiates combat, and has HP >= 50%%,", "<white>Boosts damage dealt by 25%% of player's STR."
 				set slot 48 of the player's current inventory to 1 barrier named "<light red>Fighter Mastery" with lore "<white>You need more XP in the Fighter class to equip the Mastery perk.", "<white>Fighter XP needed: %getAbsoluteValue({perkTreeXP.Fighter.%player%::Global} - {perksThirdHonorXPRequirement})%"
 				set slot 50 of the player's current inventory to 1 barrier named "<light red>Fighter Mastery" with lore "<white>You need more XP in the Fighter class to equip the Mastery perk.", "<white>Fighter XP needed: %getAbsoluteValue({perkTreeXP.Fighter.%player%::Global} - {perksThirdHonorXPRequirement})%"
-		#Mage Perks Preview
+		#Mage Perk Tree
 		else if arg 1 is "Mage":
 			open chest inventory with 6 rows named "<gold>Mage Perks Preview" for the player
 			if {activePerkTree.%player%::Mage} is not set:
@@ -6686,25 +6732,25 @@ command /class_setup_perkmenu [<text="2">]:
 			#Diligence
 			if {perkTreeXP.Mage.%player%::Diligence} is more than or equal to {perksFirstHonorXPRequirement}:
 				set slot 24 of the player's current inventory to 1 ladder named "<gold>Diligence: 1st Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 33 of the player's current inventory to 1 emerald block named "<bold>Hexblade" with lore "<white>Causes melee weapons to deal magical damage instead of physical damage while equipped."
+				set slot 33 of the player's current inventory to 1 emerald block named "<bold>Hexblade" with lore "<white>Causes melee weapons to deal magical damage instead of physical damage while equipped,", "<white>and all weapon types use your Magical Weapons ability rating for accuracy checks.", "<white>Grants MAG +5 per-hit during combat."
 			else:
 				set slot 24 of the player's current inventory to 1 barrier named "<light red>Diligence: 1st Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Diligence XP needed: %getAbsoluteValue({perkTreeXP.Mage.%player%::Diligence} - {perksFirstHonorXPRequirement})%"
-				set slot 33 of the player's current inventory to 1 obsidian named "<light red>Hexblade" with lore "<white>Causes melee weapons to deal magical damage instead of physical damage while equipped."
+				set slot 33 of the player's current inventory to 1 obsidian named "<light red>Hexblade" with lore "<white>Causes melee weapons to deal magical damage instead of physical damage while equipped,", "<white>and all weapon types use your Magical Weapons ability rating for accuracy checks.", "<white>Grants MAG +5 per-hit during combat."
 			#Second perk XP walls
 			#Wisdom
 			if {perkTreeXP.Mage.%player%::Wisdom} is more than or equal to {perksSecondHonorXPRequirement}:
 				set slot 38 of the player's current inventory to 1 ladder named "<gold>Wisdom: 2nd Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 47 of the player's current inventory to 1 emerald block named "<bold>Lifetaker" with lore "<white>If player initiates combat, restores health equal to 10%% of damage dealt during combat."
+				set slot 47 of the player's current inventory to 1 emerald block named "<bold>Lifetaker" with lore "<white>If player initiates combat, restores health equal to 20%% of damage dealt during combat."
 			else:
 				set slot 38 of the player's current inventory to 1 barrier named "<light red>Wisdom: 2nd Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Wisdom XP needed: %getAbsoluteValue({perkTreeXP.Mage.%player%::Wisdom} - {perksSecondHonorXPRequirement})%"
-				set slot 47 of the player's current inventory to 1 obsidian named "<light red>Lifetaker" with lore "<white>If player initiates combat, restores health equal to 10%% of damage dealt during combat."
+				set slot 47 of the player's current inventory to 1 obsidian named "<light red>Lifetaker" with lore "<white>If player initiates combat, restores health equal to 20%% of damage dealt during combat."
 			#Serenity
 			if {perkTreeXP.Mage.%player%::Serenity} is more than or equal to {perksSecondHonorXPRequirement}:
 				set slot 31 of the player's current inventory to 1 ladder named "<gold>Serenity: 2nd Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 40 of the player's current inventory to 1 emerald block named "<bold>Steadfast Casting" with lore "<white>Whenever a spell hits a foe, grants MAG +5 after combat.", "<white>This effect can stack up to MAG +25, but is lost when changing weapons."
+				set slot 40 of the player's current inventory to 1 emerald block named "<bold>Steadfast Casting" with lore "<white>Whenever a spell hits a foe, grants MAG +5 after combat for 10 seconds.", "<white>This effect can stack up to MAG +25, and the duration is reset when another bonus is gained."
 			else:
 				set slot 31 of the player's current inventory to 1 barrier named "<light red>Serenity: 2nd Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Serenity XP needed: %getAbsoluteValue({perkTreeXP.Mage.%player%::Serenity} - {perksSecondHonorXPRequirement})%"
-				set slot 40 of the player's current inventory to 1 obsidian named "<light red>Steadfast Casting" with lore "<white>Whenever a spell hits a foe, grants MAG +5 after combat.", "<white>This effect can stack up to MAG +25, but is lost when changing weapons."
+				set slot 40 of the player's current inventory to 1 obsidian named "<light red>Steadfast Casting" with lore "<white>Whenever a spell hits a foe, grants MAG +5 after combat for 10 seconds.", "<white>This effect can stack up to MAG +25, and the duration is reset when another bonus is gained."
 			#Diligence
 			if {perkTreeXP.Mage.%player%::Diligence} is more than or equal to {perksSecondHonorXPRequirement}:
 				set slot 42 of the player's current inventory to 1 ladder named "<gold>Diligence: 2nd Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
@@ -6713,14 +6759,14 @@ command /class_setup_perkmenu [<text="2">]:
 				set slot 42 of the player's current inventory to 1 barrier named "<light red>Diligence: 2nd Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Diligence XP needed: %getAbsoluteValue({perkTreeXP.Mage.%player%::Diligence} - {perksSecondHonorXPRequirement})%"
 				set slot 51 of the player's current inventory to 1 obsidian named "<light red>More Than Magic" with lore "<white>Changing weapons after casting a spell grants +20%% damage for 3 seconds."
 			if {perkTreeXP.Mage.%player%::Global} is more than or equal to {perksThirdHonorXPRequirement}:
-				set slot 49 of the player's current inventory to 1 emerald block of power 1 named "<bold>Ascended Magic" with lore "<white>While equipped, grants MAG +9, LCK/RES +6.", "<white>Boosts Magical Weapons by +100 while equipped."
+				set slot 49 of the player's current inventory to 1 emerald block of power 1 named "<bold>Ascended Magic" with lore "<white>Grants each spell element a unique bonus during combat:", "<orange>Fire: Deal recoil damage to the foe = 20%% of their maximum HP.", "<light blue>Ice: Inflicts SPD -10 on foe during combat.", "<light yellow>Thunder: Boosts total damage dealt by 10%% (applies after doubling).", "<light green>Wind: If player's SPD >= foe's SPD +10 before skills activate,", "<light green>player makes a guaranteed follow-up attack.", "<white>Also grants MAG +9, LCK/RES +6, and +100 Magical Weapons while equipped."
 				set slot 48 of the player's current inventory to 1 ladder named "<gold>Mage Mastery" with lore "<white>You've reached the XP needed to equip this tree's Mastery perk."
 				set slot 50 of the player's current inventory to 1 ladder named "<gold>Mage Mastery" with lore "<white>You've reached the XP needed to equip this tree's Mastery perk."
 			else:
-				set slot 49 of the player's current inventory to 1 obsidian named "<light red>Ascended Magic" with lore "<white>While equipped, grants MAG +9, LCK/RES +6.", "<white>Boosts Magical Weapons by +100 while equipped."
+				set slot 49 of the player's current inventory to 1 obsidian named "<bold>Ascended Magic" with lore "<white>Grants each spell element a unique bonus during combat:", "<orange>Fire: Deal recoil damage to the foe = 20%% of their maximum HP.", "<light blue>Ice: Inflicts SPD -10 on foe during combat.", "<light yellow>Thunder: Boosts total damage dealt by 10%% (applies after doubling).", "<light green>Wind: If player's SPD >= foe's SPD +10 before skills activate,", "<light green>player makes a guaranteed follow-up attack.", "<white>Also, grants MAG +9, LCK/RES +6, and +100 Magical Weapons while equipped."
 				set slot 48 of the player's current inventory to 1 barrier named "<light red>Mage Mastery" with lore "<white>You need more XP in the Mage class to equip the Mastery perk.", "<white>Mage XP needed: %getAbsoluteValue({perkTreeXP.Mage.%player%::Global} - {perksThirdHonorXPRequirement})%"
 				set slot 50 of the player's current inventory to 1 barrier named "<light red>Mage Mastery" with lore "<white>You need more XP in the Mage class to equip the Mastery perk.", "<white>Mage XP needed: %getAbsoluteValue({perkTreeXP.Mage.%player%::Global} - {perksThirdHonorXPRequirement})%"
-		#Cleric Perks Preview
+		#Cleric Perk Tree
 		else if arg 1 is "Cleric":
 			open chest inventory with 6 rows named "<gold>Cleric Perks Preview" for the player
 			if {activePerkTree.%player%::Cleric} is not set:
@@ -6746,55 +6792,55 @@ command /class_setup_perkmenu [<text="2">]:
 			#Pacifism
 			if {perkTreeXP.Cleric.%player%::Pacifism} is more than or equal to {perksFirstHonorXPRequirement}:
 				set slot 20 of the player's current inventory to 1 ladder named "<gold>Pacifism: 1st Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 29 of the player's current inventory to 1 emerald block named "<bold>Sacred Balm" with lore "<white>Healing an ally with any staff grants DEF/RES +9", "<white>to both the healer and target through their next action,", "<white>and grants Absorption 5 for 20 seconds."
+				set slot 29 of the player's current inventory to 1 emerald block named "<bold>Live to Serve" with lore "<white>Using a staff on an ally applies the effects to yourself as well.", "<white>Staves also grant the player and target DEF/RES +9 through their next action, and Absorption 5.", "<white>You and all allies within 30 blocks recover 1.5 hearts every 3 seconds while equipped."
 			else:
 				set slot 20 of the player's current inventory to 1 barrier named "<light red>Pacifism: 1st Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Pacifism XP needed: %getAbsoluteValue({perkTreeXP.Cleric.%player%::Pacifism} - {perksFirstHonorXPRequirement})%"
-				set slot 29 of the player's current inventory to 1 obsidian named "<light red>Sacred Balm" with lore "<white>Healing an ally with any staff grants DEF/RES +9", "<white>to both the healer and target through their next action.", "<white>and grants Absorption 5 for 20 seconds."
+				set slot 29 of the player's current inventory to 1 obsidian named "<light red>Live to Serve" with lore "<white>Using a staff on an ally applies the effects to yourself as well.", "<white>Staves also grant the player and target DEF/RES +9 through their next action, and Absorption 5.", "<white>You and all allies within 30 blocks recover 1.5 hearts every 3 seconds while equipped."
 			#Loyalty
 			if {perkTreeXP.Cleric.%player%::Loyalty} is more than or equal to {perksFirstHonorXPRequirement}:
 				set slot 13 of the player's current inventory to 1 ladder named "<gold>Loyalty: 1st Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 22 of the player's current inventory to 1 emerald block named "<bold>Breath of Life" with lore "<white>After combat, if player attacked:", "<white>Restores 6 hearts to allies within 30 blocks."
+				set slot 22 of the player's current inventory to 1 emerald block named "<bold>Breath of Life" with lore "<white>After combat, if player attacked:", "<white>Restores 6 hearts to the player and all allies within 30 blocks.", "<white>During combat, foes cannot counter-attack."
 			else:
 				set slot 13 of the player's current inventory to 1 barrier named "<light red>Loyalty: 1st Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Loyalty XP needed: %getAbsoluteValue({perkTreeXP.Cleric.%player%::Loyalty} - {perksFirstHonorXPRequirement})%"
-				set slot 22 of the player's current inventory to 1 obsidian named "<light red>Breath of Life" with lore "<white>After combat, if player attacked:", "<white>Restores 6 hearts to allies within 30 blocks."
+				set slot 22 of the player's current inventory to 1 obsidian named "<light red>Breath of Life" with lore "<white>After combat, if player attacked:", "<white>Restores 6 hearts to the player and all allies within 30 blocks.", "<white>During combat, foes cannot counter-attack."
 			#Hypocrisy
 			if {perkTreeXP.Cleric.%player%::Hypocrisy} is more than or equal to {perksFirstHonorXPRequirement}:
 				set slot 24 of the player's current inventory to 1 ladder named "<gold>Hypocrisy: 1st Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 33 of the player's current inventory to 1 emerald block named "<bold>Secret Training" with lore "<white>Boosts your Traditional Weapons, Magical Weapons, and Guns abilities by +20 while equipped.", "<white>Also, if player initiates combat with any Staff:", "<white>Boosts damage dealt by 5 hearts and calculates damage using STR or MAG,", "<white>whichever of the player's stats is higher."
+				set slot 33 of the player's current inventory to 1 emerald block named "<bold>Holy Light" with lore "<white>Using a healing staff on a monster applies the inverse effects to that monster.", "<white>Status staffs like Enrage strip the positive effect (such as Strength) and apply its inverse."
 			else:
 				set slot 24 of the player's current inventory to 1 barrier named "<light red>Hypocrisy: 1st Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Hypocrisy XP needed: %getAbsoluteValue({perkTreeXP.Cleric.%player%::Hypocrisy} - {perksFirstHonorXPRequirement})%"
-				set slot 33 of the player's current inventory to 1 obsidian named "<light red>Secret Training" with lore "<white>Boosts your Traditional Weapons, Magical Weapons, and Guns abilities by +20 while equipped.", "<white>Also, if player initiates combat with any Staff:", "<white>Boosts damage dealt by 5 hearts and calculates damage using STR or MAG,", "<white>whichever of the player's stats is higher."
+				set slot 33 of the player's current inventory to 1 obsidian named "<light red>Holy Light" with lore "<white>Using a healing staff on a monster applies the inverse effects to that monster.", "<white>Status staffs like Enrage strip the positive effect (such as Strength) and apply its inverse."
 			#Second perk XP walls
 			#Pacifism
 			if {perkTreeXP.Cleric.%player%::Pacifism} is more than or equal to {perksSecondHonorXPRequirement}:
 				set slot 38 of the player's current inventory to 1 ladder named "<gold>Pacifism: 2nd Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 47 of the player's current inventory to 1 emerald block named "<bold>Live to Serve" with lore "<white>Using a staff on an ally applies the effects to yourself as well.", "<white>You and all allies within 30 blocks recover 1/2 heart every 3 seconds while equipped."
+				set slot 47 of the player's current inventory to 1 emerald block named "<bold>Wings of Mercy" with lore "<white>If any ally has HP <= 80%%:", "<white>Sneak and right-click with an empty hand to teleport to that ally.", "<white>If multiple allies have HP <= 50%%, you will teleport to the closest ally."
 			else:
 				set slot 38 of the player's current inventory to 1 barrier named "<light red>Pacifism: 2nd Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Pacifism XP needed: %getAbsoluteValue({perkTreeXP.Cleric.%player%::Pacifism} - {perksSecondHonorXPRequirement})%"
-				set slot 47 of the player's current inventory to 1 obsidian named "<light red>Live to Serve" with lore "<white>Using a staff on an ally applies the effects to yourself as well.", "<white>You and all allies within 30 blocks recover 0.5 HP/s while equipped."
+				set slot 47 of the player's current inventory to 1 obsidian named "<light red>Wings of Mercy" with lore "<white>If any ally has HP <= 80%%:", "<white>Sneak and right-click with an empty hand to teleport to that ally.", "<white>If multiple allies have HP <= 50%%, you will teleport to the closest ally."
 			#Loyalty
 			if {perkTreeXP.Cleric.%player%::Loyalty} is more than or equal to {perksSecondHonorXPRequirement}:
 				set slot 31 of the player's current inventory to 1 ladder named "<gold>Loyalty: 2nd Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 40 of the player's current inventory to 1 emerald block named "<bold>Herbivore" with lore "<white>Boosts the drop rates for Sacred and Golden herbs by 50%%.", "<white>After combat, restores 3 hearts of health."
+				set slot 40 of the player's current inventory to 1 emerald block named "<bold>Inner Peace" with lore "<white>During combat, inflicts Spectrum -8 on foe.", "<white>After combat, inflicts Spectrum -8 on foe and restores 3 hearts of health.", "<white>Boosts the drop rates for Sacred and Golden herbs by 50%%."
 			else:
 				set slot 31 of the player's current inventory to 1 barrier named "<light red>Loyalty: 2nd Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Loyalty XP needed: %getAbsoluteValue({perkTreeXP.Cleric.%player%::Loyalty} - {perksSecondHonorXPRequirement})%"
-				set slot 40 of the player's current inventory to 1 obsidian named "<light red>Herbivore" with lore "<white>Boosts the drop rates for Sacred and Golden herbs by 50%%.", "<white>After combat, restores 3 hearts of health."
+				set slot 40 of the player's current inventory to 1 obsidian named "<light red>Inner Peace" with lore "<white>During combat, inflicts Spectrum -8 on foe.", "<white>After combat, inflicts Spectrum -8 on foe and restores 3 hearts of health.", "<white>Boosts the drop rates for Sacred and Golden herbs by 50%%."
 			#Hypocrisy
 			if {perkTreeXP.Cleric.%player%::Hypocrisy} is more than or equal to {perksSecondHonorXPRequirement}:
 				set slot 42 of the player's current inventory to 1 ladder named "<gold>Hypocrisy: 2nd Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 51 of the player's current inventory to 1 emerald block named "<bold>Hidden Thorn" with lore "<white>During combat, if player's STR / MAG < foe's STR / MAG:", "<white>Boosts damage dealt during combat by 50%% of the difference", "<white>between stats (maximum bonus of +10 hearts).", "<white>Stat used for comparison is dependent on physical VS magical damage being used."
+				set slot 51 of the player's current inventory to 1 emerald block named "<bold>Hidden Thorn" with lore "<white>If player initiates combat, foe suffers recoil damage", "<white>equal to 25%% of the player's RES."
 			else:
 				set slot 42 of the player's current inventory to 1 barrier named "<light red>Hypocrisy: 2nd Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Hypocrisy XP needed: %getAbsoluteValue({perkTreeXP.Cleric.%player%::Hypocrisy} - {perksSecondHonorXPRequirement})%"
-				set slot 51 of the player's current inventory to 1 obsidian named "<light red>Hidden Thorn" with lore "<white>During combat, if player's STR / MAG < foe's STR / MAG:", "<white>Boosts damage dealt during combat by 50%% of the difference", "<white>between stats (maximum bonus of +10 hearts).", "<white>Stat used for comparison is dependent on physical VS magical damage being used."
+				set slot 51 of the player's current inventory to 1 obsidian named "<light red>Hidden Thorn" with lore "<white>If player initiates combat, foe suffers recoil damage", "<white>equal to 25%% of the player's RES."
 			if {perkTreeXP.Cleric.%player%::Global} is more than or equal to {perksThirdHonorXPRequirement}:
-				set slot 49 of the player's current inventory to 1 emerald block of power 1 named "<bold>Wings of Mercy" with lore "<white>If any ally has HP <= 50%%:", "<white>Sneak and right-click with an empty hand to teleport to that ally.", "<white>If multiple allies have HP <= 50%%, you will teleport to the closest ally."
+				set slot 49 of the player's current inventory to 1 emerald block of power 1 named "<bold>Resurrection" with lore "<white>If the player or any ally within 30 blocks triggers Last Stand,", "<white>they heal all missing HP and gain Resistance 3 for 15 seconds."
 				set slot 48 of the player's current inventory to 1 ladder named "<gold>Cleric Mastery" with lore "<white>You've reached the XP needed to equip this tree's Mastery perk."
 				set slot 50 of the player's current inventory to 1 ladder named "<gold>Cleric Mastery" with lore "<white>You've reached the XP needed to equip this tree's Mastery perk."
 			else:
-				set slot 49 of the player's current inventory to 1 obsidian named "<light red>Wings of Mercy" with lore "<white>If any ally has HP <= 50%%:", "<white>Sneak and right-click with an empty hand to teleport to that ally.", "<white>If multiple allies have HP <= 50%%, you will teleport to the closest ally."
+				set slot 49 of the player's current inventory to 1 obsidian named "<light red>Wings of Mercy" with lore "<white>If the player or any ally within 30 blocks triggers Last Stand,", "<white>they heal all missing HP and gain Resistance 3 for 15 seconds."
 				set slot 48 of the player's current inventory to 1 barrier named "<light red>Cleric Mastery" with lore "<white>You need more XP in the Cleric class to equip the Mastery perk.", "<white>Cleric XP needed: %getAbsoluteValue({perkTreeXP.Cleric.%player%::Global} - {perksThirdHonorXPRequirement})%"
 				set slot 50 of the player's current inventory to 1 barrier named "<light red>Cleric Mastery" with lore "<white>You need more XP in the Cleric class to equip the Mastery perk.", "<white>Cleric XP needed: %getAbsoluteValue({perkTreeXP.Cleric.%player%::Global} - {perksThirdHonorXPRequirement})%"
-		#Archer Perks Preview
+		#Archer Perk Tree
 		else if arg 1 is "Archer":
 			open chest inventory with 6 rows named "<gold>Archer Perks Preview" for the player
 			if {activePerkTree.%player%::Archer} is not set:
@@ -6868,7 +6914,7 @@ command /class_setup_perkmenu [<text="2">]:
 				set slot 49 of the player's current inventory to 1 obsidian named "<light red>Lunar Arc" with lore "<white>Boosts damage dealt by 10%% of foe's DEF + RES during combat."
 				set slot 48 of the player's current inventory to 1 barrier named "<light red>Archer Mastery" with lore "<white>You need more XP in the Archer class to equip the Mastery perk.", "<white>Archer XP needed: %getAbsoluteValue({perkTreeXP.Archer.%player%::Global} - {perksThirdHonorXPRequirement})%"
 				set slot 50 of the player's current inventory to 1 barrier named "<light red>Archer Mastery" with lore "<white>You need more XP in the Archer class to equip the Mastery perk.", "<white>Archer XP needed: %getAbsoluteValue({perkTreeXP.Archer.%player%::Global} - {perksThirdHonorXPRequirement})%"
-		#Cavalier Perks Preview
+		#Cavalier Perk Tree
 		else if arg 1 is "Cavalier":
 			open chest inventory with 6 rows named "<gold>Cavalier Perks Preview" for the player
 			if {activePerkTree.%player%::Cavalier} is not set:
@@ -6894,39 +6940,39 @@ command /class_setup_perkmenu [<text="2">]:
 			#Adeptness
 			if {perkTreeXP.Cavalier.%player%::Adeptness} is more than or equal to {perksFirstHonorXPRequirement}:
 				set slot 20 of the player's current inventory to 1 ladder named "<gold>Adeptness: 1st Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 29 of the player's current inventory to 1 emerald block named "<bold>Well-Trained" with lore "<white>While riding a horse, grants +20 to Traditional/Magical Weapons,", "<white>and grants STR/MAG/LCK +4."
+				set slot 29 of the player's current inventory to 1 emerald block named "<bold>Pass II" with lore "<white>If an enemy is within 7 blocks, grants Swiftness 3.", "<white>During combat, deals true damage = 2 * level of swiftness active on the player."
 			else:
 				set slot 20 of the player's current inventory to 1 barrier named "<light red>Adeptness: 1st Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Adeptness XP needed: %getAbsoluteValue({perkTreeXP.Cavalier.%player%::Adeptness} - {perksFirstHonorXPRequirement})%"
-				set slot 29 of the player's current inventory to 1 obsidian named "<light red>Well-Trained" with lore "<white>While riding a horse, grants +20 to Traditional/Magical Weapons,", "<white>and grants STR/MAG/LCK +4."
+				set slot 29 of the player's current inventory to 1 obsidian named "<light red>Pass II" with lore "<white>If an enemy is within 7 blocks, grants Swiftness 3.", "<white>During combat, deals true damage = 2 * level of swiftness active on the player."
 			#Enthusiasm
 			if {perkTreeXP.Cavalier.%player%::Enthusiasm} is more than or equal to {perksFirstHonorXPRequirement}:
 				set slot 13 of the player's current inventory to 1 ladder named "<gold>Enthusiasm: 1st Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 22 of the player's current inventory to 1 emerald block named "<bold>Mount" with lore "<white>Allows use of the /mount command while equipped,", "<white>allowing you to summon a horse to your side at any time.", "<white>Horses summed by /mount have Swiftness 3 until death."
+				set slot 22 of the player's current inventory to 1 emerald block named "<bold>Mount" with lore "<white>Allows use of the /mount command while equipped,", "<white>allowing you to summon a horse to your side at any time.", "<white>Horses summed by /mount have Swiftness & Resistance 5 until death.", "<white>Grants <gold>[Canto 5/8]<white> while equipped."
 			else:
 				set slot 13 of the player's current inventory to 1 barrier named "<light red>Enthusiasm: 1st Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Enthusiasm XP needed: %getAbsoluteValue({perkTreeXP.Cavalier.%player%::Enthusiasm} - {perksFirstHonorXPRequirement})%"
-				set slot 22 of the player's current inventory to 1 obsidian named "<light red>Mount" with lore "<white>Allows use of the /mount command while equipped,", "<white>allowing you to summon a horse to your side at any time."
+				set slot 22 of the player's current inventory to 1 obsidian named "<light red>Mount" with lore "<white>Allows use of the /mount command while equipped,", "<white>allowing you to summon a horse to your side at any time.", "<white>Horses summed by /mount have Swiftness & Resistance 5 until death.", "<white>Grants <gold><tooltip:%{EffectGuide::Canto}%>[Canto]<white> while equipped."
 			#Steadfastness
 			if {perkTreeXP.Cavalier.%player%::Steadfastness} is more than or equal to {perksFirstHonorXPRequirement}:
 				set slot 24 of the player's current inventory to 1 ladder named "<gold>Steadfastness: 1st Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 33 of the player's current inventory to 1 emerald block named "<bold>Power Pitcher" with lore "<white>When attacking at range with any weapon,", "<white>including Hand Axes and thrown Lances, grants ATK +6, and", "<white>reduces Critical Miss chance by 15%%."
+				set slot 33 of the player's current inventory to 1 emerald block named "<bold>Power Pitcher" with lore "<white>When attacking at range with any weapon,", "<white>including Hand Axes and thrown Lances, grants ATK +9, and", "<white>reduces Critical Miss chance by 15%%."
 			else:
 				set slot 24 of the player's current inventory to 1 barrier named "<light red>Steadfastness: 1st Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Steadfastness XP needed: %getAbsoluteValue({perkTreeXP.Cavalier.%player%::Steadfastness} - {perksFirstHonorXPRequirement})%"
-				set slot 33 of the player's current inventory to 1 obsidian named "<light red>Power Pitcher" with lore "<white>When attacking at range with any weapon,", "<white>including Hand Axes and thrown Lances, grants ATK +6, and", "<white>reduces Critical Miss chance by 15%%."
+				set slot 33 of the player's current inventory to 1 obsidian named "<light red>Power Pitcher" with lore "<white>When attacking at range with any weapon,", "<white>including Hand Axes and thrown Lances, grants ATK +9, and", "<white>reduces Critical Miss chance by 15%%."
 			#Second perk XP walls
 			#Adeptness
 			if {perkTreeXP.Cavalier.%player%::Adeptness} is more than or equal to {perksSecondHonorXPRequirement}:
 				set slot 38 of the player's current inventory to 1 ladder named "<gold>Adeptness: 2nd Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 47 of the player's current inventory to 1 emerald block named "<bold>Canto" with lore "<white>After combat, if player is riding a horse:", "<white>Grants Swiftness/Resistance 5 to the mount for 2 seconds,", "<white>and if foe is killed during that combat,", "<white>grants Swiftness/Resistance 8 to the mount for 5 seconds."
+				set slot 47 of the player's current inventory to 1 emerald block named "<bold>Momentum" with lore "<white>On kill: Grants STR/SPD +3 for 6 seconds.", "<white>Stacks, and killing a foe resets the duration."
 			else:
 				set slot 38 of the player's current inventory to 1 barrier named "<light red>Adeptness: 2nd Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Adeptness XP needed: %getAbsoluteValue({perkTreeXP.Cavalier.%player%::Adeptness} - {perksSecondHonorXPRequirement})%"
-				set slot 47 of the player's current inventory to 1 obsidian named "<light red>Canto" with lore "<white>After combat, if player is riding a horse:", "<white>Grants Swiftness/Resistance 5 to the mount for 2 seconds,", "<white>and if foe is killed during that combat,", "<white>grants Swiftness/Resistance 8 to the mount for 5 seconds."
+				set slot 47 of the player's current inventory to 1 obsidian named "<light red>Momentum" with lore "<white>On kill: Grants STR/SPD +3 for 6 seconds.", "<white>Stacks, and killing a foe resets the duration."
 			#Enthusiasm
 			if {perkTreeXP.Cavalier.%player%::Enthusiasm} is more than or equal to {perksSecondHonorXPRequirement}:
 				set slot 31 of the player's current inventory to 1 ladder named "<gold>Enthusiasm: 2nd Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 40 of the player's current inventory to 1 emerald block named "<bold>Deep Bond" with lore "<white>Animals that you tame (or are summoned via /mount) are granted", "<white>3x HP, and Swiftness/Resistance 5 until their death."
+				set slot 40 of the player's current inventory to 1 emerald block named "<bold>Crusader's Charge" with lore "<white>During combat, if player's HP >= 50%% and is riding a horse:", "<white>Inflicts SPD -5 on foe during combat.", "<white>Reduces SPD advantage needed to double to 1,", "<white>and grants STR/MAG/SPD/DEF/RES +6 during combat."
 			else:
 				set slot 31 of the player's current inventory to 1 barrier named "<light red>Enthusiasm: 2nd Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Enthusiasm XP needed: %getAbsoluteValue({perkTreeXP.Cavalier.%player%::Enthusiasm} - {perksSecondHonorXPRequirement})%"
-				set slot 40 of the player's current inventory to 1 obsidian named "<light red>Deep Bond" with lore "<white>Animals that you tame (or are summoned via /mount) are granted", "<white>3x HP, and Swiftness/Resistance 5 until their death."
+				set slot 40 of the player's current inventory to 1 obsidian named "<light red>Crusader's Charge" with lore "<white>During combat, if player's HP >= 50%% and is riding a horse:", "<white>Inflicts SPD -5 on foe during combat.", "<white>Reduces SPD advantage needed to double to 1,", "<white>and grants STR/MAG/SPD/DEF/RES +6 during combat."
 			#Steadfastness
 			if {perkTreeXP.Cavalier.%player%::Steadfastness} is more than or equal to {perksSecondHonorXPRequirement}:
 				set slot 42 of the player's current inventory to 1 ladder named "<gold>Steadfastness: 2nd Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
@@ -6935,14 +6981,14 @@ command /class_setup_perkmenu [<text="2">]:
 				set slot 42 of the player's current inventory to 1 barrier named "<light red>Steadfastness: 2nd Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Steadfastness XP needed: %getAbsoluteValue({perkTreeXP.Cavalier.%player%::Steadfastness} - {perksSecondHonorXPRequirement})%"
 				set slot 51 of the player's current inventory to 1 obsidian named "<light red>Seth's Guidance" with lore "<white>When a stat increases via level-up,", "<white>grants a 50%% chance for that stat to go up again.", "<white>NOTE: Seth's Guidance cannot activate itself."
 			if {perkTreeXP.Cavalier.%player%::Global} is more than or equal to {perksThirdHonorXPRequirement}:
-				set slot 49 of the player's current inventory to 1 emerald block of power 1 named "<bold>Crusader's Charge" with lore "<white>During combat, if player's HP >= 50%% and is riding a horse:", "<white>Inflicts SPD -5 on foe during combat.", "<white>Reduces SPD advantage needed to double to 1,", "<white>and grants STR/MAG/DEF/RES +6 during combat."
+				set slot 49 of the player's current inventory to 1 emerald block of power 1 named "<bold>Override" with lore "<white>Defeat opponents to fill the Override gauge. Activate by right-clicking with an empty hand.", "<white>While Override is active, colliding with a foe deals 20 true damage and flings them away.", "<white>Foes can only be targeted once by Override."
 				set slot 48 of the player's current inventory to 1 ladder named "<gold>Cavalier Mastery" with lore "<white>You've reached the XP needed to equip this tree's Mastery perk."
 				set slot 50 of the player's current inventory to 1 ladder named "<gold>Cavalier Mastery" with lore "<white>You've reached the XP needed to equip this tree's Mastery perk."
 			else:
-				set slot 49 of the player's current inventory to 1 obsidian named "<light red>Crusader's Charge" with lore "<white>During combat, if player's HP >= 50%% and is riding a horse:", "<white>Inflicts SPD -5 on foe during combat.", "<white>Reduces SPD advantage needed to double to 1,", "<white>and grants STR/MAG/DEF/RES +6 during combat."
+				set slot 49 of the player's current inventory to 1 obsidian named "<light red>Override" with lore "<white>Defeat opponents to fill the Override gauge. Activate by right-clicking with an empty hand.", "<white>While Override is active, colliding with a foe deals 20 true damage and flings them away.", "<white>Foes can only be targeted once by Override."
 				set slot 48 of the player's current inventory to 1 barrier named "<light red>Cavalier Mastery" with lore "<white>You need more XP in the Cavalier class to equip the Mastery perk.", "<white>Cavalier XP needed: %getAbsoluteValue({perkTreeXP.Cavalier.%player%::Global} - {perksThirdHonorXPRequirement})%"
 				set slot 50 of the player's current inventory to 1 barrier named "<light red>Cavalier Mastery" with lore "<white>You need more XP in the Cavalier class to equip the Mastery perk.", "<white>Cavalier XP needed: %getAbsoluteValue({perkTreeXP.Cavalier.%player%::Global} - {perksThirdHonorXPRequirement})%"
-		#Devil Hunter Perks Preview
+		#Devil Hunter Perk Tree
 		else if arg 1 is "Devil Hunter":
 			open chest inventory with 6 rows named "<gold>Devil Hunter Perks Preview" for the player
 			if {activePerkTree.%player%::Devil Hunter} is not set:
@@ -7016,7 +7062,7 @@ command /class_setup_perkmenu [<text="2">]:
 				set slot 49 of the player's current inventory to 1 obsidian named "<light red>Trigger Heart" with lore "<white>While in Devil Trigger,", "<white>grants Strength/Swiftness 3, STR/MAG/SPD/LCK +6, and", "<white>reduces consumption of the Devil Trigger gauge by 50%%.", "<italics>Yeah... Let's go all the way to hell!"
 				set slot 48 of the player's current inventory to 1 barrier named "<light red>Devil Hunter Mastery" with lore "<white>You need more XP in the Devil Hunter class to equip the Mastery perk.", "<white>Devil Hunter XP needed: %getAbsoluteValue({perkTreeXP.Devil Hunter.%player%::Global} - {perksThirdHonorXPRequirement})%"
 				set slot 50 of the player's current inventory to 1 barrier named "<light red>Devil Hunter Mastery" with lore "<white>You need more XP in the Devil Hunter class to equip the Mastery perk.", "<white>Devil Hunter XP needed: %getAbsoluteValue({perkTreeXP.Devil Hunter.%player%::Global} - {perksThirdHonorXPRequirement})%"
-		#Gunslinger Perks Preview
+		#Gunslinger Perk Tree
 		else if arg 1 is "Gunslinger":
 			open chest inventory with 6 rows named "<gold>Gunslinger Perks Preview" for the player
 			if {activePerkTree.%player%::Gunslinger} is not set:
@@ -7042,10 +7088,10 @@ command /class_setup_perkmenu [<text="2">]:
 			#GUNSLINGER_TREE_02
 			if {perkTreeXP.Gunslinger.%player%::GUNSLINGER_TREE_02} is more than or equal to {perksFirstHonorXPRequirement}:
 				set slot 20 of the player's current inventory to 1 ladder named "<gold>GUNSLINGER_TREE_02: 1st Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 29 of the player's current inventory to 1 emerald block named "<bold>Belt Feed" with lore "<white>Firearms draw ammunition directly from your inventory, removing the need to reload.", "<light red>But, guns use 2x the normal amount of ammunition while equipped.", "<light purple>Minigun is unaffected."
+				set slot 29 of the player's current inventory to 1 emerald block named "<bold>Belt Feed" with lore "<white>While equipped, firearms have infinite ammo.", "<white>Instead, shooting any firearm fills an Overheat gauge.", "<white>While the Overheat gauge is full, firearms can't be used.", "<white>The Overheat gauge empties over time.", "<light purple>Minigun is unaffected."
 			else:
 				set slot 20 of the player's current inventory to 1 barrier named "<light red>GUNSLINGER_TREE_02: 1st Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>GUNSLINGER_TREE_02 XP needed: %getAbsoluteValue({perkTreeXP.Gunslinger.%player%::GUNSLINGER_TREE_02} - {perksFirstHonorXPRequirement})%"
-				set slot 29 of the player's current inventory to 1 obsidian named "<light red>Belt Feed" with lore "<white>Firearms draw ammunition directly from your inventory, removing the need to reload.", "<light red>But, guns use 2x the normal amount of ammunition while equipped.", "<light purple>Minigun is unaffected."
+				set slot 29 of the player's current inventory to 1 obsidian named "<light red>Belt Feed" with lore "<white>While equipped, firearms have infinite ammo.", "<white>Instead, shooting any firearm fills an Overheat gauge.", "<white>While the Overheat gauge is full, firearms can't be used.", "<white>The Overheat gauge empties over time.", "<light purple>Minigun is unaffected."
 			#GUNSLINGER_TREE_01
 			if {perkTreeXP.Gunslinger.%player%::GUNSLINGER_TREE_01} is more than or equal to {perksFirstHonorXPRequirement}:
 				set slot 13 of the player's current inventory to 1 ladder named "<gold>GUNSLINGER_TREE_01: 1st Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
@@ -7056,18 +7102,18 @@ command /class_setup_perkmenu [<text="2">]:
 			#GUNSLINGER_TREE_03
 			if {perkTreeXP.Gunslinger.%player%::GUNSLINGER_TREE_03} is more than or equal to {perksFirstHonorXPRequirement}:
 				set slot 24 of the player's current inventory to 1 ladder named "<gold>GUNSLINGER_TREE_03: 1st Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 33 of the player's current inventory to 1 emerald block named "<bold>Utility Belt" with lore "<white>Attempting to reload a firearm that has a full clip throws a grenade from your inventory.", "<white>If no grenades are found, a rock is thrown instead."
+				set slot 33 of the player's current inventory to 1 emerald block named "<bold>Riccochet" with lore "<white>Shooting a foe causes the bullet to riccochet,", "<white>dealing recoil damage to the nearest mob for 25%% of the damage dealt."
 			else:
 				set slot 24 of the player's current inventory to 1 barrier named "<light red>GUNSLINGER_TREE_03: 1st Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>GUNSLINGER_TREE_03 XP needed: %getAbsoluteValue({perkTreeXP.Gunslinger.%player%::GUNSLINGER_TREE_03} - {perksFirstHonorXPRequirement})%"
-				set slot 33 of the player's current inventory to 1 obsidian named "<light red>Utility Belt" with lore "<white>Attempting to reload a firearm that has a full clip throws a grenade from your inventory.", "<white>If no grenades are found, a rock is thrown instead."
+				set slot 33 of the player's current inventory to 1 obsidian named "<light red>Riccochet" with lore "<white>Shooting a foe causes the bullet to riccochet,", "<white>dealing recoil damage to the nearest mob for 25%% of the damage dealt."
 			#Second perk XP walls
 			#GUNSLINGER_TREE_02
 			if {perkTreeXP.Gunslinger.%player%::GUNSLINGER_TREE_02} is more than or equal to {perksSecondHonorXPRequirement}:
 				set slot 38 of the player's current inventory to 1 ladder named "<gold>GUNSLINGER_TREE_02: 2nd Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 47 of the player's current inventory to 1 emerald block named "<bold>Glory Kill" with lore "<white>Boosts damage dealt while unarmed by +100%%", "<white>Defeating an enemy with an unarmed strike restores ammunition,", "<white>and heals you for 50%% of your maximum health."
+				set slot 47 of the player's current inventory to 1 emerald block named "<bold>Glory Kill" with lore "<white>Boosts damage dealt while unarmed by +100%%", "<white>Defeating an enemy with an unarmed strike restores ammunition,", "<white>and heals you for 50%% of your maximum health.", "<white>Gauntlets count as unarmed for the effects of this perk."
 			else:
 				set slot 38 of the player's current inventory to 1 barrier named "<light red>GUNSLINGER_TREE_02: 2nd Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>GUNSLINGER_TREE_02 XP needed: %getAbsoluteValue({perkTreeXP.Gunslinger.%player%::GUNSLINGER_TREE_02} - {perksSecondHonorXPRequirement})%"
-				set slot 47 of the player's current inventory to 1 obsidian named "<light red>Glory Kill" with lore "<white>Boosts damage dealt while unarmed by +100%%", "<white>Defeating an enemy with an unarmed strike restores ammunition,", "<white>and heals you for 50%% of your maximum health."
+				set slot 47 of the player's current inventory to 1 obsidian named "<light red>Glory Kill" with lore "<white>Boosts damage dealt while unarmed by +100%%", "<white>Defeating an enemy with an unarmed strike restores ammunition,", "<white>and heals you for 50%% of your maximum health.", "<white>Gauntlets count as unarmed for the effects of this perk."
 			#GUNSLINGER_TREE_01
 			if {perkTreeXP.Gunslinger.%player%::GUNSLINGER_TREE_01} is more than or equal to {perksSecondHonorXPRequirement}:
 				set slot 31 of the player's current inventory to 1 ladder named "<gold>GUNSLINGER_TREE_01: 2nd Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
@@ -7090,7 +7136,7 @@ command /class_setup_perkmenu [<text="2">]:
 				set slot 49 of the player's current inventory to 1 obsidian named "<bold>Blood Thirst" with lore "<white>Killing an enemy grants STR/SPD +15 through your next action.", "<white>But, enemies that are combat tagged take 20%% less damage."
 				set slot 48 of the player's current inventory to 1 barrier named "<light red>Gunslinger Mastery" with lore "<white>You need more XP in the Gunslinger class to equip the Mastery perk.", "<white>Gunslinger XP needed: %getAbsoluteValue({perkTreeXP.Gunslinger.%player%::Global} - {perksThirdHonorXPRequirement})%"
 				set slot 50 of the player's current inventory to 1 barrier named "<light red>Gunslinger Mastery" with lore "<white>You need more XP in the Gunslinger class to equip the Mastery perk.", "<white>Gunslinger XP needed: %getAbsoluteValue({perkTreeXP.Gunslinger.%player%::Global} - {perksThirdHonorXPRequirement})%"
-		#Strategist Perks Preview
+		#Strategist Perk Tree
 		else if arg 1 is "Strategist":
 			open chest inventory with 6 rows named "<gold>Strategist Perks Preview" for the player
 			if {activePerkTree.%player%::Strategist} is not set:
@@ -7116,55 +7162,55 @@ command /class_setup_perkmenu [<text="2">]:
 			#Strategist_TREE_02
 			if {perkTreeXP.Strategist.%player%::Strategist_TREE_02} is more than or equal to {perksFirstHonorXPRequirement}:
 				set slot 20 of the player's current inventory to 1 ladder named "<gold>Strategist_TREE_02: 1st Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 29 of the player's current inventory to 1 emerald block named "<bold>Inference" with lore "<white>When either Traditional Weapons or Magical Weapons increases,", "<white>grants +1 to the other Ability's value.", "<light purple>EX: Traditional Weapons is raised by +1 from the Journal.", "<light purple>With Inference, Magical Weapons increases by +1."
+				set slot 29 of the player's current inventory to 1 emerald block named "<bold>Item Master" with lore "<white>After defeating a foe, grants a LCK / 2%% chance (MAX: 25%%) to gain a random consumable.", "<white>This includes stat boosters, War Horns, etc..."
 			else:
 				set slot 20 of the player's current inventory to 1 barrier named "<light red>Strategist_TREE_02: 1st Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Strategist_TREE_02 XP needed: %getAbsoluteValue({perkTreeXP.Strategist.%player%::Strategist_TREE_02} - {perksFirstHonorXPRequirement})%"
-				set slot 29 of the player's current inventory to 1 obsidian named "<light red>Inference" with lore "<white>When either Traditional Weapons or Magical Weapons increases,", "<white>grants +1 to the other Ability's value.", "<light purple>EX: Traditional Weapons is raised by +1 from the Journal.", "<light purple>With Inference, Magical Weapons increases by +1."
+				set slot 29 of the player's current inventory to 1 obsidian named "<light red>Item Master" with lore "<white>After defeating a foe, grants a LCK / 2%% chance (MAX: 25%%)  to gain a random consumable.", "<white>This includes stat boosters, War Horns, etc..."
 			#Strategist_TREE_01
 			if {perkTreeXP.Strategist.%player%::Strategist_TREE_01} is more than or equal to {perksFirstHonorXPRequirement}:
 				set slot 13 of the player's current inventory to 1 ladder named "<gold>Strategist_TREE_01: 1st Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 22 of the player's current inventory to 1 emerald block named "<bold>Joint-Drive Spectrum" with lore "<white>If an ally is within 30 blocks, grants:", "<white>STR/MAG/SPD/LCK/DEF/RES +4 to player and all allies within 15 blocks." 
+				set slot 22 of the player's current inventory to 1 emerald block named "<bold>Joint-Drive Spectrum" with lore "<white>If an ally is within 30 blocks, grants:", "<white>STR/MAG/SPD/LCK/DEF/RES +6 to player and all allies within 30 blocks." 
 			else:
 				set slot 13 of the player's current inventory to 1 barrier named "<light red>Strategist_TREE_01: 1st Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Strategist_TREE_01 XP needed: %getAbsoluteValue({perkTreeXP.Strategist.%player%::Strategist_TREE_01} - {perksFirstHonorXPRequirement})%"
-				set slot 22 of the player's current inventory to 1 obsidian named "<light red>Joint-Drive Spectrum" with lore "<white>If an ally is within 30 blocks, grants:", "<white>STR/MAG/SPD/LCK/DEF/RES +4 to player and all allies within 15 blocks." 
+				set slot 22 of the player's current inventory to 1 obsidian named "<light red>Joint-Drive Spectrum" with lore "<white>If an ally is within 30 blocks, grants:", "<white>STR/MAG/SPD/LCK/DEF/RES +6 to player and all allies within 30 blocks." 
 			#Strategist_TREE_03
 			if {perkTreeXP.Strategist.%player%::Strategist_TREE_03} is more than or equal to {perksFirstHonorXPRequirement}:
 				set slot 24 of the player's current inventory to 1 ladder named "<gold>Strategist_TREE_03: 1st Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 33 of the player's current inventory to 1 emerald block named "<bold>Near Save" with lore "<white>If foe initiates combat on an ally within 15 blocks:", "<white>Grants a (LCK / 4)%% chance to reduce the damage that ally suffers by 50%%."
+				set slot 33 of the player's current inventory to 1 emerald block named "<bold>Near Save" with lore "<white>If foe initiates combat on an ally within 30 blocks:", "<white>Grants a LCK%% chance to reduce the damage that ally suffers by 50%%."
 			else:
 				set slot 24 of the player's current inventory to 1 barrier named "<light red>Strategist_TREE_03: 1st Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Strategist_TREE_03 XP needed: %getAbsoluteValue({perkTreeXP.Strategist.%player%::Strategist_TREE_03} - {perksFirstHonorXPRequirement})%"
-				set slot 33 of the player's current inventory to 1 obsidian named "<light red>Near Save" with lore "<white>If foe initiates combat on an ally within 15 blocks:", "<white>Grants a (LCK / 4)%% chance to reduce the damage that ally suffers by 50%%.", "<italics>Calculated per-hit during that combat."
+				set slot 33 of the player's current inventory to 1 obsidian named "<light red>Near Save" with lore "<white>If foe initiates combat on an ally within 30 blocks:", "<white>Grants a LCK%% chance to reduce the damage that ally suffers by 50%%.", "<italics>Calculated per-hit during that combat."
 			#Second perk XP walls
 			#Strategist_TREE_02
 			if {perkTreeXP.Strategist.%player%::Strategist_TREE_02} is more than or equal to {perksSecondHonorXPRequirement}:
 				set slot 38 of the player's current inventory to 1 ladder named "<gold>Strategist_TREE_02: 2nd Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 47 of the player's current inventory to 1 emerald block named "<bold>Dual Strike" with lore "<white>If an ally is within 30 blocks, the player's HP >= 70%%, and the player initiates combat:", "<white>Boosts damage dealt by 10%% of the nearest ally's STR or MAG depending on damage type,", "<white>and grants a (LCK / 4)%% chance to attack twice.", "<italics>Once per combat only."
+				set slot 47 of the player's current inventory to 1 emerald block named "<bold>Dual Strike" with lore "<white>If an ally is within 30 blocks and the player initiates combat:", "<white>Boosts damage dealt by 20%% of the nearest ally's STR or MAG depending on damage type,", "<white>and grants a LCK%% chance to attack twice.", "<italics>Once per combat only."
 			else:
 				set slot 38 of the player's current inventory to 1 barrier named "<light red>Strategist_TREE_02: 2nd Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Strategist_TREE_02 XP needed: %getAbsoluteValue({perkTreeXP.Strategist.%player%::Strategist_TREE_02} - {perksSecondHonorXPRequirement})%"
-				set slot 47 of the player's current inventory to 1 obsidian named "<light red>Dual Strike" with lore "<white>If an ally is within 30 blocks, the player's HP >= 70%%, and the player initiates combat:", "<white>Boosts damage dealt by 10%% of the nearest ally's STR or MAG depending on damage type,", "<white>and grants a (LCK / 4)%% chance to attack twice.", "<italics>Once per combat only."
+				set slot 47 of the player's current inventory to 1 obsidian named "<light red>Dual Strike" with lore "<white>If an ally is within 30 blocks and the player initiates combat:", "<white>Boosts damage dealt by 20%% of the nearest ally's STR or MAG depending on damage type,", "<white>and grants a LCK%% chance to attack twice.", "<italics>Once per combat only."
 			#Strategist_TREE_01
 			if {perkTreeXP.Strategist.%player%::Strategist_TREE_01} is more than or equal to {perksSecondHonorXPRequirement}:
 				set slot 31 of the player's current inventory to 1 ladder named "<gold>Strategist_TREE_01: 2nd Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 40 of the player's current inventory to 1 emerald block named "<bold>Under This Banner" with lore "<white>Grants CHR +6.", "<white>Doubles the effects of your Leadership bonuses."
+				set slot 40 of the player's current inventory to 1 emerald block named "<bold>Under This Banner" with lore "<white>Grants CHR +6.", "<white>Doubles the effects of your Leadership bonuses,", "<white>and halves the effects of Leadership for monsters within 30 blocks."
 			else:
 				set slot 31 of the player's current inventory to 1 barrier named "<light red>Strategist_TREE_01: 2nd Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Strategist_TREE_01 XP needed: %getAbsoluteValue({perkTreeXP.Strategist.%player%::Strategist_TREE_01} - {perksSecondHonorXPRequirement})%"
-				set slot 40 of the player's current inventory to 1 obsidian named "<light red>Under This Banner" with lore "<white>Grants CHR +6.", "<white>Doubles the effects of your Leadership bonuses."
+				set slot 40 of the player's current inventory to 1 obsidian named "<light red>Under This Banner" with lore "<white>Grants CHR +6.", "<white>Doubles the effects of your Leadership bonuses.", "<white>and halves the effects of Leadership for monsters within 30 blocks."
 			#Strategist_TREE_03
 			if {perkTreeXP.Strategist.%player%::Strategist_TREE_03} is more than or equal to {perksSecondHonorXPRequirement}:
 				set slot 42 of the player's current inventory to 1 ladder named "<gold>Strategist_TREE_03: 2nd Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 51 of the player's current inventory to 1 emerald block named "<bold>Rally Up!" with lore "<white>The effects of skills/perks that activate on a right-click action,", "<white>such as Rally Strength or Ardent Sacrifice,", "<white>apply to all allies within 10 blocks of the target at no additional cost.", "<italics>Positional skills such as Reposition are unaffected."
+				set slot 51 of the player's current inventory to 1 emerald block named "<bold>Rally Spectrum" with lore "<white>The effects of skills/perks that activate on a right-click action,", "<white>such as Rally Strength or Ardent Sacrifice,", "<white>apply to all allies within 30 blocks of the target at no additional cost.", "<white>Additionally, those allies gain Strength/Swiftness/Resistance 3 for 30 seconds.", "<italics>Positional skills such as Reposition are unaffected."
 			else:
 				set slot 42 of the player's current inventory to 1 barrier named "<light red>Strategist_TREE_03: 2nd Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Strategist_TREE_03 XP needed: %getAbsoluteValue({perkTreeXP.Strategist.%player%::Strategist_TREE_03} - {perksSecondHonorXPRequirement})%"
-				set slot 51 of the player's current inventory to 1 obsidian named "<light red>Rally Up!" with lore "<white>The effects of skills/perks that activate on a right-click action,", "<white>such as Rally Strength or Ardent Sacrifice,", "<white>apply to all allies within 30 blocks of the target at no additional cost."
+				set slot 51 of the player's current inventory to 1 obsidian named "<light red>Rally Spectrum" with lore "<white>The effects of skills/perks that activate on a right-click action,", "<white>such as Rally Strength or Ardent Sacrifice,", "<white>apply to all allies within 30 blocks of the target at no additional cost.", "<white>Additionally, those allies gain Strength/Swiftness/Resistance 3 for 30 seconds.", "<italics>Positional skills such as Reposition are unaffected."
 			if {perkTreeXP.Strategist.%player%::Global} is more than or equal to {perksThirdHonorXPRequirement}:
-				set slot 49 of the player's current inventory to 1 emerald block of power 1 named "<bold>Spectrum +4" with lore "<white>Grants STR/MAG/SPD/LCK/DEF/RES/CHR +4."
+				set slot 49 of the player's current inventory to 1 emerald block of power 1 named "<bold>Beacon of Hope" with lore "<white>Plant a Beacon of Hope by dodge rolling.", "<white>The Beacon acts as a second Strategist with your stats and all Strategist perks equipped.", "<white>The Beacon can also trigger the effects of your own Strategist perks", "<white>for ones that require allies to be nearby."
 				set slot 48 of the player's current inventory to 1 ladder named "<gold>Strategist Mastery" with lore "<white>You've reached the XP needed to equip this tree's Mastery perk."
 				set slot 50 of the player's current inventory to 1 ladder named "<gold>Strategist Mastery" with lore "<white>You've reached the XP needed to equip this tree's Mastery perk."
 			else:
-				set slot 49 of the player's current inventory to 1 obsidian named "<light red>Spectrum +4" with lore "<white>Grants STR/MAG/SPD/LCK/DEF/RES/CHR +4."
+				set slot 49 of the player's current inventory to 1 obsidian named "<light red>Beacon of Hope" with lore "<white>Plant a Beacon of Hope by dodge rolling.", "<white>The Beacon acts as a second Strategist with your stats and all Strategist perks equipped.", "<white>The Beacon can also trigger the effects of your own Strategist perks", "<white>for ones that require allies to be nearby."
 				set slot 48 of the player's current inventory to 1 barrier named "<light red>Strategist Mastery" with lore "<white>You need more XP in the Strategist class to equip the Mastery perk.", "<white>Strategist XP needed: %getAbsoluteValue({perkTreeXP.Strategist.%player%::Global} - {perksThirdHonorXPRequirement})%"
 				set slot 50 of the player's current inventory to 1 barrier named "<light red>Strategist Mastery" with lore "<white>You need more XP in the Strategist class to equip the Mastery perk.", "<white>Strategist XP needed: %getAbsoluteValue({perkTreeXP.Strategist.%player%::Global} - {perksThirdHonorXPRequirement})%"
-		#Survivor Perks Preview
+		#Survivor Perk Tree
 		else if arg 1 is "Survivor":
 			open chest inventory with 6 rows named "<gold>Survivor Perks Preview" for the player
 			if {activePerkTree.%player%::Survivor} is not set:
@@ -7238,7 +7284,7 @@ command /class_setup_perkmenu [<text="2">]:
 				set slot 49 of the player's current inventory to 1 obsidian named "<light red>Scavenger" with lore "<white>Halves the time it takes for ore you mine to regenerate."
 				set slot 48 of the player's current inventory to 1 barrier named "<light red>Survivor Mastery" with lore "<white>You need more XP in the Survivor class to equip the Mastery perk.", "<white>Survivor XP needed: %getAbsoluteValue({perkTreeXP.Survivor.%player%::Global} - {perksThirdHonorXPRequirement})%"
 				set slot 50 of the player's current inventory to 1 barrier named "<light red>Survivor Mastery" with lore "<white>You need more XP in the Survivor class to equip the Mastery perk.", "<white>Survivor XP needed: %getAbsoluteValue({perkTreeXP.Survivor.%player%::Global} - {perksThirdHonorXPRequirement})%"
-		#Trickster Perks Preview
+		#Trickster Perk Tree
 		else if arg 1 is "Trickster":
 			open chest inventory with 6 rows named "<gold>Trickster Perks Preview" for the player
 			if {activePerkTree.%player%::Trickster} is not set:
@@ -7264,55 +7310,55 @@ command /class_setup_perkmenu [<text="2">]:
 			#Trickster_TREE_02
 			if {perkTreeXP.Trickster.%player%::Trickster_TREE_02} is more than or equal to {perksFirstHonorXPRequirement}:
 				set slot 20 of the player's current inventory to 1 ladder named "<gold>Trickster_TREE_02: 1st Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 29 of the player's current inventory to 1 emerald block named "<bold>Swift Strike" with lore "<white>If player initiates combat with HP >= 50%%:", "<white>Grants STR/SPD +5 and Swiftness 2 for 2 seconds."
+				set slot 29 of the player's current inventory to 1 emerald block named "<bold>ATK/SPD Chain" with lore "<white>When using a positional assist skill on an enemy:", "<white>Grants STR/MAG/SPD +7 and inflicts STR/MAG/SPD -7 on foe through your next action."
 			else:
 				set slot 20 of the player's current inventory to 1 barrier named "<light red>Trickster_TREE_02: 1st Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Trickster_TREE_02 XP needed: %getAbsoluteValue({perkTreeXP.Trickster.%player%::Trickster_TREE_02} - {perksFirstHonorXPRequirement})%"
-				set slot 29 of the player's current inventory to 1 obsidian named "<light red>Swift Strike" with lore "<white>If player initiates combat with HP >= 50%%:", "<white>Grants STR/SPD +5 and Swiftness 2 for 2 seconds."
+				set slot 29 of the player's current inventory to 1 obsidian named "<light red>ATK/SPD Chain" with lore "<white>When using a positional assist skill on an enemy:", "<white>Grants STR/MAG/SPD +7 and inflicts STR/MAG/SPD -7 on foe through your next action."
 			#Trickster_TREE_01
 			if {perkTreeXP.Trickster.%player%::Trickster_TREE_01} is more than or equal to {perksFirstHonorXPRequirement}:
 				set slot 13 of the player's current inventory to 1 ladder named "<gold>Trickster_TREE_01: 1st Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 22 of the player's current inventory to 1 emerald block named "<bold>Offense Smoke" with lore "<white>If player initiates combat:", "<white>Inflicts STR/MAG/SPD -7 on foes within 10 blocks of the victim through their next action."
+				set slot 22 of the player's current inventory to 1 emerald block named "<bold>Silent Smoke" with lore "<white>Daggers can be thrown infinitely.", "<white>If player initiates combat:", "<white>Inflicts STR/MAG/SPD -7 on foes within 10 blocks of the victim through their next action."
 			else:
 				set slot 13 of the player's current inventory to 1 barrier named "<light red>Trickster_TREE_01: 1st Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Trickster_TREE_01 XP needed: %getAbsoluteValue({perkTreeXP.Trickster.%player%::Trickster_TREE_01} - {perksFirstHonorXPRequirement})%"
-				set slot 22 of the player's current inventory to 1 obsidian named "<light red>Offense Smoke" with lore "<white>If player initiates combat:", "<white>Inflicts STR/MAG/SPD -7 on foes within 10 blocks of the victim through their next action."
+				set slot 22 of the player's current inventory to 1 obsidian named "<light red>Silent Smoke" with lore "<white>Daggers can be thrown infinitely.", "<white>If player initiates combat:", "<white>Inflicts STR/MAG/SPD -7 on foes within 10 blocks of the victim through their next action."
 			#Trickster_TREE_03
 			if {perkTreeXP.Trickster.%player%::Trickster_TREE_03} is more than or equal to {perksFirstHonorXPRequirement}:
 				set slot 24 of the player's current inventory to 1 ladder named "<gold>Trickster_TREE_03: 1st Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 33 of the player's current inventory to 1 emerald block named "<bold>Locktouch" with lore "<white>Grants Lockpicking +35 while equipped.", "<white>Loot Chests that you open contain an extra item."
+				set slot 33 of the player's current inventory to 1 emerald block named "<bold>Deft Hands" with lore "<white>Grants Lockpicking +35 while equipped.", "<white>During combat, if your Lockpicking > foe's Lockpicking:", "<white>Drops a random valuable item at the foe after combat.", "<white>Loot Chests that you open contain an extra item."
 			else:
 				set slot 24 of the player's current inventory to 1 barrier named "<light red>Trickster_TREE_03: 1st Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Trickster_TREE_03 XP needed: %getAbsoluteValue({perkTreeXP.Trickster.%player%::Trickster_TREE_03} - {perksFirstHonorXPRequirement})%"
-				set slot 33 of the player's current inventory to 1 obsidian named "<light red>Locktouch" with lore "<white>Grants Lockpicking +35 while equipped.", "<white>Loot Chests that you open contain an extra item."
+				set slot 33 of the player's current inventory to 1 obsidian named "<light red>Deft Hands" with lore "<white>Grants Lockpicking +35 while equipped.", "<white>During combat, if your Lockpicking > foe's Lockpicking:", "<white>Drops a random valuable item at the foe after combat.", "<white>Loot Chests that you open contain an extra item."
 			#Second perk XP walls
 			#Trickster_TREE_02
 			if {perkTreeXP.Trickster.%player%::Trickster_TREE_02} is more than or equal to {perksSecondHonorXPRequirement}:
 				set slot 38 of the player's current inventory to 1 ladder named "<gold>Trickster_TREE_02: 2nd Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 47 of the player's current inventory to 1 emerald block named "<bold>Lethality" with lore "<white>If player initiates combat, and a Critical Hit or Special skill activation occurs:", "<white>Boosts damage dealt by 25%%."
+				set slot 47 of the player's current inventory to 1 emerald block named "<bold>Chain Reaction" with lore "<white>When using a positional assist skill on an enemy:", "<white>Tags the enemy until their next combat, or until they take damage.", "<white>When initiating combat, damage dealt is also given to all foes you have tagged."
 			else:
 				set slot 38 of the player's current inventory to 1 barrier named "<light red>Trickster_TREE_02: 2nd Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Trickster_TREE_02 XP needed: %getAbsoluteValue({perkTreeXP.Trickster.%player%::Trickster_TREE_02} - {perksSecondHonorXPRequirement})%"
-				set slot 47 of the player's current inventory to 1 obsidian named "<light red>Lethality" with lore "<white>If player initiates combat, and a Critical Hit or Special skill activation occurs:", "<white>Boosts damage dealt by 25%%."
+				set slot 47 of the player's current inventory to 1 obsidian named "<light red>Chain Reaction" with lore "<white>When using a positional assist skill on an enemy:", "<white>Tags the enemy until their next combat.", "<white>When initiating combat, damage dealt is also given to all foes you have tagged."
 			#Trickster_TREE_01
 			if {perkTreeXP.Trickster.%player%::Trickster_TREE_01} is more than or equal to {perksSecondHonorXPRequirement}:
 				set slot 31 of the player's current inventory to 1 ladder named "<gold>Trickster_TREE_01: 2nd Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 40 of the player's current inventory to 1 emerald block named "<bold>Flash and Clear" with lore "<white>If player initiates combat with HP >= 50%%:", "<white>Grants a (LCK / 4)%% chance to plant a <gold>[Concussion Grenade]<white> on the foe.", "<white>Maximum of 25%% chance. Conc. Grenade explodes after 2 seconds.", "<gold>[Concussion Grenade]: <white>Creates a 15-block radius explosion that inflicts", "<white>Blindness 1, Slowness/Weakness 3 for 10 seconds."
+				set slot 40 of the player's current inventory to 1 emerald block named "<bold>Hurricane" with lore "<white>Boosts damage dealt during combat by 20%% of your SPD."
 			else:
 				set slot 31 of the player's current inventory to 1 barrier named "<light red>Trickster_TREE_01: 2nd Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Trickster_TREE_01 XP needed: %getAbsoluteValue({perkTreeXP.Trickster.%player%::Trickster_TREE_01} - {perksSecondHonorXPRequirement})%"
-				set slot 40 of the player's current inventory to 1 obsidian named "<light red>Flash and Clear" with lore "<white>If player initiates combat with HP >= 50%%:", "<white>Grants a (LCK / 4)%% chance to plant a <gold>[Concussion Grenade]<white> on the foe.", "<white>Maximum of 25%% chance. Conc. Grenade explodes after 2 seconds.", "<gold>[Concussion Grenade]: <white>Creates a 15-block radius explosion that inflicts", "<white>Blindness 1, Slowness/Weakness 3 for 10 seconds."
+				set slot 40 of the player's current inventory to 1 obsidian named "<light red>Hurricane" with lore "<white>Boosts damage dealt during combat by 20%% of your SPD."
 			#Trickster_TREE_03
 			if {perkTreeXP.Trickster.%player%::Trickster_TREE_03} is more than or equal to {perksSecondHonorXPRequirement}:
 				set slot 42 of the player's current inventory to 1 ladder named "<gold>Trickster_TREE_03: 2nd Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 51 of the player's current inventory to 1 emerald block named "<bold>Rough Shove" with lore "<white>When using a positional assist skill that targets an enemy:", "<white>Grants a 50%% chance to disarm the opponent's held item."
+				set slot 51 of the player's current inventory to 1 emerald block named "<bold>Midas Touch" with lore "<white>When defeating an opponent, gain bonus Gold = 50%% of your Lockpicking ability.", "<white>Defeated foes have an extra (LCK / 2)%% chance (MAX: 50%%) to drop their equipment."
 			else:
 				set slot 42 of the player's current inventory to 1 barrier named "<light red>Trickster_TREE_03: 2nd Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Trickster_TREE_03 XP needed: %getAbsoluteValue({perkTreeXP.Trickster.%player%::Trickster_TREE_03} - {perksSecondHonorXPRequirement})%"
-				set slot 51 of the player's current inventory to 1 obsidian named "<light red>Rough Shove" with lore "<white>When using a positional assist skill that targets an enemy:", "<white>Grants a 50%% chance to disarm the opponent's held item."
+				set slot 51 of the player's current inventory to 1 obsidian named "<light red>Midas Touch" with lore "<white>When defeating an opponent, gain bonus Gold = 50%% of your Lockpicking ability.", "<white>Defeated foes have an extra (LCK / 2)%% chance (MAX: 50%%) to drop their equipment."
 			if {perkTreeXP.Trickster.%player%::Global} is more than or equal to {perksThirdHonorXPRequirement}:
-				set slot 49 of the player's current inventory to 1 emerald block of power 1 named "<bold>Shadow Walker" with lore "<white>Holding Sneak and then right-clicking with an empty hand hides you in plain sight,", "<white>granting Invisibility and automatically hiding your armour.", "<white>Shadow Walker ends when you stop sneaking or enter combat."
+				set slot 49 of the player's current inventory to 1 emerald block of power 1 named "<bold>Escape Artist" with lore "<white>Dodge Rolling spawns a dummy of yourself at your starting location.", "<white>When the dummy takes damage, it detonates, dealing 20 recoil damage to all foes within 10 blocks.", "<white>Dodge Rolling while a dummy is already spawned will detonate the existing dummy."
 				set slot 48 of the player's current inventory to 1 ladder named "<gold>Trickster Mastery" with lore "<white>You've reached the XP needed to equip this tree's Mastery perk."
 				set slot 50 of the player's current inventory to 1 ladder named "<gold>Trickster Mastery" with lore "<white>You've reached the XP needed to equip this tree's Mastery perk."
 			else:
-				set slot 49 of the player's current inventory to 1 obsidian named "<light red>Shadow Walker" with lore "<white>Holding Sneak and then right-clicking with an empty hand hides you in plain sight,", "<white>granting Invisibility and automatically hiding your armour.", "<white>Shadow Walker ends when you stop sneaking or enter combat."
+				set slot 49 of the player's current inventory to 1 obsidian named "<light red>Escape Artist" with lore "<white>Dodge Rolling spawns a dummy of yourself at your starting location.", "<white>When the dummy takes damage, it detonates, dealing 20 recoil damage to all foes within 10 blocks.", "<white>Dodge Rolling while a dummy is already spawned will detonate the existing dummy."
 				set slot 48 of the player's current inventory to 1 barrier named "<light red>Trickster Mastery" with lore "<white>You need more XP in the Trickster class to equip the Mastery perk.", "<white>Trickster XP needed: %getAbsoluteValue({perkTreeXP.Trickster.%player%::Global} - {perksThirdHonorXPRequirement})%"
 				set slot 50 of the player's current inventory to 1 barrier named "<light red>Trickster Mastery" with lore "<white>You need more XP in the Trickster class to equip the Mastery perk.", "<white>Trickster XP needed: %getAbsoluteValue({perkTreeXP.Trickster.%player%::Global} - {perksThirdHonorXPRequirement})%"
-		#Summoner Perks Preview
+		#Summoner Perk Tree
 		else if arg 1 is "Summoner":
 			open chest inventory with 6 rows named "<gold>Summoner Perks Preview" for the player
 			if {activePerkTree.%player%::Summoner} is not set:
@@ -7386,7 +7432,7 @@ command /class_setup_perkmenu [<text="2">]:
 				set slot 49 of the player's current inventory to 1 obsidian named "<light red>Crimson Cloud" with lore "<white>Reduces the cost of summoning by 30%%.", "<white>Grants STR/SPD/LCK/MAG +X during combat,", "<white>where X = number of active summons * 3."
 				set slot 48 of the player's current inventory to 1 barrier named "<light red>Summoner Mastery" with lore "<white>You need more XP in the Summoner class to equip the Mastery perk.", "<white>Summoner XP needed: %getAbsoluteValue({perkTreeXP.Summoner.%player%::Global} - {perksThirdHonorXPRequirement})%"
 				set slot 50 of the player's current inventory to 1 barrier named "<light red>Summoner Mastery" with lore "<white>You need more XP in the Summoner class to equip the Mastery perk.", "<white>Summoner XP needed: %getAbsoluteValue({perkTreeXP.Summoner.%player%::Global} - {perksThirdHonorXPRequirement})%"
-		#Charlatan Perks Preview
+		#Charlatan Perk Tree
 		else if arg 1 is "Charlatan":
 			open chest inventory with 6 rows named "<gold>Charlatan Perks Preview" for the player
 			if {activePerkTree.%player%::Charlatan} is not set:
@@ -7415,17 +7461,17 @@ command /class_setup_perkmenu [<text="2">]:
 			#Experimentation
 			if {perkTreeXP.charlatan.%player%::Experimentation} is more than or equal to {perksFirstHonorXPRequirement}:
 				set slot 20 of the player's current inventory to 1 ladder named "<gold>Experimentation: 1st Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 29 of the player's current inventory to 1 emerald block named "<bold>Flask of Madness" with lore "<white>After drinking any potion,", "<white>the player gains either Strength 3, Swiftness 3, Regeneration 3, or Resistance 3 for 30 seconds.", "<white>Each effect has an equal chance of occurring."
+				set slot 29 of the player's current inventory to 1 emerald block named "<bold>Essence Drain" with lore "<white>After combat, inflicts Slowness / Weakness 2 on foes within 7 blocks for 3 seconds.", "<white>If the opponent has slowness or weakness,", "<white>grants the inverse potion effect and Regeneration 3 for 3 seconds."
 			else:
 				set slot 20 of the player's current inventory to 1 barrier named "<light red>Experimentation: 1st Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Experimentation XP needed: %getAbsoluteValue({perkTreeXP.charlatan.%player%::Experimentation} - {perksFirstHonorXPRequirement})%"
-				set slot 29 of the player's current inventory to 1 obsidian named "<light red>Flask of Madness" with lore "<white>After drinking any potion,", "<white>the player gains either Strength 3, Swiftness 3, Regeneration 3, or Resistance 3 for 30 seconds.", "<white>Each effect has an equal chance of occurring."
+				set slot 29 of the player's current inventory to 1 obsidian named "<light red>Essence Drain" with lore "<white>After combat, inflicts Slowness / Weakness 2 on foes within 7 blocks for 3 seconds.", "<white>If the opponent has slowness or weakness,", "<white>grants the inverse potion effect and Regeneration 3 for 3 seconds."
 			#Illumination
 			if {perkTreeXP.charlatan.%player%::Illumination} is more than or equal to {perksFirstHonorXPRequirement}:
 				set slot 13 of the player's current inventory to 1 ladder named "<gold>Illumination: 1st Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 22 of the player's current inventory to 1 emerald block named "<bold>Divine Blessing" with lore "<white>If player initiates combat,", "and either the Regeneration or Absorption potion effects are active on them:", "<white>Restores health = 25%% of damage dealt during combat."
+				set slot 22 of the player's current inventory to 1 emerald block named "<bold>Divine Blessing" with lore "<white>If player initiates combat,", "and either the Regeneration or Absorption potion effects are active on them:", "<white>Restores health = 25%% of damage dealt during combat.", "<white>and calculates damage using either MAG or STR, whichever would deal more damage."
 			else:
 				set slot 13 of the player's current inventory to 1 barrier named "<light red>Illumination: 1st Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Illumination XP needed: %getAbsoluteValue({perkTreeXP.charlatan.%player%::Illumination} - {perksFirstHonorXPRequirement})%"
-				set slot 22 of the player's current inventory to 1 obsidian named "<light red>Divine Blessing" with lore "<white>If player initiates combat,", "and either the Regeneration or Absorption potion effects are active on them:", "<white>Restores health = 25%% of damage dealt during combat."
+				set slot 22 of the player's current inventory to 1 obsidian named "<light red>Divine Blessing" with lore "<white>If player initiates combat,", "and either the Regeneration or Absorption potion effects are active on them:", "<white>Restores health = 25%% of damage dealt during combat,", "<white>and calculates damage using either MAG or STR, whichever would deal more damage."
 			#Condemnation
 			if {perkTreeXP.charlatan.%player%::Condemnation} is more than or equal to {perksFirstHonorXPRequirement}:
 				set slot 24 of the player's current inventory to 1 ladder named "<gold>Condemnation: 1st Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
@@ -7437,10 +7483,10 @@ command /class_setup_perkmenu [<text="2">]:
 			#Experimentation
 			if {perkTreeXP.charlatan.%player%::Experimentation} is more than or equal to {perksSecondHonorXPRequirement}:
 				set slot 38 of the player's current inventory to 1 ladder named "<gold>Experimentation: 2nd Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 47 of the player's current inventory to 1 emerald block named "<bold>Alchemical Mutation" with lore "<white>While equipped, inflicts the <gold>[Morph]<reset><white> status effect.", "<gold>[Morph]: During combat, sets the inflicted's STR/MAG/SPD/DEF/RES = highest value from all entities within 30 blocks.", "<gold>Each stat is calculated independently.", "<gold>Stats will decrease if the highest value found is lower than the afflicted's."
+				set slot 47 of the player's current inventory to 1 emerald block named "<bold>Alchemical Mutation" with lore "<white>While equipped, inflicts the <gold>[Morph]<reset><white> status effect.", "<gold>[Morph]: During combat, sets the inflicted's STR/MAG/SPD/DEF/RES = highest value from all entities within 30 blocks.", "<gold>Each stat is calculated independently."
 			else:
 				set slot 38 of the player's current inventory to 1 barrier named "<light red>Experimentation: 2nd Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Experimentation XP needed: %getAbsoluteValue({perkTreeXP.charlatan.%player%::Experimentation} - {perksSecondHonorXPRequirement})%"
-				set slot 47 of the player's current inventory to 1 obsidian named "<light red>Alchemical Mutation" with lore "<white>While equipped, inflicts the <gold>[Morph]<reset><white> status effect.", "<gold>[Morph]: During combat, sets the inflicted's STR/MAG/SPD/DEF/RES = highest value from all entities within 30 blocks.", "<gold>Each stat is calculated independently.", "<gold>Stats will decrease if the highest value found is lower than the afflicted's."
+				set slot 47 of the player's current inventory to 1 obsidian named "<light red>Alchemical Mutation" with lore "<white>While equipped, inflicts the <gold>[Morph]<reset><white> status effect.", "<gold>[Morph]: During combat, sets the inflicted's STR/MAG/SPD/DEF/RES = highest value from all entities within 30 blocks.", "<gold>Each stat is calculated independently."
 			#Illumination
 			if {perkTreeXP.charlatan.%player%::Illumination} is more than or equal to {perksSecondHonorXPRequirement}:
 				set slot 31 of the player's current inventory to 1 ladder named "<gold>Illumination: 2nd Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
@@ -7463,7 +7509,7 @@ command /class_setup_perkmenu [<text="2">]:
 				set slot 49 of the player's current inventory to 1 obsidian named "<light red>Infernal Ascendence" with lore "<white>During combat, if player's HP >= 50%%:", "<white>Grants bonus to player's STR/MAG/SPD/DEF/RES = current bonus on each stat.", "<white>Each bonus calculated independently.", "<white>After combat, damages the player by 30%% of their maximum health."
 				set slot 48 of the player's current inventory to 1 barrier named "<light red>Charlatan Mastery" with lore "<white>You need more XP in the Charlatan class to equip the Mastery perk.", "<white>Charlatan XP needed: %getAbsoluteValue({perkTreeXP.charlatan.%player%::Global} - {perksThirdHonorXPRequirement})%"
 				set slot 50 of the player's current inventory to 1 barrier named "<light red>Charlatan Mastery" with lore "<white>You need more XP in the Charlatan class to equip the Mastery perk.", "<white>Charlatan XP needed: %getAbsoluteValue({perkTreeXP.charlatan.%player%::Global} - {perksThirdHonorXPRequirement})%"
-		#Troubador Perks Preview
+		#Troubador Perk Tree
 		else if arg 1 is "Troubador":
 			open chest inventory with 6 rows named "<gold>Troubador Perks Preview" for the player
 			if {activePerkTree.%player%::Troubador} is not set:
@@ -7489,46 +7535,46 @@ command /class_setup_perkmenu [<text="2">]:
 			#Faithfulness
 			if {perkTreeXP.Troubador.%player%::Faithfulness} is more than or equal to {perksFirstHonorXPRequirement}:
 				set slot 20 of the player's current inventory to 1 ladder named "<gold>Faithfulness: 1st Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 29 of the player's current inventory to 1 emerald block named "<bold>Fast Healing" with lore "<white>Allies you heal with a staff instantly recover an extra 7.5 hearts."
+				set slot 29 of the player's current inventory to 1 emerald block named "<bold>Fast Healing" with lore "<white>Allies you heal with a staff instantly recover an extra 7.5 hearts.", "<white>Right-clicking without a heal target applies the staff to yourself."
 			else:
 				set slot 20 of the player's current inventory to 1 barrier named "<light red>Faithfulness: 1st Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Faithfulness XP needed: %getAbsoluteValue({perkTreeXP.Troubador.%player%::Faithfulness} - {perksFirstHonorXPRequirement})%"
-				set slot 29 of the player's current inventory to 1 obsidian named "<light red>Fast Healing" with lore "<white>Allies you heal with a staff instantly recover an extra 7.5 hearts."
+				set slot 29 of the player's current inventory to 1 obsidian named "<light red>Fast Healing" with lore "<white>Allies you heal with a staff instantly recover an extra 7.5 hearts.", "<white>Right-clicking without a heal target applies the staff to yourself."
 			#Enthusiasm
 			if {perkTreeXP.Troubador.%player%::Enthusiasm} is more than or equal to {perksFirstHonorXPRequirement}:
 				set slot 13 of the player's current inventory to 1 ladder named "<gold>Enthusiasm: 1st Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 22 of the player's current inventory to 1 emerald block named "<bold>Mount" with lore "<white>Allows use of the /mount command while equipped,", "<white>allowing you to summon a horse to your side at any time."
+				set slot 22 of the player's current inventory to 1 emerald block named "<bold>Mount" with lore "<white>Allows use of the /mount command while equipped,", "<white>allowing you to summon a horse to your side at any time.", "<white>Horses summed by /mount have Swiftness & Resistance 5 until death.", "<white>Grants <gold>[Canto 5/8]<white> while equipped."
 			else:
 				set slot 13 of the player's current inventory to 1 barrier named "<light red>Enthusiasm: 1st Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Enthusiasm XP needed: %getAbsoluteValue({perkTreeXP.Troubador.%player%::Enthusiasm} - {perksFirstHonorXPRequirement})%"
-				set slot 22 of the player's current inventory to 1 obsidian named "<light red>Mount" with lore "<white>Allows use of the /mount command while equipped,", "<white>allowing you to summon a horse to your side at any time."
+				set slot 22 of the player's current inventory to 1 obsidian named "<light red>Mount" with lore "<white>Allows use of the /mount command while equipped,", "<white>allowing you to summon a horse to your side at any time.", "<white>Horses summed by /mount have Swiftness & Resistance 5 until death.", "<white>Grants <gold><tooltip:%{EffectGuide::Canto}%>[Canto]<white> while equipped."
 			#Versatility
 			if {perkTreeXP.Troubador.%player%::Versatility} is more than or equal to {perksFirstHonorXPRequirement}:
 				set slot 24 of the player's current inventory to 1 ladder named "<gold>Versatility: 1st Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 33 of the player's current inventory to 1 emerald block named "<bold>Armsthrift" with lore "<white>On level-up:", "<white>Grants +1 to Traditional Weapons, Magical Weapons, and Guns abilities."
+				set slot 33 of the player's current inventory to 1 emerald block named "<bold>Armsthrift" with lore "<white>On level-up:", "<white>Grants +1 to Traditional Weapons, Magical Weapons, and Guns abilities.", "<white>During combat, uses the highest Weapon Ability score for hit calculations.", "<white>Weapons of the same type as the highest Weapon Ability score deal 20%% more damage per attack."
 			else:
 				set slot 24 of the player's current inventory to 1 barrier named "<light red>Versatility: 1st Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Versatility XP needed: %getAbsoluteValue({perkTreeXP.Troubador.%player%::Versatility} - {perksFirstHonorXPRequirement})%"
-				set slot 33 of the player's current inventory to 1 obsidian named "<light red>Armsthrift" with lore "<white>On level-up:", "<white>Grants +1 to Traditional Weapons, Magical Weapons, and Guns abilities."
+				set slot 33 of the player's current inventory to 1 obsidian named "<light red>Armsthrift" with lore "<white>On level-up:", "<white>Grants +1 to Traditional Weapons, Magical Weapons, and Guns abilities.", "<white>During combat, uses the highest Weapon Ability score for hit calculations.", "<white>Weapons of the same type as the highest Weapon Ability score deal 20%% more damage per attack."
 			#Second perk XP walls
 			#Faithfulness
 			if {perkTreeXP.Troubador.%player%::Faithfulness} is more than or equal to {perksSecondHonorXPRequirement}:
 				set slot 38 of the player's current inventory to 1 ladder named "<gold>Faithfulness: 2nd Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 47 of the player's current inventory to 1 emerald block named "<bold>Re-Move" with lore "<white>After healing an ally with a staff:", "<white>grants Strength/Swiftness 2 to the player and their mount for 5 seconds."
+				set slot 47 of the player's current inventory to 1 emerald block named "<bold>Second Wind" with lore "<white>After healing damage by using a staff:", "<white>Pushes foes within 7 blocks away from the player,", "<white>and inflicts Slowness 3 on those foes for 3 seconds."
 			else:
 				set slot 38 of the player's current inventory to 1 barrier named "<light red>Faithfulness: 2nd Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Faithfulness XP needed: %getAbsoluteValue({perkTreeXP.Troubador.%player%::Faithfulness} - {perksSecondHonorXPRequirement})%"
-				set slot 47 of the player's current inventory to 1 obsidian named "<light red>Re-Move" with lore "<white>After healing an ally with a staff:", "<white>grants Strength/Swiftness 2 to the player and their mount for 5 seconds."
+				set slot 47 of the player's current inventory to 1 obsidian named "<light red>Second Wind" with lore "<white>After healing damage by using a staff:", "<white>Pushes foes within 7 blocks away from the player,", "<white>and inflicts Slowness 3 on those foes for 3 seconds."
 			#Enthusiasm
 			if {perkTreeXP.Troubador.%player%::Enthusiasm} is more than or equal to {perksSecondHonorXPRequirement}:
 				set slot 31 of the player's current inventory to 1 ladder named "<gold>Enthusiasm: 2nd Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 40 of the player's current inventory to 1 emerald block named "<bold>Deep Bond" with lore "<white>Animals that you tame (or are summoned via /mount) are granted", "<white>3x HP, and Swiftness/Resistance 1 until their death."
+				set slot 40 of the player's current inventory to 1 emerald block named "<bold>Crusader's Charge" with lore "<white>During combat, if player's HP >= 50%% and is riding a horse:", "<white>Inflicts SPD -5 on foe during combat.", "<white>Reduces SPD advantage needed to double to 1,", "<white>and grants STR/MAG/SPD/DEF/RES +6 during combat."
 			else:
 				set slot 31 of the player's current inventory to 1 barrier named "<light red>Enthusiasm: 2nd Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Enthusiasm XP needed: %getAbsoluteValue({perkTreeXP.Troubador.%player%::Enthusiasm} - {perksSecondHonorXPRequirement})%"
-				set slot 40 of the player's current inventory to 1 obsidian named "<light red>Deep Bond" with lore "<white>Animals that you tame (or are summoned via /mount) are granted", "<white>3x HP, and Swiftness/Resistance 1 until their death."
+				set slot 40 of the player's current inventory to 1 obsidian named "<light red>Crusader's Charge" with lore "<white>During combat, if player's HP >= 50%% and is riding a horse:", "<white>Inflicts SPD -5 on foe during combat.", "<white>Reduces SPD advantage needed to double to 1,", "<white>and grants STR/MAG/SPD/DEF/RES +6 during combat."
 			#Versatility
 			if {perkTreeXP.Troubador.%player%::Versatility} is more than or equal to {perksSecondHonorXPRequirement}:
 				set slot 42 of the player's current inventory to 1 ladder named "<gold>Versatility: 2nd Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 51 of the player's current inventory to 1 emerald block named "<bold>Master of All" with lore "<white>During combat, if player's HP >= 50%% and is riding a horse:", "<white>Grants STR/MAG/SPD +6 during combat."
+				set slot 51 of the player's current inventory to 1 emerald block named "<bold>Arcane Blade" with lore "<white>During combat, if player's HP >= 50%%:", "<white>Adds 20%% of the damage stat not being used for calcuating damage to damage dealt.", "<white>EG: Physical attacks add 20%% of the player's MAG to damage dealt."
 			else:
 				set slot 42 of the player's current inventory to 1 barrier named "<light red>Versatility: 2nd Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Versatility XP needed: %getAbsoluteValue({perkTreeXP.Troubador.%player%::Versatility} - {perksSecondHonorXPRequirement})%"
-				set slot 51 of the player's current inventory to 1 obsidian named "<light red>Master of All" with lore "<white>During combat, if player's HP >= 50%% and is riding a horse:", "<white>Grants STR/MAG/SPD +6 during combat."
+				set slot 51 of the player's current inventory to 1 obsidian named "<light red>Arcane Blade" with lore "<white>During combat, if player's HP >= 50%%:", "<white>Adds 20%% of the damage stat not being used for calcuating damage to damage dealt.", "<white>EG: Physical attacks add 20%% of the player's MAG to damage dealt."
 			if {perkTreeXP.Troubador.%player%::Global} is more than or equal to {perksThirdHonorXPRequirement}:
 				set slot 49 of the player's current inventory to 1 emerald block of power 1 named "<bold>Njorun's Zeal" with lore "<white>During combat, if player's HP >= 50%%, is riding a horse, and makes a follow-up attack:", "<white>Player automatically activates the <light purple>[Galeforce]<reset><white> Special skill.", "<white>However, after combat, inflicts Weakness/Slowness 2 on player and their mount for 10 seconds.", "<white>Njorun's Zeal cannot activate if the player is debuffed with Weakness or Slowness.", "<light purple>[Galeforce]: <white>Inflicts [Dazed] on foes within 15 blocks for 10 seconds.", "<white>Foes with the [Dazed] condition take 25%% more damage from weapons equipped with [Galeforce]."
 				set slot 48 of the player's current inventory to 1 ladder named "<gold>Troubador Mastery" with lore "<white>You've reached the XP needed to equip this tree's Mastery perk."
@@ -7537,7 +7583,7 @@ command /class_setup_perkmenu [<text="2">]:
 				set slot 49 of the player's current inventory to 1 obsidian named "<light red>Njorun's Zeal" with lore "<white>During combat, if player's HP >= 50%%, is riding a horse, and makes a follow-up attack:", "<white>Player automatically activates the <light purple>[Galeforce]<reset><white> Special skill.", "<white>However, after combat, inflicts Weakness/Slowness 2 on player and their mount for 10 seconds.", "<white>Njorun's Zeal cannot activate if the player is debuffed with Weakness or Slowness.", "<light purple>[Galeforce]: <white>Inflicts [Dazed] on foes within 15 blocks for 10 seconds.", "<white>Foes with the [Dazed] condition take 25%% more damage from weapons equipped with [Galeforce]."
 				set slot 48 of the player's current inventory to 1 barrier named "<light red>Troubador Mastery" with lore "<white>You need more XP in the Troubador class to equip the Mastery perk.", "<white>Troubador XP needed: %getAbsoluteValue({perkTreeXP.Troubador.%player%::Global} - {perksThirdHonorXPRequirement})%"
 				set slot 50 of the player's current inventory to 1 barrier named "<light red>Troubador Mastery" with lore "<white>You need more XP in the Troubador class to equip the Mastery perk.", "<white>Troubador XP needed: %getAbsoluteValue({perkTreeXP.Troubador.%player%::Global} - {perksThirdHonorXPRequirement})%"
-		#Outlaw Perks Preview
+		#Outlaw Perk Tree
 		else if arg 1 is "Outlaw":
 			open chest inventory with 6 rows named "<gold>Outlaw Perks Preview" for the player
 			if {activePerkTree.%player%::Outlaw} is not set:
@@ -7611,7 +7657,7 @@ command /class_setup_perkmenu [<text="2">]:
 				set slot 49 of the player's current inventory to 1 obsidian named "<light red>Angel of Death" with lore "<white>If player initiates combat and number of foes > number of allies within 10 blocks:", "<white>Grants STR/MAG/SPD +6 during combat and accelerates Special skill activation (+10%% activation chance)."
 				set slot 48 of the player's current inventory to 1 barrier named "<light red>Outlaw Mastery" with lore "<white>You need more XP in the Outlaw class to equip the Mastery perk.", "<white>Outlaw XP needed: %getAbsoluteValue({perkTreeXP.Outlaw.%player%::Global} - {perksThirdHonorXPRequirement})%"
 				set slot 50 of the player's current inventory to 1 barrier named "<light red>Outlaw Mastery" with lore "<white>You need more XP in the Outlaw class to equip the Mastery perk.", "<white>Outlaw XP needed: %getAbsoluteValue({perkTreeXP.Outlaw.%player%::Global} - {perksThirdHonorXPRequirement})%"
-		#Conjurer Perks Preview
+		#Conjurer Perk Tree
 		else if arg 1 is "Conjurer":
 			open chest inventory with 6 rows named "<gold>Conjurer Perks Preview" for the player
 			if {activePerkTree.%player%::Conjurer} is not set:
@@ -7644,25 +7690,25 @@ command /class_setup_perkmenu [<text="2">]:
 			#Vendetta
 			if {perkTreeXP.Conjurer.%player%::Vendetta} is more than or equal to {perksFirstHonorXPRequirement}:
 				set slot 13 of the player's current inventory to 1 ladder named "<gold>Vendetta: 1st Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 22 of the player's current inventory to 1 emerald block named "<bold>Blood Pact" with lore "<white>If player initiates combat, and both player and foe are not combat tagged:", "<white>Damage the player suffers also damages the foe by half the amount.", "<white>Effect lasts while player is combat tagged."
+				set slot 22 of the player's current inventory to 1 emerald block named "<bold>Blood Pact" with lore "<white>If player initiates combat, and both player and foe are not combat tagged:", "<white>Damage the player suffers also damages the foe by half the amount.", "<white>Foes under the effect of a Blood Pact suffer STR/MAG/SPD/DEF/RES -6 during combat.", "<light red>Blood Pacts are removed when the player enters Bleedout.", "<white>Only one Blood pact can be active at a time."
 			else:
 				set slot 13 of the player's current inventory to 1 barrier named "<light red>Vendetta: 1st Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Vendetta XP needed: %getAbsoluteValue({perkTreeXP.Conjurer.%player%::Vendetta} - {perksFirstHonorXPRequirement})%"
-				set slot 22 of the player's current inventory to 1 obsidian named "<light red>Blood Pact" with lore "<white>If player initiates combat, and both player and foe are not combat tagged:", "<white>Damage the player suffers also damages the foe.", "<white>Effect lasts while player is combat tagged."
+				set slot 22 of the player's current inventory to 1 obsidian named "<light red>Blood Pact" with lore "<white>If player initiates combat, and both player and foe are not combat tagged:", "<white>Damage the player suffers also damages the foe.", "<white>Foes under the effect of a Blood Pact suffer STR/MAG/SPD/DEF/RES -6 during combat.", "<light red>Blood Pacts are removed when the player enters Bleedout.", "<white>Only one Blood Pact can be active at a time."
 			#Chaos
 			if {perkTreeXP.Conjurer.%player%::Chaos} is more than or equal to {perksFirstHonorXPRequirement}:
 				set slot 24 of the player's current inventory to 1 ladder named "<gold>Chaos: 1st Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 33 of the player's current inventory to 1 emerald block named "<bold>Sudden Panic" with lore "<white>During combat, if player's HP >= foe's HP -3:", "<white>Converts bonuses on foe into penalties.", "<white>Inflicts STR/MAG/DEF/RES -4 on foe."
+				set slot 33 of the player's current inventory to 1 emerald block named "<bold>Sudden Panic" with lore "<white>Grants HP +20 while equipped.", "<white>During combat, if player's HP >= foe's HP -3:", "<white>Converts bonuses on foe into penalties,", "<white>and inflicts STR/MAG/SPD/DEF/RES -7 on foe."
 			else:
 				set slot 24 of the player's current inventory to 1 barrier named "<light red>Chaos: 1st Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Chaos XP needed: %getAbsoluteValue({perkTreeXP.Conjurer.%player%::Chaos} - {perksFirstHonorXPRequirement})%"
-				set slot 33 of the player's current inventory to 1 obsidian named "<light red>Sudden Panic" with lore "<white>During combat, if player's HP >= foe's HP -3:", "<white>Converts bonuses on foe into penalties.", "<white>Inflicts STR/MAG/DEF/RES -4 on foe."
+				set slot 33 of the player's current inventory to 1 obsidian named "<light red>Sudden Panic" with lore "<white>Grants HP +20 while equipped.", "<white>During combat, if player's HP >= foe's HP -3:", "<white>Converts bonuses on foe into penalties,", "<white>and inflicts STR/MAG/SPD/DEF/RES -7 on foe."
 			#Second perk XP walls
 			#Wisdom
 			if {perkTreeXP.Conjurer.%player%::Wisdom} is more than or equal to {perksSecondHonorXPRequirement}:
 				set slot 38 of the player's current inventory to 1 ladder named "<gold>Wisdom: 2nd Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 47 of the player's current inventory to 1 emerald block named "<bold>Lifetaker" with lore "<white>If player initiates combat, restores health equal to 10%% of damage dealt during combat."
+				set slot 47 of the player's current inventory to 1 emerald block named "<bold>Lifetaker" with lore "<white>If player initiates combat, restores health equal to 20%% of damage dealt during combat."
 			else:
 				set slot 38 of the player's current inventory to 1 barrier named "<light red>Wisdom: 2nd Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Wisdom XP needed: %getAbsoluteValue({perkTreeXP.Conjurer.%player%::Wisdom} - {perksSecondHonorXPRequirement})%"
-				set slot 47 of the player's current inventory to 1 obsidian named "<light red>Lifetaker" with lore "<white>If player initiates combat, restores health equal to 10%% of damage dealt during combat."
+				set slot 47 of the player's current inventory to 1 obsidian named "<light red>Lifetaker" with lore "<white>If player initiates combat, restores health equal to 20%% of damage dealt during combat."
 			#Vendetta
 			if {perkTreeXP.Conjurer.%player%::Vendetta} is more than or equal to {perksSecondHonorXPRequirement}:
 				set slot 31 of the player's current inventory to 1 ladder named "<gold>Vendetta: 2nd Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
@@ -7685,7 +7731,7 @@ command /class_setup_perkmenu [<text="2">]:
 				set slot 49 of the player's current inventory to 1 obsidian named "<light red>Chaos's Embrace" with lore "<white>Grants bonus damage equal to 50%% of total debuffs on foe during combat.", "<white>After combat, if player initiated:", "<white>Inflicts recoil damage equal to 20%% of player's maximum health."
 				set slot 48 of the player's current inventory to 1 barrier named "<light red>Conjurer Mastery" with lore "<white>You need more XP in the Conjurer class to equip the Mastery perk.", "<white>Conjurer XP needed: %getAbsoluteValue({perkTreeXP.Conjurer.%player%::Global} - {perksThirdHonorXPRequirement})%"
 				set slot 50 of the player's current inventory to 1 barrier named "<light red>Conjurer Mastery" with lore "<white>You need more XP in the Conjurer class to equip the Mastery perk.", "<white>Conjurer XP needed: %getAbsoluteValue({perkTreeXP.Conjurer.%player%::Global} - {perksThirdHonorXPRequirement})%"
-		#Poet Perks Preview
+		#Poet Perk Tree
 		else if arg 1 is "Poet":
 			open chest inventory with 6 rows named "<gold>Poet Perks Preview" for the player
 			if {activePerkTree.%player%::Poet} is not set:
@@ -7733,33 +7779,33 @@ command /class_setup_perkmenu [<text="2">]:
 			#Tempo
 			if {perkTreeXP.Poet.%player%::Tempo} is more than or equal to {perksSecondHonorXPRequirement}:
 				set slot 38 of the player's current inventory to 1 ladder named "<gold>Tempo: 2nd Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 47 of the player's current inventory to 1 emerald block named "<bold>Requiem" with lore "<white>If player triggers a Special skill during combat:", "<white>Grants Strength/Swiftness 2 to player & allies within 30 blocks for 10 seconds."
+				set slot 47 of the player's current inventory to 1 emerald block named "<bold>Requiem" with lore "<white>If player triggers a Special skill during combat:", "<white>Grants Strength/Swiftness 3 to player & allies within 30 blocks for 10 seconds."
 			else:
 				set slot 38 of the player's current inventory to 1 barrier named "<light red>Tempo: 2nd Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Tempo XP needed: %getAbsoluteValue({perkTreeXP.Poet.%player%::Tempo} - {perksSecondHonorXPRequirement})%"
-				set slot 47 of the player's current inventory to 1 obsidian named "<light red>Requiem" with lore "<white>If player triggers a Special skill during combat:", "<white>Grants Strength/Swiftness 2 to player & allies within 30 blocks for 10 seconds."
+				set slot 47 of the player's current inventory to 1 obsidian named "<light red>Requiem" with lore "<white>If player triggers a Special skill during combat:", "<white>Grants Strength/Swiftness 3 to player & allies within 30 blocks for 10 seconds."
 			#Rythm
 			if {perkTreeXP.Poet.%player%::Rythm} is more than or equal to {perksSecondHonorXPRequirement}:
 				set slot 31 of the player's current inventory to 1 ladder named "<gold>Rythm: 2nd Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 40 of the player's current inventory to 1 emerald block named "<bold>Crescendo" with lore "<white>Doubles the effect of Finishing Blows,", "<white>but also doubles the melee cooldown inflicted."
+				set slot 40 of the player's current inventory to 1 emerald block named "<bold>Crescendo" with lore "<white>Doubles the effect of Finishing Blows,", "<white>but also doubles the melee cooldown inflicted.", "<white>When a Finishing Blow triggers,", "<white>clears negative potion effects and applies Regeneration 4", "<white>to player and allies within 10 blocks."
 			else:
 				set slot 31 of the player's current inventory to 1 barrier named "<light red>Rythm: 2nd Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Rythm XP needed: %getAbsoluteValue({perkTreeXP.Poet.%player%::Rythm} - {perksSecondHonorXPRequirement})%"
-				set slot 40 of the player's current inventory to 1 obsidian named "<light red>Crescendo" with lore "<white>Doubles the effect of Finishing Blows,", "<white>but also doubles the melee cooldown inflicted."
+				set slot 40 of the player's current inventory to 1 obsidian named "<light red>Crescendo" with lore "<white>Doubles the effect of Finishing Blows,", "<white>but also doubles the melee cooldown inflicted.", "<white>When a Finishing Blow triggers,", "<white>clears negative potion effects and applies Regeneration 4", "<white>to player and allies within 10 blocks."
 			#Melody
 			if {perkTreeXP.Poet.%player%::Melody} is more than or equal to {perksSecondHonorXPRequirement}:
 				set slot 42 of the player's current inventory to 1 ladder named "<gold>Melody: 2nd Honor" with lore "<white>You've reached the XP needed to equip this tree's next perk."
-				set slot 51 of the player's current inventory to 1 emerald block named "<bold>Firestorm Song" with lore "<white>Using any Rally skill or Performing for an ally", "<white>grants you and that ally STR/MAG/SPD +6 through next action,", "<white>and also instantly heals both player and target by 5 hearts."
+				set slot 51 of the player's current inventory to 1 emerald block named "<bold>Firestorm Song" with lore "<white>Using any Rally skill or Performing for an ally", "<white>grants you and that ally STR/MAG/SPD +10 through next action,", "<white>and also instantly heals both player and target by 5 hearts."
 			else:
 				set slot 42 of the player's current inventory to 1 barrier named "<light red>Melody: 2nd Honor" with lore "<white>You need more XP in this tree to equip the next perk.", "<white>Melody XP needed: %getAbsoluteValue({perkTreeXP.Poet.%player%::Melody} - {perksSecondHonorXPRequirement})%"
-				set slot 51 of the player's current inventory to 1 obsidian named "<light red>Firestorm Song" with lore "<white>Using any Rally skill or Performing for an ally", "<white>grants you and that ally STR/MAG/SPD +6 through next action,", "<white>and also instantly heals both player and target by 5 hearts."
+				set slot 51 of the player's current inventory to 1 obsidian named "<light red>Firestorm Song" with lore "<white>Using any Rally skill or Performing for an ally", "<white>grants you and that ally STR/MAG/SPD +10 through next action,", "<white>and also instantly heals both player and target by 5 hearts."
 			if {perkTreeXP.Poet.%player%::Global} is more than or equal to {perksThirdHonorXPRequirement}:
-				set slot 49 of the player's current inventory to 1 emerald block of power 1 named "<bold>Flashing Blade II" with lore "<white>If player initiates combat:", "<white>Inflicts SPD -5 on foe during combat, and,", "<white>if player's SPD >= foe's SPD:", "<white>Accelerates Special skill activation (+10%% activation chance)", "<white>and deals bonus damage of [(player's SPD - foe's SPD) * 2].", "<white>Bonus damage caps at +10."
+				set slot 49 of the player's current inventory to 1 emerald block of power 1 named "<bold>Ballad" with lore "<white>Performing for an ally applies the bonuses to yourself and all allies within 30 blocks.", "<white>Additionally, perform grants <gold>[Bonus Doubler]<white> to all targeted players for 20 seconds.", "<white>This perk also spreads the effects of Firestorm Dance."
 				set slot 48 of the player's current inventory to 1 ladder named "<gold>Poet Mastery" with lore "<white>You've reached the XP needed to equip this tree's Mastery perk."
 				set slot 50 of the player's current inventory to 1 ladder named "<gold>Poet Mastery" with lore "<white>You've reached the XP needed to equip this tree's Mastery perk."
 			else:
-				set slot 49 of the player's current inventory to 1 obsidian named "<light red>Flashing Blade II" with lore "<white>If player initiates combat:", "<white>Inflicts SPD -5 on foe during combat, and,", "<white>if player's SPD >= foe's SPD:", "<white>Accelerates Special skill activation (+10%% activation chance)", "<white>and deals bonus damage of [(player's SPD - foe's SPD) * 2].", "<white>Bonus damage caps at +10."
+				set slot 49 of the player's current inventory to 1 obsidian named "<light red>Ballad" with lore "<white>Performing for an ally applies the bonuses to yourself and all allies within 30 blocks.", "<white>Additionally, perform grants <gold>[Bonus Doubler]<white> to all targeted players for 20 seconds.", "<white>This perk also spreads the effects of Firestorm Dance."
 				set slot 48 of the player's current inventory to 1 barrier named "<light red>Poet Mastery" with lore "<white>You need more XP in the Poet class to equip the Mastery perk.", "<white>Poet XP needed: %getAbsoluteValue({perkTreeXP.Poet.%player%::Global} - {perksThirdHonorXPRequirement})%"
 				set slot 50 of the player's current inventory to 1 barrier named "<light red>Poet Mastery" with lore "<white>You need more XP in the Poet class to equip the Mastery perk.", "<white>Poet XP needed: %getAbsoluteValue({perkTreeXP.Poet.%player%::Global} - {perksThirdHonorXPRequirement})%"
-		#Keeper Perks Preview
+		#Keeper Perk Tree
 		else if arg 1 is "Keeper":
 			open chest inventory with 6 rows named "<gold>Keeper Perks Preview" for the player
 			if {activePerkTree.%player%::Keeper} is not set:

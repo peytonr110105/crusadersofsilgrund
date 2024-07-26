@@ -278,7 +278,9 @@ on right click:
 	else if nbt of player's tool contains "perkManualType:":
 		set {_perk} to "%tag "perkManualType" of the player's tool's nbt%"
 		set {_perk::*} to {_perk} split at "_"
-		if {_perk::2} is set:
+		if {_perk::3} is set:
+			set {_perk} to "%{_perk::1}% %{_perk::2}% %{_perk::3}%"
+		else if {_perk::2} is set:
 			set {_perk} to "%{_perk::1}% %{_perk::2}%"
 		if {perks.%player%::%{_perk}%} is not set:
 			remove 1 of tool from tool

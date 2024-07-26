@@ -3,22 +3,22 @@
 #The random chance to encounter a travelling NPC is based on the player's Speech ability + time since last encounter
 every 2 minecraft hours:
 	loop all players:
-		#NPC's can only spawn between Y-61 and Y-179, to prevent them from spawning on cliffs and in caves
+		#NPC's can only spawn between Y-61 and Y-240, to prevent them from spawning on cliffs and in caves
 		if y-coordinate of loop-player is more than 60:
-			if y-coordinate of loop-player is less than 180:
+			if y-coordinate of loop-player is less than 240:
 				if {t_wanderingNPCChance.%loop-player%} is not set:
 					set {t_wanderingNPCChance.%loop-player%} to 0
 				if {t_wanderingNPCChance.%loop-player%} is more than 50:
 					set {t_wanderingNPCChance.%loop-player%} to 50
 				#send "wandering npc chance: %{t_wanderingNPCChance.%loop-player%}%" to loop-player
 				chance of {t_wanderingNPCChance.%loop-player%}%:
-					loop all players in radius 300 of the loop-player:
-						if citizen id of loop-player-2 is set:
-							set {_blockWanderingNPC} to true
+					#loop all players in radius 300 of the loop-player:
+					#	if citizen id of loop-player-2 is set:
+					#		set {_blockWanderingNPC} to true
 							#send "too close to a town!!" to loop-player-1
-							exit 1 loop
+					#		exit 1 loop
 					if {_blockWanderingNPC} is not true:
-						set {_rng} to random integer from 0 to 8
+						set {_rng} to random integer from 0 to 9
 						if {_rng} is 0:
 							set {_NPC} to "Blacksmith"
 						else if {_rng} is 1:
@@ -37,6 +37,8 @@ every 2 minecraft hours:
 							set {_NPC} to "Jeweler"
 						else if {_rng} is 8:
 							set {_NPC} to "Weaponsmith"
+						else if {_rng} is 9:
+							set {_NPC} to "Innkeeper"
 						send formatted "<yellow>In my travels, I've spotted a travelling %{_NPC}% and their caravan." to loop-player
 						wait 0.5 seconds
 						send formatted "<yellow>I could either ignore them and continue on my way, or flag them down and trade with them." to loop-player
@@ -60,18 +62,18 @@ command /wanderingNPC <text>:
 			clear {interruptNPCWizardry.%player%}
 			set {inCutscene.%player%} to true
 			make console execute command "/npc create %arg 1% --at %player's x-coordinate%:%player's y-coordinate%:%player's z-coordinate%:%player's world%"
-			while {NPCsFor.%player%::C_%arg 1%} is not set:
-				add 1 to {_blockInfLoop}
-				wait 1 tick
-				send formatted "<blue>Waiting for NPC..." to the player
-				if {_blockInfLoop} is more than 60:
-					send formatted "<red>Failed to retrieve NPC!" to the player
-					exit 1 loop
-			if {NPCsFor.%player%::C_%arg 1%} is set:
-				clear {inCutscene.%player%}
-				play 20 (smoke with speed 0) at the player
-				send formatted "<yellow>The wandering %arg 1% has arrived. They will stay in this location until the start of the next day." to the player
-				set {wanderingNPCList.%player%::%arg 1%} to true
+			#while {NPCsFor.%player%::C_%arg 1%} is not set:
+			#	add 1 to {_blockInfLoop}
+			#	wait 1 tick
+			#	send formatted "<blue>Waiting for NPC..." to the player
+			#	if {_blockInfLoop} is more than 60:
+			#		send formatted "<red>Failed to retrieve NPC!" to the player
+			#		exit 1 loop
+			#if {NPCsFor.%player%::C_%arg 1%} is set:
+			clear {inCutscene.%player%}
+			play 20 (smoke with speed 0) at the player
+			send formatted "<yellow>The wandering %arg 1% has arrived. They will stay in this location until the start of the next day." to the player
+			set {wanderingNPCList.%player%::%arg 1%} to true
 				
 command /printWanderingNPCS:
 	trigger:

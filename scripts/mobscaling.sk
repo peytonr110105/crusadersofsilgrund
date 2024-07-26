@@ -240,61 +240,66 @@ function humanoidEquipmentHandler(MOB: entity, LVL: number, RANGE: number):
 	set {_diamondBlock} to ({_LVL} - 5)
 	if {_diamondBlock} is more than 40:
 		set {_diamondBlock} to 40
+	if {_LVL} is more than 100:
+		set {_lvl} to 100
+	set {_odds} to {_LVL} - 30
+	if {_odds} is more than 75:
+		set {_odds} to 75
 	chance of {_diamondBlock}%:
 		if {_MOB}'s helmet is air:
-			chance of 50%:
+			chance of 80%:
 				set {_MOB}'s helmet to 1 diamond helmet
 				enchantHelmet({_MOB},{_LVL})
 		if {_MOB}'s chestplate is air:
-			chance of 50%:
+			chance of 80%:
 				set {_MOB}'s chestplate to 1 diamond chestplate
 				enchantChestplate({_MOB},{_LVL})
 		if {_MOB}'s leggings is air:
-			chance of 50%:
+			chance of 80%:
 				set {_MOB}'s leggings to 1 diamond leggings
 				enchantLeggings({_MOB},{_LVL})
 		if {_MOB}'s boots is air:
-			chance of 50%:
+			chance of 80%:
 				set {_MOB}'s boots to 1 diamond boots
 				enchantBoots({_MOB},{_LVL})
 	else:
-		chance of ({_LVL} + 100)%:
-			chance of 50%:
+		chance of ({_odds} + 50)%:
+			chance of 80%:
 				set {_MOB}'s helmet to 1 leather helmet
 				enchantHelmet({_MOB},{_LVL})
-			chance of 50%:
+			chance of 80%:
 				set {_MOB}'s chestplate to 1 leather chestplate
 				enchantChestplate({_MOB},{_LVL})
-			chance of 50%:
+			chance of 80%:
 				set {_MOB}'s leggings to 1 leather leggings
 				enchantLeggings({_MOB},{_LVL})
-			chance of 50%:
+			chance of 80%:
 				set {_MOB}'s boots to 1 leather boots
 				enchantBoots({_MOB},{_LVL})
-		chance of ({_LVL} + 65)%:
-			chance of 50%:
+		chance of ({_LVL} + 35)%:
+			chance of 80%:
 				set {_MOB}'s helmet to 1 chainmail helmet
 				enchantHelmet({_MOB},{_LVL})
-			chance of 50%:
+			chance of 80%:
 				set {_MOB}'s chestplate to 1 chainmail chestplate
 				enchantChestplate({_MOB},{_LVL})
-			chance of 50%:
+			chance of 80%:
 				set {_MOB}'s leggings to 1 chainmail leggings
 				enchantLeggings({_MOB},{_LVL})
-			chance of 50%:
+			chance of 80%:
 				set {_MOB}'s boots to 1 chainmail boots
 				enchantBoots({_MOB},{_LVL})
 		chance of ({_LVL} + 20)%:
-			chance of 50%:
+			chance of 80%:
 				set {_MOB}'s helmet to 1 iron helmet
 				enchantHelmet({_MOB},{_LVL})
-			chance of 50%:
+			chance of 80%:
 				set {_MOB}'s chestplate to 1 iron chestplate
 				enchantChestplate({_MOB},{_LVL})
-			chance of 50%:
+			chance of 80%:
 				set {_MOB}'s leggings to 1 iron leggings
 				enchantLeggings({_MOB},{_LVL})
-			chance of 50%:
+			chance of 80%:
 				set {_MOB}'s boots to 1 iron boots
 				enchantBoots({_MOB},{_LVL})
 	if {_RANGE} is 1:
@@ -302,18 +307,18 @@ function humanoidEquipmentHandler(MOB: entity, LVL: number, RANGE: number):
 			set {_RANGE} to 0
 	if {_RANGE} is 0:
 		set {_weapon} to a random integer from 1 to 5
-		chance of ({_LVL} + 100)%:
-			if {_weapon} is 1:
-				set {_MOB}'s tool to 1 wooden sword
-			else if {_weapon} is 2:
-				set {_MOB}'s tool to 1 wooden axe
-			else if {_weapon} is 3:
-				set {_MOB}'s tool to 1 wooden shovel named "<bold>Wooden Lance" with nbt "{LanceType:0}"
-			ELSE IF {_WEAPON} is 4:
-				set {_MOB}'s tool to 1 wooden hoe named "<bold>Wooden Gauntlets" with nbt "{GauntletType:0}"
-			else if {_WEAPON} is 5:
-				set {_MOB}'s tool to 16 arrow named "<bold>Wooden Dagger" with nbt "{DaggerType:0}"
-		chance of ({_LVL} + 65)%:
+		#Always give some kind of melee weapon at base
+		if {_weapon} is 1:
+			set {_MOB}'s tool to 1 wooden sword
+		else if {_weapon} is 2:
+			set {_MOB}'s tool to 1 wooden axe
+		else if {_weapon} is 3:
+			set {_MOB}'s tool to 1 wooden shovel named "<bold>Wooden Lance" with nbt "{LanceType:0}"
+		ELSE IF {_WEAPON} is 4:
+			set {_MOB}'s tool to 1 wooden hoe named "<bold>Wooden Gauntlets" with nbt "{GauntletType:0}"
+		else if {_WEAPON} is 5:
+			set {_MOB}'s tool to 16 arrow named "<bold>Wooden Dagger" with nbt "{DaggerType:0}"
+		chance of ({_odds} + 50)%:
 			if {_weapon} is 1:
 				set {_MOB}'s tool to 1 stone sword
 			else if {_weapon} is 2:
@@ -324,7 +329,7 @@ function humanoidEquipmentHandler(MOB: entity, LVL: number, RANGE: number):
 				set {_MOB}'s tool to 1 stone hoe named "<bold>Stone Gauntlets" with nbt "{GauntletType:1}"
 			else if {_WEAPON} is 5:
 				set {_MOB}'s tool to 16 arrow named "<bold>Stone Dagger" with nbt "{DaggerType:1}"
-		chance of ({_LVL} + 20)%:
+		chance of ({_LVL} + 25)%:
 			if {_weapon} is 1:
 				set {_MOB}'s tool to 1 iron sword
 			else if {_weapon} is 2:
@@ -335,7 +340,7 @@ function humanoidEquipmentHandler(MOB: entity, LVL: number, RANGE: number):
 				set {_MOB}'s tool to 1 iron hoe named "<bold>Iron Gauntlets" with nbt "{GauntletType:2}"
 			else if {_WEAPON} is 5:
 				set {_MOB}'s tool to 16 arrow named "<bold>Iron Dagger" with nbt "{DaggerType:2}"
-		chance of {_diamondBlock}%:
+		chance of ({_diamondBlock} + 20)%:
 			if {_weapon} is 1:
 				set {_MOB}'s tool to 1 diamond sword
 			else if {_weapon} is 2:
@@ -362,9 +367,9 @@ function humanoidEquipmentHandler(MOB: entity, LVL: number, RANGE: number):
 			enchant {_MOB}'s tool with sharpness 7
 		chance of ({_LVL} - 25)%:
 			enchant {_MOB}'s tool with sharpness 8
-		chance of ({_LVL} - 40)%:
+		chance of ({_LVL} - 35)%:
 			enchant {_MOB}'s tool with sharpness 9
-		chance of ({_LVL} - 60)%:
+		chance of ({_LVL} - 45)%:
 			enchant {_MOB}'s tool with sharpness 10
 		chance of ({_LVL} - 10)%:
 			enchant {_MOB}'s tool with fire aspect 1
@@ -382,19 +387,19 @@ function humanoidEquipmentHandler(MOB: entity, LVL: number, RANGE: number):
 			enchant {_MOB}'s tool with punch 2
 	chance of ({_LVL})%:
 		set line 1 of {_MOB}'s tool's lore to getASlotSkill({_RANGE})
-	chance of floor({_LVL} * 0.9)%:
+	chance of ({_LVL})%:
 		set line 2 of {_MOB}'s tool's lore to getBSlotSkill({_RANGE})
 	chance of ({_LVL})%:
 		set line 3 of {_MOB}'s tool's lore to getCSlotSkill({_RANGE})
 	chance of ({_LVL})%:
 		set line 4 of {_MOB}'s tool's lore to getAssistSlotSkill({_RANGE})
-	chance of floor({_LVL} * 0.8)%:
+	chance of {_LVL}%:
 		set line 5 of {_MOB}'s tool's lore to getSpecialSlotSkill({_RANGE})
-	chance of floor({_LVL} * 0.8)%:
+	chance of {_LVL}%:
 		set line 6 of {_MOB}'s tool's lore to getRefineSlotSkill({_RANGE})
 		
 function getASlotSkill(RANGE: number) :: text:
-	set {_RN} to a random integer from 1 to 49
+	set {_RN} to a random integer from 1 to 51
 	if {_RN} is 1:
 		return "<light red><bold>Slot A - Death Blow"
 	else if {_RN} is 2:
@@ -493,8 +498,12 @@ function getASlotSkill(RANGE: number) :: text:
 		return "<light red><bold>Slot A - DEF/RES Bond"
 	else if {_RN} is 49:
 		return "<light red><bold>Slot A - Sacae's Grace"
+	else if {_RN} is 50:
+		return "<light red><bold>Slot A - Hawkeye"
+	else if {_RN} is 51:
+		return "<light red><bold>Slot A - Triangle Adept"
 function getBSlotSkill(RANGE: number) :: text:
-	set {_RN} to a random integer from 1 to 22
+	set {_RN} to a random integer from 1 to 39
 	if {_RN} is 1:
 		return "<light blue><bold>Slot B - Vantage"
 	else if {_RN} is 2:
@@ -565,8 +574,16 @@ function getBSlotSkill(RANGE: number) :: text:
 		return "<light blue><bold>Slot B - Pass"
 	else if {_RN} is 35:
 		return "<light blue><bold>Slot B - Obstruct"
+	else if {_RN} is 36:
+		return "<light blue><bold>Slot B - Wary Fighter"
+	else if {_RN} is 37:
+		return "<light blue><bold>Slot B - Gambit"
+	else if {_RN} is 38:
+		return "<light blue><bold>Slot B - Mirror Match"
+	else if {_RN} is 39:
+		return "<light blue><bold>Slot B - Triangle Reaver"
 function getCSlotSkill(RANGE: number) :: text:
-	set {_RN} to a random integer from 1 to 49
+	set {_RN} to a random integer from 1 to 52
 	if {_RN} is 1:
 		return "<light yellow><bold>Slot C - Spur STR"
 	else if {_RN} is 2:
@@ -665,18 +682,18 @@ function getCSlotSkill(RANGE: number) :: text:
 		return "<light yellow><bold>Slot C - SPD/RES Ploy"
 	else if {_RN} is 49:
 		return "<light yellow><bold>Slot C - ATK/SPD Ploy"
+	else if {_RN} is 50:
+		return "<light yellow><bold>Slot C - Canter"
+	else if {_RN} is 51:
+		return "<light yellow><bold>Slot C - Discipline"
+	else if {_RN} is 52:
+		return "<light yellow><bold>Sparkling Boost"
 function getAssistSlotSkill(RANGE: number) :: text:
-	set {_RN} to a random integer from 1 to 16
+	set {_RN} to a random integer from 1 to 19
 	if {_RN} is 1:
-		if {_RANGE} is 0:
-			return "<light green><bold>Assist - Drag Back"
-		else:
-			return "<light green><bold>Assist - Ethreal Grip"
+		return "<light green><bold>Assist - Drag Back"
 	else if {_RN} is 2:
-		if {_RANGE} is 0:
-			return "<light green><bold>Assist - Hit and Run"
-		else:
-			return "<light green><bold>Assist - Ethreal Grip"
+		return "<light green><bold>Assist - Hit and Run"
 	else if {_RN} is 3:
 		return "<light green><bold>Assist - Reposition"
 	else if {_RN} is 4:
@@ -684,7 +701,7 @@ function getAssistSlotSkill(RANGE: number) :: text:
 	else if {_RN} is 5:
 		return "<light green><bold>Assist - Shove"
 	else if {_RN} is 6:
-		return "<light green><bold>Assist - Launcher"
+		return "<light green><bold>Assist - Liftoff"
 	else if {_RN} is 7:
 		return "<light green><bold>Assist - Fortify Health"
 	else if {_RN} is 8:
@@ -702,13 +719,15 @@ function getAssistSlotSkill(RANGE: number) :: text:
 	else if {_RN} is 14:
 		return "<light green><bold>Assist - Stinger"
 	else if {_RN} is 15:
-		return "<light green><bold>Assist - Capture"
+		return "<light green><bold>Assist - Counter"
 	else if {_RN} is 16:
 		return "<light green><bold>Assist - Smite"
 	else if {_RN} is 17:
-		return "<light green><bold>Assist - Taunt"
+		return "<light green><bold>Assist - Fist Override"
 	else if {_RN} is 18:
-		return "<light green><bold>Assist - MAX-Taunt"
+		return "<light green><bold>Assist - Cancel Affinity"
+	else if {_RN} is 19:
+		return "<light green><bold>Assist - Hit +20"
 		
 function getSpecialSlotSkill(RANGE: number) :: text:
 	set {_RN} to a random integer from 1 to 20
@@ -751,9 +770,9 @@ function getSpecialSlotSkill(RANGE: number) :: text:
 	else if {_RN} is 19:
 		return "<light purple><bold>Special - Ruptured Sky"
 	else if {_RN} is 20:
-		return "<light purple><bold>Special - Holy Vestments"		
+		return "<light purple><bold>Special - Holy Vestments"
 function getRefineSlotSkill(RANGE: number) :: text:
-	set {_RN} to a random integer from 1 to 6
+	set {_RN} to a random integer from 1 to 7
 	if {_RN} is 1:
 		return "<gold><italics>Refined - Slaying"
 	else if {_RN} is 2:
@@ -1421,7 +1440,7 @@ on spawn of a monster:
 				else:
 					clear {allowFreeBuildMobSpawn}
 			if entity's world is not "Salindrum":
-				set {_modifier} to 20
+				set {_modifier} to 5
 				if the entity's world is "GenOne":
 					add -19 to {_modifier}
 				if the entity's world is "Alstair":
@@ -1431,7 +1450,7 @@ on spawn of a monster:
 				else if the entity's world is "Alstair_End":
 					subtract 15 from {_modifier}
 				chance of 1%:
-					chance of 1%:
+					chance of {_modifier}%:
 						cancel event
 						broadcast "<light red>A fallen hero has arisen..."
 						set {_name} to a random integer from 1 to 7
@@ -1503,7 +1522,7 @@ on spawn of a monster:
 							set {t_isBoss.%{_deadlord}%} to true	
 							spawn 1 horse at the entity
 							make {_deadlord} ride the last spawned horse
-						else if {_name} is 4:
+						else if {_name} is 11:
 							spawn 1 zombie at the entity
 							set {_deadlord} to the last spawned entity
 							set the name of the last spawned entity to "<light red>Young Lion: Roy"
@@ -1515,7 +1534,7 @@ on spawn of a monster:
 							set {t_mag.%{_deadlord}%} to 30
 							set the maximum health of {_deadlord} to 180
 							set {t_lvl.%{_deadlord}%} to 45
-							set {_deadlord}'s tool to diamond sword of sharpness 5 named "<gold><bold>Binding Blade" with nbt "{bakedRefine:776,sacredTreasureID:1}" with lore "<light red><bold>Slot A - Bracing Stance", "<light blue><bold>Slot B - Riposte", "<light yellow><bold>Slot C - STR/DEF Rein", "<light green><bold>Assist - Counter", "<light purple><bold>Special - Bonfire", "<gold>Refined: Warding"
+							set {_deadlord}'s tool to diamond sword of sharpness 5 named "<gold><bold>Binding Blade" with nbt "{bakedRefine:776,sacredTreasureID:1}" with lore "<light red><bold>Slot A - Earth Boost", "<light blue><bold>Slot B - Riposte", "<light yellow><bold>Slot C - STR/DEF Rein", "<light green><bold>Assist - Counter", "<light purple><bold>Special - Bonfire", "<gold>Refined: Warding"
 							set {_deadlord}'s helmet to diamond helmet of protection 4
 							set {_deadlord}'s chestplate to diamond chestplate of protection 4
 							set {_deadlord}'s leggings to diamond leggings of protection 4
@@ -1831,8 +1850,8 @@ on spawn of a monster:
 					#add a random integer from 1 to 10 to {_moblvl}
 					#
 					#Add a hidden level bonus that isn't displayed if players have difficulty higher than Normal
-					#Formula: [DifficultyAverage], round down to nearest whole number, subtract 1 and then multiply by 4.
-					set {_playerdiffmodifier} to ((floor({_playerdiffmodifier} / {_players})) - 1) * 4
+					#Formula: [DifficultyAverage], round down to nearest whole number, subtract 1 and then multiply by 5.
+					set {_playerdiffmodifier} to ((floor({_playerdiffmodifier} / {_players})) - 1) * 5
 					#Difficulty modifier increases the scaling of promoted mobs
 					#Get average promotion tier of all nearby players.
 					#Floor is used so that "Jagens" do not make the game more difficult for their party
@@ -1882,9 +1901,11 @@ on spawn of a monster:
 						set {_magic} to true
 					else if entity is illusioner:
 						set {_magic} to true
+					else if entity is slime:
+						set {_magic} to true
 					#JUST IN CASE the system is calcing abilities for mobs
-					set {t_abilities.%entity%::Traditional Weapons} to 100
-					set {t_abilities.%entity%::Magical Weapons} to 100
+					set {t_abilities.%entity%::Traditional Weapons} to 500
+					set {t_abilities.%entity%::Magical Weapons} to 500
 					#Mob lockpicking starts at 30
 					set {t_abilities.%entity%::Lockpicking} to a random integer from 30 to ({_moblvl} + 30)
 					if {_phys} is true:
@@ -1896,7 +1917,7 @@ on spawn of a monster:
 							set {t_str.%entity%} to 13
 							set {t_def.%entity%} to 8
 							set {t_spd.%entity%} to 8
-							set {t_mag.%entity%} to 0
+							set {t_mag.%entity%} to 2
 							set {t_res.%entity%} to 3
 							set {t_chr.%entity%} to 0
 							set {t_lck.%entity%} to 1
@@ -1922,7 +1943,7 @@ on spawn of a monster:
 							set {t_hp.%entity%} to 24
 							set {t_str.%entity%} to 8
 							set {t_def.%entity%} to 10
-							set {t_spd.%entity%} to 0
+							set {t_spd.%entity%} to 2
 							set {t_mag.%entity%} to 0
 							set {t_res.%entity%} to 8
 							set {t_chr.%entity%} to 6
@@ -1949,10 +1970,10 @@ on spawn of a monster:
 						else if {_archetype} is 3:
 							set {t_hp.%entity%} to 13
 							set {t_str.%entity%} to 15
-							set {t_def.%entity%} to 0
+							set {t_def.%entity%} to 2
 							set {t_spd.%entity%} to 11
 							set {t_mag.%entity%} to 1
-							set {t_res.%entity%} to 0
+							set {t_res.%entity%} to 2
 							set {t_chr.%entity%} to 2
 							set {t_lck.%entity%} to 14
 							loop ((floor({_moblvl} ^ 1)) + 4 + {_playerdiffmodifier}) times:
@@ -1983,7 +2004,7 @@ on spawn of a monster:
 							set {t_spd.%entity%} to 7
 							set {t_mag.%entity%} to 4
 							set {t_res.%entity%} to 6
-							set {t_chr.%entity%} to 11
+							set {t_chr.%entity%} to 8
 							set {t_lck.%entity%} to 10
 							loop ((floor({_moblvl} ^ 1)) + 4 + {_playerdiffmodifier}) times:
 								add 1 to {t_hp.%entity%}
@@ -2001,8 +2022,7 @@ on spawn of a monster:
 									add 1 to {t_mag.%entity%}
 								chance of 23%:
 									add 1 to {t_res.%entity%}
-								add 1 to {t_chr.%entity%}
-								chance of 58%:
+								chance of 65%:
 									add 1 to {t_chr.%entity%}
 								add 1 to {t_lck.%entity%}
 								chance of 18%:
@@ -2019,7 +2039,7 @@ on spawn of a monster:
 							set {t_mag.%entity%} to 13
 							set {t_res.%entity%} to 9
 							set {t_chr.%entity%} to 0
-							set {t_lck.%entity%} to 1
+							set {t_lck.%entity%} to 6
 							loop ((floor({_moblvl} ^ 1)) + 4 + {_playerdiffmodifier}) times:
 								chance of 65%:
 									add 1 to {t_hp.%entity%}
@@ -2041,8 +2061,8 @@ on spawn of a monster:
 						else if {_archetype} is 2:
 							set {t_hp.%entity%} to 24
 							set {t_str.%entity%} to 2
-							set {t_def.%entity%} to 0
-							set {t_spd.%entity%} to 0
+							set {t_def.%entity%} to 2
+							set {t_spd.%entity%} to 2
 							set {t_mag.%entity%} to 12
 							set {t_res.%entity%} to 13
 							set {t_chr.%entity%} to 6
@@ -2103,7 +2123,7 @@ on spawn of a monster:
 							set {t_spd.%entity%} to 8
 							set {t_mag.%entity%} to 8
 							set {t_res.%entity%} to 10
-							set {t_chr.%entity%} to 11
+							set {t_chr.%entity%} to 8
 							set {t_lck.%entity%} to 10
 							loop ((floor({_moblvl} ^ 1)) + 4 + {_playerdiffmodifier}) times:
 								add 1 to {t_hp.%entity%}
@@ -2121,8 +2141,7 @@ on spawn of a monster:
 									add 1 to {t_mag.%entity%}
 								chance of 23%:
 									add 1 to {t_res.%entity%}
-								add 1 to {t_chr.%entity%}
-								chance of 58%:
+								chance of 65%:
 									add 1 to {t_chr.%entity%}
 								add 1 to {t_lck.%entity%}
 								chance of 18%:
@@ -2193,7 +2212,7 @@ on spawn of a monster:
 						if {blockAdditionalAltMobSpawn} is not set:
 							set {blockAdditionalAltMobSpawn} to true
 							loop 1 times:
-								chance of 50%:
+								chance of 25%:
 									set {_rng} to a random integer from 0 to 1
 									if {_rng} is 1:
 										spawn 1 husk at the entity
@@ -2385,7 +2404,7 @@ on spawn of a monster:
 								spawn 1 enderman at the entity
 							chance of 10%:
 								spawn 1 witch at the entity						
-					if {t_lvl.%entity%} is more than or equal to 15:
+					if {t_lvl.%entity%} is more than or equal to 10:
 						chance of 20%:
 							#set the entity's maximum health to 500
 							chance of 1%:
@@ -2445,7 +2464,7 @@ on spawn of a monster:
 												add 1 to {t_mag.%entity%}
 											chance of 55%:
 												add 1 to {t_chr.%entity%}
-										set the entity's maximum health to ({t_lvl.%entity%} * 50)
+										set the entity's maximum health to ({t_lvl.%entity%} * 10)
 										heal the entity by 1000
 										set the entity's name to "<light red>%entity% Boss"
 										humanoidEquipmentHandler(entity,{t_lvl.%entity%} + 25,0)
@@ -2454,10 +2473,10 @@ on spawn of a monster:
 											set {_loc} to location of block at the entity
 											send formatted "<light red>Coordinates: %{_loc}%" to loop-player
 					if {_deadlord} is not set:
-						set {_mobSpecialChance} to ceil({t_lvl.%entity%} / 1.5)
+						set {_mobSpecialChance} to ceil({t_lvl.%entity%} / 1)
 						subtract 5 from {_mobSpecialChance}
-						if {_mobSpecialChance} is more than 15:
-							set {_mobSpecialChance} to 15
+						if {_mobSpecialChance} is more than 45:
+							set {_mobSpecialChance} to 45
 						if entity is zombie:
 							humanoidEquipmentHandler(entity,{t_lvl.%entity%},0)
 							if {_mobSpecialChance} is more than 1:
@@ -2543,8 +2562,81 @@ every 5 ticks:
 	
 #Ender Dragon buffs
 on spawn of ender dragon:
-	if entity's world is "adventure_the_end":
-		loop all players in radius 256 of the entity:
+	#if entity's world is "adventure_the_end":
+	loop all players in radius 256 of the entity:
+		if citizen id of loop-player is not set:
+			add {lvl.%loop-player%} to {_moblvl}
+			add (({promoted.%loop-player%} - 1) * 10) to {_moblvl}
+			add 1 to {_players}
+	set {_moblvl} to ({_moblvl} / {_players})
+	set {_max} to {_moblvl} + 28
+	set {_balancer} to {_moblvl}
+	set {_moblvl} to a random integer from 1 to {_max}
+	add floor({_balancer} / 2) to {_moblvl}
+	if {_moblvl} is not set:
+		set {_moblvl} to 1
+		set {_max} to 10
+	if {_moblvl} is more than {_max}:
+		set {_moblvl} to {_max}
+	if {_moblvl} is less than 1:
+		set {_moblvl} to 1
+	set {_moblvl} to ceil({_moblvl})
+	add a random integer from 1 to 10 to {_moblvl}
+	#Add a hidden level bonus that isn't displayed if players have difficulty higher than Normal
+	#Formula: [DifficultyAverage], round down to nearest whole number, subtract 1 and then multiply by 4.
+	set {_playerdiffmodifier} to ((floor({_playerdiffmodifier} / {_players})) - 1) * 4
+	#Difficulty modifier increases the scaling of promoted mobs
+	#Get average promotion tier of all nearby players.
+	#Floor is used so that "Jagens" do not make the game more difficult for their party
+	set {_playerPromotions} to floor({_playerPromotions} / {_players})
+	#Promotion tier 1 is unaffected
+	set {_playerdiffmodifier} to {_playerdiffmodifier} + ((({_playerPromotions} - 1) * {_playerdiffmodifier}) * 2)
+	set {t_hp.%entity%} to 60
+	set {t_str.%entity%} to 30
+	set {t_def.%entity%} to 30
+	set {t_spd.%entity%} to 30
+	set {t_mag.%entity%} to 30
+	set {t_res.%entity%} to 25
+	set {t_chr.%entity%} to 30
+	set {t_lck.%entity%} to 50
+	loop ({_moblvl} + 2 + {_playerdiffmodifier}) times:
+		add 2 to {t_hp.%entity%}
+		chance of 68%:
+			add 1 to {t_hp.%entity%}
+		add 2 to {t_str.%entity%}
+		chance of 23%:
+			add 1 to {t_str.%entity%}
+		add 2 to {t_def.%entity%}
+		chance of 28%:
+			add 1 to {t_def.%entity%}
+		add 2 to {t_spd.%entity%}
+		chance of 28%:
+			add 1 to {t_spd.%entity%}
+		add 2 to {t_mag.%entity%}
+		chance of 33%:
+			add 1 to {t_mag.%entity%}
+		add 2 to {t_res.%entity%}
+		chance of 23%:
+			add 1 to {t_res.%entity%}
+		add 4 to {t_chr.%entity%}
+		chance of 58%:
+			add 1 to {t_chr.%entity%}
+		add 4 to {t_lck.%entity%}
+		chance of 18%:
+			add 1 to {t_lck.%entity%}
+	set the entity's max health to ({t_hp.%entity%} / 2)
+	
+on damage:
+	if victim is ender dragon:
+		if {t_str.%victim%} is not set:
+			set {_scaleED} to the victim
+	else if attacker is ender dragon:
+		if {t_str.%attacker%} is not set:
+			set {_scaleED} to the attacker
+	if {_scaleED} is set:
+		cancel event
+		set damage to 0
+		loop all players in radius 256 of {_scaleED}:
 			if citizen id of loop-player is not set:
 				add {lvl.%loop-player%} to {_moblvl}
 				add (({promoted.%loop-player%} - 1) * 10) to {_moblvl}
@@ -2572,37 +2664,38 @@ on spawn of ender dragon:
 		set {_playerPromotions} to floor({_playerPromotions} / {_players})
 		#Promotion tier 1 is unaffected
 		set {_playerdiffmodifier} to {_playerdiffmodifier} + ((({_playerPromotions} - 1) * {_playerdiffmodifier}) * 2)
-		set {t_hp.%entity%} to 60
-		set {t_str.%entity%} to 30
-		set {t_def.%entity%} to 30
-		set {t_spd.%entity%} to 30
-		set {t_mag.%entity%} to 30
-		set {t_res.%entity%} to 25
-		set {t_chr.%entity%} to 30
-		set {t_lck.%entity%} to 50
+		set {t_hp.%{_scaleED}%} to 60
+		set {t_str.%{_scaleED}%} to 30
+		set {t_def.%{_scaleED}%} to 30
+		set {t_spd.%{_scaleED}%} to 30
+		set {t_mag.%{_scaleED}%} to 30
+		set {t_res.%{_scaleED}%} to 25
+		set {t_chr.%{_scaleED}%} to 30
+		set {t_lck.%{_scaleED}%} to 50
 		loop ({_moblvl} + 2 + {_playerdiffmodifier}) times:
-			add 2 to {t_hp.%entity%}
+			add 2 to {t_hp.%{_scaleED}%}
 			chance of 68%:
-				add 1 to {t_hp.%entity%}
-			add 2 to {t_str.%entity%}
+				add 1 to {t_hp.%{_scaleED}%}
+			add 2 to {t_str.%{_scaleED}%}
 			chance of 23%:
-				add 1 to {t_str.%entity%}
-			add 2 to {t_def.%entity%}
+				add 1 to {t_str.%{_scaleED}%}
+			add 2 to {t_def.%{_scaleED}%}
 			chance of 28%:
-				add 1 to {t_def.%entity%}
-			add 2 to {t_spd.%entity%}
+				add 1 to {t_def.%{_scaleED}%}
+			add 2 to {t_spd.%{_scaleED}%}
 			chance of 28%:
-				add 1 to {t_spd.%entity%}
-			add 2 to {t_mag.%entity%}
+				add 1 to {t_spd.%{_scaleED}%}
+			add 2 to {t_mag.%{_scaleED}%}
 			chance of 33%:
-				add 1 to {t_mag.%entity%}
-			add 2 to {t_res.%entity%}
+				add 1 to {t_mag.%{_scaleED}%}
+			add 2 to {t_res.%{_scaleED}%}
 			chance of 23%:
-				add 1 to {t_res.%entity%}
-			add 4 to {t_chr.%entity%}
+				add 1 to {t_res.%{_scaleED}%}
+			add 4 to {t_chr.%{_scaleED}%}
 			chance of 58%:
-				add 1 to {t_chr.%entity%}
-			add 4 to {t_lck.%entity%}
+				add 1 to {t_chr.%{_scaleED}%}
+			add 4 to {t_lck.%{_scaleED}%}
 			chance of 18%:
-				add 1 to {t_lck.%entity%}
-		set the entity's max health to ({t_hp.%entity%} / 2)
+				add 1 to {t_lck.%{_scaleED}%}
+		set the {_scaleED}'s max health to ({t_hp.%{_scaleED}%} / 2)
+		heal {_scaleED} by 10000

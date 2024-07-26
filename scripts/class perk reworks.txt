@@ -1,0 +1,188 @@
+<3 <3 <3 Charlatan:
+
+<3 Flask of Madness -> Essence Drain
+Unconditional Fear + Lethargy, if foe has
+slowness/weakness, steal the inverse effects
+and gain Regeneration 2 for 15 seconds
+
+<3 Divine Blessing:
++ Gives adaptive damage to melee weapons
+
+<3 Alchemical Mutation:
++ Stats can't drop
+
+<3 <3 <3 Cavalier:
+
+<3 Compress Mount + Deep Bond + Canto into one perk
+
+<3 Well-Trained -> Pass II
+If an enemy is within 7 blocks, grants Swiftness 3
+and deals damage = 2 * level of Swiftness active
+on the player
+
+<3 Crusader's Charge -> Override:
+Fill a charge gauge by killing foes. When the gauge
+is full, right-click to activate Override. While
+active, colliding with an opponent will deal 20 true
+damage (recoil) and fling them away.
+
+<3 Momentum (Tier 2):
+On kill, grants STR/SPD +3 for 10 seconds. The effect
+stacks, and will have the duration reset on each kill.
+
+<3 Crusader's Charge (Tier 2):
++ Now also gives SPD +6 for a full Spectrum +6 bonus.
+
+<3 <3 <3 Troubador:
+
+<3 Armsthrift:
+New Effect - While equipped, uses your highest Weapon Ability
+score for all weapon types. Weapons aligning with your highest
+Weapon Ability score gain a 20% damage bonus.
+
+<3 Master of All -> Arcane Blade
+Grants bonus damage = 20% of the offensive stat not being used
+to calculate damage for that combat.
+
+<3 Fast Healing:
++ Right-clicking in the air with a staff (no heal target)
+applies the staff's effects to yourself instead.
+
+<3 Re-Move -> Second Wind:
+Self-healing with a staff knocks back foes within 7 blocks,
+and applies slowness 3 for 3 seconds on those foes.
+
+<3 Gunslinger:
+
+<3 Glory Kill:
++ Gauntlets count as unarmed for this perk's effects
+
+<3 Utility Belt -> Riccochet:
+Shooting an enemy causes the bullet to riccochet, damaging
+the nearest mob within 2 blocks for 25% of damage dealt
+to the first enemy.
+
+<3 Belt Feed:
++ Removed 2x ammo penalty
++ Guns now no longer use ammo while equipped
+- Guns now use the Melee Combo meter. Each bullet shot adds to the
+combo meter, and when it is full, guns cannot be fired.
+
+<3 <3 <3 Cleric:
+
+<3 Sacred Balm merged into Live to Serve, now a tier 1 perk
+
+<3 Wings of Mercy moved to Live to Serve's position in the tree
+
+<3 Breath of Life:
++ AoE heal also applies to yourself
++ Foes cannot counter-attack.
+
+<3 Secret Training -> Holy Light:
+Attempting to heal a monster deals damage to it equal to the amount
+the staff would have healed.
+
+<3 Hidden Thorn (New Perk):
+After combat, the opponent suffers recoil damage = 25% of the cleric's RES.
+
+<3 Herbivore -> Disarm:
++ Inflicts Spectrum -8 on foe during combat, then inflicts Spectrum -8 on
+the foe after combat.
+
+<3 Mastery - Resurrection:
+While equipped, all players within 30 blocks (including the cleric) gain the
+[Resurrection] status effect.
+
+[Resurrection]: When Last Stand triggers, you immediately recover all missing
+HP and gain Resistance 3 for 15 seconds.
+
+<3 <3 <3 Strategist:
+
+<3 Near Save:
++ Radius increased to 30 blocks
+
+<3 Rally Up! -> Rally Spectrum
++ Grants Strength, Swiftness, Regeneration, and Resistance 3 to all allies
+within 30 blocks when right-clicking.
+
+<3 Joint-Drive Spectrum:
++ Radius increased to 30 blocks
+
+<3 Under This Banner:
++ Halves the effect of Leadership for foes within 30 blocks.
+
+<3 Dual Strike:
++ Removed HP Condition
++ Damage bonus increased to 20%
+
+<3 Inference -> Item Master:
+Grants a LCK% chance to cause defeated enemies to drop an extra consumable
+item (such as Bottled Blizzard or a War Horn).
+
+<3 Spectrum +4 -> Beacon of Hope:
+Strategist gains the ability to plant a beacon by dodge rolling. The beacon
+acts as a second Strategist with the player's stats, and all of the Strategist
+perks that can benefit allies (JDS, Under This Banner, Near Save, Dual Strike).
+
+<3 <3 <3 Mercenary:
+
+<3 Lord's Blood:
++ Stat bonuses increased to HP +15, STR/SPD/LCK/DEF/RES +6
+
+<3 Heavy Blade -> Breakthrough:
+If player initiates combat with STR >= foe's STR -5:
+Reduces damage dealt by 30%, and player makes a
+guaranteed follow-up attack.
+
+<3 Scendscale:
+- Recoil damage increased to 4 hearts, and occurs AFTER all
+in-combat healing effects (Sol, Aether, Mystic Boost, etc)
+
+<3 <3 <3 Poet:
+
+<3 Flashing Blade II -> Ballad:
+Dances become AoE and self-targeting, applies [Bonus Doubler] to danced allies
+for 20 seconds.
+
+<3 <3 <3 Mage:
+
+<3 Hexblade:
++ All weapon types use Magical Weapons ability
++ MAG +5 per-hit during combat
+
+<3 Lifetaker:
++ Health recovery buffed to 20%
+
+<3 Steadfast Casting:
++ Removed bonus loss on weapon change
+- Bonus is lost after 10 seconds, refill duration by getting another bonus
+
+<3 Ascended Magic (New Perk):
+Grants bonus effects based on the elements of the spells attached to the wand / tome:
+- Fire: Foe takes true damage (recoil) = 20% of their maximum HP
+- Ice: Inflicts SPD -10 on foe during combat
+- Thunder: +10% damage after doubles happen
+- Wind: If SPD > foe's SPD + 10, make a guaranteed follow-up attack.
+
+Edgelord
+
+Teleport, gain +2 MAG per block teleported, warp again while projectile is active to immediately warp
+
+Magic CD reduction based on distance (closer = better)
+
+Airblast, knocks player backwards and mobs away (mobs take 5 recoil)
+
+1.5x damage to airborne mobs, +5 MAG for each mob struck by airblast
+
+Obstruct II:
+Foes within 4 blocks suffer Slowness 4 and DEF/RES -6 during combat.
+
+Soul Eater:
+If an enemy is within 6 blocks, heal 1 HP and 0.5 hunger every 0.5 seconds
+
+Judgement Cut:
+Fill JC gauge by earning kills. Gauge fills faster based on MAG bonus the
+player had when the opponent died.
+
+
+

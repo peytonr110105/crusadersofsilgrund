@@ -66,6 +66,7 @@ command /spells [<number=0>]:
 command /clearspellcooldown:
 	trigger:
 		clear {spellCooldown.%player%}
+		clear {tomeCooldown.%player%}
 		send "<light blue>Reset spell cooldowns."
 			
 command /printallspells:
@@ -99,7 +100,7 @@ on inventory click:
 			send {_name} to the player
 			make player execute command "/setspell %{_name}%"
 	else if the name of the player's current inventory is "<light blue>Apply Spell":
-		if the name of the clicked item is "<yellow><bold>Magic Wand":
+		if the name of the clicked item contains "<yellow><bold>Magic Wand":
 			if slot 4 of the player's current inventory is not the clicked item:
 				cancel event
 				set slot 4 of the player's current inventory to the clicked item
@@ -128,7 +129,7 @@ on inventory click:
 		#else if the clicked item is not air:
 		#	cancel event
 on tool change:
-	if the name of the player's tool is "<yellow><bold>Magic Wand":
+	if the name of the player's tool contains "<yellow><bold>Magic Wand":
 		if {spells.%player%::Ember} is not 1:
 			play sound "entity.player.levelup" with volume 0.5 and pitch 0.5 at player for player
 			play 20 (smoke with speed 0) at the player
@@ -142,9 +143,9 @@ on tool change:
 on rightclick with book:
 	set {_checkClass} to checkClass(player)
 	if the nbt of player's tool contains "TomeType:":
-		if {spellcooldown.%player%} is not set:
+		if {tomeCooldown.%player%} is not set:
 			#Chained Magic environmental block
-			if getEntitySkillsInHand(player,"Chained Magic",0,4) is more than 0:
+			if getEntitySkillsInHand(player,"Unchained Magic",0,4) is 0:
 				set metadata value "SPELLOVERRIDES" of the last shot projectile to "CANCEL_ENV"
 			make the player shoot an arrow with speed 3
 			#if the 7th line of the lore of the player's tool contains "Dire Thunder":
@@ -181,7 +182,6 @@ on rightclick with book:
 				set {_dur} to the 11th line of the lore of the player's tool parsed as integer
 				subtract 1 from {_dur}
 				if {_dur} is less than 1:
-					delete the player's tool
 					send formatted "<light red>Your tome broke!"
 					set {_meta} to metadata value "TomeEff" of the last shot projectile
 					play sound "entity.armorstand.break" with volume 1 and pitch 1 at the player for the player
@@ -189,6 +189,7 @@ on rightclick with book:
 						give 1 book named "<light blue>Broken Tome" with lore "<white>An old, tattered tome sapped of magic.", "<white>The spell Dire Thunder used to be present." to the player
 					else:
 						give 1 book named "<light blue>Broken Tome" with lore "<white>The tattered remains of the %name of the player's tool% tome." to the player
+					delete the player's tool
 				else:
 					set the 11th line of the lore of the player's tool to "%{_dur}%"
 					if {_dur} is less than or equal to 10:
@@ -199,7 +200,7 @@ on rightclick with book:
 on rightclick with blaze rod:
 	#set {_checkClass} to checkClass(player)
 	set {_checkClass} to 1
-	if the name of the player's tool contains "<yellow><bold>Magic Wand":
+	if the name of the player's tool contains "Magic Wand":
 		if {_checkClass} is 1:
 			if {spellcooldown.%player%} is not set:
 				set {t_allowRocketJump.%player%} to true

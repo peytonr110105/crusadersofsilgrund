@@ -560,14 +560,14 @@ on inventory click:
 				else:
 					set {class.%player%} to "Master Knight"
 			if getBaseClass(player) is "Mercenary":
-				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 25
-				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 25
-				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 25
-				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 25
-				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 25
-				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 25
-				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 25
-				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 25
+				set {hpgrowth.%player%} to floor(({pts_HP.%player%} - 15) * 7.5) + 35
+				set {strgrowth.%player%} to floor(({pts_STR.%player%} - 5) * 7.5) + 25
+				set {defgrowth.%player%} to floor(({pts_DEF.%player%} - 5) * 7.5) + 25
+				set {chrgrowth.%player%} to floor(({pts_CHR.%player%} - 5) * 7.5) + 25
+				set {lckgrowth.%player%} to floor(({pts_LCK.%player%} - 5) * 7.5) + 25
+				set {spdgrowth.%player%} to floor(({pts_SPD.%player%} - 5) * 7.5) + 25
+				set {maggrowth.%player%} to floor(({pts_MAG.%player%} - 5) * 7.5) + 25
+				set {resgrowth.%player%} to floor(({pts_RES.%player%} - 5) * 7.5) + 25
 				add 13 to {hpcap.%player%}
 				add 12 to {strcap.%player%}
 				add 12 to {defcap.%player%}
@@ -585,39 +585,39 @@ on inventory click:
 				add 5 to {chr.%player%}
 				add 5 to {lck.%player%}
 			else if getBaseClass(player) is "Knight":
-				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 45
-				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 25
-				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 45
-				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 25
-				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 20
-				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 20
-				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 10
-				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 10
+				set {hpgrowth.%player%} to floor(({pts_HP.%player%} - 15) * 5) + 45
+				set {strgrowth.%player%} to floor(({pts_STR.%player%} - 5) * 5) + 25
+				set {defgrowth.%player%} to floor(({pts_DEF.%player%} - 5) * 5) + 45
+				set {chrgrowth.%player%} to floor(({pts_CHR.%player%} - 5) * 5) + 25
+				set {lckgrowth.%player%} to floor(({pts_LCK.%player%} - 5) * 5) + 20
+				set {spdgrowth.%player%} to floor(({pts_SPD.%player%} - 5) * 5) + 20
+				set {maggrowth.%player%} to floor(({pts_MAG.%player%} - 5) * 5) + 10
+				set {resgrowth.%player%} to floor(({pts_RES.%player%} - 5) * 5) + 10
 				add 16 to {hpcap.%player%}
 				add 14 to {strcap.%player%}
-				add 16 to {defcap.%player%}
+				add 13 to {defcap.%player%}
 				add 13 to {chrcap.%player%}
-				add 11 to {lckcap.%player%}
-				add 9 to {spdcap.%player%}
+				add 13 to {lckcap.%player%}
+				add 10 to {spdcap.%player%}
 				add 8 to {magcap.%player%}
 				add 9 to {rescap.%player%}
 				add 9 to {hp.%player%}
 				add 4 to {str.%player%}
-				add 9 to {def.%player%}
+				add 8 to {def.%player%}
 				add 6 to {chr.%player%}
 				add 5 to {lck.%player%}
-				add 3 to {spd.%player%}
+				add 4 to {spd.%player%}
 				add 2 to {mag.%player%}
 				add 3 to {res.%player%}
 			else if getBaseClass(player) is "Bladesman":
-				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 20
-				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 45
-				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 10
-				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 25
-				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 40
-				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 50
-				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 5
-				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 5
+				set {hpgrowth.%player%} to floor(({pts_HP.%player%} - 15) * 5) + 20
+				set {strgrowth.%player%} to floor(({pts_STR.%player%} - 5) * 5) + 45
+				set {defgrowth.%player%} to floor(({pts_DEF.%player%} - 5) * 5) + 10
+				set {chrgrowth.%player%} to floor(({pts_CHR.%player%} - 5) * 5) + 25
+				set {lckgrowth.%player%} to floor(({pts_LCK.%player%} - 5) * 5) + 40
+				set {spdgrowth.%player%} to floor(({pts_SPD.%player%} - 5) * 5) + 50
+				set {maggrowth.%player%} to floor(({pts_MAG.%player%} - 5) * 5) + 5
+				set {resgrowth.%player%} to floor(({pts_RES.%player%} - 5) * 5) + 5
 				add 10 to {hpcap.%player%}
 				add 18 to {strcap.%player%}
 				add 6 to {defcap.%player%}
@@ -635,14 +635,14 @@ on inventory click:
 				add 2 to {mag.%player%}
 				add 2 to {res.%player%}
 			else if getBaseClass(player) is "Fighter":
-				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 40
-				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 45
-				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 35
-				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 20
-				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 10
-				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 25
-				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 10
-				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 15
+				set {hpgrowth.%player%} to floor(({pts_HP.%player%} - 15) * 5) + 40
+				set {strgrowth.%player%} to floor(({pts_STR.%player%} - 5) * 5) + 45
+				set {defgrowth.%player%} to floor(({pts_DEF.%player%} - 5) * 5) + 25
+				set {chrgrowth.%player%} to floor(({pts_CHR.%player%} - 5) * 5) + 20
+				set {lckgrowth.%player%} to floor(({pts_LCK.%player%} - 5) * 5) + 20
+				set {spdgrowth.%player%} to floor(({pts_SPD.%player%} - 5) * 5) + 25
+				set {maggrowth.%player%} to floor(({pts_MAG.%player%} - 5) * 5) + 10
+				set {resgrowth.%player%} to floor(({pts_RES.%player%} - 5) * 5) + 15
 				add 15 to {hpcap.%player%}
 				add 16 to {strcap.%player%}
 				add 16 to {defcap.%player%}
@@ -660,14 +660,14 @@ on inventory click:
 				add 1 to {mag.%player%}
 				add 6 to {res.%player%}
 			else if getBaseClass(player) is "Archer":
-				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 20
-				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 30
-				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 35
-				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 25
-				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 25
-				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 25
-				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 15
-				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 20
+				set {hpgrowth.%player%} to floor(({pts_HP.%player%} - 15) * 5) + 20
+				set {strgrowth.%player%} to floor(({pts_STR.%player%} - 5) * 5) + 30
+				set {defgrowth.%player%} to floor(({pts_DEF.%player%} - 5) * 5) + 35
+				set {chrgrowth.%player%} to floor(({pts_CHR.%player%} - 5) * 5) + 25
+				set {lckgrowth.%player%} to floor(({pts_LCK.%player%} - 5) * 5) + 25
+				set {spdgrowth.%player%} to floor(({pts_SPD.%player%} - 5) * 5) + 25
+				set {maggrowth.%player%} to floor(({pts_MAG.%player%} - 5) * 5) + 15
+				set {resgrowth.%player%} to floor(({pts_RES.%player%} - 5) * 5) + 20
 				add 14 to {hpcap.%player%}
 				add 15 to {strcap.%player%}
 				add 14 to {defcap.%player%}
@@ -685,39 +685,39 @@ on inventory click:
 				add 3 to {mag.%player%}
 				add 3 to {res.%player%}	
 			else if getBaseClass(player) is "Cavalier":
-				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 20
-				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 35
-				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 15
-				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 25
-				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 30
-				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 35
-				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 10
-				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 30
+				set {hpgrowth.%player%} to floor(({pts_HP.%player%} - 15) * 5) + 20
+				set {strgrowth.%player%} to floor(({pts_STR.%player%} - 5) * 5) + 35
+				set {defgrowth.%player%} to floor(({pts_DEF.%player%} - 5) * 5) + 35
+				set {chrgrowth.%player%} to floor(({pts_CHR.%player%} - 5) * 5) + 20
+				set {lckgrowth.%player%} to floor(({pts_LCK.%player%} - 5) * 5) + 30
+				set {spdgrowth.%player%} to floor(({pts_SPD.%player%} - 5) * 5) + 30
+				set {maggrowth.%player%} to floor(({pts_MAG.%player%} - 5) * 5) + 5
+				set {resgrowth.%player%} to floor(({pts_RES.%player%} - 5) * 5) + 25
 				add 11 to {hpcap.%player%}
 				add 14 to {strcap.%player%}
-				add 10 to {defcap.%player%}
-				add 14 to {chrcap.%player%}
+				add 14 to {defcap.%player%}
+				add 12 to {chrcap.%player%}
 				add 14 to {lckcap.%player%}
 				add 14 to {spdcap.%player%}
-				add 6 to {magcap.%player%}
-				add 14 to {rescap.%player%}
+				add 2 to {magcap.%player%}
+				add 12 to {rescap.%player%}
 				add 4 to {hp.%player%}
-				add 6 to {str.%player%}
-				add 3 to {def.%player%}
-				add 6 to {chr.%player%}
+				add 8 to {str.%player%}
+				add 5 to {def.%player%}
+				add 5 to {chr.%player%}
 				add 7 to {lck.%player%}
-				add 8 to {spd.%player%}
-				add 2 to {mag.%player%}
+				add 6 to {spd.%player%}
+				add 1 to {mag.%player%}
 				add 4 to {res.%player%}
 			else if getBaseClass(player) is "Survivor":
-				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 60
-				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 20
-				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 40
-				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 10
-				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 10
-				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 20
-				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 35
-				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 25
+				set {hpgrowth.%player%} to floor(({pts_HP.%player%} - 15) * 5) + 60
+				set {strgrowth.%player%} to floor(({pts_STR.%player%} - 5) * 5) + 20
+				set {defgrowth.%player%} to floor(({pts_DEF.%player%} - 5) * 5) + 40
+				set {chrgrowth.%player%} to floor(({pts_CHR.%player%} - 5) * 5) + 10
+				set {lckgrowth.%player%} to floor(({pts_LCK.%player%} - 5) * 5) + 10
+				set {spdgrowth.%player%} to floor(({pts_SPD.%player%} - 5) * 5) + 20
+				set {maggrowth.%player%} to floor(({pts_MAG.%player%} - 5) * 5) + 35
+				set {resgrowth.%player%} to floor(({pts_RES.%player%} - 5) * 5) + 25
 				add 20 to {hpcap.%player%}
 				add 13 to {strcap.%player%}
 				add 13 to {defcap.%player%}
@@ -735,40 +735,40 @@ on inventory click:
 				add 6 to {mag.%player%}
 				add 7 to {res.%player%}
 			else if getBaseClass(player) is "Gunslinger":
-				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 20
-				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 35
-				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 20
-				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 30
-				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 30
-				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 35
-				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 10
-				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 20
+				set {hpgrowth.%player%} to floor(({pts_HP.%player%} - 15) * 5) + 20
+				set {strgrowth.%player%} to floor(({pts_STR.%player%} - 5) * 5) + 45
+				set {defgrowth.%player%} to floor(({pts_DEF.%player%} - 5) * 5) + 10
+				set {chrgrowth.%player%} to floor(({pts_CHR.%player%} - 5) * 5) + 35
+				set {lckgrowth.%player%} to floor(({pts_LCK.%player%} - 5) * 5) + 35
+				set {spdgrowth.%player%} to floor(({pts_SPD.%player%} - 5) * 5) + 45
+				set {maggrowth.%player%} to floor(({pts_MAG.%player%} - 5) * 5) + 5
+				set {resgrowth.%player%} to floor(({pts_RES.%player%} - 5) * 5) + 5
 				add 12 to {hpcap.%player%}
-				add 14 to {strcap.%player%}
+				add 18 to {strcap.%player%}
 				add 11 to {defcap.%player%}
 				add 14 to {chrcap.%player%}
 				add 15 to {lckcap.%player%}
-				add 14 to {spdcap.%player%}
+				add 15 to {spdcap.%player%}
 				add 6 to {magcap.%player%}
-				add 11 to {rescap.%player%}
+				add 6 to {rescap.%player%}
 				add 4 to {hp.%player%}
-				add 7 to {str.%player%}
+				add 10 to {str.%player%}
 				add 3 to {def.%player%}
 				add 8 to {chr.%player%}
 				add 7 to {lck.%player%}
 				add 7 to {spd.%player%}
 				add 1 to {mag.%player%}
-				add 6 to {res.%player%}
+				add 3 to {res.%player%}
 			else if getBaseClass(player) is "Devil Hunter":
 				set {combosenabled.%player%} to true
-				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 15
-				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 30
-				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 15
-				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 30
-				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 35
-				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 30
-				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 30
-				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 15
+				set {hpgrowth.%player%} to floor(({pts_HP.%player%} - 15) * 5) + 20
+				set {strgrowth.%player%} to floor(({pts_STR.%player%} - 5) * 5) + 30
+				set {defgrowth.%player%} to floor(({pts_DEF.%player%} - 5) * 5) + 15
+				set {chrgrowth.%player%} to floor(({pts_CHR.%player%} - 5) * 5) + 30
+				set {lckgrowth.%player%} to floor(({pts_LCK.%player%} - 5) * 5) + 35
+				set {spdgrowth.%player%} to floor(({pts_SPD.%player%} - 5) * 5) + 30
+				set {maggrowth.%player%} to floor(({pts_MAG.%player%} - 5) * 5) + 30
+				set {resgrowth.%player%} to floor(({pts_RES.%player%} - 5) * 5) + 15
 				add 8 to {hpcap.%player%}
 				add 14 to {strcap.%player%}
 				add 8 to {defcap.%player%}
@@ -786,14 +786,14 @@ on inventory click:
 				add 6 to {mag.%player%}
 				add 2 to {res.%player%}
 			else if getBaseClass(player) is "Strategist":
-				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 20
-				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 30
-				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 25
-				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 30
-				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 20
-				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 20
-				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 35
-				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 20
+				set {hpgrowth.%player%} to floor(({pts_HP.%player%} - 15) * 5) + 25
+				set {strgrowth.%player%} to floor(({pts_STR.%player%} - 5) * 5) + 35
+				set {defgrowth.%player%} to floor(({pts_DEF.%player%} - 5) * 5) + 25
+				set {chrgrowth.%player%} to floor(({pts_CHR.%player%} - 5) * 5) + 30
+				set {lckgrowth.%player%} to floor(({pts_LCK.%player%} - 5) * 5) + 20
+				set {spdgrowth.%player%} to floor(({pts_SPD.%player%} - 5) * 5) + 20
+				set {maggrowth.%player%} to floor(({pts_MAG.%player%} - 5) * 5) + 35
+				set {resgrowth.%player%} to floor(({pts_RES.%player%} - 5) * 5) + 20
 				add 11 to {hpcap.%player%}
 				add 13 to {strcap.%player%}
 				add 14 to {defcap.%player%}
@@ -811,14 +811,14 @@ on inventory click:
 				add 6 to {mag.%player%}
 				add 4 to {res.%player%}
 			else if getBaseClass(player) is "Mage":
-				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 20
-				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 15
-				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 15
-				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 25
-				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 30
-				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 25
-				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 35
-				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 35
+				set {hpgrowth.%player%} to floor(({pts_HP.%player%} - 15) * 5) + 20
+				set {strgrowth.%player%} to floor(({pts_STR.%player%} - 5) * 5) + 15
+				set {defgrowth.%player%} to floor(({pts_DEF.%player%} - 5) * 5) + 15
+				set {chrgrowth.%player%} to floor(({pts_CHR.%player%} - 5) * 5) + 25
+				set {lckgrowth.%player%} to floor(({pts_LCK.%player%} - 5) * 5) + 30
+				set {spdgrowth.%player%} to floor(({pts_SPD.%player%} - 5) * 5) + 25
+				set {maggrowth.%player%} to floor(({pts_MAG.%player%} - 5) * 5) + 35
+				set {resgrowth.%player%} to floor(({pts_RES.%player%} - 5) * 5) + 35
 				add 10 to {hpcap.%player%}
 				add 8 to {strcap.%player%}
 				add 10 to {defcap.%player%}
@@ -836,16 +836,16 @@ on inventory click:
 				add 10 to {mag.%player%}
 				add 6 to {res.%player%}
 			else if getBaseClass(player) is "Trickster":
-				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 20
-				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 20
-				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 20
-				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 45
-				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 40
-				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 35
-				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 10
-				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 10
+				set {hpgrowth.%player%} to floor(({pts_HP.%player%} - 15) * 5) + 20
+				set {strgrowth.%player%} to floor(({pts_STR.%player%} - 5) * 5) + 20
+				set {defgrowth.%player%} to floor(({pts_DEF.%player%} - 5) * 5) + 20
+				set {chrgrowth.%player%} to floor(({pts_CHR.%player%} - 5) * 5) + 55
+				set {lckgrowth.%player%} to floor(({pts_LCK.%player%} - 5) * 5) + 60
+				set {spdgrowth.%player%} to floor(({pts_SPD.%player%} - 5) * 5) + 45
+				set {maggrowth.%player%} to floor(({pts_MAG.%player%} - 5) * 5) + 10
+				set {resgrowth.%player%} to floor(({pts_RES.%player%} - 5) * 5) + 10
 				add 13 to {hpcap.%player%}
-				add 10 to {strcap.%player%}
+				add 12 to {strcap.%player%}
 				add 9 to {defcap.%player%}
 				add 18 to {chrcap.%player%}
 				add 15 to {lckcap.%player%}
@@ -853,7 +853,7 @@ on inventory click:
 				add 8 to {magcap.%player%}
 				add 9 to {rescap.%player%}
 				add 4 to {hp.%player%}
-				add 3 to {str.%player%}
+				add 5 to {str.%player%}
 				add 3 to {def.%player%}
 				add 11 to {chr.%player%}
 				add 7 to {lck.%player%}
@@ -861,91 +861,91 @@ on inventory click:
 				add 2 to {mag.%player%}
 				add 3 to {res.%player%}
 			else if getBaseClass(player) is "Summoner":
-				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 35
-				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 10
-				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 10
-				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 20
-				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 30
-				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 35
-				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 40
-				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 20
-				add 18 to {hpcap.%player%}
+				set {hpgrowth.%player%} to floor(({pts_HP.%player%} - 15) * 5) + 45
+				set {strgrowth.%player%} to floor(({pts_STR.%player%} - 5) * 5) + 10
+				set {defgrowth.%player%} to floor(({pts_DEF.%player%} - 5) * 5) + 10
+				set {chrgrowth.%player%} to floor(({pts_CHR.%player%} - 5) * 5) + 10
+				set {lckgrowth.%player%} to floor(({pts_LCK.%player%} - 5) * 5) + 30
+				set {spdgrowth.%player%} to floor(({pts_SPD.%player%} - 5) * 5) + 35
+				set {maggrowth.%player%} to floor(({pts_MAG.%player%} - 5) * 5) + 40
+				set {resgrowth.%player%} to floor(({pts_RES.%player%} - 5) * 5) + 20
+				add 22 to {hpcap.%player%}
 				add 6 to {strcap.%player%}
 				add 6 to {defcap.%player%}
-				add 10 to {chrcap.%player%}
+				add 6 to {chrcap.%player%}
 				add 12 to {lckcap.%player%}
 				add 16 to {spdcap.%player%}
 				add 17 to {magcap.%player%}
 				add 12 to {rescap.%player%}
-				add 7 to {hp.%player%}
+				add 9 to {hp.%player%}
 				add 2 to {str.%player%}
 				add 2 to {def.%player%}
-				add 4 to {chr.%player%}
+				add 2 to {chr.%player%}
 				add 5 to {lck.%player%}
 				add 7 to {spd.%player%}
 				add 9 to {mag.%player%}
 				add 4 to {res.%player%}
 			else if getBaseClass(player) is "Cleric":
-				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 25
-				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 5
-				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 10
-				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 25
-				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 30
-				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 10
-				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 45
-				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 50
+				set {hpgrowth.%player%} to floor(({pts_HP.%player%} - 15) * 5) + 25
+				set {strgrowth.%player%} to floor(({pts_STR.%player%} - 5) * 5) + 5
+				set {defgrowth.%player%} to floor(({pts_DEF.%player%} - 5) * 5) + 10
+				set {chrgrowth.%player%} to floor(({pts_CHR.%player%} - 5) * 5) + 25
+				set {lckgrowth.%player%} to floor(({pts_LCK.%player%} - 5) * 5) + 40
+				set {spdgrowth.%player%} to floor(({pts_SPD.%player%} - 5) * 5) + 20
+				set {maggrowth.%player%} to floor(({pts_MAG.%player%} - 5) * 5) + 45
+				set {resgrowth.%player%} to floor(({pts_RES.%player%} - 5) * 5) + 50
 				add 15 to {hpcap.%player%}
 				add 6 to {strcap.%player%}
 				add 10 to {defcap.%player%}
-				add 12 to {chrcap.%player%}
+				add 8 to {chrcap.%player%}
 				add 15 to {lckcap.%player%}
 				add 9 to {spdcap.%player%}
 				add 12 to {magcap.%player%}
-				add 18 to {rescap.%player%}
-				add 6 to {hp.%player%}
+				add 22 to {rescap.%player%}
+				add 5 to {hp.%player%}
 				add 2 to {str.%player%}
 				add 3 to {def.%player%}
-				add 5 to {chr.%player%}
-				add 7 to {lck.%player%}
+				add 3 to {chr.%player%}
+				add 8 to {lck.%player%}
 				add 3 to {spd.%player%}
 				add 7 to {mag.%player%}
-				add 7 to {res.%player%}
+				add 9 to {res.%player%}
 			#ARMORMAGE
 			else if getBaseClass(player) is "Keeper":
-				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 25
-				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 10
-				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 35
-				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 10
-				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 25
-				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 20
-				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 40
-				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 35
-				add 12 to {hpcap.%player%}
-				add 8 to {strcap.%player%}
-				add 16 to {defcap.%player%}
-				add 11 to {chrcap.%player%}
+				set {hpgrowth.%player%} to floor(({pts_HP.%player%} - 15) * 5) + 25
+				set {strgrowth.%player%} to floor(({pts_STR.%player%} - 5) * 5) + 10
+				set {defgrowth.%player%} to floor(({pts_DEF.%player%} - 5) * 5) + 35
+				set {chrgrowth.%player%} to floor(({pts_CHR.%player%} - 5) * 5) + 10
+				set {lckgrowth.%player%} to floor(({pts_LCK.%player%} - 5) * 5) + 25
+				set {spdgrowth.%player%} to floor(({pts_SPD.%player%} - 5) * 5) + 20
+				set {maggrowth.%player%} to floor(({pts_MAG.%player%} - 5) * 5) + 40
+				set {resgrowth.%player%} to floor(({pts_RES.%player%} - 5) * 5) + 35
+				add 15 to {hpcap.%player%}
+				add 12 to {strcap.%player%}
+				add 13 to {defcap.%player%}
+				add 8 to {chrcap.%player%}
 				add 11 to {lckcap.%player%}
-				add 9 to {spdcap.%player%}
-				add 16 to {magcap.%player%}
+				add 11 to {spdcap.%player%}
+				add 12 to {magcap.%player%}
 				add 13 to {rescap.%player%}
 				add 8 to {hp.%player%}
-				add 2 to {str.%player%}
-				add 7 to {def.%player%}
-				add 3 to {chr.%player%}
+				add 3 to {str.%player%}
+				add 6 to {def.%player%}
+				add 4 to {chr.%player%}
 				add 5 to {lck.%player%}
-				add 3 to {spd.%player%}
-				add 6 to {mag.%player%}
-				add 7 to {res.%player%}
+				add 4 to {spd.%player%}
+				add 5 to {mag.%player%}
+				add 5 to {res.%player%}
 			#CHEMIST
 			else if getBaseClass(player) is "Charlatan":
-				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 30
-				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 15
-				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 20
-				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 20
-				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 20
-				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 25
-				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 35
-				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 35
+				set {hpgrowth.%player%} to floor(({pts_HP.%player%} - 15) * 5) + 45
+				set {strgrowth.%player%} to floor(({pts_STR.%player%} - 5) * 5) + 15
+				set {defgrowth.%player%} to floor(({pts_DEF.%player%} - 5) * 5) + 20
+				set {chrgrowth.%player%} to floor(({pts_CHR.%player%} - 5) * 5) + 20
+				set {lckgrowth.%player%} to floor(({pts_LCK.%player%} - 5) * 5) + 20
+				set {spdgrowth.%player%} to floor(({pts_SPD.%player%} - 5) * 5) + 25
+				set {maggrowth.%player%} to floor(({pts_MAG.%player%} - 5) * 5) + 35
+				set {resgrowth.%player%} to floor(({pts_RES.%player%} - 5) * 5) + 35
 				add 12 to {hpcap.%player%}
 				add 10 to {strcap.%player%}
 				add 13 to {defcap.%player%}
@@ -964,14 +964,14 @@ on inventory click:
 				add 8 to {res.%player%}
 			#BARD
 			else if getBaseClass(player) is "Poet":
-				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 15
-				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 10
-				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 20
-				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 40
-				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 40
-				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 40
-				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 20
-				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 20
+				set {hpgrowth.%player%} to floor(({pts_HP.%player%} - 15) * 5) + 15
+				set {strgrowth.%player%} to floor(({pts_STR.%player%} - 5) * 5) + 20
+				set {defgrowth.%player%} to floor(({pts_DEF.%player%} - 5) * 5) + 20
+				set {chrgrowth.%player%} to floor(({pts_CHR.%player%} - 5) * 5) + 40
+				set {lckgrowth.%player%} to floor(({pts_LCK.%player%} - 5) * 5) + 30
+				set {spdgrowth.%player%} to floor(({pts_SPD.%player%} - 5) * 5) + 40
+				set {maggrowth.%player%} to floor(({pts_MAG.%player%} - 5) * 5) + 25
+				set {resgrowth.%player%} to floor(({pts_RES.%player%} - 5) * 5) + 20
 				add 10 to {hpcap.%player%}
 				add 10 to {strcap.%player%}
 				add 9 to {defcap.%player%}
@@ -980,7 +980,7 @@ on inventory click:
 				add 15 to {spdcap.%player%}
 				add 13 to {magcap.%player%}
 				add 9 to {rescap.%player%}
-				add 3 to {str.%player%}
+				add 4 to {str.%player%}
 				add 2 to {def.%player%}
 				add 7 to {spd.%player%}
 				add 6 to {mag.%player%}
@@ -990,14 +990,14 @@ on inventory click:
 				add 7 to {lck.%player%}
 			#ASSASSIN
 			else if getBaseClass(player) is "Outlaw":
-				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 20
-				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 40
-				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 15
-				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 15
-				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 45
-				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 35
-				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 10
-				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 15
+				set {hpgrowth.%player%} to floor(({pts_HP.%player%} - 15) * 5) + 20
+				set {strgrowth.%player%} to floor(({pts_STR.%player%} - 5) * 5) + 40
+				set {defgrowth.%player%} to floor(({pts_DEF.%player%} - 5) * 5) + 15
+				set {chrgrowth.%player%} to floor(({pts_CHR.%player%} - 5) * 5) + 15
+				set {lckgrowth.%player%} to floor(({pts_LCK.%player%} - 5) * 5) + 45
+				set {spdgrowth.%player%} to floor(({pts_SPD.%player%} - 5) * 5) + 35
+				set {maggrowth.%player%} to floor(({pts_MAG.%player%} - 5) * 5) + 10
+				set {resgrowth.%player%} to floor(({pts_RES.%player%} - 5) * 5) + 15
 				add 16 to {hpcap.%player%}
 				add 14 to {strcap.%player%}
 				add 9 to {defcap.%player%}
@@ -1016,14 +1016,14 @@ on inventory click:
 				add 3 to {res.%player%}
 			#DARKMAGE
 			else if getBaseClass(player) is "Conjurer":
-				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 45
-				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 20
-				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 20
-				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 5
-				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 20
-				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 15
-				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 45
-				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 30
+				set {hpgrowth.%player%} to floor(({pts_HP.%player%} - 15) * 5) + 45
+				set {strgrowth.%player%} to floor(({pts_STR.%player%} - 5) * 5) + 20
+				set {defgrowth.%player%} to floor(({pts_DEF.%player%} - 5) * 5) + 20
+				set {chrgrowth.%player%} to floor(({pts_CHR.%player%} - 5) * 5) + 5
+				set {lckgrowth.%player%} to floor(({pts_LCK.%player%} - 5) * 5) + 20
+				set {spdgrowth.%player%} to floor(({pts_SPD.%player%} - 5) * 5) + 15
+				set {maggrowth.%player%} to floor(({pts_MAG.%player%} - 5) * 5) + 45
+				set {resgrowth.%player%} to floor(({pts_RES.%player%} - 5) * 5) + 30
 				add 18 to {hpcap.%player%}
 				add 9 to {strcap.%player%}
 				add 11 to {defcap.%player%}
@@ -1042,14 +1042,14 @@ on inventory click:
 				add 6 to {res.%player%}
 			#TROUBADOR
 			else if getBaseClass(player) is "Troubador":
-				set {hpgrowth.%player%} to floor({pts_HP.%player%}) + 20
-				set {strgrowth.%player%} to floor({pts_STR.%player%}) + 20
-				set {defgrowth.%player%} to floor({pts_DEF.%player%}) + 15
-				set {chrgrowth.%player%} to floor({pts_CHR.%player%}) + 20
-				set {lckgrowth.%player%} to floor({pts_LCK.%player%}) + 45
-				set {spdgrowth.%player%} to floor({pts_SPD.%player%}) + 40
-				set {maggrowth.%player%} to floor({pts_MAG.%player%}) + 25
-				set {resgrowth.%player%} to floor({pts_RES.%player%}) + 15
+				set {hpgrowth.%player%} to floor(({pts_HP.%player%} - 15) * 5) + 20
+				set {strgrowth.%player%} to floor(({pts_STR.%player%} - 5) * 5) + 20
+				set {defgrowth.%player%} to floor(({pts_DEF.%player%} - 5) * 5) + 15
+				set {chrgrowth.%player%} to floor(({pts_CHR.%player%} - 5) * 5) + 20
+				set {lckgrowth.%player%} to floor(({pts_LCK.%player%} - 5) * 5) + 45
+				set {spdgrowth.%player%} to floor(({pts_SPD.%player%} - 5) * 5) + 40
+				set {maggrowth.%player%} to floor(({pts_MAG.%player%} - 5) * 5) + 25
+				set {resgrowth.%player%} to floor(({pts_RES.%player%} - 5) * 5) + 15
 				add 11 to {hpcap.%player%}
 				add 11 to {strcap.%player%}
 				add 9 to {defcap.%player%}
@@ -1165,6 +1165,7 @@ on inventory click:
 				add 20 to {defgrowth.%player%}
 				add 10 to {resgrowth.%player%}
 				add 10 to {lckgrowth.%player%}
+			#Veteran / Trainee growth mods
 			if {traits.%player%::Veteran} is true:
 				subtract 30 from {hpgrowth.%player%}
 				subtract 30 from {strgrowth.%player%}
@@ -1183,15 +1184,198 @@ on inventory click:
 				add 30 to {spdgrowth.%player%}
 				add 30 to {lckgrowth.%player%}
 				add 30 to {chrgrowth.%player%}
+			#Patch dump growths going below 0
+			if {strgrowth.%player%} is less than 10:
+				set {strgrowth.%player%} to 10
+			else if {defgrowth.%player%} is less than 10:
+				set {defgrowth.%player%} to 10
+			else if {chrgrowth.%player%} is less than 10:
+				set {chrgrowth.%player%} to 10
+			else if {lckgrowth.%player%} is less than 10:
+				set {lckgrowth.%player%} to 10
+			else if {spdgrowth.%player%} is less than 10:
+				set {spdgrowth.%player%} to 10
+			else if {maggrowth.%player%} is less than 10:
+				set {maggrowth.%player%} to 10
+			else if {resgrowth.%player%} is less than 10:
+				set {resgrowth.%player%} to 10
+			#Small bump to growth rates
+			add 20 to {hpgrowth.%player%}
+			add 10 to {strgrowth.%player%}
+			add 10 to {defgrowth.%player%}
+			add 15 to {chrgrowth.%player%}
+			add 10 to {lckgrowth.%player%}
+			add 10 to {spdgrowth.%player%}
+			add 10 to {maggrowth.%player%}
+			add 10 to {resgrowth.%player%}
+			#Holy Blood bonuses
+			#1 = Major Holy Blood | 2 = Minor Holy Blood (bonuses halved)
+			#
+			#Selena
+			if {holyBlood.%player%::Selena} is more than 0:
+				add (4 / {holyBlood.%player%::Selena}) to {hp.%player%}
+				add (8 / {holyBlood.%player%::Selena}) to {hpcap.%player%}
+				add (2 / {holyBlood.%player%::Selena}) to {str.%player%}
+				add (4 / {holyBlood.%player%::Selena}) to {strcap.%player%}
+				add (2 / {holyBlood.%player%::Selena}) to {lck.%player%}
+				add (4 / {holyBlood.%player%::Selena}) to {lckcap.%player%}
+				add (2 / {holyBlood.%player%::Selena}) to {chr.%player%}
+				add (4 / {holyBlood.%player%::Selena}) to {chrcap.%player%}
+				add (40 / {holyBlood.%player%::Selena}) to {hpgrowth.%player%}
+				add (20 / {holyBlood.%player%::Selena}) to {strgrowth.%player%}
+				add (20 / {holyBlood.%player%::Selena}) to {lckgrowth.%player%}
+				add (20 / {holyBlood.%player%::Selena}) to {chrgrowth.%player%}
+			#Edainn
+			if {holyBlood.%player%::Edainn} is more than 0:
+				add (4 / {holyBlood.%player%::Edainn}) to {hp.%player%}
+				add (8 / {holyBlood.%player%::Edainn}) to {hpcap.%player%}
+				add (4 / {holyBlood.%player%::Edainn}) to {lck.%player%}
+				add (8 / {holyBlood.%player%::Edainn}) to {lckcap.%player%}
+				add (2 / {holyBlood.%player%::Edainn}) to {spd.%player%}
+				add (4 / {holyBlood.%player%::Edainn}) to {spdcap.%player%}
+				add (40 / {holyBlood.%player%::Edainn}) to {hpgrowth.%player%}
+				add (40 / {holyBlood.%player%::Edainn}) to {lckgrowth.%player%}
+				add (20 / {holyBlood.%player%::Edainn}) to {spdgrowth.%player%}
+			#Tresvian
+			if {holyBlood.%player%::Tresvian} is more than 0:
+				add (6 / {holyBlood.%player%::Tresvian}) to {hp.%player%}
+				add (12 / {holyBlood.%player%::Tresvian}) to {hpcap.%player%}
+				add (2 / {holyBlood.%player%::Tresvian}) to {spd.%player%}
+				add (4 / {holyBlood.%player%::Tresvian}) to {spdcap.%player%}
+				add (2 / {holyBlood.%player%::Tresvian}) to {def.%player%}
+				add (4 / {holyBlood.%player%::Tresvian}) to {defcap.%player%}		
+				add (40 / {holyBlood.%player%::Tresvian}) to {hpgrowth.%player%}
+				add (30 / {holyBlood.%player%::Tresvian}) to {spdgrowth.%player%}
+				add (30 / {holyBlood.%player%::Tresvian}) to {defgrowth.%player%}
+			#Rexas
+			if {holyBlood.%player%::Rexas} is more than 0:
+				add (6 / {holyBlood.%player%::Rexas}) to {spd.%player%}
+				add (12 / {holyBlood.%player%::Rexas}) to {spdcap.%player%}
+				add (2 / {holyBlood.%player%::Rexas}) to {lck.%player%}
+				add (4 / {holyBlood.%player%::Rexas}) to {lckcap.%player%}
+				add (2 / {holyBlood.%player%::Rexas}) to {str.%player%}
+				add (4 / {holyBlood.%player%::Rexas}) to {strcap.%player%}	
+				add (40 / {holyBlood.%player%::Rexas}) to {spdgrowth.%player%}
+				add (30 / {holyBlood.%player%::Rexas}) to {lckgrowth.%player%}
+				add (30 / {holyBlood.%player%::Rexas}) to {strgrowth.%player%}
+			#Valkyria
+			if {holyBlood.%player%::Valkyria} is more than 0:
+				add (4 / {holyBlood.%player%::Valkyria}) to {res.%player%}
+				add (8 / {holyBlood.%player%::Valkyria}) to {rescap.%player%}
+				add (2 / {holyBlood.%player%::Valkyria}) to {hp.%player%}
+				add (4 / {holyBlood.%player%::Valkyria}) to {hpcap.%player%}
+				add (2 / {holyBlood.%player%::Valkyria}) to {mag.%player%}
+				add (4 / {holyBlood.%player%::Valkyria}) to {magcap.%player%}
+				add (2 / {holyBlood.%player%::Valkyria}) to {lck.%player%}
+				add (4 / {holyBlood.%player%::Valkyria}) to {lckcap.%player%}
+				add (20 / {holyBlood.%player%::Valkyria}) to {hpgrowth.%player%}
+				add (20 / {holyBlood.%player%::Valkyria}) to {maggrowth.%player%}
+				add (40 / {holyBlood.%player%::Valkyria}) to {resgrowth.%player%}
+				add (20 / {holyBlood.%player%::Valkyria}) to {lckgrowth.%player%}
+			#Aquillo
+			if {holyBlood.%player%::Aquillo} is more than 0:
+				add (8 / {holyBlood.%player%::Aquillo}) to {lck.%player%}
+				add (16 / {holyBlood.%player%::Aquillo}) to {lckcap.%player%}
+				add (2 / {holyBlood.%player%::Aquillo}) to {hp.%player%}
+				add (4 / {holyBlood.%player%::Aquillo}) to {hpcap.%player%}
+				add (2 / {holyBlood.%player%::Aquillo}) to {mag.%player%}
+				add (4 / {holyBlood.%player%::Aquillo}) to {magcap.%player%}		
+				add (20 / {holyBlood.%player%::Aquillo}) to {hpgrowth.%player%}
+				add (60 / {holyBlood.%player%::Aquillo}) to {lckgrowth.%player%}
+				add (20 / {holyBlood.%player%::Aquillo}) to {maggrowth.%player%}
+			#Delphi
+			if {holyBlood.%player%::Delphi} is more than 0:
+				add (8 / {holyBlood.%player%::Delphi}) to {mag.%player%}
+				add (16 / {holyBlood.%player%::Delphi}) to {magcap.%player%}
+				add (4 / {holyBlood.%player%::Delphi}) to {hp.%player%}
+				add (8 / {holyBlood.%player%::Delphi}) to {hpcap.%player%}
+				add (40 / {holyBlood.%player%::Delphi}) to {hpgrowth.%player%}
+				add (60 / {holyBlood.%player%::Delphi}) to {maggrowth.%player%}
+			#Zelahan
+			if {holyBlood.%player%::Zelahan} is more than 0:
+				add (4 / {holyBlood.%player%::Zelahan}) to {hp.%player%}
+				add (8 / {holyBlood.%player%::Zelahan}) to {hpcap.%player%}
+				add (4 / {holyBlood.%player%::Zelahan}) to {str.%player%}
+				add (8 / {holyBlood.%player%::Zelahan}) to {strcap.%player%}
+				add (2 / {holyBlood.%player%::Zelahan}) to {def.%player%}
+				add (4 / {holyBlood.%player%::Zelahan}) to {defcap.%player%}
+				add (40 / {holyBlood.%player%::Zelahan}) to {hpgrowth.%player%}
+				add (40 / {holyBlood.%player%::Zelahan}) to {strgrowth.%player%}
+				add (20 / {holyBlood.%player%::Zelahan}) to {defgrowth.%player%}
+			#Kallin
+			if {holyBlood.%player%::Kallin} is more than 0:
+				add (4 / {holyBlood.%player%::Kallin}) to {hp.%player%}
+				add (8 / {holyBlood.%player%::Kallin}) to {hpcap.%player%}
+				add (2 / {holyBlood.%player%::Kallin}) to {str.%player%}
+				add (4 / {holyBlood.%player%::Kallin}) to {strcap.%player%}
+				add (2 / {holyBlood.%player%::Kallin}) to {spd.%player%}
+				add (4 / {holyBlood.%player%::Kallin}) to {spdcap.%player%}
+				add (2 / {holyBlood.%player%::Kallin}) to {def.%player%}
+				add (4 / {holyBlood.%player%::Kallin}) to {defcap.%player%}
+				add (40 / {holyBlood.%player%::Kallin}) to {hpgrowth.%player%}
+				add (20 / {holyBlood.%player%::Kallin}) to {strgrowth.%player%}
+				add (20 / {holyBlood.%player%::Kallin}) to {spdgrowth.%player%}
+				add (20 / {holyBlood.%player%::Kallin}) to {defgrowth.%player%}
+			#Makalis
+			if {holyBlood.%player%::Makallan} is more than 0:
+				add (8 / {holyBlood.%player%::Makallan}) to {def.%player%}
+				add (16 / {holyBlood.%player%::Makallan}) to {defcap.%player%}
+				add (4 / {holyBlood.%player%::Makallan}) to {hp.%player%}
+				add (8 / {holyBlood.%player%::Makallan}) to {hpcap.%player%}
+				add (40 / {holyBlood.%player%::Makallan}) to {hpgrowth.%player%}
+				add (60 / {holyBlood.%player%::Makallan}) to {defgrowth.%player%}
+			#D'al Versain
+			if {holyBlood.%player%::D'al Versain} is more than 0:
+				add (2 / {holyBlood.%player%::D'al Versain}) to {hp.%player%}
+				add (4 / {holyBlood.%player%::D'al Versain}) to {hpcap.%player%}
+				add (4 / {holyBlood.%player%::D'al Versain}) to {mag.%player%}
+				add (8 / {holyBlood.%player%::D'al Versain}) to {magcap.%player%}
+				add (4 / {holyBlood.%player%::D'al Versain}) to {res.%player%}
+				add (8 / {holyBlood.%player%::D'al Versain}) to {rescap.%player%}
+				add (20 / {holyBlood.%player%::D'al Versain}) to {hpgrowth.%player%}
+				add (40 / {holyBlood.%player%::D'al Versain}) to {maggrowth.%player%}
+				add (40 / {holyBlood.%player%::D'al Versain}) to {resgrowth.%player%}
+			#Gaia
+			if {holyBlood.%player%::Gaia} is more than 0:
+				add (8 / {holyBlood.%player%::Gaia}) to {spd.%player%}
+				add (16 / {holyBlood.%player%::Gaia}) to {spdcap.%player%}
+				add (4 / {holyBlood.%player%::Gaia}) to {hp.%player%}
+				add (8 / {holyBlood.%player%::Gaia}) to {hpcap.%player%}
+				add (40 / {holyBlood.%player%::Gaia}) to {hpgrowth.%player%}
+				add (60 / {holyBlood.%player%::Gaia}) to {spdgrowth.%player%}
+			#Jubilo
+			if {holyBlood.%player%::Jublio} is more than 0:
+				add (4 / {holyBlood.%player%::Selena}) to {hp.%player%}
+				add (8 / {holyBlood.%player%::Selena}) to {hpcap.%player%}
+				add (2 / {holyBlood.%player%::Selena}) to {str.%player%}
+				add (4 / {holyBlood.%player%::Selena}) to {strcap.%player%}
+				add (2 / {holyBlood.%player%::Selena}) to {lck.%player%}
+				add (4 / {holyBlood.%player%::Selena}) to {lckcap.%player%}
+				add (2 / {holyBlood.%player%::Selena}) to {chr.%player%}
+				add (4 / {holyBlood.%player%::Selena}) to {chrcap.%player%}
+				add (40 / {holyBlood.%player%::Jubilo}) to {hpgrowth.%player%}
+				add (20 / {holyBlood.%player%::Jubilo}) to {maggrowth.%player%}
+				add (20 / {holyBlood.%player%::Jubilo}) to {defgrowth.%player%}
+				add (20 / {holyBlood.%player%::Jubilo}) to {resgrowth.%player%}
+			#
+			#
+			add floor({hpgrowth.%player%} * 0.2) to {hpgrowth.%player%}
+			add floor({strgrowth.%player%} * 0.1) to {strgrowth.%player%}
+			add floor({defgrowth.%player%} * 0.1) to {defgrowth.%player%}
+			add floor({chrgrowth.%player%} * 0.1) to {chrgrowth.%player%}
+			add floor({lckgrowth.%player%} * 0.1) to {lckgrowth.%player%}
+			add floor({spdgrowth.%player%} * 0.1) to {spdgrowth.%player%}
+			add floor({maggrowth.%player%} * 0.1) to {maggrowth.%player%}
+			add floor({resgrowth.%player%} * 0.1) to {resgrowth.%player%}
 			#LCK growth rate bonus
-			add floor({lck.%player%} * 1.5) to {hpgrowth.%player%}
-			add floor({lck.%player%} * 1.5) to {strgrowth.%player%}
-			add floor({lck.%player%} * 1.5) to {defgrowth.%player%}
-			add floor({lck.%player%} * 1.5) to {chrgrowth.%player%}
-			add floor({lck.%player%} * 1.5) to {lckgrowth.%player%}
-			add floor({lck.%player%} * 1.5) to {spdgrowth.%player%}
-			add floor({lck.%player%} * 1.5) to {maggrowth.%player%}
-			add floor({lck.%player%} * 1.5) to {resgrowth.%player%}
+			add floor({lck.%player%} * 1.25) to {hpgrowth.%player%}
+			add floor({lck.%player%} * 1.25) to {strgrowth.%player%}
+			add floor({lck.%player%} * 1.25) to {defgrowth.%player%}
+			add floor({lck.%player%} * 1.25) to {chrgrowth.%player%}
+			add floor({lck.%player%} * 1.25) to {lckgrowth.%player%}
+			add floor({lck.%player%} * 1.25) to {spdgrowth.%player%}
+			add floor({lck.%player%} * 1.25) to {maggrowth.%player%}
+			add floor({lck.%player%} * 1.25) to {resgrowth.%player%}
 			close the player's inventory
 			send title "<gold><bold>--==CLASS CHANGE!==--" with subtitle "<gold>%{class.%player%}%" to player for 3 seconds with fade in 0.5 second and fade out 1 seconds
 			play sound "entity.player.levelup" with volume 2 and pitch 1 at player for player

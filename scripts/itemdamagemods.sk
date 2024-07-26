@@ -30,7 +30,7 @@ on item damage:
 	if {_itemType} is not 776:
 		#Hammerne
 		add 1 to {toolbreaktally.%player%}
-		if {toolbreaktally.%player%} is more than 1000:
+		if {toolbreaktally.%player%} is more than 500:
 			if {perks.%player%::Hammerne} is not set:
 				make player execute command "/grantskill 0 Hammerne"
 		set {_LCKcheck.%player%} to checkSlots(player,"Hammerne")

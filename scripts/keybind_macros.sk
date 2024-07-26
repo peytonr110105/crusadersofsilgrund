@@ -18,6 +18,51 @@ command /m_dodgeroll:
 				#Roll behavior
 				#Roll Overrides
 				set {_flight} to checkSlots(player,"Flight")
+				if {_flight} is not 1:
+					#Escape Artist - Dodge Roll behavior
+					if checkSlots(player,"Escape Artist") is 1:
+						#Detonating a set dummy
+						if {t_escapeArtistDummy.%player%} is alive:
+							loop all entities in radius 10 of {t_escapeArtistDummy.%player%}:
+								if {party.%loop-entity%} is not {party.%player%}:
+									if loop-entity is alive:
+										if metadata value "isEADummy" of the loop-entity is 1:
+											create safe explosion of force 3 at the loop-entity
+											delete the loop-entity
+										else:
+											applyRecoilDamage(loop-entity,20)
+							clear {t_escapeArtistDummy.%player%}
+						#Spawning a dummy
+						else:
+							spawn 1 armor stand at the player
+							set {t_escapeArtistDummy.%player%} to the last spawned armor stand
+							set metadata value "isEADummy" of {t_escapeArtistDummy.%player%} to 1
+							set {t_escapeArtistDummy.%player%}'s helmet to 1 leather helmet
+							set {t_escapeArtistDummy.%player%}'s chestplate to 1 leather chestplate
+							set {t_escapeArtistDummy.%player%}'s leggings to 1 leather leggings
+							set {t_escapeArtistDummy.%player%}'s boots to 1 leather boots
+					#Beacon of Hope - Dodge Roll Behavior
+					else if checkSlots(player,"Beacon of Hope") is 1:
+						#Destroying a set dummy
+						if {t_beaconofhopeDummy.%player%} is alive:
+							loop all entities in radius 1 of {t_beaconofhopeDummy.%player%}:
+								if metadata value "isBOHDummy" of the loop-entity is 1:
+									create safe explosion of force 1 at loop-entity
+									delete the loop-entity
+									exit 1 loop
+							clear {t_beaconOwner.%{t_beaconofhopeDummy.%player%}%}
+							clear {t_beaconofhopeDummy.%player%}
+						else:
+							spawn 1 armor stand at the player
+							set {t_beaconofhopeDummy.%player%} to the last spawned armor stand
+							set {t_beaconOwner.%{t_beaconofhopeDummy.%player%}%} to the player
+							set metadata value "isBOHDummy" of {t_beaconofhopeDummy.%player%} to 1	
+							#Copy player's equipment
+							set {t_beaconofhopeDummy.%player%}'s helmet to player's helmet
+							set {t_beaconofhopeDummy.%player%}'s chestplate to player's chestplate
+							set {t_beaconofhopeDummy.%player%}'s leggings to player's leggings
+							set {t_beaconofhopeDummy.%player%}'s boots to player's boots
+							set {t_beaconofhopeDummy.%player%}'s tool to player's tool
 				if the 1st line of the lore of the player's boots contains "Lunge":
 					push the player in horizontal direction of the player at speed 1.35
 					push the player up at speed 0.3

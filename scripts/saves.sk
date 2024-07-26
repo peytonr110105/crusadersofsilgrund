@@ -100,16 +100,20 @@ command /character [<text="list">] [<number=0>]:
 			set {sslot%arg 2%.%player%::blocksmined} to {blocksmined.%player%}
 			set {sslot%arg 2%.%player%::toolbreaktally} to {toolbreaktally.%player%}
 			set {sslot%arg 2%.%player%::slfalltotal} to {slfalltotal.%player%}
-			set {sslot%arg 2%.%player%::skillslot1} to {skillslot1.%player%}
-			set {sslot%arg 2%.%player%::skillslot2} to {skillslot2.%player%}
-			set {sslot%arg 2%.%player%::skillslot3} to {skillslot3.%player%}
-			set {sslot%arg 2%.%player%::skillslot4} to {skillslot4.%player%}
-			set {sslot%arg 2%.%player%::skillslot5} to {skillslot5.%player%}
-			set {sslot%arg 2%.%player%::skillslot6} to {skillslot6.%player%}
-			set {sslot%arg 2%.%player%::skillslot7} to {skillslot7.%player%}
-			set {sslot%arg 2%.%player%::skillslot8} to {skillslot8.%player%}
-			set {sslot%arg 2%.%player%::skillslot9} to {skillslot9.%player%}
-			set {sslot%arg 2%.%player%::skillslot10} to {skillslot10.%player%}
+			#set {sslot%arg 2%.%player%::skillslot1} to {skillslot1.%player%}
+			#set {sslot%arg 2%.%player%::skillslot2} to {skillslot2.%player%}
+			#set {sslot%arg 2%.%player%::skillslot3} to {skillslot3.%player%}
+			#set {sslot%arg 2%.%player%::skillslot4} to {skillslot4.%player%}
+			#set {sslot%arg 2%.%player%::skillslot5} to {skillslot5.%player%}
+			#set {sslot%arg 2%.%player%::skillslot6} to {skillslot6.%player%}
+			#set {sslot%arg 2%.%player%::skillslot7} to {skillslot7.%player%}
+			#set {sslot%arg 2%.%player%::skillslot8} to {skillslot8.%player%}
+			#set {sslot%arg 2%.%player%::skillslot9} to {skillslot9.%player%}
+			#set {sslot%arg 2%.%player%::skillslot10} to {skillslot10.%player%}
+			loop {eqClassPerks.%player%::*}:
+				set {sslot%arg 2%.%player%.eqClassPerks::%loop-index%} to loop-value
+			loop {eqGenericPerks.%player%::*}:
+				set {sslot%arg 2%.%player%.eqGenericPerks::%loop-index%} to loop-value
 			#set {sslot%arg 2%.%player%::realism} to {realism.%player%}
 			set {sslot%arg 2%.%player%::perdiff} to {perdiff.%player%}
 			set {sslot%arg 2%.%player%::charmade} to {charmade.%player%}
@@ -380,16 +384,21 @@ command /character [<text="list">] [<number=0>]:
 				set {toolbreaktally.%player%} to {sslot%arg 2%.%player%::toolbreaktally}
 				set {slfalltotal.%player%} to {sslot%arg 2%.%player%::slfalltotal}
 				set {skillstotal.%player%} to {sslot%arg 2%.%player%::skillstotal}
-				set {skillslot1.%player%} to {sslot%arg 2%.%player%::skillslot1}
-				set {skillslot2.%player%} to {sslot%arg 2%.%player%::skillslot2}
-				set {skillslot3.%player%} to {sslot%arg 2%.%player%::skillslot3}
-				set {skillslot4.%player%} to {sslot%arg 2%.%player%::skillslot4}
-				set {skillslot5.%player%} to {sslot%arg 2%.%player%::skillslot5}
-				set {skillslot6.%player%} to {sslot%arg 2%.%player%::skillslot6}
-				set {skillslot7.%player%} to {sslot%arg 2%.%player%::skillslot7}
-				set {skillslot8.%player%} to {sslot%arg 2%.%player%::skillslot8}
-				set {skillslot9.%player%} to {sslot%arg 2%.%player%::skillslot9}
-				set {skillslot10.%player%} to {sslot%arg 2%.%player%::skillslot10}
+				#equipped perks
+				loop {sslot%arg 2%.%player%.eqClassPerks::*}:
+					set {eqClassPerks.%player%::%loop-index%} to loop-value
+				loop {sslot%arg 2%.%player%.eqGenericPerks::*}:
+					set {eqGenericPerks.%player%::%loop-index%} to loop-value
+				#set {skillslot1.%player%} to {sslot%arg 2%.%player%::skillslot1}
+				#set {skillslot2.%player%} to {sslot%arg 2%.%player%::skillslot2}
+				#set {skillslot3.%player%} to {sslot%arg 2%.%player%::skillslot3}
+				#set {skillslot4.%player%} to {sslot%arg 2%.%player%::skillslot4}
+				#set {skillslot5.%player%} to {sslot%arg 2%.%player%::skillslot5}
+				#set {skillslot6.%player%} to {sslot%arg 2%.%player%::skillslot6}
+				#set {skillslot7.%player%} to {sslot%arg 2%.%player%::skillslot7}
+				#set {skillslot8.%player%} to {sslot%arg 2%.%player%::skillslot8}
+				#set {skillslot9.%player%} to {sslot%arg 2%.%player%::skillslot9}
+				#set {skillslot10.%player%} to {sslot%arg 2%.%player%::skillslot10}
 				set {perdiff.%player%} to {sslot%arg 2%.%player%::perdiff}
 				set {ctoggle.%player%} to {sslot%arg 2%.%player%::ctoggle}
 				set {charmade.%player%} to {sslot%arg 2%.%player%::charmade}
@@ -612,15 +621,17 @@ command /character [<text="list">] [<number=0>]:
 			clear {toolbreaktally.%player%}
 			clear {slfalltotal.%player%}
 			clear {skillstotal.%player%}
-			clear {skillslot1.%player%}
-			clear {skillslot2.%player%}
-			clear {skillslot3.%player%}
-			clear {skillslot4.%player%}
-			clear {skillslot5.%player%}
-			clear {skillslot6.%player%}
-			clear {skillslot7.%player%}
-			clear {skillslot8.%player%}
-			clear {skillslot9.%player%}
+			#clear {skillslot1.%player%}
+			#clear {skillslot2.%player%}
+			#clear {skillslot3.%player%}
+			#clear {skillslot4.%player%}
+			#clear {skillslot5.%player%}
+			#clear {skillslot6.%player%}
+			#clear {skillslot7.%player%}
+			#clear {skillslot8.%player%}
+			#clear {skillslot9.%player%}
+			clear {eqClassPerks.%player%::*}
+			clear {eqGenericPerks.%player%::*}
 			#weapon ranks
 			clear {weaponranks.%player%::*}
 			clear {weapondamagetotals.%player%::*}
@@ -902,7 +913,7 @@ on inventory click:
 			send "<light green>Autosave now using save slot %index of event-slot + 1%. To change the Autosave slot, use the command /autosave." to the player
 			
 #Autosave trigger
-every 4 minutes:
+every 10 minutes:
 	loop all players:
 		if {autosave.%loop-player%} is set:
 			if {permadeath.%loop-player%} is not true:

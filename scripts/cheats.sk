@@ -67,12 +67,12 @@ command /cheats <text>:
 			finishQuest(player,"A Hero Rises","")
 			finishQuest(player,"Breaking the Ice","")
 		#else if arg 1 is "idkfa":
-		#	set {weapongrade.%player%::swords} to "<gold><bold>S"
-		#	set {weapongrade.%player%::lances} to "<gold><bold>S"
-		#	set {weapongrade.%player%::axes} to "<gold><bold>S"
-		#	set {weapongrade.%player%::bows} to "<gold><bold>S"
-		#	set {weapongrade.%player%::magic} to "<gold><bold>S"
-		#	set {weapongrade.%player%::staves} to "<gold><bold>S"
+		#	set {weaponranks.%player%::swords} to "<gold><bold>SS"
+		#	set {weaponranks.%player%::lances} to "<gold><bold>SS"
+		#	set {weaponranks.%player%::axes} to "<gold><bold>SS"
+		#	set {weaponranks.%player%::bows} to "<gold><bold>SS"
+		#	set {weaponranks.%player%::magic} to "<gold><bold>SS"
+		#	set {weaponranks.%player%::staves} to "<gold><bold>SS"
 		#	set {weaponrank.%player%::swords} to 999999
 		#	set {weaponrank.%player%::lances} to 999999
 		#	set {weaponrank.%player%::axes} to 999999
@@ -120,6 +120,93 @@ command /cheats <text>:
 		else if arg 1 is "thedarksoulsofminecraftservers":
 			give 1 diamond sword named "<gold><bold>Estoc" with lore "<light red><bold>Slot A - Power Within", "<light blue><bold>Slot B - Bonus Blade", "<light yellow><bold>Slot C - Bold Fighter", "<light green><bold>Assist - Stinger", "<light purple><bold>Special - Dragon Fang", "<light red><bold>Refined - Reinforced", "<white>Grants bonus damage equal to 25%% of your STR.", "<white>Nullifies foe's bonuses granted by armour." to the player
 			send "<light green><bold>Obtained <reset><gold><bold>Estoc<reset><light green><bold>!" to the player
+		else if arg 1 is "sigurd":
+			set {t_overrideGauge.%player%} to 100
+			set bossbar "override.%player's uuid%" progress to {t_overrideGauge.%player%}
+		else if arg 1 is "gimmetrickperks":
+			set {perkTreeXP.Trickster.%player%::Trickster_TREE_01} to 99999
+			set {perkTreeXP.Trickster.%player%::Trickster_TREE_02} to 99999
+			set {perkTreeXP.Trickster.%player%::Trickster_TREE_03} to 99999
+			set {perkTreeXP.Trickster.%player%::Global} to 99999
+			send "<gold>All trickster perks are now unlocked."
+		else if arg 1 is "bookworm":
+			set {perkTreeXP.Mercenary.%player%::Fortitude} to 99999
+			set {perkTreeXP.Mercenary.%player%::Camraderie} to 99999
+			set {perkTreeXP.Mercenary.%player%::Courage} to 99999
+			set {perkTreeXP.Mercenary.%player%::Global} to 99999
+			set {perkTreeXP.Knight.%player%::Reliability} to 99999
+			set {perkTreeXP.Knight.%player%::Perserverance} to 99999
+			set {perkTreeXP.Knight.%player%::Pessimism} to 99999
+			set {perkTreeXP.Knight.%player%::Global} to 99999
+			set {perkTreeXP.Bladesman.%player%::Intuition} to 99999
+			set {perkTreeXP.Bladesman.%player%::Zeal} to 99999
+			set {perkTreeXP.Bladesman.%player%::Daring} to 99999
+			set {perkTreeXP.Bladesman.%player%::Global} to 99999
+			set {perkTreeXP.Fighter.%player%::Heroism} to 99999
+			set {perkTreeXP.Fighter.%player%::Flexibility} to 99999
+			set {perkTreeXP.Fighter.%player%::Confidence} to 99999
+			set {perkTreeXP.Fighter.%player%::Global} to 99999
+			set {perkTreeXP.Mage.%player%::Serenity} to 99999
+			set {perkTreeXP.Mage.%player%::Wisdom} to 99999
+			set {perkTreeXP.Mage.%player%::Diligence} to 99999
+			set {perkTreeXP.Mage.%player%::Global} to 99999
+			set {perkTreeXP.Cleric.%player%::Loyalty} to 99999
+			set {perkTreeXP.Cleric.%player%::Pacifism} to 99999
+			set {perkTreeXP.Cleric.%player%::Hypocrisy} to 99999
+			set {perkTreeXP.Cleric.%player%::Global} to 99999
+			set {perkTreeXP.Archer.%player%::Recitence} to 99999
+			set {perkTreeXP.Archer.%player%::Prudence} to 99999
+			set {perkTreeXP.Archer.%player%::Spirit} to 99999
+			set {perkTreeXP.Archer.%player%::Global} to 99999
+			set {perkTreeXP.Cavalier.%player%::Enthusiasm} to 99999
+			set {perkTreeXP.Cavalier.%player%::Adeptness} to 99999
+			set {perkTreeXP.Cavalier.%player%::Steadfastness} to 99999
+			set {perkTreeXP.Cavalier.%player%::Global} to 99999
+			set {perkTreeXP.Devil Hunter.%player%::Confidence} to 99999
+			set {perkTreeXP.Devil Hunter.%player%::Stoicism} to 99999
+			set {perkTreeXP.Devil Hunter.%player%::Impulsiveness} to 99999
+			set {perkTreeXP.Devil Hunter.%player%::Global} to 99999
+			set {perkTreeXP.Gunslinger.%player%::GUNSLINGER_TREE_01} to 99999
+			set {perkTreeXP.Gunslinger.%player%::GUNSLINGER_TREE_02} to 99999
+			set {perkTreeXP.Gunslinger.%player%::GUNSLINGER_TREE_03} to 99999
+			set {perkTreeXP.Gunslinger.%player%::Global} to 99999
+			set {perkTreeXP.Strategist.%player%::STRATEGIST_TREE_01} to 99999
+			set {perkTreeXP.Strategist.%player%::STRATEGIST_TREE_02} to 99999
+			set {perkTreeXP.Strategist.%player%::STRATEGIST_TREE_03} to 99999
+			set {perkTreeXP.Strategist.%player%::Global} to 99999
+			set {perkTreeXP.Survivor.%player%::SURVIVOR_TREE_01} to 99999
+			set {perkTreeXP.Survivor.%player%::SURVIVOR_TREE_02} to 99999
+			set {perkTreeXP.Survivor.%player%::SURVIVOR_TREE_03} to 99999
+			set {perkTreeXP.Survivor.%player%::Global} to 99999
+			set {perkTreeXP.Charlatan.%player%::Illumination} to 99999
+			set {perkTreeXP.Charlatan.%player%::Experimentation} to 99999
+			set {perkTreeXP.Charlatan.%player%::Condemnation} to 99999
+			set {perkTreeXP.Charlatan.%player%::Global} to 99999
+			set {perkTreeXP.Troubador.%player%::Adeptness} to 99999
+			set {perkTreeXP.Troubador.%player%::Faithfulness} to 99999
+			set {perkTreeXP.Troubador.%player%::Versatility} to 99999
+			set {perkTreeXP.Troubador.%player%::Global} to 99999
+			set {perkTreeXP.Outlaw.%player%::Secrecy} to 99999
+			set {perkTreeXP.Outlaw.%player%::Lawlessness} to 99999
+			set {perkTreeXP.Outlaw.%player%::Mercilessness} to 99999
+			set {perkTreeXP.Outlaw.%player%::Global} to 99999
+			set {perkTreeXP.Conjurer.%player%::Vendetta} to 99999
+			set {perkTreeXP.Conjurer.%player%::Wisdom} to 99999
+			set {perkTreeXP.Conjurer.%player%::Chaos} to 99999
+			set {perkTreeXP.Conjurer.%player%::Global} to 99999	
+			set {perkTreeXP.Poet.%player%::Rythm} to 99999
+			set {perkTreeXP.Poet.%player%::Tempo} to 99999
+			set {perkTreeXP.Poet.%player%::Melody} to 99999
+			set {perkTreeXP.Poet.%player%::Global} to 99999
+			set {perkTreeXP.Keeper.%player%::Deflection} to 99999
+			set {perkTreeXP.Keeper.%player%::Perserverance} to 99999
+			set {perkTreeXP.Keeper.%player%::Protection} to 99999
+			set {perkTreeXP.Keeper.%player%::Global} to 99999			
+			set {perkTreeXP.Trickster.%player%::Trickster_TREE_01} to 99999
+			set {perkTreeXP.Trickster.%player%::Trickster_TREE_02} to 99999
+			set {perkTreeXP.Trickster.%player%::Trickster_TREE_03} to 99999
+			set {perkTreeXP.Trickster.%player%::Global} to 99999
+			send "<gold>All class perk trees are now unlocked."
 		else:
 			send formatted "<light red>Your code was not recognized."
 		

@@ -726,29 +726,38 @@ function checkSlots(PLR: entity , skill: text) :: number:
 			return 1
 		else:
 			return 0		
+	#if {_CID} is not set:
+	#	if {skillslot1.%{_PLR}%} is "%{_skill}%":
+	#		return 1
+	#	else if {skillslot2.%{_PLR}%} is "%{_skill}%":
+	#		return 1
+	#	else if {skillslot3.%{_PLR}%} is "%{_skill}%":
+	#		return 1
+	#	else if {skillslot4.%{_PLR}%} is "%{_skill}%":
+	#		return 1
+	#	else if {skillslot5.%{_PLR}%} is "%{_skill}%":
+	#		return 1
+	#	else if {skillslot6.%{_PLR}%} is "%{_skill}%":
+	#		return 1
+	#	else if {skillslot7.%{_PLR}%} is "%{_skill}%":
+	#		return 1
+	#	else if {skillslot8.%{_PLR}%} is "%{_skill}%":
+	#		return 1
+	#	else if {skillslot9.%{_PLR}%} is "%{_skill}%":
+	#		return 1
+	#	else if {skillslot10.%{_PLR}%} is "%{_skill}%":
+	#		return 1
+	#	else:
+	#		return 0
+	#New perk system
 	if {_CID} is not set:
-		if {skillslot1.%{_PLR}%} is "%{_skill}%":
-			return 1
-		else if {skillslot2.%{_PLR}%} is "%{_skill}%":
-			return 1
-		else if {skillslot3.%{_PLR}%} is "%{_skill}%":
-			return 1
-		else if {skillslot4.%{_PLR}%} is "%{_skill}%":
-			return 1
-		else if {skillslot5.%{_PLR}%} is "%{_skill}%":
-			return 1
-		else if {skillslot6.%{_PLR}%} is "%{_skill}%":
-			return 1
-		else if {skillslot7.%{_PLR}%} is "%{_skill}%":
-			return 1
-		else if {skillslot8.%{_PLR}%} is "%{_skill}%":
-			return 1
-		else if {skillslot9.%{_PLR}%} is "%{_skill}%":
-			return 1
-		else if {skillslot10.%{_PLR}%} is "%{_skill}%":
-			return 1
-		else:
-			return 0
+		loop {eqClassPerks.%{_PLR}%::*}:
+			if "%loop-value%" is "%{_skill}%":
+				return 1
+		loop {eqGenericPerks.%{_PLR}%::*}:
+			if "%loop-value%" is "%{_skill}%":
+				return 1
+		return 0
 	else:
 		if {npc_skillslot1.%{_CID}%} is "%{_skill}%":
 			return 1
@@ -861,7 +870,7 @@ function addClassXP(PLR: entity, XP: number):
 				add {_XP} to {perkTreeXP.%{_plrBaseClass}%.%{_PLR}%::%{activePerkTree.%{_PLR}%::%{_plrBaseClass}%}%}
 				add {_XP} to {perkTreeXP.%{_plrBaseClass}%.%{_PLR}%::Global}
 			add {_XP} to {classXP.%{_PLR}%}
-			add {_XP} to {perkTreeXP.%{_plrBaseClass}%.%{_PLR}%::%{activePerkTree.%{_PLR}%::%{_plrBaseClass}%}%}
+			add floor({_XP} / 2) to {perkTreeXP.%{_plrBaseClass}%.%{_PLR}%::%{activePerkTree.%{_PLR}%::%{_plrBaseClass}%}%}
 			#Warn player if they have maxed out a perk tree
 			if {perkTreeXP.%{_plrBaseClass}%.%{_PLR}%::%{activePerkTree.%{_PLR}%::%{_plrBaseClass}%}%} is more than {perksSecondHonorXPRequirement}:
 				if {t_hideClassXPTreeFullWarning.%{_PLR}%} is not true:
@@ -879,7 +888,7 @@ function addClassXP(PLR: entity, XP: number):
 				play 2 (firework spark with speed 0) at {_PLR}
 				play 2 (critical hit with speed 1) at {_PLR}
 				set {_XP} to ceil((({_playerLVL} + ({_playerLVL} ^ 2)) / (1 + ({promoted.%{_PLR}%} - 1))) + 10)
-				set bossbar "classxpbar.%{_PLR}'s UUID%" progress to floor({classXP.%{_PLR}%} / {_XP}) * 100
+				set bossbar "classxpbar.%{_PLR}'s UUID%" progress to floor(({classXP.%{_PLR}%} / {_XP}) * 100)
 	#Is NPC
 	else:
 		if {npc_lvl.%{_CID}%} is less than {npc_lvlcap.%{_PLR}%}:

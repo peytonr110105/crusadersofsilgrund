@@ -5,17 +5,19 @@ on damage of monster:
 	if victim is monster:
 		if victim is alive:
 			clear {_damageTacticChosen}
-			if {t_lvl.%victim%} is more than 30:
-				set {_mobLVLScalar} to 30
+			if {t_lvl.%victim%} is more than 50:
+				set {_mobLVLScalar} to 50
 			else:
 				set {_mobLVLScalar} to {t_lvl.%victim%}
 			set {_drOdds} to floor(({t_spd.%victim%} / 2))
-			if {_drOdds} is more than 60:
-				set {_drOdds} to 60
-			set {_drOdds} to floor(({_drOdds} - 10) + ({_mobLVLScalar} / 2))
-			if ({_drOdds} - 10) is more than 0:
+			if {_drOdds} is more than 66:
+				set {_drOdds} to 66
+			set {_drOdds} to floor(({_drOdds} - 10) + ({_mobLVLScalar} / 2) + ({playerdifficulty.%attacker%} * 2.23))
+			if {_drOdds} is more than 80:
+				set {_drOdds} to 80
+			if ({_drOdds}) is more than 0:
 				#All mobs can occasionally dodge roll away from the player
-				chance of (({_drOdds} - 20) + (10 * getEntityWeaponType(victim)))%:
+				chance of (({_drOdds} - 20))%:
 					if {t_foeDRTimeout.%victim%} is not set:
 						chance of 50%:
 							wait 0.1 seconds
@@ -33,13 +35,15 @@ on damage of monster:
 						play sound "block.fire.extinguish" with volume 0.4 and pitch 0.7 at the victim
 						wait 3 seconds
 						clear {t_foeDRTimeout.%victim%}
+				#Lance mobs will throw their lance at the foe
 				if nbt of victim's tool contains "LanceType":
 					chance of floor({_drOdds} + 15)%:
 						if victim is not on fire:
 							chance of 50%:
 								set {_damageTacticChosen} to true
-								play 20 (emerald block break with speed 1) at the victim
-								wait 0.6 seconds
+								play 30 (emerald block break with speed 1) at the victim
+								play sound "block.gravel.break" with volume 0.7 and pitch 0.5 at the victim
+								wait 1 seconds
 								make the victim shoot an arrow at speed 2
 								if victim is not on fire:
 									chance of 30%:
@@ -54,8 +58,9 @@ on damage of monster:
 						if victim is not on fire:
 							chance of 50%:
 								set {_damageTacticChosen} to true
-								play 20 (gold block break with speed 1) at the victim
-								wait 0.6 seconds
+								play 30 (gold block break with speed 1) at the victim
+								play sound "block.gravel.break" with volume 0.7 and pitch 0.5 at the victim
+								wait 1 seconds
 								if victim is alive:
 									loop 2 times:
 										if victim is alive:
@@ -80,8 +85,8 @@ on damage of monster:
 					#Melee mobs will occasionally stinger to close the gap
 					if getEntityRange(victim) is 1:
 						chance of floor({_drOdds} + 50)%:
-							play 20 lapis block break with speed 1 at the victim
-							wait 0.6 seconds
+							play 30 lapis block break with speed 1 at the victim
+							wait 1 seconds
 							if victim is alive:
 								push the victim upwards at speed 0.1
 								push the victim in direction of the attacker at speed 1.4
@@ -89,7 +94,7 @@ on damage of monster:
 					#Bow/Magic mobs will occasionally side-strafe and fire more rapidly
 					else if getEntityRange(victim) is 2:
 						chance of floor({_drOdds} + 50)%:
-							play 20 (diamond block break with speed 1) at the victim
+							play 30 (diamond block break with speed 1) at the victim
 							wait 0.5 seconds
 							if victim is alive:
 								play 9 (smoke with speed 0) at the victim
@@ -307,6 +312,6 @@ on death:
 				apply mining fatigue 3 to the loop-entity for 10 seconds
 				apply hunger 2 to the loop-entity for 10 seconds
 			cancel event
-			create safe explosion of force 3 at the entity
+			create safe explosion of force 3 at the victim
 			set metadata value "ignoreDeathCondition" of the victim to 1
-			kill the entity
+			kill the victim

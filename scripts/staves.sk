@@ -91,11 +91,151 @@ command /staff <text>:
 #Healing behavior
 on right click:
 	if target is set:
+		if target is a monster:
+			if checkSlots(player,"Holy Light") is 1:
+				set {_checkSlots} to checkSlots(player,"Live to Serve")
+				#Heal
+				if the name of the player's tool contains "<yellow><bold>Heal":
+					damage player's tool by 1
+					if {_checkSlots} is 1:
+						apply regeneration 3 to the player for 2 seconds
+						heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+					applyRecoilDamage(target, floor(((getEntityStatTotal(player,"MAG")) / 5) + 2))
+				#Mend
+				else if the name of the player's tool contains "<yellow><bold>Mend":
+					damage player's tool by 5
+					if {_checkSlots} is 1:
+						apply regeneration 3 to the player for 4 seconds
+						heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+					applyRecoilDamage(target, floor(((getEntityStatTotal(player,"MAG")) / 5) + 4))
+				#Rehabilitate
+				else if the name of the player's tool contains "<yellow><bold>Rehabilitate":
+					damage player's tool by 8
+					if {_checkSlots} is 1:
+						apply regeneration 3 to the player for 6 seconds
+						heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+					applyRecoilDamage(target, floor(((getEntityStatTotal(player,"MAG")) / 5) + 6))
+				#Wrys
+				else if the name of the player's tool contains "<yellow><bold>Wrys":
+					damage player's tool by 2
+					if {_checkSlots} is 1:
+						apply regeneration 4 to the player for 6 seconds
+						heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+					applyRecoilDamage(target, floor(((getEntityStatTotal(player,"MAG")) / 5) + 6))
+				#Imbue
+				else if the name of the player's tool contains "<yellow><bold>Imbue":
+					damage player's tool by 15
+					if {_checkSlots} is 1:
+						apply regeneration 3 to the player for 8 seconds
+						heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+					applyRecoilDamage(target, floor(((getEntityStatTotal(player,"MAG")) / 5) + 9))
+				#Physic
+				else if the name of the player's tool contains "<yellow><bold>Physic":
+					damage player's tool by 21
+					if {_checkSlots} is 1:
+						apply regeneration 3 to the player for 9 seconds
+						heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+					applyRecoilDamage(target, floor(((getEntityStatTotal(player,"MAG")) / 5) + 12))
+				#Renewal
+				else if the name of the player's tool contains "<yellow><bold>Renewal":
+					damage player's tool by 20
+					if {_checkSlots} is 1:
+						apply regeneration 3 to the player for 11 seconds
+						heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+					applyRecoilDamage(target, floor(((getEntityStatTotal(player,"MAG")) / 5) + 15))
+				#Miracle
+				else if the name of the player's tool contains "<yellow><bold>Miracle":
+					damage player's tool by 32
+					if {_checkSlots} is 1:
+						apply regeneration 3 to the player for 14 seconds
+						heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+					applyRecoilDamage(target, floor(((getEntityStatTotal(player,"MAG")) / 5) + 20))
+				#Aum
+				else if the name of the player's tool contains "<yellow><bold>Aum":
+					damage player's tool by 75
+					if {_checkSlots} is 1:
+						apply regeneration 4 to the player for 15 seconds
+						heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+					applyRecoilDamage(target, floor(((getEntityStatTotal(player,"MAG")) / 5) + 30))
+				#Restore
+				else if the name of the player's tool contains "<yellow><bold>Restore":
+					damage player's tool by 17
+					remove strength from the target
+					remove swiftness from the target
+					remove resistance from the target
+					apply weakness 2 to the target for 20 seconds
+					apply slowness 2 to the target for 20 seconds
+					if {_checkSlots} is 1:
+						apply regeneration 3 to the player for 5 seconds
+						heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+					applyRecoilDamage(target, floor(((getEntityStatTotal(player,"MAG")) / 5)))
+				#Fortify
+				else if the name of the player's tool contains "<yellow><bold>Fortify":
+					remove resistance from the target
+					damage player's tool by 75
+					show wolf hearts on the target
+					if {quotesToggle.%target%} is true:
+						make target say {playerQuotes.%target%::ThanksForHeals1}
+					if {_checkSlots} is 1:
+						remove resistance from the player
+						apply resistance 4 to the player for 60 seconds
+					applyRecoilDamage(target, floor(((getEntityStatTotal(player,"MAG")) / 5) + 40))
+				#Hammerne
+				else if the name of the player's tool contains "<yellow><bold>Hammerne":
+					damage player's tool by 300
+					drop target's tool at the player
+					set target's tool to air
+					applyRecoilDamage(target, floor(((getEntityStatTotal(player,"MAG")) / 5)))
+				#Hasten
+				else if the name of the player's tool contains "<yellow><bold>Hasten":
+					remove swiftness from the target
+					apply slowness 5 to the target for 60 seconds
+					damage player's tool by 75
+					if {_checkSlots} is 1:
+						remove swiftness from the player
+						apply swiftness 5 to the player for 60 seconds
+					applyRecoilDamage(target, floor(((getEntityStatTotal(player,"MAG")) / 5)))
+				#Enrage
+				else if the name of the player's tool contains "<yellow><bold>Enrage":
+					remove strength from the target
+					apply weakness 5 to the target for 60 seconds
+					damage player's tool by 75
+					if {_checkSlots} is 1:
+						remove strength from the player
+						apply strength 5 to the player for 60 seconds
+					applyRecoilDamage(target, floor(((getEntityStatTotal(player,"MAG")) / 5)))
+				#Live to Serve (Perk)
+				if {_preHealHP} is set:
+					if checkSlots(player,"Live to Serve") is 1:
+						if {tempActiveBuffs.def.%player%::Live to Serve (Perk)} is not set:
+							set {_debug} to changeEntityStatBuff(player,"DEF",9,"Live to Serve (Perk)",1)
+							set {_debug} to changeEntityStatBuff(player,"RES",9,"Live to Serve (Perk)",1)
+							apply absorption 5 to the player for 20 seconds
+						if {tempActiveBuffs.def.%target%::Live to Serve (Perk)} is not set:
+							set {_debug} to changeEntityStatBuff(target,"DEF",-9,"Live to Serve (Perk)",1)
+							set {_debug} to changeEntityStatBuff(target,"RES",-9,"Live to Serve (Perk)",1)
+					#Fast Healing (Perk)
+					if checkSlots(player,"Fast Healing") is 1:
+						damage the target by 7.5
+					#Protective trait
+					if {traits.%player%::Protective} is set:
+						damage the target by floor(((getEntityStatTotal(player,"MAG")) / 5))
+					#Re-Move (Perk)
+					if checkSlots(player,"Re-Move") is 1:
+						remove swiftness from the player
+						remove strength from the player
+						apply swiftness 2 to the player for 15 seconds
+						apply strength 2 to the player for 15 seconds
+						loop all horses in radius 1 of the player:
+							remove swiftness from the loop-horse
+							remove strength from the loop-horse
+							apply swiftness 2 to the loop-horse for 15 seconds
+							apply strength 2 to the loop-horse for 15 seconds
 		set {_checkSlots} to checkSlots(player,"Live to Serve")
 		#Heal
 		if the name of the player's tool contains "<yellow><bold>Heal":
 			apply regeneration 3 to the target for 2 seconds
-			damage player's tool by 5
+			damage player's tool by 2
 			show wolf hearts on the target
 			if {quotesToggle.%target%} is true:
 				make target say {playerQuotes.%target%::ThanksForHeals1}
@@ -103,12 +243,12 @@ on right click:
 				apply regeneration 3 to the player for 2 seconds
 				heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
 			set {_preHealHP} to the target's health
-			heal the target by floor(((getEntityStatTotal(player,"MAG")) / 5))
+			heal the target by floor(((getEntityStatTotal(player,"MAG")) / 5) + 2)
 			addClassXP(player,ceil(target's health - {_preHealHP}) + 1)
 		#Mend
 		else if the name of the player's tool contains "<yellow><bold>Mend":
 			apply regeneration 3 to the target for 4 seconds
-			damage player's tool by 10
+			damage player's tool by 5
 			show wolf hearts on the target
 			if {quotesToggle.%target%} is true:
 				make target say {playerQuotes.%target%::ThanksForHeals1}
@@ -116,13 +256,13 @@ on right click:
 				apply regeneration 3 to the player for 4 seconds
 				heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
 			set {_preHealHP} to the target's health
-			heal the target by floor(((getEntityStatTotal(player,"MAG")) / 5))
+			heal the target by floor(((getEntityStatTotal(player,"MAG")) / 5) + 4)
 			make server execute command "/xp %ceil(target's health - {_preHealHP})% %player%"
 			addClassXP(player,ceil(target's health - {_preHealHP}) + 5)
 		#Rehabilitate
 		else if the name of the player's tool contains "<yellow><bold>Rehabilitate":
 			apply regeneration 3 to the target for 6 seconds
-			damage player's tool by 15
+			damage player's tool by 8
 			show wolf hearts on the target
 			if {quotesToggle.%target%} is true:
 				make target say {playerQuotes.%target%::ThanksForHeals1}
@@ -130,7 +270,7 @@ on right click:
 				apply regeneration 3 to the player for 6 seconds
 				heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
 			set {_preHealHP} to the target's health
-			heal the target by floor(((getEntityStatTotal(player,"MAG")) / 5))
+			heal the target by floor(((getEntityStatTotal(player,"MAG")) / 5) + 6)
 			make server execute command "/xp %ceil(target's health - {_preHealHP})% %player%"
 			addClassXP(player,ceil(target's health - {_preHealHP}) + 10)
 		#Wrys
@@ -144,13 +284,13 @@ on right click:
 				apply regeneration 4 to the player for 6 seconds
 				heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
 			set {_preHealHP} to the target's health
-			heal the target by floor(((getEntityStatTotal(player,"MAG")) / 5))
+			heal the target by floor(((getEntityStatTotal(player,"MAG")) / 5) + 6)
 			make server execute command "/xp %ceil(target's health - {_preHealHP})% %player%"
 			addClassXP(player,ceil(target's health - {_preHealHP}) + 10)
 		#Imbue
 		else if the name of the player's tool contains "<yellow><bold>Imbue":
 			apply regeneration 3 to the target for 8 seconds
-			damage player's tool by 30
+			damage player's tool by 15
 			show wolf hearts on the target
 			if {quotesToggle.%target%} is true:
 				make target say {playerQuotes.%target%::ThanksForHeals1}
@@ -158,14 +298,14 @@ on right click:
 				apply regeneration 3 to the player for 8 seconds
 				heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
 			set {_preHealHP} to the target's health
-			heal the target by floor(((getEntityStatTotal(player,"MAG")) / 5))
+			heal the target by floor(((getEntityStatTotal(player,"MAG")) / 5) + 9)
 			make server execute command "/xp %ceil(target's health - {_preHealHP})% %player%"
 			addClassXP(player,ceil(target's health - {_preHealHP}) + 10)
 		#Physic
 		else if the name of the player's tool contains "<yellow><bold>Physic":
 			apply regeneration 3 to the target for 9 seconds
 			heal the target by 1
-			damage player's tool by 42
+			damage player's tool by 21
 			show wolf hearts on the target
 			if {quotesToggle.%target%} is true:
 				make target say {playerQuotes.%target%::ThanksForHeals1}
@@ -173,13 +313,13 @@ on right click:
 				apply regeneration 3 to the player for 9 seconds
 				heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
 			set {_preHealHP} to the target's health
-			heal the target by floor(((getEntityStatTotal(player,"MAG")) / 5))
+			heal the target by floor(((getEntityStatTotal(player,"MAG")) / 5) + 11)
 			make server execute command "/xp %ceil(target's health - {_preHealHP})% %player%"
 			addClassXP(player,ceil(target's health - {_preHealHP}) + 10)
 		#Renewal
 		else if the name of the player's tool contains "<yellow><bold>Renewal":
 			apply regeneration 3 to the target for 11 seconds
-			damage player's tool by 40
+			damage player's tool by 20
 			show wolf hearts on the target
 			if {quotesToggle.%target%} is true:
 				make target say {playerQuotes.%target%::ThanksForHeals1}
@@ -187,13 +327,13 @@ on right click:
 				apply regeneration 3 to the player for 11 seconds
 				heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
 			set {_preHealHP} to the target's health
-			heal the target by floor(((getEntityStatTotal(player,"MAG")) / 5))
+			heal the target by floor(((getEntityStatTotal(player,"MAG")) / 5) + 15)
 			make server execute command "/xp %ceil(target's health - {_preHealHP})% %player%"
 			addClassXP(player,ceil(target's health - {_preHealHP}) + 12)
 		#Miracle
 		else if the name of the player's tool contains "<yellow><bold>Miracle":
 			apply regeneration 3 to the target for 14 seconds
-			damage player's tool by 65
+			damage player's tool by 32
 			show wolf hearts on the target
 			if {quotesToggle.%target%} is true:
 				make target say {playerQuotes.%target%::ThanksForHeals1}
@@ -201,14 +341,14 @@ on right click:
 				apply regeneration 3 to the player for 14 seconds
 				heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
 			set {_preHealHP} to the target's health
-			heal the target by floor(((getEntityStatTotal(player,"MAG")) / 5))
+			heal the target by floor(((getEntityStatTotal(player,"MAG")) / 5) + 20)
 			make server execute command "/xp %ceil(target's health - {_preHealHP})% %player%"
 			addClassXP(player,ceil(target's health - {_preHealHP}) + 20)
 		#Aum
 		else if the name of the player's tool contains "<yellow><bold>Aum":
 			apply regeneration 4 to the target for 15 seconds
 			apply absorption 4 to the target for 30 seconds
-			damage player's tool by 150
+			damage player's tool by 75
 			show wolf hearts on the target
 			if {quotesToggle.%target%} is true:
 				make target say {playerQuotes.%target%::ThanksForHeals1}
@@ -216,13 +356,13 @@ on right click:
 				apply regeneration 4 to the player for 15 seconds
 				heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
 			set {_preHealHP} to the target's health
-			heal the target by floor(((getEntityStatTotal(player,"MAG")) / 5))
+			heal the target by floor(((getEntityStatTotal(player,"MAG")) / 5) + 40)
 			make server execute command "/xp %ceil(target's health - {_preHealHP})% %player%"
 			addClassXP(player,ceil(target's health - {_preHealHP}) + 40)
 		#Restore
 		else if the name of the player's tool contains "<yellow><bold>Restore":
 			apply regeneration 3 to the target for 5 seconds
-			damage player's tool by 35
+			damage player's tool by 17
 			remove weakness from the target
 			remove slowness from the target
 			remove wither from the target
@@ -241,20 +381,20 @@ on right click:
 		else if the name of the player's tool contains "<yellow><bold>Fortify":
 			remove resistance from the target
 			apply resistance 4 to the target for 60 seconds
-			damage player's tool by 150
+			damage player's tool by 75
 			show wolf hearts on the target
 			if {quotesToggle.%target%} is true:
 				make target say {playerQuotes.%target%::ThanksForHeals1}
 			if {_checkSlots} is 1:
 				remove resistance from the player
-				apply resistance 3 to the player for 30 seconds
+				apply resistance 4 to the player for 60 seconds
 			set {_preHealHP} to the target's health
 			heal the target by floor(((getEntityStatTotal(player,"MAG")) / 5))
 			make server execute command "/xp %ceil(target's health - {_preHealHP})% %player%"
 			addClassXP(player,ceil(target's health - {_preHealHP}))
 		#Hammerne
 		else if the name of the player's tool contains "<yellow><bold>Hammerne":
-			damage player's tool by 600
+			damage player's tool by 300
 			show wolf hearts on the target
 			make target execute command "/fix"
 			set {_preHealHP} to the target's health
@@ -265,13 +405,13 @@ on right click:
 		else if the name of the player's tool contains "<yellow><bold>Hasten":
 			remove swiftness from the target
 			apply swiftness 5 to the target for 60 seconds
-			damage player's tool by 150
+			damage player's tool by 75
 			show wolf hearts on the target
 			if {quotesToggle.%target%} is true:
 				make target say {playerQuotes.%target%::ThanksForHeals1}
 			if {_checkSlots} is 1:
 				remove swiftness from the player
-				apply swiftness 3 to the player for 15 seconds
+				apply swiftness 5 to the player for 60 seconds
 			set {_preHealHP} to the target's health
 			heal the target by floor(((getEntityStatTotal(player,"MAG")) / 5))
 			make server execute command "/xp %ceil(target's health - {_preHealHP})% %player%"
@@ -280,27 +420,27 @@ on right click:
 		else if the name of the player's tool contains "<yellow><bold>Enrage":
 			remove strength from the target
 			apply strength 5 to the target for 60 seconds
-			damage player's tool by 150
+			damage player's tool by 75
 			show wolf hearts on the target
 			if {quotesToggle.%target%} is true:
 				make target say {playerQuotes.%target%::ThanksForHeals1}
 			if {_checkSlots} is 1:
 				remove strength from the player
-				apply strength 3 to the player for 15 seconds
+				apply strength 5 to the player for 60 seconds
 			set {_preHealHP} to the target's health
 			heal the target by floor(((getEntityStatTotal(player,"MAG")) / 5))
 			make server execute command "/xp %ceil(target's health - {_preHealHP})% %player%"
 			addClassXP(player,ceil(target's health - {_preHealHP}) + 40)
-		#Sacred Balm (Perk)
+		#Live to Serve (Perk)
 		if {_preHealHP} is set:
-			if checkSlots(player,"Sacred Balm") is 1:
-				if {tempActiveBuffs.def.%player%::Sacred Balm (Perk)} is not set:
-					set {_debug} to changeEntityStatBuff(player,"DEF",9,"Sacred Balm (Perk)",1)
-					set {_debug} to changeEntityStatBuff(player,"RES",9,"Sacred Balm (Perk)",1)
+			if checkSlots(player,"Live to Serve") is 1:
+				if {tempActiveBuffs.def.%player%::Live to Serve (Perk)} is not set:
+					set {_debug} to changeEntityStatBuff(player,"DEF",9,"Live to Serve (Perk)",1)
+					set {_debug} to changeEntityStatBuff(player,"RES",9,"Live to Serve (Perk)",1)
 					apply absorption 5 to the player for 20 seconds
-				if {tempActiveBuffs.def.%target%::Sacred Balm (Perk)} is not set:
-					set {_debug} to changeEntityStatBuff(target,"DEF",9,"Sacred Balm (Perk)",1)
-					set {_debug} to changeEntityStatBuff(target,"RES",9,"Sacred Balm (Perk)",1)
+				if {tempActiveBuffs.def.%target%::Live to Serve (Perk)} is not set:
+					set {_debug} to changeEntityStatBuff(target,"DEF",9,"Live to Serve (Perk)",1)
+					set {_debug} to changeEntityStatBuff(target,"RES",9,"Live to Serve (Perk)",1)
 					apply absorption 5 to the target for 20 seconds
 			#Fast Healing (Perk)
 			if checkSlots(player,"Fast Healing") is 1:
@@ -326,7 +466,7 @@ on right click:
 				#Heal
 				if the name of the player's tool contains "<yellow><bold>Heal":
 					apply regeneration 3 to the loop-player for 2 seconds
-					damage player's tool by 5
+					damage player's tool by 2
 					show wolf hearts on the loop-player
 					if {quotesToggle.%loop-player%} is true:
 						make loop-player say {playerQuotes.%loop-player%::ThanksForHeals1}
@@ -340,7 +480,7 @@ on right click:
 				#Mend
 				else if the name of the player's tool contains "<yellow><bold>Mend":
 					apply regeneration 3 to the loop-player for 4 seconds
-					damage player's tool by 10
+					damage player's tool by 5
 					show wolf hearts on the loop-player
 					if {quotesToggle.%loop-player%} is true:
 						make loop-player say {playerQuotes.%loop-player%::ThanksForHeals1}
@@ -354,7 +494,7 @@ on right click:
 				#Rehabilitate
 				else if the name of the player's tool contains "<yellow><bold>Rehabilitate":
 					apply regeneration 3 to the loop-player for 6 seconds
-					damage player's tool by 15
+					damage player's tool by 7
 					show wolf hearts on the loop-player
 					if {quotesToggle.%loop-player%} is true:
 						make loop-player say {playerQuotes.%loop-player%::ThanksForHeals1}
@@ -382,7 +522,7 @@ on right click:
 				#Imbue
 				else if the name of the player's tool contains "<yellow><bold>Imbue":
 					apply regeneration 3 to the loop-player for 8 seconds
-					damage player's tool by 30
+					damage player's tool by 15
 					show wolf hearts on the loop-player
 					if {quotesToggle.%loop-player%} is true:
 						make loop-player say {playerQuotes.%loop-player%::ThanksForHeals1}
@@ -397,7 +537,7 @@ on right click:
 				else if the name of the player's tool contains "<yellow><bold>Physic":
 					apply regeneration 3 to the loop-player for 9 seconds
 					heal the loop-player by 1
-					damage player's tool by 42
+					damage player's tool by 21
 					show wolf hearts on the loop-player
 					if {quotesToggle.%loop-player%} is true:
 						make loop-player say {playerQuotes.%loop-player%::ThanksForHeals1}
@@ -411,7 +551,7 @@ on right click:
 				#Renewal
 				else if the name of the player's tool contains "<yellow><bold>Renewal":
 					apply regeneration 3 to the loop-player for 11 seconds
-					damage player's tool by 40
+					damage player's tool by 20
 					show wolf hearts on the loop-player
 					if {quotesToggle.%loop-player%} is true:
 						make loop-player say {playerQuotes.%loop-player%::ThanksForHeals1}
@@ -425,7 +565,7 @@ on right click:
 				#Miracle
 				else if the name of the player's tool contains "<yellow><bold>Miracle":
 					apply regeneration 3 to the loop-player for 14 seconds
-					damage player's tool by 65
+					damage player's tool by 35
 					show wolf hearts on the loop-player
 					if {quotesToggle.%loop-player%} is true:
 						make loop-player say {playerQuotes.%loop-player%::ThanksForHeals1}
@@ -440,7 +580,7 @@ on right click:
 				else if the name of the player's tool contains "<yellow><bold>Aum":
 					apply regeneration 4 to the loop-player for 15 seconds
 					apply absorption 4 to the loop-player for 30 seconds
-					damage player's tool by 150
+					damage player's tool by 75
 					show wolf hearts on the loop-player
 					if {quotesToggle.%loop-player%} is true:
 						make loop-player say {playerQuotes.%loop-player%::ThanksForHeals1}
@@ -454,7 +594,7 @@ on right click:
 				#Restore
 				else if the name of the player's tool contains "<yellow><bold>Restore":
 					apply regeneration 3 to the loop-player for 5 seconds
-					damage player's tool by 35
+					damage player's tool by 17
 					remove weakness from the loop-player
 					remove slowness from the loop-player
 					remove wither from the loop-player
@@ -473,7 +613,7 @@ on right click:
 				else if the name of the player's tool contains "<yellow><bold>Fortify":
 					remove resistance from the loop-player
 					apply resistance 4 to the loop-player for 60 seconds
-					damage player's tool by 150
+					damage player's tool by 75
 					show wolf hearts on the loop-player
 					if {quotesToggle.%loop-player%} is true:
 						make loop-player say {playerQuotes.%loop-player%::ThanksForHeals1}
@@ -487,7 +627,7 @@ on right click:
 					addClassXP(player,ceil({_postHealHP} - {_preHealHP}) + 1)
 				#Hammerne
 				else if the name of the player's tool contains "<yellow><bold>Hammerne":
-					damage player's tool by 600
+					damage player's tool by 300
 					show wolf hearts on the loop-player
 					make loop-player execute command "/fix"
 					set {_preHealHP} to the loop-player's health
@@ -498,7 +638,7 @@ on right click:
 				else if the name of the player's tool contains "<yellow><bold>Hasten":
 					remove swiftness from the loop-player
 					apply swiftness 5 to the loop-player for 60 seconds
-					damage player's tool by 150
+					damage player's tool by 75
 					show wolf hearts on the loop-player
 					if {quotesToggle.%loop-player%} is true:
 						make loop-player say {playerQuotes.%loop-player%::ThanksForHeals1}
@@ -514,7 +654,7 @@ on right click:
 				else if the name of the player's tool contains "<yellow><bold>Enrage":
 					remove strength from the loop-player
 					apply strength 5 to the loop-player for 60 seconds
-					damage player's tool by 150
+					damage player's tool by 75
 					show wolf hearts on the loop-player
 					if {quotesToggle.%loop-player%} is true:
 						make loop-player say {playerQuotes.%loop-player%::ThanksForHeals1}
@@ -526,16 +666,16 @@ on right click:
 					heal the loop-player by floor(((getEntityStatTotal(player,"MAG")) / 5))
 					set {_postHealHP} to the loop-player's health
 					addClassXP(player,ceil({_postHealHP} - {_preHealHP}) + 1)
-				#Sacred Balm (Perk)
+				#Live to Serve (Perk)
 				if {_preHealHP} is set:
-					if checkSlots(player,"Sacred Balm") is 1:
-						if {tempActiveBuffs.def.%player%::Sacred Balm (Perk)} is not set:
-							set {_debug} to changeEntityStatBuff(player,"DEF",9,"Sacred Balm (Perk)",1)
-							set {_debug} to changeEntityStatBuff(player,"RES",9,"Sacred Balm (Perk)",1)
+					if checkSlots(player,"Live to Serve") is 1:
+						if {tempActiveBuffs.def.%player%::Live to Serve (Perk)} is not set:
+							set {_debug} to changeEntityStatBuff(player,"DEF",9,"Live to Serve (Perk)",1)
+							set {_debug} to changeEntityStatBuff(player,"RES",9,"Live to Serve (Perk)",1)
 							apply absorption 5 to the player for 20 seconds
-						if {tempActiveBuffs.def.%loop-player%::Sacred Balm (Perk)} is not set:
-							set {_debug} to changeEntityStatBuff(loop-player,"DEF",9,"Sacred Balm (Perk)",1)
-							set {_debug} to changeEntityStatBuff(loop-player,"RES",9,"Sacred Balm (Perk)",1)
+						if {tempActiveBuffs.def.%loop-player%::Live to Serve (Perk)} is not set:
+							set {_debug} to changeEntityStatBuff(loop-player,"DEF",9,"Live to Serve (Perk)",1)
+							set {_debug} to changeEntityStatBuff(loop-player,"RES",9,"Live to Serve (Perk)",1)
 							apply absorption 5 to the loop-player for 20 seconds
 					#Fast Healing (Perk)
 					if checkSlots(player,"Fast Healing") is 1:
@@ -543,4 +683,237 @@ on right click:
 					#Protective trait
 					if {traits.%player%::Protective} is set:
 						heal the loop-player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+	else if checkSlots(player,"Fast Healing") is 1:
+		set {_checkSlots} to checkSlots(player,"Live to Serve")
+		if player's health is less than player's maximum health:
+			#Heal
+			if the name of the player's tool contains "<yellow><bold>Heal":
+				apply regeneration 3 to the player for 2 seconds
+				damage player's tool by 2
+				show wolf hearts on the player
+				if {_checkSlots} is 1:
+					apply regeneration 3 to the player for 2 seconds
+					heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+				set {_preHealHP} to the player's health
+				heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+				set {_postHealHP} to the player's health
+				addClassXP(player,ceil({_postHealHP} - {_preHealHP}) + 1)
+			#Mend
+			else if the name of the player's tool contains "<yellow><bold>Mend":
+				apply regeneration 3 to the player for 4 seconds
+				damage player's tool by 5
+				show wolf hearts on the player
+				if {quotesToggle.%player%} is true:
+					make player say {playerQuotes.%player%::ThanksForHeals1}
+				if {_checkSlots} is 1:
+					apply regeneration 3 to the player for 4 seconds
+					heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+				set {_preHealHP} to the player's health
+				heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+				set {_postHealHP} to the player's health
+				addClassXP(player,ceil({_postHealHP} - {_preHealHP}) + 5)
+			#Rehabilitate
+			else if the name of the player's tool contains "<yellow><bold>Rehabilitate":
+				apply regeneration 3 to the player for 6 seconds
+				damage player's tool by 7
+				show wolf hearts on the player
+				if {quotesToggle.%player%} is true:
+					make player say {playerQuotes.%player%::ThanksForHeals1}
+				if {_checkSlots} is 1:
+					apply regeneration 3 to the player for 6 seconds
+					heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+				set {_preHealHP} to the player's health
+				heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+				set {_postHealHP} to the player's health
+				addClassXP(player,ceil({_postHealHP} - {_preHealHP}) + 10)
+			#Wrys
+			else if the name of the player's tool contains "<yellow><bold>Wrys":
+				apply regeneration 4 to the player for 6 seconds
+				damage player's tool by 2
+				show wolf hearts on the player
+				if {quotesToggle.%player%} is true:
+					make player say {playerQuotes.%player%::ThanksForHeals1}
+				if {_checkSlots} is 1:
+					apply regeneration 4 to the player for 6 seconds
+					heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+				set {_preHealHP} to the player's health
+				heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+				set {_postHealHP} to the player's health
+				addClassXP(player,ceil({_postHealHP} - {_preHealHP}) + 20)
+			#Imbue
+			else if the name of the player's tool contains "<yellow><bold>Imbue":
+				apply regeneration 3 to the player for 8 seconds
+				damage player's tool by 15
+				show wolf hearts on the player
+				if {quotesToggle.%player%} is true:
+					make player say {playerQuotes.%player%::ThanksForHeals1}
+				if {_checkSlots} is 1:
+					apply regeneration 3 to the player for 8 seconds
+					heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+				set {_preHealHP} to the player's health
+				heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+				set {_postHealHP} to the player's health
+				addClassXP(player,ceil({_postHealHP} - {_preHealHP}) + 10)
+			#Physic
+			else if the name of the player's tool contains "<yellow><bold>Physic":
+				apply regeneration 3 to the player for 9 seconds
+				heal the player by 1
+				damage player's tool by 21
+				show wolf hearts on the player
+				if {quotesToggle.%player%} is true:
+					make player say {playerQuotes.%player%::ThanksForHeals1}
+				if {_checkSlots} is 1:
+					apply regeneration 3 to the player for 9 seconds
+					heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+				set {_preHealHP} to the player's health
+				heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+				set {_postHealHP} to the player's health
+				addClassXP(player,ceil({_postHealHP} - {_preHealHP}) + 10)
+			#Renewal
+			else if the name of the player's tool contains "<yellow><bold>Renewal":
+				apply regeneration 3 to the player for 11 seconds
+				damage player's tool by 20
+				show wolf hearts on the player
+				if {quotesToggle.%player%} is true:
+					make player say {playerQuotes.%player%::ThanksForHeals1}
+				if {_checkSlots} is 1:
+					apply regeneration 3 to the player for 11 seconds
+					heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+				set {_preHealHP} to the player's health
+				heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+				set {_postHealHP} to the player's health
+				addClassXP(player,ceil({_postHealHP} - {_preHealHP}) + 12)
+			#Miracle
+			else if the name of the player's tool contains "<yellow><bold>Miracle":
+				apply regeneration 3 to the player for 14 seconds
+				damage player's tool by 35
+				show wolf hearts on the player
+				if {quotesToggle.%player%} is true:
+					make player say {playerQuotes.%player%::ThanksForHeals1}
+				if {_checkSlots} is 1:
+					apply regeneration 3 to the player for 14 seconds
+					heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+				set {_preHealHP} to the player's health
+				heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+				set {_postHealHP} to the player's health
+				addClassXP(player,ceil({_postHealHP} - {_preHealHP}) + 20)
+			#Aum
+			else if the name of the player's tool contains "<yellow><bold>Aum":
+				apply regeneration 4 to the player for 15 seconds
+				apply absorption 4 to the player for 30 seconds
+				damage player's tool by 75
+				show wolf hearts on the player
+				if {quotesToggle.%player%} is true:
+					make player say {playerQuotes.%player%::ThanksForHeals1}
+				if {_checkSlots} is 1:
+					apply regeneration 4 to the player for 15 seconds
+					heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+				set {_preHealHP} to the player's health
+				heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+				set {_postHealHP} to the player's health
+				addClassXP(player,ceil({_postHealHP} - {_preHealHP}) + 40)
+			#Restore
+			else if the name of the player's tool contains "<yellow><bold>Restore":
+				apply regeneration 3 to the player for 5 seconds
+				damage player's tool by 17
+				remove weakness from the player
+				remove slowness from the player
+				remove wither from the player
+				remove poison from the player
+				show wolf hearts on the player
+				if {quotesToggle.%player%} is true:
+					make player say {playerQuotes.%player%::ThanksForHeals1}
+				if {_checkSlots} is 1:
+					apply regeneration 3 to the player for 5 seconds
+					heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+				set {_preHealHP} to the player's health
+				heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+				set {_postHealHP} to the player's health
+				addClassXP(player,ceil({_postHealHP} - {_preHealHP}) + 20)
+			#Fortify
+			else if the name of the player's tool contains "<yellow><bold>Fortify":
+				remove resistance from the player
+				apply resistance 4 to the player for 60 seconds
+				damage player's tool by 75
+				show wolf hearts on the player
+				if {quotesToggle.%player%} is true:
+					make player say {playerQuotes.%player%::ThanksForHeals1}
+				if {_checkSlots} is 1:
+					remove resistance from the player
+					apply resistance 3 to the player for 30 seconds
+					heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+				set {_preHealHP} to the player's health
+				heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+				set {_postHealHP} to the player's health
+				addClassXP(player,ceil({_postHealHP} - {_preHealHP}) + 1)
+			#Hammerne
+			else if the name of the player's tool contains "<yellow><bold>Hammerne":
+				damage player's tool by 300
+				show wolf hearts on the player
+				make player execute command "/fix"
+				set {_preHealHP} to the player's health
+				heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+				set {_postHealHP} to the player's health
+				addClassXP(player,ceil({_postHealHP} - {_preHealHP}) + 40)
+			#Hasten
+			else if the name of the player's tool contains "<yellow><bold>Hasten":
+				remove swiftness from the player
+				apply swiftness 5 to the player for 60 seconds
+				damage player's tool by 75
+				show wolf hearts on the player
+				if {quotesToggle.%player%} is true:
+					make player say {playerQuotes.%player%::ThanksForHeals1}
+				if {_checkSlots} is 1:
+					remove swiftness from the player
+					apply swiftness 3 to the player for 15 seconds
+					heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+				set {_preHealHP} to the player's health
+				heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+				set {_postHealHP} to the player's health
+				addClassXP(player,ceil({_postHealHP} - {_preHealHP}) + 1)
+			#Enrage
+			else if the name of the player's tool contains "<yellow><bold>Enrage":
+				remove strength from the player
+				apply strength 5 to the player for 60 seconds
+				damage player's tool by 75
+				show wolf hearts on the player
+				if {quotesToggle.%player%} is true:
+					make player say {playerQuotes.%player%::ThanksForHeals1}
+				if {_checkSlots} is 1:
+					remove strength from the player
+					apply strength 3 to the player for 15 seconds
+					heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+				set {_preHealHP} to the player's health
+				heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+				set {_postHealHP} to the player's health
+				addClassXP(player,ceil({_postHealHP} - {_preHealHP}) + 1)
+			#Live to Serve (Perk)
+			if {_preHealHP} is set:
+				if checkSlots(player,"Live to Serve") is 1:
+					if {tempActiveBuffs.def.%player%::Live to Serve (Perk)} is not set:
+						set {_debug} to changeEntityStatBuff(player,"DEF",9,"Live to Serve (Perk)",1)
+						set {_debug} to changeEntityStatBuff(player,"RES",9,"Live to Serve (Perk)",1)
+						apply absorption 5 to the player for 20 seconds
+				#Fast Healing (Perk)
+				if checkSlots(player,"Fast Healing") is 1:
+					heal the player by 7.5
+				#Protective trait
+				if {traits.%player%::Protective} is set:
+					heal the player by floor(((getEntityStatTotal(player,"MAG")) / 5))
+	#Global staff effects
+	if {_preHealHP} is set:
+		#maybe staffs will break now????
+		if player's held item's durability is more than or equal to player's held item's maximum durability:
+			set player's held item to air
+			play sound "entity.item.break" with volume 1 and pitch 1 at the player
+		#Second Wind (Perk)
+		if checkSlots(player,"Second Wind") is 1:
+			loop all entities in radius 7 of the player:
+				if {party.%loop-entity%} is not {party.%player%}:
+					if loop-entity does not have slowness:
+						push loop-entity up at speed 0.6
+						push loop-entity backwards at speed 1.35
+						apply slowness 3 to the loop-entity for 3 seconds
+	#if durability of player's tool is less than 1:
+	#	set player's tool to air
 				

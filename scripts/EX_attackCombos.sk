@@ -14,6 +14,7 @@ command /toggleComboBar:
 				
 every 0.1 seconds:
 	loop all players:
+		#Melee Fatigue
 		if {t_weaponComboPenalty.%loop-player%} is set:
 			clear {t_comboBuildup.%loop-player%}
 			subtract 0.1 from {t_weaponComboPenalty.%loop-player%}
@@ -56,3 +57,16 @@ every 0.1 seconds:
 					clear {t_comboBuildup.%loop-player%}
 					if {enableComboBar.%loop-player%} is true:
 						set bossbar "combobar.%loop-player's uuid%" progress to 0
+		#Belt Feed (Perk)
+		if {t_beltFeedPenalty.%loop-player%} is set:
+			subtract 2 from {t_beltFeedPenalty.%loop-player%}
+			#Sets ammo count of equipped gun to 0 if overheated
+			if {t_beltFeedPenalty.%loop-player%} is more than 100:
+				if nbt of loop-player's tool contains "FirearmType:":
+					set the 8th line of the lore of the loop-player's tool to "0"
+			else:
+				if nbt of loop-player's tool contains "FirearmType:":
+					set the 8th line of the lore of the loop-player's tool to "1"
+			if {t_beltFeedPenalty.%loop-player%} is less than 0:
+				set {t_beltFeedPenalty.%loop-player%} to 0
+			set bossbar "beltfeed.%loop-player's uuid%" progress to {t_beltFeedPenalty.%loop-player%}

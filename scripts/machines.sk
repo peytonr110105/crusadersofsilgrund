@@ -9,7 +9,7 @@ on block place:
 		wait 1 tick
 		loop 25 times:
 			if block at {_loc} is air:
-				set block at {_loc} to north facing ladder
+				set block at {_loc} to south facing ladder
 				if block behind {_loc} is air:
 					set block behind {_loc} to oak planks
 				set {_loc} to location of block below {_loc}
@@ -26,7 +26,7 @@ on block place:
 		wait 1 tick
 		loop 50 times:
 			if block at {_loc} is air:
-				set block at {_loc} to north facing ladder
+				set block at {_loc} to south facing ladder
 				if block behind {_loc} is air:
 					set block behind {_loc} to oak planks
 				set {_loc} to location of block below {_loc}
@@ -43,7 +43,7 @@ on block place:
 		wait 1 tick
 		loop 255 times:
 			if block at {_loc} is air:
-				set block at {_loc} to north facing ladder
+				set block at {_loc} to south facing ladder
 				if block behind {_loc} is air:
 					set block behind {_loc} to oak planks
 				set {_loc} to location of block below {_loc}
@@ -80,7 +80,7 @@ on block place:
 		wait 1 tick
 		loop 25 times:
 			if block at {_loc} is air:
-				set block at {_loc} to north facing ladder
+				set block at {_loc} to south facing ladder
 				if block behind {_loc} is air:
 					set block behind {_loc} to oak planks
 				set {_loc} to location of block above {_loc}
@@ -108,7 +108,7 @@ on right click on any fence:
 			set {t_isRappeling.%player%} to "RappelOK"
 			set {t_rappelFacing.%player%} to event-block's location
 			send "<light green>Now rappelling." to the player
-			send "<light blue>- JUMP off the ground to begin rappeling." to the player
+			send "<light blue>- Hold SNEAK, then JUMP off the ground to begin rappeling." to the player
 			send "<light blue>- SNEAK to slow your descent. Hold to climb back up the rope." to the player
 			send "<light blue>- LEFT-CLICK a wall to kick off of it." to the player
 			send "<light blue>- You will automatically stop rappeling when you reach the ground." to the player
@@ -143,41 +143,45 @@ on damage:
 		if damage cause is fall:
 			if {t_isRappeling.%victim%} is "Rappeling":
 				cancel event
+			else if {t_isRappeling.%victim%} is "RappelOK":
+				cancel event
 		
 #Main rappelling behavior
 on jump:
 	if {t_isRappeling.%player%} is "RappelOK":
-		set {t_isRappeling.%player%} to "Rappeling"
-		set {_maxY} to y-coordinate of {t_rappelFacing.%player%}
-		wait 10 ticks
-		while player is not on ground:
-			if player is not sneaking:
-				if player does not have resistance:
-					apply resistance 2 to the player for 1 second
-				remove levitation from the player
-				push the player downwards at speed 0.05
-			else:
-				if player's y-coordinate is less than {_maxY}:
-					remove resistance from the player
-					push the player upwards at speed 0.05
-					apply levitation 1 to the player for 1 seconds
-				else:
+		if player is sneaking:
+			set {t_isRappeling.%player%} to "Rappeling"
+			set {_maxY} to y-coordinate of {t_rappelFacing.%player%}
+			push the player upwards at speed 0.2
+			wait 10 ticks
+			while player is not on ground:
+				if player is not sneaking:
+					if player does not have resistance:
+						apply resistance 2 to the player for 1 second
 					remove levitation from the player
-					push the player downwards at speed 0.05					
-			#Push towards the rappel post
-			#if player's facing is {_dir}:
-			#	push the player forwards at speed 0.05
-			#else:
-			#	push the player backwards at speed 0.05
-			push player (direction from {t_rappelFacing.%player%} to player) at speed -0.1
-			play sound "entity.fishing_bobber.retrieve" with volume 1 and pitch 0.8 at the player
-			if player is on ground:
-				exit 1 loop
-			else if block at player is water:
-				exit 1 loop
+					push the player downwards at speed 0.05
+				else:
+					if player's y-coordinate is less than {_maxY}:
+						remove resistance from the player
+						push the player upwards at speed 0.05
+						apply levitation 1 to the player for 1 seconds
+					else:
+						remove levitation from the player
+						push the player downwards at speed 0.05					
+				#Push towards the rappel post
+				#if player's facing is {_dir}:
+				#	push the player forwards at speed 0.05
+				#else:
+				#	push the player backwards at speed 0.05
+				push player (direction from {t_rappelFacing.%player%} to player) at speed -0.1
+				play sound "entity.fishing_bobber.retrieve" with volume 1 and pitch 0.8 at the player
+				if player is on ground:
+					exit 1 loop
+				else if block at player is water:
+					exit 1 loop
+				wait 2 ticks
+			play sound "block.gravel.break" with volume 1.5 and pitch 0.7 at the player
+			play 25 (stone block break with speed 1) at the player
 			wait 2 ticks
-		play sound "block.gravel.break" with volume 1.5 and pitch 0.7 at the player
-		play 25 (stone block break with speed 1) at the player
-		wait 2 ticks
-		clear {t_rappelFacing.%player%}
-		clear {t_isRappeling.%player%}
+			clear {t_rappelFacing.%player%}
+			clear {t_isRappeling.%player%}

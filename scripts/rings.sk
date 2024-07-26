@@ -1,25 +1,25 @@
 
-every 15 seconds:
+every 7 seconds:
 	loop all players:
 		loop all items in loop-player's inventory:
 			if the name of the loop-item is "<light green><bold>Life Ring":
 				if loop-player is alive:
-					heal the loop-player by (loop-player's maximum health * 0.1)
+					heal the loop-player by (loop-player's maximum health * 0.35)
 			else if the name of the loop-item is "<light green><bold>Recover Ring":
 				if loop-player is alive:
-					heal the loop-player by (loop-player's maximum health * 0.5)
+					heal the loop-player by (loop-player's maximum health * 0.8)
 			else if the name of the loop-item is "<light cyan><bold>Speed Ring":
-				apply swiftness 2 to the loop-player for 15 seconds
+				apply swiftness 2 to the loop-player for 7 seconds
 			else if the name of the loop-item contains "Power Ring":
-				apply strength 2 to the loop-player for 15 seconds
+				apply strength 2 to the loop-player for 7 seconds
 			else if the name of the loop-item contains "Shield Ring":
-				apply resistance 2 to the loop-player for 15 seconds
+				apply resistance 2 to the loop-player for 7 seconds
 			else if the name of the loop-item is "<gold><bold>Crest of Valor":
-				apply strength 4 to the loop-player for 15 seconds
+				apply strength 4 to the loop-player for 7 seconds
 			else if the name of the loop-item is "<gold><bold>Crest of Resilience":
-				apply resistance 4 to the loop-player for 15 seconds
+				apply resistance 4 to the loop-player for 7 seconds
 			else if the name of the loop-item is "<gold><bold>Crest of Wisdom":
-				apply swiftness 4 to the loop-player for 15 seconds
+				apply swiftness 4 to the loop-player for 7 seconds
 			
 on right-click:
 	if the name of the event-item is "<light purple><bold>Return Ring":

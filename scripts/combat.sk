@@ -73,9 +73,11 @@ function changeEntityStatBuff(ENT: entity, STAT: text, CHANGE: number,SKILL: tex
 		clear {_CID}
 		add {_CHANGE} to {t_%{_STAT}%buff.%{_ENT}%}
 		if {_TEMPORARY} is 1:
-			set {t_tempActiveBuffs.%{_STAT}%.%{_ENT}%::%{_SKILL}%} to {_CHANGE}
+			set {t_tempActiveBuffs.%{_STAT}%.%{_ENT}%::%{_SKILL}%} to {_CHANGE} + {t_tempActiveBuffs.%{_STAT}%.%{_ENT}%::%{_SKILL}%}
 		else:
 			set {t_activeBuffs.%{_STAT}%.%{_ENT}%::%{_SKILL}%} to {_CHANGE}
+			if {t_activeBuffs.%{_STAT}%.%{_ENT}%::%{_SKILL}%} is 0:
+				clear {t_activeBuffs.%{_STAT}%.%{_ENT}%::%{_SKILL}%}
 		#Updates entity Max HP if needed
 		if {_STAT} is "HP":
 			set {_ENT}'s maximum health to (getEntityStatTotal({_ENT},"HP") / 2)
@@ -366,11 +368,12 @@ function getEntityRange(ENT: entity) :: number:
 	else if {_ENT}'s tool is a book:
 		add 2 to {_range}
 	else if {_ENT}'s tool is any hoe:
-		add 2 to {_range}
+		add 1 to {_range}
 	else if {_ENT}'s tool is blaze powder:
 		add 2 to {_range}
 	else if {_ENT}'s tool is air:
 		add 1 to {_range}
+	return {_range}
 		
 #Applies an effect to a given entity that activates every second for a specified duration
 function applyOOCStatusEffect(ENT: entity,STATUS: text,DURATION: number) :: number:
@@ -460,14 +463,27 @@ function getAllyLeadership(TGT: entity) :: number:
 			if {party.%loop-player%} is {party.%{_TGT}%}:
 				if loop-player is {_TGT}:
 					add floor(((getEntityStatTotal(loop-player,"CHR")) / 4) * ((checkSlots({_TGT},"Under This Banner")) + 1)) to {_leadership}
+					add 1 to {_tgtcnt}
 				else:
-					add floor(((getEntityStatTotal(loop-player,"CHR")) / 2) * ((checkSlots({_TGT},"Under This Banner")) + 1)) to {_leadership}
+					add floor(((getEntityStatTotal(loop-player,"CHR")) / 2) * ((checkSlots(loop-player,"Under This Banner")) + 1)) to {_leadership}
+					add 1 to {_tgtcnt}
+		loop all armor stands in radius 30 of {_TGT}:
+			if metadata value "isBOHDummy" of the loop-entity is 1:
+				add floor(((getEntityStatTotal({t_beaconOwner.%loop-entity%},"CHR")) / 2) * ((checkSlots({_TGT},"Under This Banner")) + 1)) to {_leadership}
+				add 1 to {_tgtcnt}
 	else if {_TGT} is a monster:
 		loop all monsters in radius 15 of {_TGT}:
 			if loop-monster is {_TGT}:
 				add floor(((getEntityStatTotal(loop-monster,"CHR")) / 4) * ((checkSlots({_TGT},"Under This Banner")) + 1)) to {_leadership}
+				add 1 to {_tgtcnt}
 			else:
-				add floor(((getEntityStatTotal(loop-monster,"CHR")) / 2) * ((checkSlots({_TGT},"Under This Banner")) + 1)) to {_leadership}
+				add floor(((getEntityStatTotal(loop-monster,"CHR")) / 2) * ((checkSlots(loop-monster,"Under This Banner")) + 1)) to {_leadership}
+				add 1 to {_tgtcnt}
+		#Under This Banner
+		loop all players in radius 30 of {_TGT}:
+			if checkSlots(loop-player,"Under This Banner") is 1:
+				set {_leadership} to {_leadership} / 2
+	set {_leadership} to floor({_leadership} / ({_tgtcnt} / 2))
 	#50+ leadership gives diminishing returns
 	if {_leadership} is more than 50:
 		set {_leadership} to ({_leadership} ^ 0.75)
@@ -547,9 +563,9 @@ function defensiveSpecialCheck(ENT: entity, SKL: number, PCT: number, CAP: numbe
 	if the 6th line of the lore of {_ENT}'s tool contains "Slaying":
 		add 10 to {_odds}
 	if the 2nd line of the lore of {_ENT}'s tool contains "Shield Pulse":
-		add 20 to {_odds}
+		add 30 to {_odds}
 	if checkSlots({_ENT},"Shield Pulse") is 1:
-		add 20 to {_odds}
+		add 30 to {_odds}
 	if {dSoulActive.%{_ENT}%} is set:
 		set {_DraconicAura} to checkSlots({_ENT},"Draconic Aura")
 		if {_DraconicAura} is 1:
@@ -756,7 +772,9 @@ function getEntityWeaponAbilityRequirement(WPN: item, ENT: entity) :: number:
 		add 1 to {_linecount}
 		set {_wpnskill::*} to line {_linecount} of the lore of {_WPN} split at " - "
 		set {_wpnskill::2} to decolorize({_wpnskill::2})
-		add {wpndata_abilityrequirements::%{_wpnskill::2}%} to {_weaponAbilityTotal}
+		if {_wpnskill::2} is set:
+			add {wpndata_abilityrequirements::%{_wpnskill::2}%} to {_weaponAbilityTotal}
+			#send "wpn skill %{_linecount}% : %{wpndata_abilityrequirements::%{_wpnskill::2}%}%" to {_ENT}
 		clear {_wpnskill::*}
 	if nbt of {_WPN} contains "sacredTreasureID:":
 		set {_treasureID} to "%tag "sacredTreasureID" of {_WPN}'s nbt%" parsed as integer
@@ -766,6 +784,7 @@ function getEntityWeaponAbilityRequirement(WPN: item, ENT: entity) :: number:
 	subtract ({_WR} * 3) from {_weaponAbilityTotal}
 	if {_weaponAbilityTotal} is less than 0:
 		set {_weaponAbilityTotal} to 0
+	#send "weapon ability total: %{_weaponAbilityTotal}%" to {_ENT}
 	return {_weaponAbilityTotal}
 	
 #Calculates the damage reduction an entity's armor is providing.
@@ -1107,7 +1126,8 @@ function getEntityOOCStatBuff(ENT: entity,STAT: text,TYPE: number) :: number:
 #Note: 0.5 hearts is subtracted from the actual recoil to give the player the proper damage effects (sound effect, aimpunch, etc)
 function applyRecoilDamage(ENT: entity,DMG: number):
 	set {_ENT}'s health to ({_ENT}'s health - ({_DMG} - 0.5))
-	damage {_ENT} by 0.5 with fake cause void
+	if {_ENT}'s health is more than 0.5:
+		damage {_ENT} by 0.5 with fake cause void
 	
 #Backs up the player's current hotbar to the specified variable
 #Set 3rd argument to 1 to clear the player's hotbar after saving
@@ -1132,7 +1152,74 @@ function getEntitySacredTreasure(ENT: entity) :: number:
 	set {_STID} to tag "sacredTreasureID" of {_ENT}'s tool's nbt
 	#send "%{_STID}%" to {_ENT}
 	return {_STID}
+	
+#Gets results of the weapon triangle between two entities for ENT-1
+function getWeaponTriangleBonus(ATT: entity, VIC: entity) :: number:
+	#Weapon triangle is ignored for ranged weapons
+	if getEntityRange({_ATT}) is 2:
+		return 0
+	else if getEntityRange({_ATT}) is 4:
+		return 0
+	else if getEntityRange({_VIC}) is 2:
+		return 0
+	else if getEntityRange({_VIC}) is 4:
+		return 0
+	set {_ATKWEP} to getEntityWeaponClass({_ATT}'s tool)
+	set {_VICWEP} to getEntityWeaponClass({_VIC}'s tool)
+	#Melee weapon triangle:
+	#Swords > Axes, Swords > Gauntlets, Swords < Lances
+	if {_ATKWEP} is "Swords":
+		if {_VICWEP} is "Lances":
+			return -15
+		else if {_VICWEP} is "Axes":
+			return 15
+		else if {_VICWEP} is "Gauntlets":
+			return 15
+		else:
+			return 0
+	#Lances > Swords, Lances > Daggers, Axes > Lances
+	else if {_ATKWEP} is "Lances":
+		if {_VICWEP} is "Axes":
+			return -15
+		else if {_VICWEP} is "Swords":
+			return 15
+		else if {_VICWEP} is "Daggers":
+			return 15
+		else:
+			return 0
+	#Axes > Lances, Swords > Axes, Daggers > Axes (sorry)
+	else if {_ATKWEP} is "Axes":
+		if {_VICWEP} is "Swords":
+			return -15
+		else if {_VICWEP} is "Lances":
+			return 15
+		else if {_VICWEP} is "Daggers":
+			return -15
+		else:
+			return 0
+	else:
+		return 0
+		
+#Checks the entity's active status effect list for a particular status effect.
+#Returns 1 if status effect is active, otherwise returns 0.
+function checkActiveStatusEffect(ENT: entity,EFF: text) :: number:
+	if {t_activeStatusEffects.%{_ENT}%::%{_EFF}%} is set:
+		return 1
+	return 0
+		
+#Adds a new status effect to the specified entity.
+#Status effects should clear on server reset, so players and mobs use temp (t_) variables for this.
+#If DUR is set to -1, the status effect will be removed after the next combat.
+#If the status effect is already active, the duration will be reset (if applicable)
+function addStatusEffect(ENT: entity,EFF: text,DUR: number):
+	if {t_activeStatusEffects.%{_ENT}%::%{_EFF}%} is set:
+		if {t_activeStatusEffects.%{_ENT}%::%{_EFF}%} is less than {_DUR}:
+			set {t_activeStatusEffects.%{_ENT}%::%{_EFF}%} to {_DUR}
+	else:
+		set {t_activeStatusEffects.%{_ENT}%::%{_EFF}%} to {_DUR}
 
+
+		
 #Define new crafting recipes:
 on load:
 	#Netherite weaps
@@ -1204,8 +1291,8 @@ on load:
 	register new shapeless recipe for book named "<light yellow>Nosferatu" with nbt "{TomeType:15}" with lore "<white>A master's tome containing the Nosferatu spell.", "", "", "", "", "", "", "", "", "Uses Left:", "60" using air, air, air, air, diamond, lapis block, redstone dust, book, snowball with id "tome_nosferatu" in group "magic"
 	register new shapeless recipe for book named "<light yellow>Light" with nbt "{TomeType:16}" with lore "<white>An intermediate's tome containing the Light spell.", "", "", "", "", "", "", "", "", "Uses Left:", "130" using air, air, air, air, air, air, redstone dust, book, feather with id "tome_light" in group "magic"
 	#Misc
-	register new shapeless recipe for book named "<light yellow>Rescue" with nbt "{TomeType:22}" with lore "<white>A specialty tome containing the Rescue spell.", "", "", "", "", "", "", "", "", "Uses Left:", "12" using air, air, air, air, air, lapis block, redstone dust, book, fishing rod with id "tome_rescue" in group "magic"
-	register new shapeless recipe for book named "<light yellow>Slipgate" with nbt "{TomeType:23}" with lore "<white>A specialty tome containing the Slipgate spell.", "", "", "", "", "", "", "", "", "Uses Left:", "12" using air, air, air, air, air, lapis block, redstone dust, book, rabbit hide with id "tome_slipgate" in group "magic"
+	register new shapeless recipe for book named "<light yellow>Rescue" with nbt "{TomeType:22}" with lore "<white>A specialty tome containing the Rescue spell.", "", "", "", "", "", "", "", "", "Uses Left:", "10000" using air, air, air, air, air, lapis block, redstone dust, book, fishing rod with id "tome_rescue" in group "magic"
+	register new shapeless recipe for book named "<light yellow>Slipgate" with nbt "{TomeType:23}" with lore "<white>A specialty tome containing the Slipgate spell.", "", "", "", "", "", "", "", "", "Uses Left:", "10000" using air, air, air, air, air, lapis block, redstone dust, book, rabbit hide with id "tome_slipgate" in group "magic"
 	register new shapeless recipe for book named "<light yellow>Silence" with nbt "{TomeType:24}" with lore "<white>A specialty tome containing the Silence spell.", "", "", "", "", "", "", "", "", "Uses Left:", "6" using air, air, air, air, diamond, lapis block, redstone dust, book, cobblestone with id "tome_silence" in group "magic"
 	register new shapeless recipe for book named "<light yellow>Thief" with nbt "{TomeType:25}" with lore "<white>A specialty tome containing the Thief spell.", "", "", "", "", "", "", "", "", "Uses Left:", "3" using air, air, air, air, diamond, lapis block, redstone dust, book, tripwire hook with id "tome_thief" in group "magic"
 
@@ -1247,6 +1334,15 @@ every 0.1 seconds:
 			apply swiftness 2 to loop-player for 1 second
 			apply jump boost 2 to loop-player for 1 second
 			apply mining fatigue 5 to loop-player for 1 second
+		#Override bossbar timer
+		if {t_overrideActive.%loop-player%} is true:
+			subtract 2 from {t_overrideGauge.%loop-player%}
+			set bossbar "override.%loop-player's uuid%" progress to {t_overrideGauge.%loop-player%}
+			if {t_overrideGauge.%loop-player%} is less than or equal to 0:
+				set {t_overrideGauge.%loop-player%} to 0
+				set {t_overrideActive.%loop-player%} to false
+				send formatted "<light red>Override depleted!" to loop-player
+			
 	
 #Players can transfer more momentum into the air.
 on jump:
@@ -1359,6 +1455,51 @@ on sneak toggle:
 						#Roll behavior
 						#Roll Overrides
 						set {_flight} to checkSlots(player,"Flight")
+						if {_flight} is not 1:
+							#Escape Artist - Dodge Roll behavior
+							if checkSlots(player,"Escape Artist") is 1:
+								#Detonating a set dummy
+								if {t_escapeArtistDummy.%player%} is alive:
+									loop all entities in radius 10 of {t_escapeArtistDummy.%player%}:
+										if {party.%loop-entity%} is not {party.%player%}:
+											if loop-entity is alive:
+												if metadata value "isEADummy" of the loop-entity is 1:
+													create safe explosion of force 0 at the loop-entity
+													delete the loop-entity
+												else:
+													applyRecoilDamage(loop-entity,20)
+									clear {t_escapeArtistDummy.%player%}
+								#Spawning a dummy
+								else:
+									spawn 1 armor stand at the player
+									set {t_escapeArtistDummy.%player%} to the last spawned armor stand
+									set metadata value "isEADummy" of {t_escapeArtistDummy.%player%} to 1
+									set {t_escapeArtistDummy.%player%}'s helmet to 1 leather helmet
+									set {t_escapeArtistDummy.%player%}'s chestplate to 1 leather chestplate
+									set {t_escapeArtistDummy.%player%}'s leggings to 1 leather leggings
+									set {t_escapeArtistDummy.%player%}'s boots to 1 leather boots
+							#Beacon of Hope - Dodge Roll Behavior
+							else if checkSlots(player,"Beacon of Hope") is 1:
+								#Destroying a set dummy
+								if {t_beaconofhopeDummy.%player%} is alive:
+									loop all entities in radius 1 of {t_beaconofhopeDummy.%player%}:
+										if metadata value "isBOHDummy" of the loop-entity is 1:
+											create safe explosion of force 1 at loop-entity
+											delete the loop-entity
+											exit 1 loop
+									clear {t_beaconOwner.%{t_beaconofhopeDummy.%player%}%}
+									clear {t_beaconofhopeDummy.%player%}
+								else:
+									spawn 1 armor stand at the player
+									set {t_beaconofhopeDummy.%player%} to the last spawned armor stand
+									set {t_beaconOwner.%{t_beaconofhopeDummy.%player%}%} to the player
+									set metadata value "isBOHDummy" of {t_beaconofhopeDummy.%player%} to 1	
+									#Copy player's equipment
+									set {t_beaconofhopeDummy.%player%}'s helmet to player's helmet
+									set {t_beaconofhopeDummy.%player%}'s chestplate to player's chestplate
+									set {t_beaconofhopeDummy.%player%}'s leggings to player's leggings
+									set {t_beaconofhopeDummy.%player%}'s boots to player's boots
+									set {t_beaconofhopeDummy.%player%}'s tool to player's tool
 						if the 1st line of the lore of the player's boots contains "Lunge":
 							push the player in horizontal direction of the player at speed 1.35
 							push the player up at speed 0.3
@@ -1437,7 +1578,7 @@ on tool change:
 	#Setting the countdown timer to -1 effectively "resets" the timer and prevents the skill's effect from activating early.
 	loop {t_toolSkillCountdownTimer.%player%::*}:
 		set {t_toolSkillCountdownTimer.%player%::%loop-index%} to -1
-	if getEntitySkillsInHand(player,"Renewal",2,2) is more than 0:
+	if getEntitySkillsInHand(player,"Renewal",0,2) is more than 0:
 		set {t_toolSkillCountdownTimer.%player%::Renewal} to 2
 		while {t_toolSkillCountdownTimer.%player%::Renewal} is more than 0:
 			wait 1 second
@@ -1635,6 +1776,20 @@ on damage:
 			clear {npc_party.%citizen id of victim%}
 			subtract 1 from {activeSummonCount.%{npc_summonOwner.%citizen id of victim%}%}
 			clear {npc_summonOwner.%citizen id of victim%}
+		#Escape Artist dummy on-damage detonation
+		else if metadata value "isEADummy" of the victim is 1:
+			loop all entities in radius 10 of the victim:
+				#On-damage detonations hurt allies but not the dummy owner. Be careful!
+				if {t_escapeArtistDummy.%loop-entity%} is not the victim:
+					if loop-entity is alive:
+						applyRecoilDamage(loop-entity,20)
+			create safe explosion of force 3 at the victim
+			delete the victim
+			cancel event
+		#Beacon of Hope destruction
+		else if metadata value "isBOHDummy" of the victim is 1:
+			delete the victim
+			cancel event
 		else:
 			#Shadow Walker undo - Victim
 			if {ShadowWalkerArmourStorage.%victim%::Helmet} is set:
@@ -1912,12 +2067,14 @@ on damage:
 						play 5 (lava pop with speed 1) at the victim
 						set damage to damage + 3
 						add 0.5 to {_spellRecoil}
+						set {_ascmagEff} to 1
 					#Spark
 					if {_spelleffect%{_forloop}%} is 2:
 						play 10 (critical hit with speed 1) at the victim
 						show firework's spark on the victim
 						set damage to damage + 6
 						add 1 to {_spellRecoil}
+						set {_ascmagEff} to 2
 					#Frost
 					if {_spelleffect%{_forloop}%} is 3:
 						play 5 (ice break with speed 1) at the victim
@@ -1925,27 +2082,32 @@ on damage:
 						send formatted "<cyan><bold>%attacker% slowed you with a Frost spell!" to the victim
 						set damage to damage + 2
 						add 0.5 to {_spellRecoil}
+						set {_ascmagEff} to 3
 					#Gust
 					if {_spelleffect%{_forloop}%} is 4:
 						play 5 (green wool break with speed 1) at the victim
 						push the victim backwards at speed 1.5
 						set damage to damage + 3
 						add 0.5 to {_spellRecoil}
+						set {_ascmagEff} to 4
 					#Fire
 					if {_spelleffect%{_forloop}%} is 5:
 						play 15 (lava pop with speed 1) at the victim
 						ignite the victim
 						set damage to damage + 5
 						add 1 to {_spellRecoil}
-						loop blocks in radius 1 of {_loc}:
-							loop-block is air
-							set loop-block to fire
+						set {_ascmagEff} to 1
+						if getEntitySkillsInHand(attacker,"Unchained Magic",0,4) is 1:
+							loop blocks in radius 1 of {_loc}:
+								loop-block is air
+								set loop-block to fire
 					#Thunder
 					if {_spelleffect%{_forloop}%} is 6:
 						play 20 (critical hit with speed 1) at the victim
 						show firework's spark on the victim
 						set damage to damage + 8
 						add 1.5 to {_spellRecoil}
+						set {_ascmagEff} to 2
 					#Hail
 					if {_spelleffect%{_forloop}%} is 7:
 						play 15 (ice break with speed 1) at the victim
@@ -1953,6 +2115,7 @@ on damage:
 						send formatted "<cyan><bold>%attacker% slowed you with a Hail spell!" to the victim
 						set damage to damage + 3
 						add 1 to {_spellRecoil}
+						set {_ascmagEff} to 3
 					#Wind
 					if {_spelleffect%{_forloop}%} is 8:
 						play 15 (green wool break with speed 1) at the victim
@@ -1960,21 +2123,24 @@ on damage:
 						push the victim upwards at speed 0.5
 						set damage to damage + 4.5
 						add 1 to {_spellRecoil}
+						set {_ascmagEff} to 4
 					#Elfire
 					if {_spelleffect%{_forloop}%} is 9:
 						ignite the victim
 						play 5 (mob spawner flames with speed 1) at the victim
 						set damage to damage + 9
 						add 1.5 to {_spellRecoil}
-						if getEntitySkillsInHand(attacker,"Chained Magic",0,4) is 0:
+						if getEntitySkillsInHand(attacker,"Unchained Magic",0,4) is 1:
 							loop blocks in radius 2 of {_loc}:
 								loop-block is air
 								set loop-block to fire
+						set {_ascmagEff} to 1
 					#Thoron
 					if {_spelleffect%{_forloop}%} is 10:
 						set damage to damage + 12
 						strike lightning effect at the victim
 						add 2.5 to {_spellRecoil}
+						set {_ascmagEff} to 2
 					#Blizzard
 					if {_spelleffect%{_forloop}%} is 11:
 						play 40 (ice break with speed 1) at the victim
@@ -1983,6 +2149,7 @@ on damage:
 						send formatted "<cyan><bold>%attacker% slowed you with a Blizzard spell!" to the victim
 						set damage to damage + 4.5
 						add 1.5 to {_spellRecoil}
+						set {_ascmagEff} to 3
 					#Tornado
 					if {_spelleffect%{_forloop}%} is 12:
 						play 40 (critical hit with speed 1) at the victim
@@ -1991,6 +2158,7 @@ on damage:
 						push the victim upwards at speed 1.5
 						set damage to damage + 5.5
 						add 1.5 to {_spellRecoil}
+						set {_ascmagEff} to 4
 					#Bolganone
 					if {_spelleffect%{_forloop}%} is 13:
 						ignite the victim
@@ -1998,10 +2166,11 @@ on damage:
 						play 20 (lava pop with speed 1) at the victim
 						set damage to damage + 13
 						add 2.5 to {_spellRecoil}
-						if getEntitySkillsInHand(attacker,"Chained Magic",0,4) is 0:
+						if getEntitySkillsInHand(attacker,"Unchained Magic",0,4) is 1:
 							loop blocks in radius 3 of {_loc}:
 								loop-block is air
 								set loop-block to fire
+						set {_ascmagEff} to 1
 					#Aurora
 					if {_spelleffect%{_forloop}%} is 14:
 						show 80 (firework's spark with speed 1) at the victim
@@ -2009,6 +2178,7 @@ on damage:
 						strike lightning effect at the victim
 						strike lightning effect at the victim
 						add 2.5 to {_spellRecoil}
+						set {_ascmagEff} to 2
 					#Nosferatu
 					if {_spelleffect%{_forloop}%} is 15:
 						show 60 (purple wool break with speed 1) at the victim
@@ -2016,12 +2186,14 @@ on damage:
 						set damage to damage + 3.5
 						heal the attacker by damage
 						add 1.5 to {_spellRecoil}
+						set {_ascmagEff} to 3
 					#Spellblade
 					if {_spelleffect%{_forloop}%} is 17:
 						show 80 (light green wool break with speed 1) at the victim
 						show 80 (critical hit with speed 1) at the victim
 						set damage to damage + floor((({strbuff.%attacker%} / 2) + ({defbuff.%attacker%} / 2) + ({MAGBuff.%attacker%} / 2) + ({spdbuff.%attacker%} / 2) + ({sklbuff.%attacker%} / 2)) ^ 0.75)
 						add damage / 2 to {_spellRecoil}
+						set {_ascmagEff} to 4
 					#Forseti
 					if {_spelleffect%{_forloop}%} is 18:
 						show 80 (light green wool break with speed 1) at the victim
@@ -2032,12 +2204,14 @@ on damage:
 						if attacker's health is attacker's maximum health:
 							set damage to damage * 2
 							add 1.5 to {_spellRecoil}
+						set {_ascmagEff} to 4
 					#Naga
 					if {_spelleffect%{_forloop}%} is 19:
 						show 80 (yellow wool break with speed 1) at the victim
 						show 80 (critical hit with speed 1) at the victim
 						show firework's spark on the victim
 						set damage to damage + 10
+						set {_ascmagEff} to 2
 						if victim is ender dragon:
 							set damage to damage * 1.5
 							send formatted "<yellow>Dealt effective damage!" to the attacker
@@ -2060,6 +2234,7 @@ on damage:
 						show 40 (smoke with speed 0) at the victim
 						add 6.5 to {_spellRecoil}
 						set damage to damage + 10
+						set {_ascmagEff} to 3
 					#Stone
 					if {_spelleffect%{_forloop}%} is 21:
 						show 80 (stone break with speed 1) at the victim
@@ -2067,16 +2242,17 @@ on damage:
 						apply slowness 10 to the victim for 2 seconds
 						set damage to damage + 1.5
 						add 5 to {_spellRecoil}
+						set {_ascmagEff} to 3
 					#Rescue:
 					#if {_spelleffect%{_forloop}%} is 22:
 					#	show 80 (blue wool break with speed 1) at the victim
-					#	set damage to 0
+					#	#set damage to 0
 					#	teleport the victim to the attacker
 					#	add 5 to {_spellRecoil}
 					#Slipgate
 					#if {_spelleffect%{_forloop}%} is 23:
 					#	show 80 (blue wool break with speed 1) at the attacker
-					#	set damage to 0
+					#	#set damage to 0
 					#	teleport the attacker to the victim
 					#	add 5 to {_spellRecoil}
 					#Silence
@@ -2086,6 +2262,7 @@ on damage:
 						apply weakness 4 to the victim for 6 seconds
 						set {_disableAutoCounters} to true
 						add 1.5 to {_spellRecoil}
+						set {_ascmagEff} to 3
 					#Thief
 					if {_spelleffect%{_forloop}%} is 25:
 						show 60 (cobweb break with speed 1) at the victim
@@ -2107,11 +2284,22 @@ on damage:
 						else:
 							play 40 (glowstone break with speed 0) at the projectile
 							add 2 to {_spellRecoil}
+						set {_ascmagEff} to 2
 					if {_forloop} is 1:
 						if {_overchargePrimarySpell} is more than 0:
 							subtract 1 from {_forloop}
 							subtract 1 from {_overchargePrimarySpell}
 					add 1 to {_forloop}
+					#Ascended Magic element effects
+					if {_ascmagEff} is 1:
+						applyRecoilDamage(victim,floor(victim's maximum health * 0.2))
+					else if {_ascmagEff} is 2:
+						add 1 to {_ascmagThunderBonus}
+					else if {_ascmagEff} is 3:
+						changeEntityStatBuff(victim,"SPD",-10,"Ascended Magic (Perk)",1)
+					else if {_ascmagEff} is 4:
+						if getEntityStatTotal(attacker,"SPD") is more than or equal to getEntityStatTotal(victim,"SPD") + 10:
+							add 1 to {t_cos_doubleattacks.%attacker%}
 			#
 			#Adaptive Damage Checks & Magical Denotation
 			#
@@ -2154,6 +2342,22 @@ on damage:
 						clear {_magical}
 						if {verboseCombatLogging.%attacker%} is true:
 							send formatted "<gold>[Sorcery Aura] <white>Calculating damage using STR/DEF." to the attacker
+			if checkSlots(attacker,"Divine Blessing") is 1:
+				if attacker has regeneration:
+					set {_divineblessingOK} to true
+				else if attacker has absorption:
+					set {_divineblessingOK} to true
+				if {_divineblessingOK} is true:
+					if getEntityWeaponType(attacker) is not 1:
+						if (((getEntityStatTotal(attacker,"MAG")) / 2) - ((getEntityStatTotal(victim,"RES")) / 2)) is more than (((getEntityStatTotal(attacker,"STR")) / 2) - ((getEntityStatTotal(victim,"DEF")) / 2)):
+							set {_magical} to 1
+							if {verboseCombatLogging.%attacker%} is true:
+								send formatted "<gold>[Divine Blessing] <white>Calculating damage using MAG/RES." to the attacker
+					else:
+						if (((getEntityStatTotal(attacker,"MAG")) / 2) - ((getEntityStatTotal(victim,"RES")) / 2)) is less than (((getEntityStatTotal(attacker,"STR")) / 2) - ((getEntityStatTotal(victim,"DEF")) / 2)):
+							clear {_magical}
+							if {verboseCombatLogging.%attacker%} is true:
+								send formatted "<gold>[Divine Blessing] <white>Calculating damage using STR/DEF." to the attacker					
 			#
 			#Blaze/Ghast/Enderman/Ender Dragon/Creeper/Husk/Stray deal magical damage
 			#
@@ -2279,6 +2483,22 @@ on damage:
 				changeEntityStatBuff(attacker,"MAG",-5,"Lull ATK/SPD",1)
 				changeEntityStatBuff(attacker,"SPD",-5,"Lull ATK/SPD",1)
 			#Bonus Doubler goes before any weapon/skill effects to ensure it only doubles pre-combat bonuses
+			#Bonus Doubler (Attacker, status effect)
+			if checkActiveStatusEffect(attacker,"Bonus Doubler") is 1:
+				set {_debug} to changeEntityStatBuff(attacker,"STR",(getEntityStatBuff(attacker,"STR")),"Bonus Doubler",1)
+				set {_debug} to changeEntityStatBuff(attacker,"MAG",(getEntityStatBuff(attacker,"MAG")),"Bonus Doubler",1)
+				set {_debug} to changeEntityStatBuff(attacker,"SPD",(getEntityStatBuff(attacker,"SPD")),"Bonus Doubler",1)
+				set {_debug} to changeEntityStatBuff(attacker,"LCK",(getEntityStatBuff(attacker,"LCK")),"Bonus Doubler",1)
+				set {_debug} to changeEntityStatBuff(attacker,"DEF",(getEntityStatBuff(attacker,"DEF")),"Bonus Doubler",1)
+				set {_debug} to changeEntityStatBuff(attacker,"RES",(getEntityStatBuff(attacker,"RES")),"Bonus Doubler",1)
+			#Bonus Doubler (Victim, status effect)
+			if checkActiveStatusEffect(victim,"Bonus Doubler") is 1:
+				set {_debug} to changeEntityStatBuff(victim,"STR",(getEntityStatBuff(victim,"STR")),"Bonus Doubler",1)
+				set {_debug} to changeEntityStatBuff(victim,"MAG",(getEntityStatBuff(victim,"MAG")),"Bonus Doubler",1)
+				set {_debug} to changeEntityStatBuff(victim,"SPD",(getEntityStatBuff(victim,"SPD")),"Bonus Doubler",1)
+				set {_debug} to changeEntityStatBuff(victim,"LCK",(getEntityStatBuff(victim,"LCK")),"Bonus Doubler",1)
+				set {_debug} to changeEntityStatBuff(victim,"DEF",(getEntityStatBuff(victim,"DEF")),"Bonus Doubler",1)
+				set {_debug} to changeEntityStatBuff(victim,"RES",(getEntityStatBuff(victim,"RES")),"Bonus Doubler",1)			
 			#Bonus Doubler (Attacker)
 			if getEntitySkillsInHand(attacker,"Bonus Doubler",0,2) is more than 0:
 				set {_debug} to changeEntityStatBuff(attacker,"STR",(getEntityStatBuff(attacker,"STR")),"Bonus Doubler",1)
@@ -2570,7 +2790,7 @@ on damage:
 			else if getEntitySacredTreasure(attacker) is 4:
 				set damage to damage + 1
 				set {_debug} to changeEntityStatBuff(attacker,"LCK",10,"Light Brand",1)
-				if (getEntityStatTotal(victim,"RES")) is more than (getEntityStatTotal(victim,"DEF")):
+				if (getEntityStatTotal(victim,"RES")) is less than (getEntityStatTotal(victim,"DEF")):
 					set {_magical} to 1
 					if (getEntityStatTotal(attacker,"STR")) is more than (getEntityStatTotal(attacker,"MAG")):
 						set {_LBMagToStr} to getEntityStatTotal(attacker,"MAG")
@@ -3153,6 +3373,16 @@ on damage:
 							set {_debug} to changeEntityStatBuff(attacker,"DEF",6,"Drive DEF",1)
 						else if getEntitySkillsInHand(loop-monster,"Drive RES",0,3) is more than 0:
 							set {_debug} to changeEntityStatBuff(attacker,"RES",6,"Drive RES",1)
+						else if getEntitySkillsInHand(loop-monster,"Spur STR",0,3) is more than 0:
+							set {_debug} to changeEntityStatBuff(attacker,"STR",5,"Spur STR",1)
+						else if getEntitySkillsInHand(loop-monster,"Spur MAG",0,3) is more than 0:
+							set {_debug} to changeEntityStatBuff(attacker,"MAG",5,"Spur MAG",1)
+						else if getEntitySkillsInHand(loop-monster,"Spur SPD",0,3) is more than 0:
+							set {_debug} to changeEntityStatBuff(attacker,"SPD",5,"Spur SPD",1)
+						else if getEntitySkillsInHand(loop-monster,"Spur DEF",0,3) is more than 0:
+							set {_debug} to changeEntityStatBuff(attacker,"DEF",5,"Spur DEF",1)
+						else if getEntitySkillsInHand(loop-monster,"Spur RES",0,3) is more than 0:
+							set {_debug} to changeEntityStatBuff(attacker,"RES",5,"Spur RES",1)
 						else if getEntitySkillsInHand(loop-monster,"Slaying Pulse",0,3) is more than 0:
 							if loop-monster's health is more than or equal to attacker's health - 6:
 								set {_debug} to changeEntityStatBuff(attacker,"SpecialAcceleration",10,"Slaying Pulse",1)
@@ -3177,22 +3407,22 @@ on damage:
 					if loop-player is not the attacker:
 						if {party.%loop-player%} is {party.%attacker%}:
 							if checkSlots(loop-player,"Joint-Drive Spectrum") is 1:
-								set {_debug} to changeEntityStatBuff(attacker,"STR",4,"Joint-Drive Spectrum",1)
-								set {_debug} to changeEntityStatBuff(attacker,"MAG",4,"Joint-Drive Spectrum",1)
-								set {_debug} to changeEntityStatBuff(attacker,"SPD",4,"Joint-Drive Spectrum",1)
-								set {_debug} to changeEntityStatBuff(attacker,"LCK",4,"Joint-Drive Spectrum",1)
-								set {_debug} to changeEntityStatBuff(attacker,"CHR",4,"Joint-Drive Spectrum",1)
-								set {_debug} to changeEntityStatBuff(attacker,"DEF",4,"Joint-Drive Spectrum",1)
-								set {_debug} to changeEntityStatBuff(attacker,"RES",4,"Joint-Drive Spectrum",1)
+								set {_debug} to changeEntityStatBuff(attacker,"STR",6,"Joint-Drive Spectrum",1)
+								set {_debug} to changeEntityStatBuff(attacker,"MAG",6,"Joint-Drive Spectrum",1)
+								set {_debug} to changeEntityStatBuff(attacker,"SPD",6,"Joint-Drive Spectrum",1)
+								set {_debug} to changeEntityStatBuff(attacker,"LCK",6,"Joint-Drive Spectrum",1)
+								set {_debug} to changeEntityStatBuff(attacker,"CHR",6,"Joint-Drive Spectrum",1)
+								set {_debug} to changeEntityStatBuff(attacker,"DEF",6,"Joint-Drive Spectrum",1)
+								set {_debug} to changeEntityStatBuff(attacker,"RES",6,"Joint-Drive Spectrum",1)
 							if checkSlots(attacker,"Joint-Drive Spectrum") is 1:
 								if {_appliedJDS} is not true:
-									set {_debug} to changeEntityStatBuff(attacker,"STR",4,"Joint-Drive Spectrum",1)
-									set {_debug} to changeEntityStatBuff(attacker,"MAG",4,"Joint-Drive Spectrum",1)
-									set {_debug} to changeEntityStatBuff(attacker,"SPD",4,"Joint-Drive Spectrum",1)
-									set {_debug} to changeEntityStatBuff(attacker,"LCK",4,"Joint-Drive Spectrum",1)
-									set {_debug} to changeEntityStatBuff(attacker,"CHR",4,"Joint-Drive Spectrum",1)
-									set {_debug} to changeEntityStatBuff(attacker,"DEF",4,"Joint-Drive Spectrum",1)
-									set {_debug} to changeEntityStatBuff(attacker,"RES",4,"Joint-Drive Spectrum",1)
+									set {_debug} to changeEntityStatBuff(attacker,"STR",6,"Joint-Drive Spectrum",1)
+									set {_debug} to changeEntityStatBuff(attacker,"MAG",6,"Joint-Drive Spectrum",1)
+									set {_debug} to changeEntityStatBuff(attacker,"SPD",6,"Joint-Drive Spectrum",1)
+									set {_debug} to changeEntityStatBuff(attacker,"LCK",6,"Joint-Drive Spectrum",1)
+									set {_debug} to changeEntityStatBuff(attacker,"CHR",6,"Joint-Drive Spectrum",1)
+									set {_debug} to changeEntityStatBuff(attacker,"DEF",6,"Joint-Drive Spectrum",1)
+									set {_debug} to changeEntityStatBuff(attacker,"RES",6,"Joint-Drive Spectrum",1)
 									set {_appliedJDS} to true
 							if getEntitySkillsInHand(loop-player,"Drive STR",0,3) is more than 0:
 								set {_debug} to changeEntityStatBuff(attacker,"STR",9,"Drive STR",1)
@@ -3231,6 +3461,25 @@ on damage:
 										set {_lckBonus} to 20
 									set {_debug} to changeEntityStatBuff(attacker,"LCK",{_lckBonus},"Heavy Blade",1)
 									add ({_lckBonus} / 2) to damage
+				loop all armor stands in radius 30 of the attacker:
+					if metadata value "isBOHDummy" of the loop-entity is 1:
+						set {_debug} to changeEntityStatBuff(attacker,"STR",6,"Joint-Drive Spectrum",1)
+						set {_debug} to changeEntityStatBuff(attacker,"MAG",6,"Joint-Drive Spectrum",1)
+						set {_debug} to changeEntityStatBuff(attacker,"SPD",6,"Joint-Drive Spectrum",1)
+						set {_debug} to changeEntityStatBuff(attacker,"LCK",6,"Joint-Drive Spectrum",1)
+						set {_debug} to changeEntityStatBuff(attacker,"CHR",6,"Joint-Drive Spectrum",1)
+						set {_debug} to changeEntityStatBuff(attacker,"DEF",6,"Joint-Drive Spectrum",1)
+						set {_debug} to changeEntityStatBuff(attacker,"RES",6,"Joint-Drive Spectrum",1)
+						if checkSlots(attacker,"Joint-Drive Spectrum") is 1:
+							if {_appliedJDS} is not true:
+								set {_debug} to changeEntityStatBuff(attacker,"STR",6,"Joint-Drive Spectrum",1)
+								set {_debug} to changeEntityStatBuff(attacker,"MAG",6,"Joint-Drive Spectrum",1)
+								set {_debug} to changeEntityStatBuff(attacker,"SPD",6,"Joint-Drive Spectrum",1)
+								set {_debug} to changeEntityStatBuff(attacker,"LCK",6,"Joint-Drive Spectrum",1)
+								set {_debug} to changeEntityStatBuff(attacker,"CHR",6,"Joint-Drive Spectrum",1)
+								set {_debug} to changeEntityStatBuff(attacker,"DEF",6,"Joint-Drive Spectrum",1)
+								set {_debug} to changeEntityStatBuff(attacker,"RES",6,"Joint-Drive Spectrum",1)
+								set {_appliedJDS} to true
 			#Drives & Pulses - victim
 			#Monster case
 			if victim is monster:
@@ -3246,6 +3495,16 @@ on damage:
 							set {_debug} to changeEntityStatBuff(victim,"DEF",6,"Drive DEF",1)
 						else if getEntitySkillsInHand(loop-monster,"Drive RES",0,3) is more than 0:
 							set {_debug} to changeEntityStatBuff(victim,"RES",6,"Drive RES",1)
+						else if getEntitySkillsInHand(loop-monster,"Spur STR",0,3) is more than 0:
+							set {_debug} to changeEntityStatBuff(victim,"STR",5,"Spur STR",1)
+						else if getEntitySkillsInHand(loop-monster,"Spur MAG",0,3) is more than 0:
+							set {_debug} to changeEntityStatBuff(victim,"MAG",5,"Spur MAG",1)
+						else if getEntitySkillsInHand(loop-monster,"Spur SPD",0,3) is more than 0:
+							set {_debug} to changeEntityStatBuff(victim,"SPD",5,"Spur SPD",1)
+						else if getEntitySkillsInHand(loop-monster,"Spur DEF",0,3) is more than 0:
+							set {_debug} to changeEntityStatBuff(victim,"DEF",5,"Spur DEF",1)
+						else if getEntitySkillsInHand(loop-monster,"Spur RES",0,3) is more than 0:
+							set {_debug} to changeEntityStatBuff(victim,"RES",5,"Spur RES",1)
 						else if getEntitySkillsInHand(loop-monster,"Slaying Pulse",0,3) is more than 0:
 							if loop-monster's health is more than or equal to victim's health - 6:
 								set {_debug} to changeEntityStatBuff(victim,"SpecialAcceleration",10,"Slaying Pulse",1)
@@ -3256,22 +3515,22 @@ on damage:
 					if loop-player is not the victim:
 						if {party.%victim%} is {party.%loop-player%}:
 							if checkSlots(loop-player,"Joint-Drive Spectrum") is 1:
-								set {_debug} to changeEntityStatBuff(victim,"STR",4,"Joint-Drive Spectrum",1)
-								set {_debug} to changeEntityStatBuff(victim,"MAG",4,"Joint-Drive Spectrum",1)
-								set {_debug} to changeEntityStatBuff(victim,"SPD",4,"Joint-Drive Spectrum",1)
-								set {_debug} to changeEntityStatBuff(victim,"LCK",4,"Joint-Drive Spectrum",1)
-								set {_debug} to changeEntityStatBuff(victim,"CHR",4,"Joint-Drive Spectrum",1)
-								set {_debug} to changeEntityStatBuff(victim,"DEF",4,"Joint-Drive Spectrum",1)
-								set {_debug} to changeEntityStatBuff(victim,"RES",4,"Joint-Drive Spectrum",1)
+								set {_debug} to changeEntityStatBuff(victim,"STR",6,"Joint-Drive Spectrum",1)
+								set {_debug} to changeEntityStatBuff(victim,"MAG",6,"Joint-Drive Spectrum",1)
+								set {_debug} to changeEntityStatBuff(victim,"SPD",6,"Joint-Drive Spectrum",1)
+								set {_debug} to changeEntityStatBuff(victim,"LCK",6,"Joint-Drive Spectrum",1)
+								set {_debug} to changeEntityStatBuff(victim,"CHR",6,"Joint-Drive Spectrum",1)
+								set {_debug} to changeEntityStatBuff(victim,"DEF",6,"Joint-Drive Spectrum",1)
+								set {_debug} to changeEntityStatBuff(victim,"RES",6,"Joint-Drive Spectrum",1)
 							if checkSlots(victim,"Joint-Drive Spectrum") is 1:
 								if {_appliedJDS} is not true:
-									set {_debug} to changeEntityStatBuff(victim,"STR",4,"Joint-Drive Spectrum",1)
-									set {_debug} to changeEntityStatBuff(victim,"MAG",4,"Joint-Drive Spectrum",1)
-									set {_debug} to changeEntityStatBuff(victim,"SPD",4,"Joint-Drive Spectrum",1)
-									set {_debug} to changeEntityStatBuff(victim,"LCK",4,"Joint-Drive Spectrum",1)
-									set {_debug} to changeEntityStatBuff(victim,"CHR",4,"Joint-Drive Spectrum",1)
-									set {_debug} to changeEntityStatBuff(victim,"DEF",4,"Joint-Drive Spectrum",1)
-									set {_debug} to changeEntityStatBuff(victim,"RES",4,"Joint-Drive Spectrum",1)
+									set {_debug} to changeEntityStatBuff(victim,"STR",6,"Joint-Drive Spectrum",1)
+									set {_debug} to changeEntityStatBuff(victim,"MAG",6,"Joint-Drive Spectrum",1)
+									set {_debug} to changeEntityStatBuff(victim,"SPD",6,"Joint-Drive Spectrum",1)
+									set {_debug} to changeEntityStatBuff(victim,"LCK",6,"Joint-Drive Spectrum",1)
+									set {_debug} to changeEntityStatBuff(victim,"CHR",6,"Joint-Drive Spectrum",1)
+									set {_debug} to changeEntityStatBuff(victim,"DEF",6,"Joint-Drive Spectrum",1)
+									set {_debug} to changeEntityStatBuff(victim,"RES",6,"Joint-Drive Spectrum",1)
 									set {_appliedJDS} to true
 							if getEntitySkillsInHand(loop-player,"Drive STR",0,3) is more than 0:
 								set {_debug} to changeEntityStatBuff(victim,"STR",6,"Drive STR",1)
@@ -3283,11 +3542,40 @@ on damage:
 								set {_debug} to changeEntityStatBuff(victim,"DEF",6,"Drive DEF",1)
 							else if getEntitySkillsInHand(loop-player,"Drive RES",0,3) is more than 0:
 								set {_debug} to changeEntityStatBuff(victim,"RES",6,"Drive RES",1)
+							else if getEntitySkillsInHand(loop-player,"Spur STR",0,3) is more than 0:
+								set {_debug} to changeEntityStatBuff(victim,"STR",5,"Spur STR",1)
+							else if getEntitySkillsInHand(loop-player,"Spur MAG",0,3) is more than 0:
+								set {_debug} to changeEntityStatBuff(victim,"MAG",5,"Spur MAG",1)
+							else if getEntitySkillsInHand(loop-player,"Spur SPD",0,3) is more than 0:
+								set {_debug} to changeEntityStatBuff(victim,"SPD",5,"Spur SPD",1)
+							else if getEntitySkillsInHand(loop-player,"Spur DEF",0,3) is more than 0:
+								set {_debug} to changeEntityStatBuff(victim,"DEF",5,"Spur DEF",1)
+							else if getEntitySkillsInHand(loop-player,"Spur RES",0,3) is more than 0:
+								set {_debug} to changeEntityStatBuff(victim,"RES",5,"Spur RES",1)
 							else if getEntitySkillsInHand(loop-player,"Slaying Pulse",0,3) is more than 0:
 								if loop-player's health is more than or equal to victim's health - 6:
 									set {_debug} to changeEntityStatBuff(victim,"SpecialAcceleration",10,"Slaying Pulse",1)
 							if {traits.%loop-player%::Protective} is set:
 								set damage to damage * 0.8
+				loop all armor stands in radius 30 of the victim:
+					if metadata value "isBOHDummy" of the loop-entity is 1:
+						set {_debug} to changeEntityStatBuff(victim,"STR",6,"Joint-Drive Spectrum",1)
+						set {_debug} to changeEntityStatBuff(victim,"MAG",6,"Joint-Drive Spectrum",1)
+						set {_debug} to changeEntityStatBuff(victim,"SPD",6,"Joint-Drive Spectrum",1)
+						set {_debug} to changeEntityStatBuff(victim,"LCK",6,"Joint-Drive Spectrum",1)
+						set {_debug} to changeEntityStatBuff(victim,"CHR",6,"Joint-Drive Spectrum",1)
+						set {_debug} to changeEntityStatBuff(victim,"DEF",6,"Joint-Drive Spectrum",1)
+						set {_debug} to changeEntityStatBuff(victim,"RES",6,"Joint-Drive Spectrum",1)
+						if checkSlots(victim,"Joint-Drive Spectrum") is 1:
+							if {_appliedJDS} is not true:
+								set {_debug} to changeEntityStatBuff(victim,"STR",6,"Joint-Drive Spectrum",1)
+								set {_debug} to changeEntityStatBuff(victim,"MAG",6,"Joint-Drive Spectrum",1)
+								set {_debug} to changeEntityStatBuff(victim,"SPD",6,"Joint-Drive Spectrum",1)
+								set {_debug} to changeEntityStatBuff(victim,"LCK",6,"Joint-Drive Spectrum",1)
+								set {_debug} to changeEntityStatBuff(victim,"CHR",6,"Joint-Drive Spectrum",1)
+								set {_debug} to changeEntityStatBuff(victim,"DEF",6,"Joint-Drive Spectrum",1)
+								set {_debug} to changeEntityStatBuff(victim,"RES",6,"Joint-Drive Spectrum",1)
+								set {_appliedJDS} to true
 			#Rising Courage (Perk) (Attacker)
 			if checkSlots(attacker,"Rising Courage") is 1:
 				if {t_morale.%attacker%} is more than 0:
@@ -3347,6 +3635,16 @@ on damage:
 			if checkSlots(attacker,"Bracing Blow") is 1:
 				set {_debug} to changeEntityStatBuff(attacker,"DEF",7,"Bracing Blow (Perk)",1)
 				set {_debug} to changeEntityStatBuff(attacker,"RES",7,"Bracing Blow (Perk)",1)
+			#Inner Peace (start of combat effect)
+			#Inner Peace (attacker)
+			if checkSlots(attacker,"Inner Peace") is 1:
+				if attacker's health is attacker's maximum health:
+					set {_debug} to changeEntityStatBuff(victim,"STR",-6,"Inner Peace (Perk)",1)
+					set {_debug} to changeEntityStatBuff(victim,"MAG",-6,"Inner Peace (Perk)",1)
+					set {_debug} to changeEntityStatBuff(victim,"SPD",-6,"Inner Peace (Perk)",1)
+					set {_debug} to changeEntityStatBuff(victim,"LCK",-6,"Inner Peace (Perk)",1)
+					set {_debug} to changeEntityStatBuff(victim,"DEF",-6,"Inner Peace (Perk)",1)
+					set {_debug} to changeEntityStatBuff(victim,"RES",-6,"Inner Peace (Perk)",1)
 			#The "Stance" family, grants in-combat stats if foe initiates combat (These are removed after the damage step, so they won't be visible to the player via /cstats)
 			if getEntitySkillsInHand(victim,"Steady Stance",2,1) is more than 0:
 				set {_debug} to changeEntityStatBuff(victim,"DEF",6,"Steady Stance",1)
@@ -3448,6 +3746,12 @@ on damage:
 				if getEntitySkillsInHand(victim,"Obstruct",0,2) is more than 0:
 					changeEntityStatBuff(attacker,"STR",-5,"Obstruct",1)
 					changeEntityStatBuff(attacker,"MAG",-5,"Obstruct",1)
+			#Pass II (Perk, In-Combat)
+			if distance between attacker and victim is less than 7:
+				if checkSlots(attacker,"Pass II") is 1:
+					set {_swiftLVL} to tier of swiftness on the attacker
+					set {_Pass2TrueDamage} to (2 * {_swiftLVL})
+					add {_Pass2TrueDamage} to damage
 			#Boost skills
 			if attacker's health is more than or equal to (victim's health - 3):
 				if getEntitySkillsInHand(attacker,"Flame Boost",2,1) is more than 0:
@@ -3529,9 +3833,10 @@ on damage:
 				if getEntitySkillsInHand(attacker,"Defiant RES",2,1) is more than 0:
 					set {_defiantActive.%attacker%} to changeEntityStatBuff(attacker,"RES",7,"Defiant RES",1)
 				#Brazen STR/DEF
-				if checkSlots(attacker,"Brazen STR/DEF") is 1:
+				if checkSlots(attacker,"Brazen STR/DEF/RES") is 1:
 					set {_defiantSTRActive.%attacker%} to changeEntityStatBuff(attacker,"STR",7,"Brazen STR/DEF",1)
 					set {_defiantActive.%attacker%} to changeEntityStatBuff(attacker,"DEF",7,"Brazen STR/DEF",1)
+					set {_defiantActive.%attacker%} to changeEntityStatBuff(attacker,"RES",7,"Brazen STR/DEF",1)
 				#Brazen STR
 				if checkSlots(attacker,"Brazen STR") is 1:
 					set {_debug} to changeEntityStatBuff(attacker,"STR",9,"Brazen STR",1)
@@ -3570,9 +3875,10 @@ on damage:
 				if getEntitySkillsInHand(victim,"Defiant RES",2,1) is more than 0:
 					set {_defiantActive.%victim%} to changeEntityStatBuff(victim,"RES",7,"Defiant RES",1)
 				#Brazen STR/DEF
-				if checkSlots(victim,"Brazen STR/DEF") is 1:
+				if checkSlots(victim,"Brazen STR/DEF/RES") is 1:
 					set {_defiantSTRActive.%victim%} to changeEntityStatBuff(victim,"STR",7,"Brazen STR/DEF",1)
 					set {_defiantActive.%victim%} to changeEntityStatBuff(victim,"DEF",7,"Brazen STR/DEF",1)
+					set {_defiantActive.%victim%} to changeEntityStatBuff(victim,"RES",7,"Brazen STR/DEF",1)
 				#Brazen STR
 				if checkSlots(victim,"Brazen STR") is 1:
 					set {_debug} to changeEntityStatBuff(victim,"STR",9,"Brazen STR",1)
@@ -3692,8 +3998,16 @@ on damage:
 						set {_debug} to changeEntityStatBuff(attacker,"MAG",5,"Blazing Storm",1)
 						set {_debug} to changeEntityStatBuff(attacker,"LCK",5,"Blazing Storm",1)
 						chance of 50%:
-							applyOOCStatusEffect(victim,"Dazed",1)
+							apply slowness 5 to the victim for 2 seconds
+							apply weakness 5 to the victim for 2 seconds
+							apply blindness 1 to the victim for 2 seconds
+							#applyOOCStatusEffect(victim,"Dazed",1)
 							send formatted "<gold>Victim was Dazed by Blazing Storm!" to the attacker
+			#Immovable
+			if getEntitySkillsInHand(victim,"Immovable",0,2) is more than 0:
+				changeEntityStatBuff(victim,"DEF",7,"Immovable",1)
+				changeEntityStatBuff(victim,"RES",7,"Immovable",1)
+				changeEntityStatBuff(victim,"SpecialAcceleration",10,"Immovable",1)
 			#Close Call (Skill)
 			if getEntitySkillsInHand(victim,"Close Call",0,2) is more than 0:
 				if getEntityStatTotal(victim,"SPD") is more than getEntityStatTotal(attacker,"SPD"):
@@ -3715,6 +4029,62 @@ on damage:
 					if {_deadlyBalanceBonus} is more than 50:
 						set {_deadlyBalanceBonus} to 50
 					set damage to damage * (1 + ({_deadlyBalanceBonus} / 100))
+			#Gambit - Victim
+			if getEntitySkillsInHand(victim,"Gambit",0,2) is more than 0:
+				if getEntitySkillsInHand(victim,"Moonbow",0,5) is more than 0:
+					set damage to damage *  0.9
+				else if getEntitySkillsInHand(victim,"Luna",0,5) is more than 0:
+					set damage to damage * 0.7
+				else if getEntitySkillsInHand(victim,"Sol",0,5) is more than 0:
+					set damage to damage * 0.75
+				else if getEntitySkillsInHand(victim,"Aether",0,5) is more than 0:
+					set damage to damage * 0.5
+				else if getEntitySkillsInHand(victim,"Retribution",0,5) is more than 0:
+					set damage to damage * 0.75
+				else if getEntitySkillsInHand(victim,"Glimmer",0,5) is more than 0:
+					set damage to damage * 0.6
+				else if getEntitySkillsInHand(victim,"Astra",0,5) is more than 0:
+					set damage to damage * 0.5
+				else if getEntitySkillsInHand(victim,"Dragon Fang",0,5) is more than 0:
+					set damage to damage * 0.6
+				else if getEntitySkillsInHand(victim,"Bonfire",0,5) is more than 0:
+					set damage to damage * 0.6
+				else if getEntitySkillsInHand(victim,"Iceberg",0,5) is more than 0:
+					set damage to damage * 0.6
+				else if getEntitySkillsInHand(victim,"Rising Thunder",0,5) is more than 0:
+					set damage to damage * 0.75
+				else if getEntitySkillsInHand(victim,"Blazing Thunder",0,5) is more than 0:
+					set damage to damage * 0.75
+				else if getEntitySkillsInHand(victim,"Buckler",0,5) is more than 0:
+					set damage to damage * 0.9
+					set {_gambitDefensiveSpecial} to true
+				else if getEntitySkillsInHand(victim,"Galeforce",0,5) is more than 0:
+					set damage to damage * 0.5
+				else if getEntitySkillsInHand(victim,"Deadeye",0,5) is more than 0:
+					set damage to damage * 0.6
+				else if getEntitySkillsInHand(victim,"Ruptured Sky",0,5) is more than 0:
+					set damage to damage * 0.6
+				else if getEntitySkillsInHand(victim,"Holy Vestments",0,5) is more than 0:
+					set damage to damage * 0.7
+					set {_gambitDefensiveSpecial} to true
+				else:
+					set {_gambitDefensiveSpecial} to true
+				if {_gambitDefensiveSpecial} is not true:
+					set {_debug} to changeEntityStatBuff(victim,"SpecialAcceleration",-20,"Gambit (Offensive Special Penalty)",1)
+			#Gambit - Attacker Offensive Special Penalty
+			if getEntitySkillsInHand(attacker,"Gambit",0,2) is more than 0:
+				if getEntitySkillsInHand(attacker,"Buckler",0,5) is more than 0:
+					set {_gambitDefensiveSpecial} to true
+				else if getEntitySkillsInHand(attacker,"Holy Vestments",0,5) is more than 0:
+					set {_gambitDefensiveSpecial} to true
+				else if getEntitySkillsInHand(attacker,"Pavise",0,5) is more than 0:
+					set {_gambitDefensiveSpecial} to true
+				else if getEntitySkillsInHand(attacker,"Aegis",0,5) is more than 0:
+					set {_gambitDefensiveSpecial} to true
+				else if getEntitySkillsInHand(attacker,"Miracle",0,5) is more than 0:
+					set {_gambitDefensiveSpecial} to true
+				if {_gambitDefensiveSpecial} is not true:
+					set {_debug} to changeEntityStatBuff(attacker,"SpecialAcceleration",-20,"Gambit (Offensive Special Penalty)",1)
 			#Rage - Attacker
 			if getEntitySkillsInHand(attacker,"Rage",2,1) is more than 0:
 				set {_debug} to changeEntityStatBuff(attacker,"STR",9,"Rage",1)
@@ -3749,11 +4119,15 @@ on damage:
 						set {_lckBonus} to 20
 					set {_debug} to changeEntityStatBuff(attacker,"LCK",{_lckBonus},"Heavy Blade (Perk)",1)
 					add ({_lckBonus} / 2) to damage
+			#Breakthrough (Perk)
+			if checkSlots(attacker,"Breakthrough") is 1:
+				if getEntityStatTotal(attacker,"STR") is more than (getEntityStatTotal(victim,"STR") - 10):
+					set damage to damage * 0.8
+					add 1 to {t_cos_doubleattacks.%attacker%}
 			#Scendscale (Perk)
 			if checkSlots(attacker,"Scendscale") is 1:
 				if attacker's health is equal to attacker's maximum health:
 					add ((getEntityStatTotal(attacker,"STR")) * 0.2) to damage
-					applyRecoilDamage(attacker,2.5)
 					add 1 to {t_cos_doubleattacks.%attacker%}
 			#Brave Impact (Perk)
 			if checkSlots(attacker,"Brave Impact") is 1:
@@ -3813,11 +4187,11 @@ on damage:
 			if {traits.%victim%::Claustrophobic} is set:
 				loop all players in radius 7 of the victim:
 					if loop-player is not the victim:
-						set {_claustrophobicApplyDebuff} to true
+						add 1 to {_claustrophobicApplyDebuff}
 				if {_claustrophobicApplyDebuff} is not true:
 					loop all monsters in radius 7 of the victim:
-						set {_claustrophobicApplyDebuff} to true
-				if {_claustrophobicApplyDebuff} is true:
+						add 1 to {_claustrophobicApplyDebuff}
+				if {_claustrophobicApplyDebuff} is more than 2:
 					changeEntityStatBuff(victim,"STR",-4,"Claustrophobic (Trait)",1)
 					changeEntityStatBuff(victim,"MAG",-4,"Claustrophobic (Trait)",1)
 					changeEntityStatBuff(victim,"SPD",-4,"Claustrophobic (Trait)",1)
@@ -3926,13 +4300,16 @@ on damage:
 					set {_debug} to changeEntityStatBuff(attacker,"SpecialAcceleration",10,"Flame Boost II (Perk)",1)
 			#Secret Training (Perk)
 			if checkSlots(attacker,"Secret Training") is 1:
-				if attacker's tool is any hoe:
-					add 5 to damage
-					if (getEntityStatTotal(attacker,"MAG")) is more than (getEntityStatTotal(attacker,"STR")):
-						set {_magical} to 1
+				add 5 to damage
+				if (getEntityStatTotal(attacker,"MAG")) is more than (getEntityStatTotal(attacker,"STR")):
+					set {_magical} to 1
+				else:
+					set {_magical} to 0
 			#Glory Kills (Perk)
 			if checkSlots(attacker,"Glory Kill") is 1:
 				if isEntityToolAir(attacker) is true:
+					set damage to damage * 2
+				else if getEntityWeaponClass(attacker's tool) is "Gauntlets":
 					set damage to damage * 2
 			#By a Thread (Perk)
 			if checkSlots(attacker,"By a Thread") is 1:
@@ -3953,12 +4330,15 @@ on damage:
 				if {dtActive.%attacker%} is true:
 					if projectile exists:
 						set damage to damage * 1.2
-						applyOOCStatusEffect(victim,"Dazed",1)
+						#applyOOCStatusEffect(victim,"Dazed",1)
+						apply slowness 5 to the victim for 2 seconds
+						apply weakness 5 to the victim for 2 seconds
+						apply blindness 1 to the victim for 2 seconds
 			#Steady Breath (Perk)
 			if checkSlots(victim,"Steady Breath") is 1:
-				set {_debug} to changeEntityStatBuff(victim,"DEF",2,"Steady Breath (Perk)",1)
-				set {_debug} to changeEntityStatBuff(victim,"RES",2,"Steady Breath (Perk)",1)
-				set {_debug} to changeEntityStatBuff(victim,"SpecialAcceleration",10,"Steady Breath (Perk)",1)
+				set {_debug} to changeEntityStatBuff(victim,"DEF",6,"Steady Breath (Perk)",1)
+				set {_debug} to changeEntityStatBuff(victim,"RES",6,"Steady Breath (Perk)",1)
+				set {_debug} to changeEntityStatBuff(victim,"SpecialAcceleration",25,"Steady Breath (Perk)",1)
 			#Daring Fighter (Perk) (Attacker)
 			if checkSlots(attacker,"Daring Fighter") is 1:
 				set {_debug} to changeEntityStatBuff(attacker,"SPD",5,"Daring Fighter (Perk)",1)
@@ -3992,14 +4372,14 @@ on damage:
 				add 6 to damage
 			#Lifetaker (Perk)
 			if checkSlots(attacker,"Lifetaker") is 1:
-				heal the attacker by damage * 0.1
+				heal the attacker by damage * 0.2
 			#Breath of Life (Perk)
 			if checkSlots(attacker,"Breath of Life") is 1:
+				set {_disableAutoCounters} to true
 				loop all players in radius 30 of the attacker:
 					if {party.%loop-player%} is {party.%attacker%}:
-						if loop-player is not the attacker:
-							heal loop-player by 6 hearts
-			#Swift Strike
+						heal loop-player by 6 hearts
+			#Swift Strike (Perk)
 			if checkSlots(attacker,"Swift Strike") is 1:
 				if attacker's health is more than or equal to (attacker's maximum health * 0.5):
 					set {_debug} to changeEntityStatBuff(attacker,"STR",5,"Swift Strike (Perk)",1)
@@ -4007,18 +4387,7 @@ on damage:
 					apply swiftness 2 to the attacker for 2 seconds
 			#Hidden Thorn (Perk)
 			if checkSlots(attacker,"Hidden Thorn") is 1:
-				if {_magical} is 1:
-					if (getEntityStatTotal(attacker,"MAG")) is less than (getEntityStatTotal(victim,"MAG")):
-						set {_HTBonusDamage} to (((getEntityStatTotal(attacker,"MAG")) - (getEntityStatTotal(victim,"MAG"))) * 0.5)
-						if {_HTBonusDamage} is more than 20:
-							set {_HTBonusDamage} to 20
-						add {_HTBonusDamage} to damage
-				else:
-					if (getEntityStatTotal(attacker,"STR")) is less than (getEntityStatTotal(victim,"STR")):
-						set {_HTBonusDamage} to (((getEntityStatTotal(attacker,"STR")) - (getEntityStatTotal(victim,"STR"))) * 0.5)
-						if {_HTBonusDamage} is more than 20:
-							set {_HTBonusDamage} to 20
-						add {_HTBonusDamage} to damage
+				applyRecoilDamage(victim,floor(getEntityStatTotal(attacker,"RES") * 0.25))
 			#Heavy Draw (Perk)
 			if checkSlots(attacker,"Heavy Draw") is 1:
 				set {_HDBonusDamage} to (distance between attacker and victim * 0.25)
@@ -4032,26 +4401,44 @@ on damage:
 			#More than Magic (Perk)
 			if {t_MoreThanMagicBonusActive.%attacker%} is set:
 				set damage to damage * 1.2
-			#Dual Strike
+			#Dual Strike (Perk)
 			if checkSlots(attacker,"Dual Strike") is 1:
-				if attacker's health is more than or equal to (attacker's maximum health * 0.7):
-					loop all players in radius 10 of the attacker:
-						if {party.%loop-player%} is {party.%attacker%}:
-							if loop-player is not the attacker:
+				loop all players in radius 30 of the attacker:
+					if {party.%loop-player%} is {party.%attacker%}:
+						if loop-player is not the attacker:
+							if {_magical} is not 1:
+								add floor((getEntityStatTotal(loop-player,"STR")) * 0.2) to damage
+							else:
+								add floor((getEntityStatTotal(loop-player,"MAG")) * 0.2) to damage
+							set {_odds} to getEntityStatTotal(loop-player,"LCK")
+							set {_odds} to floor({_odds} / 1)
+							if {_odds} is more than 100:
+								set {_odds} to 100
+							set {_dualStrikeProc} to true
+							chance of {_odds}%:
+								add 1 to {t_cos_doubleattacks.%attacker%}
+								send formatted "<light purple>Dual Strike was activated!" to the attacker
+								if {quotesToggle.%attacker%} is true:
+									set {_quoteRNG} to random integer between 1 and 4
+									make attacker say "<light purple>[%victim's tablist name%'s Dual Strike] %{characterQuotes.%victim%::SpecialProc%{_quoteRNG}%}%"
+							exit 1 loop
+				#Beacon of Hope's Dual Strike
+				if {_dualStrikeProc} is not true:
+					loop all armor stands in radius 30 of the victim:
+						if metadata value "isBOHDummy" of the loop-entity is 1:
+							if {party.%victim%} is {party.%{t_beaconOwner.%loop-entity%}%}:
 								if {_magical} is not 1:
-									add floor((getEntityStatTotal(loop-player,"STR")) * 0.1) to damage
+									add floor((getEntityStatTotal(attacker,"STR")) * 0.2) to damage
 								else:
-									add floor((getEntityStatTotal(loop-player,"MAG")) * 0.1) to damage
-								set {_odds} to getEntityStatTotal(loop-player,"LCK")
-								set {_odds} to floor({_odds} / 4)
+									add floor((getEntityStatTotal(attacker,"MAG")) * 0.2) to damage
+								set {_odds} to getEntityStatTotal(attacker,"LCK")
+								set {_odds} to floor({_odds} / 1)
 								if {_odds} is more than 100:
 									set {_odds} to 100
+								set {_dualStrikeProc} to true
 								chance of {_odds}%:
 									add 1 to {t_cos_doubleattacks.%attacker%}
 									send formatted "<light purple>Dual Strike was activated!" to the attacker
-									if {quotesToggle.%attacker%} is true:
-										set {_quoteRNG} to random integer between 1 and 4
-										make attacker say "<light purple>[%victim's tablist name%'s Dual Strike] %{characterQuotes.%victim%::SpecialProc%{_quoteRNG}%}%"
 								exit 1 loop
 			#Headshotting
 			if projectile exists:
@@ -4155,13 +4542,6 @@ on damage:
 						set {_debug} to changeEntityStatBuff(victim,"DEF",(getEntityStatBuff(victim,"DEF")),"Devil's Sentence (Perk)",1)
 					if getEntityStatBuff(victim,"RES") is less than 0:
 						set {_debug} to changeEntityStatBuff(victim,"RES",(getEntityStatBuff(victim,"RES")),"Devil's Sentence (Perk)",1)
-			#Master of All (Perk)
-			if checkSlots(attacker,"Master of All") is 1:
-				if attacker's health is more than or equal to attacker's maximum health * 0.5:
-					if attacker is riding a horse:
-						set {_debug} to changeEntityStatBuff(attacker,"STR",6,"Master of All (Perk)",1)
-						set {_debug} to changeEntityStatBuff(attacker,"MAG",6,"Master of All (Perk)",1)
-						set {_debug} to changeEntityStatBuff(attacker,"SPD",6,"Master of All (Perk)",1)
 			#Isolation (Perk) (Attacker)
 			if checkSlots(attacker,"Isolation") is 1:
 				set {_foes} to 0
@@ -4238,6 +4618,7 @@ on damage:
 				if {t_isCombatTagged.%victim%} is not set:
 					if {t_isCombatTagged.%attacker%} is not set:
 						set {t_bloodPactTarget.%attacker%} to the victim
+						set {t_bloodPactOwner.%victim%} to the attacker
 						play 20 (redstone block break with speed 1) at the victim
 						send formatted "<light red><bold>Blood Pact formed with the enemy!" to the attacker
 						send formatted "<light red><bold>Blood Pact formed with %attacker%! Any damage they take, you take as well!" to the victim
@@ -4246,9 +4627,28 @@ on damage:
 				if {t_bloodPactTarget.%victim%} is set:
 					damage {t_bloodPactTarget.%victim%} by damage / 2
 					play 20 (redstone block break with speed 1) at {t_bloodPactTarget.%victim%}
+			#Blood Pact (Perk, debuff)
+			if {t_bloodPactOwner.%attacker%} is set:
+				if {t_bloodPactTarget.%{t_bloodPactOwner.%attacker%}%} is the attacker:
+					changeEntityStatBuff(attacker,"MAG",-6,"Blood Pact (Perk)",1)
+					changeEntityStatBuff(attacker,"STR",-6,"Blood Pact (Perk)",1)
+					changeEntityStatBuff(attacker,"SPD",-6,"Blood Pact (Perk)",1)
+					changeEntityStatBuff(attacker,"RES",-6,"Blood Pact (Perk)",1)
+					changeEntityStatBuff(attacker,"DEF",-6,"Blood Pact (Perk)",1)
+				else:
+					clear {t_bloodPactOwner.%attacker%}
+			if {t_bloodPactOwner.%victim%} is set:
+				if {t_bloodPactTarget.%{t_bloodPactOwner.%victim%}%} is the victim:
+					changeEntityStatBuff(victim,"MAG",-6,"Blood Pact (Perk)",1)
+					changeEntityStatBuff(victim,"STR",-6,"Blood Pact (Perk)",1)
+					changeEntityStatBuff(victim,"SPD",-6,"Blood Pact (Perk)",1)
+					changeEntityStatBuff(victim,"RES",-6,"Blood Pact (Perk)",1)
+					changeEntityStatBuff(victim,"DEF",-6,"Blood Pact (Perk)",1)
+				else:
+					clear {t_bloodPactOwner.%victim%}
 			#Sudden Panic (Perk) (Attacker)
 			if checkSlots(attacker,"Sudden Panic") is 1:
-				if attacker's health is more than victim's health - 3:
+				if attacker's maximum health is more than victim's health - 3:
 					if getEntityStatBuff(victim,"STR") is more than 0:
 						set {_debug} to changeEntityStatBuff(victim,"STR",(getEntityStatBuff(victim,"STR")) * -2,"Sudden Panic (Perk)",1)
 					if getEntityStatBuff(victim,"MAG") is more than 0:
@@ -4259,13 +4659,14 @@ on damage:
 						set {_debug} to changeEntityStatBuff(victim,"DEF",(getEntityStatBuff(victim,"DEF")) * -2,"Sudden Panic (Perk)",1)
 					if getEntityStatBuff(victim,"RES") is more than 0:
 						set {_debug} to changeEntityStatBuff(victim,"RES",(getEntityStatBuff(victim,"RES")) * -2,"Sudden Panic (Perk)",1)
-					changeEntityStatBuff(victim,"MAG",-6,"Sudden Panic (Perk)",1)
-					changeEntityStatBuff(victim,"STR",-6,"Sudden Panic (Perk)",1)
-					changeEntityStatBuff(victim,"RES",-6,"Sudden Panic (Perk)",1)
-					changeEntityStatBuff(victim,"DEF",-6,"Sudden Panic (Perk)",1)
+					changeEntityStatBuff(victim,"MAG",-7,"Sudden Panic (Perk)",1)
+					changeEntityStatBuff(victim,"STR",-7,"Sudden Panic (Perk)",1)
+					changeEntityStatBuff(victim,"SPD",-7,"Sudden Panic (Perk)",1)
+					changeEntityStatBuff(victim,"RES",-7,"Sudden Panic (Perk)",1)
+					changeEntityStatBuff(victim,"DEF",-7,"Sudden Panic (Perk)",1)
 			#Sudden Panic (Perk) (Victim)
 			if checkSlots(victim,"Sudden Panic") is 1:
-				if victim's health is more than attacker's health - 3:
+				if victim's maximum health is more than attacker's health - 3:
 					if getEntityStatBuff(attacker,"STR") is more than 0:
 						set {_debug} to changeEntityStatBuff(attacker,"STR",(getEntityStatBuff(attacker,"STR")) * -2,"Sudden Panic (Perk)",1)
 					if getEntityStatBuff(attacker,"MAG") is more than 0:
@@ -4276,10 +4677,11 @@ on damage:
 						set {_debug} to changeEntityStatBuff(attacker,"DEF",(getEntityStatBuff(attacker,"DEF")) * -2,"Sudden Panic (Perk)",1)
 					if getEntityStatBuff(attacker,"RES") is more than 0:
 						set {_debug} to changeEntityStatBuff(attacker,"RES",(getEntityStatBuff(attacker,"RES")) * -2,"Sudden Panic (Perk)",1)
-					changeEntityStatBuff(attacker,"MAG",-6,"Sudden Panic (Perk)",1)
-					changeEntityStatBuff(attacker,"STR",-6,"Sudden Panic (Perk)",1)
-					changeEntityStatBuff(attacker,"RES",-6,"Sudden Panic (Perk)",1)
-					changeEntityStatBuff(attacker,"DEF",-6,"Sudden Panic (Perk)",1)
+					changeEntityStatBuff(attacker,"MAG",-7,"Sudden Panic (Perk)",1)
+					changeEntityStatBuff(attacker,"STR",-7,"Sudden Panic (Perk)",1)
+					changeEntityStatBuff(attacker,"SPD",-7,"Sudden Panic (Perk)",1)
+					changeEntityStatBuff(attacker,"RES",-7,"Sudden Panic (Perk)",1)
+					changeEntityStatBuff(attacker,"DEF",-7,"Sudden Panic (Perk)",1)
 			#Futile Resistance (Perk)
 			if checkSlots(attacker,"Futile Resistance") is 1:
 				if victim's health is less than victim's maximum health * 0.5:
@@ -4361,6 +4763,9 @@ on damage:
 						set {_lckBonus} to 10
 					set {_debug} to changeEntityStatBuff(attacker,"SpecialAcceleration",10,"Flashing Blade II (Perk)",1)
 					add ({_lckBonus} / 2) to damage
+			#Hurricane (Perk)
+			if checkSlots(attacker,"Hurricane") is 1:
+				add (getEntityStatTotal(attacker,"SPD") * 0.2) to damage
 			#Aegis Guard (Perk)
 			if checkSlots(victim,"Aegis Guard") is 1:
 				if victim is blocking:
@@ -4473,17 +4878,16 @@ on damage:
 				set {_highestRES} to 0
 				#Find highest stats on entities within 30 blocks
 				loop all entities in radius 30 of the attacker:
-					if loop-entity is not the attacker:
-						if getEntityStat(loop-entity,"STR") is more than {_highestSTR}:
-							set {_highestSTR} to getEntityStat(loop-entity,"STR")
-						if getEntityStat(loop-entity,"MAG") is more than {_highestMAG}:
-							set {_highestMAG} to getEntityStat(loop-entity,"MAG")
-						if getEntityStat(loop-entity,"SPD") is more than {_highestSPD}:
-							set {_highestSPD} to getEntityStat(loop-entity,"SPD")
-						if getEntityStat(loop-entity,"DEF") is more than {_highestDEF}:
-							set {_highestDEF} to getEntityStat(loop-entity,"DEF")
-						if getEntityStat(loop-entity,"RES") is more than {_highestRES}:
-							set {_highestRES} to getEntityStat(loop-entity,"RES")
+					if getEntityStat(loop-entity,"STR") is more than {_highestSTR}:
+						set {_highestSTR} to getEntityStat(loop-entity,"STR")
+					if getEntityStat(loop-entity,"MAG") is more than {_highestMAG}:
+						set {_highestMAG} to getEntityStat(loop-entity,"MAG")
+					if getEntityStat(loop-entity,"SPD") is more than {_highestSPD}:
+						set {_highestSPD} to getEntityStat(loop-entity,"SPD")
+					if getEntityStat(loop-entity,"DEF") is more than {_highestDEF}:
+						set {_highestDEF} to getEntityStat(loop-entity,"DEF")
+					if getEntityStat(loop-entity,"RES") is more than {_highestRES}:
+						set {_highestRES} to getEntityStat(loop-entity,"RES")
 				#Apply stat buff/debuff equal to difference between player's stat and the caluclated higher stat (can go negative on purpose)
 				set {_debug} to changeEntityStatBuff(attacker,"STR",{_highestSTR} - (getEntityStat(attacker,"STR")),"Morph Status Effect",1)
 				set {_debug} to changeEntityStatBuff(attacker,"MAG",{_highestMAG} - (getEntityStat(attacker,"MAG")),"Morph Status Effect",1)
@@ -4499,17 +4903,16 @@ on damage:
 				set {_highestRES} to 0
 				#Find highest stats on entities within 30 blocks
 				loop all entities in radius 30 of the victim:
-					if loop-entity is not the victim:
-						if getEntityStat(loop-entity,"STR") is more than {_highestSTR}:
-							set {_highestSTR} to getEntityStat(loop-entity,"STR")
-						if getEntityStat(loop-entity,"MAG") is more than {_highestMAG}:
-							set {_highestMAG} to getEntityStat(loop-entity,"MAG")
-						if getEntityStat(loop-entity,"SPD") is more than {_highestSPD}:
-							set {_highestSPD} to getEntityStat(loop-entity,"SPD")
-						if getEntityStat(loop-entity,"DEF") is more than {_highestDEF}:
-							set {_highestDEF} to getEntityStat(loop-entity,"DEF")
-						if getEntityStat(loop-entity,"RES") is more than {_highestRES}:
-							set {_highestRES} to getEntityStat(loop-entity,"RES")
+					if getEntityStat(loop-entity,"STR") is more than {_highestSTR}:
+						set {_highestSTR} to getEntityStat(loop-entity,"STR")
+					if getEntityStat(loop-entity,"MAG") is more than {_highestMAG}:
+						set {_highestMAG} to getEntityStat(loop-entity,"MAG")
+					if getEntityStat(loop-entity,"SPD") is more than {_highestSPD}:
+						set {_highestSPD} to getEntityStat(loop-entity,"SPD")
+					if getEntityStat(loop-entity,"DEF") is more than {_highestDEF}:
+						set {_highestDEF} to getEntityStat(loop-entity,"DEF")
+					if getEntityStat(loop-entity,"RES") is more than {_highestRES}:
+						set {_highestRES} to getEntityStat(loop-entity,"RES")
 				#Apply stat buff/debuff equal to difference between player's stat and the caluclated higher stat (can go negative on purpose)
 				set {_debug} to changeEntityStatBuff(victim,"STR",{_highestSTR} - (getEntityStat(victim,"STR")),"Morph Status Effect",1)
 				set {_debug} to changeEntityStatBuff(victim,"MAG",{_highestMAG} - (getEntityStat(victim,"MAG")),"Morph Status Effect",1)
@@ -4534,6 +4937,20 @@ on damage:
 					changeEntityStatBuff(attacker,"STR",7,"Surge Sparrow",1)
 					changeEntityStatBuff(attacker,"SPD",7,"Surge Sparrow",1)
 					heal the attacker by ceil((getEntityStatTotal(attacker,"SPD")) * 0.1)
+			#Flared Strike
+			if attacker's health is more than or equal to (attacker's maximum health * 0.6):
+				if getEntitySkillsInHand(attacker,"Flared Strike",2,3) is more than 0:
+					changeEntityStatBuff(attacker,"STR",6,"Flared Strike",1)
+					changeEntityStatBuff(attacker,"MAG",6,"Flared Strike",1)
+					#10 true damage
+					applyRecoilDamage(victim,10.5)
+			#Arcane Blade (Perk)
+			if checkSlots(attacker,"Arcane Blade") is 1:
+				if attacker's health is more than or equal to attacker's maximum health * 0.5:
+					if {_magical} is 0:
+						add (getEntityStatTotal(attacker,"STR") * 0.2) to damage
+					else:
+						add (getEntityStatTotal(attacker,"MAG") * 0.2) to damage
 			#send "<light blue>Base Damage: %damage%" to the attacker
 			#Double-attack effects
 			#
@@ -4558,8 +4975,8 @@ on damage:
 						set {_debug} to changeEntityStatBuff(victim,"STR",5,"Archer's Foil",1)
 						set {_debug} to changeEntityStatBuff(victim,"DEF",5,"Archer's Foil",1)						
 			#Riposte
-			if getEntitySkillsInHand(victim,"Riposte",0,2) is more than or equal to 0:
-				if victim's health is more than or equal to victim's maximum health * 0.8:
+			if getEntitySkillsInHand(victim,"Riposte",0,2) is more than 0:
+				if victim's health is more than or equal to victim's maximum health * 0.7:
 					if getEntityRange(attacker) is getEntityRange(victim):
 						add 1 to {t_cos_doubleattacks.%victim%}
 					else if the 4th line of the lore of the victim's tool contains "Counter":
@@ -4653,6 +5070,7 @@ on damage:
 							set {_debug} to changeEntityStatBuff(attacker,"DEF",6,"Crusader's Charge (Perk)",1)
 							set {_debug} to changeEntityStatBuff(attacker,"RES",6,"Crusader's Charge (Perk)",1)
 							set {_debug} to changeEntityStatBuff(attacker,"STR",6,"Crusader's Charge (Perk)",1)
+							set {_debug} to changeEntityStatBuff(attacker,"SPD",6,"Crusader's Charge (Perk)",1)
 							set {_debug} to changeEntityStatBuff(attacker,"MAG",6,"Crusader's Charge (Perk)",1)
 			#Pursuit Ring
 			if attacker's health is more than or equal to (attacker's maximum health * 0.7):
@@ -4672,6 +5090,14 @@ on damage:
 				set {t_cos_doubleattacks.%attacker%} to 1
 			if {disableDoubleAttacks.%victim%} is true:
 				clear {t_cos_doubleattacks.%victim%}
+			#Wary Fighter
+			if getEntitySkillsInHand(victim,"Wary Fighter",0,2) is more than 0:
+				if victim's health is more than or equal to (victim's health * 0.5):
+					set {t_cos_doubleattacks.%attacker%} to 1
+			if getEntitySkillsInHand(attacker,"Wary Fighter",0,2) is more than 0:
+				if attacker's health is more than or equal to (attacker's health * 0.5):
+					if {t_cos_doubleattacks.%victim%} is more than 1:
+						set {t_cos_doubleattacks.%victim%} to 1
 			#Personal Difficulty - attacker
 			if {playerDifficulty.%attacker%} is 1:
 				set damage to damage * 1.5
@@ -4725,23 +5151,23 @@ on damage:
 			#VERY EXPERIMENTAL
 			#Close-range victim can always counter-attack on difficulties above HARD
 			#Autoriposte only when HP >= 30%
-			if victim's health is more than (victim's maximum health * 0.3):
-				if getEntityRange(victim) is 1:
-					if {playerDifficulty.%victim%} is more than or equal to 4:
-						add 1 to {t_cos_doubleattacks.%victim%}
-					else if {playerDifficulty.%attacker%} is more than or equal to 4:
-						add 1 to {t_cos_doubleattacks.%victim%}
-				else if getEntityRange(victim) is 3:
-					if {playerDifficulty.%victim%} is more than or equal to 4:
-						add 1 to {t_cos_doubleattacks.%victim%}
-					else if {playerDifficulty.%attacker%} is more than or equal to 4:
-						add 1 to {t_cos_doubleattacks.%victim%}
-				else if getEntityRange(victim) is getEntityRange(attacker):
-					if getEntityRange(attacker) is not 2 or 4:
-						if {playerDifficulty.%victim%} is more than or equal to 4:
-							add 1 to {t_cos_doubleattacks.%victim%}
-						else if {playerDifficulty.%attacker%} is more than or equal to 4:
-							add 1 to {t_cos_doubleattacks.%victim%}					
+			#if victim's health is more than (victim's maximum health * 0.3):
+			#	if getEntityRange(victim) is 1:
+			#		if {playerDifficulty.%victim%} is more than or equal to 4:
+			#			add 1 to {t_cos_doubleattacks.%victim%}
+			#		else if {playerDifficulty.%attacker%} is more than or equal to 4:
+			#			add 1 to {t_cos_doubleattacks.%victim%}
+			#	else if getEntityRange(victim) is 3:
+			#		if {playerDifficulty.%victim%} is more than or equal to 4:
+			#			add 1 to {t_cos_doubleattacks.%victim%}
+			#		else if {playerDifficulty.%attacker%} is more than or equal to 4:
+			#			add 1 to {t_cos_doubleattacks.%victim%}
+			#	else if getEntityRange(victim) is getEntityRange(attacker):
+			#		if getEntityRange(attacker) is not 2 or 4:
+			#			if {playerDifficulty.%victim%} is more than or equal to 4:
+			#				add 1 to {t_cos_doubleattacks.%victim%}
+			#			else if {playerDifficulty.%attacker%} is more than or equal to 4:
+			#				add 1 to {t_cos_doubleattacks.%victim%}					
 			#
 			#
 			#
@@ -4753,14 +5179,42 @@ on damage:
 				#Base avoid is --20-- 0, what the fuck?
 				set {_criticalMissChance} to ((getEntityStatTotal(victim,"LCK")) - (getEntityStatTotal(attacker,"LCK")))
 				add ((getEntityStatTotal(victim,"SPD")) - (getEntityStatTotal(attacker,"SPD"))) to {_criticalMissChance}
-				subtract ((getEntityNumericalWeaponRank(attacker)) * 6) from {_criticalMissChance}
-				#Apply a penalty to hitrate if the attacker's weapon's ability requirement is higher than the appropriate ability.
-				if getEntityWeaponType(attacker) is 0:
-					set {_attackerAbility} to getEntityArrayValueByName(attacker,"abilities","Traditional Weapons") parsed as integer
-				else if getEntityWeaponType(attacker) is 1:
+				subtract ((getEntityNumericalWeaponRank(attacker)) * 10) from {_criticalMissChance}
+				#Armsthrift (Perk)
+				if checkSlots(attacker,"Armsthrift") is 1:
+					set {_tradAbility} to getEntityArrayValueByName(attacker,"abilities","Traditional Weapons") parsed as integer
+					set {_magicAbility} to getEntityArrayValueByName(attacker,"abilities","Magical Weapons") parsed as integer
+					set {_gunsAbility} to getEntityArrayValueByName(attacker,"abilities","Guns") parsed as integer
+					#Trad is highest
+					if {_tradAbility} is more than {_magicAbility}:
+						if {_tradAbility} is more than {_gunsAbility}:
+							set {_attackerAbility} to {_tradAbility}
+							if getEntityWeaponType(attacker) is 0:
+								set damage to damage * 1.2
+					#Mag is highest
+					if {_magicAbility} is more than {_tradAbility}:
+						if {_magicAbility} is more than {_gunsAbility}:
+							set {_attackerAbility} to {_magicAbility}
+							if getEntityWeaponType(attacker) is 1:
+								set damage to damage * 1.2
+					#Guns is highest
+					if {_gunsAbility} is more than {_tradAbility}:
+						if {_gunsAbility} is more than {_magicAbility}:
+							set {_attackerAbility} to {_gunsAbility}
+							if getEntityWeaponType(attacker) is 2:
+								set damage to damage * 1.2
+				#Hexblade (Perk, magical weapons ability override)
+				else if checkSlots(attacker,"Hexblade") is 1:
 					set {_attackerAbility} to getEntityArrayValueByName(attacker,"abilities","Magical Weapons") parsed as integer
-				else if getEntityWeaponType(attacker) is 2:
-					set {_attackerAbility} to getEntityArrayValueByName(attacker,"abilities","Guns") parsed as integer
+					changeEntityStatBuff(attacker,"MAG",5,"Hexblade (Perk)",1)
+				else:
+					#Apply a penalty to hitrate if the attacker's weapon's ability requirement is higher than the appropriate ability.
+					if getEntityWeaponType(attacker) is 0:
+						set {_attackerAbility} to getEntityArrayValueByName(attacker,"abilities","Traditional Weapons") parsed as integer
+					else if getEntityWeaponType(attacker) is 1:
+						set {_attackerAbility} to getEntityArrayValueByName(attacker,"abilities","Magical Weapons") parsed as integer
+					else if getEntityWeaponType(attacker) is 2:
+						set {_attackerAbility} to getEntityArrayValueByName(attacker,"abilities","Guns") parsed as integer
 				add ((getEntityNumericalWeaponRank(attacker)) * 3) to {_attackerAbility}
 				if {_attackerAbility} is less than getEntityWeaponAbilityRequirement(attacker's tool,attacker):
 					send "<orange>Ability too low to wield weapon effectively! (-%(((getEntityWeaponAbilityRequirement(attacker's tool,attacker)) - {_attackerAbility}) * 5)%%% hitrate penalty)" to the attacker
@@ -4782,13 +5236,13 @@ on damage:
 				#Morale Hitrate Bonus/Penalty
 				if {traits.%attacker%::Level-Headed} is not true:
 					if {t_morale.%attacker%} is less than 0:
-						add (({t_morale.%attacker%} * 1) * (1 + checkSlots(attacker,"Rising Courage"))) to {_finalChance}
+						add (ceil({t_morale.%attacker%} * 0.7) * (1 + checkSlots(attacker,"Rising Courage"))) to {_finalChance}
 					else if {t_morale.%attacker%} is more than 0:
 						subtract (({t_morale.%attacker%} * 2) * (1 + checkSlots(attacker,"Rising Courage"))) from {_finalChance}
 				#Power Pitcher (Perk)
 				if checkSlots(attacker,"Power Pitcher") is 1:
 					if damage cause is projectile:
-						add 6 to damage
+						add 9 to damage
 						subtract 15 from {_finalChance}
 				#Leadership hitrate bonus
 				subtract getAllyLeadership(attacker) from {_finalChance}
@@ -4835,6 +5289,75 @@ on damage:
 					subtract 25 from {_finalChance}
 					set {_debug} to changeEntityStatBuff(attacker,"STR",5,"Attack Stability (Perk)",1)
 					set {_debug} to changeEntityStatBuff(attacker,"MAG",5,"Attack Stability (Perk)",1)
+				#Hit +20
+				if getEntitySkillsInHand(attacker,"Hit +20",0,4) is 1:
+					subtract 20 from {_finalChance}
+				#Weapon Triangle
+				set {_WTResults} to getWeaponTriangleBonus(attacker, victim)
+				#Mirror Match - Attacker
+				if getEntitySkillsInHand(attacker,"Mirror Match",0,2) is more than 0:
+					if {_WTResults} is 0:
+						if getEntityRange(attacker) is getEntityRange(victim):
+							set {_WTResults} to 15
+						else if getEntityRange(attacker) is 3:
+							set {_WTResults} to 15
+						else if getEntityRange(attacker) is 4:
+							set {_WTResults} to 15
+				#Mirror Match - Victim, attacker nulls victim's
+				else if getEntitySkillsInHand(victim,"Mirror Match",0,2) is more than 0:
+					if {_WTResults} is 0:
+						if getEntityRange(victim) is getEntityRange(attacker):
+							set {_WTResults} to -15
+						else if getEntityRange(victim) is 3:
+							set {_WTResults} to -15
+						else if getEntityRange(victim) is 4:
+							set {_WTResults} to -15
+				#Triangle Reaver - Attacker
+				if getEntitySkillsInHand(attacker,"Triangle Reaver",0,2) is more than 0:
+					if {_WTResults} is less than 0:
+						set {_reaverBonusAttacker} to true
+						set {_WTResults} to ({_WTResults} * -2)
+				#Triangle Reaver - Victim
+				else if getEntitySkillsInHand(victim,"Triangle Reaver",0,2) is more than 0:
+					if {_WTResults} is more than 0:
+						set {_WTResults} to ({_WTResults} * -2)
+						set {_reaverBonusVictim} to true
+				#Triangle Enforcer - Attacker
+				if checkSlots(attacker,"Triangle Enforcer") is 1:
+					set {_WTResults} to {_WTResults} * 2
+				#Triangle Enforcer - Victim
+				if checkSlots(victim,"Triangle Enforcer") is 1:
+					set {_WTResults} to {_WTResults} * 2
+				#Cancel Affinity - Attacker
+				if getEntitySkillsInHand(attacker,"Cancel Affinity",0,4) is more than 0:
+					set {_WTResults} to 0
+				#Cancel Affinity - Victim
+				else if getEntitySkillsInHand(victim,"Cancel Affinity",0,4) is more than 0:
+					set {_WTResults} to 0
+				#Apply WT hitrate effects
+				subtract {_WTResults} from {_finalChance}
+				#WT Verbose Combat Logs
+				if {verboseCombatLogging.%attacker%} is set:
+					send formatted "<gold>[Weapon Triangle]: <white>+%{_WTResults}% Hitrate" to the attacker
+				if {verboseCombatLogging.%victim%} is set:
+					send formatted "<gold>[Weapon Triangle]: <white>+%{_WTResults}% Hitrate" to the victim
+				#Hawkeye
+				if getEntitySkillsInHand(attacker,"Hawkeye",0,1) is 1:
+					set {_finalChance} to 0
+					#Apply a penalty to hitrate if the attacker's weapon's ability requirement is higher than the appropriate ability.
+					if getEntityWeaponType(attacker) is 0:
+						set {_attackerAbility} to getEntityArrayValueByName(attacker,"abilities","Traditional Weapons") parsed as integer
+					else if getEntityWeaponType(attacker) is 1:
+						set {_attackerAbility} to getEntityArrayValueByName(attacker,"abilities","Magical Weapons") parsed as integer
+					else if getEntityWeaponType(attacker) is 2:
+						set {_attackerAbility} to getEntityArrayValueByName(attacker,"abilities","Guns") parsed as integer
+					add ((getEntityNumericalWeaponRank(attacker)) * 3) to {_attackerAbility}
+					if {_attackerAbility} is less than getEntityWeaponAbilityRequirement(attacker's tool,attacker):
+						send "<orange>Ability too low to wield weapon effectively! (-%(((getEntityWeaponAbilityRequirement(attacker's tool,attacker)) - {_attackerAbility}) * 5)%%% hitrate penalty)" to the attacker
+						add (((getEntityWeaponAbilityRequirement(attacker's tool,attacker)) - {_attackerAbility}) * 5) to {_criticalMissChance}
+				#Immovabale hitrate clause
+				if getEntitySkillsInHand(victim,"Immovable",0,2) is more than 0:
+					set {_finalChance} to 0
 				set {_finalChance} to floor({_finalChance})
 				if {verboseCombatLogging.%attacker%} is set:
 					send formatted "<gold>[Hitrate] <white>Final Miss Chance: %{_finalChance}%" to the attacker
@@ -4912,6 +5435,9 @@ on damage:
 				if {_critMiss} is not true:
 					#Increase attacker's Weapon Rank by 1
 					changeEntityWeaponRank(attacker,1)
+					#Discipline (Skill)
+					if getEntitySkillsInHand(attacker,"Discipline",2,3) is more than 0:
+						changeEntityWeaponRank(attacker,1)
 					#Disables Morale if attacker took the Level-Headed trait
 					if {traits.%attacker%::Level-Headed} is not true:
 						#Clears the notification for returning to neutral morale passively
@@ -5238,32 +5764,32 @@ on damage:
 								if loop-entity is not the attacker:
 									if {party.%loop-entity%} is not {party.%attacker%}:
 										if {t_galeforceCooldown.%attacker%} is not set:
-											applyOOCStatusEffect(loop-entity,"Dazed",5)
+											#applyOOCStatusEffect(loop-entity,"Dazed",5)
 											play large explosion at the loop-entity
+											apply slowness 5 to the loop-entity for 10 seconds
+											apply weakness 5 to the loop-entity for 10 seconds
+											apply blindness 1 to the loop-entity for 10 seconds
 											#send formatted "<light red>Dazed by %attacker%'s Galeforce!" to loop-entity
 							set {t_galeforceCooldown.%attacker%} to 5
 							play sound "entity.zombie_villager.cure" with volume 0.5 and pitch 1 at victim for attacker
 					#Njorun's Zeal (Perk)
 					if checkSlots(attacker,"Njorun's Zeal") is 1:
-						if attacker does not have weakness:
-							if attacker does not have slowness:
-								if attacker's health is more than or equal to attacker's maximum health * 0.5:
-									if attacker is riding a horse:
-										set {_proc} to "Njorun's Zeal"
-										loop all entities in radius 15 of the attacker:
-											if loop-entity is not the attacker:
-												if {party.%loop-entity%} is not {party.%attacker%}:
-													if {t_njorunsZealCooldown.%attacker%} is not set:
-														applyOOCStatusEffect(loop-entity,"Dazed",5)
-														play large explosion at the loop-entity
-														send formatted "<light red>Dazed by %attacker%'s Njorun's Zeal perk!" to loop-entity
-										set {t_njorunsZealCooldown.%attacker%} to 5
-										play sound "entity.zombie_villager.cure" with volume 0.5 and pitch 1 at victim for attacker
-										apply weakness 2 to the attacker for 10 seconds
-										apply slowness 2 to the attacker for 10 seconds
-										loop all horses in radius 1 of the attacker:
-											apply weakness 2 to the loop-horse for 10 seconds
-											apply slowness 2 to the loop-horse for 10 seconds
+						if attacker's health is more than or equal to attacker's maximum health * 0.5:
+							if attacker is riding a horse:
+								set {_proc} to "Njorun's Zeal"
+								loop all entities in radius 15 of the attacker:
+									if loop-entity is not a horse:
+										if {party.%loop-entity%} is not {party.%attacker%}:
+											if {t_njorunsZealCooldown.%attacker%} is not set:
+												#applyOOCStatusEffect(loop-entity,"Dazed",5)
+												play large explosion at the loop-entity
+												apply slowness 5 to the loop-entity for 10 seconds
+												apply weakness 5 to the loop-entity for 10 seconds
+												apply blindness 1 to the loop-entity for 10 seconds
+												play large explosion at the loop-entity
+												send formatted "<light red>Dazed by %attacker%'s Njorun's Zeal perk!" to loop-entity
+								set {t_njorunsZealCooldown.%attacker%} to 5
+								play sound "entity.zombie_villager.cure" with volume 0.5 and pitch 1 at victim for attacker
 					#Pavise
 					if getEntitySkillsInHand(victim,"Pavise",0,5) is 1:
 						if getEntityRange(attacker) is 1 or 3:
@@ -5273,7 +5799,7 @@ on damage:
 								if {verboseCombatLogging.%victim%} is true:
 									send formatted "<gold>Pavise reduces damage by 0.5x." to the attacker
 								if the 6th line of the lore of the victim's tool contains "Koenig":
-									subtract 7.5 from damage
+									subtract (damage * 0.2) from damage
 								if the 2nd line of the lore of the victim's tool contains "Shield Pulse":
 									subtract 2.5 from damage
 								if checkSlots(victim,"Shield Pulse") is 1:
@@ -5293,7 +5819,7 @@ on damage:
 								if {verboseCombatLogging.%victim%} is true:
 									send formatted "<gold>Aegis reduces damage by 0.5x." to the attacker
 								if the 6th line of the lore of the victim's tool contains "Koenig":
-									subtract 7.5 from damage
+									subtract (damage * 0.2) from damage
 								if the 2nd line of the lore of the victim's tool contains "Shield Pulse":
 									subtract 2.5 from damage
 								if checkSlots(victim,"Shield Pulse") is 1:
@@ -5308,11 +5834,11 @@ on damage:
 					else if getEntitySkillsInHand(victim,"Buckler",0,5) is 1:
 						if defensiveSpecialCheck(victim,getEntityStatTotal(victim,"LCK"),1.5,90) is 1:
 							set {_defensiveProc} to "Buckler"
-							set damage to damage * 0.75
+							set damage to damage * 0.6
 							if {verboseCombatLogging.%victim%} is true:
-								send formatted "<gold>Buckler reduces damage by 0.75x." to the attacker
+								send formatted "<gold>Buckler reduces damage by 0.6x." to the attacker
 							if the 6th line of the lore of the victim's tool contains "Koenig":
-								subtract 7.5 from damage
+								subtract (damage * 0.2) from damage
 							if the 2nd line of the lore of the victim's tool contains "Shield Pulse":
 								subtract 2.5 from damage
 							if checkSlots(victim,"Shield Pulse") is 1:
@@ -5335,7 +5861,7 @@ on damage:
 								if {verboseCombatLogging.%victim%} is true:
 									send formatted "<gold>The foe can double, Holy Vestments reduces damage further by 0.7x." to the attacker
 							if the 6th line of the lore of the victim's tool contains "Koenig":
-								subtract 7.5 from damage
+								subtract (damage * 0.2) from damage
 							if the 2nd line of the lore of the victim's tool contains "Shield Pulse":
 								subtract 2.5 from damage
 							if checkSlots(victim,"Shield Pulse") is 1:
@@ -5354,7 +5880,7 @@ on damage:
 								cancel event
 								set victim's health to 0.5
 								if the 6th line of the lore of the victim's tool contains "Koenig":
-									set victim's health to 7.5
+									set victim's health to (victim's maximum health * 0.2)
 								if the 2nd line of the lore of the victim's tool contains "Shield Pulse":
 									add 2.5 to the victim's health
 								if checkSlots(victim,"Shield Pulse") is 1:
@@ -5374,7 +5900,7 @@ on damage:
 								cancel event
 								set victim's health to 0.5
 								if the 6th line of the lore of the victim's tool contains "Koenig":
-									set victim's health to 7.5
+									set victim's health to (victim's maximum health * 0.2)
 								if the 2nd line of the lore of the victim's tool contains "Shield Pulse":
 									add 2.5 to the victim's health
 								if checkSlots(victim,"Shield Pulse") is 1:
@@ -5388,14 +5914,29 @@ on damage:
 								play sound "entity.zombie_villager.cure" with volume 0.5 and pitch 1.5 at attacker for victim
 					#Near Save
 					loop all players in radius 30 of the victim:
-						if checkSlots(loop-player,"Near Save") is 1:
-							set {_odds} to getEntityStatTotal(loop-player,"LCK")
-							set {_odds} to floor({_odds} / 4)
-							if {_odds} is more than 100:
-								set {_odds} to 100
-							chance of {_odds}%:
-								set damage to damage / 2
-								send "<light yellow>%loop-player's tablist name%<reset><light yellow>'s Near Save perk reduced the damage suffered." to the victim
+						if {party.%victim%} is {party.%loop-player%}:
+							if checkSlots(loop-player,"Near Save") is 1:
+								set {_odds} to getEntityStatTotal(loop-player,"LCK")
+								set {_odds} to floor({_odds} / 1)
+								if {_odds} is more than 100:
+									set {_odds} to 100
+								chance of {_odds}%:
+									set {_NearSaveOK} to true
+									set damage to damage / 2
+									send "<light yellow>%loop-player's tablist name%<reset><light yellow>'s Near Save perk reduced the damage suffered." to the victim
+					#Beacon of Hope check
+					if {_NearSaveOK} is not true:
+						loop all armor stands in radius 30 of the victim:
+							if metadata value "isBOHDummy" of the loop-entity is 1:
+								if {party.%victim%} is {party.%{t_beaconOwner.%loop-entity%}%}:
+									set {_odds} to getEntityStatTotal({t_beaconOwner.%loop-entity%},"LCK")
+									set {_odds} to floor({_odds} / 1)
+									if {_odds} is more than 100:
+										set {_odds} to 100
+									chance of {_odds}%:
+										set {_NearSaveOK} to true
+										set damage to damage / 2
+										send "<light yellow>A Beacon of Hope's Near Save perk reduced the damage suffered." to the victim									
 					#Shield damage reduction
 					if victim is blocking:
 						set {_poise} to ((getEntityStatTotal(victim,"STR")) + (getEntityStatTotal(victim,"DEF")))
@@ -5423,7 +5964,7 @@ on damage:
 				if {_proc} is set:
 					#Koenig baked refine
 					if nbt of attacker's tool contains "bakedRefine:4":
-						add 7.5 to damage
+						add (damage * 0.2) to damage
 						set {_mergeToTest} to 0
 						loop 10 times:
 							add 1 to {_mergeToTest}
@@ -5460,7 +6001,7 @@ on damage:
 						set {_debug} to changeEntityStatBuff(victim,"DEF",{_LunarBraceDEFReduction},"Lunar Brace Temp Debuff",0)
 						set {_debug} to changeEntityStatBuff(victim,"RES",{_LunarBraceRESReduction},"Lunar Brace Temp Debuff",0)
 					if the 6th line of the lore of the attacker's tool contains "Koenig":
-						add 7.5 to damage
+						add (damage * 0.2) to damage
 					if the 2nd line of the lore of the attacker's tool contains "Solar Brace":
 						heal the attacker by (damage * 0.2)
 					#Siegmund heal-on-special
@@ -5500,8 +6041,8 @@ on damage:
 					if checkSlots(attacker,"Requiem") is 1:
 						loop all players in radius 30 of the attacker:
 							if {party.%loop-player%} is {party.%attacker%}:
-								apply strength 2 to loop-player for 10 seconds
-								apply swiftness 2 to loop-player for 10 seconds
+								apply strength 3 to loop-player for 10 seconds
+								apply swiftness 3 to loop-player for 10 seconds
 					send formatted "<light purple>%{_proc}% was activated!" to the attacker
 					if {quotesToggle.%attacker%} is true:
 						set {_quoteRNG} to random integer between 1 and 4
@@ -5541,6 +6082,17 @@ on damage:
 				set damage to (damage + 3) * 1.1
 			if the 6th line of the lore of the victim's tool contains "Warding":
 				set damage to (damage - 3) * 0.9
+			#Ascended Magic (Perk, thunder bonus)
+			if {_ascmagThunderBonus} is set:
+				set damage to damage * {_ascmagThunderBonus}
+			#Riccochet (Perk)
+			if checkSlots(attacker,"Riccochet") is 1:
+				#Guns only
+				if nbt of attacker's tool contains "FirearmType:":
+					loop all entities in radius 2 of the victim:
+						if loop-entity is not the victim:
+							if {party.%loop-entity%} is not {party.%attacker%}:
+								applyRecoilDamage(loop-entity,(damage * 0.25))
 			#Finishing Blows
 			if attacker is player:
 				if {traits.%attacker%::Heavy Handed} is true:
@@ -5561,15 +6113,16 @@ on damage:
 						loop all monsters in radius 7 of the victim:
 							damage the loop-monster by (damage / 4)
 							push the loop-monster backwards at speed 0.4
-							push the loop-monster upwards at speed 0.15
-						if {verboseCombatLogging.%attacker%} is true:
-							send formatted "<gold>Sword finishing blow! +10 damage, AOE-7 at 25%% damage. Melee disabled for %{t_weaponComboPenalty.%attacker%}% seconds." to the attacker							
+							push the loop-monster upwards at speed 0.15		
 						create safe explosion of force 0 at the victim
 						push the victim backwards at speed 0.45
 						push the victim upwards at speed 0.2
 						set {t_weaponComboPenalty.%attacker%} to (1.5 / (1 + checkSlots(attacker,"Quick Refrain")))
 						set {t_weaponComboPenalty.%attacker%} to {t_weaponComboPenalty.%attacker%} / (1 + checkSlots(attacker,"Traditional Specialist"))
+						if {verboseCombatLogging.%attacker%} is true:
+							send formatted "<gold>Sword finishing blow! +10 damage, AOE-7 at 25%% damage. Melee disabled for %{t_weaponComboPenalty.%attacker%}% seconds." to the attacker	
 						if checkSlots(attacker,"Crescendo") is 1:
+							set {_crescendoProc} to true
 							set {t_weaponComboPenalty.%attacker%} to {t_weaponComboPenalty.%attacker%} * 2
 							add 10 to damage
 							#Swords deal light AOE damage
@@ -5595,14 +6148,15 @@ on damage:
 					if {t_comboBuildup.%attacker%} is more than or equal to 1:
 						add 10 to damage
 						set damage to damage * (1.2 + (getEntityArmorDamageReduction(victim)))
-						if {verboseCombatLogging.%attacker%} is true:
-							send formatted "<gold>Axe finishing blow! +10 damage, Penetrated armour for [%(1 + (getEntityArmorDamageReduction(victim)))%]x damage. Melee disabled for %{t_weaponComboPenalty.%attacker%}% seconds." to the attacker
 						create safe explosion of force 0 at the victim
 						push the victim backwards at speed 0.7
 						push the victim upwards at speed 0.7
 						set {t_weaponComboPenalty.%attacker%} to (2.3 / (1 + checkSlots(attacker,"Quick Refrain")))
 						set {t_weaponComboPenalty.%attacker%} to {t_weaponComboPenalty.%attacker%} / (1 + checkSlots(attacker,"Traditional Specialist"))
+						if {verboseCombatLogging.%attacker%} is true:
+							send formatted "<gold>Axe finishing blow! +10 damage, Penetrated armour for [%(1 + (getEntityArmorDamageReduction(victim)))%]x damage. Melee disabled for %{t_weaponComboPenalty.%attacker%}% seconds." to the attacker
 						if checkSlots(attacker,"Crescendo") is 1:
+							set {_crescendoProc} to true
 							add 10 to damage
 							set damage to damage * (1.2 + (getEntityArmorDamageReduction(victim)))
 							set {t_weaponComboPenalty.%attacker%} to {t_weaponComboPenalty.%attacker%} * 2
@@ -5615,18 +6169,25 @@ on damage:
 					add ((0.34 * {_HeavyHandModifier}) / ((getEntitySkillsInHand(attacker,"Combo Plus",0,4)) + ({_loosecannonbuildmodifier} + 0) + 1)) to {t_comboBuildup.%attacker%}
 					if {t_comboBuildup.%attacker%} is more than or equal to 1:
 						add 10 to damage
-						set {_debug} to applyOOCStatusEffect(victim,"Dazed",1.5)
+						#set {_debug} to applyOOCStatusEffect(victim,"Dazed",1.5)
+						apply slowness 5 to the victim for 3 seconds
+						apply weakness 5 to the victim for 3 seconds
+						apply blindness 1 to the victim for 3 seconds
 						send "<gold>Dazed the foe for 3 seconds!" to the attacker
-						if {verboseCombatLogging.%attacker%} is true:
-							send formatted "<gold>Lance finishing blow! +10 damage, Foe dazed for 3 seconds. Melee disabled for %{t_weaponComboPenalty.%attacker%}% seconds." to the attacker
 						create safe explosion of force 0 at the victim
 						push the victim backwards at speed 0.2
 						push the victim upwards at speed 0.2
 						set {t_weaponComboPenalty.%attacker%} to (1.9 / (1 + checkSlots(attacker,"Quick Refrain")))
 						set {t_weaponComboPenalty.%attacker%} to {t_weaponComboPenalty.%attacker%} / (1 + checkSlots(attacker,"Traditional Specialist"))
+						if {verboseCombatLogging.%attacker%} is true:
+							send formatted "<gold>Lance finishing blow! +10 damage, Foe dazed for 3 seconds. Melee disabled for %{t_weaponComboPenalty.%attacker%}% seconds." to the attacker
 						if checkSlots(attacker,"Crescendo") is 1:
+							set {_crescendoProc} to true
 							add 10 to damage
-							set {_debug} to applyOOCStatusEffect(victim,"Dazed",3)
+							#set {_debug} to applyOOCStatusEffect(victim,"Dazed",3)
+							apply slowness 5 to the victim for 6 seconds
+							apply weakness 5 to the victim for 6 seconds
+							apply blindness 1 to the victim for 6 seconds
 							set {t_weaponComboPenalty.%attacker%} to {t_weaponComboPenalty.%attacker%} * 2
 							if {verboseCombatLogging.%attacker%} is true:
 								send formatted "<gold>Crescendo doubled the effect!" to the attacker
@@ -5639,14 +6200,15 @@ on damage:
 						add 10 to damage
 						heal the attacker by 3
 						add 3 to the attacker's food bar
-						if {verboseCombatLogging.%attacker%} is true:
-							send formatted "<gold>Gauntlets finishing blow! +10 damage, Restored 3 hearts & 3 hunger. Melee disabled for %{t_weaponComboPenalty.%attacker%}% seconds." to the attacker
 						create safe explosion of force 0 at the victim
 						push the victim backwards at speed 0.2
 						push the victim upwards at speed 0.4
 						set {t_weaponComboPenalty.%attacker%} to (1.5 / (1 + checkSlots(attacker,"Quick Refrain")))
 						set {t_weaponComboPenalty.%attacker%} to {t_weaponComboPenalty.%attacker%} / (1 + checkSlots(attacker,"Traditional Specialist"))
+						if {verboseCombatLogging.%attacker%} is true:
+							send formatted "<gold>Gauntlets finishing blow! +10 damage, Restored 3 hearts & 3 hunger. Melee disabled for %{t_weaponComboPenalty.%attacker%}% seconds." to the attacker
 						if checkSlots(attacker,"Crescendo") is 1:
+							set {_crescendoProc} to true
 							add 10 to damage
 							heal the attacker by 3
 							add 3 to the attacker's food bar
@@ -5664,14 +6226,16 @@ on damage:
 						set {_debug} to changeEntityStatBuff(victim,"STR",-7,"Dagger Finishing Blow",1)
 						set {_debug} to changeEntityStatBuff(victim,"DEF",-7,"Dagger Finishing Blow",1)
 						set {_debug} to changeEntityStatBuff(victim,"RES",-7,"Dagger Finishing Blow",1)
-						if {verboseCombatLogging.%attacker%} is true:
-							send formatted "<gold>Dagger finishing blow! +10 damage, inflicted STR/SPD/DEF/RES -7 on foe through next action. Melee disabled for %{t_weaponComboPenalty.%attacker%}% seconds." to the attacker
 						create safe explosion of force 0 at the victim
 						push the victim backwards at speed 0.2
 						push the victim upwards at speed 0.2
 						set {t_weaponComboPenalty.%attacker%} to (1 / (1 + checkSlots(attacker,"Quick Refrain")))
 						set {t_weaponComboPenalty.%attacker%} to {t_weaponComboPenalty.%attacker%} / (1 + checkSlots(attacker,"Traditional Specialist"))
+						if {verboseCombatLogging.%attacker%} is true:
+							send formatted "<gold>Dagger finishing blow! +10 damage, inflicted STR/SPD/DEF/RES -7 on foe through next action. Melee disabled for %{t_weaponComboPenalty.%attacker%}% seconds." to the attacker
 						if checkSlots(attacker,"Crescendo") is 1:
+							set {_crescendoProc} to true
+							add 10 to damage
 							set {_debug} to changeEntityStatBuff(victim,"SPD",-7,"Dagger Finishing Blow",1)
 							set {_debug} to changeEntityStatBuff(victim,"STR",-7,"Dagger Finishing Blow",1)
 							set {_debug} to changeEntityStatBuff(victim,"DEF",-7,"Dagger Finishing Blow",1)
@@ -5681,6 +6245,15 @@ on damage:
 								send formatted "<gold>Crescendo doubled the effect!" to the attacker
 						create bossbar titled "<light blue>Melee Fatigue" and id "weapondowntime.%attacker's uuid%" for attacker with progress 20 with colors blue
 						display bossbar "weapondowntime.%attacker's uuid%"
+				#Crescendo AoE heal + cleanse
+				if {_crescendoProc} is true:
+					loop all players in radius 10 of the attacker:
+						if {party.%loop-player%} is {party.%attacker%}:
+							apply regeneration 4 to the loop-player for 3 seconds
+							remove weakness from the loop-player
+							remove slowness from the loop-player
+							remove poison from the loop-player
+							remove wither from the loop-player
 				#Combo freeze
 				if {t_weaponComboPenalty.%attacker%} is not set:
 					set {t_weaponComboFreeze.%attacker%} to 3
@@ -5693,13 +6266,14 @@ on damage:
 							set damage to damage * -1
 						else if {traits.%victim%::Power Player} is true:
 							set damage to damage * -1
-						cancel event
-						if projectile exists:
-							delete the projectile
-						send formatted "<light red>Your efforts are wasted. %victim%'s defenses are too strong." to the attacker
-						send formatted "<light green>%attacker%'s blows were no match for your defenses." to the victim
-						play sound "entity.experience_orb.pickup" with volume 3 and pitch 2 at victim for attacker
-						play sound "entity.experience_orb.pickup" with volume 3 and pitch 2 at victim for victim
+						else:
+							cancel event
+							if projectile exists:
+								delete the projectile
+							send formatted "<light red>Your efforts are wasted. %victim%'s defenses are too strong." to the attacker
+							send formatted "<light green>%attacker%'s blows were no match for your defenses." to the victim
+							play sound "entity.experience_orb.pickup" with volume 3 and pitch 2 at victim for attacker
+							play sound "entity.experience_orb.pickup" with volume 3 and pitch 2 at victim for victim
 			else:
 				#Add player attackers to the victim's list of previous combat targets so we can award partial XP later
 				if citizen id of the attacker is not set:
@@ -5738,6 +6312,26 @@ on damage:
 			else if victim is player:
 				if victim's world is "Salindrum":
 					set damage to damage * {sd.incomingmult.%victim%}
+			#Weapon Triangle damage mods
+			#Triangle Adept
+			if {_WTResults} is more than 0:
+				add 5 to damage
+				if {_reaverBonusAttacker} is true:
+					add 5 to damage
+				if getEntitySkillsInHand(attacker,"Triangle Adept",0,1) is more than 0:
+					set damage to damage * 1.2
+			else if {_WTResults} is less than 0:
+				subtract 5 from damage
+				if {_reaverBonusVictim} is true:
+					subtract 5 from damage
+				if getEntitySkillsInHand(victim,"Triangle Adept",0,1) is more than 0:
+					set damage to damage * 0.8
+			#Chain Reaction (perk) - Damage Effect
+			if checkSlots(attacker,"Chain Reaction") is 1:
+				loop all entities in radius 20 of the attacker:
+					if metadata value "crTagged" of the loop-entity is 1:
+						damage the loop-entity by damage
+						remove glowing from the loop-entity
 			if damage is less than victim's health:
 				send action bar "<bold>%victim% | Level: %{_actionBarLVL}% | HP: %victim's health - (final damage / 2)% / %victim's maximum health% | Damage Dealt: %final damage / 2%" to the attacker
 			else:
@@ -5771,9 +6365,15 @@ on damage:
 				#Mystic Boost perk (attacker)
 				if checkSlots(attacker,"Mystic Boost") is 1:
 					heal the attacker by 6 hearts
-				#Herbivore (attacker)
-				if checkSlots(attacker,"Herbivore") is 1:
+				#Inner Peace (attacker)
+				if checkSlots(attacker,"Inner Peace") is 1:
 					heal the attacker by 3 hearts
+					set {_debug} to changeEntityStatBuff(victim,"STR",-6,"Inner Peace (Perk)",1)
+					set {_debug} to changeEntityStatBuff(victim,"MAG",-6,"Inner Peace (Perk)",1)
+					set {_debug} to changeEntityStatBuff(victim,"SPD",-6,"Inner Peace (Perk)",1)
+					set {_debug} to changeEntityStatBuff(victim,"LCK",-6,"Inner Peace (Perk)",1)
+					set {_debug} to changeEntityStatBuff(victim,"DEF",-6,"Inner Peace (Perk)",1)
+					set {_debug} to changeEntityStatBuff(victim,"RES",-6,"Inner Peace (Perk)",1)
 			if victim is alive:
 				#Fury - Victim
 				if getEntitySkillsInHand(victim,"Fury",2,1) is more than 0:
@@ -5794,9 +6394,13 @@ on damage:
 				#Mystic Boost perk (Victim)
 				if checkSlots(victim,"Mystic Boost") is 1:
 					heal the victim by 6 hearts
-				#Herbivore (victim)
-				if checkSlots(victim,"Herbivore") is 1:
+				#Inner Peace (victim)
+				if checkSlots(victim,"Inner Peace") is 1:
 					heal the victim by 3 hearts
+			#Scendscale (Perk)
+			if checkSlots(attacker,"Scendscale") is 1:
+				if attacker's health is equal to attacker's maximum health:
+					applyRecoilDamage(attacker,7.5)
 			#Savage Blow
 			if getEntitySkillsInHand(attacker,"Savage Blow",0,3) is more than 0:
 				loop all entities in radius 5 of the victim:
@@ -5835,6 +6439,20 @@ on damage:
 						if loop-entity is not the attacker:
 							if {party.%victim%} is not {party.%loop-entity%}:
 								apply weakness 2 to the loop-entity for 3 seconds
+			#Essence Drain (Perk)
+			if checkSlots(attacker,"Essence Drain") is 1:
+				if victim has slowness:
+					apply swiftness 2 to the attacker for 3 seconds
+					apply regeneration 3 to the attacker for 3 seconds
+				if victim has weakness:
+					apply strength 2 to the attacker for 3 seconds
+					apply regeneration 3 to the attacker for 3 seconds
+				loop all entities in radius 7 of the victim:
+					if loop-entity is not the victim:
+						if loop-entity is not the attacker:
+							if {party.%victim%} is not {party.%loop-entity%}:
+								apply weakness 2 to the loop-entity for 3 seconds
+								apply slowness 2 to the loop-entity for 3 seconds								
 			#Shroud of Shadow (Perk)
 			if {_attackerSoSDebuffOK} is true:
 				loop all entities in radius 7 of the victim:
@@ -5868,6 +6486,83 @@ on damage:
 						exit 1 loop
 				set {_debug} to changeEntityStatBuff(attacker,"SpecialAcceleration",{_crushingBonus},"Crushing (Refine)",1)
 				set {_crushingBonus} to floor(damage * {_crushingBonus})
+			#Devil Trigger meter recovery
+			set {_dtCheck} to canUseDevilTrigger(attacker)
+			if {_dtCheck} is 1:
+				if {dtActive.%attacker%} is not set:
+					if final damage is more than 0:
+						set {dtMeterCap.%attacker%} to ({lvl.%attacker%} * 10) + 20
+						add (final damage / 2) to {dtMeter.%attacker%}
+						#Trigger Haste (Skill)
+						if getEntitySkillsInHand(attacker,"Trigger Haste",2,3) is more than 0:
+							add (final damage / 2) to {dtMeter.%attacker%}
+						if {dtMeter.%attacker%} is more than {dtMeterCap.%attacker%}:
+							set {dtMeter.%attacker%} to {dtMeterCap.%attacker%}
+						set {_dtMeterDisplay} to ceil(({dtMeter.%attacker%} / {dtMeterCap.%attacker%}) * 100)
+						if {_dtMeterDisplay} is more than 100:
+							if {t_blockMeterAnnoyance.%attacker%} is not set:
+								set {_dtMeterDisplay} to 100
+								play sound "block.end_portal.spawn" with volume 1 and pitch 1 at the attacker
+								send "<red>Trigger Meter full! Sneak + Right click with an empty hand to activate." to the attacker
+						set bossbar "dt.%attacker's uuid%" progress to {_dtMeterDisplay}
+						send "<red>Trigger Meter: %{dtMeter.%attacker%}% | Max Meter: %{dtMeterCap.%attacker%}%" to the attacker
+			#Dragon Soul perks
+			#Gale Soul
+			set {_LCKcheck} to checkSlots(attacker,"Gale Soul")
+			if {_LCKcheck} is 1:
+				set {dragonSoulMeterCap.%attacker%} to ({lvl.%attacker%} * 15)
+				add (final damage / 1) to {dragonSoulMeter.%attacker%}
+				#Trigger Haste (Skill)
+				if getEntitySkillsInHand(attacker,"Trigger Haste",2,3) is more than 0:
+					add (final damage / 1) to {dtMeter.%attacker%}
+				if {dragonSoulMeter.%attacker%} is more than {dragonSoulMeterCap.%attacker%}:
+					set {dragonSoulMeter.%attacker%} to {dragonSoulMeterCap.%attacker%}
+				set {_dtMeterDisplay} to ceil(({dragonSoulMeter.%attacker%} / {dragonSoulMeterCap.%attacker%}) * 100)
+				if {_dtMeterDisplay} is more than 100:
+					if {t_blockMeterAnnoyance.%attacker%} is not set:
+						set {_dtMeterDisplay} to 100
+						play sound "block.end_portal.spawn" with volume 1 and pitch 1 at the attacker
+						send "<gold>Gale Soul meter full! Sneak + Right click with an empty hand to transform." to the attacker
+				set bossbar "dsoul.%attacker's uuid%" progress to {_dtMeterDisplay}
+				send "<green>Gale Soul Meter: %{dragonSoulMeter.%attacker%}% | Max Meter: %{dragonSoulMeterCap.%attacker%}%" to the attacker
+			else:
+				#Flame Soul
+				set {_LCKcheck} to checkSlots(attacker,"Flame Soul")
+				if {_LCKcheck} is 1:
+					set {dragonSoulMeterCap.%attacker%} to ({lvl.%attacker%} * 15)
+					add (final damage / 1) to {dragonSoulMeter.%attacker%}
+					#Trigger Haste (Skill)
+					if getEntitySkillsInHand(attacker,"Trigger Haste",2,3) is more than 0:
+						add (final damage / 1) to {dtMeter.%attacker%}
+					if {dragonSoulMeter.%attacker%} is more than {dragonSoulMeterCap.%attacker%}:
+						set {dragonSoulMeter.%attacker%} to {dragonSoulMeterCap.%attacker%}
+					set {_dtMeterDisplay} to ceil(({dragonSoulMeter.%attacker%} / {dragonSoulMeterCap.%attacker%}) * 100)
+					if {_dtMeterDisplay} is more than 100:
+						if {t_blockMeterAnnoyance.%attacker%} is not set:
+							set {_dtMeterDisplay} to 100
+							play sound "block.end_portal.spawn" with volume 1 and pitch 1 at the attacker
+							send "<gold>Flame Soul meter full! Sneak + Right click with an empty hand to transform." to the attacker
+					set bossbar "dsoul.%attacker's uuid%" progress to {_dtMeterDisplay}
+					send "<orange>Flame Soul Meter: %{dragonSoulMeter.%attacker%}% | Max Meter: %{dragonSoulMeterCap.%attacker%}%" to the attacker
+				else:
+					#Aqua Soul
+					set {_LCKcheck} to checkSlots(attacker,"Aqua Soul")
+					if {_LCKcheck} is 1:
+						set {dragonSoulMeterCap.%attacker%} to ({lvl.%attacker%} * 15)
+						add (final damage / 1) to {dragonSoulMeter.%attacker%}
+						#Trigger Haste (Skill)
+						if getEntitySkillsInHand(attacker,"Trigger Haste",2,3) is more than 0:
+							add (final damage / 1) to {dtMeter.%attacker%}
+						if {dragonSoulMeter.%attacker%} is more than {dragonSoulMeterCap.%attacker%}:
+							set {dragonSoulMeter.%attacker%} to {dragonSoulMeterCap.%attacker%}
+						set {_dtMeterDisplay} to ceil(({dragonSoulMeter.%attacker%} / {dragonSoulMeterCap.%attacker%}) * 100)
+						if {_dtMeterDisplay} is more than 100:
+							if {t_blockMeterAnnoyance.%attacker%} is not set:
+								set {_dtMeterDisplay} to 100
+								play sound "block.end_portal.spawn" with volume 1 and pitch 1 at the attacker
+								send "<gold>Aqua Soul meter full! Sneak + Right click with an empty hand to transform." to the attacker
+						set bossbar "dsoul.%attacker's uuid%" progress to {_dtMeterDisplay}
+						send "<cyan>Aqua Soul Meter: %{dragonSoulMeter.%attacker%}% | Max Meter: %{dragonSoulMeterCap.%attacker%}%" to the attacker
 			#
 			#Clear buff/debuffs from previous combats
 			#
@@ -6104,26 +6799,31 @@ on damage:
 				set {_debug} to changeEntityStatBuff(victim,"STR",5,"Kestrel Stance",1)
 				set {_debug} to changeEntityStatBuff(victim,"MAG",5,"Kestrel Stance",1)
 				set {_debug} to changeEntityStatBuff(victim,"SPD",5,"Kestrel Stance",1)
+			#Immovable post-combat buff
+			if getEntitySkillsInHand(victim,"Immovable",0,2) is more than 0:
+				changeEntityStatBuff(victim,"DEF",7,"Immovable",1)
+				changeEntityStatBuff(victim,"RES",7,"Immovable",1)
+				changeEntityStatBuff(victim,"SpecialAcceleration",10,"Immovable",1)
 			#Form Skills
 			if the name of the victim's tool contains "Form":
 				loop all players in radius 20 of the victim:
 					if {party.%loop-player%} is {party.%victim%}:
 						add 1 to {_formAllies}
 				if getEntitySkillsInHand(victim,"DEF/RES Form",2,1) is more than 0:
-					changeEntityStatBuff(victim,"DEF",{_formAllies} * 3,"DEF/RES Form",1)
-					changeEntityStatBuff(victim,"RES",{_formAllies} * 3,"DEF/RES Form",1)
+					changeEntityStatBuff(victim,"DEF",{_formAllies} * 5,"DEF/RES Form",1)
+					changeEntityStatBuff(victim,"RES",{_formAllies} * 5,"DEF/RES Form",1)
 				if getEntitySkillsInHand(victim,"ATK/DEF Form",2,1) is more than 0:
-					changeEntityStatBuff(victim,"STR",{_formAllies} * 3,"ATK/DEF Form",1)
-					changeEntityStatBuff(victim,"MAG",{_formAllies} * 3,"ATK/DEF Form",1)
-					changeEntityStatBuff(victim,"DEF",{_formAllies} * 3,"ATK/DEF Form",1)
+					changeEntityStatBuff(victim,"STR",{_formAllies} * 5,"ATK/DEF Form",1)
+					changeEntityStatBuff(victim,"MAG",{_formAllies} * 5,"ATK/DEF Form",1)
+					changeEntityStatBuff(victim,"DEF",{_formAllies} * 5,"ATK/DEF Form",1)
 				if getEntitySkillsInHand(victim,"ATK/RES Form",2,1) is more than 0:
-					changeEntityStatBuff(victim,"STR",{_formAllies} * 3,"ATK/DEF Form",1)
-					changeEntityStatBuff(victim,"MAG",{_formAllies} * 3,"ATK/DEF Form",1)
-					changeEntityStatBuff(victim,"RES",{_formAllies} * 3,"ATK/RES Form",1)
+					changeEntityStatBuff(victim,"STR",{_formAllies} * 5,"ATK/DEF Form",1)
+					changeEntityStatBuff(victim,"MAG",{_formAllies} * 5,"ATK/DEF Form",1)
+					changeEntityStatBuff(victim,"RES",{_formAllies} * 5,"ATK/RES Form",1)
 				if getEntitySkillsInHand(victim,"ATK/SPD Form",2,1) is more than 0:
-					changeEntityStatBuff(victim,"STR",{_formAllies} * 3,"ATK/SPD Form",1)
-					changeEntityStatBuff(victim,"MAG",{_formAllies} * 3,"ATK/SPD Form",1)
-					changeEntityStatBuff(victim,"SPD",{_formAllies} * 3,"ATK/SPD Form",1)
+					changeEntityStatBuff(victim,"STR",{_formAllies} * 5,"ATK/SPD Form",1)
+					changeEntityStatBuff(victim,"MAG",{_formAllies} * 5,"ATK/SPD Form",1)
+					changeEntityStatBuff(victim,"SPD",{_formAllies} * 5,"ATK/SPD Form",1)
 			#Short/Tower Shield
 			if getEntityRange(attacker) is 2 or 4:
 				if getEntitySkillsInHand(victim,"Tower Shield",2,1) is more than 0:
@@ -6173,7 +6873,7 @@ on damage:
 			if {_rexHastaPostCombatBuff} is true:
 				changeEntityStatBuff(attacker,"STR",7,"Rex Hasta",1)
 				changeEntityStatBuff(attacker,"LCK",7,"Rex Hasta",1)	
-			#arthur's dumb fucking axe effect
+			#arthur's axe effect
 			if {_arthurAxeHitBuff} is true:
 				changeEntityStatBuff(attacker,"DEF",7,"Arthur's Axe",1)
 				changeEntityStatBuff(attacker,"RES",7,"Arthur's Axe",1)
@@ -6185,8 +6885,9 @@ on damage:
 			if {_attackerHasDagger} is true:
 				#dagtype 5 is Cutlaseer's throwing knives, which do not inflict dagger 7
 				if {_DAGTYPE} is not 5:
-					set {_debug} to changeEntityStatBuff(victim,"DEF",-7,"Dagger 7",1)
-					set {_debug} to changeEntityStatBuff(victim,"RES",-7,"Dagger 7",1)		
+					if getEntityArrayValueByName(victim,"tempActiveBuffs.def","Dagger 7") parsed as integer is not set:
+						set {_debug} to changeEntityStatBuff(victim,"DEF",-7,"Dagger 7",1)
+						set {_debug} to changeEntityStatBuff(victim,"RES",-7,"Dagger 7",1)
 			#Peshkatz
 			if getEntitySacredTreasure(attacker) is 33:
 				set {_debug} to changeEntityStatBuff(victim,"STR",-5,"Peshkatz",1)
@@ -6208,8 +6909,8 @@ on damage:
 				set {_debug} to changeEntityStatBuff(victim,"LCK",-7,"Smoke Dagger",1)				
 			#Poison Strike
 			if getEntitySkillsInHand(attacker,"Poison Strike",0,2) is more than 0:
-				set {_debug} to applyOOCStatusEffect(victim,"Poison",5)
-				send formatted "<light red>POISONED! (5 sec)." to the victim
+				set {_recoil} to victim's health * 0.2
+				applyRecoilDamage(victim,{_recoil})
 			#Flash and Clear (Perk)
 			if checkSlots(attacker,"Flash and Clear") is 1:
 				set {_odds} to floor((getEntityStatTotal(attacker,"LCK")) / 4)
@@ -6265,17 +6966,17 @@ on damage:
 						if {party.%attacker%} is not {party.%loop-entity%}:
 							if getEntityArrayValueByName(loop-entity,"tempActiveBuffs.res","RES Smoke") parsed as integer is not set:
 								set {_debug} to changeEntityStatBuff(loop-entity,"RES",-7,"RES Smoke",1)
-			#Offense Smoke (Perk)
-			if checkSlots(attacker,"Offense Smoke") is 1:
+			#Silent Smoke (Perk)
+			if checkSlots(attacker,"Silent Smoke") is 1:
 				loop all entities in radius 10 of the victim:
 					if loop-entity is not the victim:
 						if {party.%attacker%} is not {party.%loop-entity%}:
-							if getEntityArrayValueByName(loop-entity,"tempActiveBuffs.str","Offense Smoke") parsed as integer is not set:
-								set {_debug} to changeEntityStatBuff(loop-entity,"STR",-7,"Offense Smoke",1)
-							if getEntityArrayValueByName(loop-entity,"tempActiveBuffs.spd","Offense Smoke") parsed as integer is not set:
-								set {_debug} to changeEntityStatBuff(loop-entity,"SPD",-7,"Offense Smoke",1)
+							if getEntityArrayValueByName(loop-entity,"tempActiveBuffs.str","Silent Smoke") parsed as integer is not set:
+								set {_debug} to changeEntityStatBuff(loop-entity,"STR",-7,"Silent Smoke",1)
+							if getEntityArrayValueByName(loop-entity,"tempActiveBuffs.spd","Silent Smoke") parsed as integer is not set:
+								set {_debug} to changeEntityStatBuff(loop-entity,"SPD",-7,"Silent Smoke",1)
 							if getEntityArrayValueByName(loop-entity,"tempActiveBuffs.mag","Offense") parsed as integer is not set:
-								set {_debug} to changeEntityStatBuff(loop-entity,"MAG",-7,"Offense Smoke",1)
+								set {_debug} to changeEntityStatBuff(loop-entity,"MAG",-7,"Silent Smoke",1)
 			#Rouse Skills
 			#STR Rouse
 			if getEntitySkillsInHand(attacker,"Rouse STR",0,3) is more than 0:
@@ -6337,13 +7038,16 @@ on damage:
 			#Special Spiral
 			if getEntitySkillsInHand(attacker,"Special Spiral",0,2) is more than 0:
 				changeEntityStatBuff(attacker,"SpecialAcceleration",20,"Special Spiral",1)
-			#Canto (Perk) (Base Effect)
-			if checkSlots(attacker,"Canto") is 1:
+			#Cav Mount (Perk) (Base Effect)
+			if checkSlots(attacker,"Mount") is 1:
 				apply swiftness 5 to the attacker for 2 seconds
 				apply resistance 5 to the attacker for 2 seconds
 				loop all horses in radius 1 of the attacker:
 					apply swiftness 5 to the loop-horse for 2 seconds
 					apply resistance 5 to the loop-horse for 2 seconds
+			#Canter (Skill)
+			if getEntitySkillsInHand(attacker,"Canter",2,3) is more than 0:
+				apply swiftness 2 to the attacker for 3 seconds
 			#Scathing Blow (Perk) (Post-Combat Debuff)
 			if checkSlots(attacker,"Scathing Blow") is 1:
 				if attacker's health is attacker's maximum health:
@@ -6397,6 +7101,30 @@ on damage:
 					remove 1 of victim's boots from victim's boots
 					send formatted "<light red>%attacker% stole your boots!" to the victim
 					send formatted "<light green>Stole %victim%'s boots via Lockpicking ability." to the attacker
+			#Deft Hands random loot drop
+			if checkSlots(attacker,"Deft Hands") is 1:
+				if {party.%victim%} is not {party.%attacker%}:
+					set {_itemRN} to random integer from 1 to 10
+					if {_itemRN} is 1:
+						give 1 iron nugget to the attacker
+					else if {_itemRN} is 2:
+						give 1 gunpowder to the attacker
+					else if {_itemRN} is 3:
+						give 1 gold nugget to the attacker
+					else if {_itemRN} is 4:
+						give 1 gunpowder to the attacker
+					else if {_itemRN} is 5:
+						give 1 iron nugget to the attacker
+					else if {_itemRN} is 6:
+						give 1 gold nugget to the attacker
+					else if {_itemRN} is 7:
+						give 1 paper named "<light green>Bullion (S)" with lore "<white>A small lump of gold.", "<white>Right-click to gain 50G." to the attacker
+					else if {_itemRN} is 8:
+						drop 1 green dye named "<light green><bold>Sacred Herb" with lore "<white>A medicinal herb used to heal wounds.","<white>Right-click to restore 6 hearts.","<white>Can also be picked up off the ground to restore 3 hearts if wounded." at the victim
+					else if {_itemRN} is 9:
+						give 1 iron nugget to the attacker
+					else if {_itemRN} is 10:
+						give 1 gold nugget to the attacker
 			#Apply Combat Tags
 			#Monster Whitelist (do not apply combat tags if they are involved in combat)
 			if victim is cow:
@@ -6445,12 +7173,16 @@ on damage:
 				if checkSlots(attacker,"Steadfast Casting") is 1:
 					if {buffsActive.mag.%attacker%::Steadfast Casting (Perk)} is less than 25:
 						set {_debug} to changeEntityStatBuff(attacker,"MAG",5,"Steadfast Casting (Perk)",0)
+						set {t_steadfastCastingDuration.%attacker%} to 10
+						create bossbar titled "<gold>Steadfast Casting" and id "steadfastcasting.%attacker's uuid%" for attacker with progress 0 with colors green
+						display bossbar "steadfastcasting.%attacker's uuid%"
+						set bossbar "steadfastcasting.%attacker's uuid%" progress to 100
 				#More than Magic (Perk) (Sets up the weapon switch window)
 				if checkSlots(attacker,"More than Magic") is 1:
 					if getEntityWeaponType(attacker) is 1:
 						set {t_MoreThanMagicWeaponSwitchWindow.%attacker%} to 2
+				set {_spellRecoil} to {_spellRecoil} / 2
 				#Spell Cooldown calculations
-				set {spellcooldown.%attacker%} to 1
 				if checkSlots(attacker,"Focused Magic") is 1:
 					set {_spellRecoil} to {_spellRecoil} / 2
 				if checkSlots(attacker,"Magical Specialist") is 1:
@@ -6460,16 +7192,29 @@ on damage:
 				if {_spellRecoil} is less than 0:
 					set {_spellRecoil} to 0
 				if getEntityWeaponClass(attacker's tool) is "Tomes":
+					set {tomeCooldown.%attacker%} to 1
 					set {_spellRecoil} to ({_spellRecoil} / 2)
-				set {_recoil2} to {_spellRecoil}
-				if {_EK} is true:
-					if attacker's health - {_spellRecoil} is less than or equal to 0:
-						set attacker's health to 0.5
+					set {_recoil2} to {_spellRecoil}
+					if {_EK} is true:
+						if attacker's health - {_spellRecoil} is less than or equal to 0:
+							set attacker's health to 0.5
+						else:
+							applyRecoilDamage(attacker,{_spellRecoil})
+						clear {tomeCooldown.%attacker%}
 					else:
-						applyRecoilDamage(attacker,{_spellRecoil})
-					clear {spellCooldown.%attacker%}
+						set {tomeCooldown.%attacker%} to {_recoil2}
+
 				else:
-					set {spellcooldown.%attacker%} to {_recoil2}
+					set {spellcooldown.%attacker%} to 1
+					set {_recoil2} to {_spellRecoil}
+					if {_EK} is true:
+						if attacker's health - {_spellRecoil} is less than or equal to 0:
+							set attacker's health to 0.5
+						else:
+							applyRecoilDamage(attacker,{_spellRecoil})
+						clear {spellCooldown.%attacker%}
+					else:
+						set {spellcooldown.%attacker%} to {_recoil2}
 			
 #Toggle Battle Forecast	
 command /bf:
@@ -6521,6 +7266,8 @@ on projectile hit:
 	else if metadata value "GrenadeType" of the projectile is 0:
 		set {_loc} to event-location
 		create safe explosion of force 5 at the event-location
+		loop all monsters in radius 10 of event-location:
+			applyRecoilDamage(loop-monster,20)
 		play 10 (smoke with speed 1) at {_loc}
 		play 10 (lava pop with speed 1) at {_loc}
 	#Conc Grenade Detonation
@@ -6585,8 +7332,9 @@ on right click on an entity:
 	#Targeted Assist Skills
 	#Swap
 	if getEntitySkillsInHand(player,"Swap",0,4) is more than 0:
+		set {_usedPositionalAssist} to true
 		set {_loc} to player's location
-		apply resistance 5 to the player
+		apply resistance 5 to the player for 2 second
 		teleport the player to the target
 		teleport the target to {_loc}
 		if checkSlots(player,"Rough Shove") is 1:
@@ -6598,6 +7346,7 @@ on right click on an entity:
 					send formatted "<light green>Disarmed %target% via Rough Shove!" to the player
 	#Shove
 	else if getEntitySkillsInHand(player,"Shove",0,4) is more than 0:
+		set {_usedPositionalAssist} to true
 		push the target upwards at speed 1
 		push the target in horizontal direction of the player at speed 1
 		if checkSlots(player,"Rough Shove") is 1:
@@ -6609,6 +7358,7 @@ on right click on an entity:
 					send formatted "<light green>Disarmed %target% via Rough Shove!" to the player
 	#Smite
 	else if getEntitySkillsInHand(player,"Smite",0,4) is more than 0:
+		set {_usedPositionalAssist} to true
 		push the target upwards at speed 0.1
 		push the target in horizontal direction of the player at speed 2
 		if checkSlots(player,"Rough Shove") is 1:
@@ -6620,6 +7370,7 @@ on right click on an entity:
 					send formatted "<light green>Disarmed %target% via Rough Shove!" to the player
 	#Liftoff
 	else if getEntitySkillsInHand(player,"Liftoff",0,4) is more than 0:
+		set {_usedPositionalAssist} to true
 		push the target upwards at speed 1.2
 		if player is sneaking:
 			push the player upwards at speed 1.15
@@ -6632,6 +7383,7 @@ on right click on an entity:
 					send formatted "<light green>Disarmed %target% via Rough Shove!" to the player
 	#Draw Back
 	else if getEntitySkillsInHand(player,"Draw Back",0,4) is more than 0:
+		set {_usedPositionalAssist} to true
 		apply resistance 5 to the player for 2 second
 		push the target upwards at speed 0.1
 		push the target in horizontal direction of the player at speed -1.5
@@ -6646,8 +7398,9 @@ on right click on an entity:
 					send formatted "<light green>Disarmed %target% via Rough Shove!" to the player
 	#Pivot
 	else if getEntitySkillsInHand(player,"Pivot",0,4) is more than 0:
-		teleport the player to the target
+		set {_usedPositionalAssist} to true
 		apply resistance 5 to the player for 2 second
+		teleport the player to the target
 		push the player in horizontal direction of the player at speed 0.75
 		if checkSlots(player,"Rough Shove") is 1:
 			if {party.%player%} is not {party.%target%}:
@@ -6658,8 +7411,9 @@ on right click on an entity:
 					send formatted "<light green>Disarmed %target% via Rough Shove!" to the player
 	#Reposition
 	else if getEntitySkillsInHand(player,"Reposition",0,4) is more than 0:
-		teleport the target to the player
+		set {_usedPositionalAssist} to true
 		apply resistance 5 to the player for 2 second
+		teleport the target to the player
 		push the target in horizontal direction of the player at speed -0.75
 		if checkSlots(player,"Rough Shove") is 1:
 			if {party.%player%} is not {party.%target%}:
@@ -6670,6 +7424,7 @@ on right click on an entity:
 					send formatted "<light green>Disarmed %target% via Rough Shove!" to the player
 	#Power Bash
 	else if getEntitySkillsInHand(player,"Power Bash",0,4) is more than 0:
+		set {_usedPositionalAssist} to true
 		push the target upwards at speed 1
 		push the target backwards at speed 2
 		apply strength 3 to the player for 2 seconds
@@ -6687,11 +7442,18 @@ on right click on an entity:
 	else if getEntitySkillsInHand(player,"Finisher Plus",0,4) is more than 0:
 		set {t_comboBuildup.%player%} to 1
 		make the player damage the target by 9
+	#Rally Spectrum (Perk)
+	if checkSlots(player,"Rally Spectrum") is 1:
+		loop all players in radius 30 of the player:
+			if {party.%loop-player%} is {party.%player%}:
+				apply resistance 3 to the loop-player for 60 seconds	
+				apply swiftness 3 to the loop-player for 60 seconds
+				apply strength 3 to the loop-player for 60 seconds				
 	#Rally Attack
 	else if getEntitySkillsInHand(player,"Rally Attack",0,4) is more than 0:
 		remove strength from the target
 		apply strength 3 to the target for 60 seconds
-		if checkSlots(player,"Rally Up!") is 1:
+		if checkSlots(player,"Rally Spectrum") is 1:
 			loop all players in radius 30 of the player:
 				if {party.%loop-player%} is {party.%player%}:
 					apply strength 3 to the loop-player for 60 seconds
@@ -6699,7 +7461,7 @@ on right click on an entity:
 	else if getEntitySkillsInHand(player,"Rally Swiftness",0,4) is more than 0:
 		remove swiftness from the target
 		apply swiftness 3 to the target for 60 seconds
-		if checkSlots(player,"Rally Up!") is 1:
+		if checkSlots(player,"Rally Spectrum") is 1:
 			loop all players in radius 30 of the player:
 				if {party.%loop-player%} is {party.%player%}:
 					apply swiftness 3 to the loop-player for 60 seconds
@@ -6707,7 +7469,7 @@ on right click on an entity:
 	else if getEntitySkillsInHand(player,"Rally Resistance",0,4) is more than 0:
 		remove resistance from the target
 		apply resistance 3 to the target for 60 seconds
-		if checkSlots(player,"Rally Up!") is 1:
+		if checkSlots(player,"Rally Spectrum") is 1:
 			loop all players in radius 30 of the player:
 				if {party.%loop-player%} is {party.%player%}:
 					apply resistance 3 to the loop-player for 60 seconds
@@ -6715,7 +7477,7 @@ on right click on an entity:
 	else if getEntitySkillsInHand(player,"Fortify Health",0,4) is more than 0:
 		remove absorption from the target
 		apply absorption 3 to the target for 60 seconds
-		if checkSlots(player,"Rally Up!") is 1:
+		if checkSlots(player,"Rally Spectrum") is 1:
 			loop all players in radius 30 of the player:
 				if {party.%loop-player%} is {party.%player%}:
 					apply resistance 3 to the loop-player for 60 seconds
@@ -6725,7 +7487,7 @@ on right click on an entity:
 			if player's health is more than 6:
 				damage the player by 3 hearts
 				heal the target by 3 hearts
-				if checkSlots(player,"Rally Up!") is 1:
+				if checkSlots(player,"Rally Spectrum") is 1:
 					loop all players in radius 30 of the player:
 						if {party.%loop-player%} is {party.%player%}:
 							if loop-player is not the player:
@@ -6740,14 +7502,14 @@ on right click on an entity:
 		if target's health is not target's maximum health:
 			if {t_healingHandsCooldown.%player%} is not set:
 				set {_healingFactor} to floor(((getEntityStatTotal(player,"MAG")) + (getEntityStatTotal(player,"RES"))) * 0.1)
-				if {_healingFactor} is more than 20:
-					set {_healingFactor} to 20
+				if {_healingFactor} is more than 80:
+					set {_healingFactor} to 80
 				heal the player by {_healingFactor}
 				set {t_healingHandsCooldown.%player%} to ({_healingFactor} * 0.5)
 				loop {t_healingHandsCooldown.%player%} times:
 					wait 1 second
 				clear {t_healingHandsCooldown.%player%}
-				if checkSlots(player,"Rally Up!") is 1:
+				if checkSlots(player,"Rally Spectrum") is 1:
 					loop all players in radius 30 of the player:
 						if {party.%loop-player%} is {party.%player%}:
 							if loop-player is not the player:
@@ -6770,14 +7532,25 @@ on right click on an entity:
 				if checkSlots(player,"Firestorm Song") is 1:
 					play mob spawner flames at the target
 					play mob spawner flames at the player
-					set {_debug} to changeEntityStatBuff(player,"STR",6,"Firestorm Song (Perk)",1)
-					set {_debug} to changeEntityStatBuff(player,"MAG",6,"Firestorm Song (Perk)",1)
-					set {_debug} to changeEntityStatBuff(player,"SPD",6,"Firestorm Song (Perk)",1)
+					set {_debug} to changeEntityStatBuff(player,"STR",10,"Firestorm Song (Perk)",1)
+					set {_debug} to changeEntityStatBuff(player,"MAG",10,"Firestorm Song (Perk)",1)
+					set {_debug} to changeEntityStatBuff(player,"SPD",10,"Firestorm Song (Perk)",1)
 					heal the player by 5
-					set {_debug} to changeEntityStatBuff(target,"STR",6,"Firestorm Song (Perk)",1)
-					set {_debug} to changeEntityStatBuff(target,"MAG",6,"Firestorm Song (Perk)",1)
-					set {_debug} to changeEntityStatBuff(target,"SPD",6,"Firestorm Song (Perk)",1)
+					set {_debug} to changeEntityStatBuff(target,"STR",10,"Firestorm Song (Perk)",1)
+					set {_debug} to changeEntityStatBuff(target,"MAG",10,"Firestorm Song (Perk)",1)
+					set {_debug} to changeEntityStatBuff(target,"SPD",10,"Firestorm Song (Perk)",1)
 					heal the target by 5
+				if checkSlots(player,"Ballad") is 1:
+					loop all players in radius 30 of the player:
+						if {party.%loop-player%} is {party.%player%}:
+							apply swiftness 4 to the loop-player for 20 seconds
+							apply strength 4 to the loop-player for 20 seconds
+							addStatusEffect(loop-player,"Bonus Doubler",20)
+							if checkSlots(player,"Firestorm Song") is 1:
+								play mob spawner flames at the loop-player
+								set {_debug} to changeEntityStatBuff(loop-player,"STR",10,"Firestorm Song (Perk)",1)
+								set {_debug} to changeEntityStatBuff(loop-player,"MAG",10,"Firestorm Song (Perk)",1)
+								set {_debug} to changeEntityStatBuff(loop-player,"SPD",10,"Firestorm Song (Perk)",1)
 	#Buster Perk
 	else if checkSlots(player,"Buster") is 1:
 		if isEntityToolAir(player) is true:
@@ -6795,7 +7568,7 @@ on right click on an entity:
 				wait 2 seconds
 				push the target downwards at speed 3
 				wait 5 ticks
-				make player damage the target by 60
+				applyRecoilDamage(target,60)
 				wait 10 ticks
 				clear {t_isInBuster.%player%}
 				
@@ -6831,6 +7604,43 @@ on right click on an entity:
 			apply regeneration 3 to the player for 10 seconds
 			apply resistance 3 to the target for 10 seconds
 			apply resistance 3 to the player for 10 seconds
+	#Positional Assist skill / perk effects
+	if {_usedPositionalAssist} is true:
+		#ATK/SPD Chain (Perk)
+		if checkSlots(player,"ATK/SPD Chain") is 1:
+			if getEntityArrayValueByName(player,"tempActiveBuffs.str","ATK/SPD Chain (Perk)") parsed as integer is not set:
+				changeEntityStatBuff(player,"STR",7,"ATK/SPD Chain (Perk)",1)
+				changeEntityStatBuff(player,"MAG",7,"ATK/SPD Chain (Perk)",1)
+				changeEntityStatBuff(player,"SPD",7,"ATK/SPD Chain (Perk)",1)
+			if {party.%player%} is not {party.%target%}:
+				if getEntityArrayValueByName(target,"tempActiveBuffs.str","ATK/SPD Chain (Perk)") parsed as integer is not set:
+					changeEntityStatBuff(target,"STR",-7,"ATK/SPD Chain (Perk)",1)
+					changeEntityStatBuff(target,"MAG",-7,"ATK/SPD Chain (Perk)",1)
+					changeEntityStatBuff(target,"SPD",-7,"ATK/SPD Chain (Perk)",1)
+		#Chain Reaction (Perk) - Tagging
+		if checkSlots(player,"Chain Reaction") is 1:
+			if {party.%player%} is not {party.%target%}:
+				set metadata value "crTagged" of the target to 1
+				send "<gold>Tagged the target!" to the player
+				apply glowing 1 to the target for 1 day
+		#STR/DEF Link
+		if getEntitySkillsInHand(player,"STR/DEF Link",2,3) is more than 0:
+			if getEntityArrayValueByName(player,"tempActiveBuffs.str","STR/DEF Link") parsed as integer is not set:
+				changeEntityStatBuff(player,"STR",6,"STR/DEF Link",1)
+				changeEntityStatBuff(player,"DEF",6,"STR/DEF Link",1)
+			if {party.%player%} is {party.%target%}:
+				if getEntityArrayValueByName(target,"tempActiveBuffs.str","STR/DEF Link") parsed as integer is not set:
+					changeEntityStatBuff(target,"STR",6,"STR/DEF Link",1)
+					changeEntityStatBuff(target,"DEF",6,"STR/DEF Link",1)
+		#MAG/RES Link
+		if getEntitySkillsInHand(player,"MAG/RES Link",2,3) is more than 0:
+			if getEntityArrayValueByName(player,"tempActiveBuffs.","MAG/RES Link") parsed as integer is not set:
+				changeEntityStatBuff(player,"MAG",6,"MAG/RES Link",1)
+				changeEntityStatBuff(player,"RES",6,"MAG/RES Link",1)
+			if {party.%player%} is {party.%target%}:
+				if getEntityArrayValueByName(target,"tempActiveBuffs.","MAG/RES Link") parsed as integer is not set:
+					changeEntityStatBuff(target,"MAG",6,"MAG/RES Link",1)
+					changeEntityStatBuff(target,"RES",6,"MAG/RES Link",1)					
 
 #Grenade throwing behavior
 on shoot:
@@ -6911,6 +7721,16 @@ function executeJudgementCut(ENT: entity,JCE: number):
 			
 
 on right click:
+	#Override (Perk)
+	if isEntityToolAir(player) is true:
+		if {t_overrideGauge.%player%} is 100:
+			set {t_overrideActive.%player%} to true
+			apply resistance 4 to the player for 5 seconds
+			play 10 (smoke with speed 0) at player
+			play 10 (blue wool break with speed 1) at player
+			strike lightning effect at the player
+			play sound "entity.zombie_villager.cure" with volume 1 and pitch 1 at the player
+			send formatted "<light blue><bold>Override active!" to the player
 	#Stinger
 	if getEntitySkillsInHand(player,"Stinger",0,4) is more than 0:
 		if {t_stingerDashCooldown.%player%} is not set:
@@ -6947,8 +7767,8 @@ on right click:
 		if player's health is not player's maximum health:
 			if {t_fastHealingCooldown.%player%} is not set:
 				set {_healingFactor} to floor(((getEntityStatTotal(player,"MAG")) + (getEntityStatTotal(player,"RES"))) * 0.1)
-				if {_healingFactor} is more than 20:
-					set {_healingFactor} to 20
+				if {_healingFactor} is more than 80:
+					set {_healingFactor} to 80
 				heal the player by {_healingFactor}
 				set {t_fastHealingCooldown.%player%} to {_healingFactor}
 				loop {t_fastHealingCooldown.%player%} times:
@@ -6991,6 +7811,7 @@ on right click:
 					set {_debug} to changeEntityStatBuff(loop-player,"LCK",{_buffFactor},"Bolster DEF/RES",0)
 					add loop-player to {t_bolsterDEFRESCooldown.%player%::*}
 			wait 40 seconds
+			set {_buffFactor} to {_buffFactor} * -1
 			loop {t_bolsterDEFRESCooldown.%player%::*}:
 				set {_debug} to changeEntityStatBuff(loop-value,"DEF",{_buffFactor},"Bolster DEF/RES",0)
 				set {_debug} to changeEntityStatBuff(loop-value,"RES",{_buffFactor},"Bolster DEF/RES",0)
@@ -7263,8 +8084,11 @@ on right click:
 		add checkSlots(player,"Dagger Specialist") to {_daggerDurabilityBonus}
 		if {traits.%player%::Always Prepared} is set:
 			add 1 to {_daggerDurabilityBonus}
+		#Silent Smoke (Perk)
+		if checkSlots(player,"Silent Smoke") is 1:
+			set {_daggerDurabilityBonus} to 2
 		#Wooden Dagger (Throwing)
-		else if the nbt of player's tool contains "DaggerType:0":
+		if the nbt of player's tool contains "DaggerType:0":
 			make the player shoot an arrow with speed 2
 			set metadata value "DaggerType" of the last shot projectile to 0
 			if {_daggerDurabilityBonus} is more than 0:
@@ -7460,6 +8284,39 @@ every second:
 			else:
 				clear {t_njorunsZealCooldown.%loop-player%}
 				send "<light purple>Galeforce is now ready." to loop-player
+		#Momentum (Perk, timeout logic)
+		if {momentumDuration.%loop-player%} is set:
+			if {momentumDuration.%loop-player%} is more than 0:
+				subtract 1 from {momentumDuration.%loop-player%}
+				set bossbar "momentum.%loop-player's uuid%" progress to ({momentumDuration.%loop-player%} * 10)
+			if {momentumDuration.%loop-player%} is less than or equal to 0:
+				hide bossbar "momentum.%loop-player's uuid%"
+				destroy bossbar "momentum.%loop-player's uuid%"
+				clear {momentumDuration.%loop-player%}
+				set {_momentumBonusCancel} to getEntityArrayValueByName(loop-player,"activeBuffs.str","Momentum (Perk)") parsed as integer
+				set {_momentumBonusCancel} to {_momentumBonusCancel} * -1
+				#send formatted "calc'd momentum buff: %{_momentumBonusCancel}%" to loop-player
+				changeEntityStatBuff(loop-player,"STR",{_momentumBonusCancel},"Momentum (Perk)",0)
+				changeEntityStatBuff(loop-player,"SPD",{_momentumBonusCancel},"Momentum (Perk)",0)
+		#Steadfast Casting (Perk, timeout logic)
+		if {steadfastCastingDuration.%loop-player%} is set:
+			if {steadfastCastingDuration.%loop-player%} is more than 0:
+				subtract 1 from {steadfastCastingDuration.%loop-player%}
+				set bossbar "steadfastcasting.%loop-player's uuid%" progress to ({steadfastCastingDuration.%loop-player%} * 10)
+			if {steadfastCastingDuration.%loop-player%} is less than or equal to 0:
+				hide bossbar "steadfastcasting.%loop-player's uuid%"
+				destroy bossbar "steadfastcasting.%loop-player's uuid%"
+				clear {steadfastCastingDuration.%loop-player%}
+				set {_steadfastCastingBonusCancel} to getEntityArrayValueByName(loop-player,"activeBuffs.mag","Steadfast Casting (Perk)") parsed as integer
+				set {_steadfastCastingBonusCancel} to {_steadfastCastingBonusCancel} * -1
+				#send formatted "calc'd momentum buff: %{_momentumBonusCancel}%" to loop-player
+				changeEntityStatBuff(loop-player,"MAG",{_steadfastCastingBonusCancel},"Steadfast Casting (Perk)",0)	
+		#Out of combat status effects (like Bonus Doubler from Poet's Ballad)
+		loop {t_activeStatusEffects.%loop-player%::*}:
+			if loop-value-2 is more than 0:
+				subtract 1 from {t_activeStatusEffects.%loop-player%::%loop-index%}
+			else if loop-value-2 is 0:
+				clear {t_activeStatusEffects.%loop-player%::%loop-index%}
 				
 #Leggings potion effects
 every 2 seconds:
@@ -7483,6 +8340,13 @@ every 2 seconds:
 				if loop-entity-2 is not loop-player:
 					if {party.%loop-entity-2%} is not {party.%loop-player%}:
 						apply slowness 2 to loop-entity-2 for 2 seconds
+		#Pass II (Perk)
+		if checkSlots(loop-player,"Pass II") is 1:
+			loop all entities in radius 7 of the loop-player:
+				if loop-entity-2 is not loop-player:
+					if {party.%loop-entity-2%} is not {party.%loop-player%}:
+						apply swiftness 3 to loop-player for 2 seconds
+						exit 1 loop
 
 #Combat Tag decay, morale decay, and spell cooldowns
 every 0.25 seconds:
@@ -7524,6 +8388,14 @@ every 0.25 seconds:
 				send "<light green>Wand recharged!" to loop-player
 			else:
 				send "<light yellow>Wand Cooldown: %{spellcooldown.%loop-player%}% seconds left" to loop-player
+		#Tome Cooldown
+		if {tomeCooldown.%loop-player%} is more than 0:
+			subtract 0.25 from {tomeCooldown.%loop-player%}
+			if {tomeCooldown.%loop-player%} is less than or equal to 0:
+				clear {tomeCooldown.%loop-player%}
+				send "<light green>Tome recharged!" to loop-player
+			else:
+				send "<light yellow>Tome Cooldown: %{tomeCooldown.%loop-player%}% seconds left" to loop-player
 		#More than Magic (Perk) (Weapon Switch window decay)
 		if {t_MoreThanMagicWeaponSwitchWindow.%loop-player%} is more than 0:
 			subtract 0.25 from {t_MoreThanMagicWeaponSwitchWindow.%loop-player%}
@@ -7534,6 +8406,21 @@ every 0.25 seconds:
 			subtract 0.25 from {t_MoreThanMagicBonusActive.%loop-player%}
 			if {t_MoreThanMagicBonusActive.%loop-player%} is less than or equal to 0:
 				clear {t_MoreThanMagicBonusActive.%loop-player%}
+		#Override damage effect
+		if {t_overrideActive.%loop-player%} is true:
+			loop all entities in radius 3 of the loop-player:
+				if loop-entity-2 is not a horse:
+					if {party.%loop-player%} is not {party.%loop-entity-2%}:
+						create safe explosion of force 0 at the loop-entity-2
+						push loop-entity-2 up at speed 3
+						push loop-entity-2 backwards at speed 3
+						applyRecoilDamage(loop-entity-2,35)
+				
+#Sparkling Boost
+every 7 seconds:
+	loop all players:
+		if getEntitySkillsInHand(loop-player,"Sparkling Boost",2,3) is more than 0:
+			heal loop-player by (loop-player's maximum health * 0.35)
 				
 #Experience Points & Gold handler
 on death of a monster:
@@ -7552,7 +8439,7 @@ on death of a monster:
 			set {_xp} to 1
 			#Boss Bonuses
 			if {t_isBoss.%victim%} is set:
-				loop (10 + {t_lvl.%victim%}) times:
+				loop {t_lvl.%victim%} times:
 					chance of 1%:
 						chance of 25%:
 							drop 1 diamond block at the victim
@@ -7589,7 +8476,7 @@ on death of a monster:
 				clear {isBoss.%victim%}
 			#Treasure mob bonus
 			if the name of the victim contains "<gold>Treasure":
-				loop (10 + {t_lvl.%victim%}) times:
+				loop {t_lvl.%victim%} times:
 					chance of 1%:
 						chance of 1%:
 							drop 1 diamond block at the victim
@@ -7705,6 +8592,17 @@ on death of a monster:
 			if checkSlots(attacker,"Blood Thirst") is 1:
 				set {_debug} to changeEntityStatBuff(attacker,"STR",15,"Blood Thirst (Perk)",1)
 				set {_debug} to changeEntityStatBuff(attacker,"SPD",15,"Blood Thirst (Perk)",1)
+			#Override gauge fill behavior
+			if checkSlots(attacker,"Override") is 1:
+				if {t_overrideGauge.%attacker%} is less than 100:
+					if {t_overrideActive.%attacker%} is not true:
+						add 20 to {t_overrideGauge.%attacker%}
+						if {t_overrideGauge.%attacker%} is more than 100:
+							set {t_overrideGauge.%attacker%} to 100
+						set bossbar "override.%attacker's uuid%" progress to {t_overrideGauge.%attacker%}
+				else if {t_overrideGauge.%attacker%} is not set:
+					set {t_overrideGauge.%attacker%} to 20
+					set bossbar "override.%attacker's uuid%" progress to {t_overrideGauge.%attacker%}
 			#Guns Specialist
 			if checkSlots(attacker,"Guns Specialist") is 1:
 				if getEntityWeaponType(attacker) is 2:
@@ -7725,7 +8623,7 @@ on death of a monster:
 				set {_xp} to floor({_xp} * 1.5)
 			#Racial XP Curve adjustments
 			if {race.%attacker%} is "Human":
-				set {_xp} to floor({_xp} * 1.2)
+				set {_xp} to floor({_xp} * 1.1)
 			else if {race.%attacker%} is "Orc":
 				set {_xp} to floor({_xp} * 0.8)
 			else if {race.%attacker%} is "Dragonborn":
@@ -7735,6 +8633,27 @@ on death of a monster:
 				set {_xp} to floor({_xp} * 0.8)
 			else if {lvl.%attacker%} is more than 30:
 				set {_xp} to floor({_xp} * 1.2)
+			#Midas Touch (Perk)
+			if checkSlots(attacker,"Midas Touch") is 1:
+				add ({abilities.%attacker%::Lockpicking} / 2) to {_cash}
+				set {_eqDropChance} to floor(getEntityStatTotal(attacker,"LCK") / 2)
+				if {_eqDropChance} is more than 50:
+					set {_eqDropChance} to 50
+				if victim's helmet is not air:
+					chance of {_eqDropChance}%:
+						drop victim's helmet at the victim
+				if victim's chestplate is not air:
+					chance of {_eqDropChance}%:
+						drop victim's chestplate at the victim
+				if victim's leggings is not air:
+					chance of {_eqDropChance}%:
+						drop victim's leggings at the victim
+				if victim's boots is not air:
+					chance of {_eqDropChance}%:
+						drop victim's boots at the victim
+				if victim's tool is not air:
+					chance of {_eqDropChance}%:
+						drop victim's tool at the victim
 			set {_cash} to floor({_cash} * 0.75)
 			#Grant total bonuses
 			if {_xp} is more than 0:
@@ -7743,7 +8662,7 @@ on death of a monster:
 				make console execute command "/xp give %attacker% %{_xp}%"
 				send formatted "<light yellow>+%{_xp}% EXP earned." to the attacker
 				set {_playerLVL} to getPromotionCompensatedClassLevel(attacker)
-				set bossbar "classxpbar.%attacker's UUID%" progress to ({classXP.%attacker%} / (ceil((({_playerLVL} + (({_playerLVL} - 1) ^ 2)) / 2) + 1))) * 100
+				set bossbar "classxpbar.%attacker's UUID%" progress to ({classXP.%attacker%} / (ceil((({_playerLVL} + ({_playerLVL} ^ 2)) / (1 + ({promoted.%attacker%} - 1))) + 10)) * 100)
 			if {_cash} is more than 0:
 				if {traits.%attacker%::Arrgh!} is true:
 					set {_cash} to {_cash} * 2
@@ -7754,8 +8673,8 @@ on death of a monster:
 				send formatted "<light yellow>+%{_cash}% gold earned." to the attacker
 			remove the attacker from {t_lastInvolvedCombatTargets.%victim%::*}
 			#Award partial XP to players who participated in combat but did not land the killing blow
-			#Set partial XP to 1/4
-			set {_partialXP} to floor({_xp} / 4)
+			#Set partial XP to 1/2
+			set {_partialXP} to floor({_xp} / 2)
 			set {_xp} to floor({_XP} * 0.5)
 			set {_cash} to floor({_cash} * 0.5)
 			loop {t_lastInvolvedCombatTargets.%victim%::*}:
@@ -7764,10 +8683,10 @@ on death of a monster:
 						addClassXP(loop-value,{_XP})
 						if getEntitySkillsInHand(loop-value,"EXP Share",2,4) is more than 0:
 							addClassXP(loop-value,{_partialXP})
-						make console execute command "/xp %loop-value% %{_xp}%"
+						make console execute command "/xp give %loop-value% %{_xp}%"
 						send formatted "<light yellow>[Kill Assist] +%{_xp}% EXP earned." to loop-value
 						set {_playerLVL} to getPromotionCompensatedClassLevel(loop-value)
-						set bossbar "classxpbar.%loop-value's UUID%" progress to ({classXP.%loop-value%} / (ceil((({_playerLVL} + (({_playerLVL} - 1) ^ 2)) / 2) + 1))) * 100
+						set bossbar "classxpbar.%loop-value's UUID%" progress to ({classXP.%loop-value%} / (ceil((({_playerLVL} + ({_playerLVL} ^ 2)) / (1 + ({promoted.%loop-value%} - 1))) + 10)) * 100)
 					if {_cash} is more than 0:
 						if {traits.%loop-value%::Arrgh!} is true:
 							set {_cash} to {_cash} * 2
@@ -7783,10 +8702,10 @@ on death of a monster:
 						if loop-value is online:
 							if {_xp} is more than 0:
 								addClassXP(loop-value,{_partialXP})
-								make console execute command "/xp %loop-value% %{_partialXP}%"
+								make console execute command "/xp give %loop-value% %{_partialXP}%"
 								send formatted "<light yellow>+%{_partialXP}% EXP earned [Party Share]." to loop-value
 								set {_playerLVL} to getPromotionCompensatedClassLevel(loop-value)
-								set bossbar "classxpbar.%loop-value's UUID%" progress to ({classXP.%loop-value%} / (ceil((({_playerLVL} + (({_playerLVL} - 1) ^ 2)) / 2) + 1))) * 100
+								set bossbar "classxpbar.%loop-value's UUID%" progress to ({classXP.%loop-value%} / (ceil((({_playerLVL} + ({_playerLVL} ^ 2)) / (1 + ({promoted.%loop-value%} - 1))) + 10)) * 100)
 							if {_cash} is more than 0:
 								if {traits.%loop-value%::Arrgh!} is true:
 									set {_cash} to {_cash} * 2
@@ -7803,16 +8722,16 @@ on death of a monster:
 			#Item drop loot
 			#Common loot
 			set {_lootOdds} to floor({t_lvl.%victim%} / 2)
-			if {_lootOdds} is more than 20:
-				set {_lootOdds} to 20
+			if {_lootOdds} is more than 10:
+				set {_lootOdds} to 10
 			chance of {_lootOdds}%:
 				send "<orange>Common loot obtained!" to the attacker
 				set {_item} to getCommonLoot(attacker)
 				drop {_item} at the victim
 			#Rare loot
 			set {_lootOdds} to floor({t_lvl.%victim%} / 5)
-			if {_lootOdds} is more than 10:
-				set {_lootOdds} to 10
+			if {_lootOdds} is more than 6:
+				set {_lootOdds} to 6
 			chance of {_lootOdds}%:
 				chance of 90%:
 					send "<yellow>Rare loot obtained!" to the attacker
@@ -7820,8 +8739,8 @@ on death of a monster:
 					drop {_item} at the victim
 			#Ultra-Rare Loot
 			set {_lootOdds} to floor({t_lvl.%victim%} / 10)
-			if {_lootOdds} is more than 5:
-				set {_lootOdds} to 5
+			if {_lootOdds} is more than 1:
+				set {_lootOdds} to 1
 			chance of {_lootOdds}%:
 				chance of 50%:
 					send "<gold>Legendary loot obtained!" to the attacker
@@ -7835,6 +8754,14 @@ on death of a monster:
 				chance of 50%:
 					send "<orange>Perk Manual obtained!" to the attacker
 					set {_item} to getPerkManual(attacker)
+					drop {_item} at the victim
+			#Item Master (Perk)
+			if checkSlots(attacker,"Item Master") is 1:
+				set {_lootOdds} to ceil(getEntityStatTotal(attacker,"LCK") * 0.5)
+				if {_lootOdds} is more than 25:
+				set {_lootOdds} to 25
+				chance of {_lootOdds}%:
+					set {_item} to getConsumableLoot()
 					drop {_item} at the victim
 			#Glory Kills (Perk)
 			if checkSlots(attacker,"Glory Kill") is 1:
@@ -7851,39 +8778,60 @@ on death of a monster:
 						give 1 firework to the attacker
 					chance of 9%:
 						give 1 iron ingot to the attacker
+				else if getEntityWeaponClass(attacker's tool) is "Gauntlets":
+					heal the attacker by (attacker's maximum health * 0.5)
+					loop 2 times:
+						chance of 50%:
+							give 1 iron nugget to the attacker
+						chance of 70%:
+							give 1 gunpowder to the attacker
+						chance of 30%:
+							give 1 gold nugget to the attacker
+					chance of 20%:
+						give 1 firework to the attacker
+					chance of 9%:
+						give 1 iron ingot to the attacker
+			#Momentum (Perk)
+			if checkSlots(attacker,"Momentum") is 1:
+				changeEntityStatBuff(attacker,"STR",3,"Momentum (Perk)",0)
+				changeEntityStatBuff(attacker,"SPD",3,"Momentum (Perk)",0)
+				set {momentumDuration.%attacker%} to 10
+				create bossbar titled "<gold>Momentum" and id "momentum.%attacker's uuid%" for attacker with progress 0 with colors green
+				display bossbar "momentum.%attacker's uuid%"
+				set bossbar "momentum.%attacker's uuid%" progress to 100						
 			#Despoil (Skill)
 			if getEntitySkillsInHand(attacker,"Despoil",0,2) is more than 0:
-				set {_odds} to ((getEntityStatTotal(attacker,"MAG")) / 2)
+				set {_odds} to ((getEntityStatTotal(attacker,"MAG")) / 3)
 				if {_odds} is more than or equal to 50:
 					set {_odds} to 50
 				chance of {_odds}%:
 					drop 1 paper named "<light green>Bullion (S)" with lore "<white>A small lump of gold.", "<white>Right-click to gain 50G." at the victim
-				set {_odds} to floor((getEntityStatTotal(attacker,"MAG")) / 3)
+				set {_odds} to floor((getEntityStatTotal(attacker,"MAG")) / 4)
 				if {_odds} is more than or equal to 50:
 					set {_odds} to 50
 				chance of {_odds}%:
 					drop 1 paper named "<light green>Bullion (M)" with lore "<white>A respectable stash of gold.", "<white>Right-click to gain 75G." at the victim
-				set {_odds} to floor((getEntityStatTotal(attacker,"MAG")) / 4)
+				set {_odds} to floor((getEntityStatTotal(attacker,"MAG")) / 5)
 				if {_odds} is more than or equal to 25:
 					set {_odds} to 25
 				chance of {_odds}%:
 					drop 1 paper named "<light green>Bullion (L)" with lore "<white>A large sack of gold.", "<white>Right-click to gain 100G." at the victim
-				set {_odds} to floor((getEntityStatTotal(attacker,"MAG")) / 8)
+				set {_odds} to floor((getEntityStatTotal(attacker,"MAG")) / 9)
 				if {_odds} is more than or equal to 10:
 					set {_odds} to 10
 				chance of {_odds}%:
 					drop 1 paper named "<light green>Bullion (XL)" with lore "<white>A massive stash of gold. It's your lucky day!", "<white>Right-click to gain 200G." at the victim
-				set {_odds} to ((getEntityStatTotal(attacker,"MAG")) * 2)
+				set {_odds} to ((getEntityStatTotal(attacker,"MAG")) * 1)
 				if {_odds} is more than or equal to 100:
 					set {_odds} to 100
 				chance of {_odds}%:
 					drop 1 bread at the victim
-				set {_odds} to floor((getEntityStatTotal(attacker,"MAG")) / 2)
+				set {_odds} to floor((getEntityStatTotal(attacker,"MAG")) / 3)
 				if {_odds} is more than or equal to 50:
 					set {_odds} to 50
 				chance of {_odds}%:
 					drop 1 steak at the victim		
-				set {_odds} to floor((getEntityStatTotal(attacker,"MAG")) / 4)
+				set {_odds} to floor((getEntityStatTotal(attacker,"MAG")) / 5)
 				if {_odds} is more than or equal to 20:
 					set {_odds} to 20
 				chance of {_odds}%:
@@ -7905,10 +8853,10 @@ on death of a monster:
 			#Small chance of Green/Gold Herbs being dropped on mob death.
 			#Fudge the random chance a bit by making herbs drop more frequently if the player is low on health
 			set {_herbDropChance} to 30
-			#Herbivore (Perk)
-			if checkSlots(attacker,"Herbivore") is 1:
+			#Inner Peace (Perk)
+			if checkSlots(attacker,"Inner Peace") is 1:
 				add 50 to {_herbDropChance}
-				#Red Herbs can only drop if the Herbivore perk is equipped
+				#Red Herbs can only drop if the Inner Peace perk is equipped
 				chance of ({_herbDropChance} - 49)%:
 					play 30 (redstone block break with speed 1) at the victim
 					drop 1 red dye named "<light red><bold>Red Herb" with lore "<white>Extremely rare herb said to have been created by the gods.","<white>Automatically consumed on death or entering bleedout.","<white>Immediately revives you from death when used." at the victim
@@ -7920,8 +8868,8 @@ on death of a monster:
 			chance of ({_herbDropChance} - 17)%:
 				play 30 (gold block break with speed 1) at the victim
 				drop 1 yellow dye named "<light yellow><bold>Golden Herb" with lore "<white>Powerful medicinal herb with extreme healing power.","<white>Right-click to restore 12 hearts.","<white>Can also be picked up off the ground to restore 6 hearts if wounded." at the victim		
-			#Canto (Perk) (Foe's Death condition)
-			if checkSlots(attacker,"Canto") is 1:
+			#Cavalier's Mount (Perk) (Foe's Death condition)
+			if checkSlots(attacker,"Mount") is 1:
 				apply swiftness 8 to the attacker for 5 seconds
 				apply resistance 8 to the attacker for 5 seconds
 				loop all horses in radius 4 of the attacker:
@@ -8002,14 +8950,37 @@ on death of a player:
 					send "<orange>You're hanging on by a thread..." to the victim
 					#if {quotesToggle.%victim%} is true:
 					#	make victim say {playerQuotes.%victim%::LowHealth}
+					#Resurrection (Perk)
+					loop all players in radius 30 of the victim:
+						if {party.%loop-player%} is {party.%victim%}:
+							if checkSlots(loop-player,"Resurrection") is 1:
+								heal the victim by 9999
+								apply resistance 3 to the victim for 15 seconds
 					clear {bleedoutState.%victim%}
 					lowHPSFX(victim)
 				#Bleedout
 				else if {bleedoutState.%victim%} is not set:
 					if {bleedoutState.%victim%} is not 2:
+						#Quick Revive (Perk)
+						if checkSlots(victim,"Quick Revive") is 1:
+							if {itemCooldowns.%victim%::Quick Revive} is not set:
+								set {_forceBleedout} to false
+								cancel event
+								strike lightning effect at the victim
+								set {itemCooldowns.%victim%::Quick Revive} to 360
+								send "<gold><bold>Quick Revive was used." to the victim
+								heal the victim by 999
+								loop all monsters in radius 10 of the victim:
+									push the loop-monster upwards at speed 1
+									push the loop-monster backwards at speed 1
+								apply resistance 4 to the victim for 5 seconds
+								play sound "item.totem.use" with volume 0.8 and pitch 1 at victim
+							else:
+								set {_forceBleedout} to true
 						if {itemCooldowns.%victim%::Red Herb} is not set:
 							loop all items in the victim's inventory:
 								if the name of the loop-item contains "<light red><bold>Red Herb":
+									set {_forceBleedout} to false
 									#Remove poison status effect when a Red Herb is used
 									changeOOCStatusTime(victim,"Poison",-1)
 									cancel event
@@ -8024,6 +8995,7 @@ on death of a player:
 									apply resistance 4 to the victim for 5 seconds
 									play sound "item.totem.use" with volume 0.8 and pitch 1 at victim
 								if the name of the loop-item contains "<red><bold>Red Herb":
+									set {_forceBleedout} to false
 									#Remove poison status effect when a Red Herb is used
 									changeOOCStatusTime(victim,"Poison",-1)
 									cancel event
@@ -8038,8 +9010,9 @@ on death of a player:
 									apply resistance 4 to the victim for 5 seconds
 									play sound "item.totem.use" with volume 0.8 and pitch 1 at victim
 							if {itemCooldowns.%victim%::Red Herb} is not set:
-								set {_forceBleedout} to true
-						else:
+								if {_forceBleedout} is not set:
+									set {_forceBleedout} to true
+						else if {_forceBleedout} is not set:
 							set {_forceBleedout} to true
 						if {_forceBleedout} is true:
 							cancel event
@@ -8051,6 +9024,8 @@ on death of a player:
 							apply resistance 99 to the victim for 26 seconds
 							set {bleedoutState.%victim%} to 1
 							set the victim's health to 0.5
+							clear {t_bloodPactOwner.%{t_bloodPactTarget.%victim%}%}
+							clear {t_bloodPactTarget.%victim%}
 							loop {%{party.%victim%}%.members::*}:
 								send formatted "<red><bold>%victim's tablist name% <red><bold>has been downed!" to loop-value
 							if {quotesToggle.%victim%} is true:
@@ -8119,7 +9094,7 @@ on death of a player:
 				else if {bleedoutState.%victim%} is 2:
 					clear {bleedoutState.%victim%}
 					clear {tangibilityState.%victim%}
-					make victim execute command "/xp %victim% -%{_XPLoss}%l"
+					make victim execute command "/xp give %victim% -%{_XPLoss}%l"
 					subtract {_GoldLoss} from the victim's money
 					send "<light red>Lost %{_XPLoss}% enchanting XP levels..." to the victim
 					send "<light red>Lost %{_GoldLoss}% gold..." to the victim
@@ -8154,7 +9129,7 @@ on death of a player:
 								make loop-player say {playerQuotes.%loop-player%::AllyDeath}
 			else:
 				clear {tangibilityState.%victim%}
-				make victim execute command "/xp %victim% -%{_XPLoss}%l"
+				make victim execute command "/xp give %victim% -%{_XPLoss}%l"
 				subtract {_GoldLoss} from the victim's money
 				send "<light red>Lost %{_XPLoss}% enchanting XP levels..." to the victim
 				send "<light red>Lost %{_GoldLoss}% gold..." to the victim
@@ -8187,7 +9162,7 @@ every 0.5 seconds:
 			#CoS Poison DoT
 			if changeOOCStatusTime(loop-value,"Poison",0) is more than 0:
 				changeOOCStatusTime(loop-value,"Poison",0.5)
-				send "%changeOOCStatusTime(loop-value,"Poison",0)%" to loop-value
+				#send "%changeOOCStatusTime(loop-value,"Poison",0)%" to loop-value
 				#if loop-value is player:
 				#	if bossbar "poisonBar.%loop-value's uuid%" is not set:
 				#		create bossbar titled "<light red>Poisoned!" and id "poisonBar.%loop-value's uuid%" for loop-value with progress 1 with colors red
@@ -8198,7 +9173,7 @@ every 0.5 seconds:
 				if {tangibilityState.%loop-value%} is not "GenericInvulnerable":
 					applyRecoilDamage(loop-value,1)
 					#add 0.5 to loop-value's health
-			else if changeOOCStatusTime(loop-value,"Poison",0) is 0:
+			else if changeOOCStatusTime(loop-value,"Poison",0) is less than or equal to 0:
 				changeOOCStatusTime(loop-value,"Poison",-1)
 				#send "%loop-index%" to loop-value
 				#send "%loop-value%" to loop-value
@@ -8212,6 +9187,8 @@ every 0.5 seconds:
 				play 10 (gold block break with speed 1) at loop-value
 				apply slowness 5 to the loop-value for 1 second
 				apply weakness 5 to the loop-value for 1 second
+			else if changeOOCStatusTime(loop-value,"Dazed",0) is less than or equal to 0:
+				changeOOCStatusTime(loop-value,"Dazed",-1)
 			#Finishing Touch
 			if changeOOCStatusTime(loop-value,"Finishing Touch",0) is more than 0:
 				changeOOCStatusTime(loop-value,"Finishing Touch",0.5)

@@ -106,8 +106,8 @@ command /bs-shop [<number=1>]:
 			set slot 7 of the player's current inventory to 1 iron shovel of efficiency 5 named "<light blue>Silver Shovel" with lore "<white>Cost:", "%470 / {_discountFactor}%"
 			set slot 8 of the player's current inventory to 1 iron hoe of unbreaking 5 named "<light blue>Silver Hoe" with lore "<white>Cost:", "%470 / {_discountFactor}%"
 			set slot 9 of the player's current inventory to 1 bow of power 5 named "<light blue>Silver Bow" with lore "<white>Cost:", "%700 / {_discountFactor}%"
-			set slot 10 of the player's current inventory to 8 iron ingot named "<light blue>Tempered Iron" with lore "<white>Cost:", "%4320 / {_discountFactor}%"
-			set slot 11 of the player's current inventory to 8 gold ingot named "<light blue>Tempered Gold" with lore "<white>Cost:", "%5760 / {_discountFactor}%"
+			#set slot 10 of the player's current inventory to 8 iron ingot named "<light blue>Tempered Iron" with lore "<white>Cost:", "%4320 / {_discountFactor}%"
+			#set slot 11 of the player's current inventory to 8 gold ingot named "<light blue>Tempered Gold" with lore "<white>Cost:", "%5760 / {_discountFactor}%"
 			set slot 16 of the player's current inventory to 1 red glass pane named "<light red>Go to Page 4"
 			set slot 17 of the player's current inventory to 1 light green glass pane named "<light green>Go to Page 6"
 		else if arg 1 is 6:
@@ -122,7 +122,7 @@ command /bs-shop [<number=1>]:
 			set slot 7 of the player's current inventory to 1 diamond shovel with lore "<white>Cost:", "%600 / {_discountFactor}%"
 			set slot 8 of the player's current inventory to 1 diamond hoe with lore "<white>Cost:", "%400 / {_discountFactor}%"
 			set slot 9 of the player's current inventory to 4 diamond with lore "<white>Cost:", "%800 / {_discountFactor}%"
-			set slot 10 of the player's current inventory to 4 diamond named "<light blue>Tempered Diamond" with lore "<white>Cost:", "%7200 / {_discountFactor}%"
+			#set slot 10 of the player's current inventory to 4 diamond named "<light blue>Tempered Diamond" with lore "<white>Cost:", "%7200 / {_discountFactor}%"
 			set slot 17 of the player's current inventory to 1 red glass pane named "<light red>Go to Page 5"
 
 command /butchershop:
@@ -216,6 +216,44 @@ command /tradershop [<number=1>]:
 				set slot 53 of the player's current inventory to 1 book named "<gold>Perk Manual: Optimism" with nbt "{perkManualType:Optimism}" with lore "<white>Cost:", "%200 / {_discountFactor}%", "<white>Use to unlock the perk Optimism."
 				set slot 54 of the player's current inventory to 1 book named "<gold>Perk Manual: Pessimism" with nbt "{perkManualType:Pessimism}" with lore "<white>Cost:", "%200 / {_discountFactor}%", "<white>Use to unlock the perk Pessimism."
 
+command /traderbargains:
+	trigger:
+		set {traderBargainsLockout.%player%} to true
+		set {_discountFactor} to ({abilities.%player%::Barter} / 20)
+		if {_discountFactor} is less than 0.5:
+			set {_discountFactor} to 0.5
+		else if {_discountFactor} is more than 2:
+			set {_discountFactor} to ({_discountFactor} ^ 0.8)
+			if {_discountFactor} is less than 2:
+				set {_discountFactor} to 2
+		if {traits.%player%::Physician} is true:
+			set {_discountFactor} to {_discountFactor} * 0.8
+		open chest inventory with 2 rows named "<gold>Trader (Bargains)" for the player
+		#Random perk manuals
+		loop 9 times:
+			set {_perk} to getPerkManual(player)
+			set line 2 of the lore of {_perk} to "<white>Cost:"
+			set line 3 of the lore of {_perk} to "%250 / {_discountFactor}%"
+			set slot (loop-value - 1) of the player's current inventory to {_perk}
+		#Random stat boosters
+		loop 5 times:
+			set {_booster} to getStatBooster()
+			set line 2 of the lore of {_booster} to "<white>Cost:"
+			set line 3 of the lore of {_booster} to "%2000 / {_discountFactor}%"
+			set slot (8 + loop-value) of the player's current inventory to {_booster}
+		#Random stat boosters
+		loop 2 times:
+			set {_booster} to getStatBooster()
+			set line 2 of the lore of {_booster} to "<white>Cost:"
+			set line 3 of the lore of {_booster} to "%6000 / {_discountFactor}%"
+			set slot (13 + loop-value) of the player's current inventory to {_booster}
+		#Random consumable items
+		loop 2 times:
+			set {_item} to getConsumableLoot()
+			set line 2 of the lore of {_item} to "<white>Cost:"
+			set line 3 of the lore of {_item} to "%250 / {_discountFactor}%"
+			set slot (15 + loop-value) of the player's current inventory to {_item}
+
 command /weaponshop [<number=0>]:
 	trigger:
 		set {_discountFactor} to ({abilities.%player%::Barter} / 120)
@@ -262,98 +300,98 @@ command /weaponshop [<number=0>]:
 		else if arg 1 is 2:
 			open chest inventory with 2 rows named "<gold>Weapon Smith | Slaying Weapons" for the player
 			#Iron weapons
-			set slot 0 of the player's current inventory to 1 iron sword named "<light blue>Iron Slaying Edge [+0]" with nbt "{bakedRefine:0,mergeCount:0}" with lore "<white>Cost:", "%400 / {_discountFactor}%"
-			set slot 1 of the player's current inventory to 1 iron axe named "<light blue>Iron Slaying Axe [+0]" with nbt "{bakedRefine:0,mergeCount:0}" with lore "<white>Cost:", "%400 / {_discountFactor}%"
-			set slot 2 of the player's current inventory to 1 iron shovel named "<light blue>Iron Slaying Lance [+0]" with nbt "{bakedRefine:0,mergeCount:0,LanceType:2}" with lore "<white>Cost:", "%400 / {_discountFactor}%"
-			set slot 3 of the player's current inventory to 1 iron hoe named "<light blue>Iron Slaying Gaunlets [+0]" with nbt "{bakedRefine:0,mergeCount:0,GauntletType:2}" with lore "<white>Cost:", "%400 / {_discountFactor}%"
+			set slot 0 of the player's current inventory to 1 iron sword named "<light blue>Iron Slaying Edge [+0]" with nbt "{bakedRefine:0,mergeCount:0}" with lore "<white>Cost:", "%550 / {_discountFactor}%"
+			set slot 1 of the player's current inventory to 1 iron axe named "<light blue>Iron Slaying Axe [+0]" with nbt "{bakedRefine:0,mergeCount:0}" with lore "<white>Cost:", "%550 / {_discountFactor}%"
+			set slot 2 of the player's current inventory to 1 iron shovel named "<light blue>Iron Slaying Lance [+0]" with nbt "{bakedRefine:0,mergeCount:0,LanceType:2}" with lore "<white>Cost:", "%550 / {_discountFactor}%"
+			set slot 3 of the player's current inventory to 1 iron hoe named "<light blue>Iron Slaying Gaunlets [+0]" with nbt "{bakedRefine:0,mergeCount:0,GauntletType:2}" with lore "<white>Cost:", "%550 / {_discountFactor}%"
 			set slot 4 of the player's current inventory to 64 arrow named "<light blue>Iron Slaying Dagger [+0]" with nbt "{bakedRefine:0,mergeCount:0,DaggerType:2}" with lore "<white>Cost:", "%200 / {_discountFactor}%"
-			set slot 5 of the player's current inventory to 1 bow named "<light blue>Slaying Bow [+0]" with nbt "{bakedRefine:0,mergeCount:0}" with lore "<white>Cost:", "%400 / {_discountFactor}%"
+			set slot 5 of the player's current inventory to 1 bow named "<light blue>Slaying Bow [+0]" with nbt "{bakedRefine:0,mergeCount:0}" with lore "<white>Cost:", "%550 / {_discountFactor}%"
 			#Diamond weapons
-			set slot 9 of the player's current inventory to 1 diamond sword named "<light blue>Diamond Slaying Edge [+0]" with nbt "{bakedRefine:0,mergeCount:0}" with lore "<white>Cost:", "%900 / {_discountFactor}%"
-			set slot 10 of the player's current inventory to 1 diamond axe named "<light blue>Diamond Slaying Axe [+0]" with nbt "{bakedRefine:0,mergeCount:0}" with lore "<white>Cost:", "%900 / {_discountFactor}%"
-			set slot 11 of the player's current inventory to 1 diamond shovel named "<light blue>Diamond Slaying Lance [+0]" with nbt "{bakedRefine:0,mergeCount:0,LanceType:4}" with lore "<white>Cost:", "%900 / {_discountFactor}%"
-			set slot 12 of the player's current inventory to 1 diamond hoe named "<light blue>Diamond Slaying Gaunlets [+0]" with nbt "{bakedRefine:0,mergeCount:0,GauntletType:4}" with lore "<white>Cost:", "%900 / {_discountFactor}%"
-			set slot 13 of the player's current inventory to 64 arrow named "<light blue>Diamond Slaying Dagger [+0]" with nbt "{bakedRefine:0,mergeCount:0,DaggerType:4}" with lore "<white>Cost:", "%400 / {_discountFactor}%"
+			set slot 9 of the player's current inventory to 1 diamond sword named "<light blue>Diamond Slaying Edge [+0]" with nbt "{bakedRefine:0,mergeCount:0}" with lore "<white>Cost:", "%1200 / {_discountFactor}%"
+			set slot 10 of the player's current inventory to 1 diamond axe named "<light blue>Diamond Slaying Axe [+0]" with nbt "{bakedRefine:0,mergeCount:0}" with lore "<white>Cost:", "%1200 / {_discountFactor}%"
+			set slot 11 of the player's current inventory to 1 diamond shovel named "<light blue>Diamond Slaying Lance [+0]" with nbt "{bakedRefine:0,mergeCount:0,LanceType:4}" with lore "<white>Cost:", "%1200 / {_discountFactor}%"
+			set slot 12 of the player's current inventory to 1 diamond hoe named "<light blue>Diamond Slaying Gaunlets [+0]" with nbt "{bakedRefine:0,mergeCount:0,GauntletType:4}" with lore "<white>Cost:", "%1200 / {_discountFactor}%"
+			set slot 13 of the player's current inventory to 64 arrow named "<light blue>Diamond Slaying Dagger [+0]" with nbt "{bakedRefine:0,mergeCount:0,DaggerType:4}" with lore "<white>Cost:", "%550 / {_discountFactor}%"
 			set slot 17 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
 		else if arg 1 is 3:
 			open chest inventory with 2 rows named "<gold>Weapon Smith | Reinforced Weapons" for the player
 			#Iron weapons
-			set slot 0 of the player's current inventory to 1 iron sword named "<light blue>Iron Reforged Blade [+0]" with nbt "{bakedRefine:1,mergeCount:0}" with lore "<white>Cost:", "%400 / {_discountFactor}%"
-			set slot 1 of the player's current inventory to 1 iron axe named "<light blue>Iron Reforged Axe [+0]" with nbt "{bakedRefine:1,mergeCount:0}" with lore "<white>Cost:", "%400 / {_discountFactor}%"
-			set slot 2 of the player's current inventory to 1 iron shovel named "<light blue>Iron Reforged Lance [+0]" with nbt "{bakedRefine:1,mergeCount:0,LanceType:2}" with lore "<white>Cost:", "%400 / {_discountFactor}%"
-			set slot 3 of the player's current inventory to 1 iron hoe named "<light blue>Iron Reforged Gaunlets [+0]" with nbt "{bakedRefine:1,mergeCount:0,GauntletType:2}" with lore "<white>Cost:", "%400 / {_discountFactor}%"
+			set slot 0 of the player's current inventory to 1 iron sword named "<light blue>Iron Reforged Blade [+0]" with nbt "{bakedRefine:1,mergeCount:0}" with lore "<white>Cost:", "%550 / {_discountFactor}%"
+			set slot 1 of the player's current inventory to 1 iron axe named "<light blue>Iron Reforged Axe [+0]" with nbt "{bakedRefine:1,mergeCount:0}" with lore "<white>Cost:", "%550 / {_discountFactor}%"
+			set slot 2 of the player's current inventory to 1 iron shovel named "<light blue>Iron Reforged Lance [+0]" with nbt "{bakedRefine:1,mergeCount:0,LanceType:2}" with lore "<white>Cost:", "%550 / {_discountFactor}%"
+			set slot 3 of the player's current inventory to 1 iron hoe named "<light blue>Iron Reforged Gaunlets [+0]" with nbt "{bakedRefine:1,mergeCount:0,GauntletType:2}" with lore "<white>Cost:", "%550 / {_discountFactor}%"
 			set slot 4 of the player's current inventory to 64 arrow named "<light blue>Iron Reforged Dagger [+0]" with nbt "{bakedRefine:1,mergeCount:0,DaggerType:2}" with lore "<white>Cost:", "%200 / {_discountFactor}%"
-			set slot 5 of the player's current inventory to 1 bow named "<light blue>Reforged Bow [+0]" with nbt "{bakedRefine:1,mergeCount:0}" with lore "<white>Cost:", "%400 / {_discountFactor}%"
+			set slot 5 of the player's current inventory to 1 bow named "<light blue>Reforged Bow [+0]" with nbt "{bakedRefine:1,mergeCount:0}" with lore "<white>Cost:", "%550 / {_discountFactor}%"
 			#Diamond weapons
-			set slot 9 of the player's current inventory to 1 diamond sword named "<light blue>Diamond Reforged Blade [+0]" with nbt "{bakedRefine:1,mergeCount:0}" with lore "<white>Cost:", "%900 / {_discountFactor}%"
-			set slot 10 of the player's current inventory to 1 diamond axe named "<light blue>Diamond Reforged Axe [+0]" with nbt "{bakedRefine:1,mergeCount:0}" with lore "<white>Cost:", "%900 / {_discountFactor}%"
-			set slot 11 of the player's current inventory to 1 diamond shovel named "<light blue>Diamond Reforged Lance [+0]" with nbt "{bakedRefine:1,mergeCount:0,LanceType:4}" with lore "<white>Cost:", "%900 / {_discountFactor}%"
-			set slot 12 of the player's current inventory to 1 diamond hoe named "<light blue>Diamond Reforged Gaunlets [+0]" with nbt "{bakedRefine:1,mergeCount:0,GauntletType:4}" with lore "<white>Cost:", "%900 / {_discountFactor}%"
+			set slot 9 of the player's current inventory to 1 diamond sword named "<light blue>Diamond Reforged Blade [+0]" with nbt "{bakedRefine:1,mergeCount:0}" with lore "<white>Cost:", "%1200 / {_discountFactor}%"
+			set slot 10 of the player's current inventory to 1 diamond axe named "<light blue>Diamond Reforged Axe [+0]" with nbt "{bakedRefine:1,mergeCount:0}" with lore "<white>Cost:", "%1200 / {_discountFactor}%"
+			set slot 11 of the player's current inventory to 1 diamond shovel named "<light blue>Diamond Reforged Lance [+0]" with nbt "{bakedRefine:1,mergeCount:0,LanceType:4}" with lore "<white>Cost:", "%1200 / {_discountFactor}%"
+			set slot 12 of the player's current inventory to 1 diamond hoe named "<light blue>Diamond Reforged Gaunlets [+0]" with nbt "{bakedRefine:1,mergeCount:0,GauntletType:4}" with lore "<white>Cost:", "%1200 / {_discountFactor}%"
 			set slot 13 of the player's current inventory to 64 arrow named "<light blue>Diamond Reforged Dagger [+0]" with nbt "{bakedRefine:1,mergeCount:0,DaggerType:4}" with lore "<white>Cost:", "%500 / {_discountFactor}%"
 			set slot 17 of the player's current inventory to 1 red glass pane named "<bold>Go Back"	
 		else if arg 1 is 4:
 			open chest inventory with 2 rows named "<gold>Weapon Smith | Warding Weapons" for the player
 			#Iron weapons
-			set slot 0 of the player's current inventory to 1 iron sword named "<light blue>Iron Barrier Blade [+0]" with nbt "{bakedRefine:2,mergeCount:0}" with lore "<white>Cost:", "%400 / {_discountFactor}%"
-			set slot 1 of the player's current inventory to 1 iron axe named "<light blue>Iron Barrier Axe [+0]" with nbt "{bakedRefine:2,mergeCount:0}" with lore "<white>Cost:", "%400 / {_discountFactor}%"
-			set slot 2 of the player's current inventory to 1 iron shovel named "<light blue>Iron Barrier Lance [+0]" with nbt "{bakedRefine:2,mergeCount:0,LanceType:2}" with lore "<white>Cost:", "%400 / {_discountFactor}%"
-			set slot 3 of the player's current inventory to 1 iron hoe named "<light blue>Iron Barrier Gaunlets [+0]" with nbt "{bakedRefine:2,mergeCount:0,GauntletType:2}" with lore "<white>Cost:", "%400 / {_discountFactor}%"
+			set slot 0 of the player's current inventory to 1 iron sword named "<light blue>Iron Barrier Blade [+0]" with nbt "{bakedRefine:2,mergeCount:0}" with lore "<white>Cost:", "%550 / {_discountFactor}%"
+			set slot 1 of the player's current inventory to 1 iron axe named "<light blue>Iron Barrier Axe [+0]" with nbt "{bakedRefine:2,mergeCount:0}" with lore "<white>Cost:", "%550 / {_discountFactor}%"
+			set slot 2 of the player's current inventory to 1 iron shovel named "<light blue>Iron Barrier Lance [+0]" with nbt "{bakedRefine:2,mergeCount:0,LanceType:2}" with lore "<white>Cost:", "%550 / {_discountFactor}%"
+			set slot 3 of the player's current inventory to 1 iron hoe named "<light blue>Iron Barrier Gaunlets [+0]" with nbt "{bakedRefine:2,mergeCount:0,GauntletType:2}" with lore "<white>Cost:", "%550 / {_discountFactor}%"
 			set slot 4 of the player's current inventory to 64 arrow named "<light blue>Iron Barrier Dagger [+0]" with nbt "{bakedRefine:2,mergeCount:0,DaggerType:2}" with lore "<white>Cost:", "%200 / {_discountFactor}%"
-			set slot 5 of the player's current inventory to 1 bow named "<light blue>Barrier Bow [+0]" with nbt "{bakedRefine:2,mergeCount:0}" with lore "<white>Cost:", "%400 / {_discountFactor}%"
+			set slot 5 of the player's current inventory to 1 bow named "<light blue>Barrier Bow [+0]" with nbt "{bakedRefine:2,mergeCount:0}" with lore "<white>Cost:", "%550 / {_discountFactor}%"
 			#Diamond weapons
-			set slot 9 of the player's current inventory to 1 diamond sword named "<light blue>Diamond Barrier Blade [+0]" with nbt "{bakedRefine:2,mergeCount:0}" with lore "<white>Cost:", "%900 / {_discountFactor}%"
-			set slot 10 of the player's current inventory to 1 diamond axe named "<light blue>Diamond Barrier Axe [+0]" with nbt "{bakedRefine:2,mergeCount:0}" with lore "<white>Cost:", "%900 / {_discountFactor}%"
-			set slot 11 of the player's current inventory to 1 diamond shovel named "<light blue>Diamond Barrier Lance [+0]" with nbt "{bakedRefine:2,mergeCount:0,LanceType:4}" with lore "<white>Cost:", "%900 / {_discountFactor}%"
-			set slot 12 of the player's current inventory to 1 diamond hoe named "<light blue>Diamond Barrier Gaunlets [+0]" with nbt "{bakedRefine:2,mergeCount:0,GauntletType:4}" with lore "<white>Cost:", "%900 / {_discountFactor}%"
+			set slot 9 of the player's current inventory to 1 diamond sword named "<light blue>Diamond Barrier Blade [+0]" with nbt "{bakedRefine:2,mergeCount:0}" with lore "<white>Cost:", "%1200 / {_discountFactor}%"
+			set slot 10 of the player's current inventory to 1 diamond axe named "<light blue>Diamond Barrier Axe [+0]" with nbt "{bakedRefine:2,mergeCount:0}" with lore "<white>Cost:", "%1200 / {_discountFactor}%"
+			set slot 11 of the player's current inventory to 1 diamond shovel named "<light blue>Diamond Barrier Lance [+0]" with nbt "{bakedRefine:2,mergeCount:0,LanceType:4}" with lore "<white>Cost:", "%1200 / {_discountFactor}%"
+			set slot 12 of the player's current inventory to 1 diamond hoe named "<light blue>Diamond Barrier Gaunlets [+0]" with nbt "{bakedRefine:2,mergeCount:0,GauntletType:4}" with lore "<white>Cost:", "%1200 / {_discountFactor}%"
 			set slot 13 of the player's current inventory to 64 arrow named "<light blue>Diamond Barrier Dagger [+0]" with nbt "{bakedRefine:2,mergeCount:0,DaggerType:4}" with lore "<white>Cost:", "%500 / {_discountFactor}%"
 			set slot 17 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
 		else if arg 1 is 5:
 			open chest inventory with 2 rows named "<gold>Weapon Smith | Crushing Weapons" for the player
 			#Iron weapons
-			set slot 0 of the player's current inventory to 1 iron sword named "<light blue>Iron Greatsword [+0]" with nbt "{bakedRefine:5,mergeCount:0}" with lore "<white>Cost:", "%400 / {_discountFactor}%"
-			set slot 1 of the player's current inventory to 1 iron axe named "<light blue>Iron Greataxe [+0]" with nbt "{bakedRefine:5,mergeCount:0}" with lore "<white>Cost:", "%400 / {_discountFactor}%"
-			set slot 2 of the player's current inventory to 1 iron shovel named "<light blue>Iron Pike [+0]" with nbt "{bakedRefine:5,mergeCount:0,LanceType:2}" with lore "<white>Cost:", "%400 / {_discountFactor}%"
-			set slot 3 of the player's current inventory to 1 iron hoe named "<light blue>Iron Heavy Gaunlets [+0]" with nbt "{bakedRefine:5,mergeCount:0,GauntletType:2}" with lore "<white>Cost:", "%400 / {_discountFactor}%"
+			set slot 0 of the player's current inventory to 1 iron sword named "<light blue>Iron Greatsword [+0]" with nbt "{bakedRefine:5,mergeCount:0}" with lore "<white>Cost:", "%550 / {_discountFactor}%"
+			set slot 1 of the player's current inventory to 1 iron axe named "<light blue>Iron Greataxe [+0]" with nbt "{bakedRefine:5,mergeCount:0}" with lore "<white>Cost:", "%550 / {_discountFactor}%"
+			set slot 2 of the player's current inventory to 1 iron shovel named "<light blue>Iron Pike [+0]" with nbt "{bakedRefine:5,mergeCount:0,LanceType:2}" with lore "<white>Cost:", "%550 / {_discountFactor}%"
+			set slot 3 of the player's current inventory to 1 iron hoe named "<light blue>Iron Heavy Gaunlets [+0]" with nbt "{bakedRefine:5,mergeCount:0,GauntletType:2}" with lore "<white>Cost:", "%550 / {_discountFactor}%"
 			set slot 4 of the player's current inventory to 64 arrow named "<light blue>Iron Heavy Dagger [+0]" with nbt "{bakedRefine:5,mergeCount:0,DaggerType:2}" with lore "<white>Cost:", "%200 / {_discountFactor}%"
-			set slot 5 of the player's current inventory to 1 bow named "<light blue>Heavy Bow [+0]" with nbt "{bakedRefine:5,mergeCount:0}" with lore "<white>Cost:", "%400 / {_discountFactor}%"
+			set slot 5 of the player's current inventory to 1 bow named "<light blue>Heavy Bow [+0]" with nbt "{bakedRefine:5,mergeCount:0}" with lore "<white>Cost:", "%550 / {_discountFactor}%"
 			#Diamond weapons
-			set slot 9 of the player's current inventory to 1 diamond sword named "<light blue>Diamond Greatsword [+0]" with nbt "{bakedRefine:5,mergeCount:0}" with lore "<white>Cost:", "%900 / {_discountFactor}%"
-			set slot 10 of the player's current inventory to 1 diamond axe named "<light blue>Diamond Greataxe [+0]" with nbt "{bakedRefine:5,mergeCount:0}" with lore "<white>Cost:", "%900 / {_discountFactor}%"
-			set slot 11 of the player's current inventory to 1 diamond shovel named "<light blue>Diamond Pike [+0]" with nbt "{bakedRefine:5,mergeCount:0,LanceType:4}" with lore "<white>Cost:", "%900 / {_discountFactor}%"
-			set slot 12 of the player's current inventory to 1 diamond hoe named "<light blue>Diamond Heavy Gaunlets [+0]" with nbt "{bakedRefine:5,mergeCount:0,GauntletType:4}" with lore "<white>Cost:", "%900 / {_discountFactor}%"
+			set slot 9 of the player's current inventory to 1 diamond sword named "<light blue>Diamond Greatsword [+0]" with nbt "{bakedRefine:5,mergeCount:0}" with lore "<white>Cost:", "%1200 / {_discountFactor}%"
+			set slot 10 of the player's current inventory to 1 diamond axe named "<light blue>Diamond Greataxe [+0]" with nbt "{bakedRefine:5,mergeCount:0}" with lore "<white>Cost:", "%1200 / {_discountFactor}%"
+			set slot 11 of the player's current inventory to 1 diamond shovel named "<light blue>Diamond Pike [+0]" with nbt "{bakedRefine:5,mergeCount:0,LanceType:4}" with lore "<white>Cost:", "%1200 / {_discountFactor}%"
+			set slot 12 of the player's current inventory to 1 diamond hoe named "<light blue>Diamond Heavy Gaunlets [+0]" with nbt "{bakedRefine:5,mergeCount:0,GauntletType:4}" with lore "<white>Cost:", "%1200 / {_discountFactor}%"
 			set slot 13 of the player's current inventory to 64 arrow named "<light blue>Diamond Heavy Dagger [+0]" with nbt "{bakedRefine:5,mergeCount:0,DaggerType:4}" with lore "<white>Cost:", "%500 / {_discountFactor}%"
 			set slot 17 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
 		else if arg 1 is 6:
 			open chest inventory with 2 rows named "<gold>Weapon Smith | Piercing Weapons" for the player
 			#Iron weapons
-			set slot 0 of the player's current inventory to 1 iron sword named "<light blue>Iron Armoursmasher [+0]" with nbt "{bakedRefine:3,mergeCount:0}" with lore "<white>Cost:", "%400 / {_discountFactor}%"
-			set slot 1 of the player's current inventory to 1 iron axe named "<light blue>Iron Hammer [+0]" with nbt "{bakedRefine:3,mergeCount:0}" with lore "<white>Cost:", "%400 / {_discountFactor}%"
-			set slot 2 of the player's current inventory to 1 iron shovel named "<light blue>Iron Shieldreaver [+0]" with nbt "{bakedRefine:3,mergeCount:0,LanceType:2}" with lore "<white>Cost:", "%400 / {_discountFactor}%"
-			set slot 3 of the player's current inventory to 1 iron hoe named "<light blue>Iron Mailcrusher [+0]" with nbt "{bakedRefine:3,mergeCount:0,GauntletType:2}" with lore "<white>Cost:", "%400 / {_discountFactor}%"
+			set slot 0 of the player's current inventory to 1 iron sword named "<light blue>Iron Armoursmasher [+0]" with nbt "{bakedRefine:3,mergeCount:0}" with lore "<white>Cost:", "%550 / {_discountFactor}%"
+			set slot 1 of the player's current inventory to 1 iron axe named "<light blue>Iron Hammer [+0]" with nbt "{bakedRefine:3,mergeCount:0}" with lore "<white>Cost:", "%550 / {_discountFactor}%"
+			set slot 2 of the player's current inventory to 1 iron shovel named "<light blue>Iron Shieldreaver [+0]" with nbt "{bakedRefine:3,mergeCount:0,LanceType:2}" with lore "<white>Cost:", "%550 / {_discountFactor}%"
+			set slot 3 of the player's current inventory to 1 iron hoe named "<light blue>Iron Mailcrusher [+0]" with nbt "{bakedRefine:3,mergeCount:0,GauntletType:2}" with lore "<white>Cost:", "%550 / {_discountFactor}%"
 			set slot 4 of the player's current inventory to 64 arrow named "<light blue>Iron Barbed Dagger [+0]" with nbt "{bakedRefine:3,mergeCount:0,DaggerType:2}" with lore "<white>Cost:", "%200 / {_discountFactor}%"
-			set slot 5 of the player's current inventory to 1 bow named "<light blue>Lunar Arc [+0]" with nbt "{bakedRefine:3,mergeCount:0}" with lore "<white>Cost:", "%400 / {_discountFactor}%"
+			set slot 5 of the player's current inventory to 1 bow named "<light blue>Lunar Arc [+0]" with nbt "{bakedRefine:3,mergeCount:0}" with lore "<white>Cost:", "%550 / {_discountFactor}%"
 			#Diamond weapons
-			set slot 9 of the player's current inventory to 1 diamond sword named "<light blue>Diamond Armoursmasher [+0]" with nbt "{bakedRefine:3,mergeCount:0}" with lore "<white>Cost:", "%900 / {_discountFactor}%"
-			set slot 10 of the player's current inventory to 1 diamond axe named "<light blue>Diamond Hammer [+0]" with nbt "{bakedRefine:3,mergeCount:0}" with lore "<white>Cost:", "%900 / {_discountFactor}%"
-			set slot 11 of the player's current inventory to 1 diamond shovel named "<light blue>Diamond Shieldreaver [+0]" with nbt "{bakedRefine:3,mergeCount:0,LanceType:4}" with lore "<white>Cost:", "%900 / {_discountFactor}%"
-			set slot 12 of the player's current inventory to 1 diamond hoe named "<light blue>Diamond Mailcrusher [+0]" with nbt "{bakedRefine:3,mergeCount:0,GauntletType:4}" with lore "<white>Cost:", "%900 / {_discountFactor}%"
-			set slot 13 of the player's current inventory to 64 arrow named "<light blue>Diamond Barbed Dagger [+0]" with nbt "{bakedRefine:3,mergeCount:0,DaggerType:4}" with lore "<white>Cost:", "%500 / {_discountFactor}%"
+			set slot 9 of the player's current inventory to 1 diamond sword named "<light blue>Diamond Armoursmasher [+0]" with nbt "{bakedRefine:3,mergeCount:0}" with lore "<white>Cost:", "%1200 / {_discountFactor}%"
+			set slot 10 of the player's current inventory to 1 diamond axe named "<light blue>Diamond Hammer [+0]" with nbt "{bakedRefine:3,mergeCount:0}" with lore "<white>Cost:", "%1200 / {_discountFactor}%"
+			set slot 11 of the player's current inventory to 1 diamond shovel named "<light blue>Diamond Shieldreaver [+0]" with nbt "{bakedRefine:3,mergeCount:0,LanceType:4}" with lore "<white>Cost:", "%1200 / {_discountFactor}%"
+			set slot 12 of the player's current inventory to 1 diamond hoe named "<light blue>Diamond Mailcrusher [+0]" with nbt "{bakedRefine:3,mergeCount:0,GauntletType:4}" with lore "<white>Cost:", "%1200 / {_discountFactor}%"
+			set slot 13 of the player's current inventory to 64 arrow named "<light blue>Diamond Barbed Dagger [+0]" with nbt "{bakedRefine:3,mergeCount:0,DaggerType:4}" with lore "<white>Cost:", "%1200 / {_discountFactor}%"
 			set slot 17 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
 		else if arg 1 is 7:
 			open chest inventory with 2 rows named "<gold>Weapon Smith | Koenig Weapons" for the player
 			#Iron weapons
-			set slot 0 of the player's current inventory to 1 iron sword named "<light blue>Iron King Sword [+0]" with nbt "{bakedRefine:4,mergeCount:0}" with lore "<white>Cost:", "%400 / {_discountFactor}%"
-			set slot 1 of the player's current inventory to 1 iron axe named "<light blue>Iron King Axe [+0]" with nbt "{bakedRefine:4,mergeCount:0}" with lore "<white>Cost:", "%400 / {_discountFactor}%"
-			set slot 2 of the player's current inventory to 1 iron shovel named "<light blue>Iron King Lance [+0]" with nbt "{bakedRefine:4,mergeCount:0,LanceType:2}" with lore "<white>Cost:", "%400 / {_discountFactor}%"
-			set slot 3 of the player's current inventory to 1 iron hoe named "<light blue>Iron King Gaunlets [+0]" with nbt "{bakedRefine:4,mergeCount:0,GauntletType:2}" with lore "<white>Cost:", "%400 / {_discountFactor}%"
-			set slot 4 of the player's current inventory to 64 arrow named "<light blue>Iron King Dagger [+0]" with nbt "{bakedRefine:4,mergeCount:0,DaggerType:2}" with lore "<white>Cost:", "%200 / {_discountFactor}%"
-			set slot 5 of the player's current inventory to 1 bow named "<light blue>King Bow [+0]" with nbt "{bakedRefine:4,mergeCount:0}" with lore "<white>Cost:", "%400 / {_discountFactor}%"
+			set slot 0 of the player's current inventory to 1 iron sword named "<light blue>Iron King Sword [+0]" with nbt "{bakedRefine:4,mergeCount:0}" with lore "<white>Cost:", "%550 / {_discountFactor}%"
+			set slot 1 of the player's current inventory to 1 iron axe named "<light blue>Iron King Axe [+0]" with nbt "{bakedRefine:4,mergeCount:0}" with lore "<white>Cost:", "%550 / {_discountFactor}%"
+			set slot 2 of the player's current inventory to 1 iron shovel named "<light blue>Iron King Lance [+0]" with nbt "{bakedRefine:4,mergeCount:0,LanceType:2}" with lore "<white>Cost:", "%550 / {_discountFactor}%"
+			set slot 3 of the player's current inventory to 1 iron hoe named "<light blue>Iron King Gaunlets [+0]" with nbt "{bakedRefine:4,mergeCount:0,GauntletType:2}" with lore "<white>Cost:", "%550 / {_discountFactor}%"
+			set slot 4 of the player's current inventory to 64 arrow named "<light blue>Iron King Dagger [+0]" with nbt "{bakedRefine:4,mergeCount:0,DaggerType:2}" with lore "<white>Cost:", "%550 / {_discountFactor}%"
+			set slot 5 of the player's current inventory to 1 bow named "<light blue>King Bow [+0]" with nbt "{bakedRefine:4,mergeCount:0}" with lore "<white>Cost:", "%550 / {_discountFactor}%"
 			#Diamond weapons
-			set slot 9 of the player's current inventory to 1 diamond sword named "<light blue>Diamond King Sword [+0]" with nbt "{bakedRefine:4,mergeCount:0}" with lore "<white>Cost:", "%900 / {_discountFactor}%"
-			set slot 10 of the player's current inventory to 1 diamond axe named "<light blue>Diamond King Axe [+0]" with nbt "{bakedRefine:4,mergeCount:0}" with lore "<white>Cost:", "%900 / {_discountFactor}%"
-			set slot 11 of the player's current inventory to 1 diamond shovel named "<light blue>Diamond King Lance [+0]" with nbt "{bakedRefine:4,mergeCount:0,LanceType:4}" with lore "<white>Cost:", "%900 / {_discountFactor}%"
-			set slot 12 of the player's current inventory to 1 diamond hoe named "<light blue>Diamond King Gaunlets [+0]" with nbt "{bakedRefine:4,mergeCount:0,GauntletType:4}" with lore "<white>Cost:", "%900 / {_discountFactor}%"
-			set slot 13 of the player's current inventory to 64 arrow named "<light blue>Diamond King Dagger [+0]" with nbt "{bakedRefine:4,mergeCount:0,DaggerType:4}" with lore "<white>Cost:", "%500 / {_discountFactor}%"
+			set slot 9 of the player's current inventory to 1 diamond sword named "<light blue>Diamond King Sword [+0]" with nbt "{bakedRefine:4,mergeCount:0}" with lore "<white>Cost:", "%1200 / {_discountFactor}%"
+			set slot 10 of the player's current inventory to 1 diamond axe named "<light blue>Diamond King Axe [+0]" with nbt "{bakedRefine:4,mergeCount:0}" with lore "<white>Cost:", "%1200 / {_discountFactor}%"
+			set slot 11 of the player's current inventory to 1 diamond shovel named "<light blue>Diamond King Lance [+0]" with nbt "{bakedRefine:4,mergeCount:0,LanceType:4}" with lore "<white>Cost:", "%1200 / {_discountFactor}%"
+			set slot 12 of the player's current inventory to 1 diamond hoe named "<light blue>Diamond King Gaunlets [+0]" with nbt "{bakedRefine:4,mergeCount:0,GauntletType:4}" with lore "<white>Cost:", "%1200 / {_discountFactor}%"
+			set slot 13 of the player's current inventory to 64 arrow named "<light blue>Diamond King Dagger [+0]" with nbt "{bakedRefine:4,mergeCount:0,DaggerType:4}" with lore "<white>Cost:", "%1200 / {_discountFactor}%"
 			set slot 17 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
 		else if arg 1 is 8:
 			open chest inventory with 6 rows named "<gold>Weapon Smith | Weapon Frames" for the player
@@ -397,7 +435,7 @@ command /weaponshop [<number=0>]:
 			set slot 39 of the player's current inventory to 1 wooden hoe named "<light blue>Forged Diamond Gauntlets Frame" with nbt "{frameType:4,upgradeTier:1,oreType:2}" with lore "<white>Cost:", "%200 / {_discountFactor}%"
 			set slot 40 of the player's current inventory to 1 arrow named "<light blue>Forged Diamond Dagger Frame" with nbt "{frameType:5,upgradeTier:1,oreType:2}" with lore "<white>Cost:", "%200 / {_discountFactor}%"
 			#Sacred Treasure
-			set slot 45 of the player's current inventory to 1 nether star named "<gold>Mythic Cast" with nbt "{frameType:0,upgradeTier:1,oreType:776}" with lore "<white>Cost:", "%2500 / {_discountFactor}%", "<italics>Upgrades a Diamond +10 evolved weapon even further."
+			set slot 45 of the player's current inventory to 1 nether star named "<gold>Mythic Cast" with nbt "{frameType:0,upgradeTier:1,oreType:776}" with lore "<white>Cost:", "9980", "<italics>Upgrades a Diamond +10 evolved weapon even further."
 			set slot 46 of the player's current inventory to 1 wooden sword named "<light blue>Purified Diamond Weapon Frame" with nbt "{frameType:0,upgradeTier:2,oreType:2}" with lore "<white>Cost:", "%2500 / {_discountFactor}%", "<italics>Adds a merge to any mythic weapon."
 			set slot 53 of the player's current inventory to 1 red glass pane named "<bold>Go Back"
 		#Netherite
@@ -807,24 +845,24 @@ command /curateshop:
 		set slot 9 of the player's current inventory to 1 potion of healing named "<gold>Elixir of Life" with lore "<white>Cost:", "%350 / {_discountFactor}%", "<white>Fully restores health when consumed."
 		set slot 10 of the player's current inventory to 1 splash potion of slowness named "<gold>Bottled Blizzard" with lore "<white>Cost:", "%175 / {_discountFactor}%", "<white>Freezes nearby foes, preventing them from moving or attacking."
 		set slot 11 of the player's current inventory to 1 nether star named "<gold>Untouchable" with lore "<white>Cost:", "%1200 / {_discountFactor}%", "<white>Grants temporary invulnerability when consumed."
-		set slot 12 of the player's current inventory to 1 sugar named "<gold>Ability Powder" with lore "<white>Cost:", "%1000 / {_discountFactor}%", "<white>Grants +9 Ability Points when consumed."
-		set slot 13 of the player's current inventory to 1 sugar named "<gold>Holy Robe" with lore "<white>Cost:", "%1500 / {_discountFactor}%", "<white>Increases your HP by +5 when consumed."
-		set slot 14 of the player's current inventory to 1 sugar named "<gold>Energy Drop" with lore "<white>Cost:", "%1500 / {_discountFactor}%", "<white>Increases your STR by +5 when consumed."
-		set slot 15 of the player's current inventory to 1 sugar named "<gold>Spirit Dust" with lore "<white>Cost:", "%1500 / {_discountFactor}%", "<white>Increases your MAG by +5 when consumed."
-		set slot 16 of the player's current inventory to 1 sugar named "<gold>Speedwing" with lore "<white>Cost:", "%1500 / {_discountFactor}%", "<white>Increases your SPD by +5 when consumed."
-		set slot 17 of the player's current inventory to 1 sugar named "<gold>Focus Drop" with lore "<white>Cost:", "%1500 / {_discountFactor}%", "<white>Increases your LCK by +5 when consumed."
-		set slot 18 of the player's current inventory to 1 sugar named "<gold>Charm Bracelet" with lore "<white>Cost:", "%1500 / {_discountFactor}%", "<white>Increases your CHR by +5 when consumed."
-		set slot 19 of the player's current inventory to 1 sugar named "<gold>Dragonshield" with lore "<white>Cost:", "%1500 / {_discountFactor}%", "<white>Increases your DEF by +5 when consumed."
-		set slot 20 of the player's current inventory to 1 sugar named "<gold>Seraph Robe" with lore "<white>Cost:", "%1500 / {_discountFactor}%", "<white>Increases your RES by +5 when consumed."
+		set slot 12 of the player's current inventory to 1 sugar named "<orange>Ability Powder" with lore "<white>Cost:", "%1000 / {_discountFactor}%", "<white>Grants +9 Ability Points when consumed."
+		set slot 13 of the player's current inventory to 1 sugar named "<orange>Holy Robe" with lore "<white>Cost:", "%1500 / {_discountFactor}%", "<white>Increases your HP by +5 when consumed."
+		set slot 14 of the player's current inventory to 1 sugar named "<orange>Energy Drop" with lore "<white>Cost:", "%1500 / {_discountFactor}%", "<white>Increases your STR by +5 when consumed."
+		set slot 15 of the player's current inventory to 1 sugar named "<orange>Spirit Dust" with lore "<white>Cost:", "%1500 / {_discountFactor}%", "<white>Increases your MAG by +5 when consumed."
+		set slot 16 of the player's current inventory to 1 sugar named "<orange>Speedwing" with lore "<white>Cost:", "%1500 / {_discountFactor}%", "<white>Increases your SPD by +5 when consumed."
+		set slot 17 of the player's current inventory to 1 sugar named "<orange>Focus Drop" with lore "<white>Cost:", "%1500 / {_discountFactor}%", "<white>Increases your LCK by +5 when consumed."
+		set slot 18 of the player's current inventory to 1 sugar named "<orange>Charm Bracelet" with lore "<white>Cost:", "%1500 / {_discountFactor}%", "<white>Increases your CHR by +5 when consumed."
+		set slot 19 of the player's current inventory to 1 sugar named "<orange>Dragonshield" with lore "<white>Cost:", "%1500 / {_discountFactor}%", "<white>Increases your DEF by +5 when consumed."
+		set slot 20 of the player's current inventory to 1 sugar named "<orange>Seraph Robe" with lore "<white>Cost:", "%1500 / {_discountFactor}%", "<white>Increases your RES by +5 when consumed."
 		#
-		set slot 21 of the player's current inventory to 1 sugar named "<gold>Quintessence" with lore "<white>Cost:", "%3000 / {_discountFactor}%", "<white>Increases your HP cap by +5 when consumed."
-		set slot 22 of the player's current inventory to 1 sugar named "<gold>Power Charm" with lore "<white>Cost:", "%3000 / {_discountFactor}%", "<white>Increases your STR cap by +5 when consumed."
-		set slot 23 of the player's current inventory to 1 sugar named "<gold>Ancient Tome" with lore "<white>Cost:", "%3000 / {_discountFactor}%", "<white>Increases your MAG cap by +5 when consumed."
-		set slot 24 of the player's current inventory to 1 sugar named "<gold>Gust Charm" with lore "<white>Cost:", "%3000 / {_discountFactor}%", "<white>Increases your SPD cap by +5 when consumed."
-		set slot 25 of the player's current inventory to 1 sugar named "<gold>Charmed Dice" with lore "<white>Cost:", "%3000 / {_discountFactor}%", "<white>Increases your LCK cap by +5 when consumed."
-		set slot 26 of the player's current inventory to 1 sugar named "<gold>Bard's Tounge" with lore "<white>Cost:", "%3000 / {_discountFactor}%", "<white>Increases your CHR cap by +5 when consumed."
-		set slot 27 of the player's current inventory to 1 sugar named "<gold>Sacred Cowl" with lore "<white>Cost:", "%3000 / {_discountFactor}%", "<white>Increases your DEF cap by +5 when consumed."
-		set slot 28 of the player's current inventory to 1 sugar named "<gold>Ice Mirror" with lore "<white>Cost:", "%3000 / {_discountFactor}%", "<white>Increases your RES cap by +5 when consumed."
+		set slot 21 of the player's current inventory to 1 sugar named "<orange>Quintessence" with lore "<white>Cost:", "%3000 / {_discountFactor}%", "<white>Increases your HP cap by +5 when consumed."
+		set slot 22 of the player's current inventory to 1 sugar named "<orange>Power Charm" with lore "<white>Cost:", "%3000 / {_discountFactor}%", "<white>Increases your STR cap by +5 when consumed."
+		set slot 23 of the player's current inventory to 1 sugar named "<orange>Ancient Tome" with lore "<white>Cost:", "%3000 / {_discountFactor}%", "<white>Increases your MAG cap by +5 when consumed."
+		set slot 24 of the player's current inventory to 1 sugar named "<orange>Gust Charm" with lore "<white>Cost:", "%3000 / {_discountFactor}%", "<white>Increases your SPD cap by +5 when consumed."
+		set slot 25 of the player's current inventory to 1 sugar named "<orange>Charmed Dice" with lore "<white>Cost:", "%3000 / {_discountFactor}%", "<white>Increases your LCK cap by +5 when consumed."
+		set slot 26 of the player's current inventory to 1 sugar named "<orange>Bard's Tounge" with lore "<white>Cost:", "%3000 / {_discountFactor}%", "<white>Increases your CHR cap by +5 when consumed."
+		set slot 27 of the player's current inventory to 1 sugar named "<orange>Sacred Cowl" with lore "<white>Cost:", "%3000 / {_discountFactor}%", "<white>Increases your DEF cap by +5 when consumed."
+		set slot 28 of the player's current inventory to 1 sugar named "<orange>Ice Mirror" with lore "<white>Cost:", "%3000 / {_discountFactor}%", "<white>Increases your RES cap by +5 when consumed."
 	
 command /curateheal:
 	trigger:
@@ -1094,6 +1132,21 @@ on inventory click:
 				if {_sklchk} is 1:
 					add ({_cost} * 0.1) to the player's balance
 				send formatted "<light green>Purchased that item for %{_cost}% gold. New balance: %player's money%"
+	#Trader Bargains
+	else if the name of the player's current inventory is "<gold>Trader (Bargains)":
+		cancel event
+		set {_cost} to the 3rd line of the lore of the clicked item parsed as number
+		if {_cost} is less than or equal to player's money:
+			if {_cost} is set:
+				set {_item} to the clicked item
+				clear the lore of {_item}
+				give {_item} to the player
+				subtract {_cost} from player's money
+				set {_sklchk} to checkSlots(player,"Expert Negotiator")
+				if {_sklchk} is 1:
+					add ({_cost} * 0.1) to the player's balance
+				send formatted "<light green>Purchased that item for %{_cost}% gold. New balance: %player's money%"
+				set clicked item to 1 barrier named "<light red>Sold out!" with lore "<white>You can only purchase one of each bargain!"
 	#Curates
 	else if the name of the player's current inventory is "<gold>Curate":
 		cancel event
@@ -1772,7 +1825,8 @@ on consume:
 	else if the name of the player's tool contains "Class XP":
 		if {lvl.%player%} is less than {lvlcap.%player%}:
 			set {_playerLVL} to getPromotionCompensatedClassLevel(player)
-			set {_cXP} to (ceil((({_playerLVL} + ({_playerLVL} ^ 2)) / (1 + ({promoted.%{_PLR}%} - 1))) + 10)) - {classXP.%player%}
+			set {_xpNeededForLevel} to ceil((({_playerLVL} + ({_playerLVL} ^ 2)) / (1 + ({promoted.%{_PLR}%} - 1))) + 10)
+			set {_cXP} to {_xpNeededForLevel} -  {classXP.%player%} 
 			if the name of the player's tool is "<light blue>Packaged Class XP":
 				addClassXP(player,{_cXP})
 				send "<light blue>Consumed the Packaged Class XP and gained 1 Class Level."

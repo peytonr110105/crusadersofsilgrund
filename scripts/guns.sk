@@ -95,14 +95,7 @@ on right click:
 				if {_allowInfAmmo} is not true:
 					if {_resourceful} is not 1:
 						if checkSlots(player,"Belt Feed") is 1:
-							if player does not have 2 cobblestone:
-								if player does not have 1 gunpowder:
-									subtract 1 from {_clip}
-									set the 8th line of the lore of the player's tool to "%{_clip}%"
-							if player has 2 cobblestone:
-								if player has 1 gunpowder:
-									remove 2 cobblestone from the player
-									remove 1 gunpowder from the player
+							add 34 to {t_beltFeedPenalty.%player%}
 						else:
 							if {_blockClipLoss} is not true:
 								subtract 1 from {_clip}
@@ -147,20 +140,7 @@ on right click:
 				if {_allowInfAmmo} is not true:
 					if {_resourceful} is not 1:
 						if checkSlots(player,"Belt Feed") is 1:
-							if player does not have 2 cobblestone:
-								if player does not have 1 gunpowder:
-									subtract 1 from {_clip}
-									set the 8th line of the lore of the player's tool to "%{_clip}%"
-							if player has 2 cobblestone:
-								if player has 1 gunpowder:
-									remove 2 cobblestone from the player
-									remove 1 gunpowder from the player
-								else:
-									subtract 1 from {_clip}
-									set the 8th line of the lore of the player's tool to "%{_clip}%"
-							else:
-								subtract 1 from {_clip}
-								set the 8th line of the lore of the player's tool to "%{_clip}%"
+							add 51 to {t_beltFeedPenalty.%player%}
 						else:
 							subtract 1 from {_clip}
 							set the 8th line of the lore of the player's tool to "%{_clip}%"					
@@ -220,13 +200,7 @@ on right click:
 									add 1 to {_clip}
 									play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player								
 						if checkSlots(player,"Belt Feed") is 1:
-							if player does not have 2 iron nugget:
-								if player does not have 2 gunpowder:
-									subtract 1 from {_clip}
-							if player has 2 iron nugget:
-								if player has 2 gunpowder:
-									remove 2 iron nugget from the player
-									remove 2 gunpowder from the player
+							add 14 to {t_beltFeedPenalty.%player%}
 						else:
 							if {_blockClipLoss} is not true:
 								subtract 1 from {_clip}
@@ -262,13 +236,7 @@ on right click:
 							set {_allowInfAmmo} to true
 					if {_allowInfAmmo} is not true:
 						if checkSlots(player,"Belt Feed") is 1:
-							if player does not have 2 iron nugget:
-								if player does not have 2 gunpowder:
-									subtract 1 from {_clip}
-							if player has 2 iron nugget:
-								if player has 2 gunpowder:
-									remove 2 iron nugget from the player
-									remove 2 gunpowder from the player
+							add 7 to {t_beltFeedPenalty.%player%}
 						if {_resourceful} is 1:
 							chance of 50%:
 								if checkSlots(player,"Belt Feed") is 1:
@@ -328,13 +296,7 @@ on right click:
 									add 1 to {_clip}
 									play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player								
 						if checkSlots(player,"Belt Feed") is 1:
-							if player does not have 2 iron nugget:
-								if player does not have 2 gunpowder:
-									subtract 1 from {_clip}
-							if player has 2 iron nugget:
-								if player has 2 gunpowder:
-									remove 2 iron nugget from the player
-									remove 2 gunpowder from the player
+							add 8 to {t_beltFeedPenalty.%player%}
 						else:
 							if {_blockClipLoss} is not true:
 								subtract 1 from {_clip}
@@ -383,13 +345,7 @@ on right click:
 									add 1 to {_clip}
 									play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player								
 						if checkSlots(player,"Belt Feed") is 1:
-							if player does not have 2 iron ingot:
-								if player does not have 2 gunpowder:
-									subtract 1 from {_clip}
-							if player has 2 iron ingot:
-								if player has 2 gunpowder:
-									remove 2 iron ingot from the player
-									remove 2 gunpowder from the player
+							add 17 to {t_beltFeedPenalty.%player%}
 						else:
 							if {_blockClipLoss} is not true:
 								subtract 1 from {_clip}
@@ -434,13 +390,7 @@ on right click:
 								add 1 to {_clip}
 								play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player								
 					if checkSlots(player,"Belt Feed") is 1:
-						if player does not have 2 iron nugget:
-							if player does not have 2 gunpowder:
-								subtract 1 from {_clip}
-						if player has 2 iron nugget:
-							if player has 2 gunpowder:
-								remove 2 iron nugget from the player
-								remove 2 gunpowder from the player
+						add 19 to {t_beltFeedPenalty.%player%}
 					else:
 						if {_blockClipLoss} is not true:
 							subtract 1 from {_clip}
@@ -491,13 +441,7 @@ on right click:
 									add 1 to {_clip}
 									play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player								
 						if checkSlots(player,"Belt Feed") is 1:
-							if player does not have 2 gold nugget:
-								if player does not have 2 gunpowder:
-									subtract 1 from {_clip}
-							if player has 2 gold nugget:
-								if player has 2 gunpowder:
-									remove 2 gold nugget from the player
-									remove 2 gunpowder from the player
+							add 25 to {t_beltFeedPenalty.%player%}
 						else:
 							subtract 1 from {_clip}
 					set the 8th line of the lore of the player's tool to "%{_clip}%"
@@ -540,13 +484,7 @@ on right click:
 									add 1 to {_clip}
 									play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player								
 						if checkSlots(player,"Belt Feed") is 1:
-							if player does not have 2 firework:
-								if player does not have 2 gunpowder:
-									subtract 1 from {_clip}
-							if player has 2 firework:
-								if player has 2 gunpowder:
-									remove 2 firework from the player
-									remove 2 gunpowder from the player
+							add 17 to {t_beltFeedPenalty.%player%}
 						else:
 							subtract 1 from {_clip}
 					set the 8th line of the lore of the player's tool to "%{_clip}%"
@@ -615,13 +553,7 @@ on right click:
 									add 1 to {_clip}
 									play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player								
 						if checkSlots(player,"Belt Feed") is 1:
-							if player does not have 2 iron nugget:
-								if player does not have 2 gunpowder:
-									subtract 1 from {_clip}
-							if player has 2 iron nugget:
-								if player has 2 gunpowder:
-									remove 2 iron nugget from the player
-									remove 2 gunpowder from the player
+							add 10 to {t_beltFeedPenalty.%player%}
 						else:
 							subtract 1 from {_clip}
 					set the 8th line of the lore of the player's tool to "%{_clip}%"
@@ -679,13 +611,7 @@ on right click:
 									add 1 to {_clip}
 									play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player								
 						if checkSlots(player,"Belt Feed") is 1:
-							if player does not have 2 gold nugget:
-								if player does not have 2 gunpowder:
-									subtract 1 from {_clip}
-							if player has 2 gold nugget:
-								if player has 2 gunpowder:
-									remove 2 gold nugget from the player
-									remove 2 gunpowder from the player
+							add 15 to {t_beltFeedPenalty.%player%}
 						else:
 							subtract 1 from {_clip}
 					set the 8th line of the lore of the player's tool to "%{_clip}%"
@@ -750,13 +676,7 @@ on right click:
 										add 1 to {_clip}
 										play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player								
 							if checkSlots(player,"Belt Feed") is 1:
-								if player does not have 2 gold nugget:
-									if player does not have 2 gunpowder:
-										subtract 1 from {_clip}
-								if player has 2 gold nugget:
-									if player has 2 gunpowder:
-										remove 2 gold nugget from the player
-										remove 2 gunpowder from the player
+								add 11 to {t_beltFeedPenalty.%player%}
 							else:
 								subtract 1 from {_clip}
 						set the 8th line of the lore of the player's tool to "%{_clip}%"
@@ -821,13 +741,7 @@ on right click:
 									add 1 to {_clip}
 									play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player								
 						if checkSlots(player,"Belt Feed") is 1:
-							if player does not have 2 gold nugget:
-								if player does not have 2 gunpowder:
-									subtract 1 from {_clip}
-							if player has 2 gold nugget:
-								if player has 2 gunpowder:
-									remove 2 gold nugget from the player
-									remove 2 gunpowder from the player
+							add 54 to {t_beltFeedPenalty.%player%}
 						else:
 							subtract 1 from {_clip}
 					set the 8th line of the lore of the player's tool to "%{_clip}%"
@@ -866,13 +780,7 @@ on right click:
 									add 1 to {_clip}
 									play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player								
 						if checkSlots(player,"Belt Feed") is 1:
-							if player does not have 2 firework:
-								if player does not have 2 gunpowder:
-									subtract 1 from {_clip}
-							if player has 2 firework:
-								if player has 2 gunpowder:
-									remove 2 firework from the player
-									remove 2 gunpowder from the player
+							add 30 to {t_beltFeedPenalty.%player%}
 						else:
 							subtract 1 from {_clip}
 					set the 8th line of the lore of the player's tool to "%{_clip}%"
@@ -912,13 +820,7 @@ on right click:
 									add 1 to {_clip}
 									play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player								
 						if checkSlots(player,"Belt Feed") is 1:
-							if player does not have 2 firework:
-								if player does not have 2 gunpowder:
-									subtract 1 from {_clip}
-							if player has 2 firework:
-								if player has 2 gunpowder:
-									remove 2 firework from the player
-									remove 2 gunpowder from the player
+							add 34 to {t_beltFeedPenalty.%player%}
 						else:
 							subtract 1 from {_clip}
 					set the 8th line of the lore of the player's tool to "%{_clip}%"
@@ -961,13 +863,7 @@ on right click:
 									add 1 to {_clip}
 									play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player								
 						if checkSlots(player,"Belt Feed") is 1:
-							if player does not have 2 firework:
-								if player does not have 2 gunpowder:
-									subtract 1 from {_clip}
-							if player has 2 firework:
-								if player has 2 gunpowder:
-									remove 2 firework from the player
-									remove 2 gunpowder from the player
+							add 33 to {t_beltFeedPenalty.%player%}
 						else:
 							subtract 1 from {_clip}
 					set the 8th line of the lore of the player's tool to "%{_clip}%"
@@ -1007,13 +903,7 @@ on right click:
 									add 1 to {_clip}
 									play sound "entity.player.levelup" with volume 0.5 and pitch 2 at the player for the player								
 						if checkSlots(player,"Belt Feed") is 1:
-							if player does not have 2 gold nugget:
-								if player does not have 2 gunpowder:
-									subtract 1 from {_clip}
-							if player has 2 gold nugget:
-								if player has 2 gunpowder:
-									remove 2 gold nugget from the player
-									remove 2 gunpowder from the player
+							add 50 to {t_beltFeedPenalty.%player%}
 						else:
 							subtract 1 from {_clip}
 					set the 8th line of the lore of the player's tool to "%{_clip}%"
@@ -2087,6 +1977,7 @@ on left click:
 			send formatted "<light red>Already at max clip size!"
 	if checkSlots(player,"Utility Belt") is 1:
 		if {_clipFull} is true:
+			send formatted "utility belt check" to the player
 			loop all items in the player's current inventory:
 				if the name of loop-item contains "Grenade":
 					make the player shoot thrown potion of healing

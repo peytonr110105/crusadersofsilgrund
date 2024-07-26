@@ -617,7 +617,7 @@ on right click on an entity:
 							send formatted "<light cyan>%target's name%: Welcome, welcome, %player's name%<reset><light cyan>! Everything you see in my shop is for sale!" to the player
 						else:
 							send formatted "<light cyan>%target's name%: My prices are the lowest in all of Silgrund! You won't find a better deal elsewhere!" to the player
-				else if {abilities.%player%::Speech} is more than or equal to 40:
+				else if {abilities.%player%::Speech} is more than or equal to 30:
 					set {_rng} to a random integer from 1 to 3
 					if {_rng} is 1:
 						send formatted "<light cyan>%target's name%: Don't cause trouble, lizard." to the player
@@ -628,6 +628,13 @@ on right click on an entity:
 				wait 1.33 seconds
 				send formatted "<run command:/tradershop><gold>1 - What do you have for sale?" to the player
 				send formatted "<run command:/peddlershop><gold>2 - I'd like to sell some things." to the player
+				if {abilities.%player%::Speech} is more than or equal to 40:
+					if {traderBargainsLockout.%player%} is not set:
+						send formatted "<run command:/traderbargains><gold>3 - Have any special bargains for sale?" to the player
+					else:
+						send formatted "<tooltip:You already viewed today's bargains.><light red>3 - Have any special bargains for sale?" to the player
+				else:
+					send formatted "<tooltip:You 40 Speech to access the trader's bargains.><light red>3 - Have any special bargains for sale?" to the player
 			#
 			#Curates
 			if the name of the target contains "Curate":
@@ -1049,6 +1056,7 @@ every minecraft hour:
 		loop all players:
 			set {radiantQuestsRNG.%loop-player%} to true
 			clear {bleedoutMobKillRevive.%loop-player%::Target}
+			clear {traderBargainsLockout.%loop-player%}
 			loop {lootChests.%loop-player%::*}:
 				subtract 1 from {lootChests.%loop-player%::%loop-index%}
 				if {lootChests.%loop-player%::%loop-index%} is less than or equal to 0:
@@ -1061,6 +1069,7 @@ every minecraft hour:
 				clear {wanderingNPCList.%loop-player%::%loop-index%}
 		broadcast "<orange>A new day has begun..."
 		broadcast "<light yellow>The Quest Boards have been updated!"
+		broadcast "<light yellow>New bargains are available at the trader!"
 		clear {hoursOfDay}
 	else:
 		add 1 to {hoursOfDay}
